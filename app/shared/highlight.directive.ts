@@ -6,7 +6,7 @@ import { Directive, ElementRef, Renderer } from '@angular/core';
 /** Highlight the attached element or an InputElement in gray */
 export class HighlightDirective {
   constructor(renderer: Renderer, el: ElementRef) {
-    renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'black');
+    renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'white');
     console.log(
       `* Shared highlight called for ${el.nativeElement.tagName}`);
   }
