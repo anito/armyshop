@@ -1,4 +1,10 @@
-import { FORM_DIRECTIVES } from './forms';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { CORE_DIRECTIVES } from './directives';
 /**
  * A collection of Angular core directives that are likely to be used in each and every Angular
@@ -42,6 +48,8 @@ import { CORE_DIRECTIVES } from './directives';
  *   ...
  * }
  * ```
+ *
+ * @experimental Contains forms which are experimental.
  */
-export const COMMON_DIRECTIVES = [CORE_DIRECTIVES, FORM_DIRECTIVES];
+export const COMMON_DIRECTIVES = [CORE_DIRECTIVES];
 //# sourceMappingURL=common_directives.js.map

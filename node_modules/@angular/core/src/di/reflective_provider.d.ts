@@ -1,6 +1,6 @@
-import { Type } from '../../src/facade/lang';
-import { ReflectiveKey } from './reflective_key';
+import { Type } from '../facade/lang';
 import { Provider } from './provider';
+import { ReflectiveKey } from './reflective_key';
 /**
  * `Dependency` is used by the framework to extend DI.
  * This is internal to Angular and should not be used directly.
@@ -29,6 +29,8 @@ export declare class ReflectiveDependency {
  *
  * expect(injector.get('message')).toEqual('Hello');
  * ```
+ *
+ * @experimental
  */
 export interface ResolvedReflectiveProvider {
     /**
@@ -45,7 +47,7 @@ export interface ResolvedReflectiveProvider {
     multiProvider: boolean;
 }
 /**
- * See {@link ResolvedProvider} instead.
+ * See {@link ResolvedReflectiveProvider} instead.
  *
  * @deprecated
  */
@@ -60,6 +62,7 @@ export declare class ResolvedReflectiveProvider_ implements ResolvedReflectiveBi
 }
 /**
  * An internal resolved representation of a factory function created by resolving {@link Provider}.
+ * @experimental
  */
 export declare class ResolvedReflectiveFactory {
     /**

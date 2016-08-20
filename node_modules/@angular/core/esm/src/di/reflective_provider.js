@@ -1,12 +1,19 @@
-import { Type, isBlank, isPresent, isArray } from '../../src/facade/lang';
-import { MapWrapper, ListWrapper } from '../../src/facade/collection';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { ListWrapper, MapWrapper } from '../facade/collection';
+import { Type, isArray, isBlank, isPresent } from '../facade/lang';
 import { reflector } from '../reflection/reflection';
-import { ReflectiveKey } from './reflective_key';
-import { InjectMetadata, OptionalMetadata, SelfMetadata, HostMetadata, SkipSelfMetadata, DependencyMetadata } from './metadata';
-import { NoAnnotationError, MixingMultiProvidersWithRegularProvidersError, InvalidProviderError } from './reflective_exceptions';
 import { resolveForwardRef } from './forward_ref';
+import { DependencyMetadata, HostMetadata, InjectMetadata, OptionalMetadata, SelfMetadata, SkipSelfMetadata } from './metadata';
 import { Provider, ProviderBuilder, provide } from './provider';
-import { isProviderLiteral, createProvider } from './provider_util';
+import { createProvider, isProviderLiteral } from './provider_util';
+import { InvalidProviderError, MixingMultiProvidersWithRegularProvidersError, NoAnnotationError } from './reflective_exceptions';
+import { ReflectiveKey } from './reflective_key';
 /**
  * `Dependency` is used by the framework to extend DI.
  * This is internal to Angular and should not be used directly.
@@ -34,6 +41,7 @@ export class ResolvedReflectiveProvider_ {
 }
 /**
  * An internal resolved representation of a factory function created by resolving {@link Provider}.
+ * @experimental
  */
 export class ResolvedReflectiveFactory {
     constructor(
@@ -167,7 +175,7 @@ function _dependenciesFor(typeOrFunc) {
     }
     return params.map((p) => _extractToken(typeOrFunc, p, params));
 }
-function _extractToken(typeOrFunc, metadata /*any[] | any*/, params) {
+function _extractToken(typeOrFunc /** TODO #9100 */, metadata /** TODO #9100 */ /*any[] | any*/, params) {
     var depProps = [];
     var token = null;
     var optional = false;
@@ -216,7 +224,7 @@ function _extractToken(typeOrFunc, metadata /*any[] | any*/, params) {
         throw new NoAnnotationError(typeOrFunc, params);
     }
 }
-function _createDependency(token, optional, lowerBoundVisibility, upperBoundVisibility, depProps) {
+function _createDependency(token /** TODO #9100 */, optional /** TODO #9100 */, lowerBoundVisibility /** TODO #9100 */, upperBoundVisibility /** TODO #9100 */, depProps /** TODO #9100 */) {
     return new ReflectiveDependency(ReflectiveKey.get(token), optional, lowerBoundVisibility, upperBoundVisibility, depProps);
 }
 //# sourceMappingURL=reflective_provider.js.map

@@ -1,6 +1,49 @@
-import { stringify, isString } from '../../src/facade/lang';
-import { DependencyMetadata } from '../di/metadata';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { resolveForwardRef } from '../di/forward_ref';
+import { DependencyMetadata } from '../di/metadata';
+import { OpaqueToken } from '../di/opaque_token';
+import { StringWrapper, isString, stringify } from '../facade/lang';
+/**
+ * This token can be used to create a virtual provider that will populate the
+ * `entryComponents` fields of components and ng modules based on its `useValue`.
+ * All components that are referenced in the `useValue` value (either directly
+ * or in a nested array or map) will be added to the `entryComponents` property.
+ *
+ * ### Example
+ * The following example shows how the router can populate the `entryComponents`
+ * field of an NgModule based on the router configuration which refers
+ * to components.
+ *
+ * ```typescript
+ * // helper function inside the router
+ * function provideRoutes(routes) {
+ *   return [
+ *     {provide: ROUTES, useValue: routes},
+ *     {provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: routes, multi: true}
+ *   ];
+ * }
+ *
+ * // user code
+ * let routes = [
+ *   {path: '/root', component: RootComp},
+ *   {path: /teams', component: TeamsComp}
+ * ];
+ *
+ * @NgModule({
+ *   providers: [provideRoutes(routes)]
+ * })
+ * class ModuleWithRoutes {}
+ * ```
+ *
+ * @experimental
+ */
+export const ANALYZE_FOR_ENTRY_COMPONENTS = new OpaqueToken('AnalyzeForEntryComponents');
 /**
  * Specifies that a constant attribute value should be injected.
  *
@@ -17,7 +60,7 @@ import { resolveForwardRef } from '../di/forward_ref';
  * A decorator can inject string literal `text` like so:
  *
  * {@example core/ts/metadata/metadata.ts region='attributeMetadata'}
- * @ts2dart_const
+ * @stable
  */
 export class AttributeMetadata extends DependencyMetadata {
     constructor(attributeName) {
@@ -140,7 +183,7 @@ export class AttributeMetadata extends DependencyMetadata {
  *
  * The injected object is an unmodifiable live list.
  * See {@link QueryList} for more details.
- * @ts2dart_const
+ * @deprecated
  */
 export class QueryMetadata extends DependencyMetadata {
     constructor(_selector, { descendants = false, first = false, read = null } = {}) {
@@ -166,7 +209,7 @@ export class QueryMetadata extends DependencyMetadata {
      * returns a list of variable bindings this is querying for.
      * Only applicable if this is a variable bindings query.
      */
-    get varBindings() { return this.selector.split(','); }
+    get varBindings() { return StringWrapper.split(this.selector, /\s*,\s*/g); }
     toString() { return `@Query(${stringify(this.selector)})`; }
 }
 // TODO: add an example after ContentChildren and ViewChildren are in master
@@ -189,7 +232,7 @@ export class QueryMetadata extends DependencyMetadata {
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 export class ContentChildrenMetadata extends QueryMetadata {
     constructor(_selector, { descendants = false, read = null } = {}) {
@@ -216,7 +259,7 @@ export class ContentChildrenMetadata extends QueryMetadata {
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 export class ContentChildMetadata extends QueryMetadata {
     constructor(_selector, { read = null } = {}) {
@@ -257,7 +300,7 @@ export class ContentChildMetadata extends QueryMetadata {
  *
  * The injected object is an iterable and observable live list.
  * See {@link QueryList} for more details.
- * @ts2dart_const
+ * @deprecated
  */
 export class ViewQueryMetadata extends QueryMetadata {
     constructor(_selector, { descendants = false, first = false, read = null } = {}) {
@@ -345,7 +388,7 @@ export class ViewQueryMetadata extends QueryMetadata {
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 export class ViewChildrenMetadata extends ViewQueryMetadata {
     constructor(_selector, { read = null } = {}) {
@@ -421,7 +464,7 @@ export class ViewChildrenMetadata extends ViewQueryMetadata {
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 export class ViewChildMetadata extends ViewQueryMetadata {
     constructor(_selector, { read = null } = {}) {

@@ -1,4 +1,11 @@
-import { DoCheck, KeyValueDiffer, KeyValueDiffers, ElementRef, Renderer } from '@angular/core';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { DoCheck, ElementRef, KeyValueDiffers, Renderer } from '@angular/core';
 /**
  * The `NgStyle` directive changes styles based on a result of expression evaluation.
  *
@@ -8,7 +15,8 @@ import { DoCheck, KeyValueDiffer, KeyValueDiffers, ElementRef, Renderer } from '
  *
  * ### Syntax
  *
- * - `<div [ngStyle]="{'font-style': style}"></div>`
+ * - `<div [ngStyle]="{'font-style': styleExp}"></div>`
+ * - `<div [ngStyle]="{'max-width.px': widthExp}"></div>`
  * - `<div [ngStyle]="styleExp"></div>` - here the `styleExp` must evaluate to an object
  *
  * ### Example ([live demo](http://plnkr.co/edit/YamGS6GkUh9GqWNQhCyM?p=preview)):
@@ -49,19 +57,15 @@ import { DoCheck, KeyValueDiffer, KeyValueDiffers, ElementRef, Renderer } from '
  *
  * In this example the `font-style`, `font-size` and `font-weight` styles will be updated
  * based on the `style` property's value changes.
+ *
+ * @stable
  */
 export declare class NgStyle implements DoCheck {
     private _differs;
     private _ngEl;
     private _renderer;
-    /** @internal */
-    _rawStyle: {
-        [key: string]: string;
-    };
-    /** @internal */
-    _differ: KeyValueDiffer;
     constructor(_differs: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
-    rawStyle: {
+    ngStyle: {
         [key: string]: string;
     };
     ngDoCheck(): void;

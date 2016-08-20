@@ -1,10 +1,17 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
-var lang_1 = require('../../src/facade/lang');
-var collection_1 = require('../../src/facade/collection');
-var exceptions_1 = require('../../src/facade/exceptions');
-var view_type_1 = require('./view_type');
+var collection_1 = require('../facade/collection');
+var exceptions_1 = require('../facade/exceptions');
+var lang_1 = require('../facade/lang');
 var element_ref_1 = require('./element_ref');
 var view_container_ref_1 = require('./view_container_ref');
+var view_type_1 = require('./view_type');
 /**
  * An AppElement is created for elements that have a ViewContainerRef,
  * a nested component or a <template> element to keep data around
@@ -55,6 +62,31 @@ var AppElement = (function () {
         }
         return result;
     };
+    AppElement.prototype.moveView = function (view, currentIndex) {
+        var previousIndex = this.nestedViews.indexOf(view);
+        if (view.type === view_type_1.ViewType.COMPONENT) {
+            throw new exceptions_1.BaseException("Component views can't be moved!");
+        }
+        var nestedViews = this.nestedViews;
+        if (nestedViews == null) {
+            nestedViews = [];
+            this.nestedViews = nestedViews;
+        }
+        collection_1.ListWrapper.removeAt(nestedViews, previousIndex);
+        collection_1.ListWrapper.insert(nestedViews, currentIndex, view);
+        var refRenderNode;
+        if (currentIndex > 0) {
+            var prevView = nestedViews[currentIndex - 1];
+            refRenderNode = prevView.lastRootNode;
+        }
+        else {
+            refRenderNode = this.nativeElement;
+        }
+        if (lang_1.isPresent(refRenderNode)) {
+            view.renderer.attachViewAfter(refRenderNode, view.flatRootNodes);
+        }
+        view.markContentChildAsMoved(this);
+    };
     AppElement.prototype.attachView = function (view, viewIndex) {
         if (view.type === view_type_1.ViewType.COMPONENT) {
             throw new exceptions_1.BaseException("Component views can't be moved!");
@@ -83,7 +115,7 @@ var AppElement = (function () {
         if (view.type === view_type_1.ViewType.COMPONENT) {
             throw new exceptions_1.BaseException("Component views can't be moved!");
         }
-        view.renderer.detachView(view.flatRootNodes);
+        view.detach();
         view.removeFromContentChildren(this);
         return view;
     };

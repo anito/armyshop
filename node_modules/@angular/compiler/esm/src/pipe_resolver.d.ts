@@ -1,6 +1,13 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { PipeMetadata } from '@angular/core';
 import { ReflectorReader } from '../core_private';
-import { Type } from '../src/facade/lang';
+import { Type } from './facade/lang';
 /**
  * Resolve a `Type` for {@link PipeMetadata}.
  *
@@ -14,6 +21,5 @@ export declare class PipeResolver {
     /**
      * Return {@link PipeMetadata} for a given `Type`.
      */
-    resolve(type: Type): PipeMetadata;
+    resolve(type: Type, throwIfNotFound?: boolean): PipeMetadata;
 }
-export declare var CODEGEN_PIPE_RESOLVER: PipeResolver;

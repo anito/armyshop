@@ -1,10 +1,17 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var lang_1 = require('../../src/facade/lang');
+var lang_1 = require('../facade/lang');
 //// Types
 (function (TypeModifier) {
     TypeModifier[TypeModifier["Const"] = 0] = "Const";
@@ -952,11 +959,6 @@ function importType(id, typeParams, typeModifiers) {
     return lang_1.isPresent(id) ? new ExternalType(id, typeParams, typeModifiers) : null;
 }
 exports.importType = importType;
-function literal(value, type) {
-    if (type === void 0) { type = null; }
-    return new LiteralExpr(value, type);
-}
-exports.literal = literal;
 function literalArr(values, type) {
     if (type === void 0) { type = null; }
     return new LiteralArrayExpr(values, type);
@@ -976,4 +978,9 @@ function fn(params, body, type) {
     return new FunctionExpr(params, body, type);
 }
 exports.fn = fn;
+function literal(value, type) {
+    if (type === void 0) { type = null; }
+    return new LiteralExpr(value, type);
+}
+exports.literal = literal;
 //# sourceMappingURL=output_ast.js.map

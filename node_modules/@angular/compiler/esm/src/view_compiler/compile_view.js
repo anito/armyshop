@@ -1,20 +1,28 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { ViewType } from '../../core_private';
-import { isPresent, isBlank } from '../../src/facade/lang';
-import { ListWrapper } from '../../src/facade/collection';
+import { CompileIdentifierMap, CompileIdentifierMetadata } from '../compile_metadata';
+import { ListWrapper } from '../facade/collection';
+import { isBlank, isPresent } from '../facade/lang';
+import { Identifiers } from '../identifiers';
 import * as o from '../output/output_ast';
-import { EventHandlerVars } from './constants';
-import { CompileQuery, createQueryList, addQueryToTokenMap } from './compile_query';
 import { CompileMethod } from './compile_method';
 import { CompilePipe } from './compile_pipe';
-import { CompileIdentifierMetadata, CompileTokenMap } from '../compile_metadata';
-import { getViewFactoryName, getPropertyInView, createPureProxy } from './util';
-import { Identifiers } from '../identifiers';
+import { CompileQuery, addQueryToTokenMap, createQueryList } from './compile_query';
+import { EventHandlerVars } from './constants';
+import { createPureProxy, getPropertyInView, getViewFactoryName } from './util';
 export class CompileView {
-    constructor(component, genConfig, pipeMetas, styles, viewIndex, declarationElement, templateVariableBindings) {
+    constructor(component, genConfig, pipeMetas, styles, animations, viewIndex, declarationElement, templateVariableBindings) {
         this.component = component;
         this.genConfig = genConfig;
         this.pipeMetas = pipeMetas;
         this.styles = styles;
+        this.animations = animations;
         this.viewIndex = viewIndex;
         this.declarationElement = declarationElement;
         this.templateVariableBindings = templateVariableBindings;
@@ -44,6 +52,7 @@ export class CompileView {
         this.afterContentLifecycleCallbacksMethod = new CompileMethod(this);
         this.afterViewLifecycleCallbacksMethod = new CompileMethod(this);
         this.destroyMethod = new CompileMethod(this);
+        this.detachMethod = new CompileMethod(this);
         this.viewType = getViewType(component, viewIndex);
         this.className = `_View_${component.type.name}${viewIndex}`;
         this.classType = o.importType(new CompileIdentifierMetadata({ name: this.className }));
@@ -56,7 +65,7 @@ export class CompileView {
         }
         this.componentContext =
             getPropertyInView(o.THIS_EXPR.prop('context'), this, this.componentView);
-        var viewQueries = new CompileTokenMap();
+        var viewQueries = new CompileIdentifierMap();
         if (this.viewType === ViewType.COMPONENT) {
             var directiveInstance = o.THIS_EXPR.prop('context');
             ListWrapper.forEachWithIndex(this.component.viewQueries, (queryMeta, queryIndex) => {
@@ -114,7 +123,7 @@ export class CompileView {
             proxyParams.push(new o.FnParam(paramName));
             proxyReturnEntries.push(o.variable(paramName));
         }
-        createPureProxy(o.fn(proxyParams, [new o.ReturnStatement(o.literalArr(proxyReturnEntries))]), values.length, proxyExpr, this);
+        createPureProxy(o.fn(proxyParams, [new o.ReturnStatement(o.literalArr(proxyReturnEntries))], new o.ArrayType(o.DYNAMIC_TYPE)), values.length, proxyExpr, this);
         return proxyExpr.callFn(values);
     }
     createLiteralMap(entries) {
@@ -131,12 +140,11 @@ export class CompileView {
             proxyReturnEntries.push([entries[i][0], o.variable(paramName)]);
             values.push(entries[i][1]);
         }
-        createPureProxy(o.fn(proxyParams, [new o.ReturnStatement(o.literalMap(proxyReturnEntries))]), entries.length, proxyExpr, this);
+        createPureProxy(o.fn(proxyParams, [new o.ReturnStatement(o.literalMap(proxyReturnEntries))], new o.MapType(o.DYNAMIC_TYPE)), entries.length, proxyExpr, this);
         return proxyExpr.callFn(values);
     }
     afterNodes() {
-        this.pipes.forEach((pipe) => pipe.create());
-        this.viewQueries.values().forEach((queries) => queries.forEach((query) => query.afterChildren(this.updateViewQueriesMethod)));
+        this.viewQueries.values().forEach((queries) => queries.forEach((query) => query.afterChildren(this.createMethod, this.updateViewQueriesMethod)));
     }
 }
 function getViewType(component, embeddedTemplateIndex) {

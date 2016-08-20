@@ -1,8 +1,14 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
-var lang_1 = require('../../src/facade/lang');
-var collection_1 = require('../../src/facade/collection');
+var collection_1 = require('../facade/collection');
+var lang_1 = require('../facade/lang');
 var view_type_1 = require('./view_type');
-/* @ts2dart_const */
 var StaticNodeDebugInfo = (function () {
     function StaticNodeDebugInfo(providerTokens, componentToken, refTokens) {
         this.providerTokens = providerTokens;
@@ -63,7 +69,7 @@ var DebugContext = (function () {
     });
     Object.defineProperty(DebugContext.prototype, "renderNode", {
         get: function () {
-            if (lang_1.isPresent(this._nodeIndex) && lang_1.isPresent(this._view.allNodes)) {
+            if (lang_1.isPresent(this._nodeIndex) && this._view.allNodes) {
                 return this._view.allNodes[this._nodeIndex];
             }
             else {
@@ -98,7 +104,7 @@ var DebugContext = (function () {
                 collection_1.StringMapWrapper.forEach(refs, function (refToken, refName) {
                     var varValue;
                     if (lang_1.isBlank(refToken)) {
-                        varValue = lang_1.isPresent(_this._view.allNodes) ? _this._view.allNodes[_this._nodeIndex] : null;
+                        varValue = _this._view.allNodes ? _this._view.allNodes[_this._nodeIndex] : null;
                     }
                     else {
                         varValue = _this._view.injectorGet(refToken, _this._nodeIndex, null);

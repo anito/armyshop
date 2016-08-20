@@ -1,7 +1,13 @@
-import { BaseException } from '../../../src/facade/exceptions';
-import { isListLikeIterable, iterateListLike } from '../../../src/facade/collection';
-import { isBlank, isPresent, stringify, getMapKey, looseIdentical, isArray } from '../../../src/facade/lang';
-/* @ts2dart_const */
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { isListLikeIterable, iterateListLike } from '../../facade/collection';
+import { BaseException } from '../../facade/exceptions';
+import { getMapKey, isArray, isBlank, isPresent, looseIdentical, stringify } from '../../facade/lang';
 export class DefaultIterableDifferFactory {
     constructor() {
     }
@@ -11,6 +17,9 @@ export class DefaultIterableDifferFactory {
     }
 }
 var trackByIdentity = (index, item) => item;
+/**
+ * @stable
+ */
 export class DefaultIterableDiffer {
     constructor(_trackByFn) {
         this._trackByFn = _trackByFn;
@@ -40,6 +49,55 @@ export class DefaultIterableDiffer {
         var record;
         for (record = this._itHead; record !== null; record = record._next) {
             fn(record);
+        }
+    }
+    forEachOperation(fn) {
+        var nextIt = this._itHead;
+        var nextRemove = this._removalsHead;
+        var addRemoveOffset = 0;
+        var moveOffsets = null;
+        while (nextIt || nextRemove) {
+            // Figure out which is the next record to process
+            // Order: remove, add, move
+            let record = !nextRemove ||
+                nextIt &&
+                    nextIt.currentIndex < getPreviousIndex(nextRemove, addRemoveOffset, moveOffsets) ?
+                nextIt :
+                nextRemove;
+            var adjPreviousIndex = getPreviousIndex(record, addRemoveOffset, moveOffsets);
+            var currentIndex = record.currentIndex;
+            // consume the item, and adjust the addRemoveOffset and update moveDistance if necessary
+            if (record === nextRemove) {
+                addRemoveOffset--;
+                nextRemove = nextRemove._nextRemoved;
+            }
+            else {
+                nextIt = nextIt._next;
+                if (record.previousIndex == null) {
+                    addRemoveOffset++;
+                }
+                else {
+                    // INVARIANT:  currentIndex < previousIndex
+                    if (!moveOffsets)
+                        moveOffsets = [];
+                    let localMovePreviousIndex = adjPreviousIndex - addRemoveOffset;
+                    let localCurrentIndex = currentIndex - addRemoveOffset;
+                    if (localMovePreviousIndex != localCurrentIndex) {
+                        for (var i = 0; i < localMovePreviousIndex; i++) {
+                            var offset = i < moveOffsets.length ? moveOffsets[i] : (moveOffsets[i] = 0);
+                            var index = offset + i;
+                            if (localCurrentIndex <= index && index < localMovePreviousIndex) {
+                                moveOffsets[i] = offset + 1;
+                            }
+                        }
+                        var previousIndex = record.previousIndex;
+                        moveOffsets[previousIndex] = localCurrentIndex - localMovePreviousIndex;
+                    }
+                }
+            }
+            if (adjPreviousIndex !== currentIndex) {
+                fn(record, adjPreviousIndex, currentIndex);
+            }
         }
     }
     forEachPreviousItem(fn) {
@@ -117,7 +175,7 @@ export class DefaultIterableDiffer {
         }
         else {
             index = 0;
-            iterateListLike(collection, (item) => {
+            iterateListLike(collection, (item /** TODO #9100 */) => {
                 itemTrackBy = this._trackByFn(index, item);
                 if (record === null || !looseIdentical(record.trackById, itemTrackBy)) {
                     record = this._mismatch(record, item, itemTrackBy, index);
@@ -454,23 +512,28 @@ export class DefaultIterableDiffer {
     }
     toString() {
         var list = [];
-        this.forEachItem((record) => list.push(record));
+        this.forEachItem((record /** TODO #9100 */) => list.push(record));
         var previous = [];
-        this.forEachPreviousItem((record) => previous.push(record));
+        this.forEachPreviousItem((record /** TODO #9100 */) => previous.push(record));
         var additions = [];
-        this.forEachAddedItem((record) => additions.push(record));
+        this.forEachAddedItem((record /** TODO #9100 */) => additions.push(record));
         var moves = [];
-        this.forEachMovedItem((record) => moves.push(record));
+        this.forEachMovedItem((record /** TODO #9100 */) => moves.push(record));
         var removals = [];
-        this.forEachRemovedItem((record) => removals.push(record));
+        this.forEachRemovedItem((record /** TODO #9100 */) => removals.push(record));
         var identityChanges = [];
-        this.forEachIdentityChange((record) => identityChanges.push(record));
-        return "collection: " + list.join(', ') + "\n" + "previous: " + previous.join(', ') + "\n" +
-            "additions: " + additions.join(', ') + "\n" + "moves: " + moves.join(', ') + "\n" +
-            "removals: " + removals.join(', ') + "\n" + "identityChanges: " +
-            identityChanges.join(', ') + "\n";
+        this.forEachIdentityChange((record /** TODO #9100 */) => identityChanges.push(record));
+        return 'collection: ' + list.join(', ') + '\n' +
+            'previous: ' + previous.join(', ') + '\n' +
+            'additions: ' + additions.join(', ') + '\n' +
+            'moves: ' + moves.join(', ') + '\n' +
+            'removals: ' + removals.join(', ') + '\n' +
+            'identityChanges: ' + identityChanges.join(', ') + '\n';
     }
 }
+/**
+ * @stable
+ */
 export class CollectionChangeRecord {
     constructor(item, trackById) {
         this.item = item;
@@ -499,10 +562,9 @@ export class CollectionChangeRecord {
         this._nextIdentityChange = null;
     }
     toString() {
-        return this.previousIndex === this.currentIndex ?
-            stringify(this.item) :
-            stringify(this.item) + '[' + stringify(this.previousIndex) + '->' +
-                stringify(this.currentIndex) + ']';
+        return this.previousIndex === this.currentIndex ? stringify(this.item) :
+            stringify(this.item) + '[' +
+                stringify(this.previousIndex) + '->' + stringify(this.currentIndex) + ']';
     }
 }
 // A linked list of CollectionChangeRecords with the same CollectionChangeRecord.item
@@ -622,5 +684,15 @@ class _DuplicateMap {
     get isEmpty() { return this.map.size === 0; }
     clear() { this.map.clear(); }
     toString() { return '_DuplicateMap(' + stringify(this.map) + ')'; }
+}
+function getPreviousIndex(item, addRemoveOffset, moveOffsets) {
+    var previousIndex = item.previousIndex;
+    if (previousIndex === null)
+        return previousIndex;
+    var moveOffset = 0;
+    if (moveOffsets && previousIndex < moveOffsets.length) {
+        moveOffset = moveOffsets[previousIndex];
+    }
+    return previousIndex + addRemoveOffset + moveOffset;
 }
 //# sourceMappingURL=default_iterable_differ.js.map

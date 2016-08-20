@@ -1,3 +1,10 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { PipeTransform } from '@angular/core';
 /**
  *
@@ -20,13 +27,15 @@ import { PipeTransform } from '@angular/core';
  *  class MyApp {
  *    gender: string = 'male';
  *    inviteMap: any = {
- *      'male': 'Invite her.',
- *      'female': 'Invite him.',
+ *      'male': 'Invite him.',
+ *      'female': 'Invite her.',
  *      'other': 'Invite them.'
  *    }
  *    ...
  *  }
  *  ```
+ *
+ *  @experimental
  */
 export declare class I18nSelectPipe implements PipeTransform {
     transform(value: string, mapping: {

@@ -1,3 +1,10 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -21,11 +28,18 @@ function scheduleMicroTask(fn) {
     Zone.current.scheduleMicroTask('scheduleMicrotask', fn);
 }
 exports.scheduleMicroTask = scheduleMicroTask;
-exports.IS_DART = false;
 // Need to declare a new variable for global here since TypeScript
 // exports the original value of the symbol.
 var _global = globalScope;
 exports.global = _global;
+/**
+ * Runtime representation a type that a Component or other object is instances of.
+ *
+ * An example of a `Type` is `MyCustomComponent` class, which in JavaScript is be represented by
+ * the `MyCustomComponent` constructor function.
+ *
+ * @stable
+ */
 exports.Type = Function;
 function getTypeNameForDebugging(type) {
     if (type['name']) {
@@ -36,32 +50,6 @@ function getTypeNameForDebugging(type) {
 exports.getTypeNameForDebugging = getTypeNameForDebugging;
 exports.Math = _global.Math;
 exports.Date = _global.Date;
-var _devMode = true;
-var _modeLocked = false;
-function lockMode() {
-    _modeLocked = true;
-}
-exports.lockMode = lockMode;
-/**
- * Disable Angular's development mode, which turns off assertions and other
- * checks within the framework.
- *
- * One important assertion this disables verifies that a change detection pass
- * does not result in additional changes to any bindings (also known as
- * unidirectional data flow).
- */
-function enableProdMode() {
-    if (_modeLocked) {
-        // Cannot use BaseException as that ends up importing from facade/lang.
-        throw 'Cannot enable prod mode after platform setup.';
-    }
-    _devMode = false;
-}
-exports.enableProdMode = enableProdMode;
-function assertionsEnabled() {
-    return _devMode;
-}
-exports.assertionsEnabled = assertionsEnabled;
 // TODO: remove calls to assert in production environment
 // Note: Can't just export this and import in in other files
 // as `assert` is a reserved keyword in Dart
@@ -77,19 +65,19 @@ function isBlank(obj) {
 }
 exports.isBlank = isBlank;
 function isBoolean(obj) {
-    return typeof obj === "boolean";
+    return typeof obj === 'boolean';
 }
 exports.isBoolean = isBoolean;
 function isNumber(obj) {
-    return typeof obj === "number";
+    return typeof obj === 'number';
 }
 exports.isNumber = isNumber;
 function isString(obj) {
-    return typeof obj === "string";
+    return typeof obj === 'string';
 }
 exports.isString = isString;
 function isFunction(obj) {
-    return typeof obj === "function";
+    return typeof obj === 'function';
 }
 exports.isFunction = isFunction;
 function isType(obj) {
@@ -106,7 +94,9 @@ function isStrictStringMap(obj) {
 }
 exports.isStrictStringMap = isStrictStringMap;
 function isPromise(obj) {
-    return obj instanceof _global.Promise;
+    // allow any Promise/A+ compliant thenable.
+    // It's up to the caller to ensure that obj.then conforms to the spec
+    return isPresent(obj) && isFunction(obj.then);
 }
 exports.isPromise = isPromise;
 function isArray(obj) {
@@ -126,14 +116,14 @@ function stringify(token) {
     if (token === undefined || token === null) {
         return '' + token;
     }
-    if (token.name) {
-        return token.name;
-    }
     if (token.overriddenName) {
         return token.overriddenName;
     }
+    if (token.name) {
+        return token.name;
+    }
     var res = token.toString();
-    var newLineIndex = res.indexOf("\n");
+    var newLineIndex = res.indexOf('\n');
     return (newLineIndex === -1) ? res : res.substring(0, newLineIndex);
 }
 exports.stringify = stringify;
@@ -226,7 +216,7 @@ var StringJoiner = (function () {
         this.parts = parts;
     }
     StringJoiner.prototype.add = function (part) { this.parts.push(part); };
-    StringJoiner.prototype.toString = function () { return this.parts.join(""); };
+    StringJoiner.prototype.toString = function () { return this.parts.join(''); };
     return StringJoiner;
 }());
 exports.StringJoiner = StringJoiner;
@@ -248,7 +238,7 @@ var NumberWrapper = (function () {
     NumberWrapper.parseIntAutoRadix = function (text) {
         var result = parseInt(text);
         if (isNaN(result)) {
-            throw new NumberParseError("Invalid integer literal when parsing " + text);
+            throw new NumberParseError('Invalid integer literal when parsing ' + text);
         }
         return result;
     };
@@ -269,8 +259,7 @@ var NumberWrapper = (function () {
                 return result;
             }
         }
-        throw new NumberParseError("Invalid integer literal when parsing " + text + " in base " +
-            radix);
+        throw new NumberParseError('Invalid integer literal when parsing ' + text + ' in base ' + radix);
     };
     // TODO: NaN is a valid literal but is returned by parseFloat to indicate an error.
     NumberWrapper.parseFloat = function (text) { return parseFloat(text); };
@@ -279,73 +268,24 @@ var NumberWrapper = (function () {
         enumerable: true,
         configurable: true
     });
+    NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
     NumberWrapper.isNaN = function (value) { return isNaN(value); };
     NumberWrapper.isInteger = function (value) { return Number.isInteger(value); };
     return NumberWrapper;
 }());
 exports.NumberWrapper = NumberWrapper;
 exports.RegExp = _global.RegExp;
-var RegExpWrapper = (function () {
-    function RegExpWrapper() {
-    }
-    RegExpWrapper.create = function (regExpStr, flags) {
-        if (flags === void 0) { flags = ''; }
-        flags = flags.replace(/g/g, '');
-        return new _global.RegExp(regExpStr, flags + 'g');
-    };
-    RegExpWrapper.firstMatch = function (regExp, input) {
-        // Reset multimatch regex state
-        regExp.lastIndex = 0;
-        return regExp.exec(input);
-    };
-    RegExpWrapper.test = function (regExp, input) {
-        regExp.lastIndex = 0;
-        return regExp.test(input);
-    };
-    RegExpWrapper.matcher = function (regExp, input) {
-        // Reset regex state for the case
-        // someone did not loop over all matches
-        // last time.
-        regExp.lastIndex = 0;
-        return { re: regExp, input: input };
-    };
-    RegExpWrapper.replaceAll = function (regExp, input, replace) {
-        var c = regExp.exec(input);
-        var res = '';
-        regExp.lastIndex = 0;
-        var prev = 0;
-        while (c) {
-            res += input.substring(prev, c.index);
-            res += replace(c);
-            prev = c.index + c[0].length;
-            regExp.lastIndex = prev;
-            c = regExp.exec(input);
-        }
-        res += input.substring(prev);
-        return res;
-    };
-    return RegExpWrapper;
-}());
-exports.RegExpWrapper = RegExpWrapper;
-var RegExpMatcherWrapper = (function () {
-    function RegExpMatcherWrapper() {
-    }
-    RegExpMatcherWrapper.next = function (matcher) {
-        return matcher.re.exec(matcher.input);
-    };
-    return RegExpMatcherWrapper;
-}());
-exports.RegExpMatcherWrapper = RegExpMatcherWrapper;
 var FunctionWrapper = (function () {
     function FunctionWrapper() {
     }
     FunctionWrapper.apply = function (fn, posArgs) { return fn.apply(null, posArgs); };
+    FunctionWrapper.bind = function (fn, scope) { return fn.bind(scope); };
     return FunctionWrapper;
 }());
 exports.FunctionWrapper = FunctionWrapper;
 // JS has NaN !== NaN
 function looseIdentical(a, b) {
-    return a === b || typeof a === "number" && typeof b === "number" && isNaN(a) && isNaN(b);
+    return a === b || typeof a === 'number' && typeof b === 'number' && isNaN(a) && isNaN(b);
 }
 exports.looseIdentical = looseIdentical;
 // JS considers NaN is the same as NaN for map Key (while NaN !== NaN otherwise)
@@ -363,7 +303,7 @@ function normalizeBool(obj) {
 }
 exports.normalizeBool = normalizeBool;
 function isJsObject(o) {
-    return o !== null && (typeof o === "function" || typeof o === "object");
+    return o !== null && (typeof o === 'function' || typeof o === 'object');
 }
 exports.isJsObject = isJsObject;
 function print(obj) {
@@ -464,16 +404,12 @@ function hasConstructor(value, type) {
     return value.constructor === type;
 }
 exports.hasConstructor = hasConstructor;
-function bitWiseOr(values) {
-    return values.reduce(function (a, b) { return a | b; });
-}
-exports.bitWiseOr = bitWiseOr;
-function bitWiseAnd(values) {
-    return values.reduce(function (a, b) { return a & b; });
-}
-exports.bitWiseAnd = bitWiseAnd;
 function escape(s) {
     return _global.encodeURI(s);
 }
 exports.escape = escape;
+function escapeRegExp(s) {
+    return s.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+}
+exports.escapeRegExp = escapeRegExp;
 //# sourceMappingURL=lang.js.map

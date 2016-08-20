@@ -1,8 +1,13 @@
-import { ViewContainerRef, TemplateRef, QueryList, AfterContentInit } from '@angular/core';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { TemplateRef, ViewContainerRef } from '@angular/core';
+import { NgLocalization } from '../localization';
 import { SwitchView } from './ng_switch';
-export declare abstract class NgLocalization {
-    abstract getPluralCategory(value: any): string;
-}
 /**
  * `ngPlural` is an i18n directive that displays DOM sub-trees that match the switch expression
  * value, or failing that, DOM sub-trees that match the switch expression's pluralization category.
@@ -18,9 +23,6 @@ export declare abstract class NgLocalization {
  * value matches aren't found and the value maps to its category using the `getPluralCategory`
  * function provided.
  *
- * If no matching views are found for a switch expression, inner elements marked
- * `[ngPluralCase]="other"` will be displayed.
- *
  * ```typescript
  * class MyLocalization extends NgLocalization {
  *    getPluralCategory(value: any) {
@@ -32,7 +34,7 @@ export declare abstract class NgLocalization {
  *
  * @Component({
  *    selector: 'app',
- *    providers: [provide(NgLocalization, {useClass: MyLocalization})]
+ *    providers: [{provide: NgLocalization, useClass: MyLocalization}]
  * })
  * @View({
  *   template: `
@@ -57,34 +59,21 @@ export declare abstract class NgLocalization {
  * }
  *
  * ```
+ * @experimental
  */
-export declare class NgPluralCase {
-    value: string;
-    /** @internal */
-    _view: SwitchView;
-    constructor(value: string, template: TemplateRef<Object>, viewContainer: ViewContainerRef);
-}
-export declare class NgPlural implements AfterContentInit {
+export declare class NgPlural {
     private _localization;
     private _switchValue;
     private _activeView;
     private _caseViews;
-    cases: QueryList<NgPluralCase>;
     constructor(_localization: NgLocalization);
     ngPlural: number;
-    ngAfterContentInit(): void;
-    /** @internal */
-    _updateView(): void;
-    /** @internal */
-    _clearViews(): void;
-    /** @internal */
-    _activateView(view: SwitchView): void;
-    /** @internal */
-    _getCategoryView(value: number): SwitchView;
-    /** @internal */
-    _isValueView(pluralCase: NgPluralCase): boolean;
-    /** @internal */
-    _formatValue(pluralCase: NgPluralCase): any;
-    /** @internal */
-    _stripValue(value: string): number;
+    addCase(value: string, switchView: SwitchView): void;
+}
+/**
+ * @experimental
+ */
+export declare class NgPluralCase {
+    value: string;
+    constructor(value: string, template: TemplateRef<Object>, viewContainer: ViewContainerRef, ngPlural: NgPlural);
 }

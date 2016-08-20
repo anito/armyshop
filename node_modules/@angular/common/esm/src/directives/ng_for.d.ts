@@ -1,4 +1,11 @@
-import { DoCheck, ChangeDetectorRef, IterableDiffers, ViewContainerRef, TemplateRef, TrackByFn } from '@angular/core';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { ChangeDetectorRef, DoCheck, IterableDiffers, OnChanges, SimpleChanges, TemplateRef, TrackByFn, ViewContainerRef } from '@angular/core';
 export declare class NgForRow {
     $implicit: any;
     index: number;
@@ -59,24 +66,21 @@ export declare class NgForRow {
  *
  * See a [live demo](http://plnkr.co/edit/KVuXxDp0qinGDyo307QW?p=preview) for a more detailed
  * example.
+ *
+ * @stable
  */
-export declare class NgFor implements DoCheck {
+export declare class NgFor implements DoCheck, OnChanges {
     private _viewContainer;
     private _templateRef;
     private _iterableDiffers;
     private _cdr;
-    /** @internal */
-    _ngForOf: any;
-    /** @internal */
-    _ngForTrackBy: TrackByFn;
+    ngForOf: any;
+    ngForTrackBy: TrackByFn;
     private _differ;
     constructor(_viewContainer: ViewContainerRef, _templateRef: TemplateRef<NgForRow>, _iterableDiffers: IterableDiffers, _cdr: ChangeDetectorRef);
-    ngForOf: any;
     ngForTemplate: TemplateRef<NgForRow>;
-    ngForTrackBy: TrackByFn;
+    ngOnChanges(changes: SimpleChanges): void;
     ngDoCheck(): void;
     private _applyChanges(changes);
     private _perViewChange(view, record);
-    private _bulkRemove(tuples);
-    private _bulkInsert(tuples);
 }

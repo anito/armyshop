@@ -1,3 +1,10 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -5,9 +12,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var compiler_1 = require('@angular/compiler');
-var exceptions_1 = require('../../src/facade/exceptions');
-var lang_1 = require('../../src/facade/lang');
-var promise_1 = require('../../src/facade/promise');
+var exceptions_1 = require('../facade/exceptions');
+var lang_1 = require('../facade/lang');
 /**
  * An implementation of XHR that uses a template cache to avoid doing an actual
  * XHR.
@@ -26,10 +32,10 @@ var CachedXHR = (function (_super) {
     }
     CachedXHR.prototype.get = function (url) {
         if (this._cache.hasOwnProperty(url)) {
-            return promise_1.PromiseWrapper.resolve(this._cache[url]);
+            return Promise.resolve(this._cache[url]);
         }
         else {
-            return promise_1.PromiseWrapper.reject('CachedXHR: Did not find cached template for ' + url, null);
+            return Promise.reject('CachedXHR: Did not find cached template for ' + url);
         }
     };
     return CachedXHR;

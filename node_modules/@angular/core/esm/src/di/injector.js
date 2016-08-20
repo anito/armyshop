@@ -1,6 +1,25 @@
-import { unimplemented } from '../../src/facade/exceptions';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { BaseException, unimplemented } from '../facade/exceptions';
+import { stringify } from '../facade/lang';
 const _THROW_IF_NOT_FOUND = new Object();
 export const THROW_IF_NOT_FOUND = _THROW_IF_NOT_FOUND;
+class _NullInjector {
+    get(token, notFoundValue = _THROW_IF_NOT_FOUND) {
+        if (notFoundValue === _THROW_IF_NOT_FOUND) {
+            throw new BaseException(`No provider for ${stringify(token)}!`);
+        }
+        return notFoundValue;
+    }
+}
+/**
+ * @stable
+ */
 export class Injector {
     /**
      * Retrieves an instance from the injector based on the provided token.
@@ -13,7 +32,7 @@ export class Injector {
      *
      * ```typescript
      * var injector = ReflectiveInjector.resolveAndCreate([
-     *   provide("validToken", {useValue: "Value"})
+     *   {provide: "validToken", useValue: "Value"}
      * ]);
      * expect(injector.get("validToken")).toEqual("Value");
      * expect(() => injector.get("invalidToken")).toThrowError();
@@ -29,4 +48,5 @@ export class Injector {
     get(token, notFoundValue) { return unimplemented(); }
 }
 Injector.THROW_IF_NOT_FOUND = _THROW_IF_NOT_FOUND;
+Injector.NULL = new _NullInjector();
 //# sourceMappingURL=injector.js.map

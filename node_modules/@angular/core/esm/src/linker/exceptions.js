@@ -1,4 +1,12 @@
-import { BaseException, WrappedException } from '../../src/facade/exceptions';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { UNINITIALIZED } from '../change_detection/change_detection_util';
+import { BaseException, WrappedException } from '../facade/exceptions';
 /**
  * An error thrown if application changes model breaking the top-down data flow.
  *
@@ -31,11 +39,17 @@ import { BaseException, WrappedException } from '../../src/facade/exceptions';
  *   }
  * }
  * ```
+ * @stable
  */
 export class ExpressionChangedAfterItHasBeenCheckedException extends BaseException {
     constructor(oldValue, currValue, context) {
-        super(`Expression has changed after it was checked. ` +
-            `Previous value: '${oldValue}'. Current value: '${currValue}'`);
+        let msg = `Expression has changed after it was checked. Previous value: '${oldValue}'. Current value: '${currValue}'.`;
+        if (oldValue === UNINITIALIZED) {
+            msg +=
+                ` It seems like the view has been created after its parent and its children have been dirty checked.` +
+                    ` Has it been created in a change detection hook ?`;
+        }
+        super(msg);
     }
 }
 /**
@@ -43,6 +57,7 @@ export class ExpressionChangedAfterItHasBeenCheckedException extends BaseExcepti
  *
  * This error wraps the original exception to attach additional contextual information that can
  * be useful for debugging.
+ * @stable
  */
 export class ViewWrappedException extends WrappedException {
     constructor(originalException, originalStack, context) {
@@ -55,6 +70,7 @@ export class ViewWrappedException extends WrappedException {
  * This error indicates a bug in the framework.
  *
  * This is an internal Angular error.
+ * @stable
  */
 export class ViewDestroyedException extends BaseException {
     constructor(details) {

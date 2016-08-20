@@ -1,22 +1,30 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
 var core_private_1 = require('../../core_private');
-var lang_1 = require('../../src/facade/lang');
-var collection_1 = require('../../src/facade/collection');
+var compile_metadata_1 = require('../compile_metadata');
+var collection_1 = require('../facade/collection');
+var lang_1 = require('../facade/lang');
+var identifiers_1 = require('../identifiers');
 var o = require('../output/output_ast');
-var constants_1 = require('./constants');
-var compile_query_1 = require('./compile_query');
 var compile_method_1 = require('./compile_method');
 var compile_pipe_1 = require('./compile_pipe');
-var compile_metadata_1 = require('../compile_metadata');
+var compile_query_1 = require('./compile_query');
+var constants_1 = require('./constants');
 var util_1 = require('./util');
-var identifiers_1 = require('../identifiers');
 var CompileView = (function () {
-    function CompileView(component, genConfig, pipeMetas, styles, viewIndex, declarationElement, templateVariableBindings) {
+    function CompileView(component, genConfig, pipeMetas, styles, animations, viewIndex, declarationElement, templateVariableBindings) {
         var _this = this;
         this.component = component;
         this.genConfig = genConfig;
         this.pipeMetas = pipeMetas;
         this.styles = styles;
+        this.animations = animations;
         this.viewIndex = viewIndex;
         this.declarationElement = declarationElement;
         this.templateVariableBindings = templateVariableBindings;
@@ -46,6 +54,7 @@ var CompileView = (function () {
         this.afterContentLifecycleCallbacksMethod = new compile_method_1.CompileMethod(this);
         this.afterViewLifecycleCallbacksMethod = new compile_method_1.CompileMethod(this);
         this.destroyMethod = new compile_method_1.CompileMethod(this);
+        this.detachMethod = new compile_method_1.CompileMethod(this);
         this.viewType = getViewType(component, viewIndex);
         this.className = "_View_" + component.type.name + viewIndex;
         this.classType = o.importType(new compile_metadata_1.CompileIdentifierMetadata({ name: this.className }));
@@ -58,7 +67,7 @@ var CompileView = (function () {
         }
         this.componentContext =
             util_1.getPropertyInView(o.THIS_EXPR.prop('context'), this, this.componentView);
-        var viewQueries = new compile_metadata_1.CompileTokenMap();
+        var viewQueries = new compile_metadata_1.CompileIdentifierMap();
         if (this.viewType === core_private_1.ViewType.COMPONENT) {
             var directiveInstance = o.THIS_EXPR.prop('context');
             collection_1.ListWrapper.forEachWithIndex(this.component.viewQueries, function (queryMeta, queryIndex) {
@@ -116,7 +125,7 @@ var CompileView = (function () {
             proxyParams.push(new o.FnParam(paramName));
             proxyReturnEntries.push(o.variable(paramName));
         }
-        util_1.createPureProxy(o.fn(proxyParams, [new o.ReturnStatement(o.literalArr(proxyReturnEntries))]), values.length, proxyExpr, this);
+        util_1.createPureProxy(o.fn(proxyParams, [new o.ReturnStatement(o.literalArr(proxyReturnEntries))], new o.ArrayType(o.DYNAMIC_TYPE)), values.length, proxyExpr, this);
         return proxyExpr.callFn(values);
     };
     CompileView.prototype.createLiteralMap = function (entries) {
@@ -133,13 +142,12 @@ var CompileView = (function () {
             proxyReturnEntries.push([entries[i][0], o.variable(paramName)]);
             values.push(entries[i][1]);
         }
-        util_1.createPureProxy(o.fn(proxyParams, [new o.ReturnStatement(o.literalMap(proxyReturnEntries))]), entries.length, proxyExpr, this);
+        util_1.createPureProxy(o.fn(proxyParams, [new o.ReturnStatement(o.literalMap(proxyReturnEntries))], new o.MapType(o.DYNAMIC_TYPE)), entries.length, proxyExpr, this);
         return proxyExpr.callFn(values);
     };
     CompileView.prototype.afterNodes = function () {
         var _this = this;
-        this.pipes.forEach(function (pipe) { return pipe.create(); });
-        this.viewQueries.values().forEach(function (queries) { return queries.forEach(function (query) { return query.afterChildren(_this.updateViewQueriesMethod); }); });
+        this.viewQueries.values().forEach(function (queries) { return queries.forEach(function (query) { return query.afterChildren(_this.createMethod, _this.updateViewQueriesMethod); }); });
     };
     return CompileView;
 }());

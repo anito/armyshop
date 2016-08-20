@@ -1,6 +1,10 @@
 export declare const THROW_IF_NOT_FOUND: Object;
+/**
+ * @stable
+ */
 export declare abstract class Injector {
     static THROW_IF_NOT_FOUND: Object;
+    static NULL: Injector;
     /**
      * Retrieves an instance from the injector based on the provided token.
      * If not found:
@@ -12,7 +16,7 @@ export declare abstract class Injector {
      *
      * ```typescript
      * var injector = ReflectiveInjector.resolveAndCreate([
-     *   provide("validToken", {useValue: "Value"})
+     *   {provide: "validToken", useValue: "Value"}
      * ]);
      * expect(injector.get("validToken")).toEqual("Value");
      * expect(() => injector.get("invalidToken")).toThrowError();

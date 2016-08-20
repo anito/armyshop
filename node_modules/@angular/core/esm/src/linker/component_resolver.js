@@ -1,30 +1,21 @@
-import { isBlank, stringify } from '../../src/facade/lang';
-import { BaseException } from '../../src/facade/exceptions';
-import { PromiseWrapper } from '../../src/facade/async';
-import { reflector } from '../reflection/reflection';
-import { ComponentFactory } from './component_factory';
-import { Injectable } from '../di/decorators';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 /**
  * Low-level service for loading {@link ComponentFactory}s, which
  * can later be used to create and render a Component instance.
+ *
+ * @deprecated Use {@link ComponentFactoryResolver} together with {@link
+ * NgModule}.entryComponents}/{@link Component}.entryComponents or
+ * {@link ANALYZE_FOR_ENTRY_COMPONENTS} provider for dynamic component creation.
+ * Use {@link NgModuleFactoryLoader} for lazy loading.
  */
 export class ComponentResolver {
 }
-function _isComponentFactory(type) {
-    return type instanceof ComponentFactory;
-}
-export class ReflectorComponentResolver extends ComponentResolver {
-    resolveComponent(componentType) {
-        var metadatas = reflector.annotations(componentType);
-        var componentFactory = metadatas.find(_isComponentFactory);
-        if (isBlank(componentFactory)) {
-            throw new BaseException(`No precompiled component ${stringify(componentType)} found`);
-        }
-        return PromiseWrapper.resolve(componentFactory);
-    }
-    clearCache() { }
-}
-ReflectorComponentResolver.decorators = [
-    { type: Injectable },
-];
+ComponentResolver.DynamicCompilationDeprecationMsg = 'ComponentResolver is deprecated for dynamic compilation. Use ComponentFactoryResolver together with @NgModule/@Component.entryComponents or ANALYZE_FOR_ENTRY_COMPONENTS provider instead. For runtime compile only, you can also use Compiler.compileComponentSync/Async.';
+ComponentResolver.LazyLoadingDeprecationMsg = 'ComponentResolver is deprecated for lazy loading. Use NgModuleFactoryLoader instead.';
 //# sourceMappingURL=component_resolver.js.map

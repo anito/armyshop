@@ -1,5 +1,12 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
-var lang_1 = require('../../src/facade/lang');
+var lang_1 = require('../facade/lang');
 var _nextClassId = 0;
 function extractAnnotation(annotation) {
     if (lang_1.isFunction(annotation) && annotation.hasOwnProperty('annotation')) {
@@ -18,11 +25,11 @@ function applyParams(fnOrArray, key) {
     }
     else if (fnOrArray instanceof Array) {
         var annotations = fnOrArray;
-        var fn = fnOrArray[fnOrArray.length - 1];
+        var annoLength = annotations.length - 1;
+        var fn = fnOrArray[annoLength];
         if (!lang_1.isFunction(fn)) {
             throw new Error("Last position of Class method array must be Function in key " + key + " was '" + lang_1.stringify(fn) + "'");
         }
-        var annoLength = annotations.length - 1;
         if (annoLength != fn.length) {
             throw new Error("Number of annotations (" + annoLength + ") does not match number of arguments (" + fn.length + ") in the function: " + lang_1.stringify(fn));
         }
@@ -130,6 +137,7 @@ function applyParams(fnOrArray, key) {
  *   }
  * });
  * ```
+ * @stable
  */
 function Class(clsDef) {
     var constructor = applyParams(clsDef.hasOwnProperty('constructor') ? clsDef.constructor : undefined, 'constructor');
@@ -176,8 +184,7 @@ function makeDecorator(annotationCls, chainFn) {
             var chainAnnotation = lang_1.isFunction(this) && this.annotations instanceof Array ? this.annotations : [];
             chainAnnotation.push(annotationInstance);
             var TypeDecorator = function TypeDecorator(cls) {
-                var annotations = Reflect.getOwnMetadata('annotations', cls);
-                annotations = annotations || [];
+                var annotations = Reflect.getOwnMetadata('annotations', cls) || [];
                 annotations.push(annotationInstance);
                 Reflect.defineMetadata('annotations', annotations, cls);
                 return cls;
@@ -210,8 +217,7 @@ function makeParamDecorator(annotationCls) {
             return ParamDecorator;
         }
         function ParamDecorator(cls, unusedKey, index) {
-            var parameters = Reflect.getMetadata('parameters', cls);
-            parameters = parameters || [];
+            var parameters = Reflect.getMetadata('parameters', cls) || [];
             // there might be gaps if some in between parameters do not have annotations.
             // we pad with nulls.
             while (parameters.length <= index) {
@@ -242,8 +248,7 @@ function makePropDecorator(annotationCls) {
         }
         else {
             return function PropDecorator(target, name) {
-                var meta = Reflect.getOwnMetadata('propMetadata', target.constructor);
-                meta = meta || {};
+                var meta = Reflect.getOwnMetadata('propMetadata', target.constructor) || {};
                 meta[name] = meta[name] || [];
                 meta[name].unshift(decoratorInstance);
                 Reflect.defineMetadata('propMetadata', meta, target.constructor);

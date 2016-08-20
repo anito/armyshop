@@ -1,21 +1,29 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var collection_1 = require('../../src/facade/collection');
+var animation_group_player_1 = require('../animation/animation_group_player');
+var view_animation_map_1 = require('../animation/view_animation_map');
+var change_detection_1 = require('../change_detection/change_detection');
+var collection_1 = require('../facade/collection');
+var lang_1 = require('../facade/lang');
+var profile_1 = require('../profile/profile');
+var debug_context_1 = require('./debug_context');
 var element_1 = require('./element');
-var lang_1 = require('../../src/facade/lang');
-var async_1 = require('../../src/facade/async');
+var element_injector_1 = require('./element_injector');
+var exceptions_1 = require('./exceptions');
 var view_ref_1 = require('./view_ref');
 var view_type_1 = require('./view_type');
 var view_utils_1 = require('./view_utils');
-var change_detection_1 = require('../change_detection/change_detection');
-var profile_1 = require('../profile/profile');
-var exceptions_1 = require('./exceptions');
-var debug_context_1 = require('./debug_context');
-var element_injector_1 = require('./element_injector');
 var _scope_check = profile_1.wtfCreateScope("AppView#check(ascii id)");
 /**
  * Cost of making objects: http://jsperf.com/instantiate-size-of-object
@@ -33,10 +41,8 @@ var AppView = (function () {
         this.contentChildren = [];
         this.viewChildren = [];
         this.viewContainerElement = null;
-        // The names of the below fields must be kept in sync with codegen_name_util.ts or
-        // change detection will fail.
-        this.cdState = change_detection_1.ChangeDetectorState.NeverChecked;
-        this.destroyed = false;
+        this.numberOfChecks = 0;
+        this.animationPlayers = new view_animation_map_1.ViewAnimationMap();
         this.ref = new view_ref_1.ViewRef_(this);
         if (type === view_type_1.ViewType.COMPONENT || type === view_type_1.ViewType.HOST) {
             this.renderer = viewUtils.renderComponent(componentType);
@@ -45,6 +51,35 @@ var AppView = (function () {
             this.renderer = declarationAppElement.parentView.renderer;
         }
     }
+    Object.defineProperty(AppView.prototype, "destroyed", {
+        get: function () { return this.cdMode === change_detection_1.ChangeDetectorStatus.Destroyed; },
+        enumerable: true,
+        configurable: true
+    });
+    AppView.prototype.cancelActiveAnimation = function (element, animationName, removeAllAnimations) {
+        if (removeAllAnimations === void 0) { removeAllAnimations = false; }
+        if (removeAllAnimations) {
+            this.animationPlayers.findAllPlayersByElement(element).forEach(function (player) { return player.destroy(); });
+        }
+        else {
+            var player = this.animationPlayers.find(element, animationName);
+            if (lang_1.isPresent(player)) {
+                player.destroy();
+            }
+        }
+    };
+    AppView.prototype.queueAnimation = function (element, animationName, player) {
+        var _this = this;
+        this.animationPlayers.set(element, animationName, player);
+        player.onDone(function () { _this.animationPlayers.remove(element, animationName); });
+    };
+    AppView.prototype.triggerQueuedAnimations = function () {
+        this.animationPlayers.getAllPlayers().forEach(function (player) {
+            if (!player.hasStarted()) {
+                player.play();
+            }
+        });
+    };
     AppView.prototype.create = function (context, givenProjectableNodes, rootSelectorOrNode) {
         this.context = context;
         var projectableNodes;
@@ -119,7 +154,7 @@ var AppView = (function () {
         this._destroyRecurse();
     };
     AppView.prototype._destroyRecurse = function () {
-        if (this.destroyed) {
+        if (this.cdMode === change_detection_1.ChangeDetectorStatus.Destroyed) {
             return;
         }
         var children = this.contentChildren;
@@ -131,32 +166,46 @@ var AppView = (function () {
             children[i]._destroyRecurse();
         }
         this.destroyLocal();
-        this.destroyed = true;
+        this.cdMode = change_detection_1.ChangeDetectorStatus.Destroyed;
     };
     AppView.prototype.destroyLocal = function () {
+        var _this = this;
         var hostElement = this.type === view_type_1.ViewType.COMPONENT ? this.declarationAppElement.nativeElement : null;
         for (var i = 0; i < this.disposables.length; i++) {
             this.disposables[i]();
         }
         for (var i = 0; i < this.subscriptions.length; i++) {
-            async_1.ObservableWrapper.dispose(this.subscriptions[i]);
+            this.subscriptions[i].unsubscribe();
         }
         this.destroyInternal();
-        if (this._hasExternalHostElement) {
-            this.renderer.detachView(this.flatRootNodes);
-        }
-        else if (lang_1.isPresent(this.viewContainerElement)) {
-            this.viewContainerElement.detachView(this.viewContainerElement.nestedViews.indexOf(this));
+        this.dirtyParentQueriesInternal();
+        if (this.animationPlayers.length == 0) {
+            this.renderer.destroyView(hostElement, this.allNodes);
         }
         else {
-            this.dirtyParentQueriesInternal();
+            var player = new animation_group_player_1.AnimationGroupPlayer(this.animationPlayers.getAllPlayers());
+            player.onDone(function () { _this.renderer.destroyView(hostElement, _this.allNodes); });
         }
-        this.renderer.destroyView(hostElement, this.allNodes);
     };
     /**
      * Overwritten by implementations
      */
     AppView.prototype.destroyInternal = function () { };
+    /**
+     * Overwritten by implementations
+     */
+    AppView.prototype.detachInternal = function () { };
+    AppView.prototype.detach = function () {
+        var _this = this;
+        this.detachInternal();
+        if (this.animationPlayers.length == 0) {
+            this.renderer.detachView(this.flatRootNodes);
+        }
+        else {
+            var player = new animation_group_player_1.AnimationGroupPlayer(this.animationPlayers.getAllPlayers());
+            player.onDone(function () { _this.renderer.detachView(_this.flatRootNodes); });
+        }
+    };
     Object.defineProperty(AppView.prototype, "changeDetectorRef", {
         get: function () { return this.ref; },
         enumerable: true,
@@ -190,17 +239,16 @@ var AppView = (function () {
     AppView.prototype.dirtyParentQueriesInternal = function () { };
     AppView.prototype.detectChanges = function (throwOnChange) {
         var s = _scope_check(this.clazz);
-        if (this.cdMode === change_detection_1.ChangeDetectionStrategy.Detached ||
-            this.cdMode === change_detection_1.ChangeDetectionStrategy.Checked ||
-            this.cdState === change_detection_1.ChangeDetectorState.Errored)
+        if (this.cdMode === change_detection_1.ChangeDetectorStatus.Checked ||
+            this.cdMode === change_detection_1.ChangeDetectorStatus.Errored)
             return;
-        if (this.destroyed) {
+        if (this.cdMode === change_detection_1.ChangeDetectorStatus.Destroyed) {
             this.throwDestroyedError('detectChanges');
         }
         this.detectChangesInternal(throwOnChange);
-        if (this.cdMode === change_detection_1.ChangeDetectionStrategy.CheckOnce)
-            this.cdMode = change_detection_1.ChangeDetectionStrategy.Checked;
-        this.cdState = change_detection_1.ChangeDetectorState.CheckedBefore;
+        if (this.cdMode === change_detection_1.ChangeDetectorStatus.CheckOnce)
+            this.cdMode = change_detection_1.ChangeDetectorStatus.Checked;
+        this.numberOfChecks++;
         profile_1.wtfLeave(s);
     };
     /**
@@ -212,14 +260,21 @@ var AppView = (function () {
     };
     AppView.prototype.detectContentChildrenChanges = function (throwOnChange) {
         for (var i = 0; i < this.contentChildren.length; ++i) {
-            this.contentChildren[i].detectChanges(throwOnChange);
+            var child = this.contentChildren[i];
+            if (child.cdMode === change_detection_1.ChangeDetectorStatus.Detached)
+                continue;
+            child.detectChanges(throwOnChange);
         }
     };
     AppView.prototype.detectViewChildrenChanges = function (throwOnChange) {
         for (var i = 0; i < this.viewChildren.length; ++i) {
-            this.viewChildren[i].detectChanges(throwOnChange);
+            var child = this.viewChildren[i];
+            if (child.cdMode === change_detection_1.ChangeDetectorStatus.Detached)
+                continue;
+            child.detectChanges(throwOnChange);
         }
     };
+    AppView.prototype.markContentChildAsMoved = function (renderAppElement) { this.dirtyParentQueriesInternal(); };
     AppView.prototype.addToContentChildren = function (renderAppElement) {
         renderAppElement.parentView.contentChildren.push(this);
         this.viewContainerElement = renderAppElement;
@@ -230,12 +285,12 @@ var AppView = (function () {
         this.dirtyParentQueriesInternal();
         this.viewContainerElement = null;
     };
-    AppView.prototype.markAsCheckOnce = function () { this.cdMode = change_detection_1.ChangeDetectionStrategy.CheckOnce; };
+    AppView.prototype.markAsCheckOnce = function () { this.cdMode = change_detection_1.ChangeDetectorStatus.CheckOnce; };
     AppView.prototype.markPathToRootAsCheckOnce = function () {
         var c = this;
-        while (lang_1.isPresent(c) && c.cdMode !== change_detection_1.ChangeDetectionStrategy.Detached) {
-            if (c.cdMode === change_detection_1.ChangeDetectionStrategy.Checked) {
-                c.cdMode = change_detection_1.ChangeDetectionStrategy.CheckOnce;
+        while (lang_1.isPresent(c) && c.cdMode !== change_detection_1.ChangeDetectorStatus.Detached) {
+            if (c.cdMode === change_detection_1.ChangeDetectorStatus.Checked) {
+                c.cdMode = change_detection_1.ChangeDetectorStatus.CheckOnce;
             }
             var parentEl = c.type === view_type_1.ViewType.COMPONENT ? c.declarationAppElement : c.viewContainerElement;
             c = lang_1.isPresent(parentEl) ? parentEl.parentView : null;
@@ -273,6 +328,16 @@ var DebugAppView = (function (_super) {
             throw e;
         }
     };
+    DebugAppView.prototype.detach = function () {
+        this._resetDebug();
+        try {
+            _super.prototype.detach.call(this);
+        }
+        catch (e) {
+            this._rethrowWithContext(e, e.stack);
+            throw e;
+        }
+    };
     DebugAppView.prototype.destroyLocal = function () {
         this._resetDebug();
         try {
@@ -300,7 +365,7 @@ var DebugAppView = (function (_super) {
     DebugAppView.prototype._rethrowWithContext = function (e, stack) {
         if (!(e instanceof exceptions_1.ViewWrappedException)) {
             if (!(e instanceof exceptions_1.ExpressionChangedAfterItHasBeenCheckedException)) {
-                this.cdState = change_detection_1.ChangeDetectorState.Errored;
+                this.cdMode = change_detection_1.ChangeDetectorStatus.Errored;
             }
             if (lang_1.isPresent(this._currentDebugContext)) {
                 throw new exceptions_1.ViewWrappedException(e, stack, this._currentDebugContext);

@@ -1,7 +1,14 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
-var collection_1 = require('../../src/facade/collection');
-var exceptions_1 = require('../../src/facade/exceptions');
-var lang_1 = require('../../src/facade/lang');
+var collection_1 = require('../facade/collection');
+var exceptions_1 = require('../facade/exceptions');
+var lang_1 = require('../facade/lang');
 var profile_1 = require('../profile/profile');
 /**
  * Represents a container where one or more Views can be attached.
@@ -19,6 +26,7 @@ var profile_1 = require('../profile/profile');
  *
  * To access a `ViewContainerRef` of an Element, you can either place a {@link Directive} injected
  * with `ViewContainerRef` on the Element, or you obtain it via a {@link ViewChild} query.
+ * @stable
  */
 var ViewContainerRef = (function () {
     function ViewContainerRef() {
@@ -117,6 +125,14 @@ var ViewContainerRef_ = (function () {
             index = this.length;
         var viewRef_ = viewRef;
         this._element.attachView(viewRef_.internalView, index);
+        return profile_1.wtfLeave(s, viewRef_);
+    };
+    ViewContainerRef_.prototype.move = function (viewRef, currentIndex) {
+        var s = this._insertScope();
+        if (currentIndex == -1)
+            return;
+        var viewRef_ = viewRef;
+        this._element.moveView(viewRef_.internalView, currentIndex);
         return profile_1.wtfLeave(s, viewRef_);
     };
     ViewContainerRef_.prototype.indexOf = function (viewRef) {

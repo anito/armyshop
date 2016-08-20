@@ -1,9 +1,15 @@
-import { Map, MapWrapper } from '../../src/facade/collection';
-import { scheduleMicroTask } from '../../src/facade/lang';
-import { BaseException } from '../../src/facade/exceptions';
-import { NgZone } from '../zone/ng_zone';
-import { ObservableWrapper } from '../../src/facade/async';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { Injectable } from '../di/decorators';
+import { Map, MapWrapper } from '../facade/collection';
+import { BaseException } from '../facade/exceptions';
+import { scheduleMicroTask } from '../facade/lang';
+import { NgZone } from '../zone/ng_zone';
 export class Testability {
     constructor(_ngZone) {
         this._ngZone = _ngZone;
@@ -24,17 +30,21 @@ export class Testability {
     }
     /** @internal */
     _watchAngularEvents() {
-        ObservableWrapper.subscribe(this._ngZone.onUnstable, (_) => {
-            this._didWork = true;
-            this._isZoneStable = false;
+        this._ngZone.onUnstable.subscribe({
+            next: () => {
+                this._didWork = true;
+                this._isZoneStable = false;
+            }
         });
         this._ngZone.runOutsideAngular(() => {
-            ObservableWrapper.subscribe(this._ngZone.onStable, (_) => {
-                NgZone.assertNotInAngularZone();
-                scheduleMicroTask(() => {
-                    this._isZoneStable = true;
-                    this._runCallbacksIfReady();
-                });
+            this._ngZone.onStable.subscribe({
+                next: () => {
+                    NgZone.assertNotInAngularZone();
+                    scheduleMicroTask(() => {
+                        this._isZoneStable = true;
+                        this._runCallbacksIfReady();
+                    });
+                }
             });
         });
     }
@@ -84,9 +94,11 @@ export class Testability {
         return [];
     }
 }
+/** @nocollapse */
 Testability.decorators = [
     { type: Injectable },
 ];
+/** @nocollapse */
 Testability.ctorParameters = [
     { type: NgZone, },
 ];
@@ -106,11 +118,12 @@ export class TestabilityRegistry {
         return _testabilityGetter.findTestabilityInTree(this, elem, findInAncestors);
     }
 }
+/** @nocollapse */
 TestabilityRegistry.decorators = [
     { type: Injectable },
 ];
+/** @nocollapse */
 TestabilityRegistry.ctorParameters = [];
-/* @ts2dart_const */
 class _NoopGetTestability {
     addToWindow(registry) { }
     findTestabilityInTree(registry, elem, findInAncestors) {
@@ -119,6 +132,7 @@ class _NoopGetTestability {
 }
 /**
  * Set the {@link GetTestability} implementation used by the Angular testing framework.
+ * @experimental
  */
 export function setTestabilityGetter(getter) {
     _testabilityGetter = getter;

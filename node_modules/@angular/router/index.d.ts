@@ -1,33 +1,20 @@
 /**
- * @module
- * @description
- * Maps application URLs into application states, to support deep-linking and navigation.
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
  */
-export { Router, RouterOutletMap } from './src/router';
-export { RouteSegment, UrlSegment, Tree, UrlTree, RouteTree } from './src/segments';
-export { Routes } from './src/metadata/decorators';
-export { Route } from './src/metadata/metadata';
-export { RouterUrlSerializer, DefaultRouterUrlSerializer } from './src/router_url_serializer';
-export { OnActivate, CanDeactivate } from './src/interfaces';
-export { ROUTER_PROVIDERS } from './src/router_providers';
-/**
- * A list of directives. To use the router directives like {@link RouterOutlet} and
- * {@link RouterLink}, add this to your `directives` array in the {@link View} decorator of your
- * component.
- *
- * ```
- * import {Component} from '@angular/core';
- * import {ROUTER_DIRECTIVES, Routes} from '@angular/router-deprecated';
- *
- * @Component({directives: [ROUTER_DIRECTIVES]})
- * @RouteConfig([
- *  {...},
- * ])
- * class AppCmp {
- *    // ...
- * }
- *
- * bootstrap(AppCmp);
- * ```
- */
-export declare const ROUTER_DIRECTIVES: any[];
+export { ExtraOptions, provideRouterConfig, provideRoutes } from './src/common_router_providers';
+export { Data, ResolveData, Route, RouterConfig, Routes } from './src/config';
+export { RouterLink, RouterLinkWithHref } from './src/directives/router_link';
+export { RouterLinkActive } from './src/directives/router_link_active';
+export { RouterOutlet } from './src/directives/router_outlet';
+export { CanActivate, CanActivateChild, CanDeactivate, CanLoad, Resolve } from './src/interfaces';
+export { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationExtras, NavigationStart, Router, RoutesRecognized } from './src/router';
+export { ROUTER_DIRECTIVES, RouterModule } from './src/router_module';
+export { RouterOutletMap } from './src/router_outlet_map';
+export { provideRouter } from './src/router_providers';
+export { ActivatedRoute, ActivatedRouteSnapshot, RouterState, RouterStateSnapshot } from './src/router_state';
+export { PRIMARY_OUTLET, Params } from './src/shared';
+export { DefaultUrlSerializer, UrlSegment, UrlSerializer, UrlTree } from './src/url_tree';

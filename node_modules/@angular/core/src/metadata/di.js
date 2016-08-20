@@ -1,12 +1,55 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var lang_1 = require('../../src/facade/lang');
-var metadata_1 = require('../di/metadata');
 var forward_ref_1 = require('../di/forward_ref');
+var metadata_1 = require('../di/metadata');
+var opaque_token_1 = require('../di/opaque_token');
+var lang_1 = require('../facade/lang');
+/**
+ * This token can be used to create a virtual provider that will populate the
+ * `entryComponents` fields of components and ng modules based on its `useValue`.
+ * All components that are referenced in the `useValue` value (either directly
+ * or in a nested array or map) will be added to the `entryComponents` property.
+ *
+ * ### Example
+ * The following example shows how the router can populate the `entryComponents`
+ * field of an NgModule based on the router configuration which refers
+ * to components.
+ *
+ * ```typescript
+ * // helper function inside the router
+ * function provideRoutes(routes) {
+ *   return [
+ *     {provide: ROUTES, useValue: routes},
+ *     {provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: routes, multi: true}
+ *   ];
+ * }
+ *
+ * // user code
+ * let routes = [
+ *   {path: '/root', component: RootComp},
+ *   {path: /teams', component: TeamsComp}
+ * ];
+ *
+ * @NgModule({
+ *   providers: [provideRoutes(routes)]
+ * })
+ * class ModuleWithRoutes {}
+ * ```
+ *
+ * @experimental
+ */
+exports.ANALYZE_FOR_ENTRY_COMPONENTS = new opaque_token_1.OpaqueToken('AnalyzeForEntryComponents');
 /**
  * Specifies that a constant attribute value should be injected.
  *
@@ -23,7 +66,7 @@ var forward_ref_1 = require('../di/forward_ref');
  * A decorator can inject string literal `text` like so:
  *
  * {@example core/ts/metadata/metadata.ts region='attributeMetadata'}
- * @ts2dart_const
+ * @stable
  */
 var AttributeMetadata = (function (_super) {
     __extends(AttributeMetadata, _super);
@@ -153,7 +196,7 @@ exports.AttributeMetadata = AttributeMetadata;
  *
  * The injected object is an unmodifiable live list.
  * See {@link QueryList} for more details.
- * @ts2dart_const
+ * @deprecated
  */
 var QueryMetadata = (function (_super) {
     __extends(QueryMetadata, _super);
@@ -194,7 +237,7 @@ var QueryMetadata = (function (_super) {
          * returns a list of variable bindings this is querying for.
          * Only applicable if this is a variable bindings query.
          */
-        get: function () { return this.selector.split(','); },
+        get: function () { return lang_1.StringWrapper.split(this.selector, /\s*,\s*/g); },
         enumerable: true,
         configurable: true
     });
@@ -222,7 +265,7 @@ exports.QueryMetadata = QueryMetadata;
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 var ContentChildrenMetadata = (function (_super) {
     __extends(ContentChildrenMetadata, _super);
@@ -253,7 +296,7 @@ exports.ContentChildrenMetadata = ContentChildrenMetadata;
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 var ContentChildMetadata = (function (_super) {
     __extends(ContentChildMetadata, _super);
@@ -298,7 +341,7 @@ exports.ContentChildMetadata = ContentChildMetadata;
  *
  * The injected object is an iterable and observable live list.
  * See {@link QueryList} for more details.
- * @ts2dart_const
+ * @deprecated
  */
 var ViewQueryMetadata = (function (_super) {
     __extends(ViewQueryMetadata, _super);
@@ -394,7 +437,7 @@ exports.ViewQueryMetadata = ViewQueryMetadata;
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 var ViewChildrenMetadata = (function (_super) {
     __extends(ViewChildrenMetadata, _super);
@@ -474,7 +517,7 @@ exports.ViewChildrenMetadata = ViewChildrenMetadata;
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 var ViewChildMetadata = (function (_super) {
     __extends(ViewChildMetadata, _super);

@@ -1,5 +1,41 @@
-import { Type } from '../../src/facade/lang';
 import { DependencyMetadata } from '../di/metadata';
+import { OpaqueToken } from '../di/opaque_token';
+import { Type } from '../facade/lang';
+/**
+ * This token can be used to create a virtual provider that will populate the
+ * `entryComponents` fields of components and ng modules based on its `useValue`.
+ * All components that are referenced in the `useValue` value (either directly
+ * or in a nested array or map) will be added to the `entryComponents` property.
+ *
+ * ### Example
+ * The following example shows how the router can populate the `entryComponents`
+ * field of an NgModule based on the router configuration which refers
+ * to components.
+ *
+ * ```typescript
+ * // helper function inside the router
+ * function provideRoutes(routes) {
+ *   return [
+ *     {provide: ROUTES, useValue: routes},
+ *     {provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: routes, multi: true}
+ *   ];
+ * }
+ *
+ * // user code
+ * let routes = [
+ *   {path: '/root', component: RootComp},
+ *   {path: /teams', component: TeamsComp}
+ * ];
+ *
+ * @NgModule({
+ *   providers: [provideRoutes(routes)]
+ * })
+ * class ModuleWithRoutes {}
+ * ```
+ *
+ * @experimental
+ */
+export declare const ANALYZE_FOR_ENTRY_COMPONENTS: OpaqueToken;
 /**
  * Specifies that a constant attribute value should be injected.
  *
@@ -16,7 +52,7 @@ import { DependencyMetadata } from '../di/metadata';
  * A decorator can inject string literal `text` like so:
  *
  * {@example core/ts/metadata/metadata.ts region='attributeMetadata'}
- * @ts2dart_const
+ * @stable
  */
 export declare class AttributeMetadata extends DependencyMetadata {
     attributeName: string;
@@ -130,7 +166,7 @@ export declare class AttributeMetadata extends DependencyMetadata {
  *
  * The injected object is an unmodifiable live list.
  * See {@link QueryList} for more details.
- * @ts2dart_const
+ * @deprecated
  */
 export declare class QueryMetadata extends DependencyMetadata {
     private _selector;
@@ -187,7 +223,7 @@ export declare class QueryMetadata extends DependencyMetadata {
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 export declare class ContentChildrenMetadata extends QueryMetadata {
     constructor(_selector: Type | string, {descendants, read}?: {
@@ -214,7 +250,7 @@ export declare class ContentChildrenMetadata extends QueryMetadata {
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 export declare class ContentChildMetadata extends QueryMetadata {
     constructor(_selector: Type | string, {read}?: {
@@ -255,7 +291,7 @@ export declare class ContentChildMetadata extends QueryMetadata {
  *
  * The injected object is an iterable and observable live list.
  * See {@link QueryList} for more details.
- * @ts2dart_const
+ * @deprecated
  */
 export declare class ViewQueryMetadata extends QueryMetadata {
     constructor(_selector: Type | string, {descendants, first, read}?: {
@@ -345,7 +381,7 @@ export declare class ViewQueryMetadata extends QueryMetadata {
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 export declare class ViewChildrenMetadata extends ViewQueryMetadata {
     constructor(_selector: Type | string, {read}?: {
@@ -421,7 +457,7 @@ export declare class ViewChildrenMetadata extends ViewQueryMetadata {
  *   }
  * }
  * ```
- * @ts2dart_const
+ * @stable
  */
 export declare class ViewChildMetadata extends ViewQueryMetadata {
     constructor(_selector: Type | string, {read}?: {

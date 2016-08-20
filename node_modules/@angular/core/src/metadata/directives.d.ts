@@ -1,7 +1,34 @@
-import { Type } from '../../src/facade/lang';
-import { InjectableMetadata } from '../di/metadata';
-import { ViewEncapsulation } from './view';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { AnimationEntryMetadata } from '../animation/metadata';
 import { ChangeDetectionStrategy } from '../change_detection/constants';
+import { InjectableMetadata } from '../di/metadata';
+import { Type } from '../facade/lang';
+import { ViewEncapsulation } from './view';
+/**
+ * Interface for creating {@link DirectiveMetadata}
+ * @experimental
+ */
+export interface DirectiveMetadataType {
+    selector?: string;
+    properties?: string[];
+    inputs?: string[];
+    events?: string[];
+    outputs?: string[];
+    host?: {
+        [key: string]: string;
+    };
+    providers?: any[];
+    exportAs?: string;
+    queries?: {
+        [key: string]: any;
+    };
+}
 /**
  * Directives allow you to attach behavior to elements in the DOM.
  *
@@ -38,7 +65,7 @@ import { ChangeDetectionStrategy } from '../change_detection/constants';
  * current `ElementInjector` resolves the constructor dependencies for each directive.
  *
  * Angular then resolves dependencies as follows, according to the order in which they appear in the
- * {@link ViewMetadata}:
+ * {@link ComponentMetadata}:
  *
  * 1. Dependencies on the current element
  * 2. Dependencies on element injectors and their parents until it encounters a Shadow DOM boundary
@@ -287,7 +314,8 @@ import { ChangeDetectionStrategy } from '../change_detection/constants';
  * location in the current view
  * where these actions are performed.
  *
- * Views are always created as children of the current {@link ViewMetadata}, and as siblings of the
+ * Views are always created as children of the current {@link ComponentMetadata}, and as siblings of
+ * the
  * `<template>` element. Thus a
  * directive in a child view cannot inject the directive that created it.
  *
@@ -320,8 +348,9 @@ import { ChangeDetectionStrategy } from '../change_detection/constants';
  *
  * ## Lifecycle hooks
  *
- * When the directive class implements some {@link ../../guide/lifecycle-hooks.html} the callbacks
- * are called by the change detection at defined points in time during the life of the directive.
+ * When the directive class implements some {@linkDocs guide/lifecycle-hooks} the
+ * callbacks are called by the change detection at defined points in time during the life of the
+ * directive.
  *
  * ### Example
  *
@@ -379,9 +408,9 @@ import { ChangeDetectionStrategy } from '../change_detection/constants';
  * Note also that although the `<li></li>` template still exists inside the `<template></template>`,
  * the instantiated
  * view occurs on the second `<li></li>` which is a sibling to the `<template>` element.
- * @ts2dart_const
+ * @stable
  */
-export declare class DirectiveMetadata extends InjectableMetadata {
+export declare class DirectiveMetadata extends InjectableMetadata implements DirectiveMetadataType {
     /**
      * The CSS selector that triggers the instantiation of a directive.
      *
@@ -463,6 +492,11 @@ export declare class DirectiveMetadata extends InjectableMetadata {
      *
      */
     inputs: string[];
+    /**
+     * Use `inputs` instead
+     *
+     * @deprecated
+     */
     properties: string[];
     private _inputs;
     private _properties;
@@ -512,6 +546,11 @@ export declare class DirectiveMetadata extends InjectableMetadata {
      *
      */
     outputs: string[];
+    /**
+     * Use `outputs` instead
+     *
+     * @deprecated
+     */
     events: string[];
     private _outputs;
     private _events;
@@ -641,7 +680,7 @@ export declare class DirectiveMetadata extends InjectableMetadata {
      *
      * @Directive({
      *   selector: 'greet',
-     *   bindings: [
+     *   providers: [
      *     Greeter
      *   ]
      * })
@@ -655,10 +694,7 @@ export declare class DirectiveMetadata extends InjectableMetadata {
      * ```
      */
     providers: any[];
-    /** @deprecated */
-    bindings: any[];
     private _providers;
-    private _bindings;
     /**
      * Defines the name that can be used in the template to assign this directive to a variable.
      *
@@ -718,22 +754,26 @@ export declare class DirectiveMetadata extends InjectableMetadata {
     queries: {
         [key: string]: any;
     };
-    constructor({selector, inputs, outputs, properties, events, host, bindings, providers, exportAs, queries}?: {
-        selector?: string;
-        inputs?: string[];
-        outputs?: string[];
-        properties?: string[];
-        events?: string[];
-        host?: {
-            [key: string]: string;
-        };
-        providers?: any[];
-        /** @deprecated */ bindings?: any[];
-        exportAs?: string;
-        queries?: {
-            [key: string]: any;
-        };
-    });
+    constructor({selector, inputs, outputs, properties, events, host, providers, exportAs, queries}?: DirectiveMetadataType);
+}
+/**
+ * Interface for creating {@link ComponentMetadataType}
+ * @experimental
+ */
+export interface ComponentMetadataType extends DirectiveMetadataType {
+    changeDetection?: ChangeDetectionStrategy;
+    viewProviders?: any[];
+    moduleId?: string;
+    templateUrl?: string;
+    template?: string;
+    styleUrls?: string[];
+    styles?: string[];
+    animations?: AnimationEntryMetadata[];
+    directives?: Array<Type | any[]>;
+    pipes?: Array<Type | any[]>;
+    encapsulation?: ViewEncapsulation;
+    interpolation?: [string, string];
+    entryComponents?: Array<Type | any[]>;
 }
 /**
  * Declare reusable UI building blocks for an application.
@@ -750,19 +790,18 @@ export declare class DirectiveMetadata extends InjectableMetadata {
  *
  * All template expressions and statements are then evaluated against the component instance.
  *
- * For details on the `@View` annotation, see {@link ViewMetadata}.
- *
  * ## Lifecycle hooks
  *
- * When the component class implements some {@link ../../guide/lifecycle-hooks.html} the callbacks
- * are called by the change detection at defined points in time during the life of the component.
+ * When the component class implements some {@linkDocs guide/lifecycle-hooks} the
+ * callbacks are called by the change detection at defined points in time during the life of the
+ * component.
  *
  * ### Example
  *
  * {@example core/ts/metadata/metadata.ts region='component'}
- * @ts2dart_const
+ * @stable
  */
-export declare class ComponentMetadata extends DirectiveMetadata {
+export declare class ComponentMetadata extends DirectiveMetadata implements ComponentMetadataType {
     /**
      * Defines the used change detection strategy.
      *
@@ -812,14 +851,13 @@ export declare class ComponentMetadata extends DirectiveMetadata {
      * ```
      */
     viewProviders: any[];
-    viewBindings: any[];
     private _viewProviders;
-    private _viewBindings;
     /**
      * The module id of the module that contains the component.
      * Needed to be able to resolve relative urls for templates and styles.
-     * In Dart, this can be determined automatically and does not need to be set.
-     * In CommonJS, this can always be set to `module.id`.
+     * In CommonJS, this can always be set to `module.id`, similarly SystemJS exposes `__moduleName`
+     * variable within each module.
+     *
      *
      * ## Simple Example
      *
@@ -834,40 +872,128 @@ export declare class ComponentMetadata extends DirectiveMetadata {
      * ```
      */
     moduleId: string;
+    /**
+     * Specifies a template URL for an Angular component.
+     *
+     * NOTE: Only one of `templateUrl` or `template` can be defined per View.
+     *
+     * <!-- TODO: what's the url relative to? -->
+     */
     templateUrl: string;
+    /**
+     * Specifies an inline template for an Angular component.
+     *
+     * NOTE: Only one of `templateUrl` or `template` can be defined per View.
+     */
     template: string;
+    /**
+     * Specifies stylesheet URLs for an Angular component.
+     *
+     * <!-- TODO: what's the url relative to? -->
+     */
     styleUrls: string[];
+    /**
+     * Specifies an inline stylesheet for an Angular component.
+     */
     styles: string[];
+    /**
+     * Animations are defined on components via an animation-like DSL. This DSL approach to describing
+     * animations allows for a flexibility that both benefits developers and the framework.
+     *
+     * Animations work by listening on state changes that occur on an element within
+     * the template. When a state change occurs, Angular can then take advantage and animate the
+     * arc in between. This works similar to how CSS transitions work, however, by having a
+     * programmatic DSL, animations are not limited to environments that are DOM-specific.
+     * (Angular can also perform optimizations behind the scenes to make animations more performant.)
+     *
+     * For animations to be available for use, animation state changes are placed within
+     * {@link trigger animation triggers} which are housed inside of the `animations` annotation
+     * metadata. Within a trigger both {@link state state} and {@link transition transition} entries
+     * can be placed.
+     *
+     * ```typescript
+     * @Component({
+     *   selector: 'animation-cmp',
+     *   templateUrl: 'animation-cmp.html',
+     *   animations: [
+     *     // this here is our animation trigger that
+     *     // will contain our state change animations.
+     *     trigger('myTriggerName', [
+     *       // the styles defined for the `on` and `off`
+     *       // states declared below are persisted on the
+     *       // element once the animation completes.
+     *       state('on', style({ opacity: 1 }),
+     *       state('off', style({ opacity: 0 }),
+     *
+     *       // this here is our animation that kicks off when
+     *       // this state change jump is true
+     *       transition('on => off', [
+     *         animate("1s")
+     *       ])
+     *     ])
+     *   ]
+     * })
+     * ```
+     *
+     * As depicted in the code above, a group of related animation states are all contained within
+     * an animation `trigger` (the code example above called the trigger `myTriggerName`).
+     * When a trigger is created then it can be bound onto an element within the component's
+     * template via a property prefixed by an `@` symbol followed by trigger name and an expression
+     * that
+     * is used to determine the state value for that trigger.
+     *
+     * ```html
+     * <!-- animation-cmp.html -->
+     * <div @myTriggerName="expression">...</div>
+     * ```
+     *
+     * For state changes to be executed, the `expression` value must change value from its existing
+     * value
+     * to something that we have set an animation to animate on (in the example above we are listening
+     * to a change of state between `on` and `off`). The `expression` value attached to the trigger
+     * must be something that can be evaluated with the template/component context.
+     *
+     * ### DSL Animation Functions
+     *
+     * Please visit each of the animation DSL functions listed below to gain a better understanding
+     * of how and why they are used for crafting animations in Angular2:
+     *
+     * - {@link trigger trigger()}
+     * - {@link state state()}
+     * - {@link transition transition()}
+     * - {@link group group()}
+     * - {@link sequence sequence()}
+     * - {@link style style()}
+     * - {@link animate animate()}
+     * - {@link keyframes keyframes()}
+     */
+    animations: AnimationEntryMetadata[];
     directives: Array<Type | any[]>;
     pipes: Array<Type | any[]>;
+    /**
+     * Specify how the template and the styles should be encapsulated.
+     * The default is {@link ViewEncapsulation#Emulated `ViewEncapsulation.Emulated`} if the view
+     * has styles,
+     * otherwise {@link ViewEncapsulation#None `ViewEncapsulation.None`}.
+     */
     encapsulation: ViewEncapsulation;
-    constructor({selector, inputs, outputs, properties, events, host, exportAs, moduleId, bindings, providers, viewBindings, viewProviders, changeDetection, queries, templateUrl, template, styleUrls, styles, directives, pipes, encapsulation}?: {
-        selector?: string;
-        inputs?: string[];
-        outputs?: string[];
-        properties?: string[];
-        events?: string[];
-        host?: {
-            [key: string]: string;
-        };
-        /** @deprecated */ bindings?: any[];
-        providers?: any[];
-        exportAs?: string;
-        moduleId?: string;
-        /** @deprecated */ viewBindings?: any[];
-        viewProviders?: any[];
-        queries?: {
-            [key: string]: any;
-        };
-        changeDetection?: ChangeDetectionStrategy;
-        templateUrl?: string;
-        template?: string;
-        styleUrls?: string[];
-        styles?: string[];
-        directives?: Array<Type | any[]>;
-        pipes?: Array<Type | any[]>;
-        encapsulation?: ViewEncapsulation;
-    });
+    interpolation: [string, string];
+    /**
+     * Defines the components that should be compiled as well when
+     * this component is defined. For each components listed here,
+     * Angular will create a {@link ComponentFactory ComponentFactory} and store it in the
+     * {@link ComponentFactoryResolver ComponentFactoryResolver}.
+     */
+    entryComponents: Array<Type | any[]>;
+    constructor({selector, inputs, outputs, properties, events, host, exportAs, moduleId, providers, viewProviders, changeDetection, queries, templateUrl, template, styleUrls, styles, animations, directives, pipes, encapsulation, interpolation, entryComponents}?: ComponentMetadataType);
+}
+/**
+ * Interface for creating {@link PipeMetadata}
+ * @experimental
+ */
+export interface PipeMetadataType {
+    name: string;
+    pure?: boolean;
 }
 /**
  * Declare reusable pipe function.
@@ -879,16 +1005,11 @@ export declare class ComponentMetadata extends DirectiveMetadata {
  * ### Example
  *
  * {@example core/ts/metadata/metadata.ts region='pipe'}
- * @ts2dart_const
+ * @stable
  */
-export declare class PipeMetadata extends InjectableMetadata {
+export declare class PipeMetadata extends InjectableMetadata implements PipeMetadataType {
     name: string;
-    /** @internal */
-    _pure: boolean;
-    constructor({name, pure}: {
-        name: string;
-        pure?: boolean;
-    });
+    constructor({name, pure}: PipeMetadataType);
     pure: boolean;
 }
 /**
@@ -931,7 +1052,7 @@ export declare class PipeMetadata extends InjectableMetadata {
  *
  * bootstrap(App);
  * ```
- * @ts2dart_const
+ * @stable
  */
 export declare class InputMetadata {
     /**
@@ -984,7 +1105,7 @@ export declare class InputMetadata {
  * }
  * bootstrap(App);
  * ```
- * @ts2dart_const
+ * @stable
  */
 export declare class OutputMetadata {
     bindingPropertyName: string;
@@ -1024,7 +1145,7 @@ export declare class OutputMetadata {
  *
  * bootstrap(App);
  * ```
- * @ts2dart_const
+ * @stable
  */
 export declare class HostBindingMetadata {
     hostPropertyName: string;
@@ -1063,7 +1184,7 @@ export declare class HostBindingMetadata {
  *
  * bootstrap(App);
  * ```
- * @ts2dart_const
+ * @stable
  */
 export declare class HostListenerMetadata {
     eventName: string;

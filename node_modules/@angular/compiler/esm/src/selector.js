@@ -1,15 +1,21 @@
-import { Map, ListWrapper } from '../src/facade/collection';
-import { isPresent, isBlank, RegExpWrapper, RegExpMatcherWrapper, StringWrapper } from '../src/facade/lang';
-import { BaseException } from '../src/facade/exceptions';
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { ListWrapper } from './facade/collection';
+import { BaseException } from './facade/exceptions';
+import { StringWrapper, isBlank, isPresent } from './facade/lang';
 const _EMPTY_ATTR_VALUE = '';
-// TODO: Can't use `const` here as
-// in Dart this is not transpiled into `final` yet...
-var _SELECTOR_REGEXP = RegExpWrapper.create('(\\:not\\()|' +
+const _SELECTOR_REGEXP = new RegExp('(\\:not\\()|' +
     '([-\\w]+)|' +
     '(?:\\.([-\\w]+))|' +
     '(?:\\[([-\\w*]+)(?:=([^\\]]*))?\\])|' +
     '(\\))|' +
-    '(\\s*,\\s*)'); // ","
+    '(\\s*,\\s*)', // ","
+'g');
 /**
  * A css selector contains an element name,
  * css classes and attribute/value pairs with the purpose
@@ -27,16 +33,16 @@ export class CssSelector {
         var _addResult = (res, cssSel) => {
             if (cssSel.notSelectors.length > 0 && isBlank(cssSel.element) &&
                 ListWrapper.isEmpty(cssSel.classNames) && ListWrapper.isEmpty(cssSel.attrs)) {
-                cssSel.element = "*";
+                cssSel.element = '*';
             }
             res.push(cssSel);
         };
         var cssSelector = new CssSelector();
-        var matcher = RegExpWrapper.matcher(_SELECTOR_REGEXP, selector);
         var match;
         var current = cssSelector;
         var inNot = false;
-        while (isPresent(match = RegExpMatcherWrapper.next(matcher))) {
+        _SELECTOR_REGEXP.lastIndex = 0;
+        while (isPresent(match = _SELECTOR_REGEXP.exec(selector))) {
             if (isPresent(match[1])) {
                 if (inNot) {
                     throw new BaseException('Nesting :not is not allowed in a selector');
@@ -281,7 +287,7 @@ export class SelectorMatcher {
             return false;
         }
         var selectables = map.get(name);
-        var starSelectables = map.get("*");
+        var starSelectables = map.get('*');
         if (isPresent(starSelectables)) {
             selectables = selectables.concat(starSelectables);
         }
@@ -297,7 +303,7 @@ export class SelectorMatcher {
         return result;
     }
     /** @internal */
-    _matchPartial(map, name, cssSelector, matchedCallback /*: (c: CssSelector, a: any) => void*/) {
+    _matchPartial(map, name, cssSelector, matchedCallback) {
         if (isBlank(map) || isBlank(name)) {
             return false;
         }

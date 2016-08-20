@@ -1,5 +1,7 @@
-export { looseIdentical } from '../../src/facade/lang';
-export declare var uninitialized: Object;
+export { looseIdentical } from '../facade/lang';
+export declare const UNINITIALIZED: {
+    toString: () => string;
+};
 export declare function devModeEqual(a: any, b: any): boolean;
 /**
  * Indicates that the result of a {@link PipeMetadata} transformation has changed even though the
@@ -18,6 +20,7 @@ export declare function devModeEqual(a: any, b: any): boolean;
  *    return WrappedValue.wrap(this._latestValue); // this will force update
  *  }
  * ```
+ * @stable
  */
 export declare class WrappedValue {
     wrapped: any;
@@ -34,6 +37,7 @@ export declare class ValueUnwrapper {
 }
 /**
  * Represents a basic change from a previous to a new value.
+ * @stable
  */
 export declare class SimpleChange {
     previousValue: any;
