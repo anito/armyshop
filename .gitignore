@@ -4,7 +4,7 @@ node_modules
 jspm_packages
 link-checker-results.txt
 **/*npm-debug.log.*
-*.js
+
 *.js.map
 e2e/**/*.js
 e2e/**/*.js.map
@@ -18,3 +18,4 @@ _temp
 !wallaby.js
 /quickstart
 /nbproject/
+/Vendor/cakephp/cakephp/app/webroot/js/spine/halehmann/nbproject/private/

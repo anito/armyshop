@@ -1,0 +1,9 @@
+{
+    "name": "test-app",
+    "require": {
+        "cakephp/cakephp": "2.8.*"
+    },
+    "config": {
+        "vendor-dir": "Vendor/"
+    }
+}
