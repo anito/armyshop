@@ -1,9 +1,8 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
-  <div class="logo"></div>
   <div class="container">
-    <h1 class="display-3">Herzlich Willkommen</h1>
-    <p><a class="btn btn-primary btn-lg" href="#" role="button">Erfahren Sie mehr »</a></p>
+    <h1 class="display-3">Willkommen</h1>
+    <div class="right"><a class="btn btn-primary btn-lg" href="#" role="button">Erfahren Sie mehr »</a></div>
   </div>
 </div>
 

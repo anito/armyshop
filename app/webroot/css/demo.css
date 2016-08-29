@@ -58,6 +58,7 @@ header {
 }
 .header{
 	line-height: 24px;
+  height: 69px;
 	font-size: 11px;
 	background: #000;
 	opacity: 0.9;
@@ -151,6 +152,20 @@ footer .footer {
 }
 #container {
   margin: 69px 0;
+}
+.right {
+  float: right;
+}
+.left {
+  float: left;
+}
+.lehmann {
+  font-size: 13em;
+  text-shadow: 5px 3px 8px rgba(0, 0, 0, .5);
+  position: absolute;
+  top: 78px;
+  left: -75px;
+  color: rgba(200, 200, 200, .9);
 }
 body.fade.in.defense {
   background: transparent url(../img/defense_creative.jpg) 50% 10% fixed;

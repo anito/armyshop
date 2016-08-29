@@ -35,6 +35,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('/js/app/public/application_dummy');
     echo $this->Html->css("font");
     echo $this->Html->css("flaticon");
+    echo $this->Html->css("lehmann");
     echo $this->Html->css("demo");
     echo $this->Html->css("style7");
     echo $this->Html->css("jumbotron");
@@ -51,7 +52,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	?>
 </head>
 <body class="fade in">
-  <header id="header">
+  <header id="header" class="header">
     <nav class="navbar navbar-static-top navbar-dark bg-inverse">
       <a class="navbar-brand" href="/"><span class="flaticon-menu" style="font-size: 2.5em"></span></a>
       <ul class="nav navbar-nav items">
@@ -73,6 +74,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   
   <div id="container" style="">
     <div id="content">
+      <div class="lehmann"><span class="lehmann-ha-0"></span><span class="lehmann-ha-2"></span></div>
 
 
       <?php echo $this->fetch('content'); ?>
