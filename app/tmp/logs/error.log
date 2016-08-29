@@ -16,6 +16,7 @@ Request URL: /css/bootstrap.min.css.map
 Stack Trace:
 #0 /Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/index.php(111): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #1 {main}
+<<<<<<< HEAD
 2016-08-29 06:11:57 Error: [MissingControllerException] Controller class CssController could not be found.
 Exception Attributes: array (
   'class' => 'CssController',
@@ -1132,3 +1133,20 @@ Request URL: /css/bootstrap.min.css.map
 Stack Trace:
 #0 /Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/index.php(111): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #1 {main}
+=======
+2016-08-29 03:49:53 Error: [MissingViewException] View file "Pages/img/outdoor_creative.jpg.ctp" is missing.
+Exception Attributes: array (
+  'file' => 'Pages/img/outdoor_creative.jpg.ctp',
+)
+Request URL: /pages/img/outdoor_creative.jpg
+Stack Trace:
+#0 /var/www/vhosts/ha-lehmann.at/httpdocs/lib/Cake/View/View.php(470): View->_getViewFileName('img/outdoor_cre...')
+#1 /var/www/vhosts/ha-lehmann.at/httpdocs/lib/Cake/Controller/Controller.php(963): View->render('img/outdoor_cre...', NULL)
+#2 /var/www/vhosts/ha-lehmann.at/httpdocs/app/Controller/PagesController.php(68): Controller->render('img/outdoor_cre...')
+#3 [internal function]: PagesController->display('img', 'outdoor_creativ...')
+#4 /var/www/vhosts/ha-lehmann.at/httpdocs/lib/Cake/Controller/Controller.php(491): ReflectionMethod->invokeArgs(Object(PagesController), Array)
+#5 /var/www/vhosts/ha-lehmann.at/httpdocs/lib/Cake/Routing/Dispatcher.php(193): Controller->invokeAction(Object(CakeRequest))
+#6 /var/www/vhosts/ha-lehmann.at/httpdocs/lib/Cake/Routing/Dispatcher.php(167): Dispatcher->_invoke(Object(PagesController), Object(CakeRequest))
+#7 /var/www/vhosts/ha-lehmann.at/httpdocs/app/webroot/index.php(111): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#8 {main}
+>>>>>>> test
