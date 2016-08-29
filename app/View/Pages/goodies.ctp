@@ -15,7 +15,7 @@
       <li class="pricing__feature">Wassergeschützt</li>
       <li class="pricing__feature">Ultra flexibel</li>
     </ul>
-    <button class="pricing__action">Choose plan</button>
+    <button class="pricing__action">Zum Shop</button>
   </div>
   <div class="pricing__item pricing__item--featured">
     <h3 class="pricing__title">Goodi 2</h3>
@@ -26,7 +26,7 @@
       <li class="pricing__feature">Wassergeschützt</li>
       <li class="pricing__feature">Ultra flexibel</li>
     </ul>
-    <button class="pricing__action">Choose plan</button>
+    <button class="pricing__action">Zum Shop</button>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Goodi 3</h3>
@@ -37,7 +37,7 @@
       <li class="pricing__feature">Wassergeschützt</li>
       <li class="pricing__feature">Ultra flexibel</li>
     </ul>
-    <button class="pricing__action">Choose plan</button>
+    <button class="pricing__action">Zum Shop</button>
   </div>
 </div>
 <?php

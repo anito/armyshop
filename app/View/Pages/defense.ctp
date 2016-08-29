@@ -15,7 +15,7 @@
       <li class="pricing__feature">leicht bedienbar</li>
       <li class="pricing__feature">400ml Inhalt</li>
     </ul>
-    <button class="pricing__action">Choose plan</button>
+    <button class="pricing__action">Zum Shop</button>
   </div>
   <div class="pricing__item pricing__item--featured">
     <h3 class="pricing__title">Pfefferspray 2</h3>
@@ -26,7 +26,7 @@
       <li class="pricing__feature">leicht bedienbar</li>
       <li class="pricing__feature">150ml Inhalt</li>
     </ul>
-    <button class="pricing__action">Choose plan</button>
+    <button class="pricing__action">Zum Shop</button>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Pfefferspray 3</h3>
@@ -37,7 +37,7 @@
       <li class="pricing__feature">leicht bedienbar</li>
       <li class="pricing__feature">300ml Inhalt</li>
     </ul>
-    <button class="pricing__action">Choose plan</button>
+    <button class="pricing__action">Zum Shop</button>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Pfefferspray 4</h3>
@@ -48,7 +48,7 @@
       <li class="pricing__feature">leicht bedienbar</li>
       <li class="pricing__feature">800ml Inhalt</li>
     </ul>
-    <button class="pricing__action">Choose plan</button>
+    <button class="pricing__action">Zum Shop</button>
   </div>
   <div class="pricing__item pricing__item--featured">
     <h3 class="pricing__title">Pfefferspray 5</h3>
@@ -59,7 +59,7 @@
       <li class="pricing__feature">leicht bedienbar</li>
       <li class="pricing__feature">600ml Inhalt</li>
     </ul>
-    <button class="pricing__action">Choose plan</button>
+    <button class="pricing__action">Zum Shop</button>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Pfefferspray 6</h3>
@@ -70,7 +70,7 @@
       <li class="pricing__feature">leicht bedienbar</li>
       <li class="pricing__feature">400ml Inhalt</li>
     </ul>
-    <button class="pricing__action">Choose plan</button>
+    <button class="pricing__action">Zum Shop</button>
   </div>
 </div>
 <?php
