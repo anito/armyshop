@@ -1,0 +1,63 @@
+/* latin-ext */
+@font-face {
+  font-family: 'Terminal Dosis';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Dosis Regular'), local('Dosis-Regular'), url(fonts/terminal_dosis_1.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Terminal Dosis';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Dosis Regular'), local('Dosis-Regular'), url(fonts/terminal_dosis_2.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+  font-family: 'WebSymbolsRegular';
+  src: url('fonts/websymbols-regular-webfont.eot');
+  src: url('fonts/websymbols-regular-webfont.eot?#iefix') format('embedded-opentype'),
+      url('fonts/websymbols-regular-webfont.woff') format('woff'),
+      url('fonts/websymbols-regular-webfont.ttf') format('truetype'),
+      url('fonts/websymbols-regular-webfont.svg#WebSymbolsRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: ChopinScript;
+  src: url("fonts/ChopinScript.ttf");
+}
+@font-face {
+  font-family: ChopinScript;
+  src: url("fonts/ChopinScript.ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: Express;
+  src: url("fonts/Express.ttf");
+}
+@font-face {
+  font-family: Kimberle;
+  src: url("fonts/kimberle.ttf");
+}
+@font-face {
+  font-family: Puritan;
+  src: url("fonts/Puritan.ttf");
+}
+@font-face {
+  font-family: PuritanAlternate;
+  src: url("fonts/PuritanAlternate-Bold.ttf");
+}
+@font-face {
+  font-family: PuritanSwash;
+  src: url("fonts/PuritanSwash-Bold.ttf");
+}
+@font-face {
+  font-family: Linolschrift;
+  src: url("fonts/Linolschrift.ttf");
+}
+@font-face {
+  font-family: HappyEaster;
+  src: url("fonts/HappyEaster.ttf");
+}
