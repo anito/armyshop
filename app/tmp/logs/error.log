@@ -1177,3 +1177,12 @@ Request URL: /js/app/public/spine.js.map
 Stack Trace:
 #0 /Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/index.php(111): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #1 {main}
+2016-08-29 08:14:05 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /css/bootstrap.min.css.map
+Stack Trace:
+#0 /Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/index.php(111): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
