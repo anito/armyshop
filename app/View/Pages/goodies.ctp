@@ -7,7 +7,7 @@
 </div>
 <div class="pricing pricing--norbu">
   <div class="pricing__item">
-    <h3 class="pricing__title">Rucksack 1</h3>
+    <h3 class="pricing__title">Goodi 1</h3>
     <p class="pricing__sentence">Für optimalen Komfort</p>
     <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
     <ul class="pricing__feature-list">
@@ -18,7 +18,7 @@
     <button class="pricing__action">Choose plan</button>
   </div>
   <div class="pricing__item pricing__item--featured">
-    <h3 class="pricing__title">Rucksack 2</h3>
+    <h3 class="pricing__title">Goodi 2</h3>
     <p class="pricing__sentence">Für optimalen Komfort</p>
     <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
     <ul class="pricing__feature-list">
@@ -29,7 +29,7 @@
     <button class="pricing__action">Choose plan</button>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Rucksack 3</h3>
+    <h3 class="pricing__title">Goodi 3</h3>
     <p class="pricing__sentence">Für optimalen Komfort</p>
     <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
     <ul class="pricing__feature-list">
