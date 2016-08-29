@@ -912,7 +912,7 @@
   padding: 1em 2em;
   border-radius: 40px;
   background: #85c34a;
-  color: ;
+  color: inherit;
   -webkit-transition: background-color 0.3s, color 0.3s;
   transition: background-color 0.3s, color 0.3s;
 }
