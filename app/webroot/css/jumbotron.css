@@ -8,11 +8,11 @@ body {
 .jumbotron .logo {
   position: absolute;
   top: 69px;
-  right: 55px;
-  background: transparent url(../img/hal_logo_dark_298.png) no-repeat 0px -50px;
+  right: -60px;
+  background: transparent url(../img/hal_logo_dark_357.png) no-repeat 0px -40px;
   line-height: 200px;
   height: 400px;
-  width: 298px;
+  width: 357px;
 }
 .container.wide {
   min-width: 100%;
