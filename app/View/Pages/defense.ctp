@@ -1,75 +1,74 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
+  <div class="logo"></div>
   <div class="container">
-    <h1 class="display-3">
-      <p><a class="btn btn-primary btn-lg" href="http://v4-alpha.getbootstrap.com/examples/jumbotron/#" role="button">Selbstschutz »</a></p>
-    </h1>
+    <h1 class="display-3">Selbstschutz</h1>
   </div>
 </div>
 <div class="pricing pricing--norbu">
   <div class="pricing__item">
-    <h3 class="pricing__title">Beginner Savers</h3>
-    <p class="pricing__sentence">For people who are starting out in the water saving business</p>
+    <h3 class="pricing__title">Pfefferspray 1</h3>
+    <p class="pricing__sentence">Für mehr Sicherhit für unterwegs</p>
     <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
     <ul class="pricing__feature-list">
-      <li class="pricing__feature">Free water saving e-book</li>
-      <li class="pricing__feature">Free access to forums</li>
-      <li class="pricing__feature">Beginners tips</li>
+      <li class="pricing__feature">Beste Sofortwirkung</li>
+      <li class="pricing__feature">leicht bedienbar</li>
+      <li class="pricing__feature">400ml Inhalt</li>
     </ul>
     <button class="pricing__action">Choose plan</button>
   </div>
   <div class="pricing__item pricing__item--featured">
-    <h3 class="pricing__title">Advanced Savers</h3>
-    <p class="pricing__sentence">For experienced water savers who'd like to push their limits</p>
+    <h3 class="pricing__title">Pfefferspray 2</h3>
+    <p class="pricing__sentence">Für mehr Sicherhit für unterwegs</p>
     <div class="pricing__price"><span class="pricing__currency">$</span>29<span class="pricing__period">/ month</span></div>
     <ul class="pricing__feature-list">
-      <li class="pricing__feature">Free water saving e-book</li>
-      <li class="pricing__feature">Free access to forums</li>
-      <li class="pricing__feature">Advanced saving tips</li>
+      <li class="pricing__feature">Beste Sofortwirkung</li>
+      <li class="pricing__feature">leicht bedienbar</li>
+      <li class="pricing__feature">150ml Inhalt</li>
     </ul>
     <button class="pricing__action">Choose plan</button>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Pro Savers</h3>
-    <p class="pricing__sentence">For all the professionals who'd like to educate others, too</p>
+    <h3 class="pricing__title">Pfefferspray 3</h3>
+    <p class="pricing__sentence">Für mehr Sicherhit für unterwegs</p>
     <div class="pricing__price"><span class="pricing__currency">$</span>79<span class="pricing__period">/ month</span></div>
     <ul class="pricing__feature-list">
-      <li class="pricing__feature">Access to all books</li>
-      <li class="pricing__feature">Unlimited board topics</li>
-      <li class="pricing__feature">Beginners tips</li>
+      <li class="pricing__feature">Beste Sofortwirkung</li>
+      <li class="pricing__feature">leicht bedienbar</li>
+      <li class="pricing__feature">300ml Inhalt</li>
     </ul>
     <button class="pricing__action">Choose plan</button>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Beginner Savers</h3>
-    <p class="pricing__sentence">For people who are starting out in the water saving business</p>
+    <h3 class="pricing__title">Pfefferspray 4</h3>
+    <p class="pricing__sentence">Für mehr Sicherhit für unterwegs</p>
     <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
     <ul class="pricing__feature-list">
-      <li class="pricing__feature">Free water saving e-book</li>
-      <li class="pricing__feature">Free access to forums</li>
-      <li class="pricing__feature">Beginners tips</li>
+      <li class="pricing__feature">Beste Sofortwirkung</li>
+      <li class="pricing__feature">leicht bedienbar</li>
+      <li class="pricing__feature">800ml Inhalt</li>
     </ul>
     <button class="pricing__action">Choose plan</button>
   </div>
   <div class="pricing__item pricing__item--featured">
-    <h3 class="pricing__title">Advanced Savers</h3>
-    <p class="pricing__sentence">For experienced water savers who'd like to push their limits</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>29<span class="pricing__period">/ month</span></div>
+    <h3 class="pricing__title">Pfefferspray 5</h3>
+    <p class="pricing__sentence">Für mehr Sicherhit für unterwegs</p>
+    <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
     <ul class="pricing__feature-list">
-      <li class="pricing__feature">Free water saving e-book</li>
-      <li class="pricing__feature">Free access to forums</li>
-      <li class="pricing__feature">Advanced saving tips</li>
+      <li class="pricing__feature">Beste Sofortwirkung</li>
+      <li class="pricing__feature">leicht bedienbar</li>
+      <li class="pricing__feature">600ml Inhalt</li>
     </ul>
     <button class="pricing__action">Choose plan</button>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Pro Savers</h3>
-    <p class="pricing__sentence">For all the professionals who'd like to educate others, too</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>79<span class="pricing__period">/ month</span></div>
+    <h3 class="pricing__title">Pfefferspray 6</h3>
+    <p class="pricing__sentence">Für mehr Sicherhit für unterwegs</p>
+    <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
     <ul class="pricing__feature-list">
-      <li class="pricing__feature">Access to all books</li>
-      <li class="pricing__feature">Unlimited board topics</li>
-      <li class="pricing__feature">Beginners tips</li>
+      <li class="pricing__feature">Beste Sofortwirkung</li>
+      <li class="pricing__feature">leicht bedienbar</li>
+      <li class="pricing__feature">400ml Inhalt</li>
     </ul>
     <button class="pricing__action">Choose plan</button>
   </div>

@@ -20,6 +20,14 @@ a{
 	color: #fff;
 	text-decoration: none;
 }
+h1.display-3 {
+  text-shadow: 0 -1px 2px #2c2d2d;
+  color: #CCC7C7;
+  font-size: 3em;
+}
+.row.ca-menu {
+  margin: 250px 0 0px;
+}
 .clr{
 	clear: both;
 }
@@ -142,7 +150,7 @@ footer .footer {
   padding-left: 20px;
 }
 #container {
-  margin: 70px 0;
+  margin: 69px 0;
 }
 body.fade.in.defense {
   background: transparent url(../img/defense_creative.jpg) 50% 10% fixed;

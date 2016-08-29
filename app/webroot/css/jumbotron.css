@@ -2,7 +2,17 @@
 body {
 }
 .jumbotron {
-  background-color: transparent;
+  background-color: rgba(44, 45, 45, .5);
+  padding: 2rem 2rem;
+}
+.jumbotron .logo {
+  position: absolute;
+  top: 69px;
+  right: 55px;
+  background: transparent url(../img/hal_logo_dark_298.png) no-repeat 0px -50px;
+  line-height: 200px;
+  height: 400px;
+  width: 298px;
 }
 .container.wide {
   min-width: 100%;
