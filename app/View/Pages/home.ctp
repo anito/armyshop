@@ -14,7 +14,7 @@
         <a href="/pages//defense">
           <span class="flaticon-pepper-spray"></span>
           <div class="ca-content">
-            <h2 class="ca-main">Selbstschutz & Security</h2>
+            <h2 class="ca-main">Security & Selbstschutz</h2>
             <h3 class="ca-sub">Fühlen Sie sich sicher?</h3>
           </div>
         </a>
@@ -28,6 +28,15 @@
           </div>
         </a>
    </li>
+   <li id="goodies-item-menu" class="item-menu  pricing__item">
+        <a href="/pages/goodies">
+          <span class="flaticon-sales-label"></span>
+          <div class="ca-content">
+            <h2 class="ca-main">Restposten & Specials</h2>
+            <h3 class="ca-sub">24/7 Geld sparen</h3>
+          </div>
+        </a>
+    </li>
   </ul>
 
 </div> <!-- /container -->
