@@ -107,7 +107,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       {{if header}}
       <div class="modal-header dark">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <p class="">${header}</p>
+        <h3 class="h3" style="padding-left: 26px;">${header}</h3>
       </div>
       {{/if}}
       {{if body}}
