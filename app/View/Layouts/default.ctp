@@ -65,9 +65,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <li id="" class="nav-item outdoor">
           <a class="nav-link" href="/pages/outdoor">Outdoor</a>
         </li>
-        <li id="" class="nav-item goodies">
-          <a class="nav-link" href="/pages/goodies">Goodies</a>
-        </li>
       </ul>
     </nav>
   </header>
