@@ -67,7 +67,7 @@ class App extends Spine.Controller
     dialog = new ModalSimpleView
       options:
         small: false
-        header: ' '
+        header: 'AGBs'
         body: -> require("views/agb")
           copyright     : 'Axel Nitzschner'
           spine_version : Spine.version
@@ -89,7 +89,7 @@ class App extends Spine.Controller
     dialog = new ModalSimpleView
       options:
         small: true
-        header: ' '
+        header: 'Impressum'
         body: -> require("views/imp")
           copyright     : 'Axel Nitzschner'
           spine_version : Spine.version
@@ -111,7 +111,7 @@ class App extends Spine.Controller
     dialog = new ModalSimpleView
       options:
         small: false
-        header: ' '
+        header: 'Zahlungsmöglichkeiten'
         body: -> require("views/pay")
           copyright     : 'Axel Nitzschner'
           spine_version : Spine.version

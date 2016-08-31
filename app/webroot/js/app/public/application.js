@@ -30535,7 +30535,7 @@ Released under the MIT License
       dialog = new ModalSimpleView({
         options: {
           small: false,
-          header: ' ',
+          header: 'AGBs',
           body: function() {
             return require("views/agb")({
               copyright: 'Axel Nitzschner',
@@ -30563,7 +30563,7 @@ Released under the MIT License
       dialog = new ModalSimpleView({
         options: {
           small: true,
-          header: ' ',
+          header: 'Impressum',
           body: function() {
             return require("views/imp")({
               copyright: 'Axel Nitzschner',
@@ -30591,7 +30591,7 @@ Released under the MIT License
       dialog = new ModalSimpleView({
         options: {
           small: false,
-          header: ' ',
+          header: 'Zahlungsmöglichkeiten',
           body: function() {
             return require("views/pay")({
               copyright: 'Axel Nitzschner',
@@ -30847,24 +30847,9 @@ var jade_interp;
 
 jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Impressum");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
 buf.push("HA-Lehmann - Dornachgasse 15 - 6850 Dornbirn");
 jade_debug.shift();
 jade_debug.shift();
@@ -30872,7 +30857,7 @@ buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3\n  div Impressum\n\np HA-Lehmann - Dornachgasse 15 - 6850 Dornbirn");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "p HA-Lehmann - Dornachgasse 15 - 6850 Dornbirn");
 }
 };}, "views/pay": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ) ];
@@ -30883,31 +30868,40 @@ var jade_interp;
 
 jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Zahlungsmöglichkeiten");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<li>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<h5 class=\"h5\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
 buf.push("Paypal");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</h5>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</li>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+buf.push("<li>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+buf.push("<h5 class=\"h5\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
+buf.push("Vorkasse");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</h5>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
+buf.push("Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</li>");
@@ -30924,40 +30918,16 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</h5>");
 jade_debug.shift();
+jade_debug.shift();
+buf.push("</li>");
+jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<p>");
+buf.push("<li>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<h5 class=\"h5\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("Vorkasse");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
 buf.push("Bei Abholung");
 jade_debug.shift();
 jade_debug.shift();
@@ -30966,46 +30936,46 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<h5 class=\"h5\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
 buf.push("Versandkosten");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</h5>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
 buf.push("Österreich 3,90 Euro");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
 buf.push("Deuschland (ausser Inseln) 5,90 Euro");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+jade_debug.unshift(new jade.DebugItem( 15, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
 buf.push("Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich Versandkostenfrei!!");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
 buf.push("Wir versenden ausschließlich mit dem privaten Paketdienst DPD. Bei diesen ist eine Abholung wie bei der Post/DHL nicht möglich. Sollten Sie diesen im Abwesenheitsfall aufgrund der Benachrichtigungskarte telefonisch eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
 jade_debug.shift();
 jade_debug.shift();
@@ -31013,7 +30983,7 @@ buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3\n  div Zahlungsmöglichkeiten\n\nli\n  h5.h5 Paypal\nli\n  h5.h5 Vorkasse\n  p Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nli\n  h5.h5 Vorkasse\nli\n  h5.h5 Bei Abholung\nh5.h5 Versandkosten\np Österreich 3,90 Euro\n\np Deuschland (ausser Inseln) 5,90 Euro\n\np Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich Versandkostenfrei!!\n\np Wir versenden ausschließlich mit dem privaten Paketdienst DPD. Bei diesen ist eine Abholung wie bei der Post/DHL nicht möglich. Sollten Sie diesen im Abwesenheitsfall aufgrund der Benachrichtigungskarte telefonisch eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "li\n  h5.h5 Paypal\nli\n  h5.h5 Vorkasse\n  p Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nli\n  h5.h5 Vorkasse\nli\n  h5.h5 Bei Abholung\nh5.h5 Versandkosten\np Österreich 3,90 Euro\n\np Deuschland (ausser Inseln) 5,90 Euro\n\np Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich Versandkostenfrei!!\n\np Wir versenden ausschließlich mit dem privaten Paketdienst DPD. Bei diesen ist eine Abholung wie bei der Post/DHL nicht möglich. Sollten Sie diesen im Abwesenheitsfall aufgrund der Benachrichtigungskarte telefonisch eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
 }
 };}, "views/sample": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/sample.jade" ) ];
