@@ -20,10 +20,20 @@ a{
 	color: #fff;
 	text-decoration: none;
 }
+.display-3 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
 h1.display-3 {
-  text-shadow: 0 -1px 2px #2c2d2d;
   color: #CCC7C7;
+  text-shadow: 0 -1px 2px #2c2d2d;
   font-size: 3em;
+}
+h5.display-3 {
+  color: #AAA7A7;
+  text-shadow: 0 -1px 1px #2c2d2d;
+  font-size: 1.6em;
 }
 .row.ca-menu {
   margin: 250px 0 0px;
@@ -34,19 +44,18 @@ h1.display-3 {
 .content{
 	position:relative;
 }
-h1{
+h1, h2, h3, h4, h5 {
 	margin:0px;
-	padding:20px;
+	padding:0px;
 	font-size:32px;
-	text-align:center;
 	font-weight:400;
 }
-h1 span{
-    display:block;
+h1 span {
+  display:block;
 	font-size:14px;
 	color:#666;
-    font-style:italic;
-    font-family:Georgia, serif;
+  font-style:italic;
+  font-family:Georgia, serif;
 	padding-top:5px;
 }
 /* Header Style */
@@ -163,9 +172,18 @@ footer .footer {
   font-size: 13em;
   text-shadow: 5px 3px 8px rgba(0, 0, 0, .5);
   position: absolute;
-  top: 78px;
-  left: -75px;
+  top: 80px;
+  left: -60px;
   color: rgba(200, 200, 200, .9);
+}
+.modal-body {
+  padding: 45px !important;
+}
+.modal .h5 {
+  margin: 16px 0 3px;
+}
+.modal .h3 {
+  margin-top: 16px;
 }
 body.fade.in.defense {
   background: transparent url(../img/defense_creative.jpg) 50% 10% fixed;

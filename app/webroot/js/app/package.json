@@ -2,7 +2,7 @@
   "name": "app",
   "version": "1.0.0",
   "dependencies": {
-    "spine": "~1.6.1",
+    "spine": "~1.6.2",
     "jade": "~1.11.0",
     "stylus": "~0.52.0",
     "es5-shimify": "~2.0.0",

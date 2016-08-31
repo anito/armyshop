@@ -30,9 +30,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->meta('http-equiv', "x-ua-compatible");
 		echo $this->Html->meta('icon');
 
+    echo $this->Html->css('/js/app/public/application_dummy');
+    echo $this->Html->css('jquery-ui-1.8.16.custom');
     echo $this->Html->css("bootstrap.min");
     echo $this->Html->css("component");
-    echo $this->Html->css('/js/app/public/application_dummy');
     echo $this->Html->css("font");
     echo $this->Html->css("flaticon");
     echo $this->Html->css("lehmann");
@@ -41,9 +42,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("jumbotron");
     
 //    jQuery first, then Tether, then Bootstrap JS.
-    echo $this->Html->script('jquery.min');
-    echo $this->Html->script('tether.min');
-    echo $this->Html->script('bootstrap.min');
     echo $this->Html->script('app/public/application');
 
 		echo $this->fetch('meta');
@@ -54,7 +52,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body class="fade in">
   <header id="header" class="header">
     <nav class="navbar navbar-static-top navbar-dark bg-inverse">
-      <a class="navbar-brand" href="/"><span class="flaticon-menu" style="font-size: 2.5em"></span></a>
+      <a class="navbar-brand" href="/">
+        <span class="flaticon-menu" style="font-size: 2.5em"></span>
+      </a>
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
           <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
@@ -84,12 +84,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   </div>
   <footer class="footer">
     <span>© HA Lehman</span>
-    <span><a href="#"></a>Impressum</span>
-    <span><a href=""></a>Shop 1</span>
-    <span><a href=""></a>Shop 2</span>
-    <span><a href=""></a>Shop 3</span>
+    <span><a href="#" class="opt-imp">Impressum</a></span>
+    <span><a href="#" class=" opt-agb">AGB</a></span>
+    <span><a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a></span>
   </footer>
-
+  <!-- modal-dialogue -->
+  <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="top: 65px;"></div>
+  <!-- /.modal -->
 <?php echo $this->element('sql_dump'); ?>
 <script charset="utf-8">
 
@@ -99,6 +100,34 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     exports.app = new App({el: $("body")});
   });
 
+</script>
+<script id="modalSimpleTemplate" type="text/x-jquery-tmpl">
+  <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}">
+    <div class="modal-content bg-dark">
+      {{if header}}
+      <div class="modal-header dark">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <p class="">${header}</p>
+      </div>
+      {{/if}}
+      {{if body}}
+      <div class="modal-body dark">
+        {{html body}}
+      </div>
+      {{if info}}
+      <div class="modal-header label-info dark">
+        <div class="label label-info">${info}</div>
+      </div>
+      {{/if}}
+      {{/if}}
+      {{if footer}}
+      <div class="modal-footer dark" style="position: relative">
+        <div class="" style="text-align: left; max-width: 90%">{{if footer}}{{html footer}}{{/if}} </div>
+        <button class="btn btnClose dark" style="">{{if footerButtonText}}${footerButtonText}{{else}}Ok{{/if}}</button>
+      </div>
+      {{/if}}
+    </div>
+  </div>
 </script>
 </body>
 </html>
