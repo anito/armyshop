@@ -17,8 +17,8 @@
     </div>
     <div class="pricing__feature-list">
       <ul class="">
-        <li class="pricing__feature">Spass Kaffeetasse mit dem Aufdruck "Ich bin ein Geschenk an die Frauen dieser Welt"</li>
-        <li class="pricing__feature">Durchmesser 8,5cm, Marke: Rahmenlos</li>
+        <li class="pricing__feature">Durchmesser 8,5cm</li>
+        <li class="pricing__feature">Marke: Rahmenlos</li>
       </ul>
     </div>
     <a href="https://www.hood.de/i/fun-kaffeetasse-ich-bin-ein-geschenk-an-die-frauen-dieser-welt--65559718.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
