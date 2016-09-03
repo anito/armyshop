@@ -55,13 +55,13 @@
         <li class="pricing__feature">Sehr laut</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/bewegungsmelder-160-unterputzmontage-fuer-led-geeignet-3-draht-technik-65844338.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/druckluftfanfare-air-horn-65559694.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Bewegungsmelder 160°</h3>
     <p class="pricing__sentence">160° Unterputzmontage für LED geeignet</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>13,90
-      <a href="https://www.hood.de/i/druckluftfanfare-air-horn-65559694.htm" target="blank" class="" aria-disabled="false">
+      <a href="https://www.hood.de/i/bewegungsmelder-160-unterputzmontage-fuer-led-geeignet-3-draht-technik-65844338.htm" target="blank" class="" aria-disabled="false">
         <div class="pricing__image"><img  src="/img/products/94573091.jpg" alt=""/></div>
       </a>
     </div>
