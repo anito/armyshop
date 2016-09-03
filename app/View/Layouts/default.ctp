@@ -51,8 +51,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	?>
 </head>
 <body class="fade in">
-  <div class="lehmann logo-1"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
-  <div class="logo hide logo-2"></div>
+  <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
+  <div class="logo hide logo-2 hide"></div>
   <header id="header" class="header">
     <nav class="navbar navbar-static-top navbar-dark bg-inverse">
       <a class="navbar-brand" href="/">
