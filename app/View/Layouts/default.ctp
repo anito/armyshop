@@ -70,7 +70,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <li id="" class="nav-item goodies">
           <a class="nav-link" href="/pages/goodies">Specials</a>
         </li>
-        <div class="paypal"><img src="/img/paypal-logo.png" alt="Bezahlen mit PayPal"></img></div>
+        <div class="paypal"><img src="/img/paypal-logo.png" alt="Bezahlen mit PayPal" title="Bezahlen mit PayPal"></img></div>
       </ul>
     </nav>
   </header>
