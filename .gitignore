@@ -9,7 +9,8 @@
 /dist
 /tags
 *.mo
-
+*.psd
+*.ai
 # IDE and editor specific files #
 #################################
 /nbproject
