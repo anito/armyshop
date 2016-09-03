@@ -8,10 +8,20 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Lehmann1';
+  src:  url('fonts/Lehmann_1.eot?7tevy3');
+  src:  url('fonts/Lehmann_1.eot?7tevy3#iefix') format('embedded-opentype'),
+    url('fonts/Lehmann_1.ttf?7tevy3') format('truetype'),
+    url('fonts/Lehmann_1.woff?7tevy3') format('woff'),
+    url('fonts/Lehmann_1.svg?7tevy3#Lehmann') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 
 [class^="lehmann-"], [class*=" lehmann-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'Lehmann' !important;
+  font-family: 'Lehmann1' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -23,9 +33,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.lehmann-ha-2:before {
+.lehmann-01:before {
   content: "\e900";
 }
-.lehmann-ha-0:before {
+.lehmann-02:before {
   content: "\e901";
 }

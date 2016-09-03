@@ -15,10 +15,20 @@ body.fade.out {
   transition: background 2s linear;
 }
 .container{
+  margin-top: 12px;
+  margin-bottom: 10px;;
+}
+.paypal {
+  float: right;
+  padding: 5px 0px 0px;
+
 }
 a{
 	color: #fff;
 	text-decoration: none;
+}
+a:hover {
+	color: #fff;
 }
 .display-3 {
   margin: 0;
@@ -28,12 +38,15 @@ a{
 h1.display-3 {
   color: #CCC7C7;
   text-shadow: 0 -1px 2px #2c2d2d;
-  font-size: 3em;
+  font-size: 4em;
 }
 h5.display-3 {
   color: #AAA7A7;
   text-shadow: 0 -1px 1px #2c2d2d;
   font-size: 1.6em;
+}
+li.nav-item:first-child {
+  padding-left: 260px;
 }
 .row.ca-menu {
   margin: 250px 0 0px;
@@ -72,7 +85,7 @@ header {
 	background: #000;
 	opacity: 0.9;
 	text-transform: uppercase;
-	z-index: 9999;
+	z-index: 999;
 	-moz-box-shadow: 1px 0px 2px #000;
 	-webkit-box-shadow: 1px 0px 2px #000;
 	box-shadow: 1px 0px 2px #000;
@@ -93,6 +106,9 @@ header {
 .header span.right a{
 	float: none;
 	display: inline;
+}
+.hide {
+  display: none;
 }
 .more{
 	position:relative;
@@ -148,10 +164,11 @@ header {
   height: 60px;
   line-height: 60px;
   color: #999;
-  background-color: #222;
+  background-color: #333;
   panning-left: 20px;
 }
-footer .footer {
+footer.footer {
+  /*background-image: linear-gradient(to bottom,rgba(255,255,255,0.3) 0,rgba(255,255,255,0) 100%);*/
 }
 .footer .menu {
   bottom: 50px;
@@ -172,9 +189,10 @@ footer .footer {
   font-size: 13em;
   text-shadow: 5px 3px 8px rgba(0, 0, 0, .5);
   position: absolute;
-  top: 80px;
-  left: -60px;
-  color: rgba(200, 200, 200, .9);
+  top: 23px;
+  left: -54px;
+  color: rgb(204, 199, 199);
+  z-index: 1000;
 }
 .modal-body {
   padding: 45px !important;

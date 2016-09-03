@@ -1,43 +1,76 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
   <div class="container">
-    <h1 class="display-3">Goodies</h1>
-    <div class="right"><a class="btn btn-primary btn-lg" href="#" role="button">Erfahren Sie mehr »</a></div>
+    <h1 class="display-3">Specials & Restposten</h1>
+    <h5 class="h5 display-3">Günstige Angebote und Restposten</h5>
+    <div class="right"><a class="btn btn-primary btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
   </div>
 </div>
 <div class="pricing pricing--norbu">
   <div class="pricing__item">
-    <h3 class="pricing__title">Goodi 1</h3>
-    <p class="pricing__sentence">Für optimalen Komfort</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
-    <ul class="pricing__feature-list">
-      <li class="pricing__feature">Maximales Fassungsvermögen</li>
-      <li class="pricing__feature">Wassergeschützt</li>
-      <li class="pricing__feature">Ultra flexibel</li>
-    </ul>
-    <button class="pricing__action">Zum Shop</button>
-  </div>
-  <div class="pricing__item pricing__item--featured">
-    <h3 class="pricing__title">Goodi 2</h3>
-    <p class="pricing__sentence">Für optimalen Komfort</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
-    <ul class="pricing__feature-list">
-      <li class="pricing__feature">Maximales Fassungsvermögen</li>
-      <li class="pricing__feature">Wassergeschützt</li>
-      <li class="pricing__feature">Ultra flexibel</li>
-    </ul>
-    <button class="pricing__action">Zum Shop</button>
+    <h3 class="pricing__title">Fun-Kaffeetasse</h3>
+    <p class="pricing__sentence">"Ich bin ein Geschenk an die Frauen dieser Welt"</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>4,99
+      <a href="https://www.hood.de/i/fun-kaffeebecher-rahmenlos-i-love-my-cat--65553412.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/93598081.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">Durchmesser 8,5cm</li>
+        <li class="pricing__feature">Marke: Rahmenlos</li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/fun-kaffeebecher-rahmenlos-i-love-my-cat--65553412.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Goodi 3</h3>
-    <p class="pricing__sentence">Für optimalen Komfort</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
-    <ul class="pricing__feature-list">
-      <li class="pricing__feature">Maximales Fassungsvermögen</li>
-      <li class="pricing__feature">Wassergeschützt</li>
-      <li class="pricing__feature">Ultra flexibel</li>
-    </ul>
-    <button class="pricing__action">Zum Shop</button>
+    <h3 class="pricing__title">Fun-Kaffeebecher</h3>
+    <p class="pricing__sentence">"I love my Cat"</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>4,99
+      <a href="https://www.hood.de/i/fun-kaffeetasse-ich-bin-ein-geschenk-an-die-frauen-dieser-welt--65559718.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/93630555.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">Durchmesser 8,5cm</li>
+        <li class="pricing__feature">Marke: Rahmenlos</li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/fun-kaffeetasse-ich-bin-ein-geschenk-an-die-frauen-dieser-welt--65559718.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Albedo 100 Reflective Spray</h3>
+    <p class="pricing__sentence">Spray mit speziellem Reflektor-Effekt</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>22,90
+      <a href="https://www.hood.de/i/albedo-100-reflective-spray-horse-65642864.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/93872773.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">Albedo100 Reflective Spray Horse & Pets ist ein Spray mit speziellem Reflektor-Effekt, der Objekte bei schwierigen Lichtverhältnissen, wie während der Dämmerung oder in der Dunkelheit, sichtbar macht. </li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/albedo-100-reflective-spray-horse-65642864.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Druckluftfanfare Air Horn</h3>
+    <p class="pricing__sentence">Gasdruck Fanfaren Set</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>4,99
+      <a href="https://www.hood.de/i/druckluftfanfare-air-horn-65559694.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/93630518.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">Die Druckluftfanfare ist sehr beliebt als Fan-Artikel z.B. beim Fußball, Formel 1 und anderen Sportarten. </li>
+        <li class="pricing__feature">Druckluftfanfare mit 100 ml Gas Inhalt in einer 250ml Dose!</li>
+        <li class="pricing__feature">Auch geeignet als Gefahrenmelder, Hilferuf und Notsignalgeber</li>
+        <li class="pricing__feature">Sehr laut</li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/druckluftfanfare-air-horn-65559694.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
 </div>
 <?php

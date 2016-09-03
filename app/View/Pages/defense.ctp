@@ -1,76 +1,134 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
   <div class="container">
-    <h1 class="display-3">Selbstschutz</h1>
-    <div class="right"><a class="btn btn-primary btn-lg" href="#" role="button">Erfahren Sie mehr »</a></div>
+    <h1 class="display-3">Selbstschutz & Security</h1>
+    <h5 class="h5 display-3">Schützen Sie sich und ihre Mitmenschen vor möglichen Gefahren</h5>
+    <div class="right"><a class="btn btn-primary btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
   </div>
 </div>
 <div class="pricing pricing--norbu">
   <div class="pricing__item">
-    <h3 class="pricing__title">Pfefferspray 1</h3>
-    <p class="pricing__sentence">Für mehr Sicherheit für unterwegs</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
-    <ul class="pricing__feature-list">
-      <li class="pricing__feature">Beste Sofortwirkung</li>
-      <li class="pricing__feature">leicht bedienbar</li>
-      <li class="pricing__feature">400ml Inhalt</li>
-    </ul>
-    <button class="pricing__action">Zum Shop</button>
-  </div>
-  <div class="pricing__item pricing__item--featured">
-    <h3 class="pricing__title">Pfefferspray 2</h3>
-    <p class="pricing__sentence">Für mehr Sicherheit für unterwegs</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>29<span class="pricing__period">/ month</span></div>
-    <ul class="pricing__feature-list">
-      <li class="pricing__feature">Beste Sofortwirkung</li>
-      <li class="pricing__feature">leicht bedienbar</li>
-      <li class="pricing__feature">150ml Inhalt</li>
-    </ul>
-    <button class="pricing__action">Zum Shop</button>
+    <h3 class="pricing__title">Mobile Mini Alarmanlage</h3>
+    <p class="pricing__sentence">Handalarm mit LED Lampe und Sirene</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>9,99
+      <a href="https://www.hood.de/i/mobile-mini-alarmanlage-handalarm-mit-led-lampe-und-sirene-65760794.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/94228886.jpg"/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">als handlicher Schlüsselanhänger mit LED-Licht</li>
+        <li class="pricing__feature">ca. 110 Dezibel</li>
+        <li class="pricing__feature">so laut wie ein Martinshorn in 10 Metern Entfernung</li>
+        <li class="pricing__feature">Maße: ca. 7 x 4 x 2 cm</li>
+        <li class="pricing__feature">Große Wirkung</li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/mobile-mini-alarmanlage-handalarm-mit-led-lampe-und-sirene-65760794.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Pfefferspray 3</h3>
-    <p class="pricing__sentence">Für mehr Sicherheit für unterwegs</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>79<span class="pricing__period">/ month</span></div>
-    <ul class="pricing__feature-list">
-      <li class="pricing__feature">Beste Sofortwirkung</li>
-      <li class="pricing__feature">leicht bedienbar</li>
-      <li class="pricing__feature">300ml Inhalt</li>
-    </ul>
-    <button class="pricing__action">Zum Shop</button>
+    <h3 class="pricing__title">Pfefferspray</h3>
+    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>-
+      <div class="pricing__image"><img  src="/img/products/CS KO Gas.jpg"/></div>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">--</li>
+      </ul>
+    </div>
+    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Pfefferspray 4</h3>
-    <p class="pricing__sentence">Für mehr Sicherheit für unterwegs</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
-    <ul class="pricing__feature-list">
-      <li class="pricing__feature">Beste Sofortwirkung</li>
-      <li class="pricing__feature">leicht bedienbar</li>
-      <li class="pricing__feature">800ml Inhalt</li>
-    </ul>
-    <button class="pricing__action">Zum Shop</button>
-  </div>
-  <div class="pricing__item pricing__item--featured">
-    <h3 class="pricing__title">Pfefferspray 5</h3>
-    <p class="pricing__sentence">Für mehr Sicherheit für unterwegs</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
-    <ul class="pricing__feature-list">
-      <li class="pricing__feature">Beste Sofortwirkung</li>
-      <li class="pricing__feature">leicht bedienbar</li>
-      <li class="pricing__feature">600ml Inhalt</li>
-    </ul>
-    <button class="pricing__action">Zum Shop</button>
+    <h3 class="pricing__title">Pfefferspray</h3>
+    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>-
+      <div class="pricing__image"><img  src="/img/products/Defenol CS Gas 40ml.jpg"/></div>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">--</li>
+      </ul>
+    </div>
+    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Pfefferspray 6</h3>
-    <p class="pricing__sentence">Für mehr Sicherheit für unterwegs</p>
-    <div class="pricing__price"><span class="pricing__currency">$</span>19<span class="pricing__period">/ month</span></div>
-    <ul class="pricing__feature-list">
-      <li class="pricing__feature">Beste Sofortwirkung</li>
-      <li class="pricing__feature">leicht bedienbar</li>
-      <li class="pricing__feature">400ml Inhalt</li>
-    </ul>
-    <button class="pricing__action">Zum Shop</button>
+    <h3 class="pricing__title">Pfefferspray</h3>
+    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>-
+      <div class="pricing__image"><img  src="/img/products/KO Spray 007 40ml CS-Gas.jpg"/></div>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">--</li>
+      </ul>
+    </div>
+    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Pfefferspray</h3>
+    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>-
+      <div class="pricing__image"><img  src="/img/products/OC 5000 SSG 4-40ml.jpg"/></div>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">--</li>
+      </ul>
+    </div>
+    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Pfefferspray</h3>
+    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>-
+      <div class="pricing__image"><img  src="/img/products/Pfeffer 40 ml Protect.jpg"/></div>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">--</li>
+      </ul>
+    </div>
+    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Pfefferspray</h3>
+    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>-
+      <div class="pricing__image"><img  src="/img/products/RSG Pfefferspray 15ml.jpg"/></div>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">--</li>
+      </ul>
+    </div>
+    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Pfefferspray</h3>
+    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>-
+      <div class="pricing__image"><img  src="/img/products/RSG Pfefferspray 63ml.jpg"/></div>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">--</li>
+      </ul>
+    </div>
+    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Pfefferspray</h3>
+    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>-
+      <div class="pricing__image"><img  src="/img/products/TX 1919 Pfeffer Gel 50ml.jpg"/></div>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">--</li>
+      </ul>
+    </div>
+    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
 </div>
 <?php

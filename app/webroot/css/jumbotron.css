@@ -2,9 +2,9 @@
 body {
 }
 .jumbotron {
-  background-color: rgba(44, 45, 45, .5);
+  background-color: rgba(44, 45, 45, .7);
   padding: 2rem 2rem;
-  max-height: 160px;
+  max-height: 150px;
 }
 .jumbotron .logo {
   position: absolute;

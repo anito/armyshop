@@ -36,6 +36,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("component");
     echo $this->Html->css("font");
     echo $this->Html->css("flaticon");
+    echo $this->Html->css("icons");
     echo $this->Html->css("lehmann");
     echo $this->Html->css("demo");
     echo $this->Html->css("style7");
@@ -50,10 +51,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	?>
 </head>
 <body class="fade in">
+  <div class="lehmann"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
   <header id="header" class="header">
     <nav class="navbar navbar-static-top navbar-dark bg-inverse">
       <a class="navbar-brand" href="/">
-        <span class="flaticon-menu" style="font-size: 2.5em"></span>
+        <span class="flaticon-menu hide" style="font-size: 2.5em"></span>
       </a>
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
@@ -66,15 +68,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <a class="nav-link" href="/pages/outdoor">Outdoor</a>
         </li>
         <li id="" class="nav-item goodies">
-          <a class="nav-link" href="/pages/goodies">Goodies</a>
+          <a class="nav-link" href="/pages/goodies">Specials</a>
         </li>
+        <div class="paypal"><img src="/img/paypal-logo.png" alt="Bezahlen mit PayPal"></img></div>
       </ul>
     </nav>
   </header>
   
   <div id="container" style="">
     <div id="content">
-      <div class="lehmann"><span class="lehmann-ha-0"></span><span class="lehmann-ha-2"></span></div>
 
 
       <?php echo $this->fetch('content'); ?>

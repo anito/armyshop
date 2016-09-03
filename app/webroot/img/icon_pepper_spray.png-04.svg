@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1_Kopie" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" width="64px" height="63.875px" viewBox="0 0 64 63.875" enable-background="new 0 0 64 63.875" xml:space="preserve">
-<g>
-	<path fill-rule="evenodd" clip-rule="evenodd" d="M80,56.662l-21.33,0.113L39.825,33.869v22.771H24.358V8.208h15.467l0.054,0.022
-		L80,56.662z M39.954,22.735l23.495,28.427l2.615-0.044L39.917,19.485L39.954,22.735z"/>
-	<path fill-rule="evenodd" clip-rule="evenodd" d="M32.602,56.714V14.078h-1.888v16.701H9.365V14.078H7.477v36.815h1.888V32.521
-		h21.348v24.086l-6.39,0.095V38.767h-8.641v17.936H0.216V8.27h15.467v16.482h8.641V8.27h15.539v48.433L32.602,56.714z"/>
-	
-		<text transform="matrix(-4.371140e-08 -1 1 -4.371140e-08 35.1289 52.2129)" fill="#FFFFFF" font-family="'Phosphate-Inline'" font-size="9.4931">Lehmann</text>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="64px"
+	 height="63.875px" viewBox="0 0 64 63.875" enable-background="new 0 0 64 63.875" xml:space="preserve">
+<g id="Ebene_1_Kopie">
+	<path fill-rule="evenodd" clip-rule="evenodd" d="M19,91.454l-21.33,0.113l-18.846-22.906v22.771h-15.467V43h15.467l0.054,0.022
+		L19,91.454z M-21.046,57.527L2.449,85.954l2.615-0.044l-26.146-31.633L-21.046,57.527z"/>
+	<path fill-rule="evenodd" clip-rule="evenodd" d="M9.149,30.247V10.443H7.261v43.655h1.888l0.018-21.605H28v7.227H15.467v20.267H0
+		V4h15.467v19.101H28v7.175L9.149,30.247"/>
+</g>
+<g id="Ebene_2">
 </g>
 </svg>

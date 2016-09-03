@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1_Kopie" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" width="64px" height="63.875px" viewBox="0 0 64 63.875" enable-background="new 0 0 64 63.875" xml:space="preserve">
-<g>
-	<path fill-rule="evenodd" clip-rule="evenodd" d="M64,38.372h-8.533v17.936H40V7.875h15.467v16.482H64 M49.149,30.385V13.684
-		h-1.888v36.815h1.888V32.127"/>
-	<path fill-rule="evenodd" clip-rule="evenodd" d="M64,55.709"/>
-	<path fill-rule="evenodd" clip-rule="evenodd" d="M56.386,56.319"/>
-	<path fill-rule="evenodd" clip-rule="evenodd" d="M56.386,56.319"/>
-	<path fill-rule="evenodd" clip-rule="evenodd" d="M56.386,56.319"/>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="64px"
+	 height="63.875px" viewBox="0 0 64 63.875" enable-background="new 0 0 64 63.875" xml:space="preserve">
+<g id="Ebene_1_Kopie">
+	<path fill-rule="evenodd" clip-rule="evenodd" d="M64,30.248L45.149,30.22V10.416h-1.888v43.655h1.888l0.018-21.605H64v7.227
+		H51.467v20.267H36V3.973h15.467v19.101H64V30.248z"/>
+</g>
+<g id="Ebene_2">
 </g>
 </svg>
