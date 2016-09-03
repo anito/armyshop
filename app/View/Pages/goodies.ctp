@@ -40,21 +40,6 @@
     <a href="https://www.hood.de/i/fun-kaffeetasse-ich-bin-ein-geschenk-an-die-frauen-dieser-welt--65559718.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Albedo 100 Reflective Spray</h3>
-    <p class="pricing__sentence">Spray mit speziellem Reflektor-Effekt</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>22,90
-      <a href="https://www.hood.de/i/albedo-100-reflective-spray-horse-65642864.htm" target="blank" class="" aria-disabled="false">
-        <div class="pricing__image"><img  src="/img/products/93872773.jpg" alt=""/></div>
-      </a>
-    </div>
-    <div class="pricing__feature-list">
-      <ul class="">
-        <li class="pricing__feature">Albedo100 Reflective Spray Horse & Pets ist ein Spray mit speziellem Reflektor-Effekt, der Objekte bei schwierigen Lichtverhältnissen, wie während der Dämmerung oder in der Dunkelheit, sichtbar macht. </li>
-      </ul>
-    </div>
-    <a href="https://www.hood.de/i/albedo-100-reflective-spray-horse-65642864.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
-  </div>
-  <div class="pricing__item">
     <h3 class="pricing__title">Druckluftfanfare Air Horn</h3>
     <p class="pricing__sentence">Gasdruck Fanfaren Set</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>4,99
@@ -70,7 +55,25 @@
         <li class="pricing__feature">Sehr laut</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/druckluftfanfare-air-horn-65559694.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/bewegungsmelder-160-unterputzmontage-fuer-led-geeignet-3-draht-technik-65844338.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Bewegungsmelder 160°</h3>
+    <p class="pricing__sentence">160° Unterputzmontage für LED geeignet</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>13,90
+      <a href="https://www.hood.de/i/druckluftfanfare-air-horn-65559694.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/94573091.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">3-Draht Technik</li>
+        <li class="pricing__feature">On-Off-PIR Schalter </li>
+        <li class="pricing__feature">LED-Zustandsanzeige </li>
+        <li class="pricing__feature">230V~/ 50Hz > Stromverbrauch nur 0,45W (static 0,1W) </li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/bewegungsmelder-160-unterputzmontage-fuer-led-geeignet-3-draht-technik-65844338.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
 </div>
 <?php

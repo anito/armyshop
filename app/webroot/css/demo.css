@@ -5,13 +5,13 @@ html {
   min-height: 100%;
 }
 body {
-	background: transparent url(../img/outdoor_creative.jpg) 70% 0 fixed;
+	background: transparent url(../img/home_creative.jpg) 70% 0 fixed;
 	color: #333;
 	font-family: 'Myriad Pro', Arial, sans-serif;
 	font-size: 13px;
 }
 body.fade.out {
-	background: transparent url(../img/outdoor_creative.jpg) 70% 0 fixed;
+	background: transparent url(../img/home_creative.jpg) 70% 0 fixed;
   transition: background 2s linear;
 }
 .container{
@@ -21,7 +21,9 @@ body.fade.out {
 .paypal {
   float: right;
   padding: 5px 0px 0px;
-
+}
+[class^="logo-"], [class*=" logo-"] {
+  cursor: pointer;
 }
 a{
 	color: #fff;
@@ -184,6 +186,13 @@ footer.footer {
 }
 .left {
   float: left;
+}
+.logo:after {
+  content: url(../img/hal_logo_dark_298.png);
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  z-index: 1000;
 }
 .lehmann {
   font-size: 13em;

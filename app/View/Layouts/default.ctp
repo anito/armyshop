@@ -51,7 +51,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	?>
 </head>
 <body class="fade in">
-  <div class="lehmann"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
+  <div class="lehmann logo-1"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
+  <div class="logo hide logo-2"></div>
   <header id="header" class="header">
     <nav class="navbar navbar-static-top navbar-dark bg-inverse">
       <a class="navbar-brand" href="/">
@@ -85,7 +86,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
   </div>
   <footer class="footer">
-    <span>© HA Lehman</span>
+    <span id="swop-logo">© HA Lehman</span>
     <span><a href="#" class="opt-imp">Impressum</a></span>
     <span><a href="#" class=" opt-agb">AGB</a></span>
     <span><a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a></span>

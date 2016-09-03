@@ -30421,6 +30421,133 @@ Released under the MIT License
   }
 
 }).call(this);
+}, "extensions/model_extender": function(exports, require, module) {(function() {
+  var $, Log, Model, Spine;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Log = Spine.Log;
+
+  Model.Extender = {
+    extended: function() {
+      var Extend, Include;
+      Extend = {
+        trace: !Spine.isProduction,
+        logPrefix: '(' + this.className + ')',
+        guid: function() {
+          var back, diff, mask, milli, re1, re2, re3, re4, res, ret, sub;
+          mask = [8, 4, 4, 4, 12];
+          ret = [];
+          ret = (function() {
+            var i, len, results;
+            results = [];
+            for (i = 0, len = mask.length; i < len; i++) {
+              sub = mask[i];
+              res = null;
+              milli = new Date().getTime();
+              back = new Date().setTime(milli * (-200));
+              diff = milli - back;
+              re1 = diff.toString(16).split('');
+              re2 = re1.slice(sub * (-1));
+              re3 = re2.join('');
+              results.push(re3);
+            }
+            return results;
+          })();
+          re4 = ret.join('-');
+          return re4;
+        },
+        uuid: function() {
+          var s4;
+          s4 = function() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          };
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        },
+        selectAttributes: [],
+        isArray: function(value) {
+          return Object.prototype.toString.call(value) === "[object Array]";
+        },
+        isObject: function(value) {
+          return Object.prototype.toString.call(value) === "[object Object]";
+        },
+        isString: function(value) {
+          return Object.prototype.toString.call(value) === "[object String]";
+        },
+        selected: function() {
+          return this.record;
+        },
+        toID: function(records) {
+          var i, len, record, results;
+          if (records == null) {
+            records = this.records;
+          }
+          results = [];
+          for (i = 0, len = records.length; i < len; i++) {
+            record = records[i];
+            results.push(record.id);
+          }
+          return results;
+        },
+        toRecords: function(ids) {
+          var i, id, len, results;
+          if (ids == null) {
+            ids = [];
+          }
+          results = [];
+          for (i = 0, len = ids.length; i < len; i++) {
+            id = ids[i];
+            results.push(this.find(id));
+          }
+          return results;
+        },
+        successHandler: function(data, status, xhr) {},
+        errorHandler: function(record, xhr, statusText, error) {
+          var status;
+          status = xhr.status;
+          if (status !== 200) {
+            error = new SpineError({
+              record: record,
+              xhr: xhr,
+              statusText: statusText,
+              error: error
+            });
+            error.save();
+            return User.redirect('users/login');
+          }
+        },
+        customErrorHandler: function(record, xhr) {
+          var error, status;
+          status = xhr.status;
+          if (status !== 200) {
+            error = new Error({
+              flash: '<strong style="color:red">Login failed</strong>',
+              xhr: xhr
+            });
+            return error.save();
+          }
+        }
+      };
+      Include = {
+        trace: !Spine.isProduction,
+        logPrefix: this.className + '::'
+      };
+      this.include(Log);
+      this.extend(Log);
+      this.extend(Extend);
+      return this.include(Include);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Extender;
+  }
+
+}).call(this);
 }, "extensions/tmpl": function(exports, require, module) {(function() {
   var $;
 
@@ -30455,7 +30582,7 @@ Released under the MIT License
 
 }).call(this);
 }, "index": function(exports, require, module) {(function() {
-  var $, App, ModalSimpleView, Spine,
+  var $, App, ModalSimpleView, Settings, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -30467,6 +30594,8 @@ Released under the MIT License
 
   ModalSimpleView = require("controllers/modal_simple_view");
 
+  Settings = require("models/settings");
+
   App = (function(superClass) {
     extend(App, superClass);
 
@@ -30476,7 +30605,9 @@ Released under the MIT License
       '#header .nav-item': 'item',
       '#content': 'content',
       '#nav': 'nav',
-      '#menu-trigger': 'menutrigger'
+      '#menu-trigger': 'menutrigger',
+      '.logo-1': 'logo1',
+      '.logo-2': 'logo2'
     };
 
     App.prototype.events = {
@@ -30485,22 +30616,59 @@ Released under the MIT License
       'mouseenter #goodies-item-menu': 'changeBackground',
       'click .opt-agb': 'showAgb',
       'click .opt-imp': 'showImp',
-      'click .opt-pay': 'showPay'
+      'click .opt-pay': 'showPay',
+      'click #swop-logo': 'swopLogos',
+      'click [class^="logo-"], [class*=" logo-"]': 'redirectHome'
     };
 
     function App() {
+      var logo;
       App.__super__.constructor.apply(this, arguments);
       this.modal = {
         exists: false
       };
       this.arr = ['home', 'outdoor', 'defense', 'goodies', 'out'];
+      logo = {
+        hidden: false
+      };
       $('.nav-item', this.items).removeClass('active');
       $('.' + this.getData(base_url, this.arr), this.items).addClass('active');
       this.setBackground();
+      this.initLogoSettings(logo);
+      this.setLogos();
     }
+
+    App.prototype.setLogos = function() {
+      var flag;
+      flag = Settings.records[0].hidden;
+      this.logo1.toggleClass('hide', !!flag);
+      return this.logo2.toggleClass('hide', !!!flag);
+    };
+
+    App.prototype.swopLogos = function() {
+      var bol;
+      this.logo1.toggleClass('hide');
+      bol = this.logo1.hasClass('hide');
+      this.logo2.toggleClass('hide', !bol);
+      return Settings.update(Settings.first().id, {
+        hidden: bol
+      });
+    };
 
     App.prototype.setBackground = function() {
       return this.el.addClass(this.getData(base_url, this.arr));
+    };
+
+    App.prototype.initLogoSettings = function(logo) {
+      var i, ref, s;
+      Settings.fetch();
+      this.log(Settings.records);
+      if (i = (ref = Settings.first()) != null ? ref.id : void 0) {
+        return i;
+      }
+      s = new Settings(logo);
+      s.save();
+      return s.id;
     };
 
     App.prototype.changeBackground = function(e) {
@@ -30632,6 +30800,10 @@ Released under the MIT License
       return this.log('shownmodal');
     };
 
+    App.prototype.redirectHome = function() {
+      return location.href = '/';
+    };
+
     App.prototype.getData = function(s, arr) {
       var a, i, j, len, test;
       if (arr == null) {
@@ -30665,6 +30837,49 @@ Released under the MIT License
   require('spine/lib/manager');
 
   require('spine/lib/route');
+
+}).call(this);
+}, "models/settings": function(exports, require, module) {(function() {
+  var $, Extender, Log, Model, Settings, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require('spine');
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Log = Spine.Log;
+
+  Extender = require("extensions/model_extender");
+
+  require('spine/lib/local');
+
+  Settings = (function(superClass) {
+    extend(Settings, superClass);
+
+    function Settings() {
+      return Settings.__super__.constructor.apply(this, arguments);
+    }
+
+    Settings.configure('Settings', 'hidden');
+
+    Settings.extend(Model.Local);
+
+    Settings.extend(Extender);
+
+    Settings.include(Log);
+
+    Settings.prototype.init = function(instance) {};
+
+    Settings.findLogoSettings = function() {};
+
+    return Settings;
+
+  })(Spine.Model);
+
+  module.exports = Model.Settings = Settings;
 
 }).call(this);
 }, "views/agb": function(exports, require, module) {module.exports = function template(locals) {
@@ -30721,7 +30936,7 @@ jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("Wir liefern nur im Versandweg. Eine Selbstabholung der Ware ist leider nicht möglich.");
+buf.push("Nach Terminvereinbarung möglich.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -30836,7 +31051,7 @@ buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3\n  div Allgemeine Geschäftsbedingungen\n  \nh5.h5 Geltungsbereich\np Für alle Bestellungen über unseren Online-Shop gelten die nachfolgenden AGB.\n\nh5.h5 Selbstabholung\np Wir liefern nur im Versandweg. Eine Selbstabholung der Ware ist leider nicht möglich.\n\nh5.h5 Packstation\np Wir liefern nicht an Packstationen.\n\nh5.h5 Eigentumsvorbehalt \np Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum.\n\nh5.h5 Transportschäden\np Werden Waren mit offensichtlichen Transportschäden angeliefert, so reklamieren Sie solche Fehler bitte möglichst sofort beim Zusteller und nehmen Sie bitte unverzüglich Kontakt zu uns auf. Die Versäumung einer Reklamation oder Kontaktaufnahme hat für Ihre gesetzlichen Ansprüche und deren Durchsetzung, insbesondere Ihre Gewährleistungsrechte keinerlei Konsequenzen. Sie helfen uns aber, unsere eigenen Ansprüche gegenüber dem Frachtführer bzw. Transportversicherung geltend machen zu können.\n\nh5.h5 Vertragssprache\np Die für den Vertragsschluss zur Verfügung stehende Sprache ist Deutsch.\n\nh5.h5 Jugendschutz\np Bestimmte Artikel unseres Sortiments gehören ausschließlich in die Hände von Erwachsenen. Wir behalten uns für diese in den Produktbeschreibungen jeweils speziell gekennzeichnete Artikel vor, diese nur an volljährige, unbeschränkt geschäftsfähige natürliche Personen auszuliefern und dabei entsprechende Altersnachweise zu verlangen. Die für die Bestellung erforderlichen Daten wie Name, Anschrift usw. sind vollständig und wahrheitsgemäß anzugeben.  \n\nh5.h5 Widerrufsrecht\np Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat. Um Ihr Widerrufsrecht auszuüben, müssen Sie uns HandelsAgentur Lehmann E-Mail:ha-lehmann@gmx.at, Telefon: 0664-1306372) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief, Telefax oder E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist. Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden. Folgen des Widerrufs Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet. Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist. Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden. Sie tragen die unmittelbaren Kosten der Rücksendung der Waren. Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit Ihnen zurückzuführen ist. Ende der Widerrufsbelehrung\n  \n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3\n  div Allgemeine Geschäftsbedingungen\n  \nh5.h5 Geltungsbereich\np Für alle Bestellungen über unseren Online-Shop gelten die nachfolgenden AGB.\n\nh5.h5 Selbstabholung\np Nach Terminvereinbarung möglich.\n\nh5.h5 Packstation\np Wir liefern nicht an Packstationen.\n\nh5.h5 Eigentumsvorbehalt \np Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum.\n\nh5.h5 Transportschäden\np Werden Waren mit offensichtlichen Transportschäden angeliefert, so reklamieren Sie solche Fehler bitte möglichst sofort beim Zusteller und nehmen Sie bitte unverzüglich Kontakt zu uns auf. Die Versäumung einer Reklamation oder Kontaktaufnahme hat für Ihre gesetzlichen Ansprüche und deren Durchsetzung, insbesondere Ihre Gewährleistungsrechte keinerlei Konsequenzen. Sie helfen uns aber, unsere eigenen Ansprüche gegenüber dem Frachtführer bzw. Transportversicherung geltend machen zu können.\n\nh5.h5 Vertragssprache\np Die für den Vertragsschluss zur Verfügung stehende Sprache ist Deutsch.\n\nh5.h5 Jugendschutz\np Bestimmte Artikel unseres Sortiments gehören ausschließlich in die Hände von Erwachsenen. Wir behalten uns für diese in den Produktbeschreibungen jeweils speziell gekennzeichnete Artikel vor, diese nur an volljährige, unbeschränkt geschäftsfähige natürliche Personen auszuliefern und dabei entsprechende Altersnachweise zu verlangen. Die für die Bestellung erforderlichen Daten wie Name, Anschrift usw. sind vollständig und wahrheitsgemäß anzugeben.  \n\nh5.h5 Widerrufsrecht\np Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat. Um Ihr Widerrufsrecht auszuüben, müssen Sie uns HandelsAgentur Lehmann E-Mail:ha-lehmann@gmx.at, Telefon: 0664-1306372) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief, Telefax oder E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist. Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden. Folgen des Widerrufs Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet. Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist. Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden. Sie tragen die unmittelbaren Kosten der Rücksendung der Waren. Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit Ihnen zurückzuführen ist. Ende der Widerrufsbelehrung\n  \n");
 }
 };}, "views/imp": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ) ];
@@ -30850,14 +31065,50 @@ jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("HA-Lehmann - Dornachgasse 15 - 6850 Dornbirn");
+buf.push("HA-Lehmann");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
+buf.push("Dornachgasse 15");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
+buf.push("6850 Dornbirn");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
+buf.push("Telefon 0043 664-1306372");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
+buf.push("UmStNr: ATU71224409");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "p HA-Lehmann - Dornachgasse 15 - 6850 Dornbirn");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "p HA-Lehmann\np Dornachgasse 15\np 6850 Dornbirn\n\np Telefon 0043 664-1306372\n\np UmStNr: ATU71224409");
 }
 };}, "views/pay": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ) ];

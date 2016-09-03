@@ -14,7 +14,7 @@
         <a href="/pages//defense">
           <span class="flaticon-pepper-spray"></span>
           <div class="ca-content">
-            <h2 class="ca-main">Security & Selbstschutz</h2>
+            <h2 class="ca-main">Selbstschutz & Security</h2>
             <h3 class="ca-sub">Fühlen Sie sich sicher?</h3>
           </div>
         </a>

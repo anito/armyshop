@@ -3,6 +3,7 @@ require('lib/setup')
 Spine = require('spine')
 $      = Spine.$
 ModalSimpleView = require("controllers/modal_simple_view")
+Settings = require("models/settings")
 
 
 class App extends Spine.Controller
@@ -14,6 +15,8 @@ class App extends Spine.Controller
     '#content'          : 'content',
     '#nav'              : 'nav'
     '#menu-trigger'     : 'menutrigger'
+    '.logo-1'            : 'logo1'
+    '.logo-2'            : 'logo2'
 
   events:
     'mouseenter #outdoor-item-menu' :           'changeBackground'
@@ -23,7 +26,8 @@ class App extends Spine.Controller
     'click .opt-agb'                :           'showAgb'
     'click .opt-imp'                :           'showImp'
     'click .opt-pay'                :           'showPay'
-  
+    'click #swop-logo'              :           'swopLogos'
+    'click [class^="logo-"], [class*=" logo-"]':      'redirectHome'
   
   
   constructor: ->
@@ -31,15 +35,39 @@ class App extends Spine.Controller
     # Getting started - should be removed
     @modal = exists: false
     @arr = ['home', 'outdoor', 'defense', 'goodies', 'out']
+    logo = hidden  : false
+    
     
     #@content.append require("views/sample")({version:Spine.version})
     $('.nav-item', @items).removeClass('active')
     $('.'+@getData(base_url, @arr), @items).addClass('active')
     
     @setBackground()
+    @initLogoSettings(logo)
+    @setLogos()
+    
+  setLogos: ->
+    flag = Settings.records[0].hidden
+    @logo1.toggleClass('hide', !!flag)
+    @logo2.toggleClass('hide', !!!flag)
+  
+  swopLogos: ->
+    @logo1.toggleClass('hide')
+    bol = @logo1.hasClass('hide')
+    @logo2.toggleClass('hide', !bol)
+    Settings.update(Settings.first().id, {hidden: bol})
+    #Settings.findLogoSettings()
   
   setBackground: ->
     @el.addClass(@getData base_url, @arr)
+    
+  initLogoSettings: (logo) ->
+    Settings.fetch()
+    @log Settings.records
+    if i = Settings.first()?.id then return i
+    s = new Settings(logo)
+    s.save()
+    s.id
     
   changeBackground: (e) ->
     e.preventDefault()
@@ -142,6 +170,8 @@ class App extends Spine.Controller
       
   shownmodal: (e) ->
     @log 'shownmodal'
+    
+  redirectHome: -> location.href = '/'
     
   getData: (s, arr=[]) ->
     test = (s, a) -> 
