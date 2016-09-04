@@ -152,8 +152,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       {{/if}}
       {{if footer}}
       <div class="modal-footer dark" style="position: relative">
-        <div class="" style="text-align: left; max-width: 90%">{{if footer}}{{html footer}}{{/if}} </div>
-        <button class="btn btnClose dark" style="">{{if footerButtonText}}${footerButtonText}{{else}}Ok{{/if}}</button>
+        <div class="" style="text-align: left; max-width: 90%">{{if footer.footerBody}}{{html footer.footerBody}}{{/if}} </div>
+        <button class="btn btn-primary opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
       </div>
       {{/if}}
     </div>

@@ -46,7 +46,7 @@
     <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Verteidigungsspray mit dem Wirkstoff CS</h3>
+    <h3 class="pricing__title">Verteidigungsspray</h3>
     <p class="pricing__sentence">mit dem Wirkstoff CS</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>4,90
       <div class="pricing__image"><img  src="/img/products/Defenol-CS-Gas-40ml.jpg"/></div>
@@ -139,7 +139,7 @@
     <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">NEU! Pfefferspray TX1919 Gel-Fog</h3>
+    <h3 class="pricing__title">Pfefferspray TX1919 Gel-Fog</h3>
     <p class="pricing__sentence">in der 50ml Dose, extra stark</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>9,90
       <div class="pricing__image"><img  src="/img/products/TX-1919-Pfeffer-Gel-50ml.jpg"/></div>

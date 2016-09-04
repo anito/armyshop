@@ -200,6 +200,7 @@ header {
   padding-left: 20px;
 }
 footer.footer {
+  z-index: 1060;
   /*background-image: linear-gradient(to bottom,rgba(255,255,255,0.3) 0,rgba(255,255,255,0) 100%);*/
 }
 .footer .menu {
@@ -237,7 +238,7 @@ footer.footer {
   z-index: 1000;
 }
 .modal-body {
-  padding: 45px !important;
+  padding: 25px !important;
 }
 .modal .h5 {
   margin: 16px 0 3px;

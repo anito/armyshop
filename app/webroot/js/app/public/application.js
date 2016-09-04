@@ -30617,6 +30617,7 @@ Released under the MIT License
       'mouseenter #goodies-item-menu': 'changeBackground',
       'mouseenter .opt-sidebar': 'showSidebar',
       'mouseleave .opt-sidebar': 'hideSidebar',
+      'click .opt-agreed': 'agreed',
       'click .sidebar .close': 'closeSidebar',
       'click .opt-sidebar': 'toggleSidebar',
       'click .sidebar .td:first-child': 'toggleSidebar',
@@ -30629,23 +30630,22 @@ Released under the MIT License
     };
 
     function App() {
-      var logo;
+      var setting;
       App.__super__.constructor.apply(this, arguments);
       this.modal = {
         exists: false
       };
       this.arr = ['home', 'outdoor', 'defense', 'goodies', 'out'];
-      logo = {
-        hidden: false
+      setting = {
+        hidden: false,
+        agreed: false
       };
       $('.nav-item', this.items).removeClass('active');
       $('.' + this.getData(base_url, this.arr), this.items).addClass('active');
       this.setBackground();
-      this.initLogoSettings(logo);
+      this.initSettings(setting);
       this.setLogos();
-      if (this.getData(base_url, this.arr) === 'defense') {
-        this.showWarning();
-      }
+      this.checkWarning();
     }
 
     App.prototype.setLogos = function() {
@@ -30669,7 +30669,28 @@ Released under the MIT License
       return this.el.addClass(this.getData(base_url, this.arr));
     };
 
-    App.prototype.initLogoSettings = function(logo) {
+    App.prototype.initSettings = function(setting) {
+      var i, ref, s;
+      Settings.fetch();
+      this.log(Settings.records);
+      if (i = (ref = Settings.first()) != null ? ref.id : void 0) {
+        return i;
+      }
+      s = new Settings(setting);
+      s.save();
+      this.log(s);
+      return s.id;
+    };
+
+    App.prototype.checkWarning = function() {
+      var ref, warnBol;
+      warnBol = (ref = Settings.first()) != null ? ref.agreed : void 0;
+      if (!warnBol) {
+        return this.showWarning();
+      }
+    };
+
+    App.prototype.initAgreedSettings = function(logo) {
       var i, ref, s;
       Settings.fetch();
       this.log(Settings.records);
@@ -30806,6 +30827,9 @@ Released under the MIT License
               app_version: App.version,
               bs_version: '1.1.1'
             });
+          },
+          footer: {
+            footerButtonText: 'Verstanden'
           }
         },
         modalOptions: {
@@ -30817,8 +30841,7 @@ Released under the MIT License
       dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
       dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
       dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
-      dialog.render().show();
-      return e.preventDefault();
+      return dialog.render().show();
     };
 
     App.prototype.hidemodal = function(e) {
@@ -30867,6 +30890,12 @@ Released under the MIT License
       return;
       e.preventDefault();
       return this.sidebar.removeClass('glinch on');
+    };
+
+    App.prototype.agreed = function() {
+      return Settings.update(Settings.first().id, {
+        agreed: true
+      });
     };
 
     App.prototype.getData = function(s, arr) {
@@ -30928,7 +30957,7 @@ Released under the MIT License
       return Settings.__super__.constructor.apply(this, arguments);
     }
 
-    Settings.configure('Settings', 'hidden');
+    Settings.configure('Settings', 'hidden', 'agreed');
 
     Settings.extend(Model.Local);
 

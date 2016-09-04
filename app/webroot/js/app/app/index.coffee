@@ -26,10 +26,11 @@ class App extends Spine.Controller
     'mouseenter .opt-sidebar'       :           'showSidebar'
     'mouseleave .opt-sidebar'       :           'hideSidebar'
     
+    'click .opt-agreed'             :           'agreed'
     'click .sidebar .close'         :           'closeSidebar'
     'click .opt-sidebar'            :           'toggleSidebar'
     'click .sidebar .td:first-child':           'toggleSidebar'
-    'click .paypal_'                 :           'toggleView'
+    'click .paypal_'                :           'toggleView'
     'click .opt-agb'                :           'showAgb'
     'click .opt-imp'                :           'showImp'
     'click .opt-pay'                :           'showPay'
@@ -42,20 +43,18 @@ class App extends Spine.Controller
     # Getting started - should be removed
     @modal = exists: false
     @arr = ['home', 'outdoor', 'defense', 'goodies', 'out']
-    logo = hidden  : false
-    
+    setting =
+      hidden  : false
+      agreed  : false
     
     #@content.append require("views/sample")({version:Spine.version})
     $('.nav-item', @items).removeClass('active')
     $('.'+@getData(base_url, @arr), @items).addClass('active')
     
     @setBackground()
-    @initLogoSettings(logo)
+    @initSettings(setting)
     @setLogos()
-    
-    if @getData(base_url, @arr) == 'defense' then @showWarning()
-#    if (ret = @getData(base_url, @arr)) and ret == 'defense' then
-#      @showWarning()
+    @checkWarning()
     
   setLogos: ->
     flag = Settings.records[0].hidden
@@ -72,7 +71,20 @@ class App extends Spine.Controller
   setBackground: ->
     @el.addClass(@getData base_url, @arr)
     
-  initLogoSettings: (logo) ->
+  initSettings: (setting) ->
+    Settings.fetch()
+    @log Settings.records
+    if i = Settings.first()?.id then return i
+    s = new Settings(setting)
+    s.save()
+    @log s
+    s.id
+    
+  checkWarning: ->
+    warnBol = Settings.first()?.agreed
+    if !warnBol then @showWarning()
+  
+  initAgreedSettings: (logo) ->
     Settings.fetch()
     @log Settings.records
     if i = Settings.first()?.id then return i
@@ -179,6 +191,8 @@ class App extends Spine.Controller
           spine_version : Spine.version
           app_version   : App.version
           bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
+        footer:
+          footerButtonText: 'Verstanden'
       modalOptions:
         keyboard: true
         show: false
@@ -189,7 +203,6 @@ class App extends Spine.Controller
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
     dialog.render().show()
-    e.preventDefault()
     
   hidemodal: (e) ->
     @log 'hidemodal'
@@ -228,6 +241,8 @@ class App extends Spine.Controller
     e.preventDefault()
     @sidebar.removeClass('glinch on')
     
+  agreed: ->
+    Settings.update(Settings.first().id, {agreed: true})
     
   getData: (s, arr=[]) ->
     test = (s, a) -> 
