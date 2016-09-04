@@ -30,7 +30,7 @@
     <h3 class="pricing__title">CS - Gas Spray</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
-      <div class="pricing__image"><img  src="/img/products/CS KO Gas.jpg"/></div>
+      <div class="pricing__image"><img  src="/img/products/CS-KO-Gas.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -43,7 +43,7 @@
     <h3 class="pricing__title">Pfefferspray</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
-      <div class="pricing__image"><img  src="/img/products/Defenol CS Gas 40ml.jpg"/></div>
+      <div class="pricing__image"><img  src="/img/products/Defenol-CS-Gas-40ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -56,7 +56,7 @@
     <h3 class="pricing__title">Pfefferspray</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
-      <div class="pricing__image"><img  src="/img/products/OC 5000 SSG 4-40ml.jpg"/></div>
+      <div class="pricing__image"><img  src="/img/products/OC-5000-SSG-40ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -69,7 +69,7 @@
     <h3 class="pricing__title">Pfefferspray</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
-      <div class="pricing__image"><img  src="/img/products/Pfeffer 40 ml Protect.jpg"/></div>
+      <div class="pricing__image"><img  src="/img/products/Pfeffer-40-ml-Protect.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -82,7 +82,7 @@
     <h3 class="pricing__title">Pfefferspray</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
-      <div class="pricing__image"><img  src="/img/products/RSG Pfefferspray 15ml.jpg"/></div>
+      <div class="pricing__image"><img  src="/img/products/RSG-Pfefferspray-15ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -95,7 +95,7 @@
     <h3 class="pricing__title">Pfefferspray</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
-      <div class="pricing__image"><img  src="/img/products/RSG Pfefferspray 63ml.jpg"/></div>
+      <div class="pricing__image"><img  src="/img/products/RSG-Pfefferspray-63ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -108,7 +108,7 @@
     <h3 class="pricing__title">Pfeffergel</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
-      <div class="pricing__image"><img  src="/img/products/TX 1919 Pfeffer Gel 50ml.jpg"/></div>
+      <div class="pricing__image"><img  src="/img/products/TX-1919-Pfeffer-Gel-50ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
