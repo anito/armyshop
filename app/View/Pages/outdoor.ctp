@@ -183,6 +183,42 @@
     </div>
     <a href="https://www.hood.de/i/bomberjacke-mil-tec-groesse-m-65987531.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Box Trainings Pratze Schlagpolster</h3>
+    <p class="pricing__sentence">Pratze für das gezielte Schlagtraining</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>22,90
+      <a href="https://www.hood.de/i/box-trainings-pratze-schlagpolster-handpratze-schlagkissen-65991250.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/94985847.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">Leicht- an und auszuziehen</li>
+        <li class="pricing__feature">Schwarz</li>
+        <li class="pricing__feature">Maße: 27cm x 21 cm</li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/box-trainings-pratze-schlagpolster-handpratze-schlagkissen-65991250.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Handpratze Leder gekrümmt</h3>
+    <p class="pricing__sentence">Pratze für das gezielte Schlagtraining</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>29,99
+      <a href="https://www.hood.de/i/handpratze-leder-gekruemmt-boxen-training-schlagpolster-schlagkissen-65991955.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/94987817.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">Handpratze, Leder, gekrümmt</li>
+        <li class="pricing__feature">Echtleder-Pratze für das gezielte Schlagtraining </li>
+        <li class="pricing__feature">leicht an- und auszuziehen </li>
+        <li class="pricing__feature">fest an der Hand </li>
+        <li class="pricing__feature">gute Kontrolle</li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/handpratze-leder-gekruemmt-boxen-training-schlagpolster-schlagkissen-65991955.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+  </div>
 </div>
 <?php
   echo $this->Html->scriptStart();

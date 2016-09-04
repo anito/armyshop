@@ -64,13 +64,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item defense">
-          <a class="nav-link" href="/pages/defense">Selbstschutz</a>
+          <a class="nav-link" href="/pages/defense">Selbstschutz & Security</a>
         </li>
         <li id="" class="nav-item outdoor">
-          <a class="nav-link" href="/pages/outdoor">Outdoor</a>
+          <a class="nav-link" href="/pages/outdoor">Outdoor & Fitness</a>
         </li>
         <li id="" class="nav-item goodies">
-          <a class="nav-link" href="/pages/goodies">Specials</a>
+          <a class="nav-link" href="/pages/goodies">Restposten & Specials</a>
         </li>
       </ul>
       <ul class="nav navbar-nav items">
@@ -82,21 +82,33 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   </header>
   <div class="sidebar bg-inverse glinch">
     <div class="container">
-      <span class="websymbols-uni27 close"></span>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">&times;</button>
       <div class="table">
+          <div class="caption">
+            <div class="td"><img src="/img/dolar.png"></img></div>
+            <div class="td">Bezahlen Sie bequem per PayPal in unserem Online-Partnershop</div>
+          </div>
+          <div class="caption">
+            <div class="td"></div>
+            <div class="td line"></div>
+          </div>
           <div class="caption">
             <div class="td"><img src="/img/truck.png"></img></div>
             <div class="td">Ab einem Bestellwert von 50,01€ liefern wir frei Haus</div>
           </div>
+          <div class="caption">
+            <div class="td"></div>
+            <div class="td line"></div>
+          </div>
         <div class="group">
           <div class="tr">
             <div class="td"><img src="/img/parcel.png"></img></div>
-            <div class="td">Verpackung und Versand nach Österreich</div>
+            <div class="td">Kosten für Verpackung und Versand nach Österreich</div>
             <div class="td">3, 90€</div>
           </div>
           <div class="tr">
             <div class="td"></div>
-            <div class="td">Verpackung und Versand nach Deutschland</div>
+            <div class="td">Kosten für Verpackung und Versand nach Deutschland</div>
             <div class="td">5, 90€</div>
           </div>
         </div>
@@ -153,6 +165,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       {{if footer}}
       <div class="modal-footer dark" style="position: relative">
         <div class="" style="text-align: left; max-width: 90%">{{if footer.footerBody}}{{html footer.footerBody}}{{/if}} </div>
+        <button class="btn btn-primary opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
         <button class="btn btn-primary opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
       </div>
       {{/if}}

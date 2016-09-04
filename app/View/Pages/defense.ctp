@@ -3,7 +3,7 @@
   <div class="container">
     <h1 class="display-3">Selbstschutz & Security</h1>
     <h5 class="h5 display-3">Schützen Sie sich und ihre Mitmenschen vor möglichen Gefahren</h5>
-    <div class="right"><a class="btn btn-primary btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
+    <div class="opt-hint hint"><a class="btn btn-danger btn-lg" href="#" role="button">Hinweis »</a></div>
   </div>
 </div>
 <div class="pricing pricing--norbu">

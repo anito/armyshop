@@ -26,6 +26,7 @@ class App extends Spine.Controller
     'mouseenter .opt-sidebar'       :           'showSidebar'
     'mouseleave .opt-sidebar'       :           'hideSidebar'
     
+    'click .opt-hint'               :           'showWarning'
     'click .opt-agreed'             :           'agreed'
     'click .sidebar .close'         :           'closeSidebar'
     'click .opt-sidebar'            :           'toggleSidebar'
@@ -186,7 +187,7 @@ class App extends Spine.Controller
       options:
         small: false
         css: 'alert alert-warning'
-        header: 'Hinweis'
+        header: 'Hinweis zum Versand von Pfeffer- und CS Gas-Sprays'
         body: -> require("views/warning")
           copyright     : 'Axel Nitzschner'
           spine_version : Spine.version

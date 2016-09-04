@@ -4,7 +4,6 @@ body {
 .jumbotron {
   background-color: rgba(44, 45, 45, .7);
   padding: 2rem 2rem;
-  max-height: 150px;
 }
 .jumbotron .logo {
   position: absolute;

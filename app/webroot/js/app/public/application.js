@@ -30617,6 +30617,7 @@ Released under the MIT License
       'mouseenter #goodies-item-menu': 'changeBackground',
       'mouseenter .opt-sidebar': 'showSidebar',
       'mouseleave .opt-sidebar': 'hideSidebar',
+      'click .opt-hint': 'showWarning',
       'click .opt-agreed': 'agreed',
       'click .sidebar .close': 'closeSidebar',
       'click .opt-sidebar': 'toggleSidebar',
@@ -30645,7 +30646,9 @@ Released under the MIT License
       this.setBackground();
       this.initSettings(setting);
       this.setLogos();
-      this.checkWarning();
+      if (this.getData(base_url, this.arr) === 'defense') {
+        this.checkWarning();
+      }
     }
 
     App.prototype.setLogos = function() {
@@ -30819,7 +30822,7 @@ Released under the MIT License
         options: {
           small: false,
           css: 'alert alert-warning',
-          header: 'Hinweis',
+          header: 'Hinweis zum Versand von Pfeffer- und CS Gas-Sprays',
           body: function() {
             return require("views/warning")({
               copyright: 'Axel Nitzschner',
@@ -31456,7 +31459,7 @@ jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über 18 Jahre");
+buf.push("Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -31484,7 +31487,7 @@ buf.push("</div>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div.danger.alert\n  \n  p Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über 18 Jahre\n  p mit Altersnachweis (Scan oder Foto des Nachweises bitte per Mail an ha-lehmann@gmx.at).\n  p Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div.danger.alert\n  \n  p Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong>\n  p mit Altersnachweis (Scan oder Foto des Nachweises bitte per Mail an ha-lehmann@gmx.at).\n  p Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.");
 }
 };}
 });
