@@ -33,7 +33,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('/js/app/public/application_dummy');
     echo $this->Html->css('jquery-ui-1.8.16.custom');
     echo $this->Html->css("bootstrap.min");
-    echo $this->Html->css("ct");
+    echo $this->Html->css("websymbols");
     echo $this->Html->css("component");
     echo $this->Html->css("font");
     echo $this->Html->css("flaticon");
@@ -72,11 +72,29 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <li id="" class="nav-item goodies">
           <a class="nav-link" href="/pages/goodies">Specials</a>
         </li>
-        <div class="paypal"><img src="/img/paypal-logo.png" alt="Bezahlen mit PayPal" title="Bezahlen mit PayPal"></img></div>
+      </ul>
+      <ul class="nav navbar-nav items">
+        <li id="" class="nav-item opt-sidebar">
+          <a class="nav-link" href="#">Lieferung</a>
+        </li>
       </ul>
     </nav>
   </header>
-  
+  <div class="sidebar bg-inverse glinch">
+    <div class="container">
+      <span class="websymbols-uni27 close"></span>
+      <div class="table">
+        <div class="tr">
+          <div class="td"><img src="/img/truck.png"></img></div>
+          <div class="td">Ab einem Bestellwert von 50,01€ liefern wir frei Haus</div>
+        </div>
+        <div class="tr">
+          <div class="td"><img src="/img/parcel.png"></img></div>
+          <div class="td">Verpackung und Versand nur 3, 90€</div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="container" style="">
     <div id="content">
 
@@ -101,7 +119,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   var exports = this;
   jQuery(function(){
     var App = require("index");
-    exports.app = new App({el: $("body")});
+    exports.App = new App({el: $("body")});
   });
 
 </script>
@@ -109,7 +127,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}">
     <div class="modal-content bg-dark">
       {{if header}}
-      <div class="modal-header dark">
+      <div class="modal-header dark {{if css}}{{html css}}{{/if}}">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3 class="h3" style="padding-left: 26px;">${header}</h3>
       </div>

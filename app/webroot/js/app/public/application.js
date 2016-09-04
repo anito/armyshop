@@ -30607,14 +30607,20 @@ Released under the MIT License
       '#nav': 'nav',
       '#menu-trigger': 'menutrigger',
       '.logo-1': 'logo1',
-      '.logo-2': 'logo2'
+      '.logo-2': 'logo2',
+      '.sidebar': 'sidebar'
     };
 
     App.prototype.events = {
       'mouseenter #outdoor-item-menu': 'changeBackground',
       'mouseenter #defense-item-menu': 'changeBackground',
       'mouseenter #goodies-item-menu': 'changeBackground',
-      'click .paypal': 'toggleView',
+      'mouseenter .opt-sidebar': 'showSidebar',
+      'mouseleave .opt-sidebar': 'hideSidebar',
+      'click .sidebar .close': 'closeSidebar',
+      'click .opt-sidebar': 'toggleSidebar',
+      'click .sidebar .td:first-child': 'toggleSidebar',
+      'click .paypal_': 'toggleView',
       'click .opt-agb': 'showAgb',
       'click .opt-imp': 'showImp',
       'click .opt-pay': 'showPay',
@@ -30637,6 +30643,9 @@ Released under the MIT License
       this.setBackground();
       this.initLogoSettings(logo);
       this.setLogos();
+      if (this.getData(base_url, this.arr) === 'defense') {
+        this.showWarning();
+      }
     }
 
     App.prototype.setLogos = function() {
@@ -30783,6 +30792,35 @@ Released under the MIT License
       return e.preventDefault();
     };
 
+    App.prototype.showWarning = function(e) {
+      var dialog;
+      dialog = new ModalSimpleView({
+        options: {
+          small: false,
+          css: 'alert alert-warning',
+          header: 'Hinweis',
+          body: function() {
+            return require("views/warning")({
+              copyright: 'Axel Nitzschner',
+              spine_version: Spine.version,
+              app_version: App.version,
+              bs_version: '1.1.1'
+            });
+          }
+        },
+        modalOptions: {
+          keyboard: true,
+          show: false
+        }
+      });
+      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
+      dialog.render().show();
+      return e.preventDefault();
+    };
+
     App.prototype.hidemodal = function(e) {
       return this.log('hidemodal');
     };
@@ -30808,6 +30846,27 @@ Released under the MIT License
     App.prototype.toggleView = function(e) {
       e.preventDefault();
       return this.el.toggleClass('on');
+    };
+
+    App.prototype.toggleSidebar = function(e) {
+      e.preventDefault();
+      return this.sidebar.toggleClass('on');
+    };
+
+    App.prototype.closeSidebar = function(e) {
+      e.preventDefault();
+      return this.sidebar.removeClass('on');
+    };
+
+    App.prototype.showSidebar = function(e) {
+      e.preventDefault();
+      return this.sidebar.addClass('glinch');
+    };
+
+    App.prototype.hideSidebar = function(e) {
+      return;
+      e.preventDefault();
+      return this.sidebar.removeClass('glinch on');
     };
 
     App.prototype.getData = function(s, arr) {
@@ -31097,6 +31156,9 @@ jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
+buf.push(" ");
+jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
@@ -31129,7 +31191,7 @@ buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "p HA-Lehmann\np Dornachgasse 15\np 6850 Dornbirn\np\np Telefon 0043 664-1306372\np ha-lehmann@gmx.at\np UmStNr: ATU71224409");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "p HA-Lehmann\np Dornachgasse 15\np 6850 Dornbirn\np  \np Telefon 0043 664-1306372\np ha-lehmann@gmx.at\np UmStNr: ATU71224409");
 }
 };}, "views/pay": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ) ];
@@ -31271,6 +31333,84 @@ jade_debug.shift();
 jade_debug.shift();}.call(this,"version" in locals_for_with?locals_for_with.version:typeof version!=="undefined"?version:undefined));;return buf.join("");
 } catch (err) {
   jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h2 Made with Spine.js version #{version}\np Time to get busy with this magic!\n");
+}
+};}, "views/warning": function(exports, require, module) {module.exports = function template(locals) {
+var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ) ];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+
+jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<div class=\"danger alert\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
+buf.push("Unser hochwirksames Pfefferspray (Markenqualität Made in Germany) enthält das konzentrierte");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
+buf.push("Extrakt (je nach Produkt zwischen 3 und 13,2%) Oleoresin Capsicum (des Cayenne-Pfeffers).");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
+buf.push("Pfefferspray macht jeden Angreifer innerhalb weniger Sekundenbruchteile kampf- und handlungsunfähig.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
+buf.push("Die Augen, Haut und Schleimhäute brennen wie Feuer und der Angreifer ringt nach Luft.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
+buf.push("Die Wirkung hält je nach Sprühdauer bis zu einigen Stunden an.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p class=\"bs-warning\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
+buf.push("<strong>Zur Beachtung: </strong>  Pfefferspray darf in Deutschland nur zur Abwehr von angreifenden und aggressiven Tierenverwendet und verkauft werden.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
+jade_debug.shift();;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div.danger.alert\n  p Unser hochwirksames Pfefferspray (Markenqualität Made in Germany) enthält das konzentrierte\n  p Extrakt (je nach Produkt zwischen 3 und 13,2%) Oleoresin Capsicum (des Cayenne-Pfeffers).\n  p Pfefferspray macht jeden Angreifer innerhalb weniger Sekundenbruchteile kampf- und handlungsunfähig.\n  p Die Augen, Haut und Schleimhäute brennen wie Feuer und der Angreifer ringt nach Luft.\n  p Die Wirkung hält je nach Sprühdauer bis zu einigen Stunden an.\n  p\n  p.bs-warning <strong>Zur Beachtung: </strong>  Pfefferspray darf in Deutschland nur zur Abwehr von angreifenden und aggressiven Tierenverwendet und verkauft werden.");
 }
 };}
 });

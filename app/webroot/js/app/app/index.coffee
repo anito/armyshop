@@ -15,20 +15,26 @@ class App extends Spine.Controller
     '#content'          : 'content',
     '#nav'              : 'nav'
     '#menu-trigger'     : 'menutrigger'
-    '.logo-1'            : 'logo1'
-    '.logo-2'            : 'logo2'
+    '.logo-1'           : 'logo1'
+    '.logo-2'           : 'logo2'
+    '.sidebar'          : 'sidebar'
 
   events:
     'mouseenter #outdoor-item-menu' :           'changeBackground'
     'mouseenter #defense-item-menu' :           'changeBackground'
     'mouseenter #goodies-item-menu' :           'changeBackground'
-
-    'click .paypal'                 :           'toggleView'
+    'mouseenter .opt-sidebar'       :           'showSidebar'
+    'mouseleave .opt-sidebar'       :           'hideSidebar'
+    
+    'click .sidebar .close'         :           'closeSidebar'
+    'click .opt-sidebar'            :           'toggleSidebar'
+    'click .sidebar .td:first-child':           'toggleSidebar'
+    'click .paypal_'                 :           'toggleView'
     'click .opt-agb'                :           'showAgb'
     'click .opt-imp'                :           'showImp'
     'click .opt-pay'                :           'showPay'
     'click #swop-logo'              :           'swopLogos'
-    'click [class^="logo-"], [class*=" logo-"]':      'redirectHome'
+    'click [class^="logo-"], [class*=" logo-"]':'redirectHome'
   
   
   constructor: ->
@@ -46,6 +52,10 @@ class App extends Spine.Controller
     @setBackground()
     @initLogoSettings(logo)
     @setLogos()
+    
+    if @getData(base_url, @arr) == 'defense' then @showWarning()
+#    if (ret = @getData(base_url, @arr)) and ret == 'defense' then
+#      @showWarning()
     
   setLogos: ->
     flag = Settings.records[0].hidden
@@ -158,6 +168,29 @@ class App extends Spine.Controller
     dialog.render().show()
     e.preventDefault()
     
+  showWarning: (e) -> 
+    dialog = new ModalSimpleView
+      options:
+        small: false
+        css: 'alert alert-warning'
+        header: 'Hinweis'
+        body: -> require("views/warning")
+          copyright     : 'Axel Nitzschner'
+          spine_version : Spine.version
+          app_version   : App.version
+          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
+      modalOptions:
+        keyboard: true
+        show: false
+      
+    dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
+    dialog.el.one('hide.bs.modal', @proxy @hidemodal)
+    dialog.el.one('show.bs.modal', @proxy @showmodal)
+    dialog.el.one('shown.bs.modal', @proxy @shownmodal)
+    
+    dialog.render().show()
+    e.preventDefault()
+    
   hidemodal: (e) ->
     @log 'hidemodal'
     
@@ -177,6 +210,24 @@ class App extends Spine.Controller
   toggleView: (e) ->
     e.preventDefault()
     @el.toggleClass('on')
+    
+  toggleSidebar: (e) ->
+    e.preventDefault()
+    @sidebar.toggleClass('on')
+    
+  closeSidebar: (e) ->
+    e.preventDefault()
+    @sidebar.removeClass('on')
+    
+  showSidebar: (e) ->
+    e.preventDefault()
+    @sidebar.addClass('glinch')
+    
+  hideSidebar: (e) ->
+    return
+    e.preventDefault()
+    @sidebar.removeClass('glinch on')
+    
     
   getData: (s, arr=[]) ->
     test = (s, a) -> 
