@@ -27,7 +27,7 @@
     <a href="https://www.hood.de/i/mobile-mini-alarmanlage-handalarm-mit-led-lampe-und-sirene-65760794.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Pfefferspray</h3>
+    <h3 class="pricing__title">CS - Gas Spray</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
       <div class="pricing__image"><img  src="/img/products/CS KO Gas.jpg"/></div>
@@ -44,19 +44,6 @@
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
       <div class="pricing__image"><img  src="/img/products/Defenol CS Gas 40ml.jpg"/></div>
-    </div>
-    <div class="pricing__feature-list">
-      <ul class="">
-        <li class="pricing__feature">--</li>
-      </ul>
-    </div>
-    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
-  </div>
-  <div class="pricing__item">
-    <h3 class="pricing__title">Pfefferspray</h3>
-    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>-
-      <div class="pricing__image"><img  src="/img/products/KO Spray 007 40ml CS-Gas.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -118,7 +105,7 @@
     <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Pfefferspray</h3>
+    <h3 class="pricing__title">Pfeffergel</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>-
       <div class="pricing__image"><img  src="/img/products/TX 1919 Pfeffer Gel 50ml.jpg"/></div>
