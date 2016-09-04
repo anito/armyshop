@@ -46,8 +46,8 @@
     <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
-    <h3 class="pricing__title">Pfefferspray</h3>
-    <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
+    <h3 class="pricing__title">Verteidigungsspray mit dem Wirkstoff CS</h3>
+    <p class="pricing__sentence">mit dem Wirkstoff CS</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>4,90
       <div class="pricing__image"><img  src="/img/products/Defenol-CS-Gas-40ml.jpg"/></div>
     </div>
