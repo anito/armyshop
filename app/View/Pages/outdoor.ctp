@@ -127,6 +127,62 @@
     </div>
     <a href="https://www.hood.de/i/maca-guarana-60-kapseln-zur-nahrungsmittelergaenzung-65553654.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Steinschleuder Power Shot</h3>
+    <p class="pricing__sentence">mit Kugelmagazin Rot ab 18 Jahre</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>19,90
+      <a href="https://www.hood.de/i/steinschleuder-power-shot-mit-kugelmagazin-rot-ab-18-jahre-65559663.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/93630467.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">Artikel frei ab 18 Jahren. Ein Altersnachweis ist erforderlich.</li>
+        <li class="pricing__feature">Der Altersnachweis kann per Brief oder per E-Mail (ha-lehmann@gmx.at) an uns gesendet werden</li>
+        <li class="pricing__feature">Steinschleuder Power Shot mit Kugelmagazin Rot.</li>
+        <li class="pricing__feature">Perfekt als Hobby</li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/steinschleuder-power-shot-mit-kugelmagazin-rot-ab-18-jahre-65559663.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Bomberjacke Mil-Tec Größe S</h3>
+    <p class="pricing__sentence">Stylische Bomberjacke</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>29,90
+      <a href="https://www.hood.de/i/bomberjacke-mil-tec-groesse-s-65987527.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/94972887.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">Außenmaterial: 100% Nylon (210D Nylon Twill)</li>
+        <li class="pricing__feature">Polyurethan beschichtet</li>
+        <li class="pricing__feature">Wasserabweisend</li>
+        <li class="pricing__feature">Futter: 100% Nylon</li>
+        <li class="pricing__feature">Füllung: 100% Polyester, 200g/qm</li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/bomberjacke-mil-tec-groesse-s-65987527.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+  </div>
+  <div class="pricing__item">
+    <h3 class="pricing__title">Bomberjacke Mil-Tec Größe M</h3>
+    <p class="pricing__sentence">Stylische Bomberjacke</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>29,90
+      <a href="https://www.hood.de/i/bomberjacke-mil-tec-groesse-m-65987531.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/94972887.jpg" alt=""/></div>
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">
+        <li class="pricing__feature">Außenmaterial: 100% Nylon (210D Nylon Twill)</li>
+        <li class="pricing__feature">Polyurethan beschichtet</li>
+        <li class="pricing__feature">Wasserabweisend</li>
+        <li class="pricing__feature">Futter: 100% Nylon</li>
+        <li class="pricing__feature">Füllung: 100% Polyester, 200g/qm</li>
+      </ul>
+    </div>
+    <a href="https://www.hood.de/i/bomberjacke-mil-tec-groesse-m-65987531.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+  </div>
 </div>
 <?php
   echo $this->Html->scriptStart();
