@@ -23,6 +23,7 @@ class App extends Spine.Controller
     'mouseenter #defense-item-menu' :           'changeBackground'
     'mouseenter #goodies-item-menu' :           'changeBackground'
 
+    'click .paypal'                 :           'toggleView'
     'click .opt-agb'                :           'showAgb'
     'click .opt-imp'                :           'showImp'
     'click .opt-pay'                :           'showPay'
@@ -172,6 +173,10 @@ class App extends Spine.Controller
     @log 'shownmodal'
     
   redirectHome: -> location.href = '/'
+    
+  toggleView: (e) ->
+    e.preventDefault()
+    @el.toggleClass('on')
     
   getData: (s, arr=[]) ->
     test = (s, a) -> 

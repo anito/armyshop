@@ -33,6 +33,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('/js/app/public/application_dummy');
     echo $this->Html->css('jquery-ui-1.8.16.custom');
     echo $this->Html->css("bootstrap.min");
+    echo $this->Html->css("ct");
     echo $this->Html->css("component");
     echo $this->Html->css("font");
     echo $this->Html->css("flaticon");
@@ -50,7 +51,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('script');
 	?>
 </head>
-<body class="fade in">
+<body class="fade in on">
   <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
   <div class="logo hide logo-2 hide"></div>
   <header id="header" class="header">

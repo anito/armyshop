@@ -1,0 +1,285 @@
+@font-face {
+  font-family: 'websymbols-regular-webfont';
+  src:  url('fonts/websymbols-regular-webfont.eot?72pp6w');
+  src:  url('fonts/websymbols-regular-webfont.eot?72pp6w#iefix') format('embedded-opentype'),
+    url('fonts/websymbols-regular-webfont.ttf?72pp6w') format('truetype'),
+    url('fonts/websymbols-regular-webfont.woff?72pp6w') format('woff'),
+    url('fonts/websymbols-regular-webfont.svg?72pp6w#websymbols-regular-webfont') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="websymbols-"], [class*=" websymbols-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'websymbols-regular-webfont' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.websymbols-uni23:before {
+  content: "\23";
+}
+.websymbols-uni25:before {
+  content: "\25";
+}
+.websymbols-uni26:before {
+  content: "\26";
+}
+.websymbols-uni27:before {
+  content: "\27";
+}
+.websymbols-uni28:before {
+  content: "\28";
+}
+.websymbols-uni29:before {
+  content: "\29";
+}
+.websymbols-uni2A:before {
+  content: "\2a";
+}
+.websymbols-uni2B:before {
+  content: "\2b";
+}
+.websymbols-uni2C:before {
+  content: "\2c";
+}
+.websymbols-uni2D:before {
+  content: "\2d";
+}
+.websymbols-uni2E:before {
+  content: "\2e";
+}
+.websymbols-uni2F:before {
+  content: "\2f";
+}
+.websymbols-uni30:before {
+  content: "\30";
+}
+.websymbols-uni31:before {
+  content: "\31";
+}
+.websymbols-uni32:before {
+  content: "\32";
+}
+.websymbols-uni33:before {
+  content: "\33";
+}
+.websymbols-uni34:before {
+  content: "\34";
+}
+.websymbols-uni35:before {
+  content: "\35";
+}
+.websymbols-uni36:before {
+  content: "\36";
+}
+.websymbols-uni37:before {
+  content: "\37";
+}
+.websymbols-uni3A:before {
+  content: "\3a";
+}
+.websymbols-uni3B:before {
+  content: "\3b";
+}
+.websymbols-uni3C:before {
+  content: "\3c";
+}
+.websymbols-uni3E:before {
+  content: "\3e";
+}
+.websymbols-uni3F:before {
+  content: "\3f";
+}
+.websymbols-uni40:before {
+  content: "\40";
+}
+.websymbols-uni41:before {
+  content: "\41";
+}
+.websymbols-uni42:before {
+  content: "\42";
+}
+.websymbols-uni43:before {
+  content: "\43";
+}
+.websymbols-uni44:before {
+  content: "\44";
+}
+.websymbols-uni46:before {
+  content: "\46";
+}
+.websymbols-uni48:before {
+  content: "\48";
+}
+.websymbols-uni49:before {
+  content: "\49";
+}
+.websymbols-uni4A:before {
+  content: "\4a";
+}
+.websymbols-uni4B:before {
+  content: "\4b";
+}
+.websymbols-uni4C:before {
+  content: "\4c";
+}
+.websymbols-uni4D:before {
+  content: "\4d";
+}
+.websymbols-uni4E:before {
+  content: "\4e";
+}
+.websymbols-uni4F:before {
+  content: "\4f";
+}
+.websymbols-uni50:before {
+  content: "\50";
+}
+.websymbols-uni51:before {
+  content: "\51";
+}
+.websymbols-uni52:before {
+  content: "\52";
+}
+.websymbols-uni53:before {
+  content: "\53";
+}
+.websymbols-uni54:before {
+  content: "\54";
+}
+.websymbols-uni55:before {
+  content: "\55";
+}
+.websymbols-uni58:before {
+  content: "\58";
+}
+.websymbols-uni5A:before {
+  content: "\5a";
+}
+.websymbols-uni5B:before {
+  content: "\5b";
+}
+.websymbols-uni5C:before {
+  content: "\5c";
+}
+.websymbols-uni5D:before {
+  content: "\5d";
+}
+.websymbols-uni5F:before {
+  content: "\5f";
+}
+.websymbols-uni60:before {
+  content: "\60";
+}
+.websymbols-uni61:before {
+  content: "\61";
+}
+.websymbols-uni62:before {
+  content: "\62";
+}
+.websymbols-uni63:before {
+  content: "\63";
+}
+.websymbols-uni64:before {
+  content: "\64";
+}
+.websymbols-uni65:before {
+  content: "\65";
+}
+.websymbols-uni66:before {
+  content: "\66";
+}
+.websymbols-uni67:before {
+  content: "\67";
+}
+.websymbols-uni68:before {
+  content: "\68";
+}
+.websymbols-uni69:before {
+  content: "\69";
+}
+.websymbols-uni6A:before {
+  content: "\6a";
+}
+.websymbols-uni6B:before {
+  content: "\6b";
+}
+.websymbols-uni6C:before {
+  content: "\6c";
+}
+.websymbols-uni6D:before {
+  content: "\6d";
+}
+.websymbols-uni6E:before {
+  content: "\6e";
+}
+.websymbols-uni6F:before {
+  content: "\6f";
+}
+.websymbols-uni70:before {
+  content: "\70";
+}
+.websymbols-uni71:before {
+  content: "\71";
+}
+.websymbols-uni72:before {
+  content: "\72";
+}
+.websymbols-uni73:before {
+  content: "\73";
+}
+.websymbols-uni74:before {
+  content: "\74";
+}
+.websymbols-uni75:before {
+  content: "\75";
+}
+.websymbols-uni76:before {
+  content: "\76";
+}
+.websymbols-uni77:before {
+  content: "\77";
+}
+.websymbols-uni78:before {
+  content: "\78";
+}
+.websymbols-uni79:before {
+  content: "\79";
+}
+.websymbols-uni7A:before {
+  content: "\7a";
+}
+.websymbols-uni7B:before {
+  content: "\7b";
+}
+.websymbols-uni7D:before {
+  content: "\7d";
+}
+.websymbols-uni7E:before {
+  content: "\7e";
+}
+.websymbols-uniB2:before {
+  content: "\b2";
+}
+.websymbols-uniB3:before {
+  content: "\b3";
+}
+.websymbols-uniB9:before {
+  content: "\b9";
+}
+.websymbols-uniD7:before {
+  content: "\d7";
+}
+.websymbols-uniE000:before {
+  content: "\e000";
+}
+

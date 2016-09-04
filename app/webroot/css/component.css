@@ -709,7 +709,13 @@
   display: inline-block;
   min-width: 2em;
 }
-.pricing--norbu img {
+body.on .pricing--norbu .pricing__item:hover img {
+  width: 130px;
+  margin: 0em;
+  transition: all 0.3s;
+}
+
+.pricing--norbu .pricing__item img {
   width: 130px;
   margin: 0em;
   transition: all 0.3s;
@@ -723,12 +729,18 @@
   min-height: 160px;
 }
 
+body.on .pricing--norbu .pricing__image img {
+  width:305px;
+  transition: all 0.3s;
+}
+
 .pricing--norbu .pricing__image:hover img {
   width:305px;
+  transition: all 0.3s;
 }
 .pricing--norbu .pricing__price {
   font-size: 2em;
-  /* padding: 0.5em 0 0 0; */
+  padding: 0.5em 0 0 0; 
   font-weight: 400;
   position: relative;
   height: 190px;

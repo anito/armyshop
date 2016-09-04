@@ -61,13 +61,3 @@
   font-family: HappyEaster;
   src: url("fonts/HappyEaster.ttf");
 }
-@font-face {
-  font-family: 'Lehmann';
-  src:  url('fonts/Lehmann.eot?92j2ik');
-  src:  url('fonts/Lehmann.eot?92j2ik#iefix') format('embedded-opentype'),
-    url('fonts/Lehmann.ttf?92j2ik') format('truetype'),
-    url('fonts/Lehmann.woff?92j2ik') format('woff'),
-    url('fonts/Lehmann.svg?92j2ik#Lehmann') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}

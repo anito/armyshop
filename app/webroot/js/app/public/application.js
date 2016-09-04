@@ -30614,6 +30614,7 @@ Released under the MIT License
       'mouseenter #outdoor-item-menu': 'changeBackground',
       'mouseenter #defense-item-menu': 'changeBackground',
       'mouseenter #goodies-item-menu': 'changeBackground',
+      'click .paypal': 'toggleView',
       'click .opt-agb': 'showAgb',
       'click .opt-imp': 'showImp',
       'click .opt-pay': 'showPay',
@@ -30802,6 +30803,11 @@ Released under the MIT License
 
     App.prototype.redirectHome = function() {
       return location.href = '/';
+    };
+
+    App.prototype.toggleView = function(e) {
+      e.preventDefault();
+      return this.el.toggleClass('on');
     };
 
     App.prototype.getData = function(s, arr) {
