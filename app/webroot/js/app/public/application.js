@@ -31334,18 +31334,18 @@ jade_debug.shift();}.call(this,"version" in locals_for_with?locals_for_with.vers
 } catch (err) {
   jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h2 Made with Spine.js version #{version}\np Time to get busy with this magic!\n");
 }
-};}, "views/warning": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ) ];
+};}, "views/temp": function(exports, require, module) {module.exports = function template(locals) {
+var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ) ];
 try {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
-buf.push("<div class=\"danger alert\">");
+jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ));
+jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ));
+buf.push("<div>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
@@ -31354,7 +31354,7 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
@@ -31363,7 +31363,7 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
@@ -31372,7 +31372,7 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
@@ -31381,7 +31381,7 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
@@ -31390,13 +31390,13 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/temp.jade" ));
 buf.push("<p class=\"bs-warning\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
@@ -31410,7 +31410,52 @@ buf.push("</div>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div.danger.alert\n  p Unser hochwirksames Pfefferspray (Markenqualität Made in Germany) enthält das konzentrierte\n  p Extrakt (je nach Produkt zwischen 3 und 13,2%) Oleoresin Capsicum (des Cayenne-Pfeffers).\n  p Pfefferspray macht jeden Angreifer innerhalb weniger Sekundenbruchteile kampf- und handlungsunfähig.\n  p Die Augen, Haut und Schleimhäute brennen wie Feuer und der Angreifer ringt nach Luft.\n  p Die Wirkung hält je nach Sprühdauer bis zu einigen Stunden an.\n  p\n  p.bs-warning <strong>Zur Beachtung: </strong>  Pfefferspray darf in Deutschland nur zur Abwehr von angreifenden und aggressiven Tierenverwendet und verkauft werden.");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div\n  p Unser hochwirksames Pfefferspray (Markenqualität Made in Germany) enthält das konzentrierte\n  p Extrakt (je nach Produkt zwischen 3 und 13,2%) Oleoresin Capsicum (des Cayenne-Pfeffers).\n  p Pfefferspray macht jeden Angreifer innerhalb weniger Sekundenbruchteile kampf- und handlungsunfähig.\n  p Die Augen, Haut und Schleimhäute brennen wie Feuer und der Angreifer ringt nach Luft.\n  p Die Wirkung hält je nach Sprühdauer bis zu einigen Stunden an.\n  p\n  p.bs-warning <strong>Zur Beachtung: </strong>  Pfefferspray darf in Deutschland nur zur Abwehr von angreifenden und aggressiven Tierenverwendet und verkauft werden.");
+}
+};}, "views/warning": function(exports, require, module) {module.exports = function template(locals) {
+var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ) ];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+
+jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<div class=\"danger alert\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
+buf.push("Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über 18 Jahre");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
+buf.push("mit Altersnachweis (Scan oder Foto des Nachweises bitte per Mail an ha-lehmann@gmx.at).");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/warning.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
+buf.push("Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
+jade_debug.shift();;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div.danger.alert\n  \n  p Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über 18 Jahre\n  p mit Altersnachweis (Scan oder Foto des Nachweises bitte per Mail an ha-lehmann@gmx.at).\n  p Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.");
 }
 };}
 });

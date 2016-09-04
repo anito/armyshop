@@ -254,8 +254,16 @@ div.tr {
 }
 div.td { 
   display:table-cell; 
-  padding:5px; 
+  padding:5px;
+  min-width: 80px;
 }
+.table .caption { 
+  display:table-caption;
+}
+.table.group { 
+  display:table-row-group;
+}
+
 .td:first-child {
   padding-right: 10px;
   cursor: pointer;

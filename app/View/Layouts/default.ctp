@@ -84,13 +84,21 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <div class="container">
       <span class="websymbols-uni27 close"></span>
       <div class="table">
-        <div class="tr">
-          <div class="td"><img src="/img/truck.png"></img></div>
-          <div class="td">Ab einem Bestellwert von 50,01€ liefern wir frei Haus</div>
-        </div>
-        <div class="tr">
-          <div class="td"><img src="/img/parcel.png"></img></div>
-          <div class="td">Verpackung und Versand nur 3, 90€</div>
+          <div class="caption">
+            <div class="td"><img src="/img/truck.png"></img></div>
+            <div class="td">Ab einem Bestellwert von 50,01€ liefern wir frei Haus</div>
+          </div>
+        <div class="group">
+          <div class="tr">
+            <div class="td"><img src="/img/parcel.png"></img></div>
+            <div class="td">Verpackung und Versand nach Österreich</div>
+            <div class="td">5, 90€</div>
+          </div>
+          <div class="tr">
+            <div class="td"></div>
+            <div class="td">Verpackung und Versand nach Deutschland</div>
+            <div class="td">5, 90€</div>
+          </div>
         </div>
       </div>
     </div>
