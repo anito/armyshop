@@ -92,7 +92,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <div class="tr">
             <div class="td"><img src="/img/parcel.png"></img></div>
             <div class="td">Verpackung und Versand nach Österreich</div>
-            <div class="td">5, 90€</div>
+            <div class="td">3, 90€</div>
           </div>
           <div class="tr">
             <div class="td"></div>
