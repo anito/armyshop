@@ -29,12 +29,18 @@
   <div class="pricing__item">
     <h3 class="pricing__title">Tränengas Verteidigungsspray</h3>
     <p class="pricing__sentence">40 ml mit dem Wirkstoff CS für Ihre Sicherheit.</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>-
+    <div class="pricing__price"><span class="pricing__currency">€</span>4,90
       <div class="pricing__image"><img  src="/img/products/CS-KO-Gas.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
-        <li class="pricing__feature">--</li>
+        <li class="pricing__feature">Mit offizieller BKA-Zulassung zur Selbstverteidigung gegen Menschen!</li>
+        <li class="pricing__feature">Ein kurzer Druck auf den Sprühknopf - auf das Gesicht des Angreifers gerichtet - und schon ist der Kriminelle handlungsfähig. Seine Augenlider schließen sich krampfartig, die Haut brennt, er ringt nach Luft. Schnell zur Hand und niederschmetternd in der Wirkung.</li>
+        <li class="pricing__feature">Je nach Sprühdauer wirkt KO CS-Gas bis zu einigen Stunden.</li>
+        <li class="pricing__feature">Inhalt reicht für mehrere Verteidigungsaktionen.</li>
+        <li class="pricing__feature">Toxikologisch geprüft.</li>
+        <li class="pricing__feature">Mit Gürtelclip!</li>
+        <li class="pricing__feature">Qualität von Ballistol -  Made in Germany!</li>
       </ul>
     </div>
     <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
@@ -42,7 +48,7 @@
   <div class="pricing__item">
     <h3 class="pricing__title">Pfefferspray</h3>
     <p class="pricing__sentence">Der wirkungsvolle Selbstschutz</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>-
+    <div class="pricing__price"><span class="pricing__currency">€</span>4,90
       <div class="pricing__image"><img  src="/img/products/Defenol-CS-Gas-40ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
@@ -61,7 +67,7 @@
   <div class="pricing__item">
     <h3 class="pricing__title">OC 5000 Pfefferspray</h3>
     <p class="pricing__sentence"> 40ml Breitstrahl</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>5,90
+    <div class="pricing__price"><span class="pricing__currency">€</span>9,90
       <div class="pricing__image"><img  src="/img/products/OC-5000-SSG-40ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
@@ -79,7 +85,7 @@
   <div class="pricing__item">
     <h3 class="pricing__title">Pfefferspray Protect</h3>
     <p class="pricing__sentence"> in der 40ml Sprühnebel Dose</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>5
+    <div class="pricing__price"><span class="pricing__currency">€</span>5,00
       <div class="pricing__image"><img  src="/img/products/Pfeffer-40-ml-Protect.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
@@ -101,7 +107,7 @@
   <div class="pricing__item">
     <h3 class="pricing__title">Police RSG Lady Pfefferspray</h3>
     <p class="pricing__sentence">in der handlichen 15ml Breitstrahl Dose</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>-
+    <div class="pricing__price"><span class="pricing__currency">€</span>8,90
       <div class="pricing__image"><img  src="/img/products/RSG-Pfefferspray-15ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
@@ -118,7 +124,7 @@
   <div class="pricing__item">
     <h3 class="pricing__title">Profi Pfeffer-Abwehrspray Police RSG </h3>
     <p class="pricing__sentence">Breitstrahlspray mit Sprühnebel bis ca. 3 Meter Reichweite.</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>-
+    <div class="pricing__price"><span class="pricing__currency">€</span>21,90
       <div class="pricing__image"><img  src="/img/products/RSG-Pfefferspray-63ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
@@ -128,9 +134,6 @@
         <li class="pricing__feature">Sofortige Abwehrwirkung!</li>
         <li class="pricing__feature">Zur Tierabwehr!</li>
         <li class="pricing__feature">Das Profi-Abwehrspray für Security, Personenschützer, Türsteher und offizielle Stellen.</li>
-        <li class="pricing__feature">bbbb</li>
-        <li class="pricing__feature">bbbb</li>
-        <li class="pricing__feature">bbbb</li>
       </ul>
     </div>
     <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
@@ -138,7 +141,7 @@
   <div class="pricing__item">
     <h3 class="pricing__title">NEU! Pfefferspray TX1919 Gel-Fog</h3>
     <p class="pricing__sentence">in der 50ml Dose, extra stark</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>-
+    <div class="pricing__price"><span class="pricing__currency">€</span>9,90
       <div class="pricing__image"><img  src="/img/products/TX-1919-Pfeffer-Gel-50ml.jpg"/></div>
     </div>
     <div class="pricing__feature-list">
