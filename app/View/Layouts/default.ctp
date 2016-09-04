@@ -75,7 +75,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       </ul>
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item opt-sidebar">
-          <a class="nav-link" href="#">Lieferung</a>
+          <a class="nav-link hide" href="#">Lieferung</a>
         </li>
       </ul>
     </nav>
