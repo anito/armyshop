@@ -54,7 +54,8 @@ class App extends Spine.Controller
     @setBackground()
     @initSettings(setting)
     @setLogos()
-    @checkWarning()
+    
+    if @getData(base_url, @arr) == 'defense' then @checkWarning()
     
   setLogos: ->
     flag = Settings.records[0].hidden
