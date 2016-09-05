@@ -262,7 +262,7 @@ div.td {
 .table .caption { 
   display:table-caption;
 }
-.table.group { 
+.table .group { 
   display:table-row-group;
 }
 
@@ -283,6 +283,9 @@ div.td {
   position: absolute;
   top: 46px;
   right: 121px;
+}
+.modal p {
+  line-height: 2;
 }
 /*.hal .btn-primary {
   color: #ddd;

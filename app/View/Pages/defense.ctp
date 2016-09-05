@@ -156,6 +156,19 @@
     <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
 </div>
+<div class="">
+    
+    <div class="modal-body dark">
+      <div class="danger alert">
+        <p>Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong></p>
+        <p>mit Altersnachweis (Scan oder Foto des Nachweises bitte per Mail an ha-lehmann@gmx.at).</p>
+        <p>Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.</p>
+      </div>
+    </div>
+    
+    
+    
+</div>
 <?php
   echo $this->Html->scriptStart();
     ?>
