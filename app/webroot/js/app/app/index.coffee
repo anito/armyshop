@@ -59,6 +59,9 @@ class App extends Spine.Controller
     
     if @getData(base_url, @arr) == 'defense' then @checkWarning()
     
+  checkWarning: ->
+    if !@isAgreed() then @showWarning()
+    
   setLogos: ->
     flag = Settings.records[0].hidden
     @logo1.toggleClass('hide', !!flag)
@@ -83,9 +86,8 @@ class App extends Spine.Controller
     @log s
     s.id
     
-  checkWarning: ->
-    warnBol = Settings.first()?.agreed
-    if !warnBol then @showWarning()
+  isAgreed: ->
+    Settings.first()?.agreed
   
   initAgreedSettings: (logo) ->
     Settings.fetch()
@@ -184,6 +186,7 @@ class App extends Spine.Controller
     e.preventDefault()
     
   showWarning: (e) -> 
+    agreed = @isAgreed()
     dialog = new ModalSimpleView
       options:
         small: false
@@ -195,7 +198,7 @@ class App extends Spine.Controller
           app_version   : App.version
           bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
         footer:
-          footerButtonText: 'Verstanden'
+          footerButtonText: -> if agreed then 'Schliessen' else "Verstanden"
       modalOptions:
         keyboard: true
         show: false

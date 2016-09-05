@@ -284,7 +284,7 @@ div.td {
   top: 46px;
   right: 121px;
 }
-.hal .btn-primary {
+/*.hal .btn-primary {
   color: #ddd;
   background-color: #272a2c;
   border-color: #707980;
@@ -303,7 +303,7 @@ div.td {
   color: #eee;
   background-color: #171a1c;
   border-color: #707980;
-}
+}*/
 body.fade.in.defense {
   background: transparent url(../img/defense_creative.jpg) 50% 10% fixed;
   transition: background 1s ease-in-out;

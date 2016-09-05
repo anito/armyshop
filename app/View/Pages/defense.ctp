@@ -24,7 +24,7 @@
         <li class="pricing__feature">Große Wirkung</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/mobile-mini-alarmanlage-handalarm-mit-led-lampe-und-sirene-65760794.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="https://www.hood.de/i/mobile-mini-alarmanlage-handalarm-mit-led-lampe-und-sirene-65760794.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Tränengas Verteidigungsspray</h3>

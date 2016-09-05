@@ -30652,6 +30652,12 @@ Released under the MIT License
       }
     }
 
+    App.prototype.checkWarning = function() {
+      if (!this.isAgreed()) {
+        return this.showWarning();
+      }
+    };
+
     App.prototype.setLogos = function() {
       var flag;
       flag = Settings.records[0].hidden;
@@ -30686,12 +30692,9 @@ Released under the MIT License
       return s.id;
     };
 
-    App.prototype.checkWarning = function() {
-      var ref, warnBol;
-      warnBol = (ref = Settings.first()) != null ? ref.agreed : void 0;
-      if (!warnBol) {
-        return this.showWarning();
-      }
+    App.prototype.isAgreed = function() {
+      var ref;
+      return (ref = Settings.first()) != null ? ref.agreed : void 0;
     };
 
     App.prototype.initAgreedSettings = function(logo) {
@@ -30818,7 +30821,8 @@ Released under the MIT License
     };
 
     App.prototype.showWarning = function(e) {
-      var dialog;
+      var agreed, dialog;
+      agreed = this.isAgreed();
       dialog = new ModalSimpleView({
         options: {
           small: false,
@@ -30833,7 +30837,13 @@ Released under the MIT License
             });
           },
           footer: {
-            footerButtonText: 'Verstanden'
+            footerButtonText: function() {
+              if (agreed) {
+                return 'Schliessen';
+              } else {
+                return "Verstanden";
+              }
+            }
           }
         },
         modalOptions: {
