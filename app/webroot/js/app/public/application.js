@@ -31209,7 +31209,7 @@ jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Die Kosten des Versand nach Österreich: 3,90 Euro");
+buf.push("Kosten des Versandes nach Österreich: 3,90 Euro");
 jade_debug.shift();
 buf.push("\n");
 jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
@@ -31222,7 +31222,7 @@ jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("Die Kosten des Versand nach Deuschland (ausser Inseln): 5,90 Euro");
+buf.push("Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro");
 jade_debug.shift();
 buf.push("\n");
 jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
@@ -31235,7 +31235,7 @@ jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich Versandkostenfrei!!");
+buf.push("Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!");
 jade_debug.shift();
 buf.push("\n");
 jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
@@ -31256,7 +31256,7 @@ buf.push("");
 jade_debug.shift();
 buf.push("\n");
 jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("Bei diesen ist eine Abholung wie bei der Post/DHL nicht möglich.");
+buf.push("Eine Abholung wie bei der Post/DHL ist daher nicht möglich.");
 jade_debug.shift();
 buf.push("\n");
 jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
@@ -31272,14 +31272,14 @@ jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("Sollten Sie diesen im Abwesenheitsfall aufgrund der Benachrichtigungskarte telefonisch eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
+buf.push("Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Versandkosten\n\np.\n  Die Kosten des Versand nach Österreich: 3,90 Euro\n\np.\n  Die Kosten des Versand nach Deuschland (ausser Inseln): 5,90 Euro\n\np. \n  Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich Versandkostenfrei!!\n\np.\n  Wir versenden ausschließlich mit dem privaten Paketdienst DPD.\n  \n  Bei diesen ist eine Abholung wie bei der Post/DHL nicht möglich.\n  \nhr.\n\np Sollten Sie diesen im Abwesenheitsfall aufgrund der Benachrichtigungskarte telefonisch eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Versandkosten\n\np.\n  Kosten des Versandes nach Österreich: 3,90 Euro\n\np.\n  Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro\n\np. \n  Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!\n\np.\n  Wir versenden ausschließlich mit dem privaten Paketdienst DPD.\n  \n  Eine Abholung wie bei der Post/DHL ist daher nicht möglich.\n  \nhr.\n\np Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
 }
 };}, "views/imp": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ) ];
