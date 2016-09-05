@@ -32,7 +32,6 @@ class App extends Spine.Controller
     'click .opt-sidebar'            :           'toggleSidebar'
     'click .sidebar .td:first-child':           'toggleSidebar'
     'click .paypal_'                :           'toggleView'
-    'click .opt-del'                :           'showDelivery'
     'click .opt-agb'                :           'showAgb'
     'click .opt-imp'                :           'showImp'
     'click .opt-pay'                :           'showPay'
@@ -196,27 +195,6 @@ class App extends Spine.Controller
           bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
         footer:
           footerButtonText: 'Verstanden'
-      modalOptions:
-        keyboard: true
-        show: false
-      
-    dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
-    dialog.el.one('hide.bs.modal', @proxy @hidemodal)
-    dialog.el.one('show.bs.modal', @proxy @showmodal)
-    dialog.el.one('shown.bs.modal', @proxy @shownmodal)
-    
-    dialog.render().show()
-    
-  showDelivery: ->
-    dialog = new ModalSimpleView
-      options:
-        small: false
-        header: 'Versand'
-        body: -> require("views/delivery")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false

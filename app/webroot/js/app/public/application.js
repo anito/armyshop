@@ -30623,7 +30623,6 @@ Released under the MIT License
       'click .opt-sidebar': 'toggleSidebar',
       'click .sidebar .td:first-child': 'toggleSidebar',
       'click .paypal_': 'toggleView',
-      'click .opt-del': 'showDelivery',
       'click .opt-agb': 'showAgb',
       'click .opt-imp': 'showImp',
       'click .opt-pay': 'showPay',
@@ -30834,33 +30833,6 @@ Released under the MIT License
           },
           footer: {
             footerButtonText: 'Verstanden'
-          }
-        },
-        modalOptions: {
-          keyboard: true,
-          show: false
-        }
-      });
-      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
-      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
-      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
-      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
-      return dialog.render().show();
-    };
-
-    App.prototype.showDelivery = function() {
-      var dialog;
-      dialog = new ModalSimpleView({
-        options: {
-          small: false,
-          header: 'Versand',
-          body: function() {
-            return require("views/delivery")({
-              copyright: 'Axel Nitzschner',
-              spine_version: Spine.version,
-              app_version: App.version,
-              bs_version: '1.1.1'
-            });
           }
         },
         modalOptions: {
@@ -31178,99 +31150,6 @@ jade_debug.shift();;return buf.join("");
 } catch (err) {
   jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3\n  div Allgemeine Geschäftsbedingungen\n  \nh5.h5 Geltungsbereich\np Für alle Bestellungen über unseren Online-Shop gelten die nachfolgenden AGB.\n\nh5.h5 Selbstabholung\np Nach Terminvereinbarung möglich.\n\nh5.h5 Packstation\np Wir liefern nicht an Packstationen.\n\nh5.h5 Eigentumsvorbehalt \np Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum.\n\nh5.h5 Transportschäden\np Werden Waren mit offensichtlichen Transportschäden angeliefert, so reklamieren Sie solche Fehler bitte möglichst sofort beim Zusteller und nehmen Sie bitte unverzüglich Kontakt zu uns auf. Die Versäumung einer Reklamation oder Kontaktaufnahme hat für Ihre gesetzlichen Ansprüche und deren Durchsetzung, insbesondere Ihre Gewährleistungsrechte keinerlei Konsequenzen. Sie helfen uns aber, unsere eigenen Ansprüche gegenüber dem Frachtführer bzw. Transportversicherung geltend machen zu können.\n\nh5.h5 Vertragssprache\np Die für den Vertragsschluss zur Verfügung stehende Sprache ist Deutsch.\n\nh5.h5 Jugendschutz\np Bestimmte Artikel unseres Sortiments gehören ausschließlich in die Hände von Erwachsenen. Wir behalten uns für diese in den Produktbeschreibungen jeweils speziell gekennzeichnete Artikel vor, diese nur an volljährige, unbeschränkt geschäftsfähige natürliche Personen auszuliefern und dabei entsprechende Altersnachweise zu verlangen. Die für die Bestellung erforderlichen Daten wie Name, Anschrift usw. sind vollständig und wahrheitsgemäß anzugeben.  \n\nh5.h5 Widerrufsrecht\np Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat. Um Ihr Widerrufsrecht auszuüben, müssen Sie uns HandelsAgentur Lehmann E-Mail:ha-lehmann@gmx.at, Telefon: 0664-1306372) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief, Telefax oder E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist. Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden. Folgen des Widerrufs Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet. Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist. Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden. Sie tragen die unmittelbaren Kosten der Rücksendung der Waren. Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit Ihnen zurückzuführen ist. Ende der Widerrufsbelehrung\n  \n");
 }
-};}, "views/delivery": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ) ];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("Versandkosten");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Die Kosten des Versand nach Österreich: 3,90 Euro");
-jade_debug.shift();
-buf.push("\n");
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("Die Kosten des Versand nach Deuschland (ausser Inseln): 5,90 Euro");
-jade_debug.shift();
-buf.push("\n");
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich Versandkostenfrei!!");
-jade_debug.shift();
-buf.push("\n");
-jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("Wir versenden ausschließlich mit dem privaten Paketdienst DPD.");
-jade_debug.shift();
-buf.push("\n");
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("");
-jade_debug.shift();
-buf.push("\n");
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("Bei diesen ist eine Abholung wie bei der Post/DHL nicht möglich.");
-jade_debug.shift();
-buf.push("\n");
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("Sollten Sie diesen im Abwesenheitsfall aufgrund der Benachrichtigungskarte telefonisch eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Versandkosten\n\np.\n  Die Kosten des Versand nach Österreich: 3,90 Euro\n\np.\n  Die Kosten des Versand nach Deuschland (ausser Inseln): 5,90 Euro\n\np. \n  Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich Versandkostenfrei!!\n\np.\n  Wir versenden ausschließlich mit dem privaten Paketdienst DPD.\n  \n  Bei diesen ist eine Abholung wie bei der Post/DHL nicht möglich.\n  \nhr.\n\np Sollten Sie diesen im Abwesenheitsfall aufgrund der Benachrichtigungskarte telefonisch eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
-}
 };}, "views/imp": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ) ];
 try {
@@ -31408,9 +31287,54 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</li>");
 jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+buf.push("<h5 class=\"h5\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
+buf.push("Versandkosten");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</h5>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
+buf.push("Österreich 3,90 Euro");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
+buf.push("Deuschland (ausser Inseln) 5,90 Euro");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
+buf.push("Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich Versandkostenfrei!!");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 15, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
+buf.push("Wir versenden ausschließlich mit dem privaten Paketdienst DPD. Bei diesen ist eine Abholung wie bei der Post/DHL nicht möglich. Sollten Sie diesen im Abwesenheitsfall aufgrund der Benachrichtigungskarte telefonisch eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "li\n  h5.h5 Paypal\nli\n  h5.h5 Vorkasse\n  p Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nli\n  h5.h5 Bei Abholung");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "li\n  h5.h5 Paypal\nli\n  h5.h5 Vorkasse\n  p Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nli\n  h5.h5 Bei Abholung\nh5.h5 Versandkosten\np Österreich 3,90 Euro\n\np Deuschland (ausser Inseln) 5,90 Euro\n\np Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich Versandkostenfrei!!\n\np Wir versenden ausschließlich mit dem privaten Paketdienst DPD. Bei diesen ist eine Abholung wie bei der Post/DHL nicht möglich. Sollten Sie diesen im Abwesenheitsfall aufgrund der Benachrichtigungskarte telefonisch eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
 }
 };}, "views/sample": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/sample.jade" ) ];

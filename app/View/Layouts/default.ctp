@@ -86,9 +86,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       <div class="table">
           <div class="caption">
             <div class="td"><img src="/img/dolar.png"></img></div>
-            <div class="td">
-              Bezahlen Sie bequem per PayPal in unserem Online-Partnershop. Informieren Sie sich auch über unsere anderen <a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a>
-            </div>
+            <div class="td">Bezahlen Sie bequem per PayPal in unserem Online-Partnershop</div>
           </div>
           <div class="caption">
             <div class="td"></div>
@@ -96,7 +94,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           </div>
           <div class="caption">
             <div class="td"><img src="/img/truck.png"></img></div>
-            <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir frei Haus</div>
+            <div class="td">Ab einem Bestellwert von 50,01€ liefern wir frei Haus</div>
           </div>
           <div class="caption">
             <div class="td"></div>
@@ -131,7 +129,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <span><a href="#" class="opt-imp">Impressum</a></span>
     <span><a href="#" class=" opt-agb">AGB</a></span>
     <span><a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a></span>
-    <span><a href="#" class=" opt-del">Versand</a></span>
   </footer>
   <!-- modal-dialogue -->
   <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="top: 65px;"></div>
