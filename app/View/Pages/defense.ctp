@@ -2,7 +2,7 @@
 <div class="jumbotron">
   <div class="container">
     <h1 class="display-3">Selbstschutz & Security</h1>
-    <h5 class="h5 display-3">Schützen Sie sich und ihre Mitmenschen vor möglichen Gefahren</h5>
+    <h5 class="h5 display-3">Schützen Sie sich und Ihre Mitmenschen vor möglichen Gefahren</h5>
     <div class="opt-hint hint"><a class="btn btn-primary btn-lg" href="#" role="button">Hinweis »</a></div>
   </div>
 </div>
@@ -35,7 +35,7 @@
     <div class="pricing__feature-list">
       <ul class="">
         <li class="pricing__feature">Mit offizieller BKA-Zulassung zur Selbstverteidigung gegen Menschen!</li>
-        <li class="pricing__feature">Ein kurzer Druck auf den Sprühknopf - auf das Gesicht des Angreifers gerichtet - und schon ist der Kriminelle handlungsfähig. Seine Augenlider schließen sich krampfartig, die Haut brennt, er ringt nach Luft. Schnell zur Hand und niederschmetternd in der Wirkung.</li>
+        <li class="pricing__feature">Ein kurzer Druck auf den Sprühknopf - auf das Gesicht des Angreifers gerichtet - und schon ist der Kriminelle handlungsunfähig. Seine Augenlider schließen sich krampfartig, die Haut brennt, er ringt nach Luft. Schnell zur Hand und niederschmetternd in der Wirkung.</li>
         <li class="pricing__feature">Je nach Sprühdauer wirkt KO CS-Gas bis zu einigen Stunden.</li>
         <li class="pricing__feature">Inhalt reicht für mehrere Verteidigungsaktionen.</li>
         <li class="pricing__feature">Toxikologisch geprüft.</li>
@@ -54,7 +54,7 @@
     <div class="pricing__feature-list">
       <ul class="">
         <li class="pricing__feature">Mit offizieller BKA-Zulassung zur Selbstverteidigung gegen Menschen!</li>
-        <li class="pricing__feature">Ein kurzer Druck auf den Sprühknopf - auf das Gesicht des Angreifers gerichtet - und schon ist der Kriminelle handlungsfähig. Seine Augenlider schließen sich krampfartig, die Haut brennt, er ringt nach Luft. Schnell zur Hand und niederschmetternd in der Wirkung.</li>
+        <li class="pricing__feature">Ein kurzer Druck auf den Sprühknopf - auf das Gesicht des Angreifers gerichtet - und schon ist der Kriminelle handlungsunfähig. Seine Augenlider schließen sich krampfartig, die Haut brennt, er ringt nach Luft. Schnell zur Hand und niederschmetternd in der Wirkung.</li>
         <li class="pricing__feature">Je nach Sprühdauer wirkt KO CS-Gas bis zu einigen Stunden.</li>
         <li class="pricing__feature">Inhalt reicht für mehrere Verteidigungsaktionen.</li>
         <li class="pricing__feature">Toxikologisch geprüft.</li>
@@ -157,16 +157,6 @@
   </div>
 </div>
 <div class="">
-    
-    <div class="modal-body dark hide">
-      <div class="danger alert">
-        <p>Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong></p>
-        <p>mit Altersnachweis (Scan oder Foto des Nachweises bitte per Mail an ha-lehmann@gmx.at).</p>
-        <p>Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.</p>
-      </div>
-    </div>
-    
-    
     
 </div>
 <?php

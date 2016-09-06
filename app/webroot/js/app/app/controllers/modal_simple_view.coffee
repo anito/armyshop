@@ -32,7 +32,7 @@ class ModalSimpleView extends Spine.Controller
     defaults =
       small: true
       body    : 'Default Body Text'
-      
+
     @options = $.extend defaults, @options
     modals = $.extend modalDefaults, @modalOptions
     

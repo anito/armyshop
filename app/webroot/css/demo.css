@@ -14,9 +14,13 @@ body.fade.out {
 	background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
   transition: background 2s linear;
 }
-.container{
-  margin-top: 12px;
-  margin-bottom: 10px;;
+.container {
+  margin-top: 0px;
+  margin-bottom: 0px;;
+}
+.table {
+  margin-top: 0px;
+  margin-bottom: 0px;;
 }
 .paypal {
   float: right;
@@ -32,11 +36,14 @@ body.fade.out {
   z-index: 1000;
   transition: right 0.3s;
 }
-.sidebar.glinch.on {
+.sidebar.glinch {
   right: -600px;
   transition: right 0.3s;
 }
-.sidebar.glinch {
+.sidebar.off .caption .td:not(:first-child) {
+  display: none;
+}
+.sidebar.glinch.off {
   right: -922px;
   transition: right 0.3s;
 }

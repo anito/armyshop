@@ -198,10 +198,11 @@ class App extends Spine.Controller
           app_version   : App.version
           bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
         footer:
-          footerButtonText: -> if agreed then 'Schliessen' else "Verstanden"
+          footerButtonText: -> if !agreed then "Verstanden"
       modalOptions:
         keyboard: true
         show: false
+    @log dialog
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
@@ -253,11 +254,11 @@ class App extends Spine.Controller
     
   toggleSidebar: (e) ->
     e.preventDefault()
-    @sidebar.toggleClass('on')
+    @sidebar.toggleClass('off')
     
   closeSidebar: (e) ->
     e.preventDefault()
-    @sidebar.removeClass('on')
+    @sidebar.addClass('off')
     
   showSidebar: (e) ->
     e.preventDefault()
@@ -266,7 +267,7 @@ class App extends Spine.Controller
   hideSidebar: (e) ->
     return
     e.preventDefault()
-    @sidebar.removeClass('glinch on')
+    @sidebar.addClass('off')
     
   agreed: ->
     Settings.update(Settings.first().id, {agreed: true})

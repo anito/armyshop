@@ -30838,9 +30838,7 @@ Released under the MIT License
           },
           footer: {
             footerButtonText: function() {
-              if (agreed) {
-                return 'Schliessen';
-              } else {
+              if (!agreed) {
                 return "Verstanden";
               }
             }
@@ -30851,6 +30849,7 @@ Released under the MIT License
           show: false
         }
       });
+      this.log(dialog);
       dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
       dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
       dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
@@ -30914,12 +30913,12 @@ Released under the MIT License
 
     App.prototype.toggleSidebar = function(e) {
       e.preventDefault();
-      return this.sidebar.toggleClass('on');
+      return this.sidebar.toggleClass('off');
     };
 
     App.prototype.closeSidebar = function(e) {
       e.preventDefault();
-      return this.sidebar.removeClass('on');
+      return this.sidebar.addClass('off');
     };
 
     App.prototype.showSidebar = function(e) {
@@ -30930,7 +30929,7 @@ Released under the MIT License
     App.prototype.hideSidebar = function(e) {
       return;
       e.preventDefault();
-      return this.sidebar.removeClass('glinch on');
+      return this.sidebar.addClass('off');
     };
 
     App.prototype.agreed = function() {
@@ -31246,32 +31245,36 @@ buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
 buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
 buf.push("Wir versenden ausschließlich mit dem privaten Paketdienst DPD.");
 jade_debug.shift();
 buf.push("\n");
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
 buf.push("");
 jade_debug.shift();
 buf.push("\n");
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
 buf.push("Eine Abholung wie bei der Post/DHL ist daher nicht möglich.");
 jade_debug.shift();
 buf.push("\n");
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
+buf.push("");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
 buf.push("");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
+jade_debug.unshift(new jade.DebugItem( 18, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
 buf.push("<hr/>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
+jade_debug.unshift(new jade.DebugItem( 20, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
 buf.push("Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
 jade_debug.shift();
 jade_debug.shift();
@@ -31279,7 +31282,7 @@ buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Versandkosten\n\np.\n  Kosten des Versandes nach Österreich: 3,90 Euro\n\np.\n  Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro\n\np. \n  Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!\n\np.\n  Wir versenden ausschließlich mit dem privaten Paketdienst DPD.\n  \n  Eine Abholung wie bei der Post/DHL ist daher nicht möglich.\n  \nhr.\n\np Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Versandkosten\n\np.\n  Kosten des Versandes nach Österreich: 3,90 Euro\n\np.\n  Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro\n\np. \n  Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!\n\np.\n  Wir versenden ausschließlich mit dem privaten Paketdienst DPD.\n  \n  Eine Abholung wie bei der Post/DHL ist daher nicht möglich.\n  \n  \nhr.\n\np Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
 }
 };}, "views/imp": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ) ];
@@ -31317,19 +31320,13 @@ jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push(" ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
+buf.push("<hr/>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Telefon 0043 664-1306372");
+buf.push("Telefon: 0043 664-1306372");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -31338,7 +31335,7 @@ jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("ha-lehmann@gmx.at");
+buf.push("Email  : ha-lehmann@gmx.at");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -31347,14 +31344,14 @@ jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("UmStNr: ATU71224409");
+buf.push("UmStNr : ATU71224409");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "p HA-Lehmann\np Dornachgasse 15\np 6850 Dornbirn\np  \np Telefon 0043 664-1306372\np ha-lehmann@gmx.at\np UmStNr: ATU71224409");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "p HA-Lehmann\np Dornachgasse 15\np 6850 Dornbirn\nhr\np Telefon: 0043 664-1306372\np Email  : ha-lehmann@gmx.at\np UmStNr : ATU71224409");
 }
 };}, "views/pay": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ) ];

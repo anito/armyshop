@@ -9,7 +9,7 @@
 <div class="pricing pricing--norbu">
   <div class="pricing__item">
     <h3 class="pricing__title">Fun-Kaffeetasse</h3>
-    <p class="pricing__sentence">"Ich bin ein Geschenk an die Frauen dieser Welt"</p>
+    <p class="pricing__sentence">"I love my Cat"</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>4,99
       <a href="https://www.hood.de/i/fun-kaffeebecher-rahmenlos-i-love-my-cat--65553412.htm" target="blank" class="" aria-disabled="false">
         <div class="pricing__image"><img  src="/img/products/93598081.jpg" alt=""/></div>
@@ -25,7 +25,7 @@
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Fun-Kaffeebecher</h3>
-    <p class="pricing__sentence">"I love my Cat"</p>
+    <p class="pricing__sentence">"Ich bin ein Geschenk an die Frauen dieser Welt"</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>4,99
       <a href="https://www.hood.de/i/fun-kaffeetasse-ich-bin-ein-geschenk-an-die-frauen-dieser-welt--65559718.htm" target="blank" class="" aria-disabled="false">
         <div class="pricing__image"><img  src="/img/products/93630555.jpg" alt=""/></div>

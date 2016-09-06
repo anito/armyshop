@@ -80,7 +80,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       </ul>
     </nav>
   </header>
-  <div class="sidebar bg-inverse glinch">
+  <div class="sidebar bg-inverse glinch off">
     <div class="container">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">&times;</button>
       <div class="table">
@@ -102,7 +102,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             <div class="td"></div>
             <div class="td line"></div>
           </div>
-        <div class="group">
+        <div class="caption">
           <div class="tr">
             <div class="td"><img src="/img/parcel.png"></img></div>
             <div class="td">Kosten für Verpackung und Versand nach Österreich</div>
@@ -165,7 +165,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       </div>
       {{/if}}
       {{/if}}
-      {{if footer}}
+      {{if (typeof footer != 'undefined' && footer.footerButtonText)}}
       <div class="modal-footer dark" style="position: relative">
         <div class="" style="text-align: left; max-width: 90%">{{if footer.footerBody}}{{html footer.footerBody}}{{/if}} </div>
         <button class="btn btn-primary opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
