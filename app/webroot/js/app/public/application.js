@@ -31275,14 +31275,14 @@ jade_debug.unshift(new jade.DebugItem( 20, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
-buf.push("Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
+buf.push("Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 3,90 (Österreich) bzw. € 5,90 (Deutschland) an.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Versandkosten\n\np.\n  Kosten des Versandes nach Österreich: 3,90 Euro\n\np.\n  Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro\n\np. \n  Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!\n\np.\n  Wir versenden ausschließlich mit dem privaten Paketdienst DPD.\n  \n  Eine Abholung wie bei der Post/DHL ist daher nicht möglich.\n  \n  \nhr.\n\np Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 5,90 an.");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Versandkosten\n\np.\n  Kosten des Versandes nach Österreich: 3,90 Euro\n\np.\n  Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro\n\np. \n  Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!\n\np.\n  Wir versenden ausschließlich mit dem privaten Paketdienst DPD.\n  \n  Eine Abholung wie bei der Post/DHL ist daher nicht möglich.\n  \n  \nhr.\n\np Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 3,90 (Österreich) bzw. € 5,90 (Deutschland) an.");
 }
 };}, "views/imp": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ) ];
