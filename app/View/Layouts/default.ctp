@@ -128,7 +128,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
     </div>
   </div>
-  <footer class="footer">
+  <footer class="footer bg-inverse">
     <span id="swop-logo">© HA Lehman</span>
     <span><a href="#" class="opt-imp">Impressum</a></span>
     <span><a href="#" class=" opt-agb">AGB</a></span>
