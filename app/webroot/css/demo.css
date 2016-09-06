@@ -18,12 +18,15 @@ header:before {
   content: url(/img/free_delivery.png);
   position: absolute;
   z-index: 1;
-  right: 33px;
+  right: 10px;
   top: -10px;
 }
 .container {
   margin-top: 0px;
   margin-bottom: 0px;;
+}
+.container .inner {
+  position: relative;
 }
 .table {
   margin-top: 0px;
@@ -56,13 +59,13 @@ header:before {
 }
 .sidebar .container {
   width: 400px;
-  padding: 82px 13px 16px;
+  padding: 100px 13px 16px;
   float: left;
 }
 .sidebar .close {
   position: absolute;
-  left: 365px;
-  top: 10px;
+  left: 355px;
+  top: -25px;
 }
 [class^="logo-"], [class*=" logo-"] {
   cursor: pointer;
@@ -263,7 +266,8 @@ footer.footer {
 }
 div.table { 
   display: table; 
-  border-collapse:collapse; 
+  border-collapse:collapse;
+  position: relative;
 }
 div.tr { 
   display:table-row; 
@@ -295,8 +299,8 @@ div.td {
 }
 .hint {
   position: absolute;
-  top: 46px;
-  right: 121px;
+  top: 18px;
+  right: 130px;
 }
 .modal p {
   line-height: 2;

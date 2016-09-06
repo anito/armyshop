@@ -84,8 +84,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   </header>
   <div class="sidebar bg-inverse glinch off">
     <div class="container">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">&times;</button>
       <div class="table">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">&times;</button>
           <div class="caption">
             <div class="td"><img src="/img/dolar.png"></img></div>
             <div class="td">

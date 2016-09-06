@@ -1,9 +1,11 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
   <div class="container">
-    <h1 class="display-3">Selbstschutz & Security</h1>
-    <h5 class="h5 display-3">Schützen Sie sich und Ihre Mitmenschen vor möglichen Gefahren</h5>
-    <div class="opt-hint hint"><a class="btn btn-primary btn-lg" href="#" role="button">Hinweis »</a></div>
+    <div class="inner">
+      <h1 class="display-3">Selbstschutz & Security</h1>
+      <h5 class="h5 display-3">Schützen Sie sich und Ihre Mitmenschen vor möglichen Gefahren</h5>
+      <div class="opt-hint hint"><a class="btn btn-primary btn-lg" href="#" role="button">Hinweis »</a></div>
+    </div>
   </div>
 </div>
 <div class="pricing pricing--norbu">
