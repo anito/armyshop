@@ -129,7 +129,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
   </div>
   <footer class="footer bg-inverse">
-    <span id="swop-logo">© HA Lehman</span>
+    <span class="opt-reset" title="Reset Hinweis">© HA Lehman</span>
     <span><a href="#" class="opt-imp">Impressum</a></span>
     <span><a href="#" class=" opt-agb">AGB</a></span>
     <span><a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a></span>
@@ -150,25 +150,25 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </script>
 <script id="modalSimpleTemplate" type="text/x-jquery-tmpl">
   <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}">
-    <div class="modal-content bg-dark">
+    <div class="modal-content">
       {{if header}}
-      <div class="modal-header dark {{if css}}{{html css}}{{/if}}">
+      <div class="modal-header {{if css}}{{html css}}{{/if}}">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3 class="h3" style="padding-left: 26px;">${header}</h3>
       </div>
       {{/if}}
       {{if body}}
-      <div class="modal-body dark">
+      <div class="modal-body">
         {{html body}}
       </div>
       {{if info}}
-      <div class="modal-header label-info dark">
+      <div class="modal-header label-info">
         <div class="label label-info">${info}</div>
       </div>
       {{/if}}
       {{/if}}
       {{if (typeof footer != 'undefined' && footer.footerButtonText)}}
-      <div class="modal-footer dark" style="position: relative">
+      <div class="modal-footer" style="position: relative">
         <div class="" style="text-align: left; max-width: 90%">{{if footer.footerBody}}{{html footer.footerBody}}{{/if}} </div>
         <button class="btn btn-primary opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
       </div>

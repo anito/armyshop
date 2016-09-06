@@ -30622,12 +30622,12 @@ Released under the MIT License
       'click .sidebar .close': 'closeSidebar',
       'click .opt-sidebar': 'toggleSidebar',
       'click .sidebar .td:first-child': 'toggleSidebar',
-      'click .paypal_': 'toggleView',
+      'click .paypal': 'toggleView',
       'click .opt-del': 'showDelivery',
       'click .opt-agb': 'showAgb',
       'click .opt-imp': 'showImp',
       'click .opt-pay': 'showPay',
-      'click #swop-logo': 'swopLogos',
+      'click .opt-reset': 'reset',
       'click [class^="logo-"], [class*=" logo-"]': 'redirectHome'
     };
 
@@ -30640,13 +30640,15 @@ Released under the MIT License
       this.arr = ['home', 'outdoor', 'defense', 'goodies', 'out'];
       setting = {
         hidden: false,
-        agreed: false
+        agreed: false,
+        sidebaropened: false
       };
       $('.nav-item', this.items).removeClass('active');
       $('.' + this.getData(base_url, this.arr), this.items).addClass('active');
-      this.setBackground();
+      this.initBackground();
       this.initSettings(setting);
-      this.setLogos();
+      this.initLogos();
+      this.initSidebar();
       if (this.getData(base_url, this.arr) === 'defense') {
         this.checkWarning();
       }
@@ -30656,27 +30658,6 @@ Released under the MIT License
       if (!this.isAgreed()) {
         return this.showWarning();
       }
-    };
-
-    App.prototype.setLogos = function() {
-      var flag;
-      flag = Settings.records[0].hidden;
-      this.logo1.toggleClass('hide', !!flag);
-      return this.logo2.toggleClass('hide', !!!flag);
-    };
-
-    App.prototype.swopLogos = function() {
-      var bol;
-      this.logo1.toggleClass('hide');
-      bol = this.logo1.hasClass('hide');
-      this.logo2.toggleClass('hide', !bol);
-      return Settings.update(Settings.first().id, {
-        hidden: bol
-      });
-    };
-
-    App.prototype.setBackground = function() {
-      return this.el.addClass(this.getData(base_url, this.arr));
     };
 
     App.prototype.initSettings = function(setting) {
@@ -30692,21 +30673,37 @@ Released under the MIT License
       return s.id;
     };
 
+    App.prototype.initBackground = function() {
+      return this.el.addClass(this.getData(base_url, this.arr));
+    };
+
+    App.prototype.initLogos = function() {
+      var flag;
+      flag = Settings.records[0].hidden;
+      this.logo1.toggleClass('hide', !!flag);
+      return this.logo2.toggleClass('hide', !!!flag);
+    };
+
+    App.prototype.initSidebar = function() {
+      var isOpen;
+      isOpen = Settings.records[0].sidebaropened;
+      return this.setSidebar(!isOpen, true);
+    };
+
+    App.prototype.reset = function() {
+      var bol;
+      this.logo1.toggleClass('hide');
+      bol = this.logo1.hasClass('hide');
+      this.logo2.toggleClass('hide', !bol);
+      return Settings.update(Settings.first().id, {
+        hidden: bol,
+        agreed: false
+      });
+    };
+
     App.prototype.isAgreed = function() {
       var ref;
       return (ref = Settings.first()) != null ? ref.agreed : void 0;
-    };
-
-    App.prototype.initAgreedSettings = function(logo) {
-      var i, ref, s;
-      Settings.fetch();
-      this.log(Settings.records);
-      if (i = (ref = Settings.first()) != null ? ref.id : void 0) {
-        return i;
-      }
-      s = new Settings(logo);
-      s.save();
-      return s.id;
     };
 
     App.prototype.changeBackground = function(e) {
@@ -30741,6 +30738,7 @@ Released under the MIT License
       dialog = new ModalSimpleView({
         options: {
           small: false,
+          css: 'alert alert-warning',
           header: 'AGBs',
           body: function() {
             return require("views/agb")({
@@ -30769,6 +30767,7 @@ Released under the MIT License
       dialog = new ModalSimpleView({
         options: {
           small: true,
+          css: 'alert alert-warning',
           header: 'Impressum',
           body: function() {
             return require("views/imp")({
@@ -30797,6 +30796,7 @@ Released under the MIT License
       dialog = new ModalSimpleView({
         options: {
           small: false,
+          css: 'alert alert-warning',
           header: 'Zahlungsmöglichkeiten',
           body: function() {
             return require("views/pay")({
@@ -30826,7 +30826,7 @@ Released under the MIT License
       dialog = new ModalSimpleView({
         options: {
           small: false,
-          css: 'alert alert-warning',
+          css: 'alert alert-danger',
           header: 'Hinweis zum Versand von Pfeffer- und CS Gas-Sprays',
           body: function() {
             return require("views/warning")({
@@ -30862,6 +30862,7 @@ Released under the MIT License
       dialog = new ModalSimpleView({
         options: {
           small: false,
+          css: 'alert alert-warning',
           header: 'Versand',
           body: function() {
             return require("views/delivery")({
@@ -30913,12 +30914,25 @@ Released under the MIT License
 
     App.prototype.toggleSidebar = function(e) {
       e.preventDefault();
-      return this.sidebar.toggleClass('off');
+      return this.setSidebar();
     };
 
     App.prototype.closeSidebar = function(e) {
       e.preventDefault();
-      return this.sidebar.addClass('off');
+      return this.setSidebar(true);
+    };
+
+    App.prototype.setSidebar = function(bol, notrans) {
+      var isOpen;
+      if (notrans == null) {
+        notrans = false;
+      }
+      this.sidebar.toggleClass('notrans', notrans);
+      this.sidebar.toggleClass('off', bol);
+      isOpen = !this.sidebar.hasClass('off');
+      return Settings.update(Settings.first().id, {
+        sidebaropened: isOpen
+      });
     };
 
     App.prototype.showSidebar = function(e) {
@@ -30997,7 +31011,7 @@ Released under the MIT License
       return Settings.__super__.constructor.apply(this, arguments);
     }
 
-    Settings.configure('Settings', 'hidden', 'agreed');
+    Settings.configure('Settings', 'hidden', 'agreed', 'sidebaropened');
 
     Settings.extend(Model.Local);
 
@@ -31542,7 +31556,7 @@ jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong>");
+buf.push("Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong> mit Altersnachweis");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -31551,7 +31565,7 @@ jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("mit Altersnachweis (Scan oder Foto des Nachweises bitte per Mail an ha-lehmann@gmx.at).");
+buf.push("Dazu bitte ein Scan oder Foto des Nachweises per Mail an ha-lehmann@gmx.at senden.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -31570,7 +31584,7 @@ buf.push("</div>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div.danger.alert\n  \n  p Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong>\n  p mit Altersnachweis (Scan oder Foto des Nachweises bitte per Mail an ha-lehmann@gmx.at).\n  p Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div.danger.alert\n  \n  p Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong> mit Altersnachweis\n  p Dazu bitte ein Scan oder Foto des Nachweises per Mail an ha-lehmann@gmx.at senden.\n  p Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.");
 }
 };}
 });

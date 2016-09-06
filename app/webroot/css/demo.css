@@ -45,18 +45,18 @@ header:before {
   font-size: 1.3em;
   color: #bbb;
   z-index: 998;
-  transition: right 0.3s;
+  transition: right .5s ease-in-out;
 }
 .sidebar.glinch {
   right: -600px;
-  transition: right 0.3s;
+  transition: right .5s ease-in-out;
 }
 .sidebar.off .caption .td:not(:first-child) {
   display: none;
 }
 .sidebar.glinch.off {
   right: -922px;
-  transition: right 0.3s;
+  transition: right .5s ease-in-out;
 }
 .sidebar .container {
   width: 400px;
@@ -229,6 +229,10 @@ footer.footer {
 .modal-body {
   font-size: 1.2em;
 }
+.modal .modal-dialog .modal-content{
+  background-color: #f1eee3;
+  color: #292626;
+}
 #container {
   margin: 69px 0;
   position: relative;
@@ -294,16 +298,18 @@ div.td {
   width: 100%;
   height: 1px;
   background: rgba(0,0,0,.5);
-  left: 98px;
   box-shadow: 1px 2px 0px rgba(255,255,255,0.2);
 }
 .hint {
   position: absolute;
   top: 18px;
-  right: 130px;
+  right: -24px;
 }
 .modal p {
   line-height: 2;
+}
+.notrans {
+  transition: none !important;
 }
 /*.hal .btn-primary {
   color: #ddd;

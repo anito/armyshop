@@ -31,12 +31,12 @@ class App extends Spine.Controller
     'click .sidebar .close'         :           'closeSidebar'
     'click .opt-sidebar'            :           'toggleSidebar'
     'click .sidebar .td:first-child':           'toggleSidebar'
-    'click .paypal_'                :           'toggleView'
+    'click .paypal'                 :           'toggleView'
     'click .opt-del'                :           'showDelivery'
     'click .opt-agb'                :           'showAgb'
     'click .opt-imp'                :           'showImp'
     'click .opt-pay'                :           'showPay'
-    'click #swop-logo'              :           'swopLogos'
+    'click .opt-reset'              :           'reset'
     'click [class^="logo-"], [class*=" logo-"]':'redirectHome'
   
   
@@ -46,36 +46,23 @@ class App extends Spine.Controller
     @modal = exists: false
     @arr = ['home', 'outdoor', 'defense', 'goodies', 'out']
     setting =
-      hidden  : false
-      agreed  : false
+      hidden        : false
+      agreed        : false
+      sidebaropened : false
     
     #@content.append require("views/sample")({version:Spine.version})
     $('.nav-item', @items).removeClass('active')
     $('.'+@getData(base_url, @arr), @items).addClass('active')
     
-    @setBackground()
+    @initBackground()
     @initSettings(setting)
-    @setLogos()
+    @initLogos()
+    @initSidebar()
     
     if @getData(base_url, @arr) == 'defense' then @checkWarning()
     
   checkWarning: ->
     if !@isAgreed() then @showWarning()
-    
-  setLogos: ->
-    flag = Settings.records[0].hidden
-    @logo1.toggleClass('hide', !!flag)
-    @logo2.toggleClass('hide', !!!flag)
-  
-  swopLogos: ->
-    @logo1.toggleClass('hide')
-    bol = @logo1.hasClass('hide')
-    @logo2.toggleClass('hide', !bol)
-    Settings.update(Settings.first().id, {hidden: bol})
-    #Settings.findLogoSettings()
-  
-  setBackground: ->
-    @el.addClass(@getData base_url, @arr)
     
   initSettings: (setting) ->
     Settings.fetch()
@@ -86,17 +73,27 @@ class App extends Spine.Controller
     @log s
     s.id
     
+  initBackground: ->
+    @el.addClass(@getData base_url, @arr)
+    
+  initLogos: ->
+    flag = Settings.records[0].hidden
+    @logo1.toggleClass('hide', !!flag)
+    @logo2.toggleClass('hide', !!!flag)
+  
+  initSidebar: ->
+    isOpen = Settings.records[0].sidebaropened
+    @setSidebar(!isOpen, true)
+    
+  reset: ->
+    @logo1.toggleClass('hide')
+    bol = @logo1.hasClass('hide')
+    @logo2.toggleClass('hide', !bol)
+    Settings.update(Settings.first().id, {hidden: bol, agreed: false})
+    
   isAgreed: ->
     Settings.first()?.agreed
   
-  initAgreedSettings: (logo) ->
-    Settings.fetch()
-    @log Settings.records
-    if i = Settings.first()?.id then return i
-    s = new Settings(logo)
-    s.save()
-    s.id
-    
   changeBackground: (e) ->
     e.preventDefault()
     e.stopPropagation()
@@ -123,6 +120,7 @@ class App extends Spine.Controller
     dialog = new ModalSimpleView
       options:
         small: false
+        css: 'alert alert-warning'
         header: 'AGBs'
         body: -> require("views/agb")
           copyright     : 'Axel Nitzschner'
@@ -145,6 +143,7 @@ class App extends Spine.Controller
     dialog = new ModalSimpleView
       options:
         small: true
+        css: 'alert alert-warning'
         header: 'Impressum'
         body: -> require("views/imp")
           copyright     : 'Axel Nitzschner'
@@ -167,6 +166,7 @@ class App extends Spine.Controller
     dialog = new ModalSimpleView
       options:
         small: false
+        css: 'alert alert-warning'
         header: 'Zahlungsmöglichkeiten'
         body: -> require("views/pay")
           copyright     : 'Axel Nitzschner'
@@ -190,7 +190,7 @@ class App extends Spine.Controller
     dialog = new ModalSimpleView
       options:
         small: false
-        css: 'alert alert-warning'
+        css: 'alert alert-danger'
         header: 'Hinweis zum Versand von Pfeffer- und CS Gas-Sprays'
         body: -> require("views/warning")
           copyright     : 'Axel Nitzschner'
@@ -215,6 +215,7 @@ class App extends Spine.Controller
     dialog = new ModalSimpleView
       options:
         small: false
+        css: 'alert alert-warning'
         header: 'Versand'
         body: -> require("views/delivery")
           copyright     : 'Axel Nitzschner'
@@ -254,11 +255,17 @@ class App extends Spine.Controller
     
   toggleSidebar: (e) ->
     e.preventDefault()
-    @sidebar.toggleClass('off')
+    @setSidebar()
     
   closeSidebar: (e) ->
     e.preventDefault()
-    @sidebar.addClass('off')
+    @setSidebar(true)
+    
+  setSidebar: (bol, notrans=false) ->
+    @sidebar.toggleClass('notrans', notrans)
+    @sidebar.toggleClass('off', bol)
+    isOpen = !@sidebar.hasClass('off')
+    Settings.update(Settings.first().id, sidebaropened: isOpen)
     
   showSidebar: (e) ->
     e.preventDefault()
