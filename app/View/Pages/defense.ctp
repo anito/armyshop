@@ -158,7 +158,7 @@
 </div>
 <div class="">
     
-    <div class="modal-body dark">
+    <div class="modal-body dark hide">
       <div class="danger alert">
         <p>Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong></p>
         <p>mit Altersnachweis (Scan oder Foto des Nachweises bitte per Mail an ha-lehmann@gmx.at).</p>
