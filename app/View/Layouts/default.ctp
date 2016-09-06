@@ -98,7 +98,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           </div>
           <div class="caption">
             <div class="td"><img src="/img/truck.png"></img></div>
-            <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs frei Haus</div>
+            <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs frei Haus. <a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
           </div>
           <div class="caption">
             <div class="td"></div>
