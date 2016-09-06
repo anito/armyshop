@@ -14,6 +14,13 @@ body.fade.out {
 	background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
   transition: background 2s linear;
 }
+header:before {
+  content: url(/img/free_delivery.png);
+  position: absolute;
+  z-index: 1;
+  right: 33px;
+  top: -10px;
+}
 .container {
   margin-top: 0px;
   margin-bottom: 0px;;
@@ -33,7 +40,7 @@ body.fade.out {
   right: -1000px;
   font-size: 1.3em;
   color: #bbb;
-  z-index: 1000;
+  z-index: 998;
   transition: right 0.3s;
 }
 .sidebar.glinch {
@@ -49,7 +56,7 @@ body.fade.out {
 }
 .sidebar .container {
   width: 400px;
-  padding: 16px 13px;
+  padding: 82px 13px 16px;
   float: left;
 }
 .sidebar .close {
@@ -122,7 +129,7 @@ header {
   height: 69px;
 	font-size: 11px;
 	background: #000;
-	opacity: 0.9;
+	opacity: 1;
 	text-transform: uppercase;
 	z-index: 999;
 	-moz-box-shadow: 1px 0px 2px #000;
