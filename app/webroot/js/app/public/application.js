@@ -31450,7 +31450,7 @@ jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Bargeld.");
+buf.push("Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -31460,7 +31460,7 @@ buf.push("</li>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "li\n  h5.h5 Paypal\n  p Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung\n  p Sie sind über den PayPal-Verkäuferschutz abgesichert\nli\n  h5.h5 Vorkasse\n  p Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nli\n  h5.h5 Bei Abholung\n  p Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Bargeld.");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "li\n  h5.h5 Paypal\n  p Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung\n  p Sie sind über den PayPal-Verkäuferschutz abgesichert\nli\n  h5.h5 Vorkasse\n  p Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nli\n  h5.h5 Bei Abholung\n  p Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.");
 }
 };}, "views/sample": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/sample.jade" ) ];
