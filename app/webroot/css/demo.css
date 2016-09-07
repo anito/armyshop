@@ -14,7 +14,7 @@ body.fade.out {
 	background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
   transition: background 2s linear;
 }
-header:before {
+header::before {
   content: url(/img/free_delivery.png);
   position: absolute;
   z-index: 1;
@@ -243,7 +243,7 @@ footer.footer {
 .left {
   float: left;
 }
-.logo:after {
+.logo::after {
   content: url(../img/easteregg.png);
   position: absolute;
   left: -20px;
@@ -292,7 +292,7 @@ div.td {
   padding-right: 10px;
   cursor: pointer;
 }
-.table .line:after {
+.table .line::after {
   content: '';
   position: absolute;
   width: 100%;
@@ -302,14 +302,41 @@ div.td {
 }
 .hint {
   position: absolute;
+  width: 220px;
   top: 18px;
   right: -24px;
+}
+.hint a {
+  white-space: normal;
+  line-height: 1.1em;
 }
 .modal p {
   line-height: 2;
 }
+.modal li h5::before {
+  content: "\e87a";
+  font-family: 'linearicons';
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 0.75em 0 0;
+}
+.modal li {
+  list-style: none;
+}
 .notrans {
   transition: none !important;
+}
+.error {
+  font-size: 16em;
+  font-weight: bold;
+  color: #434352;
+  width: 500px;
+  margin: 0 auto;
+  line-height: .5em;
+}
+.error p:first-child {
+  color: #65657b;
+  font-size: xx-large;
 }
 /*.hal .btn-primary {
   color: #ddd;

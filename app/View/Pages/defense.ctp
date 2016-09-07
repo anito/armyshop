@@ -4,7 +4,7 @@
     <div class="inner">
       <h1 class="display-3">Selbstschutz & Security</h1>
       <h5 class="h5 display-3">Schützen Sie sich und Ihre Mitmenschen vor möglichen Gefahren</h5>
-      <div class="opt-hint hint"><a class="btn btn-primary btn-lg" href="#" role="button">Hinweis zu FSK18 Artikeln »</a></div>
+      <div class="opt-hint hint"><a class="btn btn-primary btn-lg" href="#" role="button">Hinweis zu FSK18 Artikeln anzeigen»</a></div>
     </div>
   </div>
 </div>

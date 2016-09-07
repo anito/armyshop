@@ -15,9 +15,8 @@
  */
 ?>
 <div class="error">
-  <p>Upps, diese Seite existiert nicht</p>
-  <p>404</p>
-  
+  <p>diese View existiert nicht</p>
+  <p>Sorry...</p>
 </div>
 <?php
 if (Configure::read('debug') > 0):

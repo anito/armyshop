@@ -14,11 +14,14 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 ?>
-<div class="error">
-  <p>Upps, diese Seite existiert nicht</p>
-  <p>404</p>
-  
-</div>
+<h2><?php echo $message; ?></h2>
+<p class="error">
+	<strong><?php echo __d('cake', 'Error'); ?>: </strong>
+	<?php printf(
+		__d('cake', 'The requested address %s was not found on this server.'),
+		"<strong>'{$url}'</strong>"
+	); ?>
+</p>
 <?php
 if (Configure::read('debug') > 0):
 	echo $this->element('exception_stack_trace');

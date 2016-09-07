@@ -48,6 +48,11 @@ class AppController extends Controller {
 //      $this->_data = $this->data;
     }
   }
+  function beforeRender() {
+    if($this->name == 'CakeError') {
+          $this->layout = 'error';
+      }
+  }
   
   function object2array($obj) {
     $_arr = is_object($obj) ? get_object_vars($obj) : $obj;

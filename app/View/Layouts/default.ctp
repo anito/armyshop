@@ -82,7 +82,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       </ul>
     </nav>
   </header>
-  <div class="sidebar bg-inverse glinch off">
+  <div class="sidebar bg-inverse glinch">
     <div class="container">
       <div class="table">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">&times;</button>

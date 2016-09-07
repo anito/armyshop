@@ -54,10 +54,10 @@ class App extends Spine.Controller
     $('.nav-item', @items).removeClass('active')
     $('.'+@getData(base_url, @arr), @items).addClass('active')
     
-    @initBackground()
     @initSettings(setting)
-    @initLogos()
     @initSidebar()
+    @initBackground()
+    @initLogos()
     
     if @getData(base_url, @arr) == 'defense' then @checkWarning()
     
@@ -84,12 +84,6 @@ class App extends Spine.Controller
   initSidebar: ->
     isOpen = Settings.records[0].sidebaropened
     @setSidebar(!isOpen, true)
-    
-  reset: ->
-    @logo1.toggleClass('hide')
-    bol = @logo1.hasClass('hide')
-    @logo2.toggleClass('hide', !bol)
-    Settings.update(Settings.first().id, {hidden: bol, agreed: false})
     
   isAgreed: ->
     Settings.first()?.agreed
@@ -275,6 +269,12 @@ class App extends Spine.Controller
     return
     e.preventDefault()
     @sidebar.addClass('off')
+    
+  reset: ->
+#    @logo1.toggleClass('hide')
+#    bol = @logo1.hasClass('hide')
+#    @logo2.toggleClass('hide', !bol)
+    Settings.update(Settings.first().id, {hidden: false, agreed: false})
     
   agreed: ->
     Settings.update(Settings.first().id, {agreed: true})
