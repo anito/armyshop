@@ -281,7 +281,8 @@ div.table {
   position: relative;
 }
 div.tr { 
-  display:table-row; 
+  /*display:table-row; */
+  display: inline-block;
 }
 div.td { 
   display:table-cell; 
