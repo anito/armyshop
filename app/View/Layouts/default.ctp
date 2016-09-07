@@ -37,6 +37,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("component");
     echo $this->Html->css("font");
     echo $this->Html->css("flaticon");
+    echo $this->Html->css("muli");
     echo $this->Html->css("icons");
     echo $this->Html->css("lehmann");
     echo $this->Html->css("demo");
@@ -85,25 +86,29 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   <div class="sidebar bg-inverse glinch">
     <div class="container">
       <div class="table">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">&times;</button>
-          <div class="caption">
-            <div class="td"><img src="/img/dolar.png"></img></div>
-            <div class="td">
-              Bezahlen Sie bequem per PayPal in unserem Online-Partnershop. Informieren Sie sich auch über unsere anderen <a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a>
-            </div>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">&times;</button>
+        <div class="caption">
+          <div class="td"></div>
+          <div class="td line"></div>
+        </div>
+        <div class="caption">
+          <div class="td"><img src="/img/dolar.png"></img></div>
+          <div class="td">
+            Bezahlen Sie bequem per PayPal in unserem Online-Partnershop. Informieren Sie sich auch über unsere anderen <a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a>
           </div>
-          <div class="caption">
-            <div class="td"></div>
-            <div class="td line"></div>
-          </div>
-          <div class="caption">
-            <div class="td"><img src="/img/truck.png"></img></div>
-            <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs frei Haus. <a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
-          </div>
-          <div class="caption">
-            <div class="td"></div>
-            <div class="td line"></div>
-          </div>
+        </div>
+        <div class="caption">
+          <div class="td"></div>
+          <div class="td line"></div>
+        </div>
+        <div class="caption">
+          <div class="td"><img src="/img/truck.png"></img></div>
+          <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs frei Haus. <a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
+        </div>
+        <div class="caption">
+          <div class="td"></div>
+          <div class="td line"></div>
+        </div>
         <div class="caption">
           <div class="tr">
             <div class="td"><img src="/img/parcel.png"></img></div>
@@ -115,6 +120,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             <div class="td">Kosten für Verpackung und Versand nach Deutschland</div>
             <div class="td">5, 90€</div>
           </div>
+        </div>
+        <div class="caption">
+          <div class="td"></div>
+          <div class="td line"></div>
         </div>
       </div>
     </div>

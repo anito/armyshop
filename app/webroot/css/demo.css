@@ -7,8 +7,9 @@ html {
 body {
 	background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
 	color: #333;
-	font-family: 'Myriad Pro', Arial, sans-serif;
-	font-size: 13px;
+	font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;
+	font-size: 0.8rem;
+  font-weight: 300;
 }
 body.fade.out {
 	background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
@@ -20,6 +21,9 @@ header::before {
   z-index: 1;
   right: 10px;
   top: -10px;
+}
+.btn.btn-lg {
+  font-size: 1.2rem;
 }
 .container {
   margin-top: 0px;
@@ -42,7 +46,7 @@ header::before {
   padding-right: 0px;
   position: fixed;
   right: -1000px;
-  font-size: 1.3em;
+  font-size: 1.2em;
   color: #bbb;
   z-index: 998;
   transition: right .5s ease-in-out;
@@ -67,6 +71,9 @@ header::before {
   position: absolute;
   left: 355px;
   top: -25px;
+}
+.sidebar {
+  background-image: url(/img/background.png);
 }
 [class^="logo-"], [class*=" logo-"] {
   cursor: pointer;
@@ -268,7 +275,7 @@ footer.footer {
 .modal .h3 {
   margin-top: 16px;
 }
-div.table { 
+div.table {
   display: table; 
   border-collapse:collapse;
   position: relative;
@@ -323,6 +330,9 @@ div.td {
 .modal li {
   list-style: none;
 }
+.modal-content {
+  background-image: url(/img/background_modal.png);
+}
 .notrans {
   transition: none !important;
 }
@@ -338,26 +348,37 @@ div.td {
   color: #65657b;
   font-size: xx-large;
 }
-/*.hal .btn-primary {
+.hal .btn-primary {
   color: #ddd;
-  background-color: #272a2c;
-  border-color: #707980;
-}
-.hal .btn-primary.active {
-  color: #eee;
-  background-color: #373a3c;
-  border-color: #707980;
-}
-.hal .btn-primary:active:focus {
-  color: #eee;
-  background-color: #474a4c;
-  border-color: #707980;
+  background-color: #424548;
+  border-color: #323538;
 }
 .hal .btn-primary:hover {
-  color: #eee;
-  background-color: #171a1c;
-  border-color: #707980;
-}*/
+  color: #ddd;
+  background-color: #323235;
+  border-color: #323538;
+}
+.hal .btn-primary:active {
+  color: #ddd;
+  background-color: #021a25;
+  border-color: #323538;
+  background-image: none;
+}
+.hal .btn-primary:active:focus {
+  color: #ddd;
+  background-color: #212122;
+  border-color: #223528;
+}
+.hal .alert-warning {
+  background-color: #c5bc8c;
+  border-color: #faf2cc;
+  color: #8a6d3b;
+}
+.hal .alert-danger {
+  background-color: #eca8a8;
+  border-color: #ebcccc;
+  color: #a94442;
+}
 body.fade.in.defense {
   background: transparent url(../img/defense_creative.jpg) 50% 10% fixed;
   transition: background 1s ease-in-out;

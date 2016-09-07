@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Muli';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Muli Light300'), local('Muli-Light'), url(fonts/muli_light_300.woff) format('woff');
+}
+@font-face {
+  font-family: 'Muli';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Muli Light400'), url(fonts/muli_light_400.woff) format('woff');
+}

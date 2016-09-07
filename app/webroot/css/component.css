@@ -30,9 +30,6 @@
 }
 
 .pricing__action {
-  color: inherit;
-  border: none;
-  background: none;
 }
 
 .pricing__action:focus {
@@ -85,14 +82,12 @@
   margin-top: auto;
   padding: 0.75em 2em;
   border-radius: 5px;
-  background: #E06060;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
 }
 
 .pricing--sonam .pricing__action:hover,
 .pricing--sonam .pricing__action:focus {
-  background: #BD3C3C;
 }
 
 /* Jinpa */
@@ -673,7 +668,6 @@
   margin: .5em;
   color: #fff;
   cursor: default;
-  font-family: 'Myriad Pro', Arial, sans-serif;
   border: 1px solid rgba(255,255,255,0.4);
   background: rgba(255,255,255,0.08);
   border-radius: 10px;
@@ -786,8 +780,6 @@ body.on .pricing--norbu .pricing__image img {
   flex: none;
   margin: auto 1em 1em;
   padding: .6em 0em;
-  color: #646464;
-  background: #ccc;
   border-radius: 5px;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
@@ -795,7 +787,6 @@ body.on .pricing--norbu .pricing__image img {
 
 .pricing--norbu .pricing__action:hover,
 .pricing--norbu .pricing__action:focus {
-  background: #b4b4b4;
 }
 
 /* Dawa */
