@@ -85,43 +85,45 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   </header>
   <div class="sidebar bg-inverse glinch">
     <div class="container">
-      <div class="table">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">&times;</button>
-        <div class="caption">
+    	<div class="table">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">×</button>
+        <div class="tr">
           <div class="td"></div>
           <div class="td line"></div>
         </div>
-        <div class="caption">
-          <div class="td"><img src="/img/dolar.png"></img></div>
+        <div class="tr">
+          <div class="td"><img src="/img/dolar.png"></div>
           <div class="td">
             Bezahlen Sie bequem per PayPal in unserem Online-Partnershop. Informieren Sie sich auch über unsere anderen <a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a>
           </div>
         </div>
-        <div class="caption">
+        <div class="tr">
           <div class="td"></div>
           <div class="td line"></div>
         </div>
-        <div class="caption">
-          <div class="td"><img src="/img/truck.png"></img></div>
+        <div class="tr">
+          <div class="td"><img src="/img/truck.png"></div>
           <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs frei Haus. <a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
         </div>
-        <div class="caption">
+        <div class="tr">
           <div class="td"></div>
           <div class="td line"></div>
         </div>
-        <div class="caption">
-          <div class="tr">
-            <div class="td"><img src="/img/parcel.png"></img></div>
+        <div class="group">
+  	  <div class="tr">
+            <div class="td"><img src="/img/parcel.png"></div>
             <div class="td">Kosten für Verpackung und Versand nach Österreich</div>
             <div class="td">3, 90€</div>
           </div>
+        </div>
+        <div class="group">
           <div class="tr">
             <div class="td"></div>
             <div class="td">Kosten für Verpackung und Versand nach Deutschland</div>
             <div class="td">5, 90€</div>
           </div>
         </div>
-        <div class="caption">
+        <div class="tr">
           <div class="td"></div>
           <div class="td line"></div>
         </div>
