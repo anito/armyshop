@@ -3,7 +3,7 @@
   <div class="container">
     <h1 class="display-3">Outdoor & Fitness</h1>
     <h5 class="h5 display-3">Angebote für Sport und Freizeit</h5>
-    <div class="right"><a class="btn btn-primary btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
+    <div class="right"><a class="btn btn-dark btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
   </div>
 </div>
 <div class="pricing pricing--norbu">
@@ -21,7 +21,7 @@
         <li class="pricing__feature">Gewicht: ca. 340g</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/tysonz-alu-baseball-schlaeger-66-cm-65553681.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/tysonz-alu-baseball-schlaeger-66-cm-65553681.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Kinesiologie-Tape</h3>
@@ -37,7 +37,7 @@
         <li class="pricing__feature">Es ähnelt der Elastizität und dem Gewicht der menschlichen Haut</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/kinesiologie-tape-5m-x-5cm-gelb-65606079.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/kinesiologie-tape-5m-x-5cm-gelb-65606079.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Albedo 100 Reflective Spray</h3>
@@ -52,7 +52,7 @@
         <li class="pricing__feature">Albedo100 Reflective Spray Horse & Pets ist ein Spray mit speziellem Reflektor-Effekt, der Objekte bei schwierigen Lichtverhältnissen, wie während der Dämmerung oder in der Dunkelheit, sichtbar macht. </li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/albedo-100-reflective-spray-horse-65642864.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/albedo-100-reflective-spray-horse-65642864.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Albedo Reflect. Invisible Bright</h3>
@@ -69,7 +69,7 @@
         <li class="pricing__feature">vielseitig einsetzbar, wie z.B. auf Kleidung oder schlecht beleuchteten Objekten</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/reflective-invisible-bright-reflektionsspray-100ml-65553635.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/reflective-invisible-bright-reflektionsspray-100ml-65553635.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Everlast MMA Handschuhe</h3>
@@ -88,7 +88,7 @@
         <li class="pricing__feature">Größe: L/XL</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/everlast-mma-handschuhe-65646838.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/everlast-mma-handschuhe-65646838.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">L-Carnitin</h3>
@@ -107,7 +107,7 @@
         <li class="pricing__feature">L-Carnitin hat aus biochemischer Sicht eine Schlüsselfunktion im Fettstoffwechsel</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/l-carnitin-65697160.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/l-carnitin-65697160.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Maca Guarana</h3>
@@ -125,7 +125,7 @@
         <li class="pricing__feature">Guarana kann wie Koffein aktivierend wirken</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/maca-guarana-60-kapseln-zur-nahrungsmittelergaenzung-65553654.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/maca-guarana-60-kapseln-zur-nahrungsmittelergaenzung-65553654.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Steinschleuder Power Shot</h3>
@@ -143,7 +143,7 @@
         <li class="pricing__feature">Perfekt als Hobby</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/steinschleuder-power-shot-mit-kugelmagazin-rot-ab-18-jahre-65559663.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/steinschleuder-power-shot-mit-kugelmagazin-rot-ab-18-jahre-65559663.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Bomberjacke Mil-Tec Größe S</h3>
@@ -162,7 +162,7 @@
         <li class="pricing__feature">Füllung: 100% Polyester, 200g/qm</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/bomberjacke-mil-tec-groesse-s-65987527.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/bomberjacke-mil-tec-groesse-s-65987527.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Bomberjacke Mil-Tec Größe M</h3>
@@ -181,7 +181,7 @@
         <li class="pricing__feature">Füllung: 100% Polyester, 200g/qm</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/bomberjacke-mil-tec-groesse-m-65987531.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/bomberjacke-mil-tec-groesse-m-65987531.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Box Trainings Pratze Schlagpolster</h3>
@@ -198,7 +198,7 @@
         <li class="pricing__feature">Maße: 27cm x 21 cm</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/box-trainings-pratze-schlagpolster-handpratze-schlagkissen-65991250.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/box-trainings-pratze-schlagpolster-handpratze-schlagkissen-65991250.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Handpratze Leder gekrümmt</h3>
@@ -217,7 +217,7 @@
         <li class="pricing__feature">gute Kontrolle</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/handpratze-leder-gekruemmt-boxen-training-schlagpolster-schlagkissen-65991955.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/handpratze-leder-gekruemmt-boxen-training-schlagpolster-schlagkissen-65991955.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
 </div>
 <?php

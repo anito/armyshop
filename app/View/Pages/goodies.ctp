@@ -3,7 +3,7 @@
   <div class="container">
     <h1 class="display-3">Restposten & Specials</h1>
     <h5 class="h5 display-3">Günstige Angebote und Restposten</h5>
-    <div class="right"><a class="btn btn-primary btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
+    <div class="right"><a class="btn btn-dark btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
   </div>
 </div>
 <div class="pricing pricing--norbu">
@@ -21,7 +21,7 @@
         <li class="pricing__feature">Marke: Rahmenlos</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/fun-kaffeebecher-rahmenlos-i-love-my-cat--65553412.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/fun-kaffeebecher-rahmenlos-i-love-my-cat--65553412.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Fun-Kaffeebecher</h3>
@@ -37,7 +37,7 @@
         <li class="pricing__feature">Marke: Rahmenlos</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/fun-kaffeetasse-ich-bin-ein-geschenk-an-die-frauen-dieser-welt--65559718.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/fun-kaffeetasse-ich-bin-ein-geschenk-an-die-frauen-dieser-welt--65559718.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Druckluftfanfare Air Horn</h3>
@@ -55,7 +55,7 @@
         <li class="pricing__feature">Sehr laut</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/druckluftfanfare-air-horn-65559694.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/druckluftfanfare-air-horn-65559694.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Bewegungsmelder 160°</h3>
@@ -73,7 +73,7 @@
         <li class="pricing__feature">230V~/ 50Hz > Stromverbrauch nur 0,45W (static 0,1W) </li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/bewegungsmelder-160-unterputzmontage-fuer-led-geeignet-3-draht-technik-65844338.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+    <a href="https://www.hood.de/i/bewegungsmelder-160-unterputzmontage-fuer-led-geeignet-3-draht-technik-65844338.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
 </div>
 <?php

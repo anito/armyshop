@@ -32,6 +32,9 @@ header::before {
 .container .inner {
   position: relative;
 }
+.jumbotron+.container {
+  margin: 0;
+}
 .table {
   margin-top: 0px;
   margin-bottom: 0px;;
@@ -55,7 +58,7 @@ header::before {
   right: -600px;
   transition: right .5s ease-in-out;
 }
-.sidebar.off .caption .td:not(:first-child) {
+.sidebar.off .tr div:not(:first-child) {
   display: none;
 }
 .sidebar.glinch.off {
@@ -94,7 +97,6 @@ h1.display-3 {
   color: #CCC7C7;
   text-shadow: 0 -1px 2px #2c2d2d;
   font-size: 4em;
-  margin: 0 250px;
   min-width: 400px;
 }
 h5.display-3 {
@@ -135,7 +137,7 @@ header {
   right: 0;
   left: 0;
 }
-.header{
+.header {
 	line-height: 24px;
   height: 69px;
 	font-size: 11px;
@@ -154,40 +156,40 @@ header {
 	display: block;
 	float: left;
 }
-.header a:hover{
+.header a:hover {
 	color: #fff;
 }
-.header span.right{
+.header span.right {
 	float: right;
 }
-.header span.right a{
+.header span.right a {
 	float: none;
 	display: inline;
 }
 .hide {
   display: none !important;
 }
-.more{
+.more {
 	position:relative;
 	clear:both;
-    font-size: 11px;
-    padding: 20px 0px;
-    text-transform:uppercase;
-    width: 390px;
-    height:55px;
-    margin: 0 auto;
+  font-size: 11px;
+  padding: 20px 0px;
+  text-transform:uppercase;
+  width: 390px;
+  height:55px;
+  margin: 0 auto;
 }
-.more ul{
+.more ul {
 	display:block;
 	text-align:center;
 }
-.more ul li{
+.more ul li {
 	display: inline-block;
-    padding: 4px 2px;
+  padding: 4px 2px;
 
 }
 .more ul li.selected a,
-.more ul li.selected a:hover{
+.more ul li.selected a:hover {
 	background:#0099c5;
 	color:#fff;
 	text-shadow:none;
@@ -281,8 +283,7 @@ div.table {
   position: relative;
 }
 div.tr { 
-  /*display:table-row; */
-  display: inline-block;
+  display:table-row; 
 }
 div.td { 
   display:table-cell; 
@@ -292,8 +293,11 @@ div.td {
 .table .caption { 
   display:table-caption;
 }
-.table .group { 
+.table .rowgroup { 
   display:table-row-group;
+}
+.table .colgroup { 
+  display:table-column-group;
 }
 
 .td:first-child {
@@ -349,23 +353,23 @@ div.td {
   color: #65657b;
   font-size: xx-large;
 }
-.hal .btn-primary {
+.hal .btn-dark {
   color: #ddd;
   background-color: #424548;
   border-color: #323538;
 }
-.hal .btn-primary:hover {
+.hal .btn-dark:hover {
   color: #ddd;
   background-color: #323235;
   border-color: #323538;
 }
-.hal .btn-primary:active {
+.hal .btn-dark:active {
   color: #ddd;
   background-color: #021a25;
   border-color: #323538;
   background-image: none;
 }
-.hal .btn-primary:active:focus {
+.hal .btn-dark:active:focus {
   color: #ddd;
   background-color: #212122;
   border-color: #223528;

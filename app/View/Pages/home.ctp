@@ -3,7 +3,7 @@
   <div class="container">
     <h1 class="h1 display-3">Handelsagentur Lehmann</h1>
     <h5 class="h5 display-3">Der Versandhändler Ihres Vertrauens</h5>
-    <div class="right"><a class="btn btn-primary btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
+    <div class="right"><a class="btn btn-dark btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
   </div>
 </div>
 

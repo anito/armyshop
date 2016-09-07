@@ -88,8 +88,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     	<div class="table">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">×</button>
         <div class="tr">
-          <div class="td"></div>
           <div class="td line"></div>
+          <div class="td"></div>
         </div>
         <div class="tr">
           <div class="td"><img src="/img/dolar.png"></div>
@@ -109,23 +109,23 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <div class="td"></div>
           <div class="td line"></div>
         </div>
-        <div class="group">
-  	  <div class="tr">
-            <div class="td"><img src="/img/parcel.png"></div>
+        <div class="tr">
+          <div class="td"><img src="/img/parcel.png"></div>
+          <div class="rowgroup">
             <div class="td">Kosten für Verpackung und Versand nach Österreich</div>
             <div class="td">3, 90€</div>
           </div>
         </div>
-        <div class="group">
-          <div class="tr">
-            <div class="td"></div>
+        <div class="tr">
+          <div class="td "></div>
+          <div class="rowgroup">
             <div class="td">Kosten für Verpackung und Versand nach Deutschland</div>
             <div class="td">5, 90€</div>
           </div>
         </div>
         <div class="tr">
-          <div class="td"></div>
           <div class="td line"></div>
+          <div class="td"></div>
         </div>
       </div>
     </div>
@@ -181,7 +181,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       {{if (typeof footer != 'undefined' && footer.footerButtonText)}}
       <div class="modal-footer" style="position: relative">
         <div class="" style="text-align: left; max-width: 90%">{{if footer.footerBody}}{{html footer.footerBody}}{{/if}} </div>
-        <button class="btn btn-primary opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
+        <button class="btn btn-dark opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
       </div>
       {{/if}}
     </div>

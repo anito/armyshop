@@ -26,7 +26,7 @@
         <li class="pricing__feature">Große Wirkung</li>
       </ul>
     </div>
-    <a href="https://www.hood.de/i/mobile-mini-alarmanlage-handalarm-mit-led-lampe-und-sirene-65760794.htm" target="blank" class="pricing__action btn btn-primary btn-lg" role="button">Zum Shop</a>
+    <a href="https://www.hood.de/i/mobile-mini-alarmanlage-handalarm-mit-led-lampe-und-sirene-65760794.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Tränengas Verteidigungsspray</h3>
@@ -45,7 +45,7 @@
         <li class="pricing__feature">Qualität von Ballistol -  Made in Germany!</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Verteidigungsspray</h3>
@@ -64,7 +64,7 @@
         <li class="pricing__feature">Qualität von Ballistol -  Made in Germany!</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">OC 5000 Pfefferspray</h3>
@@ -82,7 +82,7 @@
         <li class="pricing__feature">Abbildung kann ähnlich sein. Änderungen und Irrtümer vorbehalten.</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Pfefferspray Protect</h3>
@@ -104,7 +104,7 @@
         <li class="pricing__feature">Markenqualität - Made in Germany!</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Police RSG Lady Pfefferspray</h3>
@@ -121,7 +121,7 @@
         <li class="pricing__feature">Abbildung kann ähnlich sein. Änderungen und Irrtümer vorbehalten.</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Profi Pfeffer-Abwehrspray Police RSG </h3>
@@ -138,7 +138,7 @@
         <li class="pricing__feature">Das Profi-Abwehrspray für Security, Personenschützer, Türsteher und offizielle Stellen.</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Pfefferspray TX1919 Gel-Fog</h3>
@@ -155,7 +155,7 @@
         <li class="pricing__feature">50ml Inhalt.</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-primary btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
   </div>
 </div>
 <div class="">
