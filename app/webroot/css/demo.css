@@ -33,7 +33,7 @@ header::before {
   position: relative;
 }
 .jumbotron+.container {
-  margin: 0;
+  /*margin: 0;*/
 }
 .table {
   margin-top: 0px;
