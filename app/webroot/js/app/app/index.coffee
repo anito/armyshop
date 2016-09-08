@@ -12,6 +12,7 @@ class App extends Spine.Controller
     '#header'           : 'header',
     '#header .nav.items': 'items',
     '#header .nav-item' : 'item',
+    '#background'       : 'background',
     '#content'          : 'content',
     '#nav'              : 'nav'
     '#menu-trigger'     : 'menutrigger'
@@ -50,8 +51,8 @@ class App extends Spine.Controller
       agreed        : false
       sidebaropened : false
     
-    #@content.append require("views/sample")({version:Spine.version})
     $('.nav-item', @items).removeClass('active')
+    # highlight nav-item
     $('.'+@getData(base_url, @arr), @items).addClass('active')
     
     @initSettings(setting)
@@ -60,6 +61,7 @@ class App extends Spine.Controller
     @initLogos()
     
     if @getData(base_url, @arr) == 'defense' then @checkWarning()
+    if @getData(base_url, @arr) != 'home' then @background.addClass('blur')
     
   checkWarning: ->
     if !@isAgreed() then @showWarning()
@@ -74,7 +76,7 @@ class App extends Spine.Controller
     s.id
     
   initBackground: ->
-    @el.addClass(@getData base_url, @arr)
+    @background.addClass(@getData base_url, @arr)
     
   initLogos: ->
     flag = Settings.records[0].hidden
@@ -98,8 +100,8 @@ class App extends Spine.Controller
     res = @getData s, arr
     
     for c in arr
-      @el.removeClass(c)
-    @el.addClass(res)
+      @background.removeClass(c)
+    @background.addClass(res)
   
   removeBackground: (e) ->
     e.preventDefault()
@@ -107,8 +109,8 @@ class App extends Spine.Controller
     
     arr = @arr
     for c in arr
-      @el.removeClass(c)
-    @el.addClass('out')
+      @background.removeClass(c)
+    @background.addClass('out')
     
   showAgb: (e) -> 
     dialog = new ModalSimpleView
@@ -245,7 +247,7 @@ class App extends Spine.Controller
     
   toggleView: (e) ->
     e.preventDefault()
-    @el.toggleClass('on')
+    @background.toggleClass('on')
     
   toggleSidebar: (e) ->
     e.preventDefault()
