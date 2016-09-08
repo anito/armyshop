@@ -28,7 +28,7 @@ class App extends Spine.Controller
     
     'click .opt-hint'               :           'showWarning'
     'click .opt-agreed'             :           'agreed'
-    'click .sidebar .close'         :           'closeSidebar'
+    'click .opt-close'              :           'closeSidebar'
     'click .opt-sidebar'            :           'toggleSidebar'
     'click .sidebar .td:first-child':           'toggleSidebar'
     'click .paypal'                 :           'toggleView'

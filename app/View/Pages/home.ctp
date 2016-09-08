@@ -1,9 +1,8 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
   <div class="container">
-    <h1 class="h1 display-3">Handelsagentur Lehmann</h1>
+    <h1 class="h1 display-3">Handelsagentur<br>Lehmann</h1>
     <h5 class="h5 display-3">Der Versandhändler Ihres Vertrauens</h5>
-    <div class="right"><a class="btn btn-dark btn-lg hide" href="#" role="button">Erfahren Sie mehr »</a></div>
   </div>
 </div>
 

@@ -58,7 +58,7 @@ header::before {
   right: -600px;
   transition: right .5s ease-in-out;
 }
-.sidebar.off .tr div:not(:first-child) {
+.sidebar.off .tr *:not(:first-child) {
   display: none;
 }
 .sidebar.glinch.off {
@@ -70,10 +70,7 @@ header::before {
   padding: 100px 13px 16px;
   float: left;
 }
-.sidebar .close {
-  position: absolute;
-  left: 355px;
-  top: -25px;
+.sidebar.off button.close {
 }
 .sidebar {
   background-image: url(/img/background.png);
@@ -373,6 +370,12 @@ div.td {
   color: #ddd;
   background-color: #212122;
   border-color: #223528;
+}
+.btn.sm {
+  font-size: .8rem;
+}
+.wide {
+  width: 100%;
 }
 .hal .alert-warning {
   background-color: #c5bc8c;

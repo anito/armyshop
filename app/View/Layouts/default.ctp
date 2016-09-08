@@ -86,7 +86,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   <div class="sidebar bg-inverse glinch">
     <div class="container">
     	<div class="table">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">×</button>
+        <div class="tr">
+          <div class="td"></div>
+          <button type="button" class="btn btn-dark sm wide opt-close" aria-hidden="true">schliessen</button>
+        </div>
         <div class="tr">
           <div class="td line"></div>
           <div class="td"></div>
