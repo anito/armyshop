@@ -52,109 +52,106 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('script');
 	?>
 </head>
-  <body class="hal">
-    <div id="background" class="body fade in"></div>
-    <div id="content">
-      <div class="logos">
-        <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
-        <div class="logo hide logo-2 hide"></div>
-      </div>
-      <header id="header" class="header">
-        <nav class="navbar navbar-static-top navbar-dark bg-inverse">
-          <a class="navbar-brand" href="/">
-            <span class="flaticon-menu hide" style="font-size: 2.5em"></span>
-          </a>
-          <ul class="nav navbar-nav items">
-            <li id="" class="nav-item home">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li id="" class="nav-item defense">
-              <a class="nav-link" href="/pages/defense">Selbstschutz & Security</a>
-            </li>
-            <li id="" class="nav-item outdoor">
-              <a class="nav-link" href="/pages/outdoor">Outdoor & Fitness</a>
-            </li>
-            <li id="" class="nav-item goodies">
-              <a class="nav-link" href="/pages/goodies">Restposten & Specials</a>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav items">
-            <li id="" class="nav-item opt-sidebar">
-              <a class="nav-link hide" href="#">Lieferung</a>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <div class="sidebar bg-inverse glinch">
-        <div class="container">
-          <div class="table">
-            <div class="tr">
-              <div class="td"></div>
-              <button type="button" class="btn btn-dark sm wide opt-close" aria-hidden="true">schliessen</button>
-            </div>
-            <div class="tr">
-              <div class="td line"></div>
-              <div class="td"></div>
-            </div>
-            <div class="tr">
-              <div class="td"><img src="/img/dolar.png"></div>
-              <div class="td">
-                Bezahlen Sie bequem per PayPal in unserem Online-Partnershop. Informieren Sie sich auch über unsere anderen <a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a>
-              </div>
-            </div>
-            <div class="tr">
-              <div class="td"></div>
-              <div class="td line"></div>
-            </div>
-            <div class="tr">
-              <div class="td"><img src="/img/truck.png"></div>
-              <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs frei Haus. <a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
-            </div>
-            <div class="tr">
-              <div class="td"></div>
-              <div class="td line"></div>
-            </div>
-            <div class="tr">
-              <div class="td"><img src="/img/parcel.png"></div>
-              <div class="rowgroup">
-                <div class="td">Kosten für Verpackung und Versand nach Österreich</div>
-                <div class="td">3, 90€</div>
-              </div>
-            </div>
-            <div class="tr">
-              <div class="td "></div>
-              <div class="rowgroup">
-                <div class="td">Kosten für Verpackung und Versand nach Deutschland</div>
-                <div class="td">5, 90€</div>
-              </div>
-            </div>
-            <div class="tr">
-              <div class="td line"></div>
-              <div class="td"></div>
-            </div>
+<body class="hal fade in">
+  <div class="logos">
+    <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
+    <div class="logo hide logo-2 hide"></div>
+  </div>
+  <header id="header" class="header">
+    <nav class="navbar navbar-static-top navbar-dark bg-inverse">
+      <a class="navbar-brand" href="/">
+        <span class="flaticon-menu hide" style="font-size: 2.5em"></span>
+      </a>
+      <ul class="nav navbar-nav items">
+        <li id="" class="nav-item home">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li id="" class="nav-item defense">
+          <a class="nav-link" href="/pages/defense">Selbstschutz & Security</a>
+        </li>
+        <li id="" class="nav-item outdoor">
+          <a class="nav-link" href="/pages/outdoor">Outdoor & Fitness</a>
+        </li>
+        <li id="" class="nav-item goodies">
+          <a class="nav-link" href="/pages/goodies">Restposten & Specials</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav items">
+        <li id="" class="nav-item opt-sidebar">
+          <a class="nav-link hide" href="#">Lieferung</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <div class="sidebar bg-inverse glinch">
+    <div class="container">
+    	<div class="table">
+        <div class="tr">
+          <div class="td"></div>
+          <button type="button" class="btn btn-dark sm wide opt-close" aria-hidden="true">schliessen</button>
+        </div>
+        <div class="tr">
+          <div class="td line"></div>
+          <div class="td"></div>
+        </div>
+        <div class="tr">
+          <div class="td"><img src="/img/dolar.png"></div>
+          <div class="td">
+            Bezahlen Sie bequem per PayPal in unserem Online-Partnershop. Informieren Sie sich auch über unsere anderen <a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a>
           </div>
         </div>
-      </div>
-      <div id="container" style="">
-        <div class="content">
-
-
-          <?php echo $this->fetch('content'); ?>
-          <?php echo $this->element('sql_dump'); ?>
-
+        <div class="tr">
+          <div class="td"></div>
+          <div class="td line"></div>
+        </div>
+        <div class="tr">
+          <div class="td"><img src="/img/truck.png"></div>
+          <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs frei Haus. <a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
+        </div>
+        <div class="tr">
+          <div class="td"></div>
+          <div class="td line"></div>
+        </div>
+        <div class="tr">
+          <div class="td"><img src="/img/parcel.png"></div>
+          <div class="rowgroup">
+            <div class="td">Kosten für Verpackung und Versand nach Österreich</div>
+            <div class="td">3, 90€</div>
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td "></div>
+          <div class="rowgroup">
+            <div class="td">Kosten für Verpackung und Versand nach Deutschland</div>
+            <div class="td">5, 90€</div>
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td line"></div>
+          <div class="td"></div>
         </div>
       </div>
-      <footer class="footer bg-inverse">
-        <span class="opt-reset" title="Reset Hinweis">© HA Lehman</span>
-        <span><a href="#" class="opt-imp">Impressum</a></span>
-        <span><a href="#" class=" opt-agb">AGB</a></span>
-        <span><a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a></span>
-        <span><a href="#" class=" opt-del">Versand</a></span>
-      </footer>
-      <!-- modal-dialogue -->
-      <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="top: 65px;"></div>
-      <!-- /.modal -->
+    </div>
   </div>
+  <div id="container" style="">
+    <div id="content">
+
+
+      <?php echo $this->fetch('content'); ?>
+      <?php echo $this->element('sql_dump'); ?>
+
+    </div>
+  </div>
+  <footer class="footer bg-inverse">
+    <span class="opt-reset" title="Reset Hinweis">© HA Lehman</span>
+    <span><a href="#" class="opt-imp">Impressum</a></span>
+    <span><a href="#" class=" opt-agb">AGB</a></span>
+    <span><a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a></span>
+    <span><a href="#" class=" opt-del">Versand</a></span>
+  </footer>
+  <!-- modal-dialogue -->
+  <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="top: 65px;"></div>
+  <!-- /.modal -->
 <?php echo $this->element('sql_dump'); ?>
 <script charset="utf-8">
 

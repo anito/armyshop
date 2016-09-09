@@ -30603,7 +30603,6 @@ Released under the MIT License
       '#header': 'header',
       '#header .nav.items': 'items',
       '#header .nav-item': 'item',
-      '#background': 'background',
       '#content': 'content',
       '#nav': 'nav',
       '#menu-trigger': 'menutrigger',
@@ -30653,9 +30652,6 @@ Released under the MIT License
       if (this.getData(base_url, this.arr) === 'defense') {
         this.checkWarning();
       }
-      if (this.getData(base_url, this.arr) !== 'home') {
-        this.background.addClass('blur');
-      }
     }
 
     App.prototype.checkWarning = function() {
@@ -30678,7 +30674,7 @@ Released under the MIT License
     };
 
     App.prototype.initBackground = function() {
-      return this.background.addClass(this.getData(base_url, this.arr));
+      return this.el.addClass(this.getData(base_url, this.arr));
     };
 
     App.prototype.initLogos = function() {
@@ -30709,9 +30705,9 @@ Released under the MIT License
       res = this.getData(s, arr);
       for (j = 0, len = arr.length; j < len; j++) {
         c = arr[j];
-        this.background.removeClass(c);
+        this.el.removeClass(c);
       }
-      return this.background.addClass(res);
+      return this.el.addClass(res);
     };
 
     App.prototype.removeBackground = function(e) {
@@ -30721,9 +30717,9 @@ Released under the MIT License
       arr = this.arr;
       for (j = 0, len = arr.length; j < len; j++) {
         c = arr[j];
-        this.background.removeClass(c);
+        this.el.removeClass(c);
       }
-      return this.background.addClass('out');
+      return this.el.addClass('out');
     };
 
     App.prototype.showAgb = function(e) {
@@ -30902,7 +30898,7 @@ Released under the MIT License
 
     App.prototype.toggleView = function(e) {
       e.preventDefault();
-      return this.background.toggleClass('on');
+      return this.el.toggleClass('on');
     };
 
     App.prototype.toggleSidebar = function(e) {

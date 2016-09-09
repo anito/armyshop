@@ -5,39 +5,15 @@ html {
   min-height: 100%;
 }
 body {
+	background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
 	color: #333;
 	font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;
 	font-size: 0.8rem;
   font-weight: 300;
 }
-.body {
-	background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
-  position: fixed;
-  left: 0px;
-  right: 0px;
-  display: block;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-.blur {
-  -webkit-filter: blur(30px);
-  -moz-filter: blur(30px);
-  -o-filter: blur(30px);
-  -ms-filter: blur(30px);
-  filter: blur(30px);
-}
-.body.fade.out {
+body.fade.out {
 	background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
   transition: background 2s linear;
-}
-#content {
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-  margin-left: 0px;
-  margin-right: 0px;
 }
 header::before {
   content: url(/img/free_delivery.png);
@@ -70,7 +46,6 @@ header::before {
 .sidebar {
   width: 1000px;
   height: 100%;
-  padding-top: 60px;
   padding-right: 0px;
   position: fixed;
   right: -1000px;
@@ -239,7 +214,7 @@ header {
   padding: 0rem 1rem;
 }
 .footer {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
   height: 60px;
@@ -412,15 +387,15 @@ div.td {
   border-color: #ebcccc;
   color: #a94442;
 }
-.body.fade.in.defense {
+body.fade.in.defense {
   background: transparent url(../img/defense_creative.jpg) 50% 10% fixed;
   transition: background 1s ease-in-out;
 }
-.body.fade.in.outdoor {
+body.fade.in.outdoor {
   background: transparent url(../img/outdoor_creative.jpg) 40% 20% fixed; 
   transition: background 1s ease-in-out;
 }
-.body.fade.in.goodies {
+body.fade.in.goodies {
   background: transparent url(../img/goodies_creative.jpg) 20% 30% fixed; 
   transition: background 1s ease-in-out;
 }
