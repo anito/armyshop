@@ -5,6 +5,17 @@ class GroupsController extends AppController {
 
   public $name = 'Groups';
 
+  function beforeFilter() {
+    $this->Auth->allowedActions = array('login', 'logout', 'auth', 'ping', 'add');
+    $this->layout = 'cake';
+    parent::beforeFilter();
+  }
+  
+  function beforeRender() {
+    $this->response->disableCache();
+    parent::beforeRender();
+  }
+  
   function index() {
     $this->Group->recursive = 0;
     $this->set('groups', $this->paginate());
@@ -12,7 +23,7 @@ class GroupsController extends AppController {
 
   function view($id = null) {
     if (!$id) {
-      $this->Session->setFlash(__('Invalid group', true));
+      $this->Flash->error(__('Invalid group', true));
       $this->redirect(array('action' => 'index'));
     }
     $this->set('group', $this->Group->read(null, $id));
@@ -22,25 +33,25 @@ class GroupsController extends AppController {
     if (!empty($this->request->data)) {
       $this->Group->create();
       if ($this->Group->save($this->request->data)) {
-        $this->Session->setFlash(__('The group has been saved', true));
+        $this->Flash->success(__('The group has been saved', true));
         $this->redirect(array('action' => 'index'));
       } else {
-        $this->Session->setFlash(__('The group could not be saved. Please, try again.', true));
+        $this->Flash->error(__('The group could not be saved. Please, try again.', true));
       }
     }
   }
 
   function edit($id = null) {
     if (!$id && empty($this->request->data)) {
-      $this->Session->setFlash(__('Invalid group', true));
+      $this->Flash->error(__('Invalid group', true));
       $this->redirect(array('action' => 'index'));
     }
     if (!empty($this->request->data)) {
       if ($this->Group->save($this->request->data)) {
-        $this->Session->setFlash(__('The group has been saved', true));
+        $this->Flash->success(__('The group has been saved', true));
         $this->redirect(array('action' => 'index'));
       } else {
-        $this->Session->setFlash(__('The group could not be saved. Please, try again.', true));
+        $this->Flash->error(__('The group could not be saved. Please, try again.', true));
       }
     }
     if (empty($this->request->data)) {

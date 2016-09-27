@@ -37,7 +37,7 @@ class OutdoorController extends Controller {
 
   function beforeFilter() {
     $this->autoRender = true;
-    $this->layout = 'outdoor';
+    $this->layout = '';
   }
   
 //  function beforeRender() {

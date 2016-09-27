@@ -32,7 +32,9 @@
     <h3 class="pricing__title">Tränengas Verteidigungsspray</h3>
     <p class="pricing__sentence">40 ml mit dem Wirkstoff CS für Ihre Sicherheit.</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>4,90
-      <div class="pricing__image"><img  src="/img/products/CS-KO-Gas.jpg"/></div>
+      <a href="https://www.hood.de/i/ko-cs-gas-abwehrspray-40ml-traenengas-66363479.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/CS-KO-Gas.jpg"/></div>
+      </a>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -45,13 +47,15 @@
         <li class="pricing__feature">Qualität von Ballistol -  Made in Germany!</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="https://www.hood.de/i/ko-cs-gas-abwehrspray-40ml-traenengas-66363479.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Verteidigungsspray</h3>
     <p class="pricing__sentence">mit dem Wirkstoff CS</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>4,90
-      <div class="pricing__image"><img  src="/img/products/Defenol-CS-Gas-40ml.jpg"/></div>
+      <a href="https://www.hood.de/i/ballistol-defenol-cs-verteidigungsspray-40-ml-66286451.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/Defenol-CS-Gas-40ml.jpg"/></div>
+      </a>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -64,13 +68,15 @@
         <li class="pricing__feature">Qualität von Ballistol -  Made in Germany!</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="https://www.hood.de/i/ballistol-defenol-cs-verteidigungsspray-40-ml-66286451.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">OC 5000 Pfefferspray</h3>
     <p class="pricing__sentence"> 40ml Breitstrahl</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>9,90
-      <div class="pricing__image"><img  src="/img/products/OC-5000-SSG-40ml.jpg"/></div>
+      <a href="https://www.hood.de/i/oc-5000-pfefferspray-40ml-breitstrahl-verteidigungsspray-66363616.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/OC-5000-SSG-40ml.jpg"/></div>
+      </a>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -82,13 +88,15 @@
         <li class="pricing__feature">Abbildung kann ähnlich sein. Änderungen und Irrtümer vorbehalten.</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="https://www.hood.de/i/oc-5000-pfefferspray-40ml-breitstrahl-verteidigungsspray-66363616.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Pfefferspray Protect</h3>
     <p class="pricing__sentence"> in der 40ml Sprühnebel Dose</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>5,00
-      <div class="pricing__image"><img  src="/img/products/Pfeffer-40-ml-Protect.jpg"/></div>
+    <div class="pricing__price"><span class="pricing__currency">€</span>3,29
+      <a href="https://www.hood.de/i/pfefferspray-protect-40ml-66280950.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/Pfeffer-40-ml-Protect.jpg"/></div>
+      </a>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -104,13 +112,15 @@
         <li class="pricing__feature">Markenqualität - Made in Germany!</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="https://www.hood.de/i/pfefferspray-protect-40ml-66280950.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="true">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Police RSG Lady Pfefferspray</h3>
     <p class="pricing__sentence">in der handlichen 15ml Breitstrahl Dose</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>8,90
-      <div class="pricing__image"><img  src="/img/products/RSG-Pfefferspray-15ml.jpg"/></div>
+      <a href="https://www.hood.de/i/police-rsg-13-2-oc-lady-pfefferspray-15ml-verteidigungsspray-66363701.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/RSG-Pfefferspray-15ml.jpg"/></div>
+      </a>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -121,13 +131,15 @@
         <li class="pricing__feature">Abbildung kann ähnlich sein. Änderungen und Irrtümer vorbehalten.</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="https://www.hood.de/i/police-rsg-13-2-oc-lady-pfefferspray-15ml-verteidigungsspray-66363701.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Profi Pfeffer-Abwehrspray Police RSG </h3>
     <p class="pricing__sentence">Breitstrahlspray mit Sprühnebel bis ca. 3 Meter Reichweite.</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>21,90
-      <div class="pricing__image"><img  src="/img/products/RSG-Pfefferspray-63ml.jpg"/></div>
+    <div class="pricing__price"><span class="pricing__currency">€</span>14,99
+      <a href="https://www.hood.de/i/profi-pfefferspray-police-rsg-breitstrahlspray-50-ml-66286716.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/RSG-Pfefferspray-63ml.jpg"/></div>
+      </a>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -138,13 +150,15 @@
         <li class="pricing__feature">Das Profi-Abwehrspray für Security, Personenschützer, Türsteher und offizielle Stellen.</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="https://www.hood.de/i/profi-pfefferspray-police-rsg-breitstrahlspray-50-ml-66286716.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
   <div class="pricing__item">
     <h3 class="pricing__title">Pfefferspray TX1919 Gel-Fog</h3>
     <p class="pricing__sentence">in der 50ml Dose, extra stark</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>9,90
-      <div class="pricing__image"><img  src="/img/products/TX-1919-Pfeffer-Gel-50ml.jpg"/></div>
+      <a href="https://www.hood.de/i/pfefferspray-tx1919-nebel-gel-extra-stark-10-oc-50ml-dose-66363724.htm" target="blank" class="" aria-disabled="false">
+        <div class="pricing__image"><img  src="/img/products/TX-1919-Pfeffer-Gel-50ml.jpg"/></div>
+      </a>
     </div>
     <div class="pricing__feature-list">
       <ul class="">
@@ -155,7 +169,7 @@
         <li class="pricing__feature">50ml Inhalt.</li>
       </ul>
     </div>
-    <a href="" target="blank" class="pricing__action btn btn-dark btn-lg disabled" role="button" aria-disabled="true">Zum Shop</a>
+    <a href="https://www.hood.de/i/pfefferspray-tx1919-nebel-gel-extra-stark-10-oc-50ml-dose-66363724.htm" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
   </div>
 </div>
 <div class="">

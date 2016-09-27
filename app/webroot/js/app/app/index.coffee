@@ -61,6 +61,10 @@ class App extends Spine.Controller
     
     if @getData(base_url, @arr) == 'defense' then @checkWarning()
     
+    
+    @routes
+      '/home/' : (params) ->
+    
   checkWarning: ->
     if !@isAgreed() then @showWarning()
     

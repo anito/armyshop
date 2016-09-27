@@ -126,11 +126,11 @@ if (!defined('TOPLEVEL')) {
   $last = count($a)-1;
   define('TOPLEVEL', $a[$last]);
 }
-if (!defined('HOST')) {
-  $a = explode('.', DIR_HOST);
-  $domain = count($a)-2;
-  define('HOST', $a[$domain]);
-}
+//if (!defined('HOST')) {
+//  $a = explode('.', DIR_HOST);
+//  $domain = count($a)-2;
+//  define('HOST', $a[$domain]);
+//}
 if (!defined('SIMPLE_JSON')) {
 	define('SIMPLE_JSON', '/Elements/simple_json');
 }
@@ -143,4 +143,120 @@ if (!defined('MAGICK_PATH')) {
    define('MAGICK_PATH_FINAL', '"' . MAGICK_PATH . '"');	
 } else {
    define('MAGICK_PATH_FINAL', MAGICK_PATH);	
+}
+
+function pre() {
+	$args = func_get_args();
+	foreach($args as $arg) {
+		pr($arg);
+	}
+}
+
+function p($options) {
+  $defaults = array(
+      'width' => 176,
+      'height' => 132,
+      'square' => 1, // 1 => new Size ; 2 => old Size, 3 => aspect ratio
+      'quality' => 80,
+      'sharpening' => 1,
+      'anchor_x' => 50,
+      'anchor_y' => 50,
+      'force' => false
+  );
+  $o = array_merge($defaults, $options);
+  $args = join(',', array($o['uid'], $o['id'], $o['fn'], $o['width'], $o['height'], $o['square'], $o['quality'], $o['sharpening'], $o['anchor_x'], $o['anchor_y'], (int) $o['force']));
+  include_once(ROOT . DS . 'app' . DS . 'Controller' . DS . 'Component' . DS . 'SaltComponent.php');
+  $salt = new SaltComponent();
+  $crypt = $salt->convert($args);
+  $path = PHOTOS . DS . $o['uid'] . DS . $o['id'] . DS . 'lg' . DS . $o['fn'];
+  $m = filemtime($path);
+  return BASE_URL . '/q/a:' . $crypt . '/m:' . $m;
+}
+
+function __p($options) {
+  $defaults = array(
+      'width' => 176,
+      'height' => 132,
+      'square' => 1, // 1 => new Size ; 2 => old Size, 3 => aspect ratio
+      'quality' => 80,
+      'sharpening' => 1,
+      'anchor_x' => 50,
+      'anchor_y' => 50,
+      'force' => false
+  );
+  $o = array_merge($defaults, $options);
+  $args = join(',', array($o['uid'], $o['id'], $o['fn'], $o['width'], $o['height'], $o['square'], $o['quality'], $o['sharpening'], $o['anchor_x'], $o['anchor_y'], (int) $o['force']));
+  include_once(ROOT . DS . 'app' . DS . 'Controller' . DS . 'Component' . DS . 'SaltComponent.php');
+  $salt = new SaltComponent();
+  $crypt = $salt->convert($args);
+  $path = PHOTOS . DS . $o['uid'] . DS . $o['id'] . DS . 'lg' . DS . $o['fn'];
+  $m = filemtime($path);
+  return BASE_URL . '/q/a:' . $crypt . '/m:' . $m;
+}
+
+function computeSize($file, $new_w, $new_h, $scale) {
+	$dims = getimagesize($file);
+	$old_x = $dims[0];
+	$old_y = $dims[1];
+	$original_aspect = $old_x/$old_y;
+	$new_aspect = $new_w/$new_h;
+	if ($scale == 2) {
+		$x = $old_x;
+		$y = $old_y;
+	} else if ($scale == 1) {
+		$x = $new_w;
+		$y = $new_h;
+	} else {
+		if ($original_aspect >= $new_aspect) {
+			if ($new_w > $old_x) {
+				$x = $old_x;
+				$y = $old_y;
+			}
+			$x = $new_w;
+			$y = ($new_w*$old_y)/$old_x;
+		} else {
+			if ($new_h > $old_y) {
+				$x = $old_x;
+				$y = $old_y;
+			}
+			$x = ($new_h*$old_x)/$old_y;
+			$y = $new_h;
+		}
+	}
+	return array($x, $y);
+}
+
+function allowableFile($fn) {
+  if (eregi('\.flv$|.\f4v$|\.mov$|\.mp4$|\.m4a$|\.m4v$|\.3gp$|\.3g2$|\.swf$|\.jpg$|\.jpeg$|\.gif$|\.png$', $fn)) {
+    return true;
+  }
+  return false;
+}
+
+function isVideo($fn) {
+  if (eregi('\.flv$|\.f4v$|\.mov$|\.mp4$|\.m4a$|\.m4v$|\.3gp$|\.3g2$', $fn)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isSwf($fn) {
+  if (eregi('\.swf$', $fn)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isImage($fn) {
+  return!isNotImg($fn);
+}
+
+function isNotImg($fn) {
+  if (isSwf($fn) || isVideo($fn)) {
+    return true;
+  } else {
+    return false;
+  }
 }

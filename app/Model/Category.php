@@ -1,13 +1,45 @@
 <?php
 App::uses('AppModel', 'Model');
-
+/**
+ * Category Model
+ *
+ * @property Product $Product
+ */
 class Category extends AppModel {
 
-  public $name = 'Category';
-  public $displayField = 'title';
-  public $useDbConfig = 'default';
-  
-  public $hasMany = array();
-}
+/**
+ * Display field
+ *
+ * @var string
+ */
+	public $displayField = 'name';
 
-?>
+  public $hasMany = array(
+    'CategoriesProduct' => array('dependent' => true)
+  );
+  
+  
+	// The Associations below have been created with all possible keys, those that are not needed can be removed
+
+/**
+ * hasAndBelongsToMany associations
+ *
+ * @var array
+ */
+	public $hasAndBelongsToMany_ = array(
+		'Product' => array(
+			'className' => 'Product',
+			'joinTable' => 'categories_products',
+			'foreignKey' => 'category_id',
+			'associationForeignKey' => 'product_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		)
+	);
+
+}

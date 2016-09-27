@@ -15,7 +15,7 @@
  */
 ?>
 <div class="error">
-  <p>diese View existiert nicht</p>
+  <p>diese Seite existiert nicht</p>
   <p>Sorry...</p>
 </div>
 <?php

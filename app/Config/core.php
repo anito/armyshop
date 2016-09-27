@@ -153,7 +153,7 @@
  *	`admin_index()` and `/admin/controller/index`
  *	`manager_index()` and `/manager/controller/index`
  */
-	//Configure::write('Routing.prefixes', array('admin'));
+Configure::write('Routing.prefixes', array('admin'));
 
 /**
  * Turn off all caching application-wide.
@@ -225,7 +225,8 @@
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', 'f7e4a948ff5120cd1989f01812ce6ccc5b37bd64');
+	Configure::write('Security.salt', crypt('bartcc', '$2a$öaslkdöasldk07$use%$esilystriforsalt$'));
+//	Configure::write('Security.salt', 'f7e4a948ff5120cd1989f01812ce6ccc5b37bd64');
 
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.

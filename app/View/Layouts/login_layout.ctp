@@ -30,7 +30,7 @@
     
     echo $this->Html->css('bootstrap/css/bootstrap');
     echo $this->Html->css('application_boxmodel');
-    echo $this->Html->script('temp/public/application');
+    echo $this->Html->script('app/public/application');
 
     echo $this->Html->scriptStart();
     ?>

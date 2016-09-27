@@ -9,7 +9,7 @@ class UploadsController extends AppController {
 
   function beforeFilter() {
     $this->disableCache();
-    
+    $this->Auth->allowedActions = array('image');
     parent::beforeFilter();
   }
 

@@ -32,22 +32,30 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
-  public $helpers = array('Session', 'Html', 'Js');
-  public $components = array('RequestHandler', 'Session', 'Cookie');
+  public $helpers = array('Session', 'Html', 'Js', 'Flash');
+  public $components = array('RequestHandler', 'Session', 'Flash', 'Cookie', 'Auth' => array(
+      'authenticate' => array(
+          'Form' => array(
+              'passwordHasher' => 'Blowfish'
+          )
+      )
+  ));
 
   function beforeFilter() {
     if ($this->request->is('ajax')) {
       $this->autoRender = FALSE;
       $this->Auth->autoRedirect = FALSE;
       $data = $this->request->input('json_decode');
-      if(!empty($data)) {
+      if (!empty($data)) {
+//        $this->log('json decoded data-> ' . $data, LOG_DEBUG);
         $data = $this->object2Array($data);
         $this->request->data = $data;
-        $this->log('json decoded data: '.$data, LOG_DEBUG);
       }
-//      $this->_data = $this->data;
+    } else {
+      $this->Auth->autoRedirect = TRUE;
     }
   }
+
   function beforeRender() {
     if($this->name == 'CakeError') {
           $this->layout = 'error';
@@ -66,7 +74,7 @@ class AppController extends Controller {
 
   // Escape special meaning character for MySQL
   // Must be used AFTER a session was opened
-  private function cleanValue($value) {
+  function cleanValue($value) {
     if (get_magic_quotes_gpc()) {
       $value = stripslashes($value);
     }
@@ -77,7 +85,7 @@ class AppController extends Controller {
     return $value;
   }
 
-  private function flatten_array($arr) {
+  function flatten_array($arr) {
 
     $out = array();
 //    debug($arr);
@@ -87,5 +95,4 @@ class AppController extends Controller {
     }
     return $out;
   }
-
 }

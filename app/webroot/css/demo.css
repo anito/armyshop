@@ -339,16 +339,19 @@ div.td {
   transition: none !important;
 }
 .error {
-  font-size: 16em;
-  font-weight: bold;
+  font-size: 4em;
   color: #434352;
   width: 500px;
   margin: 0 auto;
-  line-height: .5em;
+  line-height: 1em;
 }
 .error p:first-child {
-  color: #65657b;
-  font-size: xx-large;
+  font-weight: normal;
+  color: #35353b;
+  font-size: large;
+}
+.error p:nth-child(2) {
+  font-weight: bold;
 }
 .hal .btn-dark {
   color: #ddd;

@@ -16428,14 +16428,14 @@ $.effects.effect.slide = function( o, done ) {
 })(jQuery);
 
 /*!
- * Bootstrap v3.3.7 (http://getbootstrap.com)
- * Copyright 2011-2016 Twitter, Inc.
+ * Bootstrap v3.3.4 (http://getbootstrap.com)
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=ddc8814edd45467871b443bc0782e6b0)
- * Config saved to config.json and https://gist.github.com/ddc8814edd45467871b443bc0782e6b0
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=c81f1cf77b97289f3017)
+ * Config saved to config.json and https://gist.github.com/c81f1cf77b97289f3017
  */
 if (typeof jQuery === 'undefined') {
   throw new Error('Bootstrap\'s JavaScript requires jQuery')
@@ -16443,16 +16443,628 @@ if (typeof jQuery === 'undefined') {
 +function ($) {
   'use strict';
   var version = $.fn.jquery.split(' ')[0].split('.')
-  if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1) || (version[0] > 3)) {
-    throw new Error('Bootstrap\'s JavaScript requires jQuery version 1.9.1 or higher, but lower than version 4')
+  if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1)) {
+    throw new Error('Bootstrap\'s JavaScript requires jQuery version 1.9.1 or higher')
   }
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: modal.js v3.3.7
+ * Bootstrap: alert.js v3.3.2
+ * http://getbootstrap.com/javascript/#alerts
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // ALERT CLASS DEFINITION
+  // ======================
+
+  var dismiss = '[data-dismiss="alert"]'
+  var Alert   = function (el) {
+    $(el).on('click', dismiss, this.close)
+  }
+
+  Alert.VERSION = '3.3.2'
+
+  Alert.TRANSITION_DURATION = 150
+
+  Alert.prototype.close = function (e) {
+    var $this    = $(this)
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = $(selector)
+
+    if (e) e.preventDefault()
+
+    if (!$parent.length) {
+      $parent = $this.closest('.alert')
+    }
+
+    $parent.trigger(e = $.Event('close.bs.alert'))
+
+    if (e.isDefaultPrevented()) return
+
+    $parent.removeClass('in')
+
+    function removeElement() {
+      // detach from parent, fire event then clean up data
+      $parent.detach().trigger('closed.bs.alert').remove()
+    }
+
+    $.support.transition && $parent.hasClass('fade') ?
+      $parent
+        .one('bsTransitionEnd', removeElement)
+        .emulateTransitionEnd(Alert.TRANSITION_DURATION) :
+      removeElement()
+  }
+
+
+  // ALERT PLUGIN DEFINITION
+  // =======================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.alert')
+
+      if (!data) $this.data('bs.alert', (data = new Alert(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.alert
+
+  $.fn.alert             = Plugin
+  $.fn.alert.Constructor = Alert
+
+
+  // ALERT NO CONFLICT
+  // =================
+
+  $.fn.alert.noConflict = function () {
+    $.fn.alert = old
+    return this
+  }
+
+
+  // ALERT DATA-API
+  // ==============
+
+  $(document).on('click.bs.alert.data-api', dismiss, Alert.prototype.close)
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: button.js v3.3.2
+ * http://getbootstrap.com/javascript/#buttons
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // BUTTON PUBLIC CLASS DEFINITION
+  // ==============================
+
+  var Button = function (element, options) {
+    this.$element  = $(element)
+    this.options   = $.extend({}, Button.DEFAULTS, options)
+    this.isLoading = false
+  }
+
+  Button.VERSION  = '3.3.2'
+
+  Button.DEFAULTS = {
+    loadingText: 'loading...'
+  }
+
+  Button.prototype.setState = function (state) {
+    var d    = 'disabled'
+    var $el  = this.$element
+    var val  = $el.is('input') ? 'val' : 'html'
+    var data = $el.data()
+
+    state = state + 'Text'
+
+    if (data.resetText == null) $el.data('resetText', $el[val]())
+
+    // push to event loop to allow forms to submit
+    setTimeout($.proxy(function () {
+      $el[val](data[state] == null ? this.options[state] : data[state])
+
+      if (state == 'loadingText') {
+        this.isLoading = true
+        $el.addClass(d).attr(d, d)
+      } else if (this.isLoading) {
+        this.isLoading = false
+        $el.removeClass(d).removeAttr(d)
+      }
+    }, this), 0)
+  }
+
+  Button.prototype.toggle = function () {
+    var changed = true
+    var $parent = this.$element.closest('[data-toggle="buttons"]')
+
+    if ($parent.length) {
+      var $input = this.$element.find('input')
+      if ($input.prop('type') == 'radio') {
+        if ($input.prop('checked') && this.$element.hasClass('active')) changed = false
+        else $parent.find('.active').removeClass('active')
+      }
+      if (changed) $input.prop('checked', !this.$element.hasClass('active')).trigger('change')
+    } else {
+      this.$element.attr('aria-pressed', !this.$element.hasClass('active'))
+    }
+
+    if (changed) this.$element.toggleClass('active')
+  }
+
+
+  // BUTTON PLUGIN DEFINITION
+  // ========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.button')
+      var options = typeof option == 'object' && option
+
+      if (!data) $this.data('bs.button', (data = new Button(this, options)))
+
+      if (option == 'toggle') data.toggle()
+      else if (option) data.setState(option)
+    })
+  }
+
+  var old = $.fn.button
+
+  $.fn.button             = Plugin
+  $.fn.button.Constructor = Button
+
+
+  // BUTTON NO CONFLICT
+  // ==================
+
+  $.fn.button.noConflict = function () {
+    $.fn.button = old
+    return this
+  }
+
+
+  // BUTTON DATA-API
+  // ===============
+
+  $(document)
+    .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
+      var $btn = $(e.target)
+      if (!$btn.hasClass('btn')) $btn = $btn.closest('.btn')
+      Plugin.call($btn, 'toggle')
+      e.preventDefault()
+    })
+    .on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
+      $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type))
+    })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: carousel.js v3.3.2
+ * http://getbootstrap.com/javascript/#carousel
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // CAROUSEL CLASS DEFINITION
+  // =========================
+
+  var Carousel = function (element, options) {
+    this.$element    = $(element)
+    this.$indicators = this.$element.find('.carousel-indicators')
+    this.options     = options
+    this.paused      = null
+    this.sliding     = null
+    this.interval    = null
+    this.$active     = null
+    this.$items      = null
+
+    this.options.keyboard && this.$element.on('keydown.bs.carousel', $.proxy(this.keydown, this))
+
+    this.options.pause == 'hover' && !('ontouchstart' in document.documentElement) && this.$element
+      .on('mouseenter.bs.carousel', $.proxy(this.pause, this))
+      .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
+  }
+
+  Carousel.VERSION  = '3.3.2'
+
+  Carousel.TRANSITION_DURATION = 600
+
+  Carousel.DEFAULTS = {
+    interval: 5000,
+    pause: 'hover',
+    wrap: true,
+    keyboard: true
+  }
+
+  Carousel.prototype.keydown = function (e) {
+    if (/input|textarea/i.test(e.target.tagName)) return
+    switch (e.which) {
+      case 37: this.prev(); break
+      case 39: this.next(); break
+      default: return
+    }
+
+    e.preventDefault()
+  }
+
+  Carousel.prototype.cycle = function (e) {
+    e || (this.paused = false)
+
+    this.interval && clearInterval(this.interval)
+
+    this.options.interval
+      && !this.paused
+      && (this.interval = setInterval($.proxy(this.next, this), this.options.interval))
+
+    return this
+  }
+
+  Carousel.prototype.getItemIndex = function (item) {
+    this.$items = item.parent().children('.item')
+    return this.$items.index(item || this.$active)
+  }
+
+  Carousel.prototype.getItemForDirection = function (direction, active) {
+    var activeIndex = this.getItemIndex(active)
+    var willWrap = (direction == 'prev' && activeIndex === 0)
+                || (direction == 'next' && activeIndex == (this.$items.length - 1))
+    if (willWrap && !this.options.wrap) return active
+    var delta = direction == 'prev' ? -1 : 1
+    var itemIndex = (activeIndex + delta) % this.$items.length
+    return this.$items.eq(itemIndex)
+  }
+
+  Carousel.prototype.to = function (pos) {
+    var that        = this
+    var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
+
+    if (pos > (this.$items.length - 1) || pos < 0) return
+
+    if (this.sliding)       return this.$element.one('slid.bs.carousel', function () { that.to(pos) }) // yes, "slid"
+    if (activeIndex == pos) return this.pause().cycle()
+
+    return this.slide(pos > activeIndex ? 'next' : 'prev', this.$items.eq(pos))
+  }
+
+  Carousel.prototype.pause = function (e) {
+    e || (this.paused = true)
+
+    if (this.$element.find('.next, .prev').length && $.support.transition) {
+      this.$element.trigger($.support.transition.end)
+      this.cycle(true)
+    }
+
+    this.interval = clearInterval(this.interval)
+
+    return this
+  }
+
+  Carousel.prototype.next = function () {
+    if (this.sliding) return
+    return this.slide('next')
+  }
+
+  Carousel.prototype.prev = function () {
+    if (this.sliding) return
+    return this.slide('prev')
+  }
+
+  Carousel.prototype.slide = function (type, next) {
+    var $active   = this.$element.find('.item.active')
+    var $next     = next || this.getItemForDirection(type, $active)
+    var isCycling = this.interval
+    var direction = type == 'next' ? 'left' : 'right'
+    var that      = this
+
+    if ($next.hasClass('active')) return (this.sliding = false)
+
+    var relatedTarget = $next[0]
+    var slideEvent = $.Event('slide.bs.carousel', {
+      relatedTarget: relatedTarget,
+      direction: direction
+    })
+    this.$element.trigger(slideEvent)
+    if (slideEvent.isDefaultPrevented()) return
+
+    this.sliding = true
+
+    isCycling && this.pause()
+
+    if (this.$indicators.length) {
+      this.$indicators.find('.active').removeClass('active')
+      var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
+      $nextIndicator && $nextIndicator.addClass('active')
+    }
+
+    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
+    if ($.support.transition && this.$element.hasClass('slide')) {
+      $next.addClass(type)
+      $next[0].offsetWidth // force reflow
+      $active.addClass(direction)
+      $next.addClass(direction)
+      $active
+        .one('bsTransitionEnd', function () {
+          $next.removeClass([type, direction].join(' ')).addClass('active')
+          $active.removeClass(['active', direction].join(' '))
+          that.sliding = false
+          setTimeout(function () {
+            that.$element.trigger(slidEvent)
+          }, 0)
+        })
+        .emulateTransitionEnd(Carousel.TRANSITION_DURATION)
+    } else {
+      $active.removeClass('active')
+      $next.addClass('active')
+      this.sliding = false
+      this.$element.trigger(slidEvent)
+    }
+
+    isCycling && this.cycle()
+
+    return this
+  }
+
+
+  // CAROUSEL PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.carousel')
+      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var action  = typeof option == 'string' ? option : options.slide
+
+      if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
+      if (typeof option == 'number') data.to(option)
+      else if (action) data[action]()
+      else if (options.interval) data.pause().cycle()
+    })
+  }
+
+  var old = $.fn.carousel
+
+  $.fn.carousel             = Plugin
+  $.fn.carousel.Constructor = Carousel
+
+
+  // CAROUSEL NO CONFLICT
+  // ====================
+
+  $.fn.carousel.noConflict = function () {
+    $.fn.carousel = old
+    return this
+  }
+
+
+  // CAROUSEL DATA-API
+  // =================
+
+  var clickHandler = function (e) {
+    var href
+    var $this   = $(this)
+    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
+    if (!$target.hasClass('carousel')) return
+    var options = $.extend({}, $target.data(), $this.data())
+    var slideIndex = $this.attr('data-slide-to')
+    if (slideIndex) options.interval = false
+
+    Plugin.call($target, options)
+
+    if (slideIndex) {
+      $target.data('bs.carousel').to(slideIndex)
+    }
+
+    e.preventDefault()
+  }
+
+  $(document)
+    .on('click.bs.carousel.data-api', '[data-slide]', clickHandler)
+    .on('click.bs.carousel.data-api', '[data-slide-to]', clickHandler)
+
+  $(window).on('load', function () {
+    $('[data-ride="carousel"]').each(function () {
+      var $carousel = $(this)
+      Plugin.call($carousel, $carousel.data())
+    })
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.3.2
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.3.2'
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this
+        .trigger('focus')
+        .attr('aria-expanded', 'true')
+
+      $parent
+        .toggleClass('open')
+        .trigger('shown.bs.dropdown', relatedTarget)
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if ((!isActive && e.which != 27) || (isActive && e.which == 27)) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.disabled):visible a'
+    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index(e.target)
+
+    if (e.which == 38 && index > 0)                 index--                        // up
+    if (e.which == 40 && index < $items.length - 1) index++                        // down
+    if (!~index)                                      index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $this         = $(this)
+      var $parent       = getParent($this)
+      var relatedTarget = { relatedTarget: this }
+
+      if (!$parent.hasClass('open')) return
+
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.attr('aria-expanded', 'false')
+      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+    })
+  }
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
+    .on('keydown.bs.dropdown.data-api', '[role="menu"]', Dropdown.prototype.keydown)
+    .on('keydown.bs.dropdown.data-api', '[role="listbox"]', Dropdown.prototype.keydown)
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: modal.js v3.3.2
  * http://getbootstrap.com/javascript/#modals
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -16483,7 +17095,7 @@ if (typeof jQuery === 'undefined') {
     }
   }
 
-  Modal.VERSION  = '3.3.7'
+  Modal.VERSION  = '3.3.2'
 
   Modal.TRANSITION_DURATION = 300
   Modal.BACKDROP_TRANSITION_DURATION = 150
@@ -16540,7 +17152,9 @@ if (typeof jQuery === 'undefined') {
         that.$element[0].offsetWidth // force reflow
       }
 
-      that.$element.addClass('in')
+      that.$element
+        .addClass('in')
+        .attr('aria-hidden', false)
 
       that.enforceFocus()
 
@@ -16574,6 +17188,7 @@ if (typeof jQuery === 'undefined') {
 
     this.$element
       .removeClass('in')
+      .attr('aria-hidden', true)
       .off('click.dismiss.bs.modal')
       .off('mouseup.dismiss.bs.modal')
 
@@ -16590,9 +17205,7 @@ if (typeof jQuery === 'undefined') {
     $(document)
       .off('focusin.bs.modal') // guard against infinite focus loop
       .on('focusin.bs.modal', $.proxy(function (e) {
-        if (document !== e.target &&
-            this.$element[0] !== e.target &&
-            !this.$element.has(e.target).length) {
+        if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
           this.$element.trigger('focus')
         }
       }, this))
@@ -16639,8 +17252,7 @@ if (typeof jQuery === 'undefined') {
     if (this.isShown && this.options.backdrop) {
       var doAnimate = $.support.transition && animate
 
-      this.$backdrop = $(document.createElement('div'))
-        .addClass('modal-backdrop ' + animate)
+      this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />')
         .appendTo(this.$body)
 
       this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
@@ -16787,6 +17399,4720 @@ if (typeof jQuery === 'undefined') {
   })
 
 }(jQuery);
+
+/* ========================================================================
+ * Bootstrap: tooltip.js v3.3.2
+ * http://getbootstrap.com/javascript/#tooltip
+ * Inspired by the original jQuery.tipsy by Jason Frame
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // TOOLTIP PUBLIC CLASS DEFINITION
+  // ===============================
+
+  var Tooltip = function (element, options) {
+    this.type       = null
+    this.options    = null
+    this.enabled    = null
+    this.timeout    = null
+    this.hoverState = null
+    this.$element   = null
+
+    this.init('tooltip', element, options)
+  }
+
+  Tooltip.VERSION  = '3.3.2'
+
+  Tooltip.TRANSITION_DURATION = 150
+
+  Tooltip.DEFAULTS = {
+    animation: true,
+    placement: 'top',
+    selector: false,
+    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    trigger: 'hover focus',
+    title: '',
+    delay: 0,
+    html: false,
+    container: false,
+    viewport: {
+      selector: 'body',
+      padding: 0
+    }
+  }
+
+  Tooltip.prototype.init = function (type, element, options) {
+    this.enabled   = true
+    this.type      = type
+    this.$element  = $(element)
+    this.options   = this.getOptions(options)
+    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
+
+    if (this.$element[0] instanceof document.constructor && !this.options.selector) {
+      throw new Error('`selector` option must be specified when initializing ' + this.type + ' on the window.document object!')
+    }
+
+    var triggers = this.options.trigger.split(' ')
+
+    for (var i = triggers.length; i--;) {
+      var trigger = triggers[i]
+
+      if (trigger == 'click') {
+        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
+      } else if (trigger != 'manual') {
+        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
+        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
+
+        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
+        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
+      }
+    }
+
+    this.options.selector ?
+      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
+      this.fixTitle()
+  }
+
+  Tooltip.prototype.getDefaults = function () {
+    return Tooltip.DEFAULTS
+  }
+
+  Tooltip.prototype.getOptions = function (options) {
+    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
+
+    if (options.delay && typeof options.delay == 'number') {
+      options.delay = {
+        show: options.delay,
+        hide: options.delay
+      }
+    }
+
+    return options
+  }
+
+  Tooltip.prototype.getDelegateOptions = function () {
+    var options  = {}
+    var defaults = this.getDefaults()
+
+    this._options && $.each(this._options, function (key, value) {
+      if (defaults[key] != value) options[key] = value
+    })
+
+    return options
+  }
+
+  Tooltip.prototype.enter = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (self && self.$tip && self.$tip.is(':visible')) {
+      self.hoverState = 'in'
+      return
+    }
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'in'
+
+    if (!self.options.delay || !self.options.delay.show) return self.show()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'in') self.show()
+    }, self.options.delay.show)
+  }
+
+  Tooltip.prototype.leave = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'out'
+
+    if (!self.options.delay || !self.options.delay.hide) return self.hide()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'out') self.hide()
+    }, self.options.delay.hide)
+  }
+
+  Tooltip.prototype.show = function () {
+    var e = $.Event('show.bs.' + this.type)
+
+    if (this.hasContent() && this.enabled) {
+      this.$element.trigger(e)
+
+      var inDom = $.contains(this.$element[0].ownerDocument.documentElement, this.$element[0])
+      if (e.isDefaultPrevented() || !inDom) return
+      var that = this
+
+      var $tip = this.tip()
+
+      var tipId = this.getUID(this.type)
+
+      this.setContent()
+      $tip.attr('id', tipId)
+      this.$element.attr('aria-describedby', tipId)
+
+      if (this.options.animation) $tip.addClass('fade')
+
+      var placement = typeof this.options.placement == 'function' ?
+        this.options.placement.call(this, $tip[0], this.$element[0]) :
+        this.options.placement
+
+      var autoToken = /\s?auto?\s?/i
+      var autoPlace = autoToken.test(placement)
+      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
+
+      $tip
+        .detach()
+        .css({ top: 0, left: 0, display: 'block' })
+        .addClass(placement)
+        .data('bs.' + this.type, this)
+
+      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+
+      var pos          = this.getPosition()
+      var actualWidth  = $tip[0].offsetWidth
+      var actualHeight = $tip[0].offsetHeight
+
+      if (autoPlace) {
+        var orgPlacement = placement
+        var $container   = this.options.container ? $(this.options.container) : this.$element.parent()
+        var containerDim = this.getPosition($container)
+
+        placement = placement == 'bottom' && pos.bottom + actualHeight > containerDim.bottom ? 'top'    :
+                    placement == 'top'    && pos.top    - actualHeight < containerDim.top    ? 'bottom' :
+                    placement == 'right'  && pos.right  + actualWidth  > containerDim.width  ? 'left'   :
+                    placement == 'left'   && pos.left   - actualWidth  < containerDim.left   ? 'right'  :
+                    placement
+
+        $tip
+          .removeClass(orgPlacement)
+          .addClass(placement)
+      }
+
+      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
+
+      this.applyPlacement(calculatedOffset, placement)
+
+      var complete = function () {
+        var prevHoverState = that.hoverState
+        that.$element.trigger('shown.bs.' + that.type)
+        that.hoverState = null
+
+        if (prevHoverState == 'out') that.leave(that)
+      }
+
+      $.support.transition && this.$tip.hasClass('fade') ?
+        $tip
+          .one('bsTransitionEnd', complete)
+          .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
+        complete()
+    }
+  }
+
+  Tooltip.prototype.applyPlacement = function (offset, placement) {
+    var $tip   = this.tip()
+    var width  = $tip[0].offsetWidth
+    var height = $tip[0].offsetHeight
+
+    // manually read margins because getBoundingClientRect includes difference
+    var marginTop = parseInt($tip.css('margin-top'), 10)
+    var marginLeft = parseInt($tip.css('margin-left'), 10)
+
+    // we must check for NaN for ie 8/9
+    if (isNaN(marginTop))  marginTop  = 0
+    if (isNaN(marginLeft)) marginLeft = 0
+
+    offset.top  = offset.top  + marginTop
+    offset.left = offset.left + marginLeft
+
+    // $.fn.offset doesn't round pixel values
+    // so we use setOffset directly with our own function B-0
+    $.offset.setOffset($tip[0], $.extend({
+      using: function (props) {
+        $tip.css({
+          top: Math.round(props.top),
+          left: Math.round(props.left)
+        })
+      }
+    }, offset), 0)
+
+    $tip.addClass('in')
+
+    // check to see if placing tip in new offset caused the tip to resize itself
+    var actualWidth  = $tip[0].offsetWidth
+    var actualHeight = $tip[0].offsetHeight
+
+    if (placement == 'top' && actualHeight != height) {
+      offset.top = offset.top + height - actualHeight
+    }
+
+    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
+
+    if (delta.left) offset.left += delta.left
+    else offset.top += delta.top
+
+    var isVertical          = /top|bottom/.test(placement)
+    var arrowDelta          = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
+    var arrowOffsetPosition = isVertical ? 'offsetWidth' : 'offsetHeight'
+
+    $tip.offset(offset)
+    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical)
+  }
+
+  Tooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
+    this.arrow()
+      .css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
+      .css(isVertical ? 'top' : 'left', '')
+  }
+
+  Tooltip.prototype.setContent = function () {
+    var $tip  = this.tip()
+    var title = this.getTitle()
+
+    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
+    $tip.removeClass('fade in top bottom left right')
+  }
+
+  Tooltip.prototype.hide = function (callback) {
+    var that = this
+    var $tip = $(this.$tip)
+    var e    = $.Event('hide.bs.' + this.type)
+
+    function complete() {
+      if (that.hoverState != 'in') $tip.detach()
+      that.$element
+        .removeAttr('aria-describedby')
+        .trigger('hidden.bs.' + that.type)
+      callback && callback()
+    }
+
+    this.$element.trigger(e)
+
+    if (e.isDefaultPrevented()) return
+
+    $tip.removeClass('in')
+
+    $.support.transition && $tip.hasClass('fade') ?
+      $tip
+        .one('bsTransitionEnd', complete)
+        .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
+      complete()
+
+    this.hoverState = null
+
+    return this
+  }
+
+  Tooltip.prototype.fixTitle = function () {
+    var $e = this.$element
+    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
+      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
+    }
+  }
+
+  Tooltip.prototype.hasContent = function () {
+    return this.getTitle()
+  }
+
+  Tooltip.prototype.getPosition = function ($element) {
+    $element   = $element || this.$element
+
+    var el     = $element[0]
+    var isBody = el.tagName == 'BODY'
+
+    var elRect    = el.getBoundingClientRect()
+    if (elRect.width == null) {
+      // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
+      elRect = $.extend({}, elRect, { width: elRect.right - elRect.left, height: elRect.bottom - elRect.top })
+    }
+    var elOffset  = isBody ? { top: 0, left: 0 } : $element.offset()
+    var scroll    = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() }
+    var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null
+
+    return $.extend({}, elRect, scroll, outerDims, elOffset)
+  }
+
+  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
+    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2 } :
+           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } :
+           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
+        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width }
+
+  }
+
+  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
+    var delta = { top: 0, left: 0 }
+    if (!this.$viewport) return delta
+
+    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
+    var viewportDimensions = this.getPosition(this.$viewport)
+
+    if (/right|left/.test(placement)) {
+      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
+      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
+      if (topEdgeOffset < viewportDimensions.top) { // top overflow
+        delta.top = viewportDimensions.top - topEdgeOffset
+      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
+        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
+      }
+    } else {
+      var leftEdgeOffset  = pos.left - viewportPadding
+      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
+      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
+        delta.left = viewportDimensions.left - leftEdgeOffset
+      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
+        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
+      }
+    }
+
+    return delta
+  }
+
+  Tooltip.prototype.getTitle = function () {
+    var title
+    var $e = this.$element
+    var o  = this.options
+
+    title = $e.attr('data-original-title')
+      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
+
+    return title
+  }
+
+  Tooltip.prototype.getUID = function (prefix) {
+    do prefix += ~~(Math.random() * 1000000)
+    while (document.getElementById(prefix))
+    return prefix
+  }
+
+  Tooltip.prototype.tip = function () {
+    return (this.$tip = this.$tip || $(this.options.template))
+  }
+
+  Tooltip.prototype.arrow = function () {
+    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
+  }
+
+  Tooltip.prototype.enable = function () {
+    this.enabled = true
+  }
+
+  Tooltip.prototype.disable = function () {
+    this.enabled = false
+  }
+
+  Tooltip.prototype.toggleEnabled = function () {
+    this.enabled = !this.enabled
+  }
+
+  Tooltip.prototype.toggle = function (e) {
+    var self = this
+    if (e) {
+      self = $(e.currentTarget).data('bs.' + this.type)
+      if (!self) {
+        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
+        $(e.currentTarget).data('bs.' + this.type, self)
+      }
+    }
+
+    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
+  }
+
+  Tooltip.prototype.destroy = function () {
+    var that = this
+    clearTimeout(this.timeout)
+    this.hide(function () {
+      that.$element.off('.' + that.type).removeData('bs.' + that.type)
+    })
+  }
+
+
+  // TOOLTIP PLUGIN DEFINITION
+  // =========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.tooltip')
+      var options = typeof option == 'object' && option
+
+      if (!data && /destroy|hide/.test(option)) return
+      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.tooltip
+
+  $.fn.tooltip             = Plugin
+  $.fn.tooltip.Constructor = Tooltip
+
+
+  // TOOLTIP NO CONFLICT
+  // ===================
+
+  $.fn.tooltip.noConflict = function () {
+    $.fn.tooltip = old
+    return this
+  }
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: popover.js v3.3.2
+ * http://getbootstrap.com/javascript/#popovers
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // POPOVER PUBLIC CLASS DEFINITION
+  // ===============================
+
+  var Popover = function (element, options) {
+    this.init('popover', element, options)
+  }
+
+  if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
+
+  Popover.VERSION  = '3.3.2'
+
+  Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
+    placement: 'right',
+    trigger: 'click',
+    content: '',
+    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+  })
+
+
+  // NOTE: POPOVER EXTENDS tooltip.js
+  // ================================
+
+  Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
+
+  Popover.prototype.constructor = Popover
+
+  Popover.prototype.getDefaults = function () {
+    return Popover.DEFAULTS
+  }
+
+  Popover.prototype.setContent = function () {
+    var $tip    = this.tip()
+    var title   = this.getTitle()
+    var content = this.getContent()
+
+    $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
+    $tip.find('.popover-content').children().detach().end()[ // we use append for html objects to maintain js events
+      this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
+    ](content)
+
+    $tip.removeClass('fade top bottom left right in')
+
+    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
+    // this manually by checking the contents.
+    if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
+  }
+
+  Popover.prototype.hasContent = function () {
+    return this.getTitle() || this.getContent()
+  }
+
+  Popover.prototype.getContent = function () {
+    var $e = this.$element
+    var o  = this.options
+
+    return $e.attr('data-content')
+      || (typeof o.content == 'function' ?
+            o.content.call($e[0]) :
+            o.content)
+  }
+
+  Popover.prototype.arrow = function () {
+    return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
+  }
+
+
+  // POPOVER PLUGIN DEFINITION
+  // =========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.popover')
+      var options = typeof option == 'object' && option
+
+      if (!data && /destroy|hide/.test(option)) return
+      if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.popover
+
+  $.fn.popover             = Plugin
+  $.fn.popover.Constructor = Popover
+
+
+  // POPOVER NO CONFLICT
+  // ===================
+
+  $.fn.popover.noConflict = function () {
+    $.fn.popover = old
+    return this
+  }
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: tab.js v3.3.2
+ * http://getbootstrap.com/javascript/#tabs
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // TAB CLASS DEFINITION
+  // ====================
+
+  var Tab = function (element) {
+    this.element = $(element)
+  }
+
+  Tab.VERSION = '3.3.2'
+
+  Tab.TRANSITION_DURATION = 150
+
+  Tab.prototype.show = function () {
+    var $this    = this.element
+    var $ul      = $this.closest('ul:not(.dropdown-menu)')
+    var selector = $this.data('target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    if ($this.parent('li').hasClass('active')) return
+
+    var $previous = $ul.find('.active:last a')
+    var hideEvent = $.Event('hide.bs.tab', {
+      relatedTarget: $this[0]
+    })
+    var showEvent = $.Event('show.bs.tab', {
+      relatedTarget: $previous[0]
+    })
+
+    $previous.trigger(hideEvent)
+    $this.trigger(showEvent)
+
+    if (showEvent.isDefaultPrevented() || hideEvent.isDefaultPrevented()) return
+
+    var $target = $(selector)
+
+    this.activate($this.closest('li'), $ul)
+    this.activate($target, $target.parent(), function () {
+      $previous.trigger({
+        type: 'hidden.bs.tab',
+        relatedTarget: $this[0]
+      })
+      $this.trigger({
+        type: 'shown.bs.tab',
+        relatedTarget: $previous[0]
+      })
+    })
+  }
+
+  Tab.prototype.activate = function (element, container, callback) {
+    var $active    = container.find('> .active')
+    var transition = callback
+      && $.support.transition
+      && (($active.length && $active.hasClass('fade')) || !!container.find('> .fade').length)
+
+    function next() {
+      $active
+        .removeClass('active')
+        .find('> .dropdown-menu > .active')
+          .removeClass('active')
+        .end()
+        .find('[data-toggle="tab"]')
+          .attr('aria-expanded', false)
+
+      element
+        .addClass('active')
+        .find('[data-toggle="tab"]')
+          .attr('aria-expanded', true)
+
+      if (transition) {
+        element[0].offsetWidth // reflow for transition
+        element.addClass('in')
+      } else {
+        element.removeClass('fade')
+      }
+
+      if (element.parent('.dropdown-menu').length) {
+        element
+          .closest('li.dropdown')
+            .addClass('active')
+          .end()
+          .find('[data-toggle="tab"]')
+            .attr('aria-expanded', true)
+      }
+
+      callback && callback()
+    }
+
+    $active.length && transition ?
+      $active
+        .one('bsTransitionEnd', next)
+        .emulateTransitionEnd(Tab.TRANSITION_DURATION) :
+      next()
+
+    $active.removeClass('in')
+  }
+
+
+  // TAB PLUGIN DEFINITION
+  // =====================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.tab')
+
+      if (!data) $this.data('bs.tab', (data = new Tab(this)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.tab
+
+  $.fn.tab             = Plugin
+  $.fn.tab.Constructor = Tab
+
+
+  // TAB NO CONFLICT
+  // ===============
+
+  $.fn.tab.noConflict = function () {
+    $.fn.tab = old
+    return this
+  }
+
+
+  // TAB DATA-API
+  // ============
+
+  var clickHandler = function (e) {
+    e.preventDefault()
+    Plugin.call($(this), 'show')
+  }
+
+  $(document)
+    .on('click.bs.tab.data-api', '[data-toggle="tab"]', clickHandler)
+    .on('click.bs.tab.data-api', '[data-toggle="pill"]', clickHandler)
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: affix.js v3.3.2
+ * http://getbootstrap.com/javascript/#affix
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // AFFIX CLASS DEFINITION
+  // ======================
+
+  var Affix = function (element, options) {
+    this.options = $.extend({}, Affix.DEFAULTS, options)
+
+    this.$target = $(this.options.target)
+      .on('scroll.bs.affix.data-api', $.proxy(this.checkPosition, this))
+      .on('click.bs.affix.data-api',  $.proxy(this.checkPositionWithEventLoop, this))
+
+    this.$element     = $(element)
+    this.affixed      = null
+    this.unpin        = null
+    this.pinnedOffset = null
+
+    this.checkPosition()
+  }
+
+  Affix.VERSION  = '3.3.2'
+
+  Affix.RESET    = 'affix affix-top affix-bottom'
+
+  Affix.DEFAULTS = {
+    offset: 0,
+    target: window
+  }
+
+  Affix.prototype.getState = function (scrollHeight, height, offsetTop, offsetBottom) {
+    var scrollTop    = this.$target.scrollTop()
+    var position     = this.$element.offset()
+    var targetHeight = this.$target.height()
+
+    if (offsetTop != null && this.affixed == 'top') return scrollTop < offsetTop ? 'top' : false
+
+    if (this.affixed == 'bottom') {
+      if (offsetTop != null) return (scrollTop + this.unpin <= position.top) ? false : 'bottom'
+      return (scrollTop + targetHeight <= scrollHeight - offsetBottom) ? false : 'bottom'
+    }
+
+    var initializing   = this.affixed == null
+    var colliderTop    = initializing ? scrollTop : position.top
+    var colliderHeight = initializing ? targetHeight : height
+
+    if (offsetTop != null && scrollTop <= offsetTop) return 'top'
+    if (offsetBottom != null && (colliderTop + colliderHeight >= scrollHeight - offsetBottom)) return 'bottom'
+
+    return false
+  }
+
+  Affix.prototype.getPinnedOffset = function () {
+    if (this.pinnedOffset) return this.pinnedOffset
+    this.$element.removeClass(Affix.RESET).addClass('affix')
+    var scrollTop = this.$target.scrollTop()
+    var position  = this.$element.offset()
+    return (this.pinnedOffset = position.top - scrollTop)
+  }
+
+  Affix.prototype.checkPositionWithEventLoop = function () {
+    setTimeout($.proxy(this.checkPosition, this), 1)
+  }
+
+  Affix.prototype.checkPosition = function () {
+    if (!this.$element.is(':visible')) return
+
+    var height       = this.$element.height()
+    var offset       = this.options.offset
+    var offsetTop    = offset.top
+    var offsetBottom = offset.bottom
+    var scrollHeight = $(document.body).height()
+
+    if (typeof offset != 'object')         offsetBottom = offsetTop = offset
+    if (typeof offsetTop == 'function')    offsetTop    = offset.top(this.$element)
+    if (typeof offsetBottom == 'function') offsetBottom = offset.bottom(this.$element)
+
+    var affix = this.getState(scrollHeight, height, offsetTop, offsetBottom)
+
+    if (this.affixed != affix) {
+      if (this.unpin != null) this.$element.css('top', '')
+
+      var affixType = 'affix' + (affix ? '-' + affix : '')
+      var e         = $.Event(affixType + '.bs.affix')
+
+      this.$element.trigger(e)
+
+      if (e.isDefaultPrevented()) return
+
+      this.affixed = affix
+      this.unpin = affix == 'bottom' ? this.getPinnedOffset() : null
+
+      this.$element
+        .removeClass(Affix.RESET)
+        .addClass(affixType)
+        .trigger(affixType.replace('affix', 'affixed') + '.bs.affix')
+    }
+
+    if (affix == 'bottom') {
+      this.$element.offset({
+        top: scrollHeight - height - offsetBottom
+      })
+    }
+  }
+
+
+  // AFFIX PLUGIN DEFINITION
+  // =======================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.affix')
+      var options = typeof option == 'object' && option
+
+      if (!data) $this.data('bs.affix', (data = new Affix(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.affix
+
+  $.fn.affix             = Plugin
+  $.fn.affix.Constructor = Affix
+
+
+  // AFFIX NO CONFLICT
+  // =================
+
+  $.fn.affix.noConflict = function () {
+    $.fn.affix = old
+    return this
+  }
+
+
+  // AFFIX DATA-API
+  // ==============
+
+  $(window).on('load', function () {
+    $('[data-spy="affix"]').each(function () {
+      var $spy = $(this)
+      var data = $spy.data()
+
+      data.offset = data.offset || {}
+
+      if (data.offsetBottom != null) data.offset.bottom = data.offsetBottom
+      if (data.offsetTop    != null) data.offset.top    = data.offsetTop
+
+      Plugin.call($spy, data)
+    })
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: collapse.js v3.3.2
+ * http://getbootstrap.com/javascript/#collapse
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // COLLAPSE PUBLIC CLASS DEFINITION
+  // ================================
+
+  var Collapse = function (element, options) {
+    this.$element      = $(element)
+    this.options       = $.extend({}, Collapse.DEFAULTS, options)
+    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
+                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
+    this.transitioning = null
+
+    if (this.options.parent) {
+      this.$parent = this.getParent()
+    } else {
+      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
+    }
+
+    if (this.options.toggle) this.toggle()
+  }
+
+  Collapse.VERSION  = '3.3.2'
+
+  Collapse.TRANSITION_DURATION = 350
+
+  Collapse.DEFAULTS = {
+    toggle: true
+  }
+
+  Collapse.prototype.dimension = function () {
+    var hasWidth = this.$element.hasClass('width')
+    return hasWidth ? 'width' : 'height'
+  }
+
+  Collapse.prototype.show = function () {
+    if (this.transitioning || this.$element.hasClass('in')) return
+
+    var activesData
+    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
+
+    if (actives && actives.length) {
+      activesData = actives.data('bs.collapse')
+      if (activesData && activesData.transitioning) return
+    }
+
+    var startEvent = $.Event('show.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    if (actives && actives.length) {
+      Plugin.call(actives, 'hide')
+      activesData || actives.data('bs.collapse', null)
+    }
+
+    var dimension = this.dimension()
+
+    this.$element
+      .removeClass('collapse')
+      .addClass('collapsing')[dimension](0)
+      .attr('aria-expanded', true)
+
+    this.$trigger
+      .removeClass('collapsed')
+      .attr('aria-expanded', true)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse in')[dimension]('')
+      this.transitioning = 0
+      this.$element
+        .trigger('shown.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
+
+    this.$element
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
+  }
+
+  Collapse.prototype.hide = function () {
+    if (this.transitioning || !this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('hide.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var dimension = this.dimension()
+
+    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
+
+    this.$element
+      .addClass('collapsing')
+      .removeClass('collapse in')
+      .attr('aria-expanded', false)
+
+    this.$trigger
+      .addClass('collapsed')
+      .attr('aria-expanded', false)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.transitioning = 0
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse')
+        .trigger('hidden.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    this.$element
+      [dimension](0)
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
+  }
+
+  Collapse.prototype.toggle = function () {
+    this[this.$element.hasClass('in') ? 'hide' : 'show']()
+  }
+
+  Collapse.prototype.getParent = function () {
+    return $(this.options.parent)
+      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
+      .each($.proxy(function (i, element) {
+        var $element = $(element)
+        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
+      }, this))
+      .end()
+  }
+
+  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
+    var isOpen = $element.hasClass('in')
+
+    $element.attr('aria-expanded', isOpen)
+    $trigger
+      .toggleClass('collapsed', !isOpen)
+      .attr('aria-expanded', isOpen)
+  }
+
+  function getTargetFromTrigger($trigger) {
+    var href
+    var target = $trigger.attr('data-target')
+      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
+
+    return $(target)
+  }
+
+
+  // COLLAPSE PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.collapse')
+      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
+
+      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
+      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.collapse
+
+  $.fn.collapse             = Plugin
+  $.fn.collapse.Constructor = Collapse
+
+
+  // COLLAPSE NO CONFLICT
+  // ====================
+
+  $.fn.collapse.noConflict = function () {
+    $.fn.collapse = old
+    return this
+  }
+
+
+  // COLLAPSE DATA-API
+  // =================
+
+  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
+    var $this   = $(this)
+
+    if (!$this.attr('data-target')) e.preventDefault()
+
+    var $target = getTargetFromTrigger($this)
+    var data    = $target.data('bs.collapse')
+    var option  = data ? 'toggle' : $this.data()
+
+    Plugin.call($target, option)
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: scrollspy.js v3.3.2
+ * http://getbootstrap.com/javascript/#scrollspy
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // SCROLLSPY CLASS DEFINITION
+  // ==========================
+
+  function ScrollSpy(element, options) {
+    this.$body          = $(document.body)
+    this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+    this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+    this.selector       = (this.options.target || '') + ' .nav li > a'
+    this.offsets        = []
+    this.targets        = []
+    this.activeTarget   = null
+    this.scrollHeight   = 0
+
+    this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+    this.refresh()
+    this.process()
+  }
+
+  ScrollSpy.VERSION  = '3.3.2'
+
+  ScrollSpy.DEFAULTS = {
+    offset: 10
+  }
+
+  ScrollSpy.prototype.getScrollHeight = function () {
+    return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+  }
+
+  ScrollSpy.prototype.refresh = function () {
+    var that          = this
+    var offsetMethod  = 'offset'
+    var offsetBase    = 0
+
+    this.offsets      = []
+    this.targets      = []
+    this.scrollHeight = this.getScrollHeight()
+
+    if (!$.isWindow(this.$scrollElement[0])) {
+      offsetMethod = 'position'
+      offsetBase   = this.$scrollElement.scrollTop()
+    }
+
+    this.$body
+      .find(this.selector)
+      .map(function () {
+        var $el   = $(this)
+        var href  = $el.data('target') || $el.attr('href')
+        var $href = /^#./.test(href) && $(href)
+
+        return ($href
+          && $href.length
+          && $href.is(':visible')
+          && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+      })
+      .sort(function (a, b) { return a[0] - b[0] })
+      .each(function () {
+        that.offsets.push(this[0])
+        that.targets.push(this[1])
+      })
+  }
+
+  ScrollSpy.prototype.process = function () {
+    var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+    var scrollHeight = this.getScrollHeight()
+    var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+    var offsets      = this.offsets
+    var targets      = this.targets
+    var activeTarget = this.activeTarget
+    var i
+
+    if (this.scrollHeight != scrollHeight) {
+      this.refresh()
+    }
+
+    if (scrollTop >= maxScroll) {
+      return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+    }
+
+    if (activeTarget && scrollTop < offsets[0]) {
+      this.activeTarget = null
+      return this.clear()
+    }
+
+    for (i = offsets.length; i--;) {
+      activeTarget != targets[i]
+        && scrollTop >= offsets[i]
+        && (offsets[i + 1] === undefined || scrollTop <= offsets[i + 1])
+        && this.activate(targets[i])
+    }
+  }
+
+  ScrollSpy.prototype.activate = function (target) {
+    this.activeTarget = target
+
+    this.clear()
+
+    var selector = this.selector +
+      '[data-target="' + target + '"],' +
+      this.selector + '[href="' + target + '"]'
+
+    var active = $(selector)
+      .parents('li')
+      .addClass('active')
+
+    if (active.parent('.dropdown-menu').length) {
+      active = active
+        .closest('li.dropdown')
+        .addClass('active')
+    }
+
+    active.trigger('activate.bs.scrollspy')
+  }
+
+  ScrollSpy.prototype.clear = function () {
+    $(this.selector)
+      .parentsUntil(this.options.target, '.active')
+      .removeClass('active')
+  }
+
+
+  // SCROLLSPY PLUGIN DEFINITION
+  // ===========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.scrollspy')
+      var options = typeof option == 'object' && option
+
+      if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.scrollspy
+
+  $.fn.scrollspy             = Plugin
+  $.fn.scrollspy.Constructor = ScrollSpy
+
+
+  // SCROLLSPY NO CONFLICT
+  // =====================
+
+  $.fn.scrollspy.noConflict = function () {
+    $.fn.scrollspy = old
+    return this
+  }
+
+
+  // SCROLLSPY DATA-API
+  // ==================
+
+  $(window).on('load.bs.scrollspy.data-api', function () {
+    $('[data-spy="scroll"]').each(function () {
+      var $spy = $(this)
+      Plugin.call($spy, $spy.data())
+    })
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: transition.js v3.3.2
+ * http://getbootstrap.com/javascript/#transitions
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+  // ============================================================
+
+  function transitionEnd() {
+    var el = document.createElement('bootstrap')
+
+    var transEndEventNames = {
+      WebkitTransition : 'webkitTransitionEnd',
+      MozTransition    : 'transitionend',
+      OTransition      : 'oTransitionEnd otransitionend',
+      transition       : 'transitionend'
+    }
+
+    for (var name in transEndEventNames) {
+      if (el.style[name] !== undefined) {
+        return { end: transEndEventNames[name] }
+      }
+    }
+
+    return false // explicit for ie8 (  ._.)
+  }
+
+  // http://blog.alexmaccaw.com/css-transitions
+  $.fn.emulateTransitionEnd = function (duration) {
+    var called = false
+    var $el = this
+    $(this).one('bsTransitionEnd', function () { called = true })
+    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
+    setTimeout(callback, duration)
+    return this
+  }
+
+  $(function () {
+    $.support.transition = transitionEnd()
+
+    if (!$.support.transition) return
+
+    $.event.special.bsTransitionEnd = {
+      bindType: $.support.transition.end,
+      delegateType: $.support.transition.end,
+      handle: function (e) {
+        if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments)
+      }
+    }
+  })
+
+}(jQuery);
+
+/*
+ * HTML5 Sortable jQuery Plugin
+ * http://farhadi.ir/projects/html5sortable
+ * 
+ * Copyright 2012, Ali Farhadi
+ * Released under the MIT license.
+ */
+(function($) {
+  var dragging, placeholders = $();
+  $.fn.sortable = function(options) {
+    var method = String(options);
+    options = $.extend({
+      connectWith: false
+    }, options);
+    return this.each(function() {
+      if (/^enable|disable|destroy$/.test(method)) {
+        var items = $(this).children($(this).data('items')).attr('draggable', method == 'enable');
+        if (method == 'destroy') {
+          items.add(this).removeData('connectWith items')
+          .off('dragstart.h5s dragend.h5s selectstart.h5s dragover.h5s dragenter.h5s drop.h5s');
+        }
+        return;
+      }
+      var isHandle, index, items = $(this).children(options.items);
+      var placeholder = $('<' + (/^ul|ol$/i.test(this.tagName) ? 'li' : 'div') + ' class="sortable-placeholder">');
+      items.find(options.handle).mousedown(function() {
+        isHandle = true;
+      }).mouseup(function() {
+        isHandle = false;
+      });
+      $(this).data('items', options.items)
+      placeholders = placeholders.add(placeholder);
+      if (options.connectWith) {
+        $(options.connectWith).add(this).data('connectWith', options.connectWith);
+      }
+      items.attr('draggable', 'true').on('dragstart.h5s', function(e) {
+        if (options.handle && !isHandle) {
+//          return false;
+        }
+        isHandle = false;
+        var w = $(this).css('width');
+        var h = $(this).css('height');
+        var dt = e.originalEvent.dataTransfer;
+        placeholder.css('width', w);
+        placeholder.css('height', h);
+        dt.effectAllowed = 'move';
+        dt.setData('Text', 'localhost');
+        index = (dragging = $(this)).addClass('sortable-dragging').index();
+      }).on('dragend.h5s', function() {
+        try {
+          dragging.removeClass('sortable-dragging').show();
+          placeholders.detach();
+          if (index != dragging.index()) {
+            items.parent().trigger('sortupdate', {
+              item: dragging
+            });
+          }
+          dragging = null;
+        } catch(e) {}
+      }).not('a[href], img').on('selectstart.h5s', function() {
+        this.dragDrop && this.dragDrop();
+//        return false;
+      }).end().add([this, placeholder]).on('dragover.h5s dragenter.h5s drop.h5s', function(e) {
+        if (!items.is(dragging) && options.connectWith !== $(dragging).parent().data('connectWith')) {
+          return true;
+        }
+        if (e.type == 'drop') {
+//          e.stopPropagation();
+          placeholders.filter(':visible').after(dragging);
+//          return false;
+        }
+        e.preventDefault();
+        e.originalEvent.dataTransfer.dropEffect = 'move';
+        if (items.is(this)) {
+          if (options.forcePlaceholderSize) {
+            placeholder.height(dragging.outerHeight());
+          }
+          dragging.hide();
+          $(this)[placeholder.index() < $(this).index() ? 'after' : 'before'](placeholder);
+          placeholders.not(placeholder).detach();
+        } else if (!placeholders.is(this) && !$(this).children(options.items).length) {
+          placeholders.detach();
+          $(this).append(placeholder);
+        }
+//        return false;
+      });
+    });
+  };
+})(jQuery);
+
+(function(e){"use strict";var t=function(e,i,a){var n,r,o=document.createElement("img");if(o.onerror=i,o.onload=function(){!r||a&&a.noRevoke||t.revokeObjectURL(r),i&&i(t.scale(o,a))},t.isInstanceOf("Blob",e)||t.isInstanceOf("File",e))n=r=t.createObjectURL(e),o._type=e.type;else{if("string"!=typeof e)return!1;n=e,a&&a.crossOrigin&&(o.crossOrigin=a.crossOrigin)}return n?(o.src=n,o):t.readFile(e,function(e){var t=e.target;t&&t.result?o.src=t.result:i&&i(e)})},i=window.createObjectURL&&window||window.URL&&URL.revokeObjectURL&&URL||window.webkitURL&&webkitURL;t.isInstanceOf=function(e,t){return Object.prototype.toString.call(t)==="[object "+e+"]"},t.transformCoordinates=function(e,t){var i=e.getContext("2d"),a=e.width,n=e.height;switch(t>4&&(e.width=n,e.height=a),t){case 2:i.translate(a,0),i.scale(-1,1);break;case 3:i.translate(a,n),i.rotate(Math.PI);break;case 4:i.translate(0,n),i.scale(1,-1);break;case 5:i.rotate(.5*Math.PI),i.scale(1,-1);break;case 6:i.rotate(.5*Math.PI),i.translate(0,-n);break;case 7:i.rotate(.5*Math.PI),i.translate(a,-n),i.scale(-1,1);break;case 8:i.rotate(-.5*Math.PI),i.translate(-a,0)}},t.renderImageToCanvas=function(e,t,i,a,n,r,o,s,d,l){return e.getContext("2d").drawImage(t,i,a,n,r,o,s,d,l),e},t.scale=function(e,i){i=i||{};var a,n,r,o,s,d,l=document.createElement("canvas"),c=e.getContext||(i.canvas||i.crop||i.orientation)&&l.getContext,u=e.width,g=e.height,f=u,h=g,m=0,p=0,S=0,x=0,y=function(){var e=Math.max((r||s)/s,(o||d)/d);e>1&&(s=Math.ceil(s*e),d=Math.ceil(d*e))},b=function(){var e=Math.min((a||s)/s,(n||d)/d);1>e&&(s=Math.ceil(s*e),d=Math.ceil(d*e))};return c&&i.orientation>4?(a=i.maxHeight,n=i.maxWidth,r=i.minHeight,o=i.minWidth):(a=i.maxWidth,n=i.maxHeight,r=i.minWidth,o=i.minHeight),c&&a&&n&&i.crop?(s=a,d=n,a/n>u/g?(h=n*u/a,p=(g-h)/2):(f=a*g/n,m=(u-f)/2)):((i.contain||i.cover)&&(r=a=a||r,o=n=n||o),s=u,d=g,i.cover?(b(),y()):(y(),b())),c?(l.width=s,l.height=d,t.transformCoordinates(l,i.orientation),t.renderImageToCanvas(l,e,m,p,f,h,S,x,s,d)):(e.width=s,e.height=d,e)},t.createObjectURL=function(e){return i?i.createObjectURL(e):!1},t.revokeObjectURL=function(e){return i?i.revokeObjectURL(e):!1},t.readFile=function(e,t,i){if(window.FileReader){var a=new FileReader;if(a.onload=a.onerror=t,i=i||"readAsDataURL",a[i])return a[i](e),a}return!1},"function"==typeof define&&define.amd?define(function(){return t}):e.loadImage=t})(this),function(e){"use strict";"function"==typeof define&&define.amd?define(["load-image"],e):e(window.loadImage)}(function(e){"use strict";if(window.navigator&&window.navigator.platform&&/iP(hone|od|ad)/.test(window.navigator.platform)){var t=e.renderImageToCanvas;e.detectSubsampling=function(e){var t,i;return e.width*e.height>1048576?(t=document.createElement("canvas"),t.width=t.height=1,i=t.getContext("2d"),i.drawImage(e,-e.width+1,0),0===i.getImageData(0,0,1,1).data[3]):!1},e.detectVerticalSquash=function(e,t){var i,a,n,r,o,s=document.createElement("canvas"),d=s.getContext("2d");for(s.width=1,s.height=t,d.drawImage(e,0,0),i=d.getImageData(0,0,1,t).data,a=0,n=t,r=t;r>a;)o=i[4*(r-1)+3],0===o?n=r:a=r,r=n+a>>1;return r/t||1},e.renderImageToCanvas=function(i,a,n,r,o,s,d,l,c,u){if("image/jpeg"===a._type){var g,f,h,m,p=i.getContext("2d"),S=document.createElement("canvas"),x=1024,y=S.getContext("2d");if(S.width=x,S.height=x,p.save(),g=e.detectSubsampling(a),g&&(o/=2,s/=2),f=e.detectVerticalSquash(a,s),g&&1!==f){for(c=Math.ceil(x*c/o),u=Math.ceil(x*u/s/f),l=0,m=0;s>m;){for(d=0,h=0;o>h;)y.clearRect(0,0,x,x),y.drawImage(a,n,r,o,s,-h,-m,o,s),p.drawImage(S,0,0,x,x,d,l,c,u),h+=x,d+=c;m+=x,l+=u}return p.restore(),i}}return t(i,a,n,r,o,s,d,l,c,u)}}}),function(e){"use strict";"function"==typeof define&&define.amd?define(["load-image"],e):e(window.loadImage)}(function(e){"use strict";var t=window.Blob&&(Blob.prototype.slice||Blob.prototype.webkitSlice||Blob.prototype.mozSlice);e.blobSlice=t&&function(){var e=this.slice||this.webkitSlice||this.mozSlice;return e.apply(this,arguments)},e.metaDataParsers={jpeg:{65505:[]}},e.parseMetaData=function(t,i,a){a=a||{};var n=this,r=a.maxMetaDataSize||262144,o={},s=!(window.DataView&&t&&t.size>=12&&"image/jpeg"===t.type&&e.blobSlice);(s||!e.readFile(e.blobSlice.call(t,0,r),function(t){var r,s,d,l,c=t.target.result,u=new DataView(c),g=2,f=u.byteLength-4,h=g;if(65496===u.getUint16(0)){for(;f>g&&(r=u.getUint16(g),r>=65504&&65519>=r||65534===r);){if(s=u.getUint16(g+2)+2,g+s>u.byteLength){console.log("Invalid meta data: Invalid segment size.");break}if(d=e.metaDataParsers.jpeg[r])for(l=0;d.length>l;l+=1)d[l].call(n,u,g,s,o,a);g+=s,h=g}!a.disableImageHead&&h>6&&(o.imageHead=c.slice?c.slice(0,h):new Uint8Array(c).subarray(0,h))}else console.log("Invalid JPEG file: Missing JPEG marker.");i(o)},"readAsArrayBuffer"))&&i(o)}}),function(e){"use strict";"function"==typeof define&&define.amd?define(["load-image","load-image-meta"],e):e(window.loadImage)}(function(e){"use strict";e.ExifMap=function(){return this},e.ExifMap.prototype.map={Orientation:274},e.ExifMap.prototype.get=function(e){return this[e]||this[this.map[e]]},e.getExifThumbnail=function(e,t,i){var a,n,r;if(!i||t+i>e.byteLength)return console.log("Invalid Exif data: Invalid thumbnail data."),void 0;for(a=[],n=0;i>n;n+=1)r=e.getUint8(t+n),a.push((16>r?"0":"")+r.toString(16));return"data:image/jpeg,%"+a.join("%")},e.exifTagTypes={1:{getValue:function(e,t){return e.getUint8(t)},size:1},2:{getValue:function(e,t){return String.fromCharCode(e.getUint8(t))},size:1,ascii:!0},3:{getValue:function(e,t,i){return e.getUint16(t,i)},size:2},4:{getValue:function(e,t,i){return e.getUint32(t,i)},size:4},5:{getValue:function(e,t,i){return e.getUint32(t,i)/e.getUint32(t+4,i)},size:8},9:{getValue:function(e,t,i){return e.getInt32(t,i)},size:4},10:{getValue:function(e,t,i){return e.getInt32(t,i)/e.getInt32(t+4,i)},size:8}},e.exifTagTypes[7]=e.exifTagTypes[1],e.getExifValue=function(t,i,a,n,r,o){var s,d,l,c,u,g,f=e.exifTagTypes[n];if(!f)return console.log("Invalid Exif data: Invalid tag type."),void 0;if(s=f.size*r,d=s>4?i+t.getUint32(a+8,o):a+8,d+s>t.byteLength)return console.log("Invalid Exif data: Invalid data offset."),void 0;if(1===r)return f.getValue(t,d,o);for(l=[],c=0;r>c;c+=1)l[c]=f.getValue(t,d+c*f.size,o);if(f.ascii){for(u="",c=0;l.length>c&&(g=l[c],"\0"!==g);c+=1)u+=g;return u}return l},e.parseExifTag=function(t,i,a,n,r){var o=t.getUint16(a,n);r.exif[o]=e.getExifValue(t,i,a,t.getUint16(a+2,n),t.getUint32(a+4,n),n)},e.parseExifTags=function(e,t,i,a,n){var r,o,s;if(i+6>e.byteLength)return console.log("Invalid Exif data: Invalid directory offset."),void 0;if(r=e.getUint16(i,a),o=i+2+12*r,o+4>e.byteLength)return console.log("Invalid Exif data: Invalid directory size."),void 0;for(s=0;r>s;s+=1)this.parseExifTag(e,t,i+2+12*s,a,n);return e.getUint32(o,a)},e.parseExifData=function(t,i,a,n,r){if(!r.disableExif){var o,s,d,l=i+10;if(1165519206===t.getUint32(i+4)){if(l+8>t.byteLength)return console.log("Invalid Exif data: Invalid segment size."),void 0;if(0!==t.getUint16(i+8))return console.log("Invalid Exif data: Missing byte alignment offset."),void 0;switch(t.getUint16(l)){case 18761:o=!0;break;case 19789:o=!1;break;default:return console.log("Invalid Exif data: Invalid byte alignment marker."),void 0}if(42!==t.getUint16(l+2,o))return console.log("Invalid Exif data: Missing TIFF marker."),void 0;s=t.getUint32(l+4,o),n.exif=new e.ExifMap,s=e.parseExifTags(t,l,l+s,o,n),s&&!r.disableExifThumbnail&&(d={exif:{}},s=e.parseExifTags(t,l,l+s,o,d),d.exif[513]&&(n.exif.Thumbnail=e.getExifThumbnail(t,l+d.exif[513],d.exif[514]))),n.exif[34665]&&!r.disableExifSub&&e.parseExifTags(t,l,l+n.exif[34665],o,n),n.exif[34853]&&!r.disableExifGps&&e.parseExifTags(t,l,l+n.exif[34853],o,n)}}},e.metaDataParsers.jpeg[65505].push(e.parseExifData)}),function(e){"use strict";"function"==typeof define&&define.amd?define(["load-image","load-image-exif"],e):e(window.loadImage)}(function(e){"use strict";var t,i,a;e.ExifMap.prototype.tags={256:"ImageWidth",257:"ImageHeight",34665:"ExifIFDPointer",34853:"GPSInfoIFDPointer",40965:"InteroperabilityIFDPointer",258:"BitsPerSample",259:"Compression",262:"PhotometricInterpretation",274:"Orientation",277:"SamplesPerPixel",284:"PlanarConfiguration",530:"YCbCrSubSampling",531:"YCbCrPositioning",282:"XResolution",283:"YResolution",296:"ResolutionUnit",273:"StripOffsets",278:"RowsPerStrip",279:"StripByteCounts",513:"JPEGInterchangeFormat",514:"JPEGInterchangeFormatLength",301:"TransferFunction",318:"WhitePoint",319:"PrimaryChromaticities",529:"YCbCrCoefficients",532:"ReferenceBlackWhite",306:"DateTime",270:"ImageDescription",271:"Make",272:"Model",305:"Software",315:"Artist",33432:"Copyright",36864:"ExifVersion",40960:"FlashpixVersion",40961:"ColorSpace",40962:"PixelXDimension",40963:"PixelYDimension",42240:"Gamma",37121:"ComponentsConfiguration",37122:"CompressedBitsPerPixel",37500:"MakerNote",37510:"UserComment",40964:"RelatedSoundFile",36867:"DateTimeOriginal",36868:"DateTimeDigitized",37520:"SubSecTime",37521:"SubSecTimeOriginal",37522:"SubSecTimeDigitized",33434:"ExposureTime",33437:"FNumber",34850:"ExposureProgram",34852:"SpectralSensitivity",34855:"PhotographicSensitivity",34856:"OECF",34864:"SensitivityType",34865:"StandardOutputSensitivity",34866:"RecommendedExposureIndex",34867:"ISOSpeed",34868:"ISOSpeedLatitudeyyy",34869:"ISOSpeedLatitudezzz",37377:"ShutterSpeedValue",37378:"ApertureValue",37379:"BrightnessValue",37380:"ExposureBias",37381:"MaxApertureValue",37382:"SubjectDistance",37383:"MeteringMode",37384:"LightSource",37385:"Flash",37396:"SubjectArea",37386:"FocalLength",41483:"FlashEnergy",41484:"SpatialFrequencyResponse",41486:"FocalPlaneXResolution",41487:"FocalPlaneYResolution",41488:"FocalPlaneResolutionUnit",41492:"SubjectLocation",41493:"ExposureIndex",41495:"SensingMethod",41728:"FileSource",41729:"SceneType",41730:"CFAPattern",41985:"CustomRendered",41986:"ExposureMode",41987:"WhiteBalance",41988:"DigitalZoomRatio",41989:"FocalLengthIn35mmFilm",41990:"SceneCaptureType",41991:"GainControl",41992:"Contrast",41993:"Saturation",41994:"Sharpness",41995:"DeviceSettingDescription",41996:"SubjectDistanceRange",42016:"ImageUniqueID",42032:"CameraOwnerName",42033:"BodySerialNumber",42034:"LensSpecification",42035:"LensMake",42036:"LensModel",42037:"LensSerialNumber",0:"GPSVersionID",1:"GPSLatitudeRef",2:"GPSLatitude",3:"GPSLongitudeRef",4:"GPSLongitude",5:"GPSAltitudeRef",6:"GPSAltitude",7:"GPSTimeStamp",8:"GPSSatellites",9:"GPSStatus",10:"GPSMeasureMode",11:"GPSDOP",12:"GPSSpeedRef",13:"GPSSpeed",14:"GPSTrackRef",15:"GPSTrack",16:"GPSImgDirectionRef",17:"GPSImgDirection",18:"GPSMapDatum",19:"GPSDestLatitudeRef",20:"GPSDestLatitude",21:"GPSDestLongitudeRef",22:"GPSDestLongitude",23:"GPSDestBearingRef",24:"GPSDestBearing",25:"GPSDestDistanceRef",26:"GPSDestDistance",27:"GPSProcessingMethod",28:"GPSAreaInformation",29:"GPSDateStamp",30:"GPSDifferential",31:"GPSHPositioningError"},e.ExifMap.prototype.stringValues={ExposureProgram:{0:"Undefined",1:"Manual",2:"Normal program",3:"Aperture priority",4:"Shutter priority",5:"Creative program",6:"Action program",7:"Portrait mode",8:"Landscape mode"},MeteringMode:{0:"Unknown",1:"Average",2:"CenterWeightedAverage",3:"Spot",4:"MultiSpot",5:"Pattern",6:"Partial",255:"Other"},LightSource:{0:"Unknown",1:"Daylight",2:"Fluorescent",3:"Tungsten (incandescent light)",4:"Flash",9:"Fine weather",10:"Cloudy weather",11:"Shade",12:"Daylight fluorescent (D 5700 - 7100K)",13:"Day white fluorescent (N 4600 - 5400K)",14:"Cool white fluorescent (W 3900 - 4500K)",15:"White fluorescent (WW 3200 - 3700K)",17:"Standard light A",18:"Standard light B",19:"Standard light C",20:"D55",21:"D65",22:"D75",23:"D50",24:"ISO studio tungsten",255:"Other"},Flash:{0:"Flash did not fire",1:"Flash fired",5:"Strobe return light not detected",7:"Strobe return light detected",9:"Flash fired, compulsory flash mode",13:"Flash fired, compulsory flash mode, return light not detected",15:"Flash fired, compulsory flash mode, return light detected",16:"Flash did not fire, compulsory flash mode",24:"Flash did not fire, auto mode",25:"Flash fired, auto mode",29:"Flash fired, auto mode, return light not detected",31:"Flash fired, auto mode, return light detected",32:"No flash function",65:"Flash fired, red-eye reduction mode",69:"Flash fired, red-eye reduction mode, return light not detected",71:"Flash fired, red-eye reduction mode, return light detected",73:"Flash fired, compulsory flash mode, red-eye reduction mode",77:"Flash fired, compulsory flash mode, red-eye reduction mode, return light not detected",79:"Flash fired, compulsory flash mode, red-eye reduction mode, return light detected",89:"Flash fired, auto mode, red-eye reduction mode",93:"Flash fired, auto mode, return light not detected, red-eye reduction mode",95:"Flash fired, auto mode, return light detected, red-eye reduction mode"},SensingMethod:{1:"Undefined",2:"One-chip color area sensor",3:"Two-chip color area sensor",4:"Three-chip color area sensor",5:"Color sequential area sensor",7:"Trilinear sensor",8:"Color sequential linear sensor"},SceneCaptureType:{0:"Standard",1:"Landscape",2:"Portrait",3:"Night scene"},SceneType:{1:"Directly photographed"},CustomRendered:{0:"Normal process",1:"Custom process"},WhiteBalance:{0:"Auto white balance",1:"Manual white balance"},GainControl:{0:"None",1:"Low gain up",2:"High gain up",3:"Low gain down",4:"High gain down"},Contrast:{0:"Normal",1:"Soft",2:"Hard"},Saturation:{0:"Normal",1:"Low saturation",2:"High saturation"},Sharpness:{0:"Normal",1:"Soft",2:"Hard"},SubjectDistanceRange:{0:"Unknown",1:"Macro",2:"Close view",3:"Distant view"},FileSource:{3:"DSC"},ComponentsConfiguration:{0:"",1:"Y",2:"Cb",3:"Cr",4:"R",5:"G",6:"B"},Orientation:{1:"top-left",2:"top-right",3:"bottom-right",4:"bottom-left",5:"left-top",6:"right-top",7:"right-bottom",8:"left-bottom"}},e.ExifMap.prototype.getText=function(e){var t=this.get(e);switch(e){case"LightSource":case"Flash":case"MeteringMode":case"ExposureProgram":case"SensingMethod":case"SceneCaptureType":case"SceneType":case"CustomRendered":case"WhiteBalance":case"GainControl":case"Contrast":case"Saturation":case"Sharpness":case"SubjectDistanceRange":case"FileSource":case"Orientation":return this.stringValues[e][t];case"ExifVersion":case"FlashpixVersion":return String.fromCharCode(t[0],t[1],t[2],t[3]);case"ComponentsConfiguration":return this.stringValues[e][t[0]]+this.stringValues[e][t[1]]+this.stringValues[e][t[2]]+this.stringValues[e][t[3]];case"GPSVersionID":return t[0]+"."+t[1]+"."+t[2]+"."+t[3]}return t+""},t=e.ExifMap.prototype.tags,i=e.ExifMap.prototype.map;for(a in t)t.hasOwnProperty(a)&&(i[t[a]]=a);e.ExifMap.prototype.getAll=function(){var e,i,a={};for(e in this)this.hasOwnProperty(e)&&(i=t[e],i&&(a[i]=this.getText(i)));return a}});
+/*
+ * jQuery File Upload Plugin Localization Example 6.5
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2012, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+window.locale = {
+    "fileupload": {
+        "errors": {
+            "maxFileSize": "File is too big",
+            "minFileSize": "File is too small",
+            "acceptFileTypes": "Filetype not allowed",
+            "maxNumberOfFiles": "Max number of files exceeded",
+            "uploadedBytes": "Uploaded bytes exceed file size",
+            "emptyResult": "Empty file upload result"
+        },
+        "error": "Error",
+        "start": "Start",
+        "cancel": "Cancel",
+        "destroy": "Delete"
+    }
+};
+
+/*
+ * JavaScript Templates 2.2.0
+ * https://github.com/blueimp/JavaScript-Templates
+ *
+ * Copyright 2011, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ *
+ * Inspired by John Resig's JavaScript Micro-Templating:
+ * http://ejohn.org/blog/javascript-micro-templating/
+ */
+
+/*jslint evil: true, regexp: true */
+/*global document, define */
+
+(function ($) {
+    "use strict";
+    var tmpl = function (str, data) {
+        var f = !/[^\w\-\.:]/.test(str) ? tmpl.cache[str] = tmpl.cache[str] ||
+                tmpl(tmpl.load(str)) :
+                    new Function(
+                        tmpl.arg + ',tmpl',
+                        "var _e=tmpl.encode" + tmpl.helper + ",_s='" +
+                            str.replace(tmpl.regexp, tmpl.func) +
+                            "';return _s;"
+                    );
+        return data ? f(data, tmpl) : function (data) {
+            return f(data, tmpl);
+        };
+    };
+    tmpl.cache = {};
+    tmpl.load = function (id) {
+        return document.getElementById(id).innerHTML;
+    };
+    tmpl.regexp = /([\s'\\])(?![^%]*%\})|(?:\{%(=|#)([\s\S]+?)%\})|(\{%)|(%\})/g;
+    tmpl.func = function (s, p1, p2, p3, p4, p5) {
+        if (p1) { // whitespace, quote and backspace in interpolation context
+            return {
+                "\n": "\\n",
+                "\r": "\\r",
+                "\t": "\\t",
+                " " : " "
+            }[s] || "\\" + s;
+        }
+        if (p2) { // interpolation: {%=prop%}, or unescaped: {%#prop%}
+            if (p2 === "=") {
+                return "'+_e(" + p3 + ")+'";
+            }
+            return "'+" + p3 + "+'";
+        }
+        if (p4) { // evaluation start tag: {%
+            return "';";
+        }
+        if (p5) { // evaluation end tag: %}
+            return "_s+='";
+        }
+    };
+    tmpl.encReg = /[<>&"'\x00]/g;
+    tmpl.encMap = {
+        "<"   : "&lt;",
+        ">"   : "&gt;",
+        "&"   : "&amp;",
+        "\""  : "&quot;",
+        "'"   : "&#39;"
+    };
+    tmpl.encode = function (s) {
+        return String(s).replace(
+            tmpl.encReg,
+            function (c) {
+                return tmpl.encMap[c] || "";
+            }
+        );
+    };
+    tmpl.arg = "o";
+    tmpl.helper = ",print=function(s,e){_s+=e&&(s||'')||_e(s);}" +
+        ",include=function(s,d){_s+=tmpl(s,d);}";
+    if (typeof define === "function" && define.amd) {
+        define(function () {
+            return tmpl;
+        });
+    } else {
+        $.tmpl = tmpl;
+    }
+}(this));
+
+/*
+ * JavaScript Canvas to Blob 2.0.5
+ * https://github.com/blueimp/JavaScript-Canvas-to-Blob
+ *
+ * Copyright 2012, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ *
+ * Based on stackoverflow user Stoive's code snippet:
+ * http://stackoverflow.com/q/4998908
+ */
+
+/*jslint nomen: true, regexp: true */
+/*global window, atob, Blob, ArrayBuffer, Uint8Array, define */
+
+(function (window) {
+    'use strict';
+    var CanvasPrototype = window.HTMLCanvasElement &&
+            window.HTMLCanvasElement.prototype,
+        hasBlobConstructor = window.Blob && (function () {
+            try {
+                return Boolean(new Blob());
+            } catch (e) {
+                return false;
+            }
+        }()),
+        hasArrayBufferViewSupport = hasBlobConstructor && window.Uint8Array &&
+            (function () {
+                try {
+                    return new Blob([new Uint8Array(100)]).size === 100;
+                } catch (e) {
+                    return false;
+                }
+            }()),
+        BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
+            window.MozBlobBuilder || window.MSBlobBuilder,
+        dataURLtoBlob = (hasBlobConstructor || BlobBuilder) && window.atob &&
+            window.ArrayBuffer && window.Uint8Array && function (dataURI) {
+                var byteString,
+                    arrayBuffer,
+                    intArray,
+                    i,
+                    mimeString,
+                    bb;
+                if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+                    // Convert base64 to raw binary data held in a string:
+                    byteString = atob(dataURI.split(',')[1]);
+                } else {
+                    // Convert base64/URLEncoded data component to raw binary data:
+                    byteString = decodeURIComponent(dataURI.split(',')[1]);
+                }
+                // Write the bytes of the string to an ArrayBuffer:
+                arrayBuffer = new ArrayBuffer(byteString.length);
+                intArray = new Uint8Array(arrayBuffer);
+                for (i = 0; i < byteString.length; i += 1) {
+                    intArray[i] = byteString.charCodeAt(i);
+                }
+                // Separate out the mime component:
+                mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+                // Write the ArrayBuffer (or ArrayBufferView) to a blob:
+                if (hasBlobConstructor) {
+                    return new Blob(
+                        [hasArrayBufferViewSupport ? intArray : arrayBuffer],
+                        {type: mimeString}
+                    );
+                }
+                bb = new BlobBuilder();
+                bb.append(arrayBuffer);
+                return bb.getBlob(mimeString);
+            };
+    if (window.HTMLCanvasElement && !CanvasPrototype.toBlob) {
+        if (CanvasPrototype.mozGetAsFile) {
+            CanvasPrototype.toBlob = function (callback, type, quality) {
+                if (quality && CanvasPrototype.toDataURL && dataURLtoBlob) {
+                    callback(dataURLtoBlob(this.toDataURL(type, quality)));
+                } else {
+                    callback(this.mozGetAsFile('blob', type));
+                }
+            };
+        } else if (CanvasPrototype.toDataURL && dataURLtoBlob) {
+            CanvasPrototype.toBlob = function (callback, type, quality) {
+                callback(dataURLtoBlob(this.toDataURL(type, quality)));
+            };
+        }
+    }
+    if (typeof define === 'function' && define.amd) {
+        define(function () {
+            return dataURLtoBlob;
+        });
+    } else {
+        window.dataURLtoBlob = dataURLtoBlob;
+    }
+}(this));
+
+/*
+ * jQuery Iframe Transport Plugin 1.7
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2011, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+/*jslint unparam: true, nomen: true */
+/*global define, window, document */
+
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // Register as an anonymous AMD module:
+        define(['jquery'], factory);
+    } else {
+        // Browser globals:
+        factory(window.jQuery);
+    }
+}(function ($) {
+    'use strict';
+
+    // Helper variable to create unique names for the transport iframes:
+    var counter = 0;
+
+    // The iframe transport accepts three additional options:
+    // options.fileInput: a jQuery collection of file input fields
+    // options.paramName: the parameter name for the file form data,
+    //  overrides the name property of the file input field(s),
+    //  can be a string or an array of strings.
+    // options.formData: an array of objects with name and value properties,
+    //  equivalent to the return data of .serializeArray(), e.g.:
+    //  [{name: 'a', value: 1}, {name: 'b', value: 2}]
+    $.ajaxTransport('iframe', function (options) {
+        if (options.async) {
+            var form,
+                iframe,
+                addParamChar;
+            return {
+                send: function (_, completeCallback) {
+                    form = $('<form style="display:none;"></form>');
+                    form.attr('accept-charset', options.formAcceptCharset);
+                    addParamChar = /\?/.test(options.url) ? '&' : '?';
+                    // XDomainRequest only supports GET and POST:
+                    if (options.type === 'DELETE') {
+                        options.url = options.url + addParamChar + '_method=DELETE';
+                        options.type = 'POST';
+                    } else if (options.type === 'PUT') {
+                        options.url = options.url + addParamChar + '_method=PUT';
+                        options.type = 'POST';
+                    } else if (options.type === 'PATCH') {
+                        options.url = options.url + addParamChar + '_method=PATCH';
+                        options.type = 'POST';
+                    }
+                    // javascript:false as initial iframe src
+                    // prevents warning popups on HTTPS in IE6.
+                    // IE versions below IE8 cannot set the name property of
+                    // elements that have already been added to the DOM,
+                    // so we set the name along with the iframe HTML markup:
+                    counter += 1;
+                    iframe = $(
+                        '<iframe src="javascript:false;" name="iframe-transport-' +
+                            counter + '"></iframe>'
+                    ).bind('load', function () {
+                        var fileInputClones,
+                            paramNames = $.isArray(options.paramName) ?
+                                    options.paramName : [options.paramName];
+                        iframe
+                            .unbind('load')
+                            .bind('load', function () {
+                                var response;
+                                // Wrap in a try/catch block to catch exceptions thrown
+                                // when trying to access cross-domain iframe contents:
+                                try {
+                                    response = iframe.contents();
+                                    // Google Chrome and Firefox do not throw an
+                                    // exception when calling iframe.contents() on
+                                    // cross-domain requests, so we unify the response:
+                                    if (!response.length || !response[0].firstChild) {
+                                        throw new Error();
+                                    }
+                                } catch (e) {
+                                    response = undefined;
+                                }
+                                // The complete callback returns the
+                                // iframe content document as response object:
+                                completeCallback(
+                                    200,
+                                    'success',
+                                    {'iframe': response}
+                                );
+                                // Fix for IE endless progress bar activity bug
+                                // (happens on form submits to iframe targets):
+                                $('<iframe src="javascript:false;"></iframe>')
+                                    .appendTo(form);
+                                window.setTimeout(function () {
+                                    // Removing the form in a setTimeout call
+                                    // allows Chrome's developer tools to display
+                                    // the response result
+                                    form.remove();
+                                }, 0);
+                            });
+                        form
+                            .prop('target', iframe.prop('name'))
+                            .prop('action', options.url)
+                            .prop('method', options.type);
+                        if (options.formData) {
+                            $.each(options.formData, function (index, field) {
+                                $('<input type="hidden"/>')
+                                    .prop('name', field.name)
+                                    .val(field.value)
+                                    .appendTo(form);
+                            });
+                        }
+                        if (options.fileInput && options.fileInput.length &&
+                                options.type === 'POST') {
+                            fileInputClones = options.fileInput.clone();
+                            // Insert a clone for each file input field:
+                            options.fileInput.after(function (index) {
+                                return fileInputClones[index];
+                            });
+                            if (options.paramName) {
+                                options.fileInput.each(function (index) {
+                                    $(this).prop(
+                                        'name',
+                                        paramNames[index] || options.paramName
+                                    );
+                                });
+                            }
+                            // Appending the file input fields to the hidden form
+                            // removes them from their original location:
+                            form
+                                .append(options.fileInput)
+                                .prop('enctype', 'multipart/form-data')
+                                // enctype must be set as encoding for IE:
+                                .prop('encoding', 'multipart/form-data');
+                        }
+                        form.submit();
+                        // Insert the file input fields at their original location
+                        // by replacing the clones with the originals:
+                        if (fileInputClones && fileInputClones.length) {
+                            options.fileInput.each(function (index, input) {
+                                var clone = $(fileInputClones[index]);
+                                $(input).prop('name', clone.prop('name'));
+                                clone.replaceWith(input);
+                            });
+                        }
+                    });
+                    form.append(iframe).appendTo(document.body);
+                },
+                abort: function () {
+                    if (iframe) {
+                        // javascript:false as iframe src aborts the request
+                        // and prevents warning popups on HTTPS in IE6.
+                        // concat is used to avoid the "Script URL" JSLint error:
+                        iframe
+                            .unbind('load')
+                            .prop('src', 'javascript'.concat(':false;'));
+                    }
+                    if (form) {
+                        form.remove();
+                    }
+                }
+            };
+        }
+    });
+
+    // The iframe transport returns the iframe content document as response.
+    // The following adds converters from iframe to text, json, html, xml
+    // and script.
+    // Please note that the Content-Type for JSON responses has to be text/plain
+    // or text/html, if the browser doesn't include application/json in the
+    // Accept header, else IE will show a download dialog.
+    // The Content-Type for XML responses on the other hand has to be always
+    // application/xml or text/xml, so IE properly parses the XML response.
+    // See also
+    // https://github.com/blueimp/jQuery-File-Upload/wiki/Setup#content-type-negotiation
+    $.ajaxSetup({
+        converters: {
+            'iframe text': function (iframe) {
+                return iframe && $(iframe[0].body).text();
+            },
+            'iframe json': function (iframe) {
+                return iframe && $.parseJSON($(iframe[0].body).text());
+            },
+            'iframe html': function (iframe) {
+                return iframe && $(iframe[0].body).html();
+            },
+            'iframe xml': function (iframe) {
+                var xmlDoc = iframe && iframe[0];
+                return xmlDoc && $.isXMLDoc(xmlDoc) ? xmlDoc :
+                        $.parseXML((xmlDoc.XMLDocument && xmlDoc.XMLDocument.xml) ||
+                            $(xmlDoc.body).html());
+            },
+            'iframe script': function (iframe) {
+                return iframe && $.globalEval($(iframe[0].body).text());
+            }
+        }
+    });
+
+}));
+
+/*
+ * jQuery File Upload Plugin 5.31.6
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2010, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+/*jslint nomen: true, unparam: true, regexp: true */
+/*global define, window, document, location, File, Blob, FormData */
+
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // Register as an anonymous AMD module:
+        define([
+            'jquery',
+            'jquery.ui.widget'
+        ], factory);
+    } else {
+        // Browser globals:
+        factory(window.jQuery);
+    }
+}(function ($) {
+    'use strict';
+
+    // The FileReader API is not actually used, but works as feature detection,
+    // as e.g. Safari supports XHR file uploads via the FormData API,
+    // but not non-multipart XHR file uploads:
+    $.support.xhrFileUpload = !!(window.XMLHttpRequestUpload && window.FileReader);
+    $.support.xhrFormDataFileUpload = !!window.FormData;
+
+    // Detect support for Blob slicing (required for chunked uploads):
+    $.support.blobSlice = window.Blob && (Blob.prototype.slice ||
+        Blob.prototype.webkitSlice || Blob.prototype.mozSlice);
+
+    // The fileupload widget listens for change events on file input fields defined
+    // via fileInput setting and paste or drop events of the given dropZone.
+    // In addition to the default jQuery Widget methods, the fileupload widget
+    // exposes the "add" and "send" methods, to add or directly send files using
+    // the fileupload API.
+    // By default, files added via file input selection, paste, drag & drop or
+    // "add" method are uploaded immediately, but it is possible to override
+    // the "add" callback option to queue file uploads.
+    $.widget('blueimp.fileupload', {
+
+        options: {
+            // The drop target element(s), by the default the complete document.
+            // Set to null to disable drag & drop support:
+            dropZone: $(document),
+            // The paste target element(s), by the default the complete document.
+            // Set to null to disable paste support:
+            pasteZone: $(document),
+            // The file input field(s), that are listened to for change events.
+            // If undefined, it is set to the file input fields inside
+            // of the widget element on plugin initialization.
+            // Set to null to disable the change listener.
+            fileInput: undefined,
+            // By default, the file input field is replaced with a clone after
+            // each input field change event. This is required for iframe transport
+            // queues and allows change events to be fired for the same file
+            // selection, but can be disabled by setting the following option to false:
+            replaceFileInput: true,
+            // The parameter name for the file form data (the request argument name).
+            // If undefined or empty, the name property of the file input field is
+            // used, or "files[]" if the file input name property is also empty,
+            // can be a string or an array of strings:
+            paramName: undefined,
+            // By default, each file of a selection is uploaded using an individual
+            // request for XHR type uploads. Set to false to upload file
+            // selections in one request each:
+            singleFileUploads: true,
+            // To limit the number of files uploaded with one XHR request,
+            // set the following option to an integer greater than 0:
+            limitMultiFileUploads: undefined,
+            // Set the following option to true to issue all file upload requests
+            // in a sequential order:
+            sequentialUploads: false,
+            // To limit the number of concurrent uploads,
+            // set the following option to an integer greater than 0:
+            limitConcurrentUploads: undefined,
+            // Set the following option to true to force iframe transport uploads:
+            forceIframeTransport: false,
+            // Set the following option to the location of a redirect url on the
+            // origin server, for cross-domain iframe transport uploads:
+            redirect: undefined,
+            // The parameter name for the redirect url, sent as part of the form
+            // data and set to 'redirect' if this option is empty:
+            redirectParamName: undefined,
+            // Set the following option to the location of a postMessage window,
+            // to enable postMessage transport uploads:
+            postMessage: undefined,
+            // By default, XHR file uploads are sent as multipart/form-data.
+            // The iframe transport is always using multipart/form-data.
+            // Set to false to enable non-multipart XHR uploads:
+            multipart: true,
+            // To upload large files in smaller chunks, set the following option
+            // to a preferred maximum chunk size. If set to 0, null or undefined,
+            // or the browser does not support the required Blob API, files will
+            // be uploaded as a whole.
+            maxChunkSize: undefined,
+            // When a non-multipart upload or a chunked multipart upload has been
+            // aborted, this option can be used to resume the upload by setting
+            // it to the size of the already uploaded bytes. This option is most
+            // useful when modifying the options object inside of the "add" or
+            // "send" callbacks, as the options are cloned for each file upload.
+            uploadedBytes: undefined,
+            // By default, failed (abort or error) file uploads are removed from the
+            // global progress calculation. Set the following option to false to
+            // prevent recalculating the global progress data:
+            recalculateProgress: true,
+            // Interval in milliseconds to calculate and trigger progress events:
+            progressInterval: 100,
+            // Interval in milliseconds to calculate progress bitrate:
+            bitrateInterval: 500,
+            // By default, uploads are started automatically when adding files:
+            autoUpload: true,
+
+            // Error and info messages:
+            messages: {
+                uploadedBytes: 'Uploaded bytes exceed file size'
+            },
+
+            // Translation function, gets the message key to be translated
+            // and an object with context specific data as arguments:
+            i18n: function (message, context) {
+                message = this.messages[message] || message.toString();
+                if (context) {
+                    $.each(context, function (key, value) {
+                        message = message.replace('{' + key + '}', value);
+                    });
+                }
+                return message;
+            },
+
+            // Additional form data to be sent along with the file uploads can be set
+            // using this option, which accepts an array of objects with name and
+            // value properties, a function returning such an array, a FormData
+            // object (for XHR file uploads), or a simple object.
+            // The form of the first fileInput is given as parameter to the function:
+            formData: function (form) {
+                return form.serializeArray();
+            },
+
+            // The add callback is invoked as soon as files are added to the fileupload
+            // widget (via file input selection, drag & drop, paste or add API call).
+            // If the singleFileUploads option is enabled, this callback will be
+            // called once for each file in the selection for XHR file uploads, else
+            // once for each file selection.
+            //
+            // The upload starts when the submit method is invoked on the data parameter.
+            // The data object contains a files property holding the added files
+            // and allows you to override plugin options as well as define ajax settings.
+            //
+            // Listeners for this callback can also be bound the following way:
+            // .bind('fileuploadadd', func);
+            //
+            // data.submit() returns a Promise object and allows to attach additional
+            // handlers using jQuery's Deferred callbacks:
+            // data.submit().done(func).fail(func).always(func);
+            add: function (e, data) {
+                if (data.autoUpload || (data.autoUpload !== false &&
+                        $(this).fileupload('option', 'autoUpload'))) {
+                    data.process().done(function () {
+                        data.submit();
+                    });
+                }
+            },
+
+            // Other callbacks:
+
+            // Callback for the submit event of each file upload:
+            // submit: function (e, data) {}, // .bind('fileuploadsubmit', func);
+
+            // Callback for the start of each file upload request:
+            // send: function (e, data) {}, // .bind('fileuploadsend', func);
+
+            // Callback for successful uploads:
+            // done: function (e, data) {}, // .bind('fileuploaddone', func);
+
+            // Callback for failed (abort or error) uploads:
+            // fail: function (e, data) {}, // .bind('fileuploadfail', func);
+
+            // Callback for completed (success, abort or error) requests:
+            // always: function (e, data) {}, // .bind('fileuploadalways', func);
+
+            // Callback for upload progress events:
+            // progress: function (e, data) {}, // .bind('fileuploadprogress', func);
+
+            // Callback for global upload progress events:
+            // progressall: function (e, data) {}, // .bind('fileuploadprogressall', func);
+
+            // Callback for uploads start, equivalent to the global ajaxStart event:
+            // start: function (e) {}, // .bind('fileuploadstart', func);
+
+            // Callback for uploads stop, equivalent to the global ajaxStop event:
+            // stop: function (e) {}, // .bind('fileuploadstop', func);
+
+            // Callback for change events of the fileInput(s):
+            // change: function (e, data) {}, // .bind('fileuploadchange', func);
+
+            // Callback for paste events to the pasteZone(s):
+            // paste: function (e, data) {}, // .bind('fileuploadpaste', func);
+
+            // Callback for drop events of the dropZone(s):
+            // drop: function (e, data) {}, // .bind('fileuploaddrop', func);
+
+            // Callback for dragover events of the dropZone(s):
+            // dragover: function (e) {}, // .bind('fileuploaddragover', func);
+
+            // Callback for the start of each chunk upload request:
+            // chunksend: function (e, data) {}, // .bind('fileuploadchunksend', func);
+
+            // Callback for successful chunk uploads:
+            // chunkdone: function (e, data) {}, // .bind('fileuploadchunkdone', func);
+
+            // Callback for failed (abort or error) chunk uploads:
+            // chunkfail: function (e, data) {}, // .bind('fileuploadchunkfail', func);
+
+            // Callback for completed (success, abort or error) chunk upload requests:
+            // chunkalways: function (e, data) {}, // .bind('fileuploadchunkalways', func);
+
+            // The plugin options are used as settings object for the ajax calls.
+            // The following are jQuery ajax settings required for the file uploads:
+            processData: false,
+            contentType: false,
+            cache: false
+        },
+
+        // A list of options that require reinitializing event listeners and/or
+        // special initialization code:
+        _specialOptions: [
+            'fileInput',
+            'dropZone',
+            'pasteZone',
+            'multipart',
+            'forceIframeTransport'
+        ],
+
+        _blobSlice: $.support.blobSlice && function () {
+            var slice = this.slice || this.webkitSlice || this.mozSlice;
+            return slice.apply(this, arguments);
+        },
+
+        _BitrateTimer: function () {
+            this.timestamp = ((Date.now) ? Date.now() : (new Date()).getTime());
+            this.loaded = 0;
+            this.bitrate = 0;
+            this.getBitrate = function (now, loaded, interval) {
+                var timeDiff = now - this.timestamp;
+                if (!this.bitrate || !interval || timeDiff > interval) {
+                    this.bitrate = (loaded - this.loaded) * (1000 / timeDiff) * 8;
+                    this.loaded = loaded;
+                    this.timestamp = now;
+                }
+                return this.bitrate;
+            };
+        },
+
+        _isXHRUpload: function (options) {
+            return !options.forceIframeTransport &&
+                ((!options.multipart && $.support.xhrFileUpload) ||
+                $.support.xhrFormDataFileUpload);
+        },
+
+        _getFormData: function (options) {
+            var formData;
+            if (typeof options.formData === 'function') {
+                return options.formData(options.form);
+            }
+            if ($.isArray(options.formData)) {
+                return options.formData;
+            }
+            if ($.type(options.formData) === 'object') {
+                formData = [];
+                $.each(options.formData, function (name, value) {
+                    formData.push({name: name, value: value});
+                });
+                return formData;
+            }
+            return [];
+        },
+
+        _getTotal: function (files) {
+            var total = 0;
+            $.each(files, function (index, file) {
+                total += file.size || 1;
+            });
+            return total;
+        },
+
+        _initProgressObject: function (obj) {
+            var progress = {
+                loaded: 0,
+                total: 0,
+                bitrate: 0
+            };
+            if (obj._progress) {
+                $.extend(obj._progress, progress);
+            } else {
+                obj._progress = progress;
+            }
+        },
+
+        _initResponseObject: function (obj) {
+            var prop;
+            if (obj._response) {
+                for (prop in obj._response) {
+                    if (obj._response.hasOwnProperty(prop)) {
+                        delete obj._response[prop];
+                    }
+                }
+            } else {
+                obj._response = {};
+            }
+        },
+
+        _onProgress: function (e, data) {
+            if (e.lengthComputable) {
+                var now = ((Date.now) ? Date.now() : (new Date()).getTime()),
+                    loaded;
+                if (data._time && data.progressInterval &&
+                        (now - data._time < data.progressInterval) &&
+                        e.loaded !== e.total) {
+                    return;
+                }
+                data._time = now;
+                loaded = Math.floor(
+                    e.loaded / e.total * (data.chunkSize || data._progress.total)
+                ) + (data.uploadedBytes || 0);
+                // Add the difference from the previously loaded state
+                // to the global loaded counter:
+                this._progress.loaded += (loaded - data._progress.loaded);
+                this._progress.bitrate = this._bitrateTimer.getBitrate(
+                    now,
+                    this._progress.loaded,
+                    data.bitrateInterval
+                );
+                data._progress.loaded = data.loaded = loaded;
+                data._progress.bitrate = data.bitrate = data._bitrateTimer.getBitrate(
+                    now,
+                    loaded,
+                    data.bitrateInterval
+                );
+                // Trigger a custom progress event with a total data property set
+                // to the file size(s) of the current upload and a loaded data
+                // property calculated accordingly:
+                this._trigger('progress', e, data);
+                // Trigger a global progress event for all current file uploads,
+                // including ajax calls queued for sequential file uploads:
+                this._trigger('progressall', e, this._progress);
+            }
+        },
+
+        _initProgressListener: function (options) {
+            var that = this,
+                xhr = options.xhr ? options.xhr() : $.ajaxSettings.xhr();
+            // Accesss to the native XHR object is required to add event listeners
+            // for the upload progress event:
+            if (xhr.upload) {
+                $(xhr.upload).bind('progress', function (e) {
+                    var oe = e.originalEvent;
+                    // Make sure the progress event properties get copied over:
+                    e.lengthComputable = oe.lengthComputable;
+                    e.loaded = oe.loaded;
+                    e.total = oe.total;
+                    that._onProgress(e, options);
+                });
+                options.xhr = function () {
+                    return xhr;
+                };
+            }
+        },
+
+        _isInstanceOf: function (type, obj) {
+            // Cross-frame instanceof check
+            return Object.prototype.toString.call(obj) === '[object ' + type + ']';
+        },
+
+        _initXHRData: function (options) {
+            var that = this,
+                formData,
+                file = options.files[0],
+                // Ignore non-multipart setting if not supported:
+                multipart = options.multipart || !$.support.xhrFileUpload,
+                paramName = options.paramName[0];
+            options.headers = options.headers || {};
+            if (options.contentRange) {
+                options.headers['Content-Range'] = options.contentRange;
+            }
+            if (!multipart || options.blob || !this._isInstanceOf('File', file)) {
+                options.headers['Content-Disposition'] = 'attachment; filename="' +
+                    encodeURI(file.name) + '"';
+            }
+            if (!multipart) {
+                options.contentType = file.type;
+                options.data = options.blob || file;
+            } else if ($.support.xhrFormDataFileUpload) {
+                if (options.postMessage) {
+                    // window.postMessage does not allow sending FormData
+                    // objects, so we just add the File/Blob objects to
+                    // the formData array and let the postMessage window
+                    // create the FormData object out of this array:
+                    formData = this._getFormData(options);
+                    if (options.blob) {
+                        formData.push({
+                            name: paramName,
+                            value: options.blob
+                        });
+                    } else {
+                        $.each(options.files, function (index, file) {
+                            formData.push({
+                                name: options.paramName[index] || paramName,
+                                value: file
+                            });
+                        });
+                    }
+                } else {
+                    if (that._isInstanceOf('FormData', options.formData)) {
+                        formData = options.formData;
+                    } else {
+                        formData = new FormData();
+                        $.each(this._getFormData(options), function (index, field) {
+                            formData.append(field.name, field.value);
+                        });
+                    }
+                    if (options.blob) {
+                        formData.append(paramName, options.blob, file.name);
+                    } else {
+                        $.each(options.files, function (index, file) {
+                            // This check allows the tests to run with
+                            // dummy objects:
+                            if (that._isInstanceOf('File', file) ||
+                                    that._isInstanceOf('Blob', file)) {
+                                formData.append(
+                                    options.paramName[index] || paramName,
+                                    file,
+                                    file.name
+                                );
+                            }
+                        });
+                    }
+                }
+                options.data = formData;
+            }
+            // Blob reference is not needed anymore, free memory:
+            options.blob = null;
+        },
+
+        _initIframeSettings: function (options) {
+            var targetHost = $('<a></a>').prop('href', options.url).prop('host');
+            // Setting the dataType to iframe enables the iframe transport:
+            options.dataType = 'iframe ' + (options.dataType || '');
+            // The iframe transport accepts a serialized array as form data:
+            options.formData = this._getFormData(options);
+            // Add redirect url to form data on cross-domain uploads:
+            if (options.redirect && targetHost && targetHost !== location.host) {
+                options.formData.push({
+                    name: options.redirectParamName || 'redirect',
+                    value: options.redirect
+                });
+            }
+        },
+
+        _initDataSettings: function (options) {
+            if (this._isXHRUpload(options)) {
+                if (!this._chunkedUpload(options, true)) {
+                    if (!options.data) {
+                        this._initXHRData(options);
+                    }
+                    this._initProgressListener(options);
+                }
+                if (options.postMessage) {
+                    // Setting the dataType to postmessage enables the
+                    // postMessage transport:
+                    options.dataType = 'postmessage ' + (options.dataType || '');
+                }
+            } else {
+                this._initIframeSettings(options);
+            }
+        },
+
+        _getParamName: function (options) {
+            var fileInput = $(options.fileInput),
+                paramName = options.paramName;
+            if (!paramName) {
+                paramName = [];
+                fileInput.each(function () {
+                    var input = $(this),
+                        name = input.prop('name') || 'files[]',
+                        i = (input.prop('files') || [1]).length;
+                    while (i) {
+                        paramName.push(name);
+                        i -= 1;
+                    }
+                });
+                if (!paramName.length) {
+                    paramName = [fileInput.prop('name') || 'files[]'];
+                }
+            } else if (!$.isArray(paramName)) {
+                paramName = [paramName];
+            }
+            return paramName;
+        },
+
+        _initFormSettings: function (options) {
+            // Retrieve missing options from the input field and the
+            // associated form, if available:
+            if (!options.form || !options.form.length) {
+                options.form = $(options.fileInput.prop('form'));
+                // If the given file input doesn't have an associated form,
+                // use the default widget file input's form:
+                if (!options.form.length) {
+                    options.form = $(this.options.fileInput.prop('form'));
+                }
+            }
+            options.paramName = this._getParamName(options);
+            if (!options.url) {
+                options.url = options.form.prop('action') || location.href;
+            }
+            // The HTTP request method must be "POST" or "PUT":
+            options.type = (options.type || options.form.prop('method') || '')
+                .toUpperCase();
+            if (options.type !== 'POST' && options.type !== 'PUT' &&
+                    options.type !== 'PATCH') {
+                options.type = 'POST';
+            }
+            if (!options.formAcceptCharset) {
+                options.formAcceptCharset = options.form.attr('accept-charset');
+            }
+        },
+
+        _getAJAXSettings: function (data) {
+            var options = $.extend({}, this.options, data);
+            this._initFormSettings(options);
+            this._initDataSettings(options);
+            return options;
+        },
+
+        // jQuery 1.6 doesn't provide .state(),
+        // while jQuery 1.8+ removed .isRejected() and .isResolved():
+        _getDeferredState: function (deferred) {
+            if (deferred.state) {
+                return deferred.state();
+            }
+            if (deferred.isResolved()) {
+                return 'resolved';
+            }
+            if (deferred.isRejected()) {
+                return 'rejected';
+            }
+            return 'pending';
+        },
+
+        // Maps jqXHR callbacks to the equivalent
+        // methods of the given Promise object:
+        _enhancePromise: function (promise) {
+            promise.success = promise.done;
+            promise.error = promise.fail;
+            promise.complete = promise.always;
+            return promise;
+        },
+
+        // Creates and returns a Promise object enhanced with
+        // the jqXHR methods abort, success, error and complete:
+        _getXHRPromise: function (resolveOrReject, context, args) {
+            var dfd = $.Deferred(),
+                promise = dfd.promise();
+            context = context || this.options.context || promise;
+            if (resolveOrReject === true) {
+                dfd.resolveWith(context, args);
+            } else if (resolveOrReject === false) {
+                dfd.rejectWith(context, args);
+            }
+            promise.abort = dfd.promise;
+            return this._enhancePromise(promise);
+        },
+
+        // Adds convenience methods to the data callback argument:
+        _addConvenienceMethods: function (e, data) {
+            var that = this,
+                getPromise = function (data) {
+                    return $.Deferred().resolveWith(that, [data]).promise();
+                };
+            data.process = function (resolveFunc, rejectFunc) {
+                if (resolveFunc || rejectFunc) {
+                    data._processQueue = this._processQueue =
+                        (this._processQueue || getPromise(this))
+                            .pipe(resolveFunc, rejectFunc);
+                }
+                return this._processQueue || getPromise(this);
+            };
+            data.submit = function () {
+                if (this.state() !== 'pending') {
+                    data.jqXHR = this.jqXHR =
+                        (that._trigger('submit', e, this) !== false) &&
+                        that._onSend(e, this);
+                }
+                return this.jqXHR || that._getXHRPromise();
+            };
+            data.abort = function () {
+                if (this.jqXHR) {
+                    return this.jqXHR.abort();
+                }
+                return that._getXHRPromise();
+            };
+            data.state = function () {
+                if (this.jqXHR) {
+                    return that._getDeferredState(this.jqXHR);
+                }
+                if (this._processQueue) {
+                    return that._getDeferredState(this._processQueue);
+                }
+            };
+            data.progress = function () {
+                return this._progress;
+            };
+            data.response = function () {
+                return this._response;
+            };
+        },
+
+        // Parses the Range header from the server response
+        // and returns the uploaded bytes:
+        _getUploadedBytes: function (jqXHR) {
+            var range = jqXHR.getResponseHeader('Range'),
+                parts = range && range.split('-'),
+                upperBytesPos = parts && parts.length > 1 &&
+                    parseInt(parts[1], 10);
+            return upperBytesPos && upperBytesPos + 1;
+        },
+
+        // Uploads a file in multiple, sequential requests
+        // by splitting the file up in multiple blob chunks.
+        // If the second parameter is true, only tests if the file
+        // should be uploaded in chunks, but does not invoke any
+        // upload requests:
+        _chunkedUpload: function (options, testOnly) {
+            options.uploadedBytes = options.uploadedBytes || 0;
+            var that = this,
+                file = options.files[0],
+                fs = file.size,
+                ub = options.uploadedBytes,
+                mcs = options.maxChunkSize || fs,
+                slice = this._blobSlice,
+                dfd = $.Deferred(),
+                promise = dfd.promise(),
+                jqXHR,
+                upload;
+            if (!(this._isXHRUpload(options) && slice && (ub || mcs < fs)) ||
+                    options.data) {
+                return false;
+            }
+            if (testOnly) {
+                return true;
+            }
+            if (ub >= fs) {
+                file.error = options.i18n('uploadedBytes');
+                return this._getXHRPromise(
+                    false,
+                    options.context,
+                    [null, 'error', file.error]
+                );
+            }
+            // The chunk upload method:
+            upload = function () {
+                // Clone the options object for each chunk upload:
+                var o = $.extend({}, options),
+                    currentLoaded = o._progress.loaded;
+                o.blob = slice.call(
+                    file,
+                    ub,
+                    ub + mcs,
+                    file.type
+                );
+                // Store the current chunk size, as the blob itself
+                // will be dereferenced after data processing:
+                o.chunkSize = o.blob.size;
+                // Expose the chunk bytes position range:
+                o.contentRange = 'bytes ' + ub + '-' +
+                    (ub + o.chunkSize - 1) + '/' + fs;
+                // Process the upload data (the blob and potential form data):
+                that._initXHRData(o);
+                // Add progress listeners for this chunk upload:
+                that._initProgressListener(o);
+                jqXHR = ((that._trigger('chunksend', null, o) !== false && $.ajax(o)) ||
+                        that._getXHRPromise(false, o.context))
+                    .done(function (result, textStatus, jqXHR) {
+                        ub = that._getUploadedBytes(jqXHR) ||
+                            (ub + o.chunkSize);
+                        // Create a progress event if no final progress event
+                        // with loaded equaling total has been triggered
+                        // for this chunk:
+                        if (currentLoaded + o.chunkSize - o._progress.loaded) {
+                            that._onProgress($.Event('progress', {
+                                lengthComputable: true,
+                                loaded: ub - o.uploadedBytes,
+                                total: ub - o.uploadedBytes
+                            }), o);
+                        }
+                        options.uploadedBytes = o.uploadedBytes = ub;
+                        o.result = result;
+                        o.textStatus = textStatus;
+                        o.jqXHR = jqXHR;
+                        that._trigger('chunkdone', null, o);
+                        that._trigger('chunkalways', null, o);
+                        if (ub < fs) {
+                            // File upload not yet complete,
+                            // continue with the next chunk:
+                            upload();
+                        } else {
+                            dfd.resolveWith(
+                                o.context,
+                                [result, textStatus, jqXHR]
+                            );
+                        }
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        o.jqXHR = jqXHR;
+                        o.textStatus = textStatus;
+                        o.errorThrown = errorThrown;
+                        that._trigger('chunkfail', null, o);
+                        that._trigger('chunkalways', null, o);
+                        dfd.rejectWith(
+                            o.context,
+                            [jqXHR, textStatus, errorThrown]
+                        );
+                    });
+            };
+            this._enhancePromise(promise);
+            promise.abort = function () {
+                return jqXHR.abort();
+            };
+            upload();
+            return promise;
+        },
+
+        _beforeSend: function (e, data) {
+            if (this._active === 0) {
+                // the start callback is triggered when an upload starts
+                // and no other uploads are currently running,
+                // equivalent to the global ajaxStart event:
+                this._trigger('start');
+                // Set timer for global bitrate progress calculation:
+                this._bitrateTimer = new this._BitrateTimer();
+                // Reset the global progress values:
+                this._progress.loaded = this._progress.total = 0;
+                this._progress.bitrate = 0;
+            }
+            // Make sure the container objects for the .response() and
+            // .progress() methods on the data object are available
+            // and reset to their initial state:
+            this._initResponseObject(data);
+            this._initProgressObject(data);
+            data._progress.loaded = data.loaded = data.uploadedBytes || 0;
+            data._progress.total = data.total = this._getTotal(data.files) || 1;
+            data._progress.bitrate = data.bitrate = 0;
+            this._active += 1;
+            // Initialize the global progress values:
+            this._progress.loaded += data.loaded;
+            this._progress.total += data.total;
+        },
+
+        _onDone: function (result, textStatus, jqXHR, options) {
+            var total = options._progress.total,
+                response = options._response;
+            if (options._progress.loaded < total) {
+                // Create a progress event if no final progress event
+                // with loaded equaling total has been triggered:
+                this._onProgress($.Event('progress', {
+                    lengthComputable: true,
+                    loaded: total,
+                    total: total
+                }), options);
+            }
+            response.result = options.result = result;
+            response.textStatus = options.textStatus = textStatus;
+            response.jqXHR = options.jqXHR = jqXHR;
+            this._trigger('done', null, options);
+        },
+
+        _onFail: function (jqXHR, textStatus, errorThrown, options) {
+            var response = options._response;
+            if (options.recalculateProgress) {
+                // Remove the failed (error or abort) file upload from
+                // the global progress calculation:
+                this._progress.loaded -= options._progress.loaded;
+                this._progress.total -= options._progress.total;
+            }
+            response.jqXHR = options.jqXHR = jqXHR;
+            response.textStatus = options.textStatus = textStatus;
+            response.errorThrown = options.errorThrown = errorThrown;
+            this._trigger('fail', null, options);
+        },
+
+        _onAlways: function (jqXHRorResult, textStatus, jqXHRorError, options) {
+            // jqXHRorResult, textStatus and jqXHRorError are added to the
+            // options object via done and fail callbacks
+            this._trigger('always', null, options);
+        },
+
+        _onSend: function (e, data) {
+            if (!data.submit) {
+                this._addConvenienceMethods(e, data);
+            }
+            var that = this,
+                jqXHR,
+                aborted,
+                slot,
+                pipe,
+                options = that._getAJAXSettings(data),
+                send = function () {
+                    that._sending += 1;
+                    // Set timer for bitrate progress calculation:
+                    options._bitrateTimer = new that._BitrateTimer();
+                    jqXHR = jqXHR || (
+                        ((aborted || that._trigger('send', e, options) === false) &&
+                        that._getXHRPromise(false, options.context, aborted)) ||
+                        that._chunkedUpload(options) || $.ajax(options)
+                    ).done(function (result, textStatus, jqXHR) {
+                        that._onDone(result, textStatus, jqXHR, options);
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        that._onFail(jqXHR, textStatus, errorThrown, options);
+                    }).always(function (jqXHRorResult, textStatus, jqXHRorError) {
+                        that._onAlways(
+                            jqXHRorResult,
+                            textStatus,
+                            jqXHRorError,
+                            options
+                        );
+                        that._sending -= 1;
+                        that._active -= 1;
+                        if (options.limitConcurrentUploads &&
+                                options.limitConcurrentUploads > that._sending) {
+                            // Start the next queued upload,
+                            // that has not been aborted:
+                            var nextSlot = that._slots.shift();
+                            while (nextSlot) {
+                                if (that._getDeferredState(nextSlot) === 'pending') {
+                                    nextSlot.resolve();
+                                    break;
+                                }
+                                nextSlot = that._slots.shift();
+                            }
+                        }
+                        if (that._active === 0) {
+                            // The stop callback is triggered when all uploads have
+                            // been completed, equivalent to the global ajaxStop event:
+                            that._trigger('stop');
+                        }
+                    });
+                    return jqXHR;
+                };
+            this._beforeSend(e, options);
+            if (this.options.sequentialUploads ||
+                    (this.options.limitConcurrentUploads &&
+                    this.options.limitConcurrentUploads <= this._sending)) {
+                if (this.options.limitConcurrentUploads > 1) {
+                    slot = $.Deferred();
+                    this._slots.push(slot);
+                    pipe = slot.pipe(send);
+                } else {
+                    this._sequence = this._sequence.pipe(send, send);
+                    pipe = this._sequence;
+                }
+                // Return the piped Promise object, enhanced with an abort method,
+                // which is delegated to the jqXHR object of the current upload,
+                // and jqXHR callbacks mapped to the equivalent Promise methods:
+                pipe.abort = function () {
+                    aborted = [undefined, 'abort', 'abort'];
+                    if (!jqXHR) {
+                        if (slot) {
+                            slot.rejectWith(options.context, aborted);
+                        }
+                        return send();
+                    }
+                    return jqXHR.abort();
+                };
+                return this._enhancePromise(pipe);
+            }
+            return send();
+        },
+
+        _onAdd: function (e, data) {
+            var that = this,
+                result = true,
+                options = $.extend({}, this.options, data),
+                limit = options.limitMultiFileUploads,
+                paramName = this._getParamName(options),
+                paramNameSet,
+                paramNameSlice,
+                fileSet,
+                i;
+            if (!(options.singleFileUploads || limit) ||
+                    !this._isXHRUpload(options)) {
+                fileSet = [data.files];
+                paramNameSet = [paramName];
+            } else if (!options.singleFileUploads && limit) {
+                fileSet = [];
+                paramNameSet = [];
+                for (i = 0; i < data.files.length; i += limit) {
+                    fileSet.push(data.files.slice(i, i + limit));
+                    paramNameSlice = paramName.slice(i, i + limit);
+                    if (!paramNameSlice.length) {
+                        paramNameSlice = paramName;
+                    }
+                    paramNameSet.push(paramNameSlice);
+                }
+            } else {
+                paramNameSet = paramName;
+            }
+            data.originalFiles = data.files;
+            $.each(fileSet || data.files, function (index, element) {
+                var newData = $.extend({}, data);
+                newData.files = fileSet ? element : [element];
+                newData.paramName = paramNameSet[index];
+                that._initResponseObject(newData);
+                that._initProgressObject(newData);
+                that._addConvenienceMethods(e, newData);
+                result = that._trigger('add', e, newData);
+                return result;
+            });
+            return result;
+        },
+
+        _replaceFileInput: function (input) {
+            var inputClone = input.clone(true);
+            $('<form></form>').append(inputClone)[0].reset();
+            // Detaching allows to insert the fileInput on another form
+            // without loosing the file input value:
+            input.after(inputClone).detach();
+            // Avoid memory leaks with the detached file input:
+            $.cleanData(input.unbind('remove'));
+            // Replace the original file input element in the fileInput
+            // elements set with the clone, which has been copied including
+            // event handlers:
+            this.options.fileInput = this.options.fileInput.map(function (i, el) {
+                if (el === input[0]) {
+                    return inputClone[0];
+                }
+                return el;
+            });
+            // If the widget has been initialized on the file input itself,
+            // override this.element with the file input clone:
+            if (input[0] === this.element[0]) {
+                this.element = inputClone;
+            }
+        },
+
+        _handleFileTreeEntry: function (entry, path) {
+            var that = this,
+                dfd = $.Deferred(),
+                errorHandler = function (e) {
+                    if (e && !e.entry) {
+                        e.entry = entry;
+                    }
+                    // Since $.when returns immediately if one
+                    // Deferred is rejected, we use resolve instead.
+                    // This allows valid files and invalid items
+                    // to be returned together in one set:
+                    dfd.resolve([e]);
+                },
+                dirReader;
+            path = path || '';
+            if (entry.isFile) {
+                if (entry._file) {
+                    // Workaround for Chrome bug #149735
+                    entry._file.relativePath = path;
+                    dfd.resolve(entry._file);
+                } else {
+                    entry.file(function (file) {
+                        file.relativePath = path;
+                        dfd.resolve(file);
+                    }, errorHandler);
+                }
+            } else if (entry.isDirectory) {
+                dirReader = entry.createReader();
+                dirReader.readEntries(function (entries) {
+                    that._handleFileTreeEntries(
+                        entries,
+                        path + entry.name + '/'
+                    ).done(function (files) {
+                        dfd.resolve(files);
+                    }).fail(errorHandler);
+                }, errorHandler);
+            } else {
+                // Return an empy list for file system items
+                // other than files or directories:
+                dfd.resolve([]);
+            }
+            return dfd.promise();
+        },
+
+        _handleFileTreeEntries: function (entries, path) {
+            var that = this;
+            return $.when.apply(
+                $,
+                $.map(entries, function (entry) {
+                    return that._handleFileTreeEntry(entry, path);
+                })
+            ).pipe(function () {
+                return Array.prototype.concat.apply(
+                    [],
+                    arguments
+                );
+            });
+        },
+
+        _getDroppedFiles: function (dataTransfer) {
+            dataTransfer = dataTransfer || {};
+            var items = dataTransfer.items;
+            if (items && items.length && (items[0].webkitGetAsEntry ||
+                    items[0].getAsEntry)) {
+                return this._handleFileTreeEntries(
+                    $.map(items, function (item) {
+                        var entry;
+                        if (item.webkitGetAsEntry) {
+                            entry = item.webkitGetAsEntry();
+                            if (entry) {
+                                // Workaround for Chrome bug #149735:
+                                entry._file = item.getAsFile();
+                            }
+                            return entry;
+                        }
+                        return item.getAsEntry();
+                    })
+                );
+            }
+            return $.Deferred().resolve(
+                $.makeArray(dataTransfer.files)
+            ).promise();
+        },
+
+        _getSingleFileInputFiles: function (fileInput) {
+            fileInput = $(fileInput);
+            var entries = fileInput.prop('webkitEntries') ||
+                    fileInput.prop('entries'),
+                files,
+                value;
+            if (entries && entries.length) {
+                return this._handleFileTreeEntries(entries);
+            }
+            files = $.makeArray(fileInput.prop('files'));
+            if (!files.length) {
+                value = fileInput.prop('value');
+                if (!value) {
+                    return $.Deferred().resolve([]).promise();
+                }
+                // If the files property is not available, the browser does not
+                // support the File API and we add a pseudo File object with
+                // the input value as name with path information removed:
+                files = [{name: value.replace(/^.*\\/, '')}];
+            } else if (files[0].name === undefined && files[0].fileName) {
+                // File normalization for Safari 4 and Firefox 3:
+                $.each(files, function (index, file) {
+                    file.name = file.fileName;
+                    file.size = file.fileSize;
+                });
+            }
+            return $.Deferred().resolve(files).promise();
+        },
+
+        _getFileInputFiles: function (fileInput) {
+            if (!(fileInput instanceof $) || fileInput.length === 1) {
+                return this._getSingleFileInputFiles(fileInput);
+            }
+            return $.when.apply(
+                $,
+                $.map(fileInput, this._getSingleFileInputFiles)
+            ).pipe(function () {
+                return Array.prototype.concat.apply(
+                    [],
+                    arguments
+                );
+            });
+        },
+
+        _onChange: function (e) {
+            var that = this,
+                data = {
+                    fileInput: $(e.target),
+                    form: $(e.target.form)
+                };
+            this._getFileInputFiles(data.fileInput).always(function (files) {
+                data.files = files;
+                if (that.options.replaceFileInput) {
+                    that._replaceFileInput(data.fileInput);
+                }
+                if (that._trigger('change', e, data) !== false) {
+                    that._onAdd(e, data);
+                }
+            });
+        },
+
+        _onPaste: function (e) {
+            var items = e.originalEvent && e.originalEvent.clipboardData &&
+                    e.originalEvent.clipboardData.items,
+                data = {files: []};
+            if (items && items.length) {
+                $.each(items, function (index, item) {
+                    var file = item.getAsFile && item.getAsFile();
+                    if (file) {
+                        data.files.push(file);
+                    }
+                });
+                if (this._trigger('paste', e, data) === false ||
+                        this._onAdd(e, data) === false) {
+                    return false;
+                }
+            }
+        },
+
+        _onDrop: function (e) {
+            e.dataTransfer = e.originalEvent && e.originalEvent.dataTransfer;
+            var that = this,
+                dataTransfer = e.dataTransfer,
+                data = {};
+            if (dataTransfer && dataTransfer.files && dataTransfer.files.length) {
+                e.preventDefault();
+                this._getDroppedFiles(dataTransfer).always(function (files) {
+                    data.files = files;
+                    if (that._trigger('drop', e, data) !== false) {
+                        that._onAdd(e, data);
+                    }
+                });
+            }
+        },
+
+        _onDragOver: function (e) {
+            e.dataTransfer = e.originalEvent && e.originalEvent.dataTransfer;
+            var dataTransfer = e.dataTransfer;
+            if (dataTransfer) {
+                if (this._trigger('dragover', e) === false) {
+                    return false;
+                }
+                if ($.inArray('Files', dataTransfer.types) !== -1) {
+                    dataTransfer.dropEffect = 'copy';
+                    e.preventDefault();
+                }
+            }
+        },
+
+        _initEventHandlers: function () {
+            if (this._isXHRUpload(this.options)) {
+                this._on(this.options.dropZone, {
+                    dragover: this._onDragOver,
+                    drop: this._onDrop
+                });
+                this._on(this.options.pasteZone, {
+                    paste: this._onPaste
+                });
+            }
+            this._on(this.options.fileInput, {
+                change: this._onChange
+            });
+        },
+
+        _destroyEventHandlers: function () {
+            this._off(this.options.dropZone, 'dragover drop');
+            this._off(this.options.pasteZone, 'paste');
+            this._off(this.options.fileInput, 'change');
+        },
+
+        _setOption: function (key, value) {
+            var reinit = $.inArray(key, this._specialOptions) !== -1;
+            if (reinit) {
+                this._destroyEventHandlers();
+            }
+            this._super(key, value);
+            if (reinit) {
+                this._initSpecialOptions();
+                this._initEventHandlers();
+            }
+        },
+
+        _initSpecialOptions: function () {
+            var options = this.options;
+            if (options.fileInput === undefined) {
+                options.fileInput = this.element.is('input[type="file"]') ?
+                        this.element : this.element.find('input[type="file"]');
+            } else if (!(options.fileInput instanceof $)) {
+                options.fileInput = $(options.fileInput);
+            }
+            if (!(options.dropZone instanceof $)) {
+                options.dropZone = $(options.dropZone);
+            }
+            if (!(options.pasteZone instanceof $)) {
+                options.pasteZone = $(options.pasteZone);
+            }
+        },
+
+        _getRegExp: function (str) {
+            var parts = str.split('/'),
+                modifiers = parts.pop();
+            parts.shift();
+            return new RegExp(parts.join('/'), modifiers);
+        },
+
+        _isRegExpOption: function (key, value) {
+            return key !== 'url' && $.type(value) === 'string' &&
+                /^\/.*\/[igm]{0,3}$/.test(value);
+        },
+
+        _initDataAttributes: function () {
+            var that = this,
+                options = this.options;
+            // Initialize options set via HTML5 data-attributes:
+            $.each(
+                $(this.element[0].cloneNode(false)).data(),
+                function (key, value) {
+                    if (that._isRegExpOption(key, value)) {
+                        value = that._getRegExp(value);
+                    }
+                    options[key] = value;
+                }
+            );
+        },
+
+        _create: function () {
+            this._initDataAttributes();
+            this._initSpecialOptions();
+            this._slots = [];
+            this._sequence = this._getXHRPromise(true);
+            this._sending = this._active = 0;
+            this._initProgressObject(this);
+            this._initEventHandlers();
+        },
+
+        // This method is exposed to the widget API and allows to query
+        // the number of active uploads:
+        active: function () {
+            return this._active;
+        },
+
+        // This method is exposed to the widget API and allows to query
+        // the widget upload progress.
+        // It returns an object with loaded, total and bitrate properties
+        // for the running uploads:
+        progress: function () {
+            return this._progress;
+        },
+
+        // This method is exposed to the widget API and allows adding files
+        // using the fileupload API. The data parameter accepts an object which
+        // must have a files property and can contain additional options:
+        // .fileupload('add', {files: filesList});
+        add: function (data) {
+            var that = this;
+            if (!data || this.options.disabled) {
+                return;
+            }
+            if (data.fileInput && !data.files) {
+                this._getFileInputFiles(data.fileInput).always(function (files) {
+                    data.files = files;
+                    that._onAdd(null, data);
+                });
+            } else {
+                data.files = $.makeArray(data.files);
+                this._onAdd(null, data);
+            }
+        },
+
+        // This method is exposed to the widget API and allows sending files
+        // using the fileupload API. The data parameter accepts an object which
+        // must have a files or fileInput property and can contain additional options:
+        // .fileupload('send', {files: filesList});
+        // The method returns a Promise object for the file upload call.
+        send: function (data) {
+            if (data && !this.options.disabled) {
+                if (data.fileInput && !data.files) {
+                    var that = this,
+                        dfd = $.Deferred(),
+                        promise = dfd.promise(),
+                        jqXHR,
+                        aborted;
+                    promise.abort = function () {
+                        aborted = true;
+                        if (jqXHR) {
+                            return jqXHR.abort();
+                        }
+                        dfd.reject(null, 'abort', 'abort');
+                        return promise;
+                    };
+                    this._getFileInputFiles(data.fileInput).always(
+                        function (files) {
+                            if (aborted) {
+                                return;
+                            }
+                            data.files = files;
+                            jqXHR = that._onSend(null, data).then(
+                                function (result, textStatus, jqXHR) {
+                                    dfd.resolve(result, textStatus, jqXHR);
+                                },
+                                function (jqXHR, textStatus, errorThrown) {
+                                    dfd.reject(jqXHR, textStatus, errorThrown);
+                                }
+                            );
+                        }
+                    );
+                    return this._enhancePromise(promise);
+                }
+                data.files = $.makeArray(data.files);
+                if (data.files.length) {
+                    return this._onSend(null, data);
+                }
+            }
+            return this._getXHRPromise(false, data && data.context);
+        }
+
+    });
+
+}));
+
+/*
+ * jQuery File Upload Processing Plugin 1.2.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2012, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+/*jslint nomen: true, unparam: true */
+/*global define, window */
+
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // Register as an anonymous AMD module:
+        define([
+            'jquery',
+            './jquery.fileupload'
+        ], factory);
+    } else {
+        // Browser globals:
+        factory(
+            window.jQuery
+        );
+    }
+}(function ($) {
+    'use strict';
+
+    var originalAdd = $.blueimp.fileupload.prototype.options.add;
+
+    // The File Upload Processing plugin extends the fileupload widget
+    // with file processing functionality:
+    $.widget('blueimp.fileupload', $.blueimp.fileupload, {
+
+        options: {
+            // The list of processing actions:
+            processQueue: [
+                /*
+                {
+                    action: 'log',
+                    type: 'debug'
+                }
+                */
+            ],
+            add: function (e, data) {
+                var $this = $(this);
+                data.process(function () {
+                    return $this.fileupload('process', data);
+                });
+                originalAdd.call(this, e, data);
+            }
+        },
+
+        processActions: {
+            /*
+            log: function (data, options) {
+                console[options.type](
+                    'Processing "' + data.files[data.index].name + '"'
+                );
+            }
+            */
+        },
+
+        _processFile: function (data) {
+            var that = this,
+                dfd = $.Deferred().resolveWith(that, [data]),
+                chain = dfd.promise();
+            this._trigger('process', null, data);
+            $.each(data.processQueue, function (i, settings) {
+                var func = function (data) {
+                    return that.processActions[settings.action].call(
+                        that,
+                        data,
+                        settings
+                    );
+                };
+                chain = chain.pipe(func, settings.always && func);
+            });
+            chain
+                .done(function () {
+                    that._trigger('processdone', null, data);
+                    that._trigger('processalways', null, data);
+                })
+                .fail(function () {
+                    that._trigger('processfail', null, data);
+                    that._trigger('processalways', null, data);
+                });
+            return chain;
+        },
+
+        // Replaces the settings of each processQueue item that
+        // are strings starting with an "@", using the remaining
+        // substring as key for the option map,
+        // e.g. "@autoUpload" is replaced with options.autoUpload:
+        _transformProcessQueue: function (options) {
+            var processQueue = [];
+            $.each(options.processQueue, function () {
+                var settings = {},
+                    action = this.action,
+                    prefix = this.prefix === true ? action : this.prefix;
+                $.each(this, function (key, value) {
+                    if ($.type(value) === 'string' &&
+                            value.charAt(0) === '@') {
+                        settings[key] = options[
+                            value.slice(1) || (prefix ? prefix +
+                                key.charAt(0).toUpperCase() + key.slice(1) : key)
+                        ];
+                    } else {
+                        settings[key] = value;
+                    }
+
+                });
+                processQueue.push(settings);
+            });
+            options.processQueue = processQueue;
+        },
+
+        // Returns the number of files currently in the processsing queue:
+        processing: function () {
+            return this._processing;
+        },
+
+        // Processes the files given as files property of the data parameter,
+        // returns a Promise object that allows to bind callbacks:
+        process: function (data) {
+            var that = this,
+                options = $.extend({}, this.options, data);
+            if (options.processQueue && options.processQueue.length) {
+                this._transformProcessQueue(options);
+                if (this._processing === 0) {
+                    this._trigger('processstart');
+                }
+                $.each(data.files, function (index) {
+                    var opts = index ? $.extend({}, options) : options,
+                        func = function () {
+                            return that._processFile(opts);
+                        };
+                    opts.index = index;
+                    that._processing += 1;
+                    that._processingQueue = that._processingQueue.pipe(func, func)
+                        .always(function () {
+                            that._processing -= 1;
+                            if (that._processing === 0) {
+                                that._trigger('processstop');
+                            }
+                        });
+                });
+            }
+            return this._processingQueue;
+        },
+
+        _create: function () {
+            this._super();
+            this._processing = 0;
+            this._processingQueue = $.Deferred().resolveWith(this)
+                .promise();
+        }
+
+    });
+
+}));
+
+/*
+ * jQuery File Upload Image Preview & Resize Plugin 1.2.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+/*jslint nomen: true, unparam: true, regexp: true */
+/*global define, window, document, DataView, Blob, Uint8Array */
+
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // Register as an anonymous AMD module:
+        define([
+            'jquery',
+            'load-image',
+            'load-image-meta',
+            'load-image-exif',
+            'load-image-ios',
+            'canvas-to-blob',
+            './jquery.fileupload-process'
+        ], factory);
+    } else {
+        // Browser globals:
+        factory(
+            window.jQuery,
+            window.loadImage
+        );
+    }
+}(function ($, loadImage) {
+    'use strict';
+
+    // Prepend to the default processQueue:
+    $.blueimp.fileupload.prototype.options.processQueue.unshift(
+        {
+            action: 'loadImageMetaData',
+            // Always trigger this action,
+            // even if the previous action was rejected: 
+            always: true,
+            disableImageHead: '@',
+            disableExif: '@',
+            disableExifThumbnail: '@',
+            disableExifSub: '@',
+            disableExifGps: '@',
+            disabled: '@disableImageMetaDataLoad'
+        },
+        {
+            action: 'loadImage',
+            // Use the action as prefix for the "@" options:
+            prefix: true,
+            fileTypes: '@',
+            maxFileSize: '@',
+            noRevoke: '@',
+            disabled: '@disableImageLoad'
+        },
+        {
+            action: 'resizeImage',
+            // Use "image" as prefix for the "@" options:
+            prefix: 'image',
+            maxWidth: '@',
+            maxHeight: '@',
+            minWidth: '@',
+            minHeight: '@',
+            crop: '@',
+            disabled: '@disableImageResize'
+        },
+        {
+            action: 'saveImage',
+            disabled: '@disableImageResize'
+        },
+        {
+            action: 'saveImageMetaData',
+            disabled: '@disableImageMetaDataSave'
+        },
+        {
+            action: 'resizeImage',
+            // Always trigger this action,
+            // even if the previous action was rejected: 
+            always: true,
+            // Use "preview" as prefix for the "@" options:
+            prefix: 'preview',
+            maxWidth: '@',
+            maxHeight: '@',
+            minWidth: '@',
+            minHeight: '@',
+            crop: '@',
+            orientation: '@',
+            thumbnail: '@',
+            canvas: '@',
+            disabled: '@disableImagePreview'
+        },
+        {
+            action: 'setImage',
+            name: '@imagePreviewName',
+            disabled: '@disableImagePreview'
+        }
+    );
+
+    // The File Upload Resize plugin extends the fileupload widget
+    // with image resize functionality:
+    $.widget('blueimp.fileupload', $.blueimp.fileupload, {
+
+        options: {
+            // The regular expression for the types of images to load:
+            // matched against the file type:
+            loadImageFileTypes: /^image\/(gif|jpeg|png)$/,
+            // The maximum file size of images to load:
+            loadImageMaxFileSize: 10000000, // 10MB
+            // The maximum width of resized images:
+            imageMaxWidth: 1920,
+            // The maximum height of resized images:
+            imageMaxHeight: 1080,
+            // Define if resized images should be cropped or only scaled:
+            imageCrop: false,
+            // Disable the resize image functionality by default:
+            disableImageResize: true,
+            // The maximum width of the preview images:
+            previewMaxWidth: 80,
+            // The maximum height of the preview images:
+            previewMaxHeight: 80,
+            // Defines the preview orientation (1-8) or takes the orientation
+            // value from Exif data if set to true:
+            previewOrientation: true,
+            // Create the preview using the Exif data thumbnail:
+            previewThumbnail: true,
+            // Define if preview images should be cropped or only scaled:
+            previewCrop: false,
+            // Define if preview images should be resized as canvas elements:
+            previewCanvas: true
+        },
+
+        processActions: {
+
+            // Loads the image given via data.files and data.index
+            // as img element if the browser supports canvas.
+            // Accepts the options fileTypes (regular expression)
+            // and maxFileSize (integer) to limit the files to load:
+            loadImage: function (data, options) {
+                if (options.disabled) {
+                    return data;
+                }
+                var that = this,
+                    file = data.files[data.index],
+                    dfd = $.Deferred();
+                if (($.type(options.maxFileSize) === 'number' &&
+                            file.size > options.maxFileSize) ||
+                        (options.fileTypes &&
+                            !options.fileTypes.test(file.type)) ||
+                        !loadImage(
+                            file,
+                            function (img) {
+                                if (!img.src) {
+                                    return dfd.rejectWith(that, [data]);
+                                }
+                                data.img = img;
+                                dfd.resolveWith(that, [data]);
+                            },
+                            options
+                        )) {
+                    dfd.rejectWith(that, [data]);
+                }
+                return dfd.promise();
+            },
+
+            // Resizes the image given as data.canvas or data.img
+            // and updates data.canvas or data.img with the resized image.
+            // Accepts the options maxWidth, maxHeight, minWidth,
+            // minHeight, canvas and crop:
+            resizeImage: function (data, options) {
+                if (options.disabled) {
+                    return data;
+                }
+                var that = this,
+                    dfd = $.Deferred(),
+                    resolve = function (newImg) {
+                        data[newImg.getContext ? 'canvas' : 'img'] = newImg;
+                        dfd.resolveWith(that, [data]);
+                    },
+                    thumbnail,
+                    img,
+                    newImg;
+                options = $.extend({canvas: true}, options);
+                if (data.exif) {
+                    if (options.orientation === true) {
+                        options.orientation = data.exif.get('Orientation');
+                    }
+                    if (options.thumbnail) {
+                        thumbnail = data.exif.get('Thumbnail');
+                        if (thumbnail) {
+                            loadImage(thumbnail, resolve, options);
+                            return dfd.promise();
+                        }
+                    }
+                }
+                img = (options.canvas && data.canvas) || data.img;
+                if (img) {
+                    newImg = loadImage.scale(img, options);
+                    if (newImg.width !== img.width ||
+                            newImg.height !== img.height) {
+                        resolve(newImg);
+                        return dfd.promise();
+                    }
+                }
+                return data;
+            },
+
+            // Saves the processed image given as data.canvas
+            // inplace at data.index of data.files:
+            saveImage: function (data, options) {
+                if (!data.canvas || options.disabled) {
+                    return data;
+                }
+                var that = this,
+                    file = data.files[data.index],
+                    name = file.name,
+                    dfd = $.Deferred(),
+                    callback = function (blob) {
+                        if (!blob.name) {
+                            if (file.type === blob.type) {
+                                blob.name = file.name;
+                            } else if (file.name) {
+                                blob.name = file.name.replace(
+                                    /\..+$/,
+                                    '.' + blob.type.substr(6)
+                                );
+                            }
+                        }
+                        // Store the created blob at the position
+                        // of the original file in the files list:
+                        data.files[data.index] = blob;
+                        dfd.resolveWith(that, [data]);
+                    };
+                // Use canvas.mozGetAsFile directly, to retain the filename, as
+                // Gecko doesn't support the filename option for FormData.append:
+                if (data.canvas.mozGetAsFile) {
+                    callback(data.canvas.mozGetAsFile(
+                        (/^image\/(jpeg|png)$/.test(file.type) && name) ||
+                            ((name && name.replace(/\..+$/, '')) ||
+                                'blob') + '.png',
+                        file.type
+                    ));
+                } else if (data.canvas.toBlob) {
+                    data.canvas.toBlob(callback, file.type);
+                } else {
+                    return data;
+                }
+                return dfd.promise();
+            },
+
+            loadImageMetaData: function (data, options) {
+                if (options.disabled) {
+                    return data;
+                }
+                var that = this,
+                    dfd = $.Deferred();
+                loadImage.parseMetaData(data.files[data.index], function (result) {
+                    $.extend(data, result);
+                    dfd.resolveWith(that, [data]);
+                }, options);
+                return dfd.promise();
+            },
+
+            saveImageMetaData: function (data, options) {
+                if (!(data.imageHead && data.canvas &&
+                        data.canvas.toBlob && !options.disabled)) {
+                    return data;
+                }
+                var file = data.files[data.index],
+                    blob = new Blob([
+                        data.imageHead,
+                        // Resized images always have a head size of 20 bytes,
+                        // including the JPEG marker and a minimal JFIF header:
+                        this._blobSlice.call(file, 20)
+                    ], {type: file.type});
+                blob.name = file.name;
+                data.files[data.index] = blob;
+                return data;
+            },
+
+            // Sets the resized version of the image as a property of the
+            // file object, must be called after "saveImage":
+            setImage: function (data, options) {
+                var img = data.canvas || data.img;
+                if (img && !options.disabled) {
+                    data.files[data.index][options.name || 'preview'] = img;
+                }
+                return data;
+            }
+
+        }
+
+    });
+
+}));
+
+/*
+ * jQuery File Upload Audio Preview Plugin 1.0.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+/*jslint nomen: true, unparam: true, regexp: true */
+/*global define, window, document */
+
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // Register as an anonymous AMD module:
+        define([
+            'jquery',
+            'load-image',
+            './jquery.fileupload-process'
+        ], factory);
+    } else {
+        // Browser globals:
+        factory(
+            window.jQuery,
+            window.loadImage
+        );
+    }
+}(function ($, loadImage) {
+    'use strict';
+
+    // Prepend to the default processQueue:
+    $.blueimp.fileupload.prototype.options.processQueue.unshift(
+        {
+            action: 'loadAudio',
+            // Always trigger this action,
+            // even if the previous action was rejected: 
+            always: true,
+            // Use the action as prefix for the "@" options:
+            prefix: true,
+            fileTypes: '@',
+            maxFileSize: '@',
+            disabled: '@disableAudioPreview'
+        },
+        {
+            action: 'setAudio',
+            name: '@audioPreviewName',
+            disabled: '@disableAudioPreview'
+        }
+    );
+
+    // The File Upload Audio Preview plugin extends the fileupload widget
+    // with audio preview functionality:
+    $.widget('blueimp.fileupload', $.blueimp.fileupload, {
+
+        options: {
+            // The regular expression for the types of audio files to load,
+            // matched against the file type:
+            loadAudioFileTypes: /^audio\/.*$/
+        },
+
+        _audioElement: document.createElement('audio'),
+
+        processActions: {
+
+            // Loads the audio file given via data.files and data.index
+            // as audio element if the browser supports playing it.
+            // Accepts the options fileTypes (regular expression)
+            // and maxFileSize (integer) to limit the files to load:
+            loadAudio: function (data, options) {
+                if (options.disabled) {
+                    return data;
+                }
+                var that = this,
+                    file = data.files[data.index],
+                    dfd = $.Deferred(),
+                    url,
+                    audio;
+                if (this._audioElement.canPlayType &&
+                        this._audioElement.canPlayType(file.type) &&
+                        ($.type(options.maxFileSize) !== 'number' ||
+                            file.size <= options.maxFileSize) &&
+                        (!options.fileTypes ||
+                            options.fileTypes.test(file.type))) {
+                    url = loadImage.createObjectURL(file);
+                    if (url) {
+                        audio = this._audioElement.cloneNode(false);
+                        audio.src = url;
+                        audio.controls = true;
+                        data.audio = audio;
+                        dfd.resolveWith(that, [data]);
+                        return dfd.promise();
+                    }
+                }
+                dfd.rejectWith(that, [data]);
+                return dfd.promise();
+            },
+
+            // Sets the audio element as a property of the file object:
+            setAudio: function (data, options) {
+                if (data.audio && !options.disabled) {
+                    data.files[data.index][options.name || 'preview'] = data.audio;
+                }
+                return data;
+            }
+
+        }
+
+    });
+
+}));
+
+/*
+ * jQuery File Upload Video Preview Plugin 1.0.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+/*jslint nomen: true, unparam: true, regexp: true */
+/*global define, window, document */
+
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // Register as an anonymous AMD module:
+        define([
+            'jquery',
+            'load-image',
+            './jquery.fileupload-process'
+        ], factory);
+    } else {
+        // Browser globals:
+        factory(
+            window.jQuery,
+            window.loadImage
+        );
+    }
+}(function ($, loadImage) {
+    'use strict';
+
+    // Prepend to the default processQueue:
+    $.blueimp.fileupload.prototype.options.processQueue.unshift(
+        {
+            action: 'loadVideo',
+            // Always trigger this action,
+            // even if the previous action was rejected: 
+            always: true,
+            // Use the action as prefix for the "@" options:
+            prefix: true,
+            fileTypes: '@',
+            maxFileSize: '@',
+            disabled: '@disableVideoPreview'
+        },
+        {
+            action: 'setVideo',
+            name: '@videoPreviewName',
+            disabled: '@disableVideoPreview'
+        }
+    );
+
+    // The File Upload Video Preview plugin extends the fileupload widget
+    // with video preview functionality:
+    $.widget('blueimp.fileupload', $.blueimp.fileupload, {
+
+        options: {
+            // The regular expression for the types of video files to load,
+            // matched against the file type:
+            loadVideoFileTypes: /^video\/.*$/
+        },
+
+        _videoElement: document.createElement('video'),
+
+        processActions: {
+
+            // Loads the video file given via data.files and data.index
+            // as video element if the browser supports playing it.
+            // Accepts the options fileTypes (regular expression)
+            // and maxFileSize (integer) to limit the files to load:
+            loadVideo: function (data, options) {
+                if (options.disabled) {
+                    return data;
+                }
+                var that = this,
+                    file = data.files[data.index],
+                    dfd = $.Deferred(),
+                    url,
+                    video;
+                if (this._videoElement.canPlayType &&
+                        this._videoElement.canPlayType(file.type) &&
+                        ($.type(options.maxFileSize) !== 'number' ||
+                            file.size <= options.maxFileSize) &&
+                        (!options.fileTypes ||
+                            options.fileTypes.test(file.type))) {
+                    url = loadImage.createObjectURL(file);
+                    if (url) {
+                        video = this._videoElement.cloneNode(false);
+                        video.src = url;
+                        video.controls = true;
+                        data.video = video;
+                        dfd.resolveWith(that, [data]);
+                        return dfd.promise();
+                    }
+                }
+                dfd.rejectWith(that, [data]);
+                return dfd.promise();
+            },
+
+            // Sets the video element as a property of the file object:
+            setVideo: function (data, options) {
+                if (data.video && !options.disabled) {
+                    data.files[data.index][options.name || 'preview'] = data.video;
+                }
+                return data;
+            }
+
+        }
+
+    });
+
+}));
+
+/*
+ * jQuery File Upload Validation Plugin 1.1
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+/*jslint nomen: true, unparam: true, regexp: true */
+/*global define, window */
+
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // Register as an anonymous AMD module:
+        define([
+            'jquery',
+            './jquery.fileupload-process'
+        ], factory);
+    } else {
+        // Browser globals:
+        factory(
+            window.jQuery
+        );
+    }
+}(function ($) {
+    'use strict';
+
+    // Append to the default processQueue:
+    $.blueimp.fileupload.prototype.options.processQueue.push(
+        {
+            action: 'validate',
+            // Always trigger this action,
+            // even if the previous action was rejected: 
+            always: true,
+            // Options taken from the global options map:
+            acceptFileTypes: '@',
+            maxFileSize: '@',
+            minFileSize: '@',
+            maxNumberOfFiles: '@',
+            disabled: '@disableValidation'
+        }
+    );
+
+    // The File Upload Validation plugin extends the fileupload widget
+    // with file validation functionality:
+    $.widget('blueimp.fileupload', $.blueimp.fileupload, {
+
+        options: {
+            /*
+            // The regular expression for allowed file types, matches
+            // against either file type or file name:
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            // The maximum allowed file size in bytes:
+            maxFileSize: 10000000, // 10 MB
+            // The minimum allowed file size in bytes:
+            minFileSize: undefined, // No minimal file size
+            // The limit of files to be uploaded:
+            maxNumberOfFiles: 10,
+            */
+
+            // Function returning the current number of files,
+            // has to be overriden for maxNumberOfFiles validation:
+            getNumberOfFiles: $.noop,
+
+            // Error and info messages:
+            messages: {
+                maxNumberOfFiles: 'Maximum number of files exceeded',
+                acceptFileTypes: 'File type not allowed',
+                maxFileSize: 'File is too large',
+                minFileSize: 'File is too small'
+            }
+        },
+
+        processActions: {
+
+            validate: function (data, options) {
+                if (options.disabled) {
+                    return data;
+                }
+                var dfd = $.Deferred(),
+                    settings = this.options,
+                    file = data.files[data.index],
+                    numberOfFiles = settings.getNumberOfFiles();
+                if (numberOfFiles && $.type(options.maxNumberOfFiles) === 'number' &&
+                        numberOfFiles + data.files.length > options.maxNumberOfFiles) {
+                    file.error = settings.i18n('maxNumberOfFiles');
+                } else if (options.acceptFileTypes &&
+                        !(options.acceptFileTypes.test(file.type) ||
+                        options.acceptFileTypes.test(file.name))) {
+                    file.error = settings.i18n('acceptFileTypes');
+                } else if (options.maxFileSize && file.size > options.maxFileSize) {
+                    file.error = settings.i18n('maxFileSize');
+                } else if ($.type(file.size) === 'number' &&
+                        file.size < options.minFileSize) {
+                    file.error = settings.i18n('minFileSize');
+                } else {
+                    delete file.error;
+                }
+                if (file.error || data.files.error) {
+                    data.files.error = true;
+                    dfd.rejectWith(this, [data]);
+                } else {
+                    dfd.resolveWith(this, [data]);
+                }
+                return dfd.promise();
+            }
+
+        }
+
+    });
+
+}));
+
+/*
+ * jQuery File Upload User Interface Plugin 8.3
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2010, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+/*jslint nomen: true, unparam: true, regexp: true */
+/*global define, window, URL, webkitURL, FileReader */
+
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // Register as an anonymous AMD module:
+        define([
+            'jquery',
+            'tmpl',
+            './jquery.fileupload-image',
+            './jquery.fileupload-audio',
+            './jquery.fileupload-video',
+            './jquery.fileupload-validate'
+        ], factory);
+    } else {
+        // Browser globals:
+        factory(
+            window.jQuery,
+            window.tmpl
+        );
+    }
+}(function ($, tmpl, loadImage) {
+    'use strict';
+
+    $.blueimp.fileupload.prototype._specialOptions.push(
+        'filesContainer',
+        'uploadTemplateId',
+        'downloadTemplateId'
+    );
+
+    // The UI version extends the file upload widget
+    // and adds complete user interface interaction:
+    $.widget('blueimp.fileupload', $.blueimp.fileupload, {
+
+        options: {
+            // By default, files added to the widget are uploaded as soon
+            // as the user clicks on the start buttons. To enable automatic
+            // uploads, set the following option to true:
+            autoUpload: false,
+            // The ID of the upload template:
+            uploadTemplateId: 'template-upload',
+            // The ID of the download template:
+            downloadTemplateId: 'template-download',
+            // The container for the list of files. If undefined, it is set to
+            // an element with class "files" inside of the widget element:
+            filesContainer: undefined,
+            // By default, files are appended to the files container.
+            // Set the following option to true, to prepend files instead:
+            prependFiles: false,
+            // The expected data type of the upload response, sets the dataType
+            // option of the $.ajax upload requests:
+            dataType: 'json',
+
+            // Function returning the current number of files,
+            // used by the maxNumberOfFiles validation:
+            getNumberOfFiles: function () {
+                return this.filesContainer.children().length;
+            },
+
+            // Callback to retrieve the list of files from the server response:
+            getFilesFromResponse: function (data) {
+                if (data.result && $.isArray(data.result.files)) {
+                    return data.result.files;
+                }
+                return [];
+            },
+
+            // The add callback is invoked as soon as files are added to the fileupload
+            // widget (via file input selection, drag & drop or add API call).
+            // See the basic file upload widget for more information:
+            add: function (e, data) {
+                var $this = $(this),
+                    that = $this.data('blueimp-fileupload') ||
+                        $this.data('fileupload'),
+                    options = that.options,
+                    files = data.files;
+                data.process(function () {
+                    return $this.fileupload('process', data);
+                }).always(function () {
+                    data.context = that._renderUpload(files).data('data', data);
+                    that._renderPreviews(data);
+                    options.filesContainer[
+                        options.prependFiles ? 'prepend' : 'append'
+                    ](data.context);
+                    that._forceReflow(data.context);
+                    that._transition(data.context).done(
+                        function () {
+                            if ((that._trigger('added', e, data) !== false) &&
+                                    (options.autoUpload || data.autoUpload) &&
+                                    data.autoUpload !== false && !data.files.error) {
+                                data.submit();
+                            }
+                        }
+                    );
+                });
+            },
+            // Callback for the start of each file upload request:
+            send: function (e, data) {
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload');
+                if (data.context && data.dataType &&
+                        data.dataType.substr(0, 6) === 'iframe') {
+                    // Iframe Transport does not support progress events.
+                    // In lack of an indeterminate progress bar, we set
+                    // the progress to 100%, showing the full animated bar:
+                    data.context
+                        .find('.progress').addClass(
+                            !$.support.transition && 'progress-animated'
+                        )
+                        .attr('aria-valuenow', 100)
+                        .find('.progress-bar').css(
+                            'width',
+                            '100%'
+                        );
+                }
+                return that._trigger('sent', e, data);
+            },
+            // Callback for successful uploads:
+            done: function (e, data) {
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload'),
+                    getFilesFromResponse = data.getFilesFromResponse ||
+                        that.options.getFilesFromResponse,
+                    files = getFilesFromResponse(data),
+                    template,
+                    deferred;
+                if (data.context) {
+                    data.context.each(function (index) {
+                        var file = files[index] ||
+                                {error: 'Empty file upload result'},
+                            deferred = that._addFinishedDeferreds();
+                        
+                        that._transition($(this)).done(
+                            function () {
+                                var node = $(this);
+                                template = that._renderDownload([file])
+                                    .replaceAll(node);
+                                that._forceReflow(template);
+                                that._transition(template).done(
+                                    function () {
+                                        data.context = $(this);
+                                        that._trigger('completed', e, data);
+                                        that._trigger('finished', e, data);
+                                        deferred.resolve();
+                                    }
+                                );
+                            }
+                        );
+                    });
+                } else {
+                    template = that._renderDownload(files)
+                        .appendTo(that.options.filesContainer);
+                    that._forceReflow(template);
+                    deferred = that._addFinishedDeferreds();
+                    that._transition(template).done(
+                        function () {
+                            data.context = $(this);
+                            that._trigger('completed', e, data);
+                            that._trigger('finished', e, data);
+                            deferred.resolve();
+                        }
+                    );
+                }
+            },
+            // Callback for failed (abort or error) uploads:
+            fail: function (e, data) {
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload'),
+                    template,
+                    deferred;
+                if (data.context) {
+                    data.context.each(function (index) {
+                        if (data.errorThrown !== 'abort') {
+                            var file = data.files[index];
+                            file.error = file.error || data.errorThrown ||
+                                true;
+                            deferred = that._addFinishedDeferreds();
+                            that._transition($(this)).done(
+                                function () {
+                                    var node = $(this);
+                                    template = that._renderDownload([file])
+                                        .replaceAll(node);
+                                    that._forceReflow(template);
+                                    that._transition(template).done(
+                                        function () {
+                                            data.context = $(this);
+                                            that._trigger('failed', e, data);
+                                            that._trigger('finished', e, data);
+                                            deferred.resolve();
+                                        }
+                                    );
+                                }
+                            );
+                        } else {
+                            deferred = that._addFinishedDeferreds();
+                            that._transition($(this)).done(
+                                function () {
+                                    $(this).remove();
+                                    that._trigger('failed', e, data);
+                                    that._trigger('finished', e, data);
+                                    deferred.resolve();
+                                }
+                            );
+                        }
+                    });
+                } else if (data.errorThrown !== 'abort') {
+                    data.context = that._renderUpload(data.files)
+                        .appendTo(that.options.filesContainer)
+                        .data('data', data);
+                    that._forceReflow(data.context);
+                    deferred = that._addFinishedDeferreds();
+                    that._transition(data.context).done(
+                        function () {
+                            data.context = $(this);
+                            that._trigger('failed', e, data);
+                            that._trigger('finished', e, data);
+                            deferred.resolve();
+                        }
+                    );
+                } else {
+                    that._trigger('failed', e, data);
+                    that._trigger('finished', e, data);
+                    that._addFinishedDeferreds().resolve();
+                }
+            },
+            // Callback for upload progress events:
+            progress: function (e, data) {
+                if (data.context) {
+                    var progress = Math.floor(data.loaded / data.total * 100);
+                    data.context.find('.progress')
+                        .attr('aria-valuenow', progress)
+                        .find('.progress-bar').css(
+                            'width',
+                            progress + '%'
+                        );
+                }
+            },
+            // Callback for global upload progress events:
+            progressall: function (e, data) {
+                var $this = $(this),
+                    progress = Math.floor(data.loaded / data.total * 100),
+                    globalProgressNode = $this.find('.fileupload-progress'),
+                    extendedProgressNode = globalProgressNode
+                        .find('.progress-extended');
+                if (extendedProgressNode.length) {
+                    extendedProgressNode.html(
+                        ($this.data('blueimp-fileupload') || $this.data('fileupload'))
+                            ._renderExtendedProgress(data)
+                    );
+                }
+                globalProgressNode
+                    .find('.progress')
+                    .attr('aria-valuenow', progress)
+                    .find('.progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+            },
+            // Callback for uploads start, equivalent to the global ajaxStart event:
+            start: function (e) {
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload');
+                that._resetFinishedDeferreds();
+                that._transition($(this).find('.fileupload-progress')).done(
+                    function () {
+                        that._trigger('started', e);
+                    }
+                );
+            },
+            // Callback for uploads stop, equivalent to the global ajaxStop event:
+            stop: function (e) {
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload'),
+                    deferred = that._addFinishedDeferreds();
+                $.when.apply($, that._getFinishedDeferreds())
+                    .done(function () {
+                        that._trigger('stopped', e);
+                    });
+                that._transition($(this).find('.fileupload-progress')).done(
+                    function () {
+                        $(this).find('.progress')
+                            .attr('aria-valuenow', '0')
+                            .find('.progress-bar').css('width', '0%');
+                        $(this).find('.progress-extended').html('&nbsp;');
+                        deferred.resolve();
+                    }
+                );
+            },
+            processstart: function () {
+                $(this).addClass('fileupload-processing');
+            },
+            processstop: function () {
+                $(this).removeClass('fileupload-processing');
+            },
+            // Callback for file deletion:
+            destroy: function (e, data) {
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload'),
+                    removeNode = function () {
+                        that._transition(data.context).done(
+                            function () {
+                                $(this).remove();
+                                that._trigger('destroyed', e, data);
+                            }
+                        );
+                    };
+                if (data.url && data.url != "undefined") {
+                    $.ajax(data).done(removeNode);
+                } else {
+                    removeNode();
+                }
+            }
+        },
+
+        _resetFinishedDeferreds: function () {
+            this._finishedUploads = [];
+        },
+
+        _addFinishedDeferreds: function (deferred) {
+            if (!deferred) {
+                deferred = $.Deferred();
+            }
+            this._finishedUploads.push(deferred);
+            return deferred;
+        },
+
+        _getFinishedDeferreds: function () {
+            return this._finishedUploads;
+        },
+
+        // Link handler, that allows to download files
+        // by drag & drop of the links to the desktop:
+        _enableDragToDesktop: function () {
+            var link = $(this),
+                url = link.prop('href'),
+                name = link.prop('download'),
+                type = 'application/octet-stream';
+            link.bind('dragstart', function (e) {
+                try {
+                    e.originalEvent.dataTransfer.setData(
+                        'DownloadURL',
+                        [type, name, url].join(':')
+                    );
+                } catch (ignore) {}
+            });
+        },
+
+        _formatFileSize: function (bytes) {
+            if (typeof bytes !== 'number') {
+                return '';
+            }
+            if (bytes >= 1000000000) {
+                return (bytes / 1000000000).toFixed(2) + ' GB';
+            }
+            if (bytes >= 1000000) {
+                return (bytes / 1000000).toFixed(2) + ' MB';
+            }
+            return (bytes / 1000).toFixed(2) + ' KB';
+        },
+
+        _formatBitrate: function (bits) {
+            if (typeof bits !== 'number') {
+                return '';
+            }
+            if (bits >= 1000000000) {
+                return (bits / 1000000000).toFixed(2) + ' Gbit/s';
+            }
+            if (bits >= 1000000) {
+                return (bits / 1000000).toFixed(2) + ' Mbit/s';
+            }
+            if (bits >= 1000) {
+                return (bits / 1000).toFixed(2) + ' kbit/s';
+            }
+            return bits.toFixed(2) + ' bit/s';
+        },
+
+        _formatTime: function (seconds) {
+            var date = new Date(seconds * 1000),
+                days = Math.floor(seconds / 86400);
+            days = days ? days + 'd ' : '';
+            return days +
+                ('0' + date.getUTCHours()).slice(-2) + ':' +
+                ('0' + date.getUTCMinutes()).slice(-2) + ':' +
+                ('0' + date.getUTCSeconds()).slice(-2);
+        },
+
+        _formatPercentage: function (floatValue) {
+            return (floatValue * 100).toFixed(2) + ' %';
+        },
+
+        _renderExtendedProgress: function (data) {
+            return this._formatBitrate(data.bitrate) + ' | ' +
+                this._formatTime(
+                    (data.total - data.loaded) * 8 / data.bitrate
+                ) + ' | ' +
+                this._formatPercentage(
+                    data.loaded / data.total
+                ) + ' | ' +
+                this._formatFileSize(data.loaded) + ' / ' +
+                this._formatFileSize(data.total);
+        },
+
+        _renderTemplate: function (func, files) {
+            if (!func) {
+                return $();
+            }
+            var result = func({
+                files: files,
+                formatFileSize: this._formatFileSize,
+                options: this.options
+            });
+            if (result instanceof $) {
+                return result;
+            }
+            return $(this.options.templatesContainer).html(result).children();
+        },
+
+        _renderPreviews: function (data) {
+            data.context.find('.preview').each(function (index, elm) {
+                $(elm).append(data.files[index].preview);
+            });
+        },
+
+        _renderUpload: function (files) {
+            return this._renderTemplate(
+                this.options.uploadTemplate,
+                files
+            );
+        },
+
+        _renderDownload: function (files) {
+            return this._renderTemplate(
+                this.options.downloadTemplate,
+                files
+            ).find('a[download]').each(this._enableDragToDesktop).end();
+        },
+
+        _startHandler: function (e) {
+            e.preventDefault();
+            var button = $(e.currentTarget),
+                template = button.closest('.template-upload'),
+                data = template.data('data');
+            if (data && data.submit && !data.jqXHR && data.submit()) {
+                button.prop('disabled', true);
+            }
+        },
+
+        _cancelHandler: function (e) {
+            e.preventDefault();
+            var template = $(e.currentTarget).closest('.template-upload'),
+                data = template.data('data') || {};
+            if (!data.jqXHR) {
+                data.errorThrown = 'abort';
+                this._trigger('fail', e, data);
+            } else {
+                data.jqXHR.abort();
+            }
+        },
+
+        _deleteHandler: function (e) {
+            e.preventDefault();
+            var button = $(e.currentTarget);
+            this._trigger('destroy', e, $.extend({
+                context: button.closest('.template-download'),
+                type: 'DELETE'
+            }, button.data()));
+        },
+
+        _forceReflow: function (node) {
+            return $.support.transition && node.length &&
+                node[0].offsetWidth;
+        },
+
+        _transition: function (node) {
+            var dfd = $.Deferred();
+            if ($.support.transition && node.hasClass('fade') && node.is(':visible')) {
+                node.bind(
+                    $.support.transition.end,
+                    function (e) {
+                        // Make sure we don't respond to other transitions events
+                        // in the container element, e.g. from button elements:
+                        if (e.target === node[0]) {
+                            node.unbind($.support.transition.end);
+                            dfd.resolveWith(node);
+                        }
+                    }
+                ).toggleClass('in');
+            } else {
+                node.toggleClass('in');
+                dfd.resolveWith(node);
+            }
+            return dfd;
+        },
+
+        _initButtonBarEventHandlers: function () {
+            var fileUploadButtonBar = this.element.find('.fileupload-buttonbar'),
+                filesList = this.options.filesContainer;
+            this._on(fileUploadButtonBar.find('.start'), {
+                click: function (e) {
+                    e.preventDefault();
+                    filesList.find('.start').click();
+                }
+            });
+            this._on(fileUploadButtonBar.find('.cancel'), {
+                click: function (e) {
+                    e.preventDefault();
+                    filesList.find('.cancel').click();
+                }
+            });
+            this._on(fileUploadButtonBar.find('.delete'), {
+                click: function (e) {
+                    e.preventDefault();
+                    filesList.find('.delete').click();
+                    fileUploadButtonBar.find('.toggle')
+                        .prop('checked', false);
+                }
+            });
+            this._on(fileUploadButtonBar.find('.toggle'), {
+                change: function (e) {
+                    filesList.find('.toggle').prop(
+                        'checked',
+                        $(e.currentTarget).is(':checked')
+                    );
+                }
+            });
+        },
+
+        _destroyButtonBarEventHandlers: function () {
+            this._off(
+                this.element.find('.fileupload-buttonbar')
+                    .find('.start, .cancel, .delete'),
+                'click'
+            );
+            this._off(
+                this.element.find('.fileupload-buttonbar .toggle'),
+                'change.'
+            );
+        },
+
+        _initEventHandlers: function () {
+            this._super();
+            this._on(this.options.filesContainer, {
+                'click .start': this._startHandler,
+                'click .cancel': this._cancelHandler,
+                'click .delete': this._deleteHandler
+            });
+            this._initButtonBarEventHandlers();
+        },
+
+        _destroyEventHandlers: function () {
+            this._destroyButtonBarEventHandlers();
+            this._off(this.options.filesContainer, 'click');
+            this._super();
+        },
+
+        _enableFileInputButton: function () {
+            this.element.find('.fileinput-button input')
+                .prop('disabled', false)
+                .parent().removeClass('disabled');
+        },
+
+        _disableFileInputButton: function () {
+            this.element.find('.fileinput-button input')
+                .prop('disabled', true)
+                .parent().addClass('disabled');
+        },
+
+        _initTemplates: function () {
+            var options = this.options;
+            options.templatesContainer = this.document[0].createElement(
+                options.filesContainer.prop('nodeName')
+            );
+            if (tmpl) {
+                if (options.uploadTemplateId) {
+                    options.uploadTemplate = tmpl(options.uploadTemplateId);
+                }
+                if (options.downloadTemplateId) {
+                    options.downloadTemplate = tmpl(options.downloadTemplateId);
+                }
+            }
+        },
+
+        _initFilesContainer: function () {
+            var options = this.options;
+            if (options.filesContainer === undefined) {
+                options.filesContainer = this.element.find('.files');
+            } else if (!(options.filesContainer instanceof $)) {
+                options.filesContainer = $(options.filesContainer);
+            }
+        },
+
+        _initSpecialOptions: function () {
+            this._super();
+            this._initFilesContainer();
+            this._initTemplates();
+        },
+
+        _create: function () {
+            this._super();
+            this._resetFinishedDeferreds();
+        },
+
+        enable: function () {
+            var wasDisabled = false;
+            if (this.options.disabled) {
+                wasDisabled = true;
+            }
+            this._super();
+            if (wasDisabled) {
+                this.element.find('input, button').prop('disabled', false);
+                this._enableFileInputButton();
+            }
+        },
+
+        disable: function () {
+            if (!this.options.disabled) {
+                this.element.find('input, button').prop('disabled', true);
+                this._disableFileInputButton();
+            }
+            this._super();
+        }
+
+    });
+
+}));
+
+// Generated by CoffeeScript 1.8.0
+(function() {
+  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  Array.prototype.toID = function() {
+    var id, item, res, _i, _len;
+    res = [];
+    for (_i = 0, _len = this.length; _i < _len; _i++) {
+      item = this[_i];
+      id = typeof item === 'object' ? item.id : typeof item === 'string' ? item : void 0;
+      if (id) {
+        res.push(id);
+      }
+    }
+    return res;
+  };
+
+  Array.prototype.removeFromList = function(list) {
+    var id, idx, seq, _i, _j, _len, _len1;
+    if (list == null) {
+      list = [];
+    }
+    seq = [];
+    for (idx = _i = 0, _len = this.length; _i < _len; idx = ++_i) {
+      id = this[idx];
+      if (__indexOf.call(list, id) >= 0) {
+        seq.push(idx);
+      }
+    }
+    seq.reverse();
+    for (_j = 0, _len1 = seq.length; _j < _len1; _j++) {
+      id = seq[_j];
+      this.splice(id, 1);
+    }
+    return this;
+  };
+
+  Array.prototype.last = function() {
+    var lastIndex;
+    lastIndex = this.length - 1;
+    return this[lastIndex] || null;
+  };
+
+  Array.prototype.first = function() {
+    return this[0] || null;
+  };
+
+  Array.prototype.update = function(value) {
+    if (Object.prototype.toString.call(value) !== '[object Array]') {
+      throw new Error('passed value requires an array');
+    }
+    [].splice.apply(this, [0, this.length - 0].concat(value)), value;
+    return this;
+  };
+
+  Array.prototype.addRemoveSelection = function(id) {
+    this.toggleSelected(id);
+    return this;
+  };
+
+  Array.prototype.add = function(id) {
+    this.toggleSelected(id, true);
+    return this;
+  };
+
+  Array.prototype.toggleSelected = function(id, addonly) {
+    var index;
+    if (!id) {
+      return this;
+    }
+    if (__indexOf.call(this, id) < 0) {
+      this.unshift(id);
+    } else if (!addonly) {
+      index = this.indexOf(id);
+      if (index !== -1) {
+        this.splice(index, 1);
+      }
+    }
+    return this;
+  };
+
+  Array.prototype.contains = function(string) {
+    var Regex, value, _i, _len;
+    for (_i = 0, _len = this.length; _i < _len; _i++) {
+      value = this[_i];
+      Regex = new RegExp(value);
+      if (Regex.test(string)) {
+        return true;
+      }
+    }
+  };
+
+}).call(this);
 
 
 (function(/*! Stitch !*/) {
@@ -30299,6 +35625,1860 @@ Released under the MIT License
 }).call(this);
 
 //# sourceMappingURL=list.js.map
+}, "admin": function(exports, require, module) {(function() {
+  var $, Category, CategoryEditView, Clipboard, Config, Drag, Extender, LoaderView, LoginView, Main, MainView, MissingView, ModalActionView, ModalSimpleView, OverviewView, PhotoEditView, Product, ProductEditView, Root, Settings, ShowView, Sidebar, Spine, SpineDragItem, SpineError, Toolbar, ToolbarView, UploadEditView, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Drag = require("extensions/drag");
+
+  User = require('models/user');
+
+  Config = require('models/config');
+
+  Product = require('models/product');
+
+  Root = require('models/root');
+
+  Category = require('models/category');
+
+  Toolbar = require("models/toolbar");
+
+  Settings = require('models/admin_settings');
+
+  SpineError = require("models/spine_error");
+
+  Clipboard = require("models/clipboard");
+
+  MainView = require("controllers/main_view");
+
+  LoginView = require("controllers/login_view");
+
+  LoaderView = require("controllers/loader_view");
+
+  Sidebar = require("controllers/sidebar");
+
+  ShowView = require("controllers/show_view");
+
+  ModalSimpleView = require("controllers/modal_simple_view");
+
+  ModalActionView = require("controllers/modal_action_view");
+
+  ToolbarView = require("controllers/toolbar_view");
+
+  LoginView = require("controllers/login_view");
+
+  ProductEditView = require("controllers/product_edit_view");
+
+  PhotoEditView = require("controllers/photo_edit_view");
+
+  UploadEditView = require("controllers/upload_edit_view");
+
+  CategoryEditView = require("controllers/category_edit_view");
+
+  OverviewView = require('controllers/overview_view');
+
+  MissingView = require("controllers/missing_view");
+
+  Extender = require('extensions/controller_extender');
+
+  SpineDragItem = require('models/drag_item');
+
+  require('spine/lib/route');
+
+  require('spine/lib/manager');
+
+  require("extensions/manager");
+
+  Main = (function(superClass) {
+    extend(Main, superClass);
+
+    Main.extend(Drag);
+
+    Main.extend(Extender);
+
+    Main.prototype.elements = {
+      '#fileupload': 'uploader',
+      '#flickr': 'flickrEl',
+      '#main': 'mainEl',
+      '#sidebar': 'sidebarEl',
+      '#show': 'showEl',
+      '#overview': 'overviewEl',
+      '#sidebar .flickr': 'sidebarFlickrEl',
+      '#missing': 'missingEl',
+      '#ga': 'categoryEl',
+      '#al': 'productEl',
+      '#ph': 'photoEl',
+      '#fu': 'uploadEl',
+      '#loader': 'loaderEl',
+      '#login': 'loginEl',
+      '#modal-category': 'slideshowEl',
+      '#show .content': 'content',
+      '.vdraggable': 'vDrag',
+      '.hdraggable': 'hDrag',
+      '.status-symbol img': 'statusIcon',
+      '.status-text': 'statusText',
+      '.status-symbol': 'statusSymbol'
+    };
+
+    Main.prototype.events = {
+      'click [class*="-trigger-edit"]': 'activateEditor',
+      'click': 'delegateFocus',
+      'drop': 'drop',
+      'keyup': 'key',
+      'keydown': 'key'
+    };
+
+    function Main() {
+      Main.__super__.constructor.apply(this, arguments);
+      this.version = "2.0.0";
+      this.autoupload = true;
+      Spine.DragItem = SpineDragItem.create();
+      this.ALBUM_SINGLE_MOVE = this.createImage('/img/cursor_folder_1.png');
+      this.ALBUM_DOUBLE_MOVE = this.createImage('/img/cursor_folder_3.png');
+      this.IMAGE_SINGLE_MOVE = this.createImage('/img/cursor_images_1.png');
+      this.IMAGE_DOUBLE_MOVE = this.createImage('/img/cursor_images_3.png');
+      this.modal = {
+        exists: false
+      };
+      $(window).bind('hashchange', this.proxy(this.storeHash));
+      this.ignoredHashes = ['slideshow', 'overview', 'preview', 'flickr', 'logout'];
+      User.bind('pinger', this.proxy(this.validate));
+      Clipboard.fetch();
+      Clipboard.destroyAll();
+      Settings.one('refresh', this.proxy(this.refreshSettings));
+      Settings.one('change', this.proxy(this.changeSettings));
+      $('#modal-category').bind('hidden', this.proxy(this.hideSlideshow));
+      this.modalView = new ModalSimpleView;
+      this.missingView = new MissingView({
+        el: this.missingEl
+      });
+      this.category = new CategoryEditView({
+        el: this.categoryEl,
+        externalClass: '.optCategory'
+      });
+      this.product = new ProductEditView({
+        el: this.productEl,
+        externalClass: '.optProduct'
+      });
+      this.photo = new PhotoEditView({
+        el: this.photoEl,
+        externalClass: '.optPhoto'
+      });
+      this.upload = new UploadEditView({
+        el: this.uploadEl,
+        externalClass: '.optUpload'
+      });
+      this.sidebar = new Sidebar({
+        el: this.sidebarEl,
+        externalClass: '.optSidebar'
+      });
+      this.loginView = new LoginView({
+        el: this.loginEl
+      });
+      this.mainView = new MainView({
+        el: this.mainEl
+      });
+      this.loaderView = new LoaderView({
+        el: this.loaderEl
+      });
+      this.showView = new ShowView({
+        el: this.showEl,
+        activeControl: 'btnCategory',
+        uploader: this.upload,
+        sidebar: this.sidebar,
+        parent: this
+      });
+      this.overviewView = new OverviewView({
+        el: this.overviewEl,
+        slideshow: this.showView.slideshowView
+      });
+      this.slideshowView = this.showView.slideshowView;
+      this.vmanager = new Spine.Manager(this.sidebar);
+      this.vmanager.external = this.showView.toolbarOne;
+      this.vmanager.initDrag(this.vDrag, {
+        initSize: (function(_this) {
+          return function() {
+            return _this.el.width() / 4;
+          };
+        })(this),
+        sleep: true,
+        disabled: false,
+        axis: 'x',
+        min: function() {
+          return 8;
+        },
+        tol: function() {
+          return 50;
+        },
+        max: (function(_this) {
+          return function() {
+            return _this.el.width() / 2;
+          };
+        })(this),
+        goSleep: (function(_this) {
+          return function() {
+            return _this.sidebar.inner.hide();
+          };
+        })(this),
+        awake: (function(_this) {
+          return function() {
+            return _this.sidebar.inner.show();
+          };
+        })(this)
+      });
+      this.hmanager = new Spine.Manager(this.category, this.product, this.photo, this.upload);
+      this.hmanager.external = this.showView.toolbarOne;
+      this.hmanager.initDrag(this.hDrag, {
+        initSize: (function(_this) {
+          return function() {
+            return _this.el.height() / 4;
+          };
+        })(this),
+        disabled: false,
+        axis: 'y',
+        min: function() {
+          return 50;
+        },
+        sleep: true,
+        max: (function(_this) {
+          return function() {
+            return _this.el.height() / 1.5;
+          };
+        })(this),
+        goSleep: function() {},
+        awake: function() {}
+      });
+      this.appManager = new Spine.Manager(this.mainView, this.loaderView);
+      this.contentManager = new Spine.Manager(this.overviewView, this.showView);
+      this.hmanager.bind('awake', (function(_this) {
+        return function() {
+          return _this.showView.trigger('awake');
+        };
+      })(this));
+      this.hmanager.bind('sleep', (function(_this) {
+        return function() {
+          return _this.showView.trigger('sleep');
+        };
+      })(this));
+      this.hmanager.bind('change', this.proxy(this.changeEditCanvas));
+      this.appManager.bind('change', this.proxy(this.changeMainCanvas));
+      this.contentManager.bind('change', this.proxy(this.changeContentCanvas));
+      this.bind('canvas', this.proxy(this.canvas));
+      this.upload.trigger('active');
+      this.loaderView.trigger('active');
+      this.initializeFileupload();
+      this.routes({
+        '/category/:gid/:aid/:pid': function(params) {
+          Root.updateSelection(params.gid || null);
+          Category.updateSelection(params.aid || null);
+          Product.updateSelection(params.pid || null);
+          return this.showView.trigger('active', this.showView.photosView, params.pid);
+        },
+        '/category/:gid/:aid': function(params) {
+          Root.updateSelection(params.gid || null);
+          Category.updateSelection(params.aid || null);
+          return this.showView.trigger('active', this.showView.photosView);
+        },
+        '/category/:gid': function(params) {
+          Root.updateSelection(params.gid || null);
+          return this.showView.trigger('active', this.showView.productsView);
+        },
+        '/categories/*': function() {
+          return this.showView.trigger('active', this.showView.categoriesView);
+        },
+        '/overview/*': function() {
+          return this.overviewView.trigger('active');
+        },
+        '/slideshow/:index': function(params) {
+          return this.showView.trigger('active', this.showView.slideshowView, params.index);
+        },
+        '/wait/*glob': function(params) {
+          return this.showView.trigger('active', this.showView.waitView);
+        },
+        '/flickr/:type/:page': function(params) {
+          return this.flickrView.trigger('active', params.type, params.page);
+        },
+        '/flickr/': function(params) {
+          return this.flickrView.trigger('active', this.showView.flickrView);
+        },
+        '/*glob': function(params) {
+          return this.missingView.trigger('active');
+        }
+      });
+      this.defaultSettings = {
+        welcomeScreen: false,
+        test: true
+      };
+      this.loadToolbars();
+    }
+
+    Main.prototype.storeHash = function() {
+      var hash, settings;
+      if (!(settings = Settings.findUserSettings())) {
+        return;
+      }
+      if (hash = location.hash) {
+        if (!this.ignoredHashes.contains(hash)) {
+          settings.previousHash = hash;
+        }
+        settings.hash = hash;
+        return settings.save();
+      }
+    };
+
+    Main.prototype.fullscreen = function() {
+      return Spine.trigger('chromeless', true);
+    };
+
+    Main.prototype.validate = function(user, json) {
+      var valid;
+      this.log('Pinger done');
+      valid = user.sessionid === json.sessionid;
+      valid = user.id === json.id && valid;
+      if (!valid) {
+        return User.logout();
+      } else {
+        this.loadUserSettings(user.id);
+        return this.delay(this.setupView, 1000);
+      }
+    };
+
+    Main.prototype.drop = function(e) {
+      this.log('drop');
+      if (!e.originalEvent.dataTransfer.files.length) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      return $('.sortable-placeholder').detach();
+    };
+
+    Main.prototype.notify = function(text) {
+      return this.modalView.render({
+        small: true,
+        body: function() {
+          return require("views/notify")({
+            text: text
+          });
+        }
+      }).show();
+    };
+
+    Main.prototype.loadUserSettings = function(id) {
+      var settings;
+      Settings.fetch();
+      if (!(settings = Settings.findByAttribute('user_id', id))) {
+        this.notify('You seem to be using this App for the first time.<br>The Auto Upload will be set to ' + this.autoupload + '.<br>To change this setting<br>go to Photo->Auto Upload');
+        return Settings.create({
+          user_id: id,
+          autoupload: this.autoupload,
+          hash: '#',
+          previousHash: '#'
+        });
+      }
+    };
+
+    Main.prototype.refreshSettings = function(records) {
+      var hash, settings;
+      if (hash = location.hash) {
+        return this.navigate(hash);
+      } else if (settings = Settings.findUserSettings()) {
+        return this.navigate(settings.hash);
+      }
+    };
+
+    Main.prototype.changeSettings = function(rec) {
+      return this.navigate(rec.hash);
+    };
+
+    Main.prototype.setupView = function() {
+      this.log('setup View');
+      Spine.unbind('uri:alldone');
+      this.mainView.trigger('active');
+      this.mainView.el.hide();
+      return this.statusSymbol.fadeOut('slow', this.proxy(this.finalizeView));
+    };
+
+    Main.prototype.finalizeView = function() {
+      this.loginView.render();
+      return this.mainView.el.fadeIn(1500, this.proxy(this.showIt));
+    };
+
+    Main.prototype.showIt = function() {
+      this.showView.trigger('active', this.showView.productsView);
+      return;
+      if (!/^#\/category\//.test(location.hash)) {
+        return this.navigate('/category', '');
+      }
+    };
+
+    Main.prototype.canvas = function(controller) {
+      return controller.trigger('active');
+    };
+
+    Main.prototype.changeMainCanvas = function(controller) {};
+
+    Main.prototype.changeContentCanvas = function(controller, b) {
+      var _1, c, i, len, ref;
+      this.controllers = (function() {
+        var i, len, ref, results;
+        ref = this.contentManager.controllers;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          c = ref[i];
+          if (c !== controller) {
+            results.push(c);
+          }
+        }
+        return results;
+      }).call(this);
+      ref = this.controllers;
+      for (i = 0, len = ref.length; i < len; i++) {
+        c = ref[i];
+        c.el.removeClass('in');
+      }
+      _1 = (function(_this) {
+        return function() {
+          return controller.el.addClass('in');
+        };
+      })(this);
+      return window.setTimeout((function(_this) {
+        return function() {
+          return _1();
+        };
+      })(this), 500);
+    };
+
+    Main.prototype.changeEditCanvas = function(controller) {};
+
+    Main.prototype.initializeFileupload = function() {
+      return this.uploader.fileupload({
+        autoUpload: true,
+        singleFileUploads: false,
+        sequentialUploads: true,
+        maxFileSize: 10000000,
+        maxNumberOfFiles: 20,
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        getFilesFromResponse: function(data) {
+          var file, i, len, ref, res;
+          res = [];
+          ref = data.files;
+          for (i = 0, len = ref.length; i < len; i++) {
+            file = ref[i];
+            res.push(file);
+          }
+          return res;
+        }
+      });
+    };
+
+    Main.prototype.loadToolbars = function() {
+      return Toolbar.load();
+    };
+
+    Main.prototype.activePhotos = function() {
+      var model, photos;
+      model = this.showView.current.el.data('current').model;
+      photos = model.activePhotos();
+      return photos;
+    };
+
+    Main.prototype.activateEditor = function(e) {
+      var el, test;
+      el = $(e.currentTarget);
+      test = el.prop('class');
+      if (/\bgal-*/.test(test)) {
+        this.category.trigger('active');
+      } else if (/\balb-*/.test(test)) {
+        this.product.trigger('active');
+      } else if (/\bpho-*/.test(test)) {
+        this.photo.trigger('active');
+      }
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    Main.prototype.key = function(e) {
+      var code, el, isFormfield, type;
+      code = e.charCode || e.keyCode;
+      type = e.type;
+      this.log(e.type, code);
+      el = $(document.activeElement);
+      isFormfield = $().isFormElement(el);
+      if (type !== 'keydown') {
+        return;
+      }
+      switch (code) {
+        case 8:
+          if (!isFormfield) {
+            this.delegateFocus(e, this.showView);
+            return e.preventDefault();
+          }
+          break;
+        case 9:
+          if (!isFormfield) {
+            this.sidebar.toggleDraghandle();
+            return e.preventDefault();
+          }
+          break;
+        case 13:
+          if (!isFormfield) {
+            this.delegateFocus(e, this.showView);
+            return e.preventDefault();
+          }
+          break;
+        case 27:
+          if (!isFormfield) {
+            if (this.overviewView.isActive()) {
+              this.delegateFocus(e, this.overviewView);
+            } else {
+              this.delegateFocus(e, this.showView);
+            }
+            return e.preventDefault();
+          }
+          break;
+        case 32:
+          if (!isFormfield) {
+            if (this.overviewView.isActive()) {
+              this.delegateFocus(e, this.overviewView);
+            } else {
+              this.delegateFocus(e, this.showView);
+            }
+            return e.preventDefault();
+          }
+          break;
+        case 37:
+          if (!isFormfield) {
+            if (this.overviewView.isActive()) {
+              this.delegateFocus(e, this.overviewView);
+            } else {
+              this.delegateFocus(e, this.showView);
+            }
+            return e.preventDefault();
+          }
+          break;
+        case 38:
+          if (!isFormfield) {
+            this.delegateFocus(e, this.showView);
+            return e.preventDefault();
+          }
+          break;
+        case 39:
+          if (!isFormfield) {
+            if (this.overviewView.isActive()) {
+              this.delegateFocus(e, this.overviewView);
+            } else {
+              this.delegateFocus(e, this.showView);
+            }
+            return e.preventDefault();
+          }
+          break;
+        case 40:
+          if (!isFormfield) {
+            this.delegateFocus(e, this.showView);
+            return e.preventDefault();
+          }
+          break;
+        case 65:
+          if (!isFormfield) {
+            this.delegateFocus(e, this.showView);
+            return e.preventDefault();
+          }
+          break;
+        case 73:
+          if (!isFormfield) {
+            this.delegateFocus(e, this.showView);
+            return e.preventDefault();
+          }
+          break;
+        case 77:
+          if (!isFormfield) {
+            this.delegateFocus(e, this.showView);
+            return e.preventDefault();
+          }
+      }
+    };
+
+    Main.prototype.delegateFocus = function(e, controller) {
+      var el;
+      if (controller == null) {
+        controller = this.showView;
+      }
+      el = $(document.activeElement);
+      if ($().isFormElement(el)) {
+        return;
+      }
+      return controller.focus();
+    };
+
+    return Main;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Main;
+  }
+
+}).call(this);
+}, "controllers/categories_header": function(exports, require, module) {(function() {
+  var $, CategoriesHeader, CategoriesProduct, Category, Extender, Photo, Product, ProductsPhoto, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Extender = require('extensions/controller_extender');
+
+  CategoriesHeader = (function(superClass) {
+    extend(CategoriesHeader, superClass);
+
+    CategoriesHeader.extend(Extender);
+
+    function CategoriesHeader() {
+      CategoriesHeader.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Category.bind('change', this.proxy(this.render));
+      Category.bind('refresh', this.proxy(this.render));
+      Category.bind('change:current', this.proxy(this.render));
+      Product.bind('change', this.proxy(this.render));
+      Product.bind('change:collection', this.proxy(this.render));
+      Photo.bind('refresh', this.proxy(this.render));
+    }
+
+    CategoriesHeader.prototype.render = function() {
+      if (!this.isActive()) {
+        return;
+      }
+      return this.html(this.template({
+        model: Category,
+        modelProduct: Product,
+        modelPhoto: Photo,
+        modelGas: CategoriesProduct,
+        modelAps: ProductsPhoto,
+        author: User.first().name
+      }));
+    };
+
+    CategoriesHeader.prototype.count = function() {
+      return Category.count();
+    };
+
+    CategoriesHeader.prototype.active = function() {
+      return this.render();
+    };
+
+    CategoriesHeader.prototype.goUp = function(e) {
+      this.navigate('/overview', '');
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    return CategoriesHeader;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = CategoriesHeader;
+  }
+
+}).call(this);
+}, "controllers/categories_list": function(exports, require, module) {(function() {
+  var $, CategoriesList, CategoriesProduct, Category, Drag, Extender, Photo, ProductsPhoto, Root, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Root = require("models/root");
+
+  Category = require('models/category');
+
+  Photo = require('models/photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Drag = require('extensions/drag');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  CategoriesList = (function(superClass) {
+    extend(CategoriesList, superClass);
+
+    CategoriesList.extend(Drag);
+
+    CategoriesList.extend(Extender);
+
+    CategoriesList.prototype.events = {
+      'click .opt-SlideshowPlay': 'slideshowPlay',
+      'click .dropdown-toggle': 'dropdownToggle',
+      'click .delete': 'deleteCategory',
+      'click .zoom': 'zoom',
+      'mousemove .item': 'infoUp',
+      'mouseleave .item': 'infoBye',
+      'dragover': 'dragover'
+    };
+
+    function CategoriesList() {
+      this.infoBye = bind(this.infoBye, this);
+      this.infoUp = bind(this.infoUp, this);
+      CategoriesList.__super__.constructor.apply(this, arguments);
+      Category.bind('change:current', this.proxy(this.exposeSelection));
+      Product.bind('change:collection', this.proxy(this.renderRelated));
+      Category.bind('change', this.proxy(this.renderOne));
+      CategoriesProduct.bind('change', this.proxy(this.renderOneRelated));
+      Photo.bind('destroy', this.proxy(this.renderRelated));
+      Product.bind('destroy', this.proxy(this.renderRelated));
+    }
+
+    CategoriesList.prototype.renderOneRelated = function(ga) {
+      var category;
+      category = Category.find(ga.category_id);
+      if (category) {
+        return this.updateOneTemplate(category);
+      }
+    };
+
+    CategoriesList.prototype.renderRelated = function() {
+      if (!this.parent.isActive()) {
+        return;
+      }
+      this.log('renderRelated');
+      return this.updateTemplates();
+    };
+
+    CategoriesList.prototype.renderOne = function(item, mode) {
+      var e, error;
+      this.log('renderOne');
+      switch (mode) {
+        case 'create':
+          if (Category.count() === 1) {
+            this.el.empty();
+          }
+          this.append(this.template(item));
+          this.exposeSelection();
+          break;
+        case 'update':
+          try {
+            this.updateTemplates();
+            $('.dropdown-toggle', this.el).dropdown();
+          } catch (error) {
+            e = error;
+          }
+          this.reorder(item);
+          this.exposeSelection();
+          break;
+        case 'destroy':
+          this.exposeSelection();
+      }
+      return this.el;
+    };
+
+    CategoriesList.prototype.render = function(items, mode) {
+      this.log('render');
+      this.html(this.template(items));
+      this.exposeSelection();
+      $('.dropdown-toggle', this.el).dropdown();
+      return this.el;
+    };
+
+    CategoriesList.prototype.updateTemplates = function() {
+      var category, j, len, ref, results;
+      this.log('updateTemplates');
+      ref = Category.records;
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        category = ref[j];
+        results.push(this.updateOneTemplate(category));
+      }
+      return results;
+    };
+
+    CategoriesList.prototype.updateOneTemplate = function(category) {
+      var active, categoryEl, contentEl, tmplItem;
+      categoryEl = this.children().forItem(category);
+      active = categoryEl.hasClass('active');
+      contentEl = $('.thumbnail', categoryEl);
+      tmplItem = contentEl.tmplItem();
+      if (!tmplItem) {
+        alert('no tmpl item');
+      }
+      if (tmplItem) {
+        tmplItem.tmpl = $("#categoriesTemplate").template();
+        if (typeof tmplItem.update === "function") {
+          tmplItem.update();
+        }
+        return categoryEl = this.children().forItem(category).toggleClass('active hot', active);
+      }
+    };
+
+    CategoriesList.prototype.reorder = function(item) {
+      var children, id, idxAfterSort, idxBeforeSort, index, newEl, oldEl;
+      id = item.id;
+      index = function(id, list) {
+        var i, itm, j, len;
+        for (i = j = 0, len = list.length; j < len; i = ++j) {
+          itm = list[i];
+          if (itm.id === id) {
+            return i;
+          }
+        }
+        return i;
+      };
+      children = this.children();
+      oldEl = this.children().forItem(item);
+      idxBeforeSort = this.children().index(oldEl);
+      idxAfterSort = index(id, Category.all().sort(Category.nameSort));
+      newEl = $(children[idxAfterSort]);
+      if (idxBeforeSort < idxAfterSort) {
+        return newEl.after(oldEl);
+      } else if (idxBeforeSort > idxAfterSort) {
+        return newEl.before(oldEl);
+      }
+    };
+
+    CategoriesList.prototype.exposeSelection = function() {
+      this.log('exposeSelection');
+      this.deselect();
+      $('#' + Category.record.id, this.el).addClass("active hot");
+      App.showView.trigger('change:toolbarOne');
+      return this.parent.focus();
+    };
+
+    CategoriesList.prototype.dropdownToggle = function(e) {
+      var el;
+      e.preventDefault();
+      e.stopPropagation();
+      el = $(e.currentTarget);
+      return el.dropdown();
+    };
+
+    CategoriesList.prototype.zoom = function(e) {
+      var item;
+      this.log('zoom');
+      e.stopPropagation();
+      e.preventDefault();
+      item = $(e.currentTarget).item();
+      return this.navigate('/category', item.id);
+    };
+
+    CategoriesList.prototype.back = function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      return this.navigate('/overview', '');
+    };
+
+    CategoriesList.prototype.deleteCategory = function(e) {
+      var el, item;
+      e.stopPropagation();
+      e.preventDefault();
+      item = $(e.currentTarget).item();
+      el = $(e.currentTarget).parents('.item');
+      if (item) {
+        return Spine.trigger('destroy:category', item.id);
+      }
+    };
+
+    CategoriesList.prototype.infoUp = function(e) {
+      var el;
+      el = $('.glyphicon-set', $(e.currentTarget)).addClass('in').removeClass('out');
+      return e.preventDefault();
+    };
+
+    CategoriesList.prototype.infoBye = function(e) {
+      var el;
+      el = $('.glyphicon-set', $(e.currentTarget)).addClass('out').removeClass('in');
+      return e.preventDefault();
+    };
+
+    CategoriesList.prototype.slideshowPlay = function(e) {
+      var category;
+      category = $(e.currentTarget).closest('.item').item();
+      if (App.activePhotos().length) {
+        App.slideshowView.trigger('play');
+      } else {
+        App.showView.noSlideShow();
+      }
+      return e.stopPropagation();
+    };
+
+    return CategoriesList;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = CategoriesList;
+  }
+
+}).call(this);
+}, "controllers/categories_view": function(exports, require, module) {(function() {
+  var $, CategoriesList, CategoriesProduct, CategoriesView, Category, Drag, Extender, ProductsPhoto, Root, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Drag = require('extensions/drag');
+
+  Root = require('models/root');
+
+  Category = require('models/category');
+
+  CategoriesProduct = require('models/categories_product');
+
+  CategoriesList = require("controllers/categories_list");
+
+  ProductsPhoto = require('models/products_photo');
+
+  Extender = require('extensions/controller_extender');
+
+  CategoriesView = (function(superClass) {
+    extend(CategoriesView, superClass);
+
+    CategoriesView.extend(Drag);
+
+    CategoriesView.extend(Extender);
+
+    CategoriesView.prototype.elements = {
+      '.items': 'items'
+    };
+
+    CategoriesView.prototype.events = {
+      'click .item': 'click'
+    };
+
+    CategoriesView.prototype.headerTemplate = function(items) {
+      return $("#headerCategoryTemplate").tmpl(items);
+    };
+
+    CategoriesView.prototype.template = function(items) {
+      return $("#categoriesTemplate").tmpl(items);
+    };
+
+    function CategoriesView() {
+      CategoriesView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.el.data('current', {
+        model: Root,
+        models: Category
+      });
+      this.type = 'Category';
+      this.list = new CategoriesList({
+        el: this.items,
+        template: this.template,
+        parent: this
+      });
+      this.header.template = this.headerTemplate;
+      this.viewport = this.list.el;
+      Category.one('refresh', this.proxy(this.render));
+      Category.bind('beforeDestroy', this.proxy(this.beforeDestroy));
+      Category.bind('destroy', this.proxy(this.destroy));
+      Category.bind('refresh:category', this.proxy(this.render));
+    }
+
+    CategoriesView.prototype.render = function(items) {
+      if (!this.isActive()) {
+        return;
+      }
+      if (Category.count()) {
+        items = Category.records.sort(Category.nameSort);
+        return this.list.render(items);
+      } else {
+        return this.list.el.html('<label class="invite"><span class="enlightened">This Application has no categories. &nbsp;<button class="opt-CreateCategory dark large">New Category</button>');
+      }
+    };
+
+    CategoriesView.prototype.active = function() {
+      if (!this.isActive()) {
+        return;
+      }
+      if (!Category.record) {
+        Category.updateSelection();
+      }
+      App.showView.trigger('change:toolbarOne', ['Default']);
+      App.showView.trigger('change:toolbarTwo', ['Slideshow']);
+      return this.render();
+    };
+
+    CategoriesView.prototype.click = function(e) {
+      var item;
+      e.preventDefault();
+      e.stopPropagation();
+      App.showView.trigger('change:toolbarOne', ['Default']);
+      item = $(e.currentTarget).item();
+      return this.select(e, item.id);
+    };
+
+    CategoriesView.prototype.select_ = function(item) {
+      return Category.trigger('activate', item.id);
+    };
+
+    CategoriesView.prototype.select__ = function(ids, exclusive) {
+      var i, id, len, selection;
+      if (ids == null) {
+        ids = [];
+      }
+      if (!Array.isArray(ids)) {
+        ids = [ids];
+      }
+      if (exclusive) {
+        Root.emptySelection();
+      }
+      selection = Root.selectionList().slice(0);
+      for (i = 0, len = ids.length; i < len; i++) {
+        id = ids[i];
+        selection.addRemoveSelection(id);
+      }
+      Root.updateSelection(selection);
+      Category.updateSelection(Category.selectionList());
+      return Product.updateSelection(Product.selectionList());
+    };
+
+    CategoriesView.prototype.select = function(e, items) {
+      if (items == null) {
+        items = [];
+      }
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      Root.updateSelection(items.first());
+      Category.updateSelection(Category.selectionList());
+      return Product.updateSelection(Product.selectionList());
+    };
+
+    CategoriesView.prototype.beforeDestroy = function(item) {
+      return this.list.findModelElement(item).detach();
+    };
+
+    CategoriesView.prototype.destroy = function(item) {
+      var ref;
+      if (item) {
+        if (((ref = Category.record) != null ? ref.id : void 0) === (item != null ? item.id : void 0)) {
+          Category.current();
+        }
+        item.removeSelectionID();
+        Root.removeFromSelection(item.id);
+      }
+      if (!Category.count()) {
+        if (/^#\/categories\//.test(location.hash)) {
+          this.navigate('/categories');
+        }
+        return this.navigate('/categories', '');
+      } else {
+        if (!/^#\/categories\//.test(location.hash)) {
+          return this.navigate('/category', Category.first().id);
+        }
+      }
+    };
+
+    CategoriesView.prototype.newAttributes = function() {
+      if (User.first()) {
+        return {
+          name: 'New Name',
+          user_id: User.first().id,
+          author: User.first().name
+        };
+      } else {
+        return User.ping();
+      }
+    };
+
+    return CategoriesView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = CategoriesView;
+  }
+
+}).call(this);
+}, "controllers/category_edit_view": function(exports, require, module) {(function() {
+  var $, Category, CategoryEditView, Extender, KeyEnhancer, Root, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  KeyEnhancer = require('extensions/key_enhancer');
+
+  Extender = require('extensions/controller_extender');
+
+  Category = require("models/category");
+
+  Root = require("models/root");
+
+  $ = Spine.$;
+
+  CategoryEditView = (function(superClass) {
+    extend(CategoryEditView, superClass);
+
+    CategoryEditView.extend(Extender);
+
+    CategoryEditView.prototype.events = {
+      'keyup': 'saveOnKeyup'
+    };
+
+    CategoryEditView.prototype.template = function(item) {
+      return $('#editCategoryTemplate').tmpl(item);
+    };
+
+    function CategoryEditView() {
+      CategoryEditView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Category.bind('current', this.proxy(this.change));
+    }
+
+    CategoryEditView.prototype.active = function() {
+      return this.render();
+    };
+
+    CategoryEditView.prototype.change = function(item) {
+      this.current = item;
+      return this.render();
+    };
+
+    CategoryEditView.prototype.change_ = function(item) {
+      this.current = item;
+      return this.render();
+    };
+
+    CategoryEditView.prototype.render = function() {
+      if (this.current) {
+        this.html(this.template(this.current));
+      } else {
+        if (!Category.count()) {
+          this.html($("#noSelectionTemplate").tmpl({
+            type: '<label class="invite"><span class="enlightened">Director has no category yet &nbsp;<button class="opt-CreateCategory dark large">New Category</button></span></label>'
+          }));
+        } else {
+          this.html($("#noSelectionTemplate").tmpl({
+            type: '<label class="invite"><span class="enlightened">Select a category!</span></label>'
+          }));
+        }
+      }
+      return this.el;
+    };
+
+    CategoryEditView.prototype.save = function(el) {
+      var atts, category;
+      this.log('save');
+      if (category = Category.record) {
+        atts = (typeof el.serializeForm === "function" ? el.serializeForm() : void 0) || this.el.serializeForm();
+        return category.updateChangedAttributes(atts);
+      }
+    };
+
+    CategoryEditView.prototype.saveOnKeyup = function(e) {
+      var code;
+      this.log('saveOnEnter');
+      code = e.charCode || e.keyCode;
+      switch (code) {
+        case 32:
+          e.stopPropagation();
+          break;
+        case 9:
+          e.stopPropagation();
+      }
+      return this.save(this.el);
+    };
+
+    CategoryEditView.prototype.createCategory = function() {
+      return Spine.trigger('create:category');
+    };
+
+    CategoryEditView.prototype.click = function(e) {};
+
+    return CategoryEditView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = CategoryEditView;
+  }
+
+}).call(this);
+}, "controllers/flickr_view": function(exports, require, module) {(function() {
+  var $, Extender, FlickrView, Settings, Spine, ToolbarView,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    slice = [].slice;
+
+  Spine = require('spine');
+
+  $ = Spine.$;
+
+  ToolbarView = require("controllers/toolbar_view");
+
+  Settings = require("models/settings");
+
+  Extender = require('extensions/controller_extender');
+
+  FlickrView = (function(superClass) {
+    extend(FlickrView, superClass);
+
+    FlickrView.extend(Extender);
+
+    FlickrView.prototype.elements = {
+      '.links': 'links',
+      '.content': 'content',
+      '.toolbarOne': 'toolbarOneEl',
+      '.toolbarTwo': 'toolbarTwoEl'
+    };
+
+    FlickrView.prototype.events = {
+      'click button.close': 'close',
+      'click .recent': 'navRecent',
+      'click .inter': 'navInter',
+      'click .links': 'click',
+      'click .opt-Prev': 'prevPage',
+      'click .opt-Next': 'nextPage'
+    };
+
+    FlickrView.prototype.template = function(items) {
+      return $('#flickrTemplate').tmpl(items);
+    };
+
+    FlickrView.prototype.toolsTemplate = function(items) {
+      return $("#toolsTemplate").tmpl(items);
+    };
+
+    FlickrView.prototype.introTemplate = function() {
+      return $('#flickrIntroTemplate').tmpl();
+    };
+
+    function FlickrView() {
+      this.doneResponse = bind(this.doneResponse, this);
+      FlickrView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.type = 'recent';
+      this.perpage = 100;
+      this.spec = {
+        recent: {
+          min: 1,
+          page: 1,
+          pages: 5,
+          per_page: this.perpage
+        },
+        inter: {
+          min: 1,
+          page: 1,
+          pages: 5,
+          per_page: this.perpage
+        }
+      };
+      this.toolbar_one = new ToolbarView({
+        el: this.toolbarOneEl,
+        template: this.toolsTemplate
+      });
+      this.toolbar_two = new ToolbarView({
+        el: this.toolbarTwoEl,
+        template: this.toolsTemplate
+      });
+      this.bind('flickr:recent', this.proxy(this.recent));
+      this.bind('flickr:inter', this.proxy(this.interestingness));
+    }
+
+    FlickrView.prototype.render = function(items) {
+      this.log('render');
+      if (items) {
+        this.content.html(this.template(items));
+      } else {
+        this.content.html(this.introTemplate());
+        this.toolbarOneEl.empty();
+      }
+      return this.changeToolbar(this.toolbar_two, ['Close']);
+    };
+
+    FlickrView.prototype.active = function() {
+      if (arguments.length) {
+        return this.setup(arguments[0], arguments[1]);
+      } else {
+        return this.render();
+      }
+    };
+
+    FlickrView.prototype.url = function() {
+      var protocol;
+      protocol = window.location.protocol === 'https:' ? 'https://secure' : 'http://api';
+      protocol = 'https://secure';
+      return protocol + '.flickr.com/services/rest/';
+    };
+
+    FlickrView.prototype.data = {
+      format: 'json',
+      method: 'flickr.activity.userPhotos',
+      api_key: '1cb992dd2b14ba97327aea602e3922e6'
+    };
+
+    FlickrView.prototype.setup = function(mode, page) {
+      var options, toolsList_one, toolsList_two;
+      this.log('setup');
+      this.type = mode;
+      switch (mode) {
+        case 'recent':
+          toolsList_one = ['FlickrRecent'];
+          toolsList_two = ['Close'];
+          options = {
+            page: page || this.spec[mode].page,
+            method: 'flickr.photos.getRecent'
+          };
+          this.changeToolbar(this.toolbar_one, toolsList_one);
+          break;
+        case 'inter':
+          toolsList_one = ['FlickrInter'];
+          toolsList_two = ['Close'];
+          options = {
+            page: page || this.spec[mode].page,
+            method: 'flickr.interestingness.getList'
+          };
+          this.changeToolbar(this.toolbar_one, toolsList_one);
+          break;
+        default:
+          return this.render();
+      }
+      options = $().extend(this.spec[mode], options);
+      return this.ajax(options);
+    };
+
+    FlickrView.prototype.ajax = function(options) {
+      var data;
+      this.log('ajax');
+      data = $().extend(this.data, options);
+      return $.ajax({
+        url: this.url(),
+        data: data,
+        dataType: 'jsonp',
+        jsonp: 'jsoncallback'
+      }).done(this.doneResponse).fail(this.failResponse);
+    };
+
+    FlickrView.prototype.doneResponse = function(result) {
+      this.updateSpecs(result);
+      return this.render(result.photos.photo);
+    };
+
+    FlickrView.prototype.failResponse = function() {
+      var args;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      return this.log(args);
+    };
+
+    FlickrView.prototype.changeToolbar = function(tb, list) {
+      tb.change(list);
+      return this.refreshElements();
+    };
+
+    FlickrView.prototype.click = function(e) {
+      var links, options, target;
+      e.stopPropagation();
+      e.preventDefault();
+      target = $(e.target).parent()[0];
+      options = {
+        index: target
+      };
+      links = $('a', this.links);
+      return blueimp.Category(links, options);
+    };
+
+    FlickrView.prototype.prevPage = function(e) {
+      var t, type;
+      e.stopPropagation();
+      e.preventDefault();
+      type = this.type;
+      this.spec[type].page = (t = (this.spec[type].page || 1) - 1) >= 1 ? t : 1;
+      return this.navigate('/flickr', type, this.spec[type].page);
+    };
+
+    FlickrView.prototype.nextPage = function(e) {
+      var t, type;
+      e.stopPropagation();
+      e.preventDefault();
+      type = this.type;
+      this.spec[type].page = (t = (this.spec[type].page || 1) + 1) <= this.spec[type].pages ? t : this.spec[type].pages;
+      return this.navigate('/flickr', type, this.spec[type].page);
+    };
+
+    FlickrView.prototype.details = function(type) {
+      var page, perpage;
+      page = Number(this.spec[type].page);
+      perpage = Number(this.spec[type].per_page);
+      return {
+        from: ((page - 1) * perpage) + 1,
+        to: ((page - 1) * perpage) + perpage
+      };
+    };
+
+    FlickrView.prototype.updateSpecs = function(res) {
+      var type;
+      type = this.type;
+      $().extend(this.spec[type], res.photos);
+      return delete this.spec[type].photo;
+    };
+
+    FlickrView.prototype.recent = function(page) {
+      return this.setup('recent', page);
+    };
+
+    FlickrView.prototype.interestingness = function(page) {
+      return this.setup('inter', page);
+    };
+
+    FlickrView.prototype.navRecent = function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      return this.navigate('/flickr', 'recent/1');
+    };
+
+    FlickrView.prototype.navInter = function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      return this.navigate('/flickr', 'inter/1');
+    };
+
+    FlickrView.prototype.close = function(e) {
+      var previousHash;
+      e.preventDefault();
+      e.stopPropagation();
+      if (previousHash = Settings.findUserSettings().previousHash) {
+        return location.hash = previousHash;
+      } else {
+        return this.navigate('/categories/');
+      }
+    };
+
+    return FlickrView;
+
+  })(Spine.Controller);
+
+  module.exports = FlickrView;
+
+}).call(this);
+}, "controllers/info": function(exports, require, module) {(function() {
+  var $, Info, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Info = (function(superClass) {
+    extend(Info, superClass);
+
+    function Info() {
+      this.position = bind(this.position, this);
+      Info.__super__.constructor.apply(this, arguments);
+      this.el.addClass('away').removeClass('in');
+    }
+
+    Info.prototype.render = function(item) {
+      this.html(this.template(item));
+      return this.el;
+    };
+
+    Info.prototype.up = function(e) {
+      var bye, item, ref;
+      bye = (function(_this) {
+        return function() {
+          return _this.bye();
+        };
+      })(this);
+      item = $(e.currentTarget).item();
+      clearTimeout(this.timer);
+      clearTimeout(this.timer_);
+      this.timer = setTimeout(bye, 2000);
+      this.el.removeClass('away').addClass('in');
+      if (!(this.current && ((ref = this.current) != null ? ref.id : void 0) === item.id)) {
+        this.current = item;
+        this.render(this.current);
+      }
+      return this.position(e);
+    };
+
+    Info.prototype.bye = function() {
+      var stop;
+      if (!this.current) {
+        return;
+      }
+      stop = (function(_this) {
+        return function() {
+          return _this.stop();
+        };
+      })(this);
+      this.el.removeClass('in');
+      clearTimeout(this.timer_);
+      return this.timer_ = setTimeout(stop, 200);
+    };
+
+    Info.prototype.stop = function() {
+      this.el.addClass('away');
+      return this.current = null;
+    };
+
+    Info.prototype.position = function(e) {
+      var h, info_h, info_w, maxx, maxy, minx, posx, posy, t, w, x_offset, y_offset;
+      info_h = this.el.innerHeight();
+      info_w = this.el.innerWidth();
+      w = $(window).width();
+      h = $(window).height();
+      t = $(window).scrollTop();
+      x_offset = 10;
+      y_offset = 10;
+      posx = e.pageX + x_offset;
+      posy = e.pageY + y_offset;
+      maxx = posx + info_w;
+      minx = posx - info_w;
+      maxy = posy + info_h;
+      if (maxx >= w) {
+        posx = e.pageX - info_w - x_offset;
+      }
+      if (maxy >= (h + t)) {
+        posy = e.pageY - info_h - y_offset;
+      }
+      return this.el.css({
+        top: posy + 'px',
+        left: posx + 'px'
+      });
+    };
+
+    return Info;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Info;
+  }
+
+}).call(this);
+}, "controllers/loader_view": function(exports, require, module) {(function() {
+  var $, Extender, LoaderView, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Extender = require('extensions/controller_extender');
+
+  LoaderView = (function(superClass) {
+    extend(LoaderView, superClass);
+
+    LoaderView.extend(Extender);
+
+    function LoaderView() {
+      LoaderView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+    }
+
+    LoaderView.prototype.active = function() {};
+
+    return LoaderView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = LoaderView;
+  }
+
+}).call(this);
+}, "controllers/login_view": function(exports, require, module) {(function() {
+  var $, LoginView, Spine, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  User = require('models/user');
+
+  LoginView = (function(superClass) {
+    extend(LoginView, superClass);
+
+    LoginView.prototype.elements = {
+      'button': 'logoutEl'
+    };
+
+    LoginView.prototype.events = {
+      'click .opt-logout': 'logout',
+      'click .opt-trace': 'toggleTrace'
+    };
+
+    function LoginView() {
+      LoginView.__super__.constructor.apply(this, arguments);
+    }
+
+    LoginView.prototype.template = function() {
+      return $('#loginTemplate').tmpl({
+        user: User.first(),
+        trace: !Spine.isProduction
+      });
+    };
+
+    LoginView.prototype.logout = function() {
+      return User.logout();
+    };
+
+    LoginView.prototype.toggleTrace = function() {
+      Spine.isProduction = localStorage.isProduction = localStorage.isProduction === 'false';
+      alert('Trace: ' + (Spine.isProduction ? 'Off' : 'On') + '\nApplication will now restart');
+      $(window).off();
+      return User.redirect('director_app');
+    };
+
+    LoginView.prototype.render = function() {
+      return this.html(this.template());
+    };
+
+    return LoginView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = LoginView;
+  }
+
+}).call(this);
+}, "controllers/main_view": function(exports, require, module) {(function() {
+  var $, Extender, MainView, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Extender = require('extensions/controller_extender');
+
+  MainView = (function(superClass) {
+    extend(MainView, superClass);
+
+    MainView.extend(Extender);
+
+    function MainView() {
+      MainView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+    }
+
+    MainView.prototype.active = function() {};
+
+    return MainView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = MainView;
+  }
+
+}).call(this);
+}, "controllers/missing_view": function(exports, require, module) {(function() {
+  var $, MissingView, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  MissingView = (function(superClass) {
+    extend(MissingView, superClass);
+
+    MissingView.prototype.events = {
+      'click .relocate': 'relocate'
+    };
+
+    MissingView.prototype.template = function(item) {
+      return $("#missingViewTemplate").tmpl();
+    };
+
+    function MissingView() {
+      MissingView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+    }
+
+    MissingView.prototype.active = function() {
+      return this.render();
+    };
+
+    MissingView.prototype.render = function(item) {
+      this.log('render');
+      return this.html(this.template());
+    };
+
+    MissingView.prototype.relocate = function(e) {
+      e.preventDefault();
+      return this.navigate('/overview', '');
+    };
+
+    return MissingView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = MissingView;
+  }
+
+}).call(this);
+}, "controllers/modal_2_button_view": function(exports, require, module) {(function() {
+  var $, Modal2ButtonView, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Modal2ButtonView = (function(superClass) {
+    extend(Modal2ButtonView, superClass);
+
+    Modal2ButtonView.prototype.elements = {
+      '.modal-header': 'header',
+      '.modal-body': 'body',
+      '.modal-footer': 'footer'
+    };
+
+    Modal2ButtonView.prototype.events = {
+      'click .btnAlt': 'close',
+      'click .btnOk': 'yes'
+    };
+
+    Modal2ButtonView.prototype.template = function(item) {
+      return $('#modal2ButtonTemplate').tmpl(item);
+    };
+
+    function Modal2ButtonView() {
+      Modal2ButtonView.__super__.constructor.apply(this, arguments);
+      this.el.modal({
+        show: false
+      });
+      this.defaults = {
+        header: 'Default Header Text',
+        body: 'Default Body Text',
+        footer: 'Default Footer Text'
+      };
+    }
+
+    Modal2ButtonView.prototype.render = function() {
+      this.log('render');
+      this.html(this.template(this.options));
+      return this.el;
+    };
+
+    Modal2ButtonView.prototype.show = function(options) {
+      var el;
+      this.options = $.extend(this.defaults, options);
+      return el = this.render().modal('show');
+    };
+
+    Modal2ButtonView.prototype.yes = function(e) {
+      return this.el.modal('hide');
+    };
+
+    Modal2ButtonView.prototype.close = function(e) {
+      return this.el.modal('hide');
+    };
+
+    return Modal2ButtonView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Modal2ButtonView;
+  }
+
+}).call(this);
+}, "controllers/modal_action_view": function(exports, require, module) {(function() {
+  var $, ModalActionView, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  ModalActionView = (function(superClass) {
+    extend(ModalActionView, superClass);
+
+    ModalActionView.prototype.elements = {
+      '.modal-header': 'header',
+      '.modal-body': 'body',
+      '.modal-footer': 'footer'
+    };
+
+    ModalActionView.prototype.events = {
+      'click .btnAlt': 'close',
+      'click .btnOk': 'yes'
+    };
+
+    ModalActionView.prototype.template = function(item) {
+      return $('#modalActionTemplate').tmpl(item);
+    };
+
+    function ModalActionView() {
+      ModalActionView.__super__.constructor.apply(this, arguments);
+      this.el.modal({
+        show: false
+      });
+      this.defaults = {
+        header: 'Default Header Text',
+        body: 'Default Body Text',
+        footer: 'Default Footer Text'
+      };
+      $('.nav-tabs').button();
+    }
+
+    ModalActionView.prototype.render = function() {
+      this.log('render');
+      this.html(this.template(this.options));
+      return this.el;
+    };
+
+    ModalActionView.prototype.show = function(options) {
+      var el;
+      this.options = $.extend(this.defaults, options);
+      return el = this.render().modal('show');
+    };
+
+    ModalActionView.prototype.yes = function(e) {};
+
+    ModalActionView.prototype.close = function(e) {};
+
+    return ModalActionView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ModalActionView;
+  }
+
+}).call(this);
 }, "controllers/modal_simple_view": function(exports, require, module) {(function() {
   var $, ModalSimpleView, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -30318,9 +37498,9 @@ Released under the MIT License
     };
 
     ModalSimpleView.prototype.events = {
-      'click .opt-ShowAllAlbums': 'allAlbums',
+      'click .opt-ShowAllProducts': 'allProducts',
       'click .opt-AddPhotos': 'addPhotos',
-      'click .opt-CreateAlbum': 'createAlbum',
+      'click .opt-CreateProduct': 'createProduct',
       'click .btnClose': 'close',
       'hidden.bs.modal': 'hiddenmodal',
       'show.bs.modal': 'showmodal',
@@ -30370,16 +37550,16 @@ Released under the MIT License
       return this.el.modal('hide');
     };
 
-    ModalSimpleView.prototype.allAlbums = function() {
-      return this.navigate('/gallery', '');
+    ModalSimpleView.prototype.allProducts = function() {
+      return this.navigate('/category', '');
     };
 
     ModalSimpleView.prototype.addPhotos = function(e) {
       return Spine.trigger('photos:add');
     };
 
-    ModalSimpleView.prototype.createAlbum = function() {
-      return Spine.trigger('create:album');
+    ModalSimpleView.prototype.createProduct = function() {
+      return Spine.trigger('create:product');
     };
 
     ModalSimpleView.prototype.hiddenmodal = function() {
@@ -30421,8 +37601,8039 @@ Released under the MIT License
   }
 
 }).call(this);
+}, "controllers/overview_header": function(exports, require, module) {(function() {
+  var $, OverviewHeader, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require('spine');
+
+  $ = Spine.$;
+
+  OverviewHeader = (function(superClass) {
+    extend(OverviewHeader, superClass);
+
+    function OverviewHeader() {
+      OverviewHeader.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+    }
+
+    OverviewHeader.prototype.template = function() {
+      return $('#overviewHeaderTemplate').tmpl();
+    };
+
+    OverviewHeader.prototype.render = function() {
+      return this.html(this.template());
+    };
+
+    OverviewHeader.prototype.active = function() {
+      return this.render();
+    };
+
+    return OverviewHeader;
+
+  })(Spine.Controller);
+
+  module.exports = OverviewHeader;
+
+}).call(this);
+}, "controllers/overview_view": function(exports, require, module) {(function() {
+  var $, Extender, OverviewView, Photo, Recent, Settings, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Recent = require('models/recent');
+
+  Photo = require('models/photo');
+
+  Settings = require('models/settings');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  OverviewView = (function(superClass) {
+    extend(OverviewView, superClass);
+
+    OverviewView.extend(Extender);
+
+    OverviewView.prototype.elements = {
+      '#overview-carousel': 'carousel',
+      '.carousel-inner': 'content',
+      '.recents .carousel-item': 'items',
+      '.recents .item': 'item',
+      '.summary': 'summary'
+    };
+
+    OverviewView.prototype.events = {
+      'click button.close': 'close',
+      'click .item': 'showPhoto',
+      'keyup': 'keyup'
+    };
+
+    OverviewView.prototype.template = function(photos) {
+      return $("#overviewTemplate").tmpl({
+        photos: photos,
+        summary: {
+          categories: Category.all(),
+          products: Product.all(),
+          photos: Photo.all()
+        }
+      });
+    };
+
+    OverviewView.prototype.toolsTemplate = function(items) {
+      return $("#toolsTemplate").tmpl(items);
+    };
+
+    function OverviewView() {
+      this.callback = bind(this.callback, this);
+      OverviewView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.el.data({
+        current: Recent
+      });
+      this.max = 18;
+      this.bind('render:toolbar', this.proxy(this.renderToolbar));
+      Recent.bind('refresh', this.proxy(this.render));
+    }
+
+    OverviewView.prototype.active = function() {
+      return this.loadRecent();
+    };
+
+    OverviewView.prototype.loadRecent = function() {
+      return Recent.loadRecent(this.max, this.proxy(this.parse));
+    };
+
+    OverviewView.prototype.parse = function(json) {
+      var i, item, len, recents;
+      recents = [];
+      for (i = 0, len = json.length; i < len; i++) {
+        item = json[i];
+        recents.push(item['Photo']);
+      }
+      return Recent.refresh(recents, {
+        clear: true
+      });
+    };
+
+    OverviewView.prototype.render = function(tests) {
+      var i, items, len, photo, test;
+      items = [];
+      for (i = 0, len = tests.length; i < len; i++) {
+        test = tests[i];
+        if (photo = Photo.find(test.id)) {
+          items.push(photo);
+        }
+      }
+      this.content.html(this.template(items));
+      this.refreshElements();
+      return this.uri(items);
+    };
+
+    OverviewView.prototype.thumbSize = function(width, height) {
+      if (width == null) {
+        width = 70;
+      }
+      if (height == null) {
+        height = 70;
+      }
+      return {
+        width: width,
+        height: height
+      };
+    };
+
+    OverviewView.prototype.uri = function(items) {
+      var e, error1;
+      try {
+        return Photo.uri(this.thumbSize(), (function(_this) {
+          return function(xhr, records) {
+            return _this.callback(xhr, items);
+          };
+        })(this), items);
+      } catch (error1) {
+        e = error1;
+        this.log(e);
+        alert("New photos found. \n\nRestarting Application!");
+        return User.redirect('director_app');
+      }
+    };
+
+    OverviewView.prototype.callback = function(json, items) {
+      var i, img, item, jsn, len, photo, photoEl, results, searchJSON;
+      this.log('callback');
+      searchJSON = function(id) {
+        var i, itm, len;
+        for (i = 0, len = json.length; i < len; i++) {
+          itm = json[i];
+          if (itm[id]) {
+            return itm[id];
+          }
+        }
+      };
+      results = [];
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        photo = item;
+        jsn = searchJSON(photo.id);
+        photoEl = this.items.children().forItem(photo);
+        img = new Image;
+        img.element = photoEl;
+        if (jsn) {
+          img.src = jsn.src;
+        } else {
+          img.src = '/img/nophoto.png';
+        }
+        results.push(img.onload = this.imageLoad);
+      }
+      return results;
+    };
+
+    OverviewView.prototype.imageLoad = function() {
+      var css;
+      css = 'url(' + this.src + ')';
+      return $('.thumbnail', this.element).css({
+        'backgroundImage': css,
+        'backgroundPosition': 'center, center'
+      });
+    };
+
+    OverviewView.prototype.showPhoto = function(e) {
+      var index;
+      index = this.item.index($(e.currentTarget));
+      this.slideshow.trigger('play', {
+        index: index,
+        startSlideshow: false
+      }, Recent.all());
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    OverviewView.prototype.error = function(xhr, statusText, error) {
+      this.log(xhr);
+      return this.record.trigger('ajaxError', xhr, statusText, error);
+    };
+
+    OverviewView.prototype.close = function(e) {
+      var previousHash;
+      e.preventDefault();
+      e.stopPropagation();
+      if (previousHash = Settings.findUserSettings().previousHash) {
+        return location.hash = previousHash;
+      } else {
+        return this.navigate('/categories/');
+      }
+    };
+
+    OverviewView.prototype.keyup = function(e) {
+      var code, paused;
+      code = e.charCode || e.keyCode;
+      this.log('keyup', code);
+      this.carousel.data('bs.carousel') || this.carousel.carousel({
+        keyboard: true
+      });
+      switch (code) {
+        case 27:
+          return this.close(e);
+        case 32:
+          paused = this.carousel.data('bs.carousel').paused;
+          if (paused) {
+            this.carousel.carousel('next');
+            return this.carousel.carousel('cycle');
+          } else {
+            return this.carousel.carousel('pause');
+          }
+          break;
+        case 39:
+          return this.carousel.carousel('next');
+        case 37:
+          return this.carousel.carousel('prev');
+      }
+    };
+
+    return OverviewView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = OverviewView;
+  }
+
+}).call(this);
+}, "controllers/photo_edit_view": function(exports, require, module) {(function() {
+  var $, Extender, KeyEnhancer, Photo, PhotoEditView, ProductsPhoto, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Photo = require('models/photo');
+
+  KeyEnhancer = require('extensions/key_enhancer');
+
+  Extender = require('extensions/controller_extender');
+
+  ProductsPhoto = require('models/products_photo');
+
+  PhotoEditView = (function(superClass) {
+    extend(PhotoEditView, superClass);
+
+    PhotoEditView.extend(Extender);
+
+    PhotoEditView.prototype.events = {
+      'click': 'click',
+      'keyup': 'saveOnKeyup'
+    };
+
+    PhotoEditView.prototype.template = function(item) {
+      return $('#editPhotoTemplate').tmpl(item);
+    };
+
+    function PhotoEditView() {
+      this.saveOnKeyup = bind(this.saveOnKeyup, this);
+      PhotoEditView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Photo.bind('current', this.proxy(this.change));
+    }
+
+    PhotoEditView.prototype.active = function() {
+      return this.render();
+    };
+
+    PhotoEditView.prototype.change = function(item) {
+      this.current = item;
+      return this.render();
+    };
+
+    PhotoEditView.prototype.render = function() {
+      var info;
+      if (this.current) {
+        this.html(this.template(this.current));
+      } else {
+        info = '';
+        if (!(Product.selectionList().length && !Product.count())) {
+          info += '<label class="invite"><span class="enlightened">No photo selected.</span></label>';
+        }
+        if (!Product.count()) {
+          info += '<label class="invite"><span class="enlightened">You should create an product first to catalogue your photos.</span></label>';
+        }
+        this.html($("#noSelectionTemplate").tmpl({
+          type: info
+        }));
+      }
+      return this.el;
+    };
+
+    PhotoEditView.prototype.save = function(el) {
+      var atts;
+      if (this.current) {
+        atts = (typeof el.serializeForm === "function" ? el.serializeForm() : void 0) || this.el.serializeForm();
+        return this.current.updateChangedAttributes(atts);
+      }
+    };
+
+    PhotoEditView.prototype.saveOnKeyup = function(e) {
+      var code;
+      code = e.charCode || e.keyCode;
+      switch (code) {
+        case 32:
+          e.stopPropagation();
+          break;
+        case 9:
+          e.stopPropagation();
+      }
+      return this.save(this.el);
+    };
+
+    PhotoEditView.prototype.click = function(e) {};
+
+    return PhotoEditView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotoEditView;
+  }
+
+}).call(this);
+}, "controllers/photo_header": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Extender, PhotoHeader, Product, ProductsPhoto, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Product = require('models/product');
+
+  Category = require('models/category');
+
+  ProductsPhoto = require('models/products_photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  Extender = require('extensions/controller_extender');
+
+  PhotoHeader = (function(superClass) {
+    extend(PhotoHeader, superClass);
+
+    PhotoHeader.extend(Extender);
+
+    PhotoHeader.prototype.events = {
+      'click .gal': 'backToCategories',
+      'click .alb': 'backToProducts',
+      'click .pho': 'backToPhotos'
+    };
+
+    PhotoHeader.prototype.template = function(item) {
+      return $("#headerPhotoTemplate").tmpl(item);
+    };
+
+    function PhotoHeader() {
+      PhotoHeader.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Photo.bind('change:current', this.proxy(this.render));
+      Category.bind('change', this.proxy(this.render));
+      Product.bind('change', this.proxy(this.render));
+      Photo.bind('change', this.proxy(this.render));
+    }
+
+    PhotoHeader.prototype.render = function() {
+      if (!this.isActive()) {
+        return;
+      }
+      return this.html(this.template({
+        model: Product,
+        category: Category.record,
+        product: Product.record,
+        photo: Photo.record,
+        modelProduct: Product,
+        modelPhoto: Photo,
+        modelGas: CategoriesProduct,
+        modelAps: ProductsPhoto,
+        count: this.count(),
+        author: User.first().name,
+        zoomed: true
+      }));
+    };
+
+    PhotoHeader.prototype.count = function() {
+      if (Product.record) {
+        return ProductsPhoto.filter(Product.record.id, {
+          key: 'product_id'
+        }).length;
+      } else {
+        return Photo.count();
+      }
+    };
+
+    PhotoHeader.prototype.active = function() {
+      return this.render();
+    };
+
+    PhotoHeader.prototype.backToCategories = function(e) {
+      this.navigate('/categories/');
+      return e.preventDefault();
+    };
+
+    PhotoHeader.prototype.backToProducts = function(e) {
+      var ref;
+      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '');
+      return e.preventDefault();
+    };
+
+    PhotoHeader.prototype.backToPhotos = function(e) {
+      var ref, ref1;
+      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Product.record) != null ? ref1.id : void 0) || '');
+      return e.preventDefault();
+    };
+
+    PhotoHeader.prototype.goUp = function(e) {
+      var ref;
+      this.navigate('/category', Category.record.id || '', ((ref = Product.record) != null ? ref.id : void 0) || '');
+      return e.preventDefault();
+    };
+
+    PhotoHeader.prototype.drop = function(e) {
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    return PhotoHeader;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotoHeader;
+  }
+
+}).call(this);
+}, "controllers/photo_list": function(exports, require, module) {(function() {
+  var $, Extender, PhotoList, Product, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Product = require('models/product');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  PhotoList = (function(superClass) {
+    extend(PhotoList, superClass);
+
+    PhotoList.extend(Extender);
+
+    PhotoList.prototype.events = {
+      'click .rotate-cw': 'rotateCW',
+      'click .rotate-ccw': 'rotateCCW'
+    };
+
+    function PhotoList() {
+      PhotoList.__super__.constructor.apply(this, arguments);
+    }
+
+    PhotoList.prototype.rotateCW = function(e) {
+      var item;
+      item = $(e.currentTarget).item();
+      Spine.trigger('rotate', item, -90);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    PhotoList.prototype.rotateCCW = function(e) {
+      var item;
+      item = $(e.currentTarget).item();
+      Spine.trigger('rotate', item, 90);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    PhotoList.prototype.back = function(e) {
+      var ref, ref1;
+      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Product.record) != null ? ref1.id : void 0) || '');
+      return e.preventDefault();
+    };
+
+    return PhotoList;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotoList;
+  }
+
+}).call(this);
+}, "controllers/photo_view": function(exports, require, module) {(function() {
+  var $, Drag, Extender, Info, PhotoList, PhotoView, Product, ProductsPhoto, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Product = require('models/product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  PhotoList = require('controllers/photo_list');
+
+  Info = require('controllers/info');
+
+  Drag = require('extensions/drag');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  PhotoView = (function(superClass) {
+    extend(PhotoView, superClass);
+
+    PhotoView.extend(Drag);
+
+    PhotoView.extend(Extender);
+
+    PhotoView.prototype.elements = {
+      '.hoverinfo': 'infoEl',
+      '.items': 'itemsEl',
+      '.item': 'item'
+    };
+
+    PhotoView.prototype.events = {
+      'mousemove  .item': 'infoUp',
+      'mouseleave .item': 'infoBye',
+      'dragstart  .item': 'stopInfo',
+      'dragstart .item': 'dragstart',
+      'drop .item': 'drop',
+      'click .dropdown-toggle': 'dropdownToggle',
+      'click .delete': 'deletePhoto',
+      'click .zoom': 'zoom',
+      'click .rotate': 'rotate'
+    };
+
+    PhotoView.prototype.template = function(item) {
+      return $('#photoTemplate').tmpl(item);
+    };
+
+    PhotoView.prototype.infoTemplate = function(item) {
+      return $('#photoInfoTemplate').tmpl(item);
+    };
+
+    function PhotoView() {
+      this.stopInfo = bind(this.stopInfo, this);
+      this.infoBye = bind(this.infoBye, this);
+      this.infoUp = bind(this.infoUp, this);
+      this.callback = bind(this.callback, this);
+      PhotoView.__super__.constructor.apply(this, arguments);
+      this.currentId = 0;
+      this.bind('active', this.proxy(this.active));
+      this.el.data('current', {
+        model: Photo,
+        models: Photo
+      });
+      this.list = new PhotoList({
+        el: this.itemsEl,
+        parent: this
+      });
+      this.list.listener = this.parent.photosView.list;
+      this.type = 'Photo';
+      this.info = new Info({
+        el: this.infoEl,
+        template: this.infoTemplate
+      });
+      this.viewport = this.itemsEl;
+      ProductsPhoto.bind('beforeDestroy', this.proxy(this.back));
+      Photo.bind('beforeDestroy', this.proxy(this.back));
+      Photo.one('refresh', this.proxy(this.refresh));
+      Product.bind('change:collection', this.proxy(this.refresh));
+      Photo.bind('change:current', this.proxy(this.changeNavigation));
+    }
+
+    PhotoView.prototype.change = function(a, b) {
+      var changed;
+      changed = !(this.currentId === b[0]);
+      if (changed) {
+        this.log(b[0]);
+        this.currentId = b[0];
+        return this.render(Photo.find(b));
+      }
+    };
+
+    PhotoView.prototype.changeNavigation = function(rec, changed) {
+      var ref, ref1;
+      if (!this.isActive()) {
+        return;
+      }
+      if (changed) {
+        return this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Product.record) != null ? ref1.id : void 0) || '', rec.id);
+      }
+    };
+
+    PhotoView.prototype.render = function(item) {
+      if (item == null) {
+        item = Photo.record;
+      }
+      if (!this.isActive()) {
+        return;
+      }
+      if (!App.showView.photosView.list.el.children().length) {
+        App.showView.photosView.refresh();
+      }
+      this.itemsEl.html(this.template(item));
+      $('.dropdown-toggle', this.el).dropdown();
+      this.uri(item);
+      return this.el;
+    };
+
+    PhotoView.prototype.active = function() {
+      if (!this.isActive()) {
+        return;
+      }
+      App.showView.trigger('change:toolbarOne', ['Default']);
+      App.showView.trigger('change:toolbarTwo', ['Slideshow']);
+      return this.render();
+    };
+
+    PhotoView.prototype.refresh = function() {
+      return this.render();
+    };
+
+    PhotoView.prototype.params = function() {
+      return {
+        width: 600,
+        height: 451,
+        square: 2,
+        force: false
+      };
+    };
+
+    PhotoView.prototype.uri = function(item, mode) {
+      if (mode == null) {
+        mode = 'html';
+      }
+      this.log('uri');
+      return Photo.uri(this.params(), (function(_this) {
+        return function(xhr, record) {
+          return _this.callback(xhr, item);
+        };
+      })(this), [item]);
+    };
+
+    PhotoView.prototype.callback = function(json, item) {
+      var img, jsn, searchJSON;
+      this.log('callback');
+      img = new Image;
+      img.onload = this.imageLoad;
+      searchJSON = function(id) {
+        var i, itm, len;
+        for (i = 0, len = json.length; i < len; i++) {
+          itm = json[i];
+          if (itm[id]) {
+            return itm[id];
+          }
+        }
+      };
+      jsn = searchJSON(item.id);
+      if (jsn) {
+        img.tmb = $('.thumbnail', this.el);
+        img.container = this.itemsEl.removeClass('in');
+        return img.src = jsn.src;
+      }
+    };
+
+    PhotoView.prototype.imageLoad = function() {
+      var container, h, img, tmb, w;
+      tmb = this.tmb;
+      container = this.container;
+      w = this.width;
+      h = this.height;
+      if (h > w) {
+        this.height = '100%';
+        this.width = 'auto';
+      }
+      img = $(this);
+      tmb.html(img);
+      return container.addClass('in');
+    };
+
+    PhotoView.prototype.dropdownToggle = function(e) {
+      var el;
+      el = $(e.currentTarget);
+      el.dropdown();
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    PhotoView.prototype.deletePhoto = function(e) {
+      var item, ref;
+      item = $(e.currentTarget).item();
+      if ((item != null ? (ref = item.constructor) != null ? ref.className : void 0 : void 0) !== 'Photo') {
+        return;
+      }
+      Spine.trigger('destroy:photo', [item.id], this.proxy(this.back));
+      this.stopInfo(e);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    PhotoView.prototype.rotate = function(e) {
+      return this.photosView.list.rotate(e);
+    };
+
+    PhotoView.prototype.back = function() {
+      if (!this.isActive()) {
+        return;
+      }
+      return this.navigate('/category', Category.record.id, Product.record.id);
+    };
+
+    PhotoView.prototype.zoom = function(e) {
+      return this.parent.slideshowView.trigger('play', {}, [Photo.record]);
+    };
+
+    PhotoView.prototype.infoUp = function(e) {
+      var el;
+      this.info.up(e);
+      el = $('.glyphicon-set', $(e.currentTarget)).addClass('in').removeClass('out');
+      return e.preventDefault();
+    };
+
+    PhotoView.prototype.infoBye = function(e) {
+      var el;
+      this.info.bye();
+      el = $('.glyphicon-set', $(e.currentTarget)).addClass('out').removeClass('in');
+      return e.preventDefault();
+    };
+
+    PhotoView.prototype.stopInfo = function(e) {
+      return this.info.bye();
+    };
+
+    return PhotoView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotoView;
+  }
+
+}).call(this);
+}, "controllers/photos_add_view": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Controller, Drag, Extender, Info, PhotosAddView, PhotosList, Product, ProductsPhoto, Spine, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require('spine');
+
+  $ = Spine.$;
+
+  Controller = Spine.Controller;
+
+  Drag = require('extensions/drag');
+
+  User = require("models/user");
+
+  Product = require('models/product');
+
+  Category = require('models/category');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Info = require('controllers/info');
+
+  PhotosList = require('controllers/photos_list');
+
+  User = require('models/user');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  PhotosAddView = (function(superClass) {
+    extend(PhotosAddView, superClass);
+
+    PhotosAddView.extend(Extender);
+
+    PhotosAddView.prototype.elements = {
+      '.items': '_items'
+    };
+
+    PhotosAddView.prototype.events = {
+      'click .item': 'click',
+      'click .opt-AddExecute:not(.disabled)': 'add',
+      'click .opt-SelectInv:not(.disabled)': 'selectInv',
+      'click .opt-SelectAll:not(.disabled)': 'selectAll',
+      'keyup': 'keyup'
+    };
+
+    PhotosAddView.prototype.template = function(items) {
+      return $('#addTemplate').tmpl({
+        title: 'Select photos',
+        type: 'photos',
+        disabled: true,
+        contains: !!this.items.length,
+        container: Product.record
+      });
+    };
+
+    PhotosAddView.prototype.subTemplate = function(items, options) {
+      return $("#photosTemplate").tmpl(items, options);
+    };
+
+    PhotosAddView.prototype.footerTemplate = function(selection) {
+      return $('#footerTemplate').tmpl({
+        disabled: !selection.length,
+        contains: !!this.items.length
+      });
+    };
+
+    function PhotosAddView() {
+      PhotosAddView.__super__.constructor.apply(this, arguments);
+      this.thumbSize = 100;
+      this.visible = false;
+      this.modal = this.el.modal({
+        show: this.visible,
+        backdrop: true
+      });
+      this.modal.bind('show.bs.modal', this.proxy(this.modalShow));
+      this.modal.bind('shown.bs.modal', this.proxy(this.modalShown));
+      this.modal.bind('hide.bs.modal', this.proxy(this.modalHide));
+      this.list = new PhotosList({
+        template: this.subTemplate,
+        parent: this.parent
+      });
+      Spine.bind('photos:add', this.proxy(this.show));
+    }
+
+    PhotosAddView.prototype.render = function(items) {
+      this.html(this.template(this.items = items));
+      this.itemsEl = $('.items', this.el);
+      this.list.el = this.itemsEl;
+      return this.list.render(items, 'add');
+    };
+
+    PhotosAddView.prototype.renderFooter = function(list) {
+      this.footer = $('.modal-footer', this.el);
+      return this.footer.html(this.footerTemplate(list));
+    };
+
+    PhotosAddView.prototype.show = function() {
+      var list, product, records;
+      product = Product.record;
+      list = ProductsPhoto.photos(product.id).toID();
+      records = Photo.filter(list, {
+        func: 'idExcludeSelect'
+      });
+      this.render(records, product);
+      return this.el.modal('show');
+    };
+
+    PhotosAddView.prototype.hide = function() {
+      return this.el.modal('hide');
+    };
+
+    PhotosAddView.prototype.modalShow = function(e) {
+      Spine.trigger('slider:change', this.thumbSize);
+      this.preservedList = Product.selectionList().slice(0);
+      return this.selectionList = [];
+    };
+
+    PhotosAddView.prototype.modalShown = function(e) {
+      return this.log('shown');
+    };
+
+    PhotosAddView.prototype.modalHide = function(e) {
+      return Spine.trigger('slider:change', App.showView.sOutValue);
+    };
+
+    PhotosAddView.prototype.click = function(e) {
+      var item;
+      e.stopPropagation();
+      e.preventDefault();
+      item = $(e.currentTarget).item();
+      return this.select(item.id, this.isCtrlClick(e));
+    };
+
+    PhotosAddView.prototype.select = function(items, exclusive) {
+      var i, item, len;
+      if (items == null) {
+        items = [];
+      }
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      if (exclusive) {
+        this.selectionList = [];
+      }
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        this.selectionList.addRemoveSelection(item);
+      }
+      this.renderFooter(this.selectionList);
+      return this.list.exposeSelection(this.selectionList);
+    };
+
+    PhotosAddView.prototype.selectAll = function(e) {
+      var list;
+      list = this.select_();
+      this.select(list, true);
+      return e.stopPropagation();
+    };
+
+    PhotosAddView.prototype.selectInv = function(e) {
+      var list;
+      list = this.select_();
+      this.select(list);
+      return e.stopPropagation();
+    };
+
+    PhotosAddView.prototype.select_ = function() {
+      var items, list, root;
+      root = this.itemsEl;
+      items = root.children('.item');
+      if (!(root && items.length)) {
+        return;
+      }
+      list = [];
+      items.each(function(index, el) {
+        var item;
+        item = $(this).item();
+        return list.unshift(item.id);
+      });
+      return list;
+    };
+
+    PhotosAddView.prototype.add = function() {
+      Photo.trigger('create:join', {
+        product: Product.record,
+        photos: this.selectionList
+      });
+      return this.hide();
+    };
+
+    PhotosAddView.prototype.keyup = function(e) {
+      var code;
+      code = e.charCode || e.keyCode;
+      this.log('PhotosAddView:keyupCode: ' + code);
+      switch (code) {
+        case 65:
+          if (e.metaKey || e.ctrlKey) {
+            this.selectAll(e);
+            e.stopPropagation();
+            return e.preventDefault();
+          }
+          break;
+        case 73:
+          if (e.metaKey || e.ctrlKey) {
+            this.selectInv(e);
+            e.preventDefault();
+            return e.stopPropagation();
+          }
+      }
+    };
+
+    return PhotosAddView;
+
+  })(Spine.Controller);
+
+  module.exports = PhotosAddView;
+
+}).call(this);
+}, "controllers/photos_header": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Extender, Photo, PhotosHeader, Product, ProductsPhoto, Spine, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  User = require('models/user');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Extender = require('extensions/controller_extender');
+
+  PhotosHeader = (function(superClass) {
+    extend(PhotosHeader, superClass);
+
+    PhotosHeader.extend(Extender);
+
+    PhotosHeader.prototype.events = {
+      'click .gal': 'backToCategories',
+      'click .alb': 'backToProducts'
+    };
+
+    PhotosHeader.prototype.template = function(item) {
+      return $("#headerPhotosTemplate").tmpl(item);
+    };
+
+    function PhotosHeader() {
+      PhotosHeader.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Category.bind('create update destroy', this.proxy(this.render));
+      Product.bind('change', this.proxy(this.render));
+      Product.bind('change:selection', this.proxy(this.render));
+      Photo.bind('change', this.proxy(this.render));
+      Photo.bind('refresh', this.proxy(this.render));
+      Category.bind('change:current', this.proxy(this.render));
+      Product.bind('change:current', this.proxy(this.render));
+      Product.bind('change:collection', this.proxy(this.render));
+    }
+
+    PhotosHeader.prototype.backToCategories = function(e) {
+      this.log('backToCategories');
+      this.navigate('/categories/');
+      return e.preventDefault();
+    };
+
+    PhotosHeader.prototype.backToProducts = function(e) {
+      var ref;
+      this.log('backToProducts');
+      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '');
+      return e.preventDefault();
+    };
+
+    PhotosHeader.prototype.goUp = function(e) {
+      this.navigate('/category', Category.record.id || '');
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    PhotosHeader.prototype.change = function() {
+      return this.render();
+    };
+
+    PhotosHeader.prototype.render = function() {
+      if (!this.isActive()) {
+        return;
+      }
+      return this.html(this.template({
+        model: Product,
+        category: Category.record,
+        product: Product.record,
+        photo: Photo.record,
+        modelProduct: Product,
+        modelPhoto: Photo,
+        modelGas: CategoriesProduct,
+        modelAps: ProductsPhoto,
+        count: this.count(),
+        author: User.first().name
+      }));
+    };
+
+    PhotosHeader.prototype.count = function() {
+      if (Product.record) {
+        return ProductsPhoto.filter(Product.record.id, {
+          key: 'product_id'
+        }).length;
+      } else {
+        return Photo.filter();
+      }
+    };
+
+    PhotosHeader.prototype.active = function() {
+      return this.render();
+    };
+
+    return PhotosHeader;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotosHeader;
+  }
+
+}).call(this);
+}, "controllers/photos_list": function(exports, require, module) {(function() {
+  var $, Drag, Extender, Photo, PhotosList, Product, ProductsPhoto, Spine, ToolbarView,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Photo = require('models/photo');
+
+  Product = require('models/product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  ToolbarView = require("controllers/toolbar_view");
+
+  Extender = require('extensions/controller_extender');
+
+  Drag = require('extensions/drag');
+
+  require('extensions/tmpl');
+
+  PhotosList = (function(superClass) {
+    extend(PhotosList, superClass);
+
+    PhotosList.extend(Drag);
+
+    PhotosList.extend(Extender);
+
+    PhotosList.prototype.elements = {
+      '.thumbnail': 'thumbEl',
+      '.toolbar': 'toolbarEl'
+    };
+
+    PhotosList.prototype.events = {
+      'click .opt-AddPhotos': 'addPhotos',
+      'click .dropdown-toggle': 'dropdownToggle',
+      'click .delete': 'deletePhoto',
+      'click .zoom': 'zoom',
+      'click .rotate-cw': 'rotateCW',
+      'click .rotate-ccw': 'rotateCCW',
+      'click .original': 'original'
+    };
+
+    PhotosList.prototype.selectFirst = true;
+
+    function PhotosList() {
+      this.callback = bind(this.callback, this);
+      PhotosList.__super__.constructor.apply(this, arguments);
+      this.toolbar = new ToolbarView({
+        el: this.toolbarEl
+      });
+      this.add = this.html;
+      Spine.bind('slider:start', this.proxy(this.sliderStart));
+      Spine.bind('slider:change', this.proxy(this.size));
+      Spine.bind('rotate', this.proxy(this.rotate));
+      Photo.bind('update', this.proxy(this.update));
+      Product.bind('ajaxError', Product.errorHandler);
+      Product.bind('change:selection', this.proxy(this.exposeSelection));
+      ProductsPhoto.bind('change', this.proxy(this.changeRelated));
+    }
+
+    PhotosList.prototype.changeRelated = function(item, mode) {
+      var el, photo;
+      if (!Product.record) {
+        return;
+      }
+      if (Product.record.id !== item['product_id']) {
+        return;
+      }
+      if (!(photo = Photo.find(item['photo_id']))) {
+        return;
+      }
+      this.log('changeRelated');
+      switch (mode) {
+        case 'create':
+          this.wipe();
+          this.append(this.template(photo));
+          this.callDeferred([photo]);
+          this.size(App.showView.sOutValue);
+          this.el.sortable('destroy').sortable();
+          $('.dropdown-toggle', this.el).dropdown();
+          break;
+        case 'destroy':
+          el = this.findModelElement(photo);
+          el.detach();
+          break;
+        case 'update':
+          this.el.sortable('destroy').sortable();
+      }
+      this.refreshElements();
+      return this.el;
+    };
+
+    PhotosList.prototype.render = function(items, mode) {
+      if (items == null) {
+        items = [];
+      }
+      this.log('PhotosList::render ' + mode);
+      if (items.length) {
+        this.wipe();
+        this[mode](this.template(items));
+        this.callDeferred(items);
+        this.size(App.showView.sOutValue);
+        this.exposeSelection();
+        $('.dropdown-toggle', this.el).dropdown();
+      } else if (mode === 'add') {
+        this.html('<h3 class="invite"><span class="enlightened">Nothing to add.  &nbsp;</span></h3>');
+        this.append('<h3><label class="invite label label-default"><span class="enlightened">Either no more photos can be added or there is no product selected.</span></label></h3>');
+      } else {
+        if (Photo.count()) {
+          this.html('<label class="invite"> <span class="enlightened">No photos here. &nbsp; <p>Simply drop your photos to your browser window</p> <p>Note: You can also drag existing photos to a sidebars folder</p> </span> <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>Upload</span></button> <button class="opt-AddPhotos dark large"><span style="font-size: .6em; position: absolute; top: -18px;">import from</span><i class="glyphicon glyphicon-book"></i><span>Library</span></button> </label>');
+        } else {
+          this.html('<label class="invite"><span class="enlightened">No photos here. &nbsp; <p>Simply drop your photos to your browser window</p> <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>Upload</span></button> </label>');
+        }
+      }
+      return this.el;
+    };
+
+    PhotosList.prototype.renderAll = function() {
+      var items;
+      this.log('renderAll');
+      items = Photo.all();
+      if (items.length) {
+        this.html(this.template(items));
+        this.activateRecord();
+        this.callDeferred(items);
+        this.size(App.showView.sOutValue);
+      }
+      return this.el;
+    };
+
+    PhotosList.prototype.wipe = function() {
+      var first;
+      if (Product.record) {
+        first = Product.record.count() === 1;
+      } else {
+        first = Photo.count() === 1;
+      }
+      if (first) {
+        this.el.empty();
+      }
+      return this.el;
+    };
+
+    PhotosList.prototype.update = function(item) {
+      var active, css, e, elements, error, helper, hot, photoEl;
+      this.log('update');
+      helper = {
+        refresh: (function(_this) {
+          return function() {
+            var el, tb;
+            el = _this.children().forItem(item, true);
+            tb = $('.thumbnail', el);
+            return {
+              el: el,
+              tb: tb
+            };
+          };
+        })(this)
+      };
+      elements = helper.refresh();
+      css = elements.tb.attr('style');
+      active = elements.el.hasClass('active');
+      hot = elements.el.hasClass('hot');
+      photoEl = elements.el.tmplItem();
+      photoEl.data = item;
+      try {
+        photoEl.update();
+      } catch (error) {
+        e = error;
+      }
+      elements = helper.refresh();
+      elements.tb.attr('style', css).addClass('in');
+      elements.el.toggleClass('active', active);
+      elements.el.toggleClass('hot', hot);
+      this.el.sortable('destroy').sortable('photos');
+      return this.refreshElements();
+    };
+
+    PhotosList.prototype.thumbSize = function(width, height) {
+      return {
+        width: width || App.showView.thumbSize,
+        height: height || App.showView.thumbSize
+      };
+    };
+
+    PhotosList.prototype.uri = function(items, mode) {
+      this.log('uri');
+      return Photo.uri(this.thumbSize(), (function(_this) {
+        return function(xhr, record) {
+          return _this.callback(xhr, items);
+        };
+      })(this), items);
+    };
+
+    PhotosList.prototype.callDeferred = function(items) {
+      this.log('callDeferred');
+      return $.when(this.uriDeferred(items)).done((function(_this) {
+        return function(xhr, rec) {
+          return _this.callback(xhr, rec);
+        };
+      })(this));
+    };
+
+    PhotosList.prototype.uriDeferred = function(items) {
+      var deferred;
+      this.log('uriDeferred');
+      deferred = $.Deferred();
+      Photo.uri(this.thumbSize(), (function(_this) {
+        return function(xhr, record) {
+          return deferred.resolve(xhr, items);
+        };
+      })(this), items);
+      return deferred.promise();
+    };
+
+    PhotosList.prototype.callback = function(json, items) {
+      var i, jsn, key, len, res, result, results, ret, val;
+      result = (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = json.length; i < len; i++) {
+          jsn = json[i];
+          ret = (function() {
+            var results1;
+            results1 = [];
+            for (key in jsn) {
+              val = jsn[key];
+              results1.push({
+                src: val.src,
+                id: key
+              });
+            }
+            return results1;
+          })();
+          results.push(ret[0]);
+        }
+        return results;
+      })();
+      results = [];
+      for (i = 0, len = result.length; i < len; i++) {
+        res = result[i];
+        results.push(this.snap(res));
+      }
+      return results;
+    };
+
+    PhotosList.prototype.snap = function(res) {
+      var el, img, thumb;
+      el = $('#' + res.id, this.el);
+      thumb = $('.thumbnail', el);
+      img = this.createImage();
+      img.element = el;
+      img.thumb = thumb;
+      img["this"] = this;
+      img.res = res;
+      img.onload = this.onLoad;
+      img.onerror = this.onError;
+      return img.src = res.src;
+    };
+
+    PhotosList.prototype.onLoad = function() {
+      var css;
+      css = 'url(' + this.src + ')';
+      this.thumb.css({
+        'backgroundImage': css,
+        'backgroundSize': '100% auto'
+      });
+      return this.thumb.addClass('in');
+    };
+
+    PhotosList.prototype.onError = function(e) {
+      return this["this"].snap(this.res);
+    };
+
+    PhotosList.prototype.photos = function(mode) {
+      var product;
+      if (mode === 'add' || !Product.record) {
+        return Photo.all();
+      } else if (product = Product.find(mode)) {
+        return product.photos();
+      } else if (Product.record) {
+        return Product.record.photos();
+      }
+    };
+
+    PhotosList.prototype.modalParams = function() {
+      return {
+        width: 600,
+        height: 451,
+        force: false
+      };
+    };
+
+    PhotosList.prototype.loadModal = function(items, mode) {
+      if (mode == null) {
+        mode = 'html';
+      }
+      return Photo.uri(this.modalParams(), (function(_this) {
+        return function(xhr, record) {
+          return _this.callbackModal(xhr, items);
+        };
+      })(this), this.photos());
+    };
+
+    PhotosList.prototype.callbackModal = function(json, items) {
+      var a, el, i, item, jsn, len, results, searchJSON;
+      this.log('callbackModal');
+      searchJSON = function(id) {
+        var i, itm, len;
+        for (i = 0, len = json.length; i < len; i++) {
+          itm = json[i];
+          if (itm[id]) {
+            return itm[id];
+          }
+        }
+      };
+      results = [];
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        jsn = searchJSON(item.id);
+        if (jsn) {
+          el = this.children().forItem(item);
+          a = $('<a></a>').attr({
+            'data-href': jsn.src,
+            'title': item.title || item.src,
+            'data-iso': item.iso || '',
+            'data-captured': item.captured || '',
+            'data-photo': item.photo || '',
+            'data-model': item.model || '',
+            'rel': 'category'
+          });
+          results.push($('.play', el).append(a));
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    };
+
+    PhotosList.prototype.exposeSelection = function(selection) {
+      var first, i, id, len;
+      if (selection == null) {
+        selection = Product.selectionList();
+      }
+      this.deselect();
+      for (i = 0, len = selection.length; i < len; i++) {
+        id = selection[i];
+        $('#' + id, this.el).addClass("active");
+      }
+      if (first = selection.first()) {
+        $('#' + first, this.el).addClass("hot");
+      }
+      return this.parent.focus();
+    };
+
+    PhotosList.prototype.remove = function(ap) {
+      var item;
+      item = Photo.find(ap.photo_id);
+      if (item) {
+        return this.findModelElement(item).detach();
+      }
+    };
+
+    PhotosList.prototype.dropdownToggle = function(e) {
+      var el;
+      el = $(e.currentTarget);
+      el.dropdown();
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    PhotosList.prototype.original = function(e) {
+      var id;
+      id = $(e.currentTarget).item().id;
+      Product.selection[0].global.update([id]);
+      this.navigate('/category', '/');
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    PhotosList.prototype.deletePhoto = function(e) {
+      var item, ref;
+      this.log('deletePhoto');
+      item = $(e.currentTarget).item();
+      if ((item != null ? (ref = item.constructor) != null ? ref.className : void 0 : void 0) !== 'Photo') {
+        return;
+      }
+      Spine.trigger('destroy:photo', [item.id]);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    PhotosList.prototype.zoom = function(e) {
+      var index, item, options, ref, ref1, ref2;
+      if ((ref = Product.record) != null ? ref.nope : void 0) {
+        index = this.thumbEl.index($(e.target).parents('li').find('.thumbnail'));
+        options = {
+          index: index,
+          startSlideshow: false
+        };
+        this.slideshow.trigger('play', options);
+      } else {
+        item = $(e.currentTarget).item();
+        this.navigate('/category', ((ref1 = Category.record) != null ? ref1.id : void 0) || '', ((ref2 = Product.record) != null ? ref2.id : void 0) || '', item.id);
+      }
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    PhotosList.prototype.back = function(e) {
+      this.navigate('/category', Category.record.id || '');
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    PhotosList.prototype.initSelectable = function() {
+      var options;
+      options = {
+        helper: 'clone'
+      };
+      return this.el.selectable();
+    };
+
+    PhotosList.prototype.addPhotos = function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      return Spine.trigger('photos:add');
+    };
+
+    PhotosList.prototype.sliderStart = function() {
+      return this.refreshElements();
+    };
+
+    PhotosList.prototype.size = function(val, bg) {
+      if (bg == null) {
+        bg = 'none';
+      }
+      return this.thumbEl.css({
+        'height': val + 'px',
+        'width': val + 'px',
+        'backgroundSize': bg
+      });
+    };
+
+    PhotosList.prototype.rotateCW = function(e) {
+      var item;
+      item = $(e.currentTarget).item();
+      this.log(item);
+      Spine.trigger('rotate', item, -90);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    PhotosList.prototype.rotateCCW = function(e) {
+      var item;
+      item = $(e.currentTarget).item();
+      this.log(item);
+      Spine.trigger('rotate', item, 90);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    PhotosList.prototype.rotate = function(item, val) {
+      var callback, i, ids, items, len, options;
+      if (val == null) {
+        val = 90;
+      }
+      if (item) {
+        items = [item];
+      } else {
+        ids = Product.selectionList().slice(0);
+        items = ids.length ? Photo.toRecords(ids.add(item != null ? item.id : void 0)) : void 0;
+      }
+      options = {
+        val: val
+      };
+      callback = (function(_this) {
+        return function(items) {
+          var alb, albs, photo, products, res;
+          products = [];
+          res = (function() {
+            var i, j, len, len1, results;
+            results = [];
+            for (i = 0, len = items.length; i < len; i++) {
+              item = items[i];
+              photo = Photo.find(item['Photo']['id']);
+              photo.clearCache();
+              albs = photo.products();
+              for (j = 0, len1 = albs.length; j < len1; j++) {
+                alb = albs[j];
+                products.add(alb.id);
+              }
+              results.push(photo);
+            }
+            return results;
+          })();
+          _this.callDeferred(res);
+          products = Product.toRecords(products);
+          return Product.trigger('change:collection', products);
+        };
+      })(this);
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        $('#' + item.id + '>.thumbnail', this.el).removeClass('in');
+      }
+      Photo.dev('rotate', options, callback, items);
+      return false;
+    };
+
+    return PhotosList;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotosList;
+  }
+
+}).call(this);
+}, "controllers/photos_view": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Controller, Drag, Extender, Info, Photo, PhotosList, PhotosView, Product, ProductsPhoto, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Controller = Spine.Controller;
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Category = require('models/category');
+
+  CategoriesProduct = require('models/categories_product');
+
+  Info = require('controllers/info');
+
+  PhotosList = require('controllers/photos_list');
+
+  Drag = require('extensions/drag');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  PhotosView = (function(superClass) {
+    extend(PhotosView, superClass);
+
+    PhotosView.extend(Drag);
+
+    PhotosView.extend(Extender);
+
+    PhotosView.prototype.elements = {
+      '.hoverinfo': 'infoEl',
+      '.items': 'itemsEl'
+    };
+
+    PhotosView.prototype.events = {
+      'click .item': 'click',
+      'sortupdate .items': 'sortupdate',
+      'dragstart .item': 'dragstart',
+      'dragstart': 'stopInfo',
+      'dragover .item': 'dragover',
+      'mousemove .item': 'infoUp',
+      'mouseleave  .item': 'infoBye'
+    };
+
+    PhotosView.prototype.template = function(items) {
+      return $('#photosTemplate').tmpl(items);
+    };
+
+    PhotosView.prototype.preloaderTemplate = function() {
+      return $('#preloaderTemplate').tmpl();
+    };
+
+    PhotosView.prototype.headerTemplate = function(items) {
+      return $("#headerPhotosTemplate").tmpl(items);
+    };
+
+    PhotosView.prototype.infoTemplate = function(item) {
+      return $('#photoInfoTemplate').tmpl(item);
+    };
+
+    function PhotosView() {
+      this.stopInfo = bind(this.stopInfo, this);
+      PhotosView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.log(this.el.data());
+      this.el.data('current', {
+        model: Product,
+        models: Photo
+      });
+      this.log(this.el.data());
+      this.type = 'Photo';
+      this.info = new Info({
+        el: this.infoEl,
+        template: this.infoTemplate
+      });
+      this.list = new PhotosList({
+        el: this.itemsEl,
+        template: this.template,
+        parent: this,
+        slideshow: this.slideshow
+      });
+      this.header.template = this.headerTemplate;
+      this.viewport = this.list.el;
+      this.bind('drag:help', this.proxy(this.dragHelp));
+      this.bind('drag:start', this.proxy(this.dragStart));
+      this.bind('drag:drop', this.proxy(this.dragComplete));
+      ProductsPhoto.bind('destroy', this.proxy(this.destroyProductsPhoto));
+      ProductsPhoto.bind('beforeDestroy', this.proxy(this.beforeDestroyProductsPhoto));
+      CategoriesProduct.bind('destroy', this.proxy(this.backToProductView));
+      Photo.bind('refresh:one', this.proxy(this.refreshOne));
+      Photo.bind('created', this.proxy(this.add));
+      Photo.bind('destroy', this.proxy(this.destroy));
+      Photo.bind('beforeDestroy', this.proxy(this.beforeDestroyPhoto));
+      Photo.bind('create:join', this.proxy(this.createJoin));
+      Photo.bind('destroy:join', this.proxy(this.destroyJoin));
+      Photo.bind('ajaxError', Photo.errorHandler);
+      Spine.bind('destroy:photo', this.proxy(this.destroyPhoto));
+      Spine.bind('loading:done', this.proxy(this.updateBuffer));
+    }
+
+    PhotosView.prototype.refreshOne = function() {
+      return Photo.one('refresh', this.proxy(this.refresh));
+    };
+
+    PhotosView.prototype.updateBuffer = function(product) {
+      var filterOptions, items;
+      if (product == null) {
+        product = Product.record;
+      }
+      filterOptions = {
+        model: 'Product',
+        key: 'product_id',
+        sorted: 'sortByOrder'
+      };
+      if (product) {
+        items = Photo.filterRelated(product.id, filterOptions);
+      } else {
+        items = Photo.filter();
+      }
+      return this.buffer = items;
+    };
+
+    PhotosView.prototype.refresh = function() {
+      this.updateBuffer();
+      return this.render(this.buffer, 'html', true);
+    };
+
+    PhotosView.prototype.render = function(items, mode, force) {
+      if (mode == null) {
+        mode = 'html';
+      }
+      if (!(this.isActive() || force)) {
+        return;
+      }
+      this.list.render(items || this.updateBuffer(), mode);
+      if (Product.record) {
+        this.list.sortable('photo');
+      }
+      delete this.buffer;
+      return this.el;
+    };
+
+    PhotosView.prototype.active = function(params) {
+      if (!this.isActive()) {
+        return;
+      }
+      if (params) {
+        this.options = $().unparam(params);
+        if (this.options.slideshow) {
+          this.parent.slideshowView.play();
+        }
+      }
+      App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider]);
+      App.showView.trigger('change:toolbarTwo', ['Slideshow']);
+      this.refresh();
+      return this.parent.scrollTo(this.el.data('current').models.record);
+    };
+
+    PhotosView.prototype.activateRecord = function(ids) {
+      if (!ids) {
+        ids = [];
+      }
+      if (!Array.isArray(ids)) {
+        ids = [ids];
+      }
+      return Photo.current(ids[0]);
+    };
+
+    PhotosView.prototype.activateRecord_ = function(records) {
+      var i, id, len, list, photo;
+      if (!records) {
+        records = Product.selectionList();
+      }
+      if (!Array.isArray(records)) {
+        records = [records];
+      }
+      list = [];
+      for (i = 0, len = records.length; i < len; i++) {
+        id = records[i];
+        if (photo = Photo.find(id)) {
+          list.push(photo.id);
+        }
+      }
+      id = list[0];
+      Product.updateSelection(list);
+      return Photo.current(id);
+    };
+
+    PhotosView.prototype.click = function(e) {
+      var item;
+      e.preventDefault();
+      e.stopPropagation();
+      App.showView.trigger('change:toolbarOne');
+      item = $(e.currentTarget).item();
+      return this.select(e, item.id);
+    };
+
+    PhotosView.prototype.select = function(e, items) {
+      var i, id, len, ref, selection, type;
+      if (items == null) {
+        items = [];
+      }
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      type = e.type;
+      switch (type) {
+        case 'keyup':
+          selection = items;
+          break;
+        case 'click':
+          if (this.isCtrlClick(e)) {
+            Product.emptySelection();
+          }
+          selection = Product.selectionList().slice(0);
+          if (!items.length) {
+            items = selection.slice(0);
+          }
+          for (i = 0, len = items.length; i < len; i++) {
+            id = items[i];
+            selection.addRemoveSelection(id);
+          }
+      }
+      return Product.updateSelection(selection, (ref = Product.record) != null ? ref.id : void 0);
+    };
+
+    PhotosView.prototype.clearPhotoCache = function() {
+      return Photo.clearCache();
+    };
+
+    PhotosView.prototype.beforeDestroyPhoto = function(photo) {
+      var i, len, product, products, results;
+      Product.removeFromSelection(null, photo.id);
+      products = ProductsPhoto.products(photo.id);
+      results = [];
+      for (i = 0, len = products.length; i < len; i++) {
+        product = products[i];
+        product.removeFromSelection(photo.id);
+        photo.removeSelectionID();
+        results.push(this.destroyJoin({
+          photos: photo.id,
+          product: product
+        }));
+      }
+      return results;
+    };
+
+    PhotosView.prototype.beforeDestroyProductsPhoto = function(ap) {
+      var product;
+      product = Product.find(ap.product_id);
+      return product.removeFromSelection(ap.photo_id);
+    };
+
+    PhotosView.prototype.destroy = function(item) {
+      var el;
+      el = this.list.findModelElement(item);
+      el.detach();
+      if (!Photo.count()) {
+        return this.render();
+      }
+    };
+
+    PhotosView.prototype.destroyProductsPhoto = function(ap) {
+      var photos;
+      photos = ProductsPhoto.photos(ap.product_id);
+      if (!photos.length) {
+        return this.render(null, 'html');
+      }
+    };
+
+    PhotosView.prototype.destroyPhoto = function(ids, callback) {
+      var el, i, id, item, j, len, len1, photo, photos, product;
+      this.log('destroyPhoto');
+      this.stopInfo();
+      photos = ids || Product.selectionList().slice(0);
+      if (!Photo.isArray(photos)) {
+        photos = [photos];
+      }
+      for (i = 0, len = photos.length; i < len; i++) {
+        id = photos[i];
+        if (item = Photo.find(id)) {
+          el = this.list.findModelElement(item);
+          el.removeClass('in');
+        }
+      }
+      if (product = Product.record) {
+        this.destroyJoin({
+          photos: photos,
+          product: product
+        });
+      } else {
+        for (j = 0, len1 = photos.length; j < len1; j++) {
+          id = photos[j];
+          if (photo = Photo.find(id)) {
+            photo.destroy();
+          }
+        }
+      }
+      if (typeof callback === 'function') {
+        return callback.call();
+      }
+    };
+
+    PhotosView.prototype.save = function(item) {};
+
+    PhotosView.prototype.addProductsPhoto = function(ap) {
+      var el, photo;
+      if (photo = Photo.find(ap.photo_id)) {
+        el = this.list.findModelElement(photo);
+      }
+      if (el.length) {
+        return;
+      }
+      return this.add(photo);
+    };
+
+    PhotosView.prototype.add = function(photos) {
+      if (!Photo.isArray(photos)) {
+        photos = [photos];
+      }
+      Product.updateSelection(photos.toID());
+      this.render(photos, 'append');
+      return this.list.el.sortable('destroy').sortable('photos');
+    };
+
+    PhotosView.prototype.createJoin = function(options, cb) {
+      Photo.createJoin(options.photos, options.product, cb);
+      Photo.trigger('activate', options.photos.last());
+      return options.product.updateSelection(options.photos);
+    };
+
+    PhotosView.prototype.destroyJoin = function(options, callback) {
+      var photos, product;
+      this.log('destroyJoin');
+      product = options.product;
+      photos = options.photos;
+      if (!Photo.isArray(photos)) {
+        photos = [photos];
+      }
+      photos = photos.toID();
+      if (!product) {
+        return;
+      }
+      Photo.destroyJoin(photos, product, callback);
+      return product.updateSelection();
+    };
+
+    PhotosView.prototype.sortupdate = function() {
+      var cb;
+      this.log('sortupdate');
+      cb = function() {};
+      this.list.children().each(function(index) {
+        var ap, item;
+        item = $(this).item();
+        if (item && Product.record) {
+          ap = ProductsPhoto.filter(item.id, {
+            func: 'selectPhoto'
+          })[0];
+          if (ap && parseInt(ap.order) !== index) {
+            ap.order = index;
+            ap.save({
+              ajax: false
+            });
+          }
+          return Product.record.invalid = true;
+        }
+      });
+      return Product.record.save({
+        done: cb
+      });
+    };
+
+    PhotosView.prototype.backToProductView = function(ga) {
+      var category;
+      if (!this.isActive()) {
+        return;
+      }
+      if (category = Category.find(ga.category_id)) {
+        return this.navigate('/category', category.id);
+      }
+    };
+
+    PhotosView.prototype.infoUp = function(e) {
+      var el;
+      this.info.up(e);
+      return el = $('.glyphicon-set', $(e.currentTarget)).addClass('in').removeClass('out');
+    };
+
+    PhotosView.prototype.infoBye = function(e) {
+      var el;
+      this.info.bye(e);
+      return el = $('.glyphicon-set', $(e.currentTarget)).addClass('out').removeClass('in');
+    };
+
+    PhotosView.prototype.stopInfo = function(e) {
+      return this.info.bye(e);
+    };
+
+    PhotosView.prototype.dragComplete = function() {
+      return this.list.exposeSelection();
+    };
+
+    return PhotosView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotosView;
+  }
+
+}).call(this);
+}, "controllers/product_edit_view": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Extender, KeyEnhancer, ProductEditView, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  KeyEnhancer = require('extensions/key_enhancer');
+
+  Extender = require('extensions/controller_extender');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductEditView = (function(superClass) {
+    extend(ProductEditView, superClass);
+
+    ProductEditView.extend(Extender);
+
+    ProductEditView.prototype.events = {
+      'keyup': 'saveOnKeyup'
+    };
+
+    ProductEditView.prototype.template = function(item) {
+      return $('#editProductTemplate').tmpl(item);
+    };
+
+    function ProductEditView() {
+      this.saveOnKeyup = bind(this.saveOnKeyup, this);
+      ProductEditView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Product.bind('current', this.proxy(this.change));
+    }
+
+    ProductEditView.prototype.active = function() {
+      return this.render();
+    };
+
+    ProductEditView.prototype.change = function(item) {
+      this.current = item;
+      return this.render();
+    };
+
+    ProductEditView.prototype.render = function() {
+      if (this.current) {
+        this.html(this.template(this.current));
+      } else {
+        this.html($("#noSelectionTemplate").tmpl({
+          type: '<label class="invite"><span class="enlightened">Select or create an product</span></label>'
+        }));
+      }
+      return this.el;
+    };
+
+    ProductEditView.prototype.save = function(el) {
+      var atts;
+      this.log('save');
+      if (this.current) {
+        atts = (typeof el.serializeForm === "function" ? el.serializeForm() : void 0) || this.el.serializeForm();
+        return this.current.updateChangedAttributes(atts);
+      }
+    };
+
+    ProductEditView.prototype.saveOnKeyup = function(e) {
+      var code;
+      code = e.charCode || e.keyCode;
+      switch (code) {
+        case 32:
+          e.stopPropagation();
+          break;
+        case 9:
+          e.stopPropagation();
+      }
+      return this.save(this.el);
+    };
+
+    ProductEditView.prototype.click = function(e) {};
+
+    return ProductEditView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ProductEditView;
+  }
+
+}).call(this);
+}, "controllers/products_add_view": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Controller, Drag, Extender, Info, Product, ProductsAddView, ProductsList, ProductsPhoto, Spine, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require('spine');
+
+  $ = Spine.$;
+
+  Controller = Spine.Controller;
+
+  Drag = require('extensions/drag');
+
+  User = require("models/user");
+
+  Product = require('models/product');
+
+  Category = require('models/category');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Info = require('controllers/info');
+
+  ProductsList = require('controllers/products_list');
+
+  User = require('models/user');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  ProductsAddView = (function(superClass) {
+    extend(ProductsAddView, superClass);
+
+    ProductsAddView.extend(Extender);
+
+    ProductsAddView.prototype.events = {
+      'click .item': 'click',
+      'click .opt-AddExecute:not(.disabled)': 'add',
+      'click .opt-SelectInv:not(.disabled)': 'selectInv',
+      'click .opt-SelectAll:not(.disabled)': 'selectAll',
+      'keyup': 'keyup'
+    };
+
+    ProductsAddView.prototype.template = function(items) {
+      return $('#addTemplate').tmpl({
+        title: 'Select products',
+        type: 'products',
+        disabled: true,
+        contains: !!items.length,
+        container: Category.record
+      });
+    };
+
+    ProductsAddView.prototype.subTemplate = function(items, options) {
+      return $("#productsTemplate").tmpl(items, options);
+    };
+
+    ProductsAddView.prototype.footerTemplate = function(selection) {
+      return $('#footerTemplate').tmpl({
+        disabled: !selection.length,
+        contains: !!this.items.length
+      });
+    };
+
+    function ProductsAddView() {
+      ProductsAddView.__super__.constructor.apply(this, arguments);
+      this.visible = false;
+      this.modal = this.el.modal({
+        show: this.visible,
+        backdrop: true
+      });
+      this.list = new ProductsList({
+        template: this.subTemplate,
+        parent: this.parent,
+        modal: true
+      });
+      this.modal.bind('show.bs.modal', this.proxy(this.modalShow));
+      this.modal.bind('hide.bs.modal', this.proxy(this.modalHide));
+      Spine.bind('products:add', this.proxy(this.show));
+    }
+
+    ProductsAddView.prototype.render = function(items) {
+      this.html(this.template(this.items = items));
+      this.itemsEl = $('.items', this.el);
+      this.list.el = this.itemsEl;
+      return this.list.render(items, 'add');
+    };
+
+    ProductsAddView.prototype.renderFooter = function(selection) {
+      this.footer = $('.modal-footer', this.el);
+      return this.footer.html(this.footerTemplate(selection));
+    };
+
+    ProductsAddView.prototype.show = function() {
+      var list, records;
+      list = CategoriesProduct.products(Category.record.id).toID();
+      records = Product.filter(list, {
+        func: 'idExcludeSelect'
+      });
+      this.render(records);
+      return this.el.modal('show');
+    };
+
+    ProductsAddView.prototype.hide = function() {
+      return this.el.modal('hide');
+    };
+
+    ProductsAddView.prototype.modalShow = function(e) {
+      this.preservedList = Category.selectionList().slice(0);
+      return this.selectionList = [];
+    };
+
+    ProductsAddView.prototype.modalHide = function(e) {};
+
+    ProductsAddView.prototype.click = function(e) {
+      var item;
+      e.stopPropagation();
+      e.preventDefault();
+      item = $(e.currentTarget).item();
+      return this.select(item.id, this.isCtrlClick(e));
+    };
+
+    ProductsAddView.prototype.select = function(items, exclusive) {
+      var i, item, len;
+      if (items == null) {
+        items = [];
+      }
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      if (exclusive) {
+        this.selectionList = [];
+      }
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        this.selectionList.addRemoveSelection(item);
+      }
+      this.renderFooter(this.selectionList);
+      return this.list.exposeSelection(this.selectionList);
+    };
+
+    ProductsAddView.prototype.selectAll = function(e) {
+      var list;
+      list = this.select_();
+      this.select(list, true);
+      return e.preventDefault();
+    };
+
+    ProductsAddView.prototype.selectInv = function(e) {
+      var list;
+      list = this.select_();
+      this.select(list);
+      return e.stopPropagation();
+    };
+
+    ProductsAddView.prototype.select_ = function() {
+      var items, list, root;
+      list = [];
+      root = this.itemsEl;
+      items = $('.item', root);
+      if (!(root && items.length)) {
+        return list;
+      }
+      items.each(function(index, el) {
+        var item;
+        item = $(this).item();
+        return list.unshift(item.id);
+      });
+      return list;
+    };
+
+    ProductsAddView.prototype.add = function() {
+      Product.trigger('create:join', this.selectionList, Category.record);
+      return this.hide();
+    };
+
+    ProductsAddView.prototype.keyup = function(e) {
+      var code;
+      code = e.charCode || e.keyCode;
+      this.log('PhotosAddView:keyupCode: ' + code);
+      switch (code) {
+        case 65:
+          if (e.metaKey || e.ctrlKey) {
+            this.selectAll(e);
+            e.stopPropagation();
+            return e.preventDefault();
+          }
+          break;
+        case 73:
+          if (e.metaKey || e.ctrlKey) {
+            this.selectInv(e);
+            e.preventDefault();
+            return e.stopPropagation();
+          }
+      }
+    };
+
+    return ProductsAddView;
+
+  })(Spine.Controller);
+
+  module.exports = ProductsAddView;
+
+}).call(this);
+}, "controllers/products_header": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Extender, Photo, Product, ProductsHeader, ProductsPhoto, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Extender = require('extensions/controller_extender');
+
+  ProductsHeader = (function(superClass) {
+    extend(ProductsHeader, superClass);
+
+    ProductsHeader.extend(Extender);
+
+    ProductsHeader.prototype.events = {
+      'click .gal': 'backToCategories'
+    };
+
+    function ProductsHeader() {
+      ProductsHeader.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Category.bind('change', this.proxy(this.render));
+      Category.bind('change:selection', this.proxy(this.render));
+      Product.bind('refresh', this.proxy(this.render));
+      Product.bind('change', this.proxy(this.render));
+      Product.bind('change:collection', this.proxy(this.render));
+    }
+
+    ProductsHeader.prototype.render = function() {
+      if (!this.isActive()) {
+        return;
+      }
+      this.html(this.template({
+        model: Category,
+        modelProduct: Product,
+        modelPhoto: Photo,
+        modelGas: CategoriesProduct,
+        modelAps: ProductsPhoto,
+        category: Category.record,
+        product: Product.record,
+        photo: Photo.record,
+        author: User.first().name
+      }));
+      return this.refreshElements();
+    };
+
+    ProductsHeader.prototype.count = function() {
+      var filterOptions;
+      if (Category.record) {
+        filterOptions = {
+          model: 'Category',
+          key: 'category_id'
+        };
+        return Product.filterRelated(Category.record.id, filterOptions).length;
+      } else {
+        return Product.filter();
+      }
+    };
+
+    ProductsHeader.prototype.backToCategories = function(e) {
+      this.navigate('/categories', '');
+      return e.preventDefault();
+    };
+
+    ProductsHeader.prototype.goUp = function(e) {
+      this.navigate('/categories', '');
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    ProductsHeader.prototype.active = function() {
+      return this.render();
+    };
+
+    return ProductsHeader;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ProductsHeader;
+  }
+
+}).call(this);
+}, "controllers/products_list": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Drag, Extender, Model, Photo, Product, ProductsList, ProductsPhoto, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  ProductsPhoto = require('models/products_photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  Extender = require('extensions/controller_extender');
+
+  Drag = require('extensions/drag');
+
+  require('extensions/tmpl');
+
+  ProductsList = (function(superClass) {
+    extend(ProductsList, superClass);
+
+    ProductsList.extend(Drag);
+
+    ProductsList.extend(Extender);
+
+    ProductsList.prototype.events = {
+      'click .dropdown-toggle': 'dropdownToggle',
+      'click .opt-AddProducts': 'addProducts',
+      'click .opt-delete': 'deleteProduct',
+      'click .opt-ignore': 'ignoreProduct',
+      'click .opt-original': 'original',
+      'click .zoom': 'zoom'
+    };
+
+    function ProductsList() {
+      ProductsList.__super__.constructor.apply(this, arguments);
+      this.widows = [];
+      this.add = this.html;
+      Product.bind('update', this.proxy(this.updateTemplate));
+      Product.bind("ajaxError", Product.errorHandler);
+      CategoriesProduct.bind('change', this.proxy(this.changeRelated));
+      Category.bind('change:selection', this.proxy(this.exposeSelection));
+    }
+
+    ProductsList.prototype.changedProducts = function(category) {};
+
+    ProductsList.prototype.changeRelated = function(item, mode) {
+      var el, product;
+      if (!(this.parent && this.parent.isActive())) {
+        return;
+      }
+      if (!Category.record) {
+        return;
+      }
+      if (Category.record.id !== item['category_id']) {
+        return;
+      }
+      if (!(product = Product.find(item['product_id']))) {
+        return;
+      }
+      this.log('changeRelated');
+      switch (mode) {
+        case 'create':
+          this.wipe();
+          this.append(this.template(this.mixinAttributes([product], ['ignore'])));
+          this.renderBackgrounds([product]);
+          this.el.sortable('destroy').sortable();
+          $('.dropdown-toggle', this.el).dropdown();
+          break;
+        case 'destroy':
+          el = this.findModelElement(product);
+          el.detach();
+          break;
+        case 'update':
+          this.updateTemplate(product);
+          this.el.sortable('destroy').sortable();
+      }
+      this.refreshElements();
+      return this.el;
+    };
+
+    ProductsList.prototype.mixinAttributes = function(items, atts) {
+      var att, ga, i, item, j, len, len1;
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id);
+        for (j = 0, len1 = atts.length; j < len1; j++) {
+          att = atts[j];
+          item[att] = ga[att];
+        }
+      }
+      return items;
+    };
+
+    ProductsList.prototype.render = function(items, mode) {
+      if (items == null) {
+        items = [];
+      }
+      this.log('render', mode);
+      if (items.length) {
+        this.wipe();
+        if (!this.modal) {
+          items = this.mixinAttributes(items, ['ignore']);
+        }
+        this[mode](this.template(items));
+        this.renderBackgrounds(items);
+        this.exposeSelection();
+        $('.dropdown-toggle', this.el).dropdown();
+      } else if (mode === 'add') {
+        this.html('<label class="invite"><span class="enlightened">Nothing to add.  &nbsp;</span></label>');
+        this.append('<h3><label class="invite label label-default"><span class="enlightened">Either no more products can be added or there is no category selected.</span></label></h3>');
+      } else {
+        if (Category.record) {
+          if (Product.count()) {
+            this.html('<label class="invite"><span class="enlightened">This Category has no products. &nbsp;</span><br><br> <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>New Product</span></button> <button class="opt-AddProducts dark large"><span style="font-size: .6em; position: absolute; top: -18px;">import from</span><i class="glyphicon glyphicon-book"></i><span>Library</span></button> </label>');
+          } else {
+            this.html('<label class="invite"><span class="enlightened">This Category has no products.<br>It\'s time to create one.</span><br><br> <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>New Product</span></button> </label>');
+          }
+        } else {
+          this.html('<label class="invite"><span class="enlightened">You don\'t have any products yet</span><br><br> <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>New Product</span></button> </label>');
+        }
+      }
+      return this.el;
+    };
+
+    ProductsList.prototype.updateTemplate = function(product) {
+      var active, contentEl, hot, ignore, productEl, ref, style, tmplItem;
+      productEl = this.children().forItem(product);
+      contentEl = $('.thumbnail', productEl);
+      active = productEl.hasClass('active');
+      hot = productEl.hasClass('hot');
+      if (Category.record) {
+        ignore = (ref = CategoriesProduct.categoryProductExists(product.id, Category.record.id)) != null ? ref.ignore : void 0;
+      } else {
+        ignore = false;
+      }
+      style = contentEl.attr('style');
+      tmplItem = contentEl.tmplItem();
+      if (!tmplItem) {
+        alert('no tmpl item');
+      }
+      if (tmplItem) {
+        tmplItem.tmpl = $("#productsTemplate").template();
+        if (typeof tmplItem.update === "function") {
+          tmplItem.update();
+        }
+        productEl = this.children().forItem(product);
+        contentEl = $('.thumbnail', productEl);
+        productEl.toggleClass('active', active);
+        productEl.toggleClass('hot', hot);
+        productEl.toggleClass('ignore', ignore);
+        contentEl.attr('style', style);
+      }
+      return this.el.sortable();
+    };
+
+    ProductsList.prototype.exposeSelection = function(selection, id) {
+      var first, i, len, ref, sel;
+      if (selection == null) {
+        selection = Category.selectionList();
+      }
+      if (id == null) {
+        id = (ref = Category.record) != null ? ref.id : void 0;
+      }
+      if (Category.record) {
+        if (Category.record.id !== id) {
+          return;
+        }
+      }
+      this.deselect();
+      for (i = 0, len = selection.length; i < len; i++) {
+        sel = selection[i];
+        $('#' + sel, this.el).addClass("active");
+      }
+      if (first = selection.first()) {
+        return $('#' + first, this.el).addClass("hot");
+      }
+    };
+
+    ProductsList.prototype.widowedProductsPhoto = function(ap) {
+      var i, item, len, list;
+      this.log('widowedProductsPhoto');
+      list = ap.products();
+      for (i = 0, len = list.length; i < len; i++) {
+        item = list[i];
+        this.widows.push(item);
+      }
+      return this.widows;
+    };
+
+    ProductsList.prototype.renderBackgrounds = function(products) {
+      var i, len, product, results;
+      this.log('renderBackgrounds');
+      if (!Product.isArray(products)) {
+        products = [products];
+      }
+      this.removeWidows(this.widows);
+      results = [];
+      for (i = 0, len = products.length; i < len; i++) {
+        product = products[i];
+        results.push($.when(this.processProductDeferred(product)).done((function(_this) {
+          return function(xhr, rec) {
+            return _this.callback(xhr, rec);
+          };
+        })(this)));
+      }
+      return results;
+    };
+
+    ProductsList.prototype.removeWidows = function(widows) {
+      var i, len, widow;
+      if (widows == null) {
+        widows = [];
+      }
+      Model.Uri.Ajax.cache = false;
+      for (i = 0, len = widows.length; i < len; i++) {
+        widow = widows[i];
+        $.when(this.processProductDeferred(widow)).done((function(_this) {
+          return function(xhr, rec) {
+            return _this.callback(xhr, rec);
+          };
+        })(this));
+      }
+      this.widows = [];
+      return Model.Uri.Ajax.cache = true;
+    };
+
+    ProductsList.prototype.processProduct = function(product) {
+      var data;
+      data = product.photos(4);
+      return Photo.uri({
+        width: 50,
+        height: 50
+      }, (function(_this) {
+        return function(xhr, rec) {
+          return _this.callback(xhr, product);
+        };
+      })(this), data);
+    };
+
+    ProductsList.prototype.processProductDeferred = function(product) {
+      var data, deferred;
+      this.log('processProductDeferred');
+      deferred = $.Deferred();
+      data = product.photos(4);
+      Photo.uri({
+        width: 50,
+        height: 50
+      }, function(xhr, rec) {
+        return deferred.resolve(xhr, product);
+      }, data);
+      return deferred.promise();
+    };
+
+    ProductsList.prototype.callback = function(json, product) {
+      var css, el, i, jsn, key, len, res, ret, thumb, url, val;
+      el = $('#' + product.id, this.el);
+      thumb = $('.thumbnail', el);
+      res = (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = json.length; i < len; i++) {
+          jsn = json[i];
+          ret = (function() {
+            var results1;
+            results1 = [];
+            for (key in jsn) {
+              val = jsn[key];
+              results1.push(val.src);
+            }
+            return results1;
+          })();
+          results.push(ret[0]);
+        }
+        return results;
+      })();
+      css = [];
+      for (i = 0, len = res.length; i < len; i++) {
+        url = res[i];
+        css.push('url(' + url + ')');
+        this.snap(url, thumb, css);
+      }
+      if (!css.length) {
+        return thumb.css('backgroundImage', 'url(/img/drag_info.png)');
+      }
+    };
+
+    ProductsList.prototype.snap = function(src, el, css) {
+      var img;
+      img = this.createImage();
+      img.element = el;
+      img["this"] = this;
+      img.css = css;
+      img.onload = this.onLoad;
+      img.onerror = this.onError;
+      return img.src = src;
+    };
+
+    ProductsList.prototype.onLoad = function() {
+      return this.element.css('backgroundImage', this.css);
+    };
+
+    ProductsList.prototype.onError = function() {
+      return this["this"].snap(this.src, this.element, this.css);
+    };
+
+    ProductsList.prototype.original = function(e) {
+      var id;
+      id = $(e.currentTarget).item().id;
+      Category.selection[0].global.update([id]);
+      this.navigate('/category', '');
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    ProductsList.prototype.zoom = function(e) {
+      var item, ref;
+      item = $(e.currentTarget).item();
+      this.parent.stopInfo();
+      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', item.id);
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    ProductsList.prototype.back = function(e) {
+      this.navigate('/categories', '');
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    ProductsList.prototype.dropdownToggle = function(e) {
+      var el;
+      el = $(e.currentTarget);
+      el.dropdown();
+      return e.preventDefault();
+    };
+
+    ProductsList.prototype.ignoreProduct = function(e) {
+      var ga, item, ref;
+      e.preventDefault();
+      item = $(e.currentTarget).item();
+      if ((item != null ? (ref = item.constructor) != null ? ref.className : void 0 : void 0) !== 'Product') {
+        return;
+      }
+      if (ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id)) {
+        return CategoriesProduct.trigger('ignore', ga, !ga.ignore);
+      }
+    };
+
+    ProductsList.prototype.deleteProduct = function(e) {
+      var item, ref;
+      this.log('deleteProduct');
+      item = $(e.currentTarget).item();
+      if ((item != null ? (ref = item.constructor) != null ? ref.className : void 0 : void 0) !== 'Product') {
+        return;
+      }
+      Spine.trigger('destroy:product', [item.id]);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    ProductsList.prototype.addProducts = function(e) {
+      this.log('add');
+      return Spine.trigger('products:add');
+    };
+
+    ProductsList.prototype.wipe = function() {
+      var first;
+      if (Category.record) {
+        first = Category.record.count() === 1;
+      } else {
+        first = Product.count() === 1;
+      }
+      if (first) {
+        this.el.empty();
+      }
+      return this.el;
+    };
+
+    return ProductsList;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ProductsList;
+  }
+
+}).call(this);
+}, "controllers/products_view": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Controller, Drag, Extender, Info, Product, ProductsList, ProductsPhoto, ProductsView, Spine, User,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Controller = Spine.Controller;
+
+  Drag = require('extensions/drag');
+
+  User = require("models/user");
+
+  Product = require('models/product');
+
+  Category = require('models/category');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Info = require('controllers/info');
+
+  ProductsList = require('controllers/products_list');
+
+  Extender = require('extensions/controller_extender');
+
+  User = require('models/user');
+
+  require('extensions/tmpl');
+
+  ProductsView = (function(superClass) {
+    extend(ProductsView, superClass);
+
+    ProductsView.extend(Drag);
+
+    ProductsView.extend(Extender);
+
+    ProductsView.prototype.elements = {
+      '.hoverinfo': 'infoEl',
+      '.header .hoverinfo': 'headerEl',
+      '.items': 'itemsEl'
+    };
+
+    ProductsView.prototype.events = {
+      'click      .item': 'click',
+      'dragstart .item': 'dragstart',
+      'dragstart': 'stopInfo',
+      'drop .item': 'drop',
+      'dragover   .item': 'dragover',
+      'sortupdate .items': 'sortupdate',
+      'mousemove .item': 'infoUp',
+      'mouseleave .item': 'infoBye'
+    };
+
+    ProductsView.prototype.productsTemplate = function(items, options) {
+      return $("#productsTemplate").tmpl(items, options);
+    };
+
+    ProductsView.prototype.headerTemplate = function(items) {
+      return $("#headerProductTemplate").tmpl(items);
+    };
+
+    ProductsView.prototype.infoTemplate = function(item) {
+      return $('#productInfoTemplate').tmpl(item);
+    };
+
+    function ProductsView() {
+      this.stopInfo = bind(this.stopInfo, this);
+      this.infoBye = bind(this.infoBye, this);
+      this.infoUp = bind(this.infoUp, this);
+      ProductsView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.el.data('current', {
+        model: Category,
+        models: Product
+      });
+      this.type = 'Product';
+      this.info = new Info({
+        el: this.infoEl,
+        template: this.infoTemplate
+      });
+      this.list = new ProductsList({
+        el: this.itemsEl,
+        template: this.productsTemplate,
+        parent: this
+      });
+      this.header.template = this.headerTemplate;
+      this.viewport = this.list.el;
+      CategoriesProduct.bind('beforeDestroy', this.proxy(this.beforeDestroyCategoriesProduct));
+      CategoriesProduct.bind('destroy', this.proxy(this.destroyCategoriesProduct));
+      CategoriesProduct.bind('ignore', this.proxy(this.ignoreProduct));
+      Product.bind('refresh:one', this.proxy(this.refreshOne));
+      Product.bind('ajaxError', Product.errorHandler);
+      Product.bind('create', this.proxy(this.create));
+      Product.bind('beforeDestroy', this.proxy(this.beforeDestroyProduct));
+      Product.bind('destroy', this.proxy(this.destroy));
+      Product.bind('create:join', this.proxy(this.createJoin));
+      Product.bind('destroy:join', this.proxy(this.destroyJoin));
+      Product.bind('change:collection', this.proxy(this.renderBackgrounds));
+      Spine.bind('reorder', this.proxy(this.reorder));
+      Spine.bind('create:product', this.proxy(this.createProduct));
+      Spine.bind('loading:start', this.proxy(this.loadingStart));
+      Spine.bind('loading:done', this.proxy(this.loadingDone));
+      Spine.bind('loading:fail', this.proxy(this.loadingFail));
+      Spine.bind('destroy:product', this.proxy(this.destroyProduct));
+      Spine.bind('select:product', this.proxy(this.select));
+      this.bind('drag:start', this.proxy(this.dragStart));
+      this.bind('drag:help', this.proxy(this.dragHelp));
+      this.bind('drag:drop', this.proxy(this.dragDrop));
+      $(this.views).queue('fx');
+    }
+
+    ProductsView.prototype.deactivate = function() {
+      this.el.removeClass('active');
+      return this;
+    };
+
+    ProductsView.prototype.refreshOne = function() {
+      return Product.one('refresh', this.proxy(this.refresh));
+    };
+
+    ProductsView.prototype.refresh = function() {
+      this.updateBuffer();
+      return this.render(this.buffer, 'html');
+    };
+
+    ProductsView.prototype.updateBuffer = function(category) {
+      var filterOptions, items;
+      if (category == null) {
+        category = Category.record;
+      }
+      filterOptions = {
+        model: 'Category',
+        key: 'category_id',
+        sorted: 'sortByOrder'
+      };
+      if (category) {
+        items = Product.filterRelated(category.id, filterOptions);
+      } else {
+        items = Product.filter();
+      }
+      return this.buffer = items;
+    };
+
+    ProductsView.prototype.render = function(items, mode) {
+      if (mode == null) {
+        mode = 'html';
+      }
+      if (!this.isActive()) {
+        return;
+      }
+      this.log(items);
+      this.list.render(items || this.updateBuffer(), mode);
+      if (Category.record) {
+        this.list.sortable('product');
+      }
+      delete this.buffer;
+      return this.el;
+    };
+
+    ProductsView.prototype.active = function() {
+      var alb, j, len, products;
+      if (!this.isActive()) {
+        return;
+      }
+      App.showView.trigger('change:toolbarOne', ['Default', 'Help']);
+      App.showView.trigger('change:toolbarTwo', ['Slideshow']);
+      products = CategoriesProduct.products(Category.record.id);
+      this.log(products);
+      for (j = 0, len = products.length; j < len; j++) {
+        alb = products[j];
+        if (alb.invalid) {
+          alb.invalid = false;
+          alb.save({
+            ajax: false
+          });
+        }
+      }
+      this.refresh();
+      return this.parent.scrollTo(this.el.data('current').models.record);
+    };
+
+    ProductsView.prototype.collectionChanged = function() {
+      var ref;
+      if (!this.isActive()) {
+        return this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '');
+      }
+    };
+
+    ProductsView.prototype.activateRecord = function(ids) {
+      if (!ids) {
+        ids = [];
+      }
+      if (!Array.isArray(ids)) {
+        ids = [ids];
+      }
+      return Product.current(ids[0]);
+    };
+
+    ProductsView.prototype.activateRecord_ = function(ids) {
+      var id, j, len, list, noid, product;
+      if (!ids) {
+        ids = Category.selectionList();
+        Product.current();
+        noid = true;
+      }
+      if (!Array.isArray(ids)) {
+        ids = [ids];
+      }
+      list = [];
+      for (j = 0, len = ids.length; j < len; j++) {
+        id = ids[j];
+        if (product = Product.find(id)) {
+          list.push(product.id);
+        }
+      }
+      id = list[0];
+      if (id) {
+        if (!noid) {
+          Product.current(id);
+        }
+        App.sidebar.list.expand(Category.record, true);
+      }
+      Category.updateSelection(list);
+      if (Product.record) {
+        return Photo.trigger('activate', Product.selectionList());
+      } else {
+        return Photo.trigger('activate');
+      }
+    };
+
+    ProductsView.prototype.newAttributes = function() {
+      if (User.first()) {
+        return {
+          title: this.productName(),
+          author: User.first().name,
+          invalid: false,
+          user_id: User.first().id,
+          order: Product.count()
+        };
+      } else {
+        return User.ping();
+      }
+    };
+
+    ProductsView.prototype.productName = function(proposal) {
+      if (proposal == null) {
+        proposal = 'Product ' + (function() {
+          var i, index, s;
+          s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          index = (i = Product.count() + 1) < s.length ? i : i % s.length;
+          return s.split('')[index];
+        })();
+      }
+      Product.each((function(_this) {
+        return function(record) {
+          if (record.title === proposal) {
+            return proposal = _this.productName(proposal + proposal.split(' ')[1][0]);
+          }
+        };
+      })(this));
+      return proposal;
+    };
+
+    ProductsView.prototype.createProduct = function(target, options) {
+      var cb, product;
+      if (target == null) {
+        target = Category.record;
+      }
+      if (options == null) {
+        options = {};
+      }
+      cb = function(record, ido) {
+        if (target) {
+          record.createJoin(target);
+          target.updateSelection(record.id);
+        } else {
+          Category.updateSelection(null, record.id);
+        }
+        record.updateSelectionID();
+        $().extend(options, {
+          product: record
+        });
+        if (options.photos) {
+          Photo.trigger('create:join', options, false);
+          if (options.deleteFromOrigin) {
+            Photo.trigger('destroy:join', options.photos, options.deleteFromOrigin);
+          }
+        }
+        if (options.deferred) {
+          options.deferred.notify(record);
+        }
+        if (options.cb) {
+          options.cb.apply(this, [record, options.deferred]);
+        }
+        Product.trigger('activate', product.id);
+        return this.navigate('/category', (target != null ? target.id : void 0) || '');
+      };
+      product = new Product(this.newAttributes());
+      product.one('ajaxSuccess', this.proxy(cb));
+      product.save();
+      return product;
+    };
+
+    ProductsView.prototype.beforeDestroyCategoriesProduct = function(ga) {
+      var category;
+      category = Category.find(ga.category_id);
+      if (category) {
+        return category.removeFromSelection(ga.product_id);
+      }
+    };
+
+    ProductsView.prototype.destroyCategoriesProduct = function(ga) {
+      var products;
+      products = CategoriesProduct.products(ga.category_id);
+      if (!products.length) {
+        return this.render(null, 'html');
+      }
+    };
+
+    ProductsView.prototype.ignoreProduct = function(ga, ignore) {
+      this.log('ignoreProduct');
+      ga.ignore = ignore;
+      return ga.save();
+    };
+
+    ProductsView.prototype.destroyProduct = function(ids) {
+      var category, el, func, id, item, j, k, len, len1, product, products, results;
+      this.log('destroyProduct');
+      this.stopInfo();
+      func = (function(_this) {
+        return function(el) {
+          return $(el).detach();
+        };
+      })(this);
+      products = ids || Category.selectionList().slice(0);
+      if (!Product.isArray(products)) {
+        products = [products];
+      }
+      for (j = 0, len = products.length; j < len; j++) {
+        id = products[j];
+        if (item = Product.find(id)) {
+          el = this.list.findModelElement(item);
+          el.removeClass('in');
+        }
+      }
+      if (category = Category.record) {
+        return this.destroyJoin(products, Category.record);
+      } else {
+        results = [];
+        for (k = 0, len1 = products.length; k < len1; k++) {
+          id = products[k];
+          if (product = Product.find(id)) {
+            results.push(product.destroy());
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      }
+    };
+
+    ProductsView.prototype.create = function(product) {
+      if (!Category.record) {
+        return this.render([product], 'append');
+      }
+    };
+
+    ProductsView.prototype.beforeDestroyProduct = function(product) {
+      var categories, category, j, len, photos, results;
+      Category.removeFromSelection(null, product.id);
+      categories = CategoriesProduct.categories(product.id);
+      results = [];
+      for (j = 0, len = categories.length; j < len; j++) {
+        category = categories[j];
+        category.removeFromSelection(product.id);
+        product.removeSelectionID();
+        this.log(product);
+        photos = ProductsPhoto.photos(product.id).toID();
+        Photo.trigger('destroy:join', photos, product);
+        results.push(this.destroyJoin(product.id, category));
+      }
+      return results;
+    };
+
+    ProductsView.prototype.destroy = function(item) {
+      var el;
+      item.removeSelectionID();
+      el = this.list.findModelElement(item);
+      el.detach();
+      if (!Product.count()) {
+        return this.render();
+      }
+    };
+
+    ProductsView.prototype.createJoin = function(products, category, callback) {
+      Product.createJoin(products, category, callback);
+      return category.updateSelection(products);
+    };
+
+    ProductsView.prototype.destroyJoin = function(products, category) {
+      var callback;
+      this.log('destroyJoin');
+      if (!(category && category.constructor.className === 'Category')) {
+        return;
+      }
+      callback = function() {};
+      if (!Product.isArray(products)) {
+        products = [products];
+      }
+      products = products.toID();
+      return Product.destroyJoin(products, category, callback);
+    };
+
+    ProductsView.prototype.loadingStart = function(product) {
+      var el;
+      if (!this.isActive()) {
+        return;
+      }
+      if (!product) {
+        return;
+      }
+      el = this.itemsEl.children().forItem(product);
+      $('.glyphicon-set', el).addClass('in');
+      return $('.downloading', el).removeClass('hide').addClass('in');
+    };
+
+    ProductsView.prototype.loadingDone = function(product) {
+      var el;
+      if (!this.isActive()) {
+        return;
+      }
+      if (!product) {
+        return;
+      }
+      el = this.itemsEl.children().forItem(product);
+      $('.glyphicon-set', el).removeClass('in');
+      return $('.downloading', el).removeClass('in').addClass('hide');
+    };
+
+    ProductsView.prototype.loadingFail = function(product, error) {
+      var el, err;
+      if (!this.isActive()) {
+        return;
+      }
+      err = error.errorThrown;
+      el = this.itemsEl.children().forItem(product);
+      $('.glyphicon-set', el).removeClass('in');
+      return $('.downloading', el).addClass('error').tooltip('destroy').tooltip({
+        title: err
+      }).tooltip('show');
+    };
+
+    ProductsView.prototype.renderBackgrounds = function(products) {
+      if (!this.isActive()) {
+        return;
+      }
+      return this.list.renderBackgrounds(products);
+    };
+
+    ProductsView.prototype.sortupdate = function(e, o) {
+      var cb;
+      if (!Category.record) {
+        return;
+      }
+      cb = function() {
+        return Category.trigger('change:collection', Category.record);
+      };
+      this.list.children().each(function(index) {
+        var ga, item;
+        item = $(this).item();
+        if (item) {
+          ga = CategoriesProduct.filter(item.id, {
+            func: 'selectProduct'
+          })[0];
+          if (ga && parseInt(ga.order) !== index) {
+            ga.order = index;
+            return ga.save({
+              ajax: false
+            });
+          }
+        }
+      });
+      return Category.record.save({
+        done: cb
+      });
+    };
+
+    ProductsView.prototype.reorder = function(category) {
+      if (category.id === Category.record.id) {
+        return this.render();
+      }
+    };
+
+    ProductsView.prototype.click = function(e, excl) {
+      var item;
+      e.preventDefault();
+      e.stopPropagation();
+      item = $(e.currentTarget).item();
+      return this.select(e, item.id);
+    };
+
+    ProductsView.prototype.select = function(e, items) {
+      var id, j, len, ref, ref1, selection, type;
+      if (items == null) {
+        items = [];
+      }
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      type = e.type;
+      switch (type) {
+        case 'keyup':
+          selection = items;
+          break;
+        case 'click':
+          if (this.isCtrlClick(e)) {
+            Category.emptySelection();
+          }
+          selection = Category.selectionList().slice(0);
+          if (!items.length) {
+            items = selection.slice(0);
+          }
+          for (j = 0, len = items.length; j < len; j++) {
+            id = items[j];
+            selection.addRemoveSelection(id);
+          }
+      }
+      Category.updateSelection(selection, (ref = Category.record) != null ? ref.id : void 0);
+      return Product.updateSelection(Product.selectionList(), (ref1 = Product.record) != null ? ref1.id : void 0);
+    };
+
+    ProductsView.prototype.infoUp = function(e) {
+      var el;
+      this.info.up(e);
+      el = $(e.currentTarget);
+      return $('.glyphicon-set.fade', el).addClass('in').removeClass('out');
+    };
+
+    ProductsView.prototype.infoBye = function(e) {
+      var el, set;
+      this.info.bye(e);
+      el = $(e.currentTarget);
+      return set = $('.glyphicon-set.fade', el).addClass('out').removeClass('in');
+    };
+
+    ProductsView.prototype.stopInfo = function(e) {
+      return this.info.bye(e);
+    };
+
+    ProductsView.prototype.dropComplete = function(e) {
+      return this.log('dropComplete');
+    };
+
+    return ProductsView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ProductsView;
+  }
+
+}).call(this);
+}, "controllers/refresh_view": function(exports, require, module) {(function() {
+  var $, Category, Photo, Product, RefreshView, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  RefreshView = (function(superClass) {
+    extend(RefreshView, superClass);
+
+    RefreshView.prototype.elements = {
+      'button': 'logoutEl'
+    };
+
+    RefreshView.prototype.events = {
+      'click .opt-Refresh': 'refresh'
+    };
+
+    RefreshView.prototype.template = function(icon) {
+      if (icon == null) {
+        icon = 'repeat';
+      }
+      return $('#refreshTemplate').tmpl({
+        icon: icon
+      });
+    };
+
+    function RefreshView() {
+      RefreshView.__super__.constructor.apply(this, arguments);
+      Spine.bind('refresh:all', this.proxy(this.refresh));
+    }
+
+    RefreshView.prototype.refresh = function() {
+      this.render('cloud-download');
+      Category.trigger('refresh:one');
+      Product.trigger('refresh:one');
+      Photo.trigger('refresh:one');
+      return this.fetchAll();
+    };
+
+    RefreshView.prototype.fetchAll = function() {
+      Photo.fetch(null, {
+        clear: true
+      });
+      Product.fetch(null, {
+        clear: true
+      });
+      return Category.fetch(null, {
+        clear: true
+      });
+    };
+
+    RefreshView.prototype.render = function(icon) {
+      return this.html(this.template(icon));
+    };
+
+    return RefreshView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = RefreshView;
+  }
+
+}).call(this);
+}, "controllers/show_view": function(exports, require, module) {(function() {
+  var $, CategoriesHeader, CategoriesProduct, CategoriesView, Category, Clipboard, Controller, Drag, Extender, ModalSimpleView, Model, OverviewHeader, OverviewView, Photo, PhotosAddView, PhotosHeader, PhotosView, Product, ProductsAddView, ProductsHeader, ProductsPhoto, ProductsView, Root, Settings, ShowView, SlideshowHeader, SlideshowView, Spine, ToolbarView, WaitView,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    slice = [].slice,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Controller = Spine.Controller;
+
+  Root = require('models/root');
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  ProductsPhoto = require('models/products_photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  Clipboard = require("models/clipboard");
+
+  Settings = require("models/settings");
+
+  ToolbarView = require("controllers/toolbar_view");
+
+  WaitView = require("controllers/wait_view");
+
+  ProductsView = require("controllers/products_view");
+
+  PhotosHeader = require('controllers/photos_header');
+
+  PhotosView = require('controllers/photos_view');
+
+  ProductsHeader = require('controllers/products_header');
+
+  ProductsAddView = require('controllers/products_add_view');
+
+  PhotosAddView = require('controllers/photos_add_view');
+
+  CategoriesView = require('controllers/categories_view');
+
+  CategoriesHeader = require('controllers/categories_header');
+
+  SlideshowView = require('controllers/slideshow_view');
+
+  SlideshowHeader = require('controllers/slideshow_header');
+
+  OverviewHeader = require('controllers/overview_header');
+
+  OverviewView = require('controllers/overview_view');
+
+  ModalSimpleView = require("controllers/modal_simple_view");
+
+  Extender = require('extensions/controller_extender');
+
+  Drag = require('extensions/drag');
+
+  require('spine/lib/manager');
+
+  ShowView = (function(superClass) {
+    extend(ShowView, superClass);
+
+    ShowView.extend(Drag);
+
+    ShowView.extend(Extender);
+
+    ShowView.prototype.elements = {
+      '#views .views': 'views',
+      '.contents': 'contents',
+      '.items': 'lists',
+      '.header .categories': 'categoriesHeaderEl',
+      '.header .products': 'productsHeaderEl',
+      '.header .photos': 'photosHeaderEl',
+      '.header .overview': 'overviewHeaderEl',
+      '.header .slideshow': 'slideshowHeaderEl',
+      '.opt-Overview': 'btnOverview',
+      '.opt-EditCategory': 'btnEditCategory',
+      '.opt-Category .ui-icon': 'btnCategory',
+      '.opt-AutoUpload': 'btnAutoUpload',
+      '.opt-Previous': 'btnPrevious',
+      '.opt-Sidebar': 'btnSidebar',
+      '.opt-FullScreen': 'btnFullScreen',
+      '.opt-SlideshowPlay': 'btnSlideshowPlay',
+      '.toolbarOne': 'toolbarOneEl',
+      '.toolbarTwo': 'toolbarTwoEl',
+      '.props': 'propsEl',
+      '.content.categories': 'categoriesEl',
+      '.content.products': 'productsEl',
+      '.content.photos': 'photosEl',
+      '.content.photo': 'photoEl',
+      '.content.wait': 'waitEl',
+      '#slideshow': 'slideshowEl',
+      '#modal-action': 'modalActionEl',
+      '#modal-addProduct': 'modalAddProductEl',
+      '#modal-addPhoto': 'modalAddPhotoEl',
+      '.overview': 'overviewEl',
+      '.slider': 'slider',
+      '.opt-Product': 'btnProduct',
+      '.opt-Category': 'btnCategory',
+      '.opt-Photo': 'btnPhoto',
+      '.opt-Upload': 'btnUpload'
+    };
+
+    ShowView.prototype.events = {
+      'click .opt-AutoUpload:not(.disabled)': 'toggleAutoUpload',
+      'click .opt-Overview:not(.disabled)': 'showOverview',
+      'click .opt-Previous:not(.disabled)': 'back',
+      'click .opt-Sidebar:not(.disabled)': 'toggleSidebar',
+      'click .opt-FullScreen:not(.disabled)': 'toggleFullScreen',
+      'click .opt-CreateCategory:not(.disabled)': 'createCategory',
+      'click .opt-CreateProduct:not(.disabled)': 'createProduct',
+      'click .opt-DuplicateProducts:not(.disabled)': 'duplicateProducts',
+      'click .opt-ToggleVisible': 'toggleVisible',
+      'click .opt-CopyProductsToNewCategory:not(.disabled)': 'copyProductsToNewCategory',
+      'click .opt-CopyPhotosToNewProduct:not(.disabled)': 'copyPhotosToNewProduct',
+      'click .opt-CopyPhoto': 'copyPhoto',
+      'click .opt-CutPhoto': 'cutPhoto',
+      'click .opt-PastePhoto': 'pastePhoto',
+      'click .opt-CopyProduct': 'copyProduct',
+      'click .opt-CutProduct': 'cutProduct',
+      'click .opt-PasteProduct': 'pasteProduct',
+      'click .opt-EmptyProduct': 'emptyProduct',
+      'click .opt-CreatePhoto:not(.disabled)': 'createPhoto',
+      'click .opt-DestroyEmptyProducts:not(.disabled)': 'destroyEmptyProducts',
+      'click .opt-DestroyCategory:not(.disabled)': 'destroyCategory',
+      'click .opt-DestroyProduct:not(.disabled)': 'destroyProduct',
+      'click .opt-DestroyPhoto:not(.disabled)': 'destroyPhoto',
+      'click .opt-EditCategory:not(.disabled)': 'editCategory',
+      'click .opt-Category:not(.disabled)': 'toggleCategoryShow',
+      'click .opt-Rotate-cw:not(.disabled)': 'rotatePhotoCW',
+      'click .opt-Rotate-ccw:not(.disabled)': 'rotatePhotoCCW',
+      'click .opt-Product:not(.disabled)': 'toggleProductShow',
+      'click .opt-Photo:not(.disabled)': 'togglePhotoShow',
+      'click .opt-Upload:not(.disabled)': 'toggleUploadShow',
+      'click .opt-ShowAllProducts:not(.disabled)': 'showProductMasters',
+      'click .opt-AddProducts:not(.disabled)': 'showProductMastersAdd',
+      'click .opt-ShowAllPhotos:not(.disabled)': 'showPhotoMasters',
+      'click .opt-AddPhotos:not(.disabled)': 'showPhotoMastersAdd',
+      'click .opt-ActionCancel:not(.disabled)': 'cancelAdd',
+      'click .opt-SlideshowAutoStart:not(.disabled)': 'toggleSlideshowAutoStart',
+      'click .opt-SlideshowPreview:not(.disabled)': 'slideshowPreview',
+      'click .opt-SlideshowPhoto:not(.disabled)': 'slideshowPhoto',
+      'click .opt-SlideshowPlay:not(.disabled)': 'slideshowPlay',
+      'click .opt-ShowPhotoSelection:not(.disabled)': 'showPhotoSelection',
+      'click .opt-ShowProductSelection:not(.disabled)': 'showProductSelection',
+      'click .opt-SelectAll:not(.disabled)': 'selectAll',
+      'click .opt-SelectNone:not(.disabled)': 'selectNone',
+      'click .opt-SelectInv:not(.disabled)': 'selectInv',
+      'click .opt-CloseDraghandle': 'toggleDraghandle',
+      'click .opt-Help': 'help',
+      'click .opt-Version': 'version',
+      'click .opt-Prev': 'prev',
+      'dblclick .draghandle': 'toggleDraghandle',
+      'hidden.bs.modal': 'hiddenmodal',
+      'dragstart .item': 'dragstart',
+      'dragenter .view': 'dragenter',
+      'dragend': 'dragend',
+      'drop': 'drop',
+      'keydown': 'keydown',
+      'keyup': 'keyup'
+    };
+
+    function ShowView() {
+      this.slideshowPlay = bind(this.slideshowPlay, this);
+      this.sliderSlide = bind(this.sliderSlide, this);
+      this.initSlider = bind(this.initSlider, this);
+      ShowView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.silent = true;
+      this.toolbarOne = new ToolbarView({
+        el: this.toolbarOneEl
+      });
+      this.toolbarTwo = new ToolbarView({
+        el: this.toolbarTwoEl
+      });
+      this.categoriesHeader = new CategoriesHeader({
+        el: this.categoriesHeaderEl
+      });
+      this.productsHeader = new ProductsHeader({
+        el: this.productsHeaderEl,
+        parent: this
+      });
+      this.photosHeader = new PhotosHeader({
+        el: this.photosHeaderEl,
+        parent: this
+      });
+      this.slideshowHeader = new SlideshowHeader({
+        header: this.slideshowHeaderEl
+      });
+      this.slideshowView = new SlideshowView({
+        el: this.slideshowEl,
+        className: 'items',
+        header: this.slideshowHeader,
+        parent: this,
+        parentModel: 'Photo',
+        subview: true
+      });
+      this.categoriesView = new CategoriesView({
+        el: this.categoriesEl,
+        className: 'items',
+        assocControl: 'opt-Category',
+        header: this.categoriesHeader,
+        parent: this
+      });
+      this.productsView = new ProductsView({
+        el: this.productsEl,
+        className: 'items',
+        header: this.productsHeader,
+        parentModel: Category,
+        parent: this
+      });
+      this.photosView = new PhotosView({
+        el: this.photosEl,
+        className: 'items',
+        header: this.photosHeader,
+        parentModel: Product,
+        parent: this,
+        slideshow: this.slideshowView
+      });
+      this.productsAddView = new ProductsAddView({
+        el: this.modalAddProductEl,
+        parent: this.productsView
+      });
+      this.photosAddView = new PhotosAddView({
+        el: this.modalAddPhotoEl,
+        parent: this.photosView
+      });
+      this.waitView = new WaitView({
+        el: this.waitEl,
+        parent: this
+      });
+      this.bind('change:toolbarOne', this.proxy(this.changeToolbarOne));
+      this.bind('change:toolbarTwo', this.proxy(this.changeToolbarTwo));
+      this.bind('activate:editview', this.proxy(this.activateEditView));
+      this.bind('drag:start', this.proxy(this.dragStart));
+      this.bind('drag:enter', this.proxy(this.dragEnter));
+      this.bind('drag:end', this.proxy(this.dragEnd));
+      this.bind('drag:drop', this.proxy(this.dragDrop));
+      this.toolbarOne.bind('refresh', this.proxy(this.refreshToolbar));
+      this.bind('awake', this.proxy(this.awake));
+      this.bind('sleep', this.proxy(this.sleep));
+      Category.bind('change', this.proxy(this.changeToolbarOne));
+      Category.bind('change:selection', this.proxy(this.refreshToolbars));
+      Product.bind('change:selection', this.proxy(this.refreshToolbars));
+      CategoriesProduct.bind('change', this.proxy(this.refreshToolbars));
+      CategoriesProduct.bind('error', this.proxy(this.error));
+      ProductsPhoto.bind('error', this.proxy(this.error));
+      ProductsPhoto.bind('create destroy', this.proxy(this.refreshToolbars));
+      Product.bind('change', this.proxy(this.changeToolbarOne));
+      Photo.bind('change', this.proxy(this.changeToolbarOne));
+      Photo.bind('refresh', this.proxy(this.refreshToolbars));
+      Product.bind('current', this.proxy(this.refreshToolbars));
+      Spine.bind('products:copy', this.proxy(this.copyProducts));
+      Spine.bind('photos:copy', this.proxy(this.copyPhotos));
+      this.current = this.controller = this.categoriesView;
+      this.sOutValue = 160;
+      this.sliderRatio = 50;
+      this.thumbSize = 240;
+      this.canvasManager = new Spine.Manager(this.categoriesView, this.productsView, this.photosView, this.slideshowView, this.waitView);
+      this.headerManager = new Spine.Manager(this.categoriesHeader, this.productsHeader, this.photosHeader, this.slideshowHeader);
+      this.canvasManager.bind('change', this.proxy(this.changeCanvas));
+      this.headerManager.bind('change', this.proxy(this.changeHeader));
+      this.trigger('change:toolbarOne');
+      Category.bind('change:current', this.proxy(this.scrollTo));
+      Product.bind('change:current', this.proxy(this.scrollTo));
+      Photo.bind('change:current', this.proxy(this.scrollTo));
+      Settings.bind('change', this.proxy(this.changeSettings));
+      Settings.bind('refresh', this.proxy(this.refreshSettings));
+    }
+
+    ShowView.prototype.active = function(controller, params) {
+      var ref;
+      if (controller) {
+        controller.trigger('active', params);
+        if ((ref = controller.header) != null) {
+          ref.trigger('active');
+        }
+        this.activated(controller);
+      }
+      return this.focus();
+    };
+
+    ShowView.prototype.changeCanvas = function(controller, args) {
+      var _1, _2, c, i, len, ref, t;
+      this.controllers = (function() {
+        var i, len, ref, results;
+        ref = this.canvasManager.controllers;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          c = ref[i];
+          if (c !== controller) {
+            results.push(c);
+          }
+        }
+        return results;
+      }).call(this);
+      ref = this.controllers;
+      for (i = 0, len = ref.length; i < len; i++) {
+        c = ref[i];
+        $('.items', this.el).removeClass('in3');
+      }
+      t = (function() {
+        switch (controller.type) {
+          case "Category":
+            return true;
+          case "Product":
+            if (!Category.record) {
+              return true;
+            } else {
+              return false;
+            }
+            break;
+          case "Photo":
+            if (!Product.record) {
+              return true;
+            } else {
+              return false;
+            }
+            break;
+          default:
+            return false;
+        }
+      })();
+      _1 = (function(_this) {
+        return function() {
+          if (t) {
+            _this.contents.addClass('all');
+          } else {
+            _this.contents.removeClass('all');
+          }
+          return _2();
+        };
+      })(this);
+      _2 = (function(_this) {
+        return function() {
+          var viewport;
+          viewport = controller.viewport || controller.el;
+          return viewport.addClass('in3');
+        };
+      })(this);
+      return window.setTimeout((function(_this) {
+        return function() {
+          return _1();
+        };
+      })(this), 500);
+    };
+
+    ShowView.prototype.resetSelection = function(controller) {};
+
+    ShowView.prototype.changeHeader = function(controller) {};
+
+    ShowView.prototype.activated = function(controller) {
+      if (!this.current.subview) {
+        this.previous = this.current;
+      }
+      this.current = this.controller = controller;
+      this.currentHeader = controller.header;
+      this.prevLocation = location.hash;
+      this.el.data('current', {
+        model: controller.el.data('current').model,
+        models: controller.el.data('current').models
+      });
+      controller.trigger('active');
+      controller.header.trigger('active');
+      return controller;
+    };
+
+    ShowView.prototype.changeToolbarOne = function(list) {
+      this.toolbarOne.change(list);
+      this.toolbarTwo.refresh();
+      return this.refreshElements();
+    };
+
+    ShowView.prototype.changeToolbarTwo = function(list) {
+      this.toolbarTwo.change(list);
+      return this.refreshElements();
+    };
+
+    ShowView.prototype.refreshToolbar = function(toolbar, lastControl) {};
+
+    ShowView.prototype.refreshToolbars = function() {
+      this.log('refreshToolbars');
+      this.toolbarOne.refresh();
+      return this.toolbarTwo.refresh();
+    };
+
+    ShowView.prototype.renderViewControl = function(controller) {
+      return App.hmanager.change(controller);
+    };
+
+    ShowView.prototype.createCategory = function(e) {
+      Spine.trigger('create:category');
+      return e.preventDefault();
+    };
+
+    ShowView.prototype.createPhoto = function(e) {
+      Spine.trigger('create:photo');
+      return e.preventDefault();
+    };
+
+    ShowView.prototype.createProduct = function() {
+      Spine.trigger('create:product');
+      if (Category.record) {
+        return this.navigate('/category', Category.record.id, Product.last());
+      } else {
+        return this.showProductMasters();
+      }
+    };
+
+    ShowView.prototype.copyProducts = function(products, category) {
+      return Product.trigger('create:join', products, category);
+    };
+
+    ShowView.prototype.copyPhotos = function(photos, product) {
+      var options;
+      options = {
+        photos: photos,
+        product: product
+      };
+      return Photo.trigger('create:join', options);
+    };
+
+    ShowView.prototype.copyProductsToNewCategory = function() {
+      return this.productsToCategory(Category.selectionList().slice(0));
+    };
+
+    ShowView.prototype.copyPhotosToNewProduct = function() {
+      return this.photosToProduct(Product.selectionList().slice(0));
+    };
+
+    ShowView.prototype.duplicateStart = function() {};
+
+    ShowView.prototype.donecallback = function(rec) {
+      return console.log('DONE');
+    };
+
+    ShowView.prototype.failcallback = function(t) {
+      return console.log('FAIL');
+    };
+
+    ShowView.prototype.progresscallback = function(rec) {
+      console.log('PROGRESS');
+      return console.log(this.state());
+    };
+
+    ShowView.prototype.duplicateProducts = function() {
+      this.deferred = $.Deferred();
+      return $.when(this.duplicateProductsDeferred()).then(this.donecallback, this.failcallback, this.progresscallback);
+    };
+
+    ShowView.prototype.duplicateProductsDeferred = function() {
+      var deferred, i, id, len, list;
+      deferred = this.deferred || (this.deferred = $.Deferred());
+      list = Category.selectionList();
+      for (i = 0, len = list.length; i < len; i++) {
+        id = list[i];
+        this.duplicateProduct(id);
+      }
+      return deferred.promise();
+    };
+
+    ShowView.prototype.duplicateProduct = function(id) {
+      var callback, photos, product;
+      if (!(product = Product.find(id))) {
+        return;
+      }
+      callback = (function(_this) {
+        return function(a, def) {
+          return _this.deferred.always(function() {
+            return console.log('completed with success ' + a.id);
+          });
+        };
+      })(this);
+      photos = product.photos().toID();
+      return this.photosToProduct(photos, callback);
+    };
+
+    ShowView.prototype.productsToCategory = function(products, category) {
+      return Spine.trigger('create:category', {
+        products: products,
+        category: category,
+        deleteFromOrigin: false,
+        relocate: true
+      });
+    };
+
+    ShowView.prototype.photosToProduct = function(photos, callback) {
+      var target;
+      target = Category.record;
+      return Spine.trigger('create:product', target, {
+        photos: photos,
+        deleteFromOrigin: false,
+        relocate: true,
+        deferred: this.deferred,
+        cb: callback
+      });
+    };
+
+    ShowView.prototype.createProductCopy = function(products, target) {
+      var i, id, len, photos;
+      if (products == null) {
+        products = Category.selectionList();
+      }
+      if (target == null) {
+        target = Category.record;
+      }
+      this.log('createProductCopy');
+      for (i = 0, len = products.length; i < len; i++) {
+        id = products[i];
+        if (Product.find(id)) {
+          photos = Product.photos(id).toID();
+          Spine.trigger('create:product', target({
+            photos: photos
+          }));
+        }
+      }
+      if (target) {
+        target.updateSelection(products);
+        return this.navigate('/category', target.id);
+      } else {
+        return this.showProductMasters();
+      }
+    };
+
+    ShowView.prototype.createProductMove = function(products, target) {
+      var i, id, len, photos;
+      if (products == null) {
+        products = Category.selectionList();
+      }
+      if (target == null) {
+        target = Category.record;
+      }
+      for (i = 0, len = products.length; i < len; i++) {
+        id = products[i];
+        if (Product.find(id)) {
+          photos = Product.photos(id).toID();
+          Spine.trigger('create:product', target({
+            photos: photos,
+            from: Product.record
+          }));
+        }
+      }
+      if (Category.record) {
+        return this.navigate('/category', target.id);
+      } else {
+        return this.showProductMasters();
+      }
+    };
+
+    ShowView.prototype.emptyProduct = function(e) {
+      var aid, ap, aps, i, j, len, len1, product, products;
+      products = Category.selectionList();
+      for (i = 0, len = products.length; i < len; i++) {
+        aid = products[i];
+        if (product = Product.find(aid)) {
+          aps = ProductsPhoto.filter(product.id, {
+            key: 'product_id'
+          });
+          for (j = 0, len1 = aps.length; j < len1; j++) {
+            ap = aps[j];
+            ap.destroy();
+          }
+        }
+        Product.trigger('change:collection', product);
+      }
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    ShowView.prototype.editCategory = function(e) {
+      return Spine.trigger('edit:category');
+    };
+
+    ShowView.prototype.editProduct = function(e) {
+      return Spine.trigger('edit:product');
+    };
+
+    ShowView.prototype.destroyEmptyProducts = function(e) {
+      var i, len, product, products, results;
+      products = Product.findEmpties();
+      results = [];
+      for (i = 0, len = products.length; i < len; i++) {
+        product = products[i];
+        results.push(product.destroy());
+      }
+      return results;
+    };
+
+    ShowView.prototype.destroySelected = function(e) {
+      var models;
+      models = this.controller.el.data('current').models;
+      this['destroy' + models.className]();
+      return e.stopPropagation();
+    };
+
+    ShowView.prototype.destroyCategory = function(e) {
+      if (!Category.record) {
+        return;
+      }
+      return Spine.trigger('destroy:category', Category.record.id);
+    };
+
+    ShowView.prototype.destroyProduct = function(e) {
+      return Spine.trigger('destroy:product');
+    };
+
+    ShowView.prototype.destroyPhoto = function(e) {
+      return Spine.trigger('destroy:photo');
+    };
+
+    ShowView.prototype.toggleCategoryShow = function(e) {
+      this.trigger('activate:editview', 'category', e.target);
+      return e.preventDefault();
+    };
+
+    ShowView.prototype.toggleProductShow = function(e) {
+      this.trigger('activate:editview', 'product', e.target);
+      this.refreshToolbars();
+      return e.preventDefault();
+    };
+
+    ShowView.prototype.togglePhotoShow = function(e) {
+      this.trigger('activate:editview', 'photo', e.target);
+      this.refreshToolbars();
+      return e.preventDefault();
+    };
+
+    ShowView.prototype.toggleUploadShow = function(e) {
+      this.trigger('activate:editview', 'upload', e.target);
+      e.preventDefault();
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.toggleCategory = function(e) {
+      this.changeToolbarOne(['Category']);
+      this.refreshToolbars();
+      return e.preventDefault();
+    };
+
+    ShowView.prototype.toggleProduct = function(e) {
+      this.changeToolbarOne(['Product']);
+      this.refreshToolbars();
+      return e.preventDefault();
+    };
+
+    ShowView.prototype.togglePhoto = function(e) {
+      this.changeToolbarOne(['Photos', 'Slider']);
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.toggleUpload = function(e) {
+      this.changeToolbarOne(['Upload']);
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.toggleSidebar = function() {
+      return App.sidebar.toggleDraghandle();
+    };
+
+    ShowView.prototype.toggleFullScreen = function() {
+      App.trigger('chromeless');
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.toggleFullScreen = function() {
+      this.slideshowView.toggleFullScreen();
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.toggleSlideshow = function() {
+      var active;
+      active = this.btnSlideshow.toggleClass('active').hasClass('active');
+      this.slideshowView.slideshowMode(active);
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.toggleSlideshowAutoStart = function() {
+      var res;
+      res = App.slideshow.data('bs.modal').options.toggleAutostart();
+      this.refreshToolbars();
+      return res;
+    };
+
+    ShowView.prototype.isAutoplay = function() {
+      return this.slideshowView.autoplay;
+    };
+
+    ShowView.prototype.toggleDraghandle = function() {
+      return this.animateView();
+    };
+
+    ShowView.prototype.toggleAutoUpload = function() {
+      var active;
+      this.settings = Settings.findUserSettings();
+      active = this.settings.autoupload = !this.settings.autoupload;
+      $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active;
+      this.settings.save();
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.refreshSettings = function(records) {
+      var settings;
+      if (settings = Settings.findUserSettings()) {
+        this.changeSettings(settings);
+      }
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.changeSettings = function(rec) {
+      var active;
+      active = rec.autoupload;
+      $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active;
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.isAutoUpload = function() {
+      return $('#fileupload').data('blueimpFileupload').options['autoUpload'];
+    };
+
+    ShowView.prototype.activateEditView = function(controller) {
+      App[controller].trigger('active');
+      return this.openView();
+    };
+
+    ShowView.prototype.closeView = function() {
+      if (!App.hmanager.el.hasClass('open')) {
+        return;
+      }
+      return this.animateView({
+        close: true
+      });
+    };
+
+    ShowView.prototype.openView = function(val) {
+      if (val == null) {
+        val = '300';
+      }
+      if (App.hmanager.el.hasClass('open')) {
+        return;
+      }
+      return this.animateView({
+        open: val
+      });
+    };
+
+    ShowView.prototype.animateView = function(options) {
+      var height, isOpen, min, speed;
+      min = 20;
+      options = $().extend({
+        open: false
+      }, options);
+      speed = options.close || options.open ? 600 : 400;
+      if (options.open) {
+        App.hmanager.el.removeClass('open');
+        App.hmanager.el.addClass('forcedopen');
+      }
+      isOpen = function() {
+        return App.hmanager.el.hasClass('open');
+      };
+      height = function() {
+        var h;
+        h = !isOpen() ? parseInt(options.open || App.hmanager.currentDim) : parseInt(min);
+        return h;
+      };
+      return this.views.animate({
+        height: height() + 'px'
+      }, speed, function() {
+        var args;
+        args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+        if ($(this).height() === min) {
+          return $(this).removeClass('open forcedopen');
+        } else {
+          return $(this).addClass('open');
+        }
+      });
+    };
+
+    ShowView.prototype.awake = function() {
+      return this.views.addClass('open');
+    };
+
+    ShowView.prototype.sleep = function() {
+      return this.animateView();
+    };
+
+    ShowView.prototype.openPanel = function(controller) {
+      var ui;
+      if (this.views.hasClass('open')) {
+        return;
+      }
+      App[controller].deactivate();
+      ui = App.hmanager.externalClass(App[controller]);
+      return ui.click();
+    };
+
+    ShowView.prototype.closePanel = function(controller, target) {
+      App[controller].trigger('active');
+      return target.click();
+    };
+
+    ShowView.prototype.selectAll = function(e) {
+      var error, list;
+      try {
+        list = this.select_();
+        return this.current.select(e, list);
+      } catch (error) {
+        e = error;
+      }
+    };
+
+    ShowView.prototype.selectNone = function(e) {
+      var error;
+      try {
+        return this.current.select(e, []);
+      } catch (error) {
+        e = error;
+      }
+    };
+
+    ShowView.prototype.selectInv = function(e) {
+      var error, list, selList;
+      try {
+        list = this.select_();
+        selList = this.current.el.data('current').model.selectionList();
+        list.removeFromList(selList);
+        return this.current.select(e, list);
+      } catch (error) {
+        e = error;
+      }
+    };
+
+    ShowView.prototype.select_ = function() {
+      var items, list, root;
+      list = [];
+      root = this.current.itemsEl;
+      items = $('.item', root);
+      if (!(root && items.length)) {
+        return list;
+      }
+      items.each(function() {
+        return list.unshift(this.id);
+      });
+      return list;
+    };
+
+    ShowView.prototype.uploadProgress = function(e, coll) {};
+
+    ShowView.prototype.uploadDone = function(e, coll) {};
+
+    ShowView.prototype.sliderInValue = function(val) {
+      val = val || this.sOutValue;
+      return this.sInValue = (val / 2) - this.sliderRatio;
+    };
+
+    ShowView.prototype.sliderOutValue = function(value) {
+      var val;
+      val = value || this.slider.slider('value');
+      return this.sOutValue = (val + this.sliderRatio) * 2;
+    };
+
+    ShowView.prototype.initSlider = function() {
+      var inValue;
+      inValue = this.sliderInValue();
+      this.refreshElements();
+      return this.slider.slider({
+        orientation: 'horizonatal',
+        value: inValue,
+        slide: (function(_this) {
+          return function(e, ui) {
+            return _this.sliderSlide(ui.value);
+          };
+        })(this)
+      });
+    };
+
+    ShowView.prototype.sliderSlide = function(val) {
+      var newVal;
+      newVal = this.sliderOutValue(val);
+      Spine.trigger('slider:change', newVal);
+      return newVal;
+    };
+
+    ShowView.prototype.slideshowPlay = function(e) {
+      return this.slideshowView.trigger('play');
+    };
+
+    ShowView.prototype.slideshowPreview = function(e) {
+      return this.navigate('/slideshow', '');
+    };
+
+    ShowView.prototype.slideshowPhoto = function(e) {
+      if (Photo.record) {
+        return this.slideshowView.trigger('play', {}, [Photo.record]);
+      }
+    };
+
+    ShowView.prototype.showOverview = function(e) {
+      return this.navigate('/overview', '');
+    };
+
+    ShowView.prototype.toggleVisible = function(e, list) {
+      var ga, i, id, len, ref, results;
+      if (list == null) {
+        list = Category.selectionList();
+      }
+      results = [];
+      for (i = 0, len = list.length; i < len; i++) {
+        id = list[i];
+        ga = CategoriesProduct.categoryProductExists(id, (ref = Category.record) != null ? ref.id : void 0);
+        ga.ignore = !ga.ignore;
+        results.push(ga.save());
+      }
+      return results;
+    };
+
+    ShowView.prototype.showPhotosTrash = function() {
+      return Photo.inactive();
+    };
+
+    ShowView.prototype.showProductsTrash = function() {
+      return Product.inactive();
+    };
+
+    ShowView.prototype.showProductMasters = function() {
+      return this.navigate('/category', '');
+    };
+
+    ShowView.prototype.showPhotoMasters = function() {
+      return this.navigate('/category', '/');
+    };
+
+    ShowView.prototype.showProductMastersAdd = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return Spine.trigger('products:add');
+    };
+
+    ShowView.prototype.showPhotoMastersAdd = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return Spine.trigger('photos:add');
+    };
+
+    ShowView.prototype.cancelAdd = function(e) {
+      this.back();
+      App.sidebar.filter();
+      this.el.removeClass('add');
+      return e.preventDefault();
+    };
+
+    ShowView.prototype.showPhotoSelection = function() {
+      if (Category.record) {
+        return this.navigate('/category', Category.record.id, Category.selectionList()[0] || '');
+      } else {
+        return this.navigate('/category', '', Category.selectionList()[0] || '');
+      }
+    };
+
+    ShowView.prototype.showProductSelection = function() {
+      return this.navigate('/category', Category.record.id || '');
+    };
+
+    ShowView.prototype.copy = function(e) {
+      var model;
+      model = this.current.el.data('current').models.className;
+      switch (model) {
+        case 'Photo':
+          return this.copyPhoto();
+        case 'Product':
+          return this.copyProduct();
+      }
+    };
+
+    ShowView.prototype.cut = function(e) {
+      var model;
+      model = this.current.el.data('current').models.className;
+      switch (model) {
+        case 'Photo':
+          return this.cutPhoto();
+        case 'Product':
+          return this.cutProduct();
+      }
+    };
+
+    ShowView.prototype.paste = function(e) {
+      var first, model;
+      if (!(first = Clipboard.first())) {
+        return;
+      }
+      model = first.item.constructor.className;
+      switch (model) {
+        case 'Photo':
+          return this.pastePhoto();
+        case 'Product':
+          return this.pasteProduct();
+      }
+    };
+
+    ShowView.prototype.copyPhoto = function() {
+      var i, id, len, ref;
+      Clipboard.deleteAll();
+      ref = Product.selectionList();
+      for (i = 0, len = ref.length; i < len; i++) {
+        id = ref[i];
+        Clipboard.create({
+          item: Photo.find(id),
+          type: 'copy'
+        });
+      }
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.cutPhoto = function() {
+      var i, id, len, ref;
+      Clipboard.deleteAll();
+      ref = Product.selectionList();
+      for (i = 0, len = ref.length; i < len; i++) {
+        id = ref[i];
+        Clipboard.create({
+          item: Photo.find(id),
+          type: 'copy',
+          cut: Product.record
+        });
+      }
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.pastePhoto = function() {
+      var callback, clb, clipboard, i, items, len, options, product;
+      if (!(product = Product.record)) {
+        return;
+      }
+      clipboard = Clipboard.findAllByAttribute('type', 'copy');
+      items = [];
+      for (i = 0, len = clipboard.length; i < len; i++) {
+        clb = clipboard[i];
+        items.push(clb.item);
+      }
+      callback = (function(_this) {
+        return function() {
+          var cut, options, origin;
+          cut = Clipboard.last().cut;
+          origin = Clipboard.last().origin;
+          if (cut) {
+            Clipboard.destroyAll();
+            options = {
+              photos: items,
+              product: cut
+            };
+            Photo.trigger('destroy:join', options);
+          }
+          return _this.refreshToolbars();
+        };
+      })(this);
+      options = {
+        photos: items,
+        product: product
+      };
+      return Photo.trigger('create:join', options, callback);
+    };
+
+    ShowView.prototype.rotatePhotoCW = function(e) {
+      Spine.trigger('rotate', false, -90);
+      this.refreshToolbars();
+      return false;
+    };
+
+    ShowView.prototype.rotatePhotoCCW = function(e) {
+      Spine.trigger('rotate', false, 90);
+      this.refreshToolbars();
+      return false;
+    };
+
+    ShowView.prototype.copyProduct = function() {
+      var i, item, len, ref;
+      Clipboard.deleteAll();
+      ref = Category.selectionList();
+      for (i = 0, len = ref.length; i < len; i++) {
+        item = ref[i];
+        Clipboard.create({
+          item: Product.find(item),
+          type: 'copy'
+        });
+      }
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.cutProduct = function() {
+      var i, id, len, ref;
+      Clipboard.deleteAll();
+      ref = Category.selectionList();
+      for (i = 0, len = ref.length; i < len; i++) {
+        id = ref[i];
+        Clipboard.create({
+          item: Product.find(id),
+          type: 'copy',
+          cut: Category.record
+        });
+      }
+      return this.refreshToolbars();
+    };
+
+    ShowView.prototype.error = function(record, err) {
+      return alert(err);
+    };
+
+    ShowView.prototype.pasteProduct = function() {
+      var callback, category, clb, clipboard, i, items, len;
+      if (!(category = Category.record)) {
+        return;
+      }
+      clipboard = Clipboard.findAllByAttribute('type', 'copy');
+      callback = (function(_this) {
+        return function() {
+          var cut, origin;
+          cut = Clipboard.last().cut;
+          origin = Clipboard.last().origin;
+          if (cut) {
+            Clipboard.deleteAll();
+            Product.trigger('destroy:join', items, cut);
+          }
+          return _this.refreshToolbars();
+        };
+      })(this);
+      items = [];
+      for (i = 0, len = clipboard.length; i < len; i++) {
+        clb = clipboard[i];
+        items.push(clb.item);
+      }
+      return Product.trigger('create:join', items.toID(), category, callback);
+    };
+
+    ShowView.prototype.help = function(e) {
+      var carousel_id, dialog, options, slides;
+      carousel_id = 'help-carousel';
+      options = {
+        interval: 1000
+      };
+      slides = [
+        {
+          img: "/img/keyboard.png",
+          width: '700px'
+        }, {
+          items: ['What is Photo Director?', 'Photo Director is a (experimental) content management tool for your photos', 'Manage your photo content using different types of sets, such as products and categories', 'As a result products can than be used to present your content in slideshows']
+        }, {
+          items: [
+            'Upload photos', 'Select the product you want to upload photos to', 'If no product is selected, Director will change to the photos library after upload', {
+              items: ['To start uploading your content, you can:', 'Drag photos from the desktop to your browser, or', 'Use the appropriate upload menu item']
+            }, 'Director currently supports JPG, JPE, GIF and PNG'
+          ]
+        }, {
+          items: ['Arrange your content', 'Host your photo content in products', 'On the other hand, products are supposed to be hosted in categories', 'This also gives you the flexibility to reuse identical products in different places (categories)']
+        }, {
+          items: ['Order to your content', 'After the content is part of a set, it will become sortable']
+        }, {
+          items: [
+            'Interaction', {
+              items: ['Organize your products or photos in sets', 'Drag your content from your main view to your sidebar or vice versa', 'You can also quickly reorder products within the sidebar only, without opening another category']
+            }
+          ]
+        }, {
+          items: [
+            'Navigation', {
+              items: ['You can navigate through objects using arrow keys:', 'To open the active object (dark blue border) hit Enter', 'To close it again hit Esc']
+            }
+          ]
+        }, {
+          items: [
+            'Selecting content', {
+              items: ['You can easily select one or more items. To do this, either...', 'Select multiple objects using both ctrl-key and arrow key(s), or', 'Single click multiple objects']
+            }
+          ]
+        }, {
+          items: ['Clipboard support', 'You can copy, paste or cut objects just as you would do on a regular PC (by keybord or mouse)']
+        }
+      ];
+      dialog = new ModalSimpleView({
+        options: {
+          small: false,
+          header: 'Quick Help',
+          body: function() {
+            return require("views/carousel")({
+              slides: slides,
+              id: carousel_id
+            });
+          },
+          footerButtonText: 'Close'
+        },
+        modalOptions: {
+          keyboard: true,
+          show: false
+        }
+      });
+      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
+      this.carousel = $('.carousel', this.el);
+      this.carousel.carousel(options);
+      return dialog.render().show();
+    };
+
+    ShowView.prototype.version = function(e) {
+      var dialog;
+      dialog = new ModalSimpleView({
+        options: {
+          small: true,
+          body: function() {
+            return require("views/version")({
+              copyright: 'Axel Nitzschner',
+              spine_version: Spine.version,
+              app_version: App.version,
+              bs_version: $.fn.tooltip.Constructor.VERSION
+            });
+          }
+        },
+        modalOptions: {
+          keyboard: true,
+          show: false
+        }
+      });
+      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
+      return dialog.render().show();
+    };
+
+    ShowView.prototype.noSlideShow = function(e) {
+      var dialog;
+      this.log('noslideshow');
+      dialog = new ModalSimpleView({
+        options: {
+          small: false,
+          body: (function(_this) {
+            return function() {
+              var ref, ref1, ref2;
+              return require("views/no_slideshow")({
+                copyright: 'Axel Nitzschner',
+                spine_version: Spine.version,
+                app_version: App.version,
+                noCategory: !!!Category.record,
+                selectedProducts: Category.selectionList(null).length,
+                noProductsView: !(!Category.record && _this.productsView.isActive()),
+                productsCount: CategoriesProduct.products((ref = Category.record) != null ? ref.id : void 0).length,
+                photosCount: CategoriesProduct.photos((ref1 = Category.record) != null ? ref1.id : void 0).length,
+                activeProductsCount: CategoriesProduct.activeProducts((ref2 = Category.record) != null ? ref2.id : void 0).length,
+                activePhotosCount: App.activePhotos().length,
+                bs_version: $.fn.tooltip.Constructor.VERSION
+              });
+            };
+          })(this)
+        },
+        modalOptions: {
+          keyboard: true,
+          show: false
+        }
+      });
+      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
+      return dialog.render().show();
+    };
+
+    ShowView.prototype.hidemodal = function(e) {
+      return this.log('hidemodal');
+    };
+
+    ShowView.prototype.hiddenmodal = function(e) {
+      this.log('hiddenmodal');
+      return App.modal.exists = false;
+    };
+
+    ShowView.prototype.showmodal = function(e) {
+      this.log('showmodal');
+      return App.modal.exists = true;
+    };
+
+    ShowView.prototype.shownmodal = function(e) {
+      return this.log('shownmodal');
+    };
+
+    ShowView.prototype.selectByKey = function(e, direction) {
+      var active, activeEl, el, elements, error, first, id, index, isMeta, last, lastIndex, list, models, next, parent, prev, record, ref, selection;
+      this.log('selectByKey');
+      isMeta = e.metaKey || e.ctrlKey;
+      index = null;
+      lastIndex = null;
+      list = ((ref = this.controller.list) != null ? ref.listener : void 0) || this.controller.list;
+      elements = list ? $('.item', list.el) : $();
+      models = this.controller.el.data('current').models;
+      parent = this.controller.el.data('current').model;
+      record = models.record;
+      try {
+        activeEl = list.findModelElement(record) || $();
+      } catch (error) {
+        e = error;
+        return;
+      }
+      elements.each((function(_this) {
+        return function(idx, el) {
+          lastIndex = idx;
+          if ($(el).is(activeEl)) {
+            return index = idx;
+          }
+        };
+      })(this));
+      last = elements[lastIndex] || false;
+      if (index == null) {
+        prev = next = first = elements[0] || false;
+      } else if (isMeta) {
+        active = elements[index];
+        first = elements[0] || false;
+        prev = elements[index - 1] || false;
+        next = elements[index + 1] || false;
+      } else {
+        first = elements[0] || false;
+        prev = elements[index - 1] || elements[index] || false;
+        next = elements[index + 1] || elements[index] || false;
+      }
+      switch (direction) {
+        case 'left':
+          el = $(prev);
+          break;
+        case 'up':
+          el = $(first);
+          break;
+        case 'right':
+          el = $(next);
+          break;
+        case 'down':
+          el = $(last);
+      }
+      id = el.attr('data-id');
+      if (isMeta) {
+        selection = parent.selectionList().slice(0);
+        if (indexOf.call(selection, id) < 0) {
+          selection.addRemoveSelection(id);
+        } else {
+          first = selection.first();
+          selection.addRemoveSelection(id);
+          selection.addRemoveSelection(first);
+          selection.addRemoveSelection(id);
+        }
+        return list.parent.select(e, selection);
+      } else {
+        return list.parent.select(e, [id]);
+      }
+    };
+
+    ShowView.prototype.scrollTo = function(item) {
+      var e, el, error, marginBottom, marginTop, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, parentEl, res, resMax, resMin, stp;
+      if (!(this.controller.isActive() && item)) {
+        return;
+      }
+      if (item.constructor.className !== this.controller.el.data('current').models.className) {
+        return;
+      }
+      parentEl = this.controller.el;
+      try {
+        el = this.controller.list.findModelElement(item) || $();
+        if (!el.length) {
+          return;
+        }
+      } catch (error) {
+        e = error;
+        return;
+      }
+      marginTop = 55;
+      marginBottom = 10;
+      ohc = el[0].offsetHeight;
+      otc = el.offset().top;
+      stp = parentEl[0].scrollTop;
+      otp = parentEl.offset().top;
+      ohp = parentEl[0].offsetHeight;
+      resMin = stp + otc - (otp + marginTop);
+      resMax = stp + otc - (otp + ohp - ohc - marginBottom);
+      outOfRange = stp > resMin || stp < resMax;
+      if (!outOfRange) {
+        return;
+      }
+      outOfMinRange = stp > resMin;
+      outOfMaxRange = stp < resMax;
+      res = outOfMinRange ? resMin : outOfMaxRange ? resMax : void 0;
+      if (Math.abs(res - stp) <= ohc / 2) {
+        return;
+      }
+      return parentEl.animate({
+        scrollTop: res
+      }, {
+        queue: false,
+        duration: 'slow',
+        complete: (function(_this) {
+          return function() {};
+        })(this)
+      });
+    };
+
+    ShowView.prototype.zoom = function(e) {
+      var activeEl, controller, models, record;
+      controller = this.controller;
+      models = controller.el.data('current').models;
+      record = models.record;
+      if (!controller.list) {
+        return;
+      }
+      activeEl = controller.list.findModelElement(record);
+      $('.zoom', activeEl).click();
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    ShowView.prototype.back = function(e) {
+      var base, ref;
+      return ((ref = this.controller.list) != null ? ref.back(e) : void 0) || (typeof (base = this.controller).back === "function" ? base.back(e) : void 0);
+    };
+
+    ShowView.prototype.prev = function(e) {
+      history.back();
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
+    ShowView.prototype.keydown = function(e) {
+      var code, el, isFormfield;
+      code = e.charCode || e.keyCode;
+      el = $(document.activeElement);
+      isFormfield = $().isFormElement(el);
+      return this.log(e.type, code);
+    };
+
+    ShowView.prototype.keyup = function(e) {
+      var code, el, isFormfield, photos;
+      code = e.charCode || e.keyCode;
+      el = $(document.activeElement);
+      isFormfield = $().isFormElement(el);
+      this.log(e.type, code);
+      switch (code) {
+        case 8:
+          if (!isFormfield) {
+            this.destroySelected(e);
+            return e.preventDefault();
+          }
+          break;
+        case 13:
+          if (!isFormfield) {
+            this.zoom(e);
+            e.stopPropagation();
+            return e.preventDefault();
+          }
+          break;
+        case 27:
+          if (!(isFormfield || App.modal.exists)) {
+            this.back(e);
+            return e.preventDefault();
+          }
+          break;
+        case 32:
+          if (!isFormfield) {
+            photos = App.activePhotos();
+            if (photos.length) {
+              this.slideshowView.play(null, photos);
+            } else {
+              this.noSlideShow();
+            }
+            return e.preventDefault();
+          }
+          break;
+        case 37:
+          if (!isFormfield) {
+            this.selectByKey(e, 'left');
+            return e.preventDefault();
+          }
+          break;
+        case 38:
+          if (!isFormfield) {
+            this.selectByKey(e, 'up');
+            return e.preventDefault();
+          }
+          break;
+        case 39:
+          if (!isFormfield) {
+            this.selectByKey(e, 'right');
+            return e.preventDefault();
+          }
+          break;
+        case 40:
+          if (!isFormfield) {
+            this.selectByKey(e, 'down');
+            return e.preventDefault();
+          }
+          break;
+        case 65:
+          if (!isFormfield) {
+            if (e.metaKey || e.ctrlKey) {
+              return this.selectAll(e);
+            }
+          }
+          break;
+        case 67:
+          if (!isFormfield) {
+            if (e.metaKey || e.ctrlKey) {
+              return this.copy(e);
+            }
+          }
+          break;
+        case 73:
+          if (!isFormfield) {
+            if (e.metaKey || e.ctrlKey) {
+              return this.selectInv(e);
+            }
+          }
+          break;
+        case 77:
+          if (!isFormfield) {
+            if (e.metaKey || e.ctrlKey) {
+              return this.toggleVisible(e);
+            }
+          }
+          break;
+        case 86:
+          if (!isFormfield) {
+            if (e.metaKey || e.ctrlKey) {
+              return this.paste(e);
+            }
+          }
+          break;
+        case 88:
+          if (!isFormfield) {
+            if (e.metaKey || e.ctrlKey) {
+              return this.cut(e);
+            }
+          }
+          break;
+        case 82:
+          if (!isFormfield) {
+            if (e.metaKey || e.ctrlKey) {
+              return Spine.trigger('rotate', false, -90);
+            }
+          }
+      }
+    };
+
+    return ShowView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ShowView;
+  }
+
+}).call(this);
+}, "controllers/sidebar": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Drag, Extender, Photo, Product, ProductsPhoto, RefreshView, Root, Sidebar, SidebarList, Spine, SpineDragItem, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  Root = require('models/root');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  User = require("models/user");
+
+  Drag = require('extensions/drag');
+
+  SidebarList = require('controllers/sidebar_list');
+
+  RefreshView = require('controllers/refresh_view');
+
+  Extender = require('extensions/controller_extender');
+
+  SpineDragItem = require('models/drag_item');
+
+  Sidebar = (function(superClass) {
+    extend(Sidebar, superClass);
+
+    Sidebar.extend(Drag);
+
+    Sidebar.extend(Extender);
+
+    Sidebar.prototype.elements = {
+      'input': 'input',
+      '.flickr': 'flickr',
+      '.items': 'items',
+      '.inner': 'inner',
+      '.droppable': 'droppable',
+      '.opt-AllProducts': 'products',
+      '.opt-AllPhotos': 'photos',
+      '.expander': 'expander',
+      '#refresh': 'refreshEl'
+    };
+
+    Sidebar.prototype.events = {
+      'keyup input': 'filter',
+      'click .opt-CreateProduct': 'createProduct',
+      'click .opt-CreateCategory': 'createCategory',
+      'dblclick .draghandle': 'toggleDraghandle',
+      'sortupdate .sublist': 'sortupdate',
+      'dragstart  .alb.item': 'dragstart',
+      'dragover   .gal.item': 'dragover',
+      'dragenter  .gal.item': 'dragenter',
+      'dragenter  .alb.item': 'dragenter',
+      'dragleave  .gal.item': 'dragleave',
+      'dragleave  .alb.item': 'dragleave',
+      'dragend    .gal.item': 'dragend',
+      'dragend    .alb.item': 'dragend',
+      'drop       .gal.item': 'drop',
+      'drop       .alb.item': 'drop'
+    };
+
+    Sidebar.prototype.categoryTemplate = function(items) {
+      return $("#sidebarTemplate").tmpl(items);
+    };
+
+    Sidebar.prototype.productTemplate = function(items) {
+      return $("#productsSublistTemplate").tmpl(items);
+    };
+
+    function Sidebar() {
+      Sidebar.__super__.constructor.apply(this, arguments);
+      this.el.width(8);
+      this.defaultTemplate = this.categoryTemplate;
+      this.list = new SidebarList({
+        el: this.items,
+        template: this.categoryTemplate,
+        parent: this
+      });
+      this.refreshView = new RefreshView({
+        el: this.refreshEl
+      });
+      Category.one('refresh', this.proxy(this.refresh));
+      Category.bind('refresh:one', this.proxy(this.refreshOne));
+      Category.bind("ajaxError", Category.errorHandler);
+      Category.bind("ajaxSuccess", Category.successHandler);
+      Spine.bind('create:category', this.proxy(this.createCategory));
+      Spine.bind('edit:category', this.proxy(this.edit));
+      Spine.bind('destroy:category', this.proxy(this.destroyCategory));
+      this.bind('drag:timeout', this.proxy(this.expandAfterTimeout));
+      this.bind('drag:help', this.proxy(this.dragHelp));
+      this.bind('drag:start', this.proxy(this.dragStart));
+      this.bind('drag:enter', this.proxy(this.dragEnter));
+      this.bind('drag:over', this.proxy(this.dragOver));
+      this.bind('drag:leave', this.proxy(this.dragLeave));
+      this.bind('drag:drop', this.proxy(this.dragDrop));
+      this.model = this.defaultModel = 'Category';
+    }
+
+    Sidebar.prototype.filter = function() {
+      this.query = this.input.val();
+      return this.render();
+    };
+
+    Sidebar.prototype.filterById = function(id, model) {
+      if (!(model && /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(id || ''))) {
+        this.filter();
+      }
+      this.query = id;
+      this.model = model;
+      switch (model) {
+        case 'Product':
+          this.list.template = this.productTemplate;
+          break;
+        case 'Category':
+          this.list.template = this.categoryTemplate;
+      }
+      this.render('idSelect');
+      this.model = this.defaultModel;
+      return this.list.template = this.defaultTemplate;
+    };
+
+    Sidebar.prototype.refresh = function(items) {
+      return this.render();
+    };
+
+    Sidebar.prototype.refreshOne = function() {
+      return Category.one('refresh', this.proxy(this.refresh));
+    };
+
+    Sidebar.prototype.render = function(selectType) {
+      var items, model;
+      if (selectType == null) {
+        selectType = 'searchSelect';
+      }
+      model = Model[this.model] || Model[this.defaultModel];
+      items = model.filter(this.query, {
+        func: selectType
+      });
+      items = items.sort(model.nameSort);
+      Category.trigger('refresh:category');
+      this.list.render(items);
+      return this.refreshView.render();
+    };
+
+    Sidebar.prototype.newAttributes = function() {
+      if (User.first()) {
+        return {
+          name: this.categoryName(),
+          author: User.first().name,
+          user_id: User.first().id
+        };
+      } else {
+        return User.ping();
+      }
+    };
+
+    Sidebar.prototype.categoryName = function(proposal) {
+      if (proposal == null) {
+        proposal = 'Category ' + (function() {
+          var i, index, s;
+          s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          index = (i = Category.count() + 1) < s.length ? i : i % s.length;
+          return s.split('')[index];
+        })();
+      }
+      Category.each((function(_this) {
+        return function(record) {
+          if (record.name === proposal) {
+            return proposal = _this.categoryName(proposal + proposal.split(' ')[1][0]);
+          }
+        };
+      })(this));
+      return proposal;
+    };
+
+    Sidebar.prototype.createCategory = function(options) {
+      var category, cb;
+      if (options == null) {
+        options = {};
+      }
+      this.log('createCategory');
+      cb = function(category) {
+        category.updateSelectionID();
+        Root.updateSelection([category.id]);
+        if (options.products) {
+          Product.trigger('create:join', options.products, category);
+          if (options.deleteFromOrigin) {
+            Product.trigger('destroy:join', options.products, options.deleteFromOrigin);
+          }
+        }
+        if (!/^#\/categories\//.test(location.hash)) {
+          return this.navigate('/category', category.id);
+        } else {
+          return Category.trigger('activate', category.id);
+        }
+      };
+      category = new Category(this.newAttributes());
+      category.one('ajaxSuccess', this.proxy(cb));
+      return category.save();
+    };
+
+    Sidebar.prototype.createProduct = function() {
+      return Spine.trigger('create:product');
+    };
+
+    Sidebar.prototype.destroyCategory = function(id) {
+      var category;
+      if (!(category = Category.find(id))) {
+        return;
+      }
+      return category.destroy();
+    };
+
+    Sidebar.prototype.edit = function() {
+      App.categoryEditView.render();
+      return App.contentManager.change(App.categoryEditView);
+    };
+
+    Sidebar.prototype.toggleDraghandle = function(options) {
+      var speed, w, width;
+      width = (function(_this) {
+        return function() {
+          var max, w;
+          max = App.vmanager.currentDim;
+          w = _this.el.width();
+          if (App.vmanager.sleep) {
+            App.vmanager.awake();
+            _this.clb = function() {};
+            return max + "px";
+          } else {
+            _this.clb = App.vmanager.goSleep;
+            return '8px';
+          }
+        };
+      })(this);
+      w = width();
+      speed = 500;
+      return this.el.animate({
+        width: w
+      }, speed, (function(_this) {
+        return function() {
+          return _this.clb();
+        };
+      })(this));
+    };
+
+    Sidebar.prototype.expandAfterTimeout = function(e, timer) {
+      var categoryEl, item;
+      clearTimeout(timer);
+      categoryEl = $(e.target).closest('.gal.item');
+      item = categoryEl.item();
+      if (!(item && item.id !== Spine.DragItem.originRecord.id)) {
+        return;
+      }
+      return this.list.expand(item, true);
+    };
+
+    Sidebar.prototype.sortupdate = function(e, o) {
+      var category, gas, j, len, list, res, result;
+      list = o.item.parent();
+      category = list.parent().item();
+      gas = CategoriesProduct.filter(category.id, {
+        key: 'category_id'
+      });
+      result = [];
+      list.children().each(function(index) {
+        var ga, j, len, product, results;
+        product = $(this).item();
+        results = [];
+        for (j = 0, len = gas.length; j < len; j++) {
+          ga = gas[j];
+          if (ga.product_id === product.id && parseInt(ga.order) !== index) {
+            ga.order = index;
+            results.push(result.push(ga));
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      });
+      for (j = 0, len = result.length; j < len; j++) {
+        res = result[j];
+        res.save({
+          ajax: false
+        });
+      }
+      category.save();
+      return Spine.trigger('reorder', category);
+    };
+
+    return Sidebar;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Sidebar;
+  }
+
+}).call(this);
+}, "controllers/sidebar_flickr": function(exports, require, module) {(function() {
+  var $, Extender, SidebarFlickr, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  SidebarFlickr = (function(superClass) {
+    extend(SidebarFlickr, superClass);
+
+    SidebarFlickr.extend(Extender);
+
+    SidebarFlickr.prototype.elements = {
+      '.items': 'items',
+      '.inner': 'inner',
+      '.expander': 'expander'
+    };
+
+    SidebarFlickr.prototype.events = {
+      'click      .expander': 'expand',
+      'click      .opt-flickr': 'expand',
+      'click      .opt-FlickrRecent': 'navRecent',
+      'click      .opt-FlickrInter': 'navInter'
+    };
+
+    SidebarFlickr.prototype.template = function(items) {
+      return $("#sidebarFlickrTemplate").tmpl(items);
+    };
+
+    function SidebarFlickr() {
+      SidebarFlickr.__super__.constructor.apply(this, arguments);
+      this.render();
+    }
+
+    SidebarFlickr.prototype.render = function() {
+      var items;
+      this.log('render');
+      items = {
+        name: 'flickr',
+        sub: [
+          {
+            name: 'Recent Photos',
+            klass: 'opt-FlickrRecent',
+            icon: 'picture'
+          }, {
+            name: 'Interesting Stuff',
+            klass: 'opt-FlickrInter',
+            icon: 'picture'
+          }
+        ]
+      };
+      return this.html(this.template(items));
+    };
+
+    SidebarFlickr.prototype.expand = function(e) {
+      var parent;
+      parent = $(e.target).closest('li');
+      parent.toggleClass('open');
+      if (parent.hasClass('open')) {
+        this.navigate('/flickr/');
+      }
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    SidebarFlickr.prototype.navRecent = function(e) {
+      this.log('flickr recent clicked');
+      this.navigate('/flickr', 'recent/1');
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    SidebarFlickr.prototype.navInter = function(e) {
+      this.log('flickr interesting clicked');
+      this.navigate('/flickr', 'inter/1');
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    return SidebarFlickr;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = SidebarFlickr;
+  }
+
+}).call(this);
+}, "controllers/sidebar_list": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Drag, Extender, Product, ProductsPhoto, Root, SidebarList, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Root = require("models/root");
+
+  Product = require('models/product');
+
+  Category = require('models/category');
+
+  ProductsPhoto = require('models/products_photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  Drag = require('extensions/drag');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  SidebarList = (function(superClass) {
+    extend(SidebarList, superClass);
+
+    SidebarList.extend(Drag);
+
+    SidebarList.extend(Extender);
+
+    SidebarList.prototype.elements = {
+      '.gal.item': 'item'
+    };
+
+    SidebarList.prototype.events = {
+      "click      .item": 'click',
+      "click      .expander": 'clickExpander'
+    };
+
+    SidebarList.prototype.selectFirst = true;
+
+    SidebarList.prototype.contentTemplate = function(items) {
+      return $('#sidebarContentTemplate').tmpl(items);
+    };
+
+    SidebarList.prototype.sublistTemplate = function(items) {
+      return $('#productsSublistTemplate').tmpl(items);
+    };
+
+    SidebarList.prototype.ctaTemplate = function(item) {
+      return $('#ctaTemplate').tmpl(item);
+    };
+
+    function SidebarList() {
+      this.change = bind(this.change, this);
+      SidebarList.__super__.constructor.apply(this, arguments);
+      Category.bind('change:collection', this.proxy(this.renderCategory));
+      CategoriesProduct.bind('update', this.proxy(this.renderFromCategoriesProduct));
+      Product.bind('change:collection', this.proxy(this.renderProduct));
+      Category.bind('change', this.proxy(this.change));
+      Product.bind('create destroy update', this.proxy(this.renderSublists));
+      Category.bind('change:selection', this.proxy(this.exposeSublistSelection));
+      Category.bind('current', this.proxy(this.exposeSelection));
+      Product.bind('current', this.proxy(this.scrollTo));
+      Category.bind('current', this.proxy(this.scrollTo));
+    }
+
+    SidebarList.prototype.template = function() {
+      return arguments[0];
+    };
+
+    SidebarList.prototype.change = function(item, mode, e) {
+      this.log('change');
+      switch (mode) {
+        case 'create':
+          this.current = item;
+          this.create(item);
+          return this.exposeSelection(item);
+        case 'update':
+          this.current = item;
+          return this.update(item);
+        case 'destroy':
+          this.current = false;
+          return this.destroy(item);
+      }
+    };
+
+    SidebarList.prototype.create = function(item) {
+      this.append(this.template(item));
+      return this.reorder(item);
+    };
+
+    SidebarList.prototype.update = function(item) {
+      this.updateTemplate(item);
+      return this.reorder(item);
+    };
+
+    SidebarList.prototype.destroy = function(item) {
+      return this.children().forItem(item, true).detach();
+    };
+
+    SidebarList.prototype.render = function(items, mode) {
+      var categoryEl, item, j, len;
+      this.log('render');
+      this.children().addClass('invalid');
+      for (j = 0, len = items.length; j < len; j++) {
+        item = items[j];
+        categoryEl = this.children().forItem(item);
+        if (!categoryEl.length) {
+          this.append(this.template(item));
+          this.reorder(item);
+        } else {
+          this.updateTemplate(item).removeClass('invalid');
+        }
+        this.renderOneSublist(item);
+      }
+      return this.children('.invalid').remove();
+    };
+
+    SidebarList.prototype.reorder = function(item) {
+      var children, id, idxAfterSort, idxBeforeSort, index, newEl, oldEl;
+      this.log('reorder');
+      id = item.id;
+      index = function(id, list) {
+        var i, itm, j, len;
+        for (i = j = 0, len = list.length; j < len; i = ++j) {
+          itm = list[i];
+          if (itm.id === id) {
+            return i;
+          }
+        }
+        return i;
+      };
+      children = this.children();
+      oldEl = this.children().forItem(item);
+      idxBeforeSort = this.children().index(oldEl);
+      idxAfterSort = index(id, Category.all().sort(Category.nameSort));
+      newEl = $(children[idxAfterSort]);
+      if (idxBeforeSort < idxAfterSort) {
+        return newEl.after(oldEl);
+      } else if (idxBeforeSort > idxAfterSort) {
+        return newEl.before(oldEl);
+      }
+    };
+
+    SidebarList.prototype.updateSublist = function(ga) {
+      var category;
+      category = Category.find(ga.category_id);
+      return this.renderOneSublist(category);
+    };
+
+    SidebarList.prototype.renderAllSublist = function() {
+      var gal, index, j, len, ref, results;
+      this.log('renderAllSublist');
+      ref = Category.records;
+      results = [];
+      for (index = j = 0, len = ref.length; j < len; index = ++j) {
+        gal = ref[index];
+        results.push(this.renderOneSublist(gal));
+      }
+      return results;
+    };
+
+    SidebarList.prototype.renderSublists = function(product) {
+      var category, ga, gas, j, len, results;
+      this.log('renderSublists');
+      gas = CategoriesProduct.filter(product.id, {
+        key: 'product_id'
+      });
+      results = [];
+      for (j = 0, len = gas.length; j < len; j++) {
+        ga = gas[j];
+        if (category = Category.find(ga['category_id'])) {
+          results.push(this.renderOneSublist(category));
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    };
+
+    SidebarList.prototype.renderFromCategoriesProduct = function(ga) {
+      var category;
+      this.log('renderFromCategoriesProduct');
+      if (category = Category.find(ga['category_id'])) {
+        return this.renderOneSublist(category);
+      }
+    };
+
+    SidebarList.prototype.renderOneSublist = function(category) {
+      var categoryEl, categorySublist, filterOptions, j, len, product, products;
+      if (category == null) {
+        category = Category.record;
+      }
+      this.log('renderOneSublist');
+      filterOptions = {
+        model: 'Category',
+        key: 'category_id',
+        sorted: 'sortByOrder'
+      };
+      products = Product.filterRelated(category.id, filterOptions);
+      for (j = 0, len = products.length; j < len; j++) {
+        product = products[j];
+        product.count = ProductsPhoto.filter(product.id, {
+          key: 'product_id'
+        }).length;
+        product.ignore = !(CategoriesProduct.isActiveProduct(category.id, product.id));
+      }
+      if (!products.length) {
+        products.push({
+          flash: ' '
+        });
+      }
+      categoryEl = this.children().forItem(category);
+      categorySublist = $('ul', categoryEl);
+      categorySublist.html(this.sublistTemplate(products));
+      categorySublist.sortable('product');
+      return this.exposeSublistSelection(null, category.id);
+    };
+
+    SidebarList.prototype.updateTemplate = function(item) {
+      var categoryContentEl, categoryEl, e, error, tmplItem;
+      this.log('updateTemplate');
+      categoryEl = this.children().forItem(item);
+      categoryContentEl = $('.item-content', categoryEl);
+      tmplItem = categoryContentEl.tmplItem();
+      tmplItem.tmpl = $("#sidebarContentTemplate").template();
+      try {
+        tmplItem.update();
+      } catch (error) {
+        e = error;
+      }
+      return categoryEl;
+    };
+
+    SidebarList.prototype.renderItemFromCategoriesProduct = function(ga, mode) {
+      var category;
+      category = Category.find(ga.category_id);
+      if (category) {
+        this.updateTemplate(category);
+        return this.renderOneSublist(category);
+      }
+    };
+
+    SidebarList.prototype.renderCategory = function(item) {
+      this.updateTemplate(item);
+      return this.renderOneSublist(item);
+    };
+
+    SidebarList.prototype.renderProduct = function(item) {
+      var category, ga, gas, j, len, results;
+      gas = CategoriesProduct.filter(item.id, {
+        key: 'product_id'
+      });
+      results = [];
+      for (j = 0, len = gas.length; j < len; j++) {
+        ga = gas[j];
+        if (category = Category.find(ga.category_id)) {
+          results.push(this.renderCategory(category));
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    };
+
+    SidebarList.prototype.renderItemFromProductsPhoto = function(ap) {
+      var ga, gas, j, len, results;
+      this.log('renderItemFromProductsPhoto');
+      gas = CategoriesProduct.filter(ap.product_id, {
+        key: 'product_id'
+      });
+      results = [];
+      for (j = 0, len = gas.length; j < len; j++) {
+        ga = gas[j];
+        results.push(this.renderItemFromCategoriesProduct(ga));
+      }
+      return results;
+    };
+
+    SidebarList.prototype.exposeSelection = function(item) {
+      if (item == null) {
+        item = Category.record;
+      }
+      this.children().removeClass('active');
+      if (item) {
+        this.children().forItem(item).addClass("active");
+      }
+      this.expand(item, true);
+      return this.exposeSublistSelection(null, item != null ? item.id : void 0);
+    };
+
+    SidebarList.prototype.exposeSublistSelection = function(selection, id) {
+      var activeEl, activeProduct, categoryEl, item, j, len, product, productsEl, ref, ref1, sel;
+      if (selection == null) {
+        selection = Category.selectionList();
+      }
+      if (id == null) {
+        id = (ref = Category.record) != null ? ref.id : void 0;
+      }
+      this.log('exposeSublistSelection');
+      item = Category.find(id);
+      if (item) {
+        categoryEl = this.children().forItem(item);
+        productsEl = categoryEl.find('li');
+        productsEl.removeClass('selected active');
+        $('.glyphicon', categoryEl).removeClass('glyphicon-folder-open');
+        ref1 = item.selectionList();
+        for (j = 0, len = ref1.length; j < len; j++) {
+          sel = ref1[j];
+          if (product = Product.find(sel)) {
+            productsEl.forItem(product).addClass('selected');
+          }
+        }
+        if (activeProduct = Product.find(item.selectionList().first())) {
+          activeEl = productsEl.forItem(activeProduct).addClass('active');
+          $('.glyphicon', activeEl).addClass('glyphicon-folder-open');
+        }
+      }
+      return this.refreshElements();
+    };
+
+    SidebarList.prototype.click = function(e) {
+      var category, el, item, ref;
+      el = $(e.target).closest('li');
+      item = el.item();
+      switch (item.constructor.className) {
+        case 'Category':
+          this.expand(item, !(((ref = Category.record) != null ? ref.id : void 0) === item.id) || !this.isOpen(el));
+          return this.navigate('/category', item.id);
+        case 'Product':
+          category = $(e.target).closest('li.gal').item();
+          return this.navigate('/category', category.id, item.id);
+      }
+    };
+
+    SidebarList.prototype.clickExpander = function(e) {
+      var categoryEl, isOpen, item;
+      categoryEl = $(e.target).closest('li.gal');
+      isOpen = categoryEl.hasClass('open');
+      if (!isOpen) {
+        categoryEl.addClass('manual');
+      } else {
+        categoryEl.removeClass('manual');
+      }
+      item = categoryEl.item();
+      if (item) {
+        this.expand(item, !isOpen, e);
+      }
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    SidebarList.prototype.expand = function(item, open, e) {
+      var categoryEl, expander, targetIsExpander;
+      categoryEl = this.categoryFromItem(item);
+      expander = $('.expander', categoryEl);
+      if (e) {
+        targetIsExpander = $(e.currentTarget).hasClass('expander');
+      }
+      if (open) {
+        return this.openSublist(categoryEl);
+      } else {
+        if (!categoryEl.hasClass('manual')) {
+          return this.closeSublist(categoryEl);
+        }
+      }
+    };
+
+    SidebarList.prototype.isOpen = function(el) {
+      return el.hasClass('open');
+    };
+
+    SidebarList.prototype.openSublist = function(el) {
+      return el.addClass('open');
+    };
+
+    SidebarList.prototype.closeSublist = function(el) {
+      return el.removeClass('open manual');
+    };
+
+    SidebarList.prototype.closeAllSublists_ = function(item) {
+      var category, j, len, parentEl, ref, results;
+      ref = Category.all();
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        category = ref[j];
+        parentEl = this.categoryFromItem(category);
+        if (!parentEl.hasClass('manual')) {
+          results.push(this.expand(category, (item != null ? item.id : void 0) === category.id));
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    };
+
+    SidebarList.prototype.closeAllSublists = function() {
+      var category, j, len, ref, results;
+      ref = Category.all();
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        category = ref[j];
+        results.push(this.expand(category));
+      }
+      return results;
+    };
+
+    SidebarList.prototype.closeAllOtherSublists = function(item) {
+      var category, j, len, ref, results;
+      ref = Category.all();
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        category = ref[j];
+        results.push(this.expand(category, (item != null ? item.id : void 0) === category.id));
+      }
+      return results;
+    };
+
+    SidebarList.prototype.categoryFromItem = function(item) {
+      return this.children().forItem(item);
+    };
+
+    SidebarList.prototype.close = function() {};
+
+    SidebarList.prototype.show = function(e) {
+      App.contentManager.change(App.showView);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    SidebarList.prototype.scrollTo = function(item) {
+      var clsName, el, el_, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, queued, res, resMax, resMin, speed, stp, ul;
+      if (!(item && Category.record)) {
+        return;
+      }
+      el = this.children().forItem(Category.record);
+      clsName = item.constructor.className;
+      switch (clsName) {
+        case 'Category':
+          queued = true;
+          ul = $('ul', el);
+          ul.hide();
+          el_ = el[0];
+          if (el_) {
+            ohc = el_.offsetHeight;
+          }
+          ul.show();
+          speed = 300;
+          break;
+        case 'Product':
+          queued = false;
+          ul = $('ul', el);
+          el = $('li', ul).forItem(item);
+          el_ = el[0];
+          if (el_) {
+            ohc = el_.offsetHeight;
+          }
+          speed = 700;
+      }
+      if (!el.length) {
+        return;
+      }
+      otc = el.offset().top;
+      stp = this.el[0].scrollTop;
+      otp = this.el.offset().top;
+      ohp = this.el[0].offsetHeight;
+      resMin = stp + otc - otp;
+      resMax = stp + otc - (otp + ohp - ohc);
+      outOfRange = stp > resMin || stp < resMax;
+      if (!outOfRange) {
+        return;
+      }
+      outOfMinRange = stp > resMin;
+      outOfMaxRange = stp < resMax;
+      res = outOfMinRange ? resMin : outOfMaxRange ? resMax : void 0;
+      return this.el.animate({
+        scrollTop: res
+      }, {
+        queue: queued,
+        duration: speed,
+        complete: (function(_this) {
+          return function() {};
+        })(this)
+      });
+    };
+
+    return SidebarList;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = SidebarList;
+  }
+
+}).call(this);
+}, "controllers/slideshow_header": function(exports, require, module) {(function() {
+  var $, SlideshowHeader, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  SlideshowHeader = (function(superClass) {
+    extend(SlideshowHeader, superClass);
+
+    SlideshowHeader.prototype.template = function(item) {};
+
+    function SlideshowHeader() {
+      SlideshowHeader.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+    }
+
+    SlideshowHeader.prototype.render = function() {};
+
+    SlideshowHeader.prototype.active = function() {
+      return this.render();
+    };
+
+    return SlideshowHeader;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = SlideshowHeader;
+  }
+
+}).call(this);
+}, "controllers/slideshow_view": function(exports, require, module) {(function() {
+  var $, Category, Controller, Extender, Model, Photo, Product, ProductsPhoto, Settings, SlideshowView, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Controller = Spine.Controller;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Settings = require('models/settings');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/uri');
+
+  require('extensions/tmpl');
+
+  require('extensions/utils');
+
+  SlideshowView = (function(superClass) {
+    extend(SlideshowView, superClass);
+
+    SlideshowView.extend(Extender);
+
+    SlideshowView.prototype.elements = {
+      '.items': 'itemsEl',
+      '.thumbnail': 'thumb'
+    };
+
+    SlideshowView.prototype.events = {
+      'click .item': 'click',
+      'click .back': 'back',
+      'keydown': 'keydown'
+    };
+
+    SlideshowView.prototype.template = function(items) {
+      return $("#photosSlideshowTemplate").tmpl(items);
+    };
+
+    function SlideshowView() {
+      SlideshowView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.el.data('current', {
+        model: Category,
+        models: Product
+      });
+      this.temp = [];
+      this.viewport = $('.items', this.el);
+      this.thumbSize = 240;
+      this.defaults = {
+        index: 0,
+        startSlideshow: true,
+        slideshowInterval: 2000,
+        clearSlides: true,
+        container: '#blueimp-category',
+        displayClass: 'blueimp-category-display',
+        fullScreen: false,
+        carousel: false,
+        useBootstrapModal: true,
+        onopen: this.proxy(this.onopenCategory),
+        onopened: this.proxy(this.onopenedCategory),
+        onclose: this.proxy(this.oncloseCategory),
+        onclosed: this.proxy(this.onclosedCategory),
+        onslide: this.onslide
+      };
+      this.bind('play', this.proxy(this.play));
+      Spine.bind('slider:change', this.proxy(this.size));
+      Spine.bind('chromeless', this.proxy(this.chromeless));
+      Spine.bind('loading:done', this.proxy(this.loadingDone));
+    }
+
+    SlideshowView.prototype.active = function(params) {
+      if (params) {
+        this.options = $().unparam(params);
+      }
+      App.showView.trigger('change:toolbarOne', ['SlideshowPackage', App.showView.initSlider]);
+      App.showView.trigger('change:toolbarTwo', ['Close']);
+      return this.render();
+    };
+
+    SlideshowView.prototype.render = function() {
+      var items;
+      this.log('render');
+      items = this.temp;
+      if (!items.length) {
+        this.itemsEl.html('<label class="invite"> <span class="enlightened">This slideshow does not have any images &nbsp; <p>Note: Select one or more albums with images.</p> </span> <button class="back dark large"><i class="glyphicon glyphicon-chevron-up"></i><span>&nbsp;Back</span></button> </label>');
+      } else {
+        this.itemsEl.html(this.template(items));
+        this.uri(items);
+        this.refreshElements();
+        this.size(App.showView.sliderOutValue());
+      }
+      return this.el;
+    };
+
+    SlideshowView.prototype.loadingDone = function() {
+      if (!this.isActive()) {
+        return;
+      }
+      return this.temp.update([]);
+    };
+
+    SlideshowView.prototype.params = function(width, height) {
+      if (width == null) {
+        width = this.parent.thumbSize;
+      }
+      if (height == null) {
+        height = this.parent.thumbSize;
+      }
+      return {
+        width: width,
+        height: height
+      };
+    };
+
+    SlideshowView.prototype.uri = function(items) {
+      this.log('uri');
+      return Photo.uri(this.params(), (function(_this) {
+        return function(xhr, record) {
+          return _this.callback(items, xhr);
+        };
+      })(this), items);
+    };
+
+    SlideshowView.prototype.callback = function(items, json) {
+      var ele, i, img, index, item, jsn, len, results, searchJSON;
+      this.log('callback');
+      searchJSON = function(id) {
+        var i, itm, len;
+        for (i = 0, len = json.length; i < len; i++) {
+          itm = json[i];
+          if (itm[id]) {
+            return itm[id];
+          }
+        }
+      };
+      results = [];
+      for (index = i = 0, len = items.length; i < len; index = ++i) {
+        item = items[index];
+        jsn = searchJSON(item.id);
+        if (jsn) {
+          ele = this.itemsEl.children().forItem(item);
+          img = new Image;
+          img.onload = this.imageLoad;
+          img.that = this;
+          img.element = ele;
+          img.index = index;
+          img.items = items;
+          img.src = jsn.src;
+          results.push($(img).addClass('hide'));
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    };
+
+    SlideshowView.prototype.imageLoad = function() {
+      var css;
+      css = 'url(' + this.src + ')';
+      $('.thumbnail', this.element).css({
+        'backgroundImage': css,
+        'backgroundPosition': 'center, center',
+        'backgroundSize': '100%'
+      }).append(this);
+      if (this.index === this.items.length - 1) {
+        return this.that.loadModal(this.items);
+      }
+    };
+
+    SlideshowView.prototype.modalParams = function() {
+      return {
+        width: 600,
+        height: 451,
+        square: 2,
+        force: false
+      };
+    };
+
+    SlideshowView.prototype.loadModal = function(items, mode) {
+      if (mode == null) {
+        mode = 'html';
+      }
+      return Photo.uri(this.modalParams(), (function(_this) {
+        return function(xhr, record) {
+          return _this.callbackModal(xhr, items);
+        };
+      })(this), items);
+    };
+
+    SlideshowView.prototype.callbackModal = function(json, items) {
+      var el, i, item, jsn, len, searchJSON, thumb;
+      this.log('callbackModal');
+      searchJSON = function(id) {
+        var i, itm, len;
+        for (i = 0, len = json.length; i < len; i++) {
+          itm = json[i];
+          if (itm[id]) {
+            return itm[id];
+          }
+        }
+      };
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        jsn = searchJSON(item.id);
+        if (jsn) {
+          el = this.itemsEl.children().forItem(item);
+          thumb = $('.thumbnail', el);
+          thumb.attr({
+            'href': jsn.src,
+            'title': item.title || item.src,
+            'data-category': 'category',
+            'data-photo': item.photo
+          });
+        }
+      }
+      return this.trigger('slideshow:ready');
+    };
+
+    SlideshowView.prototype.size = function(val, bg) {
+      if (val == null) {
+        val = this.thumbSize;
+      }
+      if (bg == null) {
+        bg = 'none';
+      }
+      return this.thumb.css({
+        'height': val + 'px',
+        'width': val + 'px',
+        'backgroundSize': bg
+      });
+    };
+
+    SlideshowView.prototype.toggleFullScreen = function(activate) {
+      var isActive, root;
+      root = document.documentElement;
+      if (activate || !(isActive = this.fullScreenEnabled())) {
+        if (root.webkitRequestFullScreen) {
+          root.webkitRequestFullScreen(window.Element.ALLOW_KEYBOARD_INPUT);
+        } else if (root.mozRequestFullScreen) {
+          root.mozRequestFullScreen();
+        }
+      } else {
+        (document.webkitCancelFullScreen || document.mozCancelFullScreen || $.noop).apply(document);
+      }
+      return this.fullScreenEnabled();
+    };
+
+    SlideshowView.prototype.fullScreenEnabled = function() {
+      return !!window.fullScreen;
+    };
+
+    SlideshowView.prototype.slideshowable = function() {
+      return this.temp().length;
+    };
+
+    SlideshowView.prototype.click = function(e) {
+      var options;
+      options = {
+        index: this.thumb.index($(e.target)),
+        startSlideshow: false
+      };
+      this.play(options);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    SlideshowView.prototype.play = function(options, list) {
+      var p, params;
+      if (options == null) {
+        options = {
+          index: 0
+        };
+      }
+      this.options = options;
+      if (!this.isActive()) {
+        if (!/^#\/slideshow\//.test(location.hash)) {
+          this.previousHash = location.hash;
+        }
+        params = $.param(options);
+        p = this.temp.update(list || App.activePhotos());
+        if (p.length) {
+          this.one('slideshow:ready', this.proxy(this.playSlideshow));
+        }
+        return this.navigate('/slideshow', params);
+      } else {
+        return this.playSlideshow();
+      }
+    };
+
+    SlideshowView.prototype.playSlideshow = function(options) {
+      if (options == null) {
+        options = this.options;
+      }
+      if (this.categoryIsActive()) {
+        return;
+      }
+      options = $().extend({}, this.defaults, options);
+      this.refreshElements();
+      this.category = blueimp.Category(this.thumb, options);
+      return delete this.options;
+    };
+
+    SlideshowView.prototype.onopenedCategory = function(e) {};
+
+    SlideshowView.prototype.onopenCategory = function(e) {
+      return App.modal.exists = true;
+    };
+
+    SlideshowView.prototype.oncloseCategory = function(e) {
+      if (this.previousHash) {
+        location.hash = this.previousHash;
+        return delete this.previousHash;
+      } else {
+        return this.parent.back();
+      }
+    };
+
+    SlideshowView.prototype.onclosedCategory = function(e) {
+      this.images = [];
+      return App.modal.exists = false;
+    };
+
+    SlideshowView.prototype.onslide = function(index, slide) {
+      var node, text;
+      text = this.list[index].getAttribute('data-photo');
+      node = this.container.find('.photo');
+      node.empty();
+      if (text) {
+        return node[0].appendChild(document.createTextNode(text));
+      }
+    };
+
+    SlideshowView.prototype.categoryIsActive = function() {
+      return $('#blueimp-category').hasClass(this.defaults.displayClass);
+    };
+
+    SlideshowView.prototype.back = function(e) {
+      var previousHash;
+      if (previousHash = Settings.findUserSettings().previousHash) {
+        return location.hash = previousHash;
+      } else {
+        return this.navigate('/categories/');
+      }
+    };
+
+    SlideshowView.prototype.keydown = function(e) {
+      var code;
+      code = e.charCode || e.keyCode;
+      this.log('SlideshowView:keydownCode: ' + code);
+      switch (code) {
+        case 27:
+          this.back(e);
+          return e.preventDefault();
+      }
+    };
+
+    return SlideshowView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = SlideshowView;
+  }
+
+}).call(this);
+}, "controllers/toolbar_view": function(exports, require, module) {(function() {
+  var $, Extender, Model, Spine, Toolbar, ToolbarView,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Toolbar = Model.Toolbar = require('models/toolbar');
+
+  Extender = require('extensions/controller_extender');
+
+  ToolbarView = (function(superClass) {
+    extend(ToolbarView, superClass);
+
+    ToolbarView.extend(Extender);
+
+    ToolbarView.prototype.template = function(items) {
+      return $('#toolsTemplate').tmpl(items);
+    };
+
+    function ToolbarView() {
+      ToolbarView.__super__.constructor.apply(this, arguments);
+      this.current = [];
+    }
+
+    ToolbarView.prototype.elements = {
+      'li': 'items'
+    };
+
+    ToolbarView.prototype.events = {
+      'click': 'click'
+    };
+
+    ToolbarView.prototype.click = function(e) {
+      return this.lastcontrol = $(e.target);
+    };
+
+    ToolbarView.prototype.change = function(list) {
+      var content, i, itm, lastItem, len, tools;
+      if (list == null) {
+        list = [];
+      }
+      if (list.length) {
+        tools = Toolbar.filter(list);
+        content = new Array;
+        for (i = 0, len = tools.length; i < len; i++) {
+          itm = tools[i];
+          $.merge(content, itm.content);
+        }
+        this.current = content;
+        lastItem = list.last();
+        if (typeof lastItem === 'function') {
+          this.current.cb = lastItem;
+        }
+      }
+      return this.render();
+    };
+
+    ToolbarView.prototype.filterTools = function(list) {
+      return Toolbar.select(list);
+    };
+
+    ToolbarView.prototype.sort = function(a, b) {};
+
+    ToolbarView.prototype.refresh = function() {
+      return this.change();
+    };
+
+    ToolbarView.prototype.lock = function() {
+      return this.locked = true;
+    };
+
+    ToolbarView.prototype.unlock = function() {
+      return this.locked = false;
+    };
+
+    ToolbarView.prototype.clear = function() {
+      this.current = [];
+      return this.render();
+    };
+
+    ToolbarView.prototype.render = function(list) {
+      var ref;
+      if (list == null) {
+        list = this.current;
+      }
+      if (this.locked) {
+        return;
+      }
+      this.trigger('before:refresh', this);
+      this.html(this.template(list));
+      if ((ref = this.current) != null) {
+        if (typeof ref.cb === "function") {
+          ref.cb();
+        }
+      }
+      return this.trigger('refresh', this, this.lastcontrol);
+    };
+
+    return ToolbarView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ToolbarView;
+  }
+
+}).call(this);
+}, "controllers/upload_edit_view": function(exports, require, module) {(function() {
+  var $, Product, Settings, Spine, UploadEditView,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Product = require("models/product");
+
+  Settings = require("models/settings");
+
+  UploadEditView = (function(superClass) {
+    extend(UploadEditView, superClass);
+
+    UploadEditView.prototype.elements = {
+      '.delete:not(.files .delete)': 'clearEl',
+      '.files': 'filesEl',
+      '.uploadinfo': 'uploadinfoEl'
+    };
+
+    UploadEditView.prototype.events = {
+      'fileuploaddone': 'done',
+      'fileuploadsubmit': 'submit',
+      'fileuploadfail': 'fail',
+      'fileuploaddrop': 'drop',
+      'fileuploadadd': 'add',
+      'fileuploadpaste': 'paste',
+      'fileuploadsend': 'send',
+      'fileuploadprogressall': 'alldone',
+      'fileuploadprogress': 'progress',
+      'fileuploaddestroyed': 'destroyed'
+    };
+
+    UploadEditView.prototype.template = function(item) {
+      return $('#template-upload').tmpl(item);
+    };
+
+    function UploadEditView() {
+      UploadEditView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Product.bind('change:current', this.proxy(this.changeDataLink));
+      this.data = {
+        fileslist: [
+          {
+            link: false
+          }
+        ]
+      };
+      this.queue = [];
+    }
+
+    UploadEditView.prototype.changeDataLink = function(product) {
+      return this.data.link = product != null ? product.id : void 0;
+    };
+
+    UploadEditView.prototype.change = function(item) {
+      return this.render();
+    };
+
+    UploadEditView.prototype.active = function() {};
+
+    UploadEditView.prototype.render = function() {
+      var category, selection;
+      selection = Category.selectionList();
+      category = Category.record;
+      this.product = Product.find(selection[0]) || false;
+      this.uploadinfoEl.html(this.template({
+        category: category,
+        product: this.product
+      }));
+      this.refreshElements();
+      return this.el;
+    };
+
+    UploadEditView.prototype.destroyed = function() {};
+
+    UploadEditView.prototype.fail = function(xhr, textStatus, errorThrown) {
+      var product;
+      product = Product.find(this.data.link);
+      return Spine.trigger('loading:fail', product, textStatus, errorThrown);
+    };
+
+    UploadEditView.prototype.drop = function(e, data) {};
+
+    UploadEditView.prototype.add = function(e, data) {
+      var file, i, len, ref;
+      ref = data.files;
+      for (i = 0, len = ref.length; i < len; i++) {
+        file = ref[i];
+        this.data.fileslist.push(file);
+      }
+      this.trigger('active');
+      if (!Settings.isAutoUpload()) {
+        App.showView.openView();
+      }
+      return this.clearEl.click();
+    };
+
+    UploadEditView.prototype.notify = function() {
+      return App.modal2ButtonView.show({
+        header: 'No Product selected',
+        body: 'Please select an product .',
+        info: '',
+        button_1_text: 'Hallo',
+        button_2_text: 'Bye'
+      });
+    };
+
+    UploadEditView.prototype.send = function(e, data) {
+      var product;
+      product = Product.find(this.data.link);
+      return Spine.trigger('loading:start', product);
+    };
+
+    UploadEditView.prototype.alldone = function(e, data) {};
+
+    UploadEditView.prototype.done = function(e, data) {
+      var i, j, len, len1, options, photo, photos, product, raw, raws, selection;
+      product = Product.find(this.data.link);
+      raws = $.parseJSON(data.jqXHR.responseText);
+      selection = [];
+      photos = [];
+      for (i = 0, len = raws.length; i < len; i++) {
+        raw = raws[i];
+        photos.push(new Photo(raw['Photo']).save({
+          ajax: false
+        }));
+      }
+      for (j = 0, len1 = photos.length; j < len1; j++) {
+        photo = photos[j];
+        selection.addRemoveSelection(photo.id);
+      }
+      if (product) {
+        options = $().extend({}, {
+          photos: selection,
+          product: product
+        });
+        Photo.trigger('create:join', options);
+      } else {
+        Photo.trigger('created', photos);
+        this.navigate('/category', '', '');
+      }
+      Spine.trigger('loading:done', product);
+      Photo.trigger('activate', selection.last());
+      return e.preventDefault();
+    };
+
+    UploadEditView.prototype.progress = function(e, data) {};
+
+    UploadEditView.prototype.paste = function(e, data) {
+      this.log('paste');
+      return this.drop(e, data);
+    };
+
+    UploadEditView.prototype.submit = function(e, data) {};
+
+    UploadEditView.prototype.changedSelected = function(product) {
+      var ref;
+      product = Product.find(product.id);
+      if (this.data.fileslist.length) {
+        return $.extend(this.data, {
+          link: (ref = Product.record) != null ? ref.id : void 0
+        });
+      }
+    };
+
+    return UploadEditView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = UploadEditView;
+  }
+
+}).call(this);
+}, "controllers/wait_view": function(exports, require, module) {(function() {
+  var $, Controller, Extender, ModalSimpleView, Model, Spine, WaitView,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Controller = Spine.Controller;
+
+  ModalSimpleView = require("controllers/modal_simple_view");
+
+  Extender = require('extensions/controller_extender');
+
+  WaitView = (function(superClass) {
+    extend(WaitView, superClass);
+
+    WaitView.extend(Extender);
+
+    function WaitView() {
+      WaitView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.modalSimpleView = new ModalSimpleView({
+        el: $('#modal-view')
+      });
+      this.header = new Spine.Controller;
+      Spine.bind('done:wait', this.proxy(this.close));
+    }
+
+    WaitView.prototype.render = function(items) {};
+
+    WaitView.prototype.show = function(params) {
+      return App.showView.trigger('canvas', this);
+    };
+
+    WaitView.prototype.active = function() {
+      return this.notify();
+    };
+
+    WaitView.prototype.notify = function() {
+      this.modalSimpleView.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      this.modalSimpleView.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      this.modalSimpleView.el.one('show.bs.modal', this.proxy(this.showmodal));
+      return this.modalSimpleView.show({
+        header: 'Wait',
+        body: 'Body',
+        small: true
+      });
+    };
+
+    WaitView.prototype.close = function(cb) {
+      this.modalSimpleView.close();
+      if (typeof cb === 'function') {
+        return cb.call(this);
+      }
+    };
+
+    WaitView.prototype.hidemodal = function(e) {};
+
+    WaitView.prototype.hiddenmodal = function(e) {};
+
+    WaitView.prototype.showmodal = function(e) {};
+
+    return WaitView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = WaitView;
+  }
+
+}).call(this);
+}, "extensions/ajax_relations": function(exports, require, module) {(function() {
+  var $, AjaxRelations, Builder, CategoriesProduct, Category, Model, Photo, Product, ProductsPhoto, Request, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require('spine');
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  ProductsPhoto = require('models/products_photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  require('spine/lib/ajax');
+
+  Builder = (function() {
+    function Builder(record) {
+      var base;
+      this.record = record;
+      this.data = {};
+      this.model = this.record.constructor;
+      this.foreignModels = typeof (base = this.model).foreignModels === "function" ? base.foreignModels() : void 0;
+    }
+
+    Builder.prototype.newWrapper = function(key) {
+      var data;
+      if (!key.className) {
+        throw 'No classname found';
+      }
+      data = {};
+      data[key.className] = {};
+      return data;
+    };
+
+    Builder.prototype.build = function() {
+      var foreignRecords, i, key, len, ref, value;
+      if (this.foreignModels) {
+        this.fModels = (function() {
+          var ref, results;
+          ref = this.foreignModels;
+          results = [];
+          for (key in ref) {
+            value = ref[key];
+            results.push(this.foreignModels[key]);
+          }
+          return results;
+        }).call(this);
+        ref = this.fModels;
+        for (i = 0, len = ref.length; i < len; i++) {
+          key = ref[i];
+          foreignRecords = Model[key.joinTable].filter(this.record.id, {
+            key: key.foreignKey
+          });
+          this.data[key.joinTable] = foreignRecords;
+        }
+      }
+      this.data[this.model.className] = this.record;
+      return this.data;
+    };
+
+    return Builder;
+
+  })();
+
+  Request = (function(superClass) {
+    extend(Request, superClass);
+
+    function Request(record) {
+      this.record = record;
+      Request.__super__.constructor.apply(this, arguments);
+      this.data = new Builder(this.record).build();
+    }
+
+    Request.prototype.create = function(params, options) {
+      return this.ajaxQueue(params, {
+        type: "POST",
+        data: JSON.stringify(this.data),
+        url: Spine.Ajax.getURL(this.model)
+      }).done(this.recordResponse(options)).fail(this.failResponse(options));
+    };
+
+    Request.prototype.update = function(params, options) {
+      return this.ajaxQueue(params, {
+        type: "PUT",
+        data: JSON.stringify(this.data),
+        url: Spine.Ajax.getURL(this.record)
+      }).done(this.recordResponse(options)).fail(this.failResponse(options));
+    };
+
+    return Request;
+
+  })(Spine.Ajax.Singleton);
+
+  AjaxRelations = {
+    extended: function() {
+      var Include;
+      Include = {
+        ajax: function() {
+          return new Request(this);
+        }
+      };
+      return this.include(Include);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.AjaxRelations = AjaxRelations;
+  }
+
+}).call(this);
+}, "extensions/cache": function(exports, require, module) {(function() {
+  var $, Model, Spine;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Model.Cache = {
+    extended: function() {
+      var Extend, Include;
+      Extend = {
+        caches: [
+          {
+            global: []
+          }
+        ],
+        cacheList: (function(_this) {
+          return function(recordID) {
+            var i, id, item, len, ref;
+            id = recordID || 'global';
+            if (!id) {
+              return;
+            }
+            ref = _this.caches;
+            for (i = 0, len = ref.length; i < len; i++) {
+              item = ref[i];
+              if (item[id]) {
+                return item[id];
+              }
+            }
+            throw 'record ' + id + ' is not configured ';
+          };
+        })(this),
+        cache: function(url, id) {
+          var cached, i, item, key, len, val;
+          cached = this.cacheList(id);
+          if (!cached) {
+            return;
+          }
+          for (i = 0, len = cached.length; i < len; i++) {
+            item = cached[i];
+            for (key in item) {
+              val = item[key];
+              if (item[url]) {
+                return val[0];
+              }
+            }
+          }
+        },
+        initCache: function(id) {
+          var arr;
+          arr = this.caches;
+          arr.push(this.hash(id));
+          return arr;
+        },
+        hash: function(key) {
+          var o;
+          o = new Object();
+          o[key] = [];
+          return o;
+        },
+        hasCache: function(url, id) {
+          return !!(this.cache(url, id));
+        },
+        addToCache: function(url, uris) {
+          var i, item, itm, itm_url, key, len, results, uri, val;
+          results = [];
+          for (i = 0, len = uris.length; i < len; i++) {
+            uri = uris[i];
+            results.push((function() {
+              var results1;
+              results1 = [];
+              for (key in uri) {
+                val = uri[key];
+                item = this.cacheList(key);
+                if (!this.keyExists.call(item, url)) {
+                  item.push(this.hash(url));
+                }
+                results1.push((function() {
+                  var j, len1, ref, results2;
+                  results2 = [];
+                  for (j = 0, len1 = item.length; j < len1; j++) {
+                    itm = item[j];
+                    if (itm_url = itm[url]) {
+                      [].splice.apply(itm_url, [0, itm_url.length - 0].concat(ref = [])), ref;
+                      results2.push(itm_url.push(uri));
+                    } else {
+                      results2.push(void 0);
+                    }
+                  }
+                  return results2;
+                })());
+              }
+              return results1;
+            }).call(this));
+          }
+          return results;
+        },
+        itemExists: function(item) {
+          var i, key, len, thisItem, val;
+          for (key in item) {
+            val = item[key];
+            for (i = 0, len = this.length; i < len; i++) {
+              thisItem = this[i];
+              if (thisItem[key]) {
+                return thisItem;
+              }
+            }
+          }
+          return false;
+        },
+        keyExists: function(key) {
+          var i, len, thisItem;
+          for (i = 0, len = this.length; i < len; i++) {
+            thisItem = this[i];
+            if (thisItem[key]) {
+              return thisItem;
+            }
+          }
+          return false;
+        },
+        destroyCache: function(id) {
+          var findIdFromObject, findItemsFromArray, i, idx, itm, len, list, results;
+          list = this.cacheList();
+          findIdFromObject = function(id, obj) {
+            var arr, i, idx, itm, key, len, value;
+            for (key in obj) {
+              value = obj[key];
+              arr = obj[key];
+              for (idx = i = 0, len = arr.length; i < len; idx = ++i) {
+                itm = arr[idx];
+                if (itm[id]) {
+                  return arr.splice(idx, 1);
+                }
+              }
+            }
+          };
+          findItemsFromArray = function(items) {
+            var i, itm, ix, len, results;
+            results = [];
+            for (ix = i = 0, len = items.length; i < len; ix = ++i) {
+              itm = items[ix];
+              results.push(findIdFromObject(id, itm));
+            }
+            return results;
+          };
+          results = [];
+          for (idx = i = 0, len = list.length; i < len; idx = ++i) {
+            itm = list[idx];
+            if (itm[id]) {
+              results.push(list.splice(idx, 1));
+            } else {
+              results.push(void 0);
+            }
+          }
+          return results;
+        },
+        clearCache: function(id) {
+          var originalList, ref;
+          originalList = this.cacheList(id);
+          [].splice.apply(originalList, [0, originalList.length - 0].concat(ref = [])), ref;
+          return originalList;
+        }
+      };
+      Include = {
+        cache: function(url) {
+          return this.constructor.cache(this, url);
+        },
+        addToCache: function(url, uri, mode) {
+          return this.constructor.addToCache(this, url, uri, mode);
+        },
+        destroyCache: function() {
+          return this.constructor.destroyCache(this.id);
+        },
+        clearCache: function() {
+          var list;
+          return list = this.constructor.clearCache(this.id);
+        }
+      };
+      this.extend(Extend);
+      return this.include(Include);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Cache;
+  }
+
+}).call(this);
+}, "extensions/controller_extender": function(exports, require, module) {(function() {
+  var $, Controller, Spine,
+    slice = [].slice;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Controller = Spine.Controller;
+
+  Controller.Extender = {
+    extended: function() {
+      var Extend, Include;
+      Extend = {
+        empty: function() {
+          this.log('empty');
+          return this.constructor.apply(this, arguments);
+        }
+      };
+      Include = {
+        init: function() {
+          this.trace = !Spine.isProduction;
+          this.logPrefix = '(' + this.constructor.name + ')';
+          return this.el.data('current', {
+            model: null,
+            models: null
+          });
+        },
+        createImage: function(url, onload) {
+          var img;
+          img = new Image();
+          if (onload) {
+            img.onload = onload;
+          }
+          if (url) {
+            img.src = url;
+          }
+          return img;
+        },
+        activated: function() {},
+        focusFirstInput: function(el) {
+          if (el == null) {
+            el = this.el;
+          }
+          if (!el) {
+            return;
+          }
+          if (el.is(':visible')) {
+            $('input', el).first().focus().select();
+          }
+          return el;
+        },
+        focus: function() {
+          return this.el.focus();
+        },
+        panelIsActive: function(controller) {
+          return App[controller].isActive();
+        },
+        openPanel: function(controller) {
+          var ui;
+          ui = App.vmanager.externalUI(App[controller]);
+          return ui.click();
+        },
+        closePanel: function(controller, target) {
+          var ui;
+          App[controller].activate();
+          ui = App.vmanager.externalUI(App[controller]);
+          return ui.click();
+        },
+        isCtrlClick: function(e) {
+          return (e != null ? e.metaKey : void 0) || (e != null ? e.ctrlKey : void 0) || (e != null ? e.altKey : void 0);
+        },
+        children: function(sel) {
+          return this.el.children(sel);
+        },
+        find: function(sel) {
+          return this.el.find(sel);
+        },
+        deselect: function() {
+          var args, ref;
+          args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+          return (ref = this.el).deselect.apply(ref, args);
+        },
+        sortable: function(type) {
+          return this.el.sortable(type);
+        },
+        findModelElement: function(item) {
+          return this.children().forItem(item, true);
+        }
+      };
+      this.extend(Extend);
+      return this.include(Include);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Controller.Extender;
+  }
+
+}).call(this);
+}, "extensions/dev": function(exports, require, module) {(function() {
+  var $, Ajax, Base, Dev, Develop, DevelopCollection, Model, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Ajax = {
+    enabled: true,
+    cache: true,
+    pending: false,
+    requests: [],
+    requestNext: function() {
+      var next;
+      next = this.requests.shift();
+      if (next) {
+        return this.request(next);
+      } else {
+        this.pending = false;
+        return Spine.trigger('uri:alldone');
+      }
+    },
+    request: function(callback) {
+      return (callback()).complete((function(_this) {
+        return function() {
+          return _this.requestNext();
+        };
+      })(this));
+    },
+    queue: function(callback) {
+      if (!this.enabled) {
+        return;
+      }
+      if (this.pending) {
+        this.requests.push(callback);
+      } else {
+        this.pending = true;
+        this.request(callback);
+      }
+      return callback;
+    }
+  };
+
+  Base = (function() {
+    function Base() {}
+
+    Base.prototype.defaults = {
+      contentType: 'application/json',
+      processData: false,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      dataType: 'json'
+    };
+
+    Base.prototype.ajax = function(params, defaults) {
+      return $.ajax($.extend({}, this.defaults, defaults, params));
+    };
+
+    Base.prototype.ajaxQueue = function(callback) {
+      return Ajax.queue(callback);
+    };
+
+    Base.prototype.get = function() {
+      return this.ajaxQueue((function(_this) {
+        return function() {
+          return _this.ajax({
+            type: "POST",
+            url: base_url + 'photos/dev/' + _this.url,
+            data: JSON.stringify(_this.data)
+          }).done(_this.recordResponse).fail(_this.failResponse);
+        };
+      })(this));
+    };
+
+    Base.prototype.uri = function(options) {
+      var o, ret, val;
+      ret = (function() {
+        var results;
+        results = [];
+        for (o in options) {
+          val = options[o];
+          results.push(val);
+        }
+        return results;
+      })();
+      return ret.join('/');
+    };
+
+    return Base;
+
+  })();
+
+  Develop = (function(superClass) {
+    extend(Develop, superClass);
+
+    function Develop(model, method, params, callback1, data1) {
+      var options;
+      this.model = model;
+      this.callback = callback1;
+      this.data = data1 != null ? data1 : [];
+      this.failResponse = bind(this.failResponse, this);
+      this.recordResponse = bind(this.recordResponse, this);
+      Develop.__super__.constructor.apply(this, arguments);
+      options = $.extend({
+        method: method
+      }, this.settings, params);
+      this.url = this.uri(options);
+      return;
+      if (!this.data.length) {
+        return;
+      }
+    }
+
+    Develop.prototype.settings = {};
+
+    Develop.prototype.recordResponse = function(res) {
+      return this.callback(res);
+    };
+
+    Develop.prototype.failResponse = function(xhr, statusText, error) {
+      return this.model.trigger('ajaxError', xhr, statusText, error);
+    };
+
+    return Develop;
+
+  })(Base);
+
+  DevelopCollection = (function(superClass) {
+    extend(DevelopCollection, superClass);
+
+    function DevelopCollection(record, params, mode, callback1, max) {
+      var options, photos, type;
+      this.record = record;
+      this.callback = callback1;
+      this.failResponse = bind(this.failResponse, this);
+      this.recordResponse = bind(this.recordResponse, this);
+      DevelopCollection.__super__.constructor.apply(this, arguments);
+      type = this.record.constructor.className;
+      switch (type) {
+        case 'Product':
+          photos = ProductsPhoto.photos(this.record.id);
+          max = max || photos.length;
+          this.mode = mode;
+          this.photos = photos.slice(0, max);
+          break;
+        case 'Photo':
+          this.photos = [this.record];
+      }
+      options = $.extend({}, this.settings, params);
+      this.url = this.uri(options);
+    }
+
+    DevelopCollection.prototype.settings = {
+      width: 140,
+      height: 140,
+      square: 1,
+      quality: 70
+    };
+
+    DevelopCollection.prototype.init = function() {
+      var cache;
+      cache = this.record.cache(this.url);
+      if (cache != null ? cache.length : void 0) {
+        return this.callback(cache, this.record);
+      } else {
+        return this.get();
+      }
+    };
+
+    DevelopCollection.prototype.all = function() {
+      return this.ajaxQueue((function(_this) {
+        return function() {
+          return _this.ajax({
+            type: "POST",
+            url: base_url + 'photos/uri/' + _this.url,
+            data: JSON.stringify(_this.photos)
+          }).done(_this.recordResponse).fail(_this.failResponse);
+        };
+      })(this));
+    };
+
+    DevelopCollection.prototype.recordResponse = function(uris) {
+      return this.callback(uris, this.record);
+    };
+
+    DevelopCollection.prototype.failResponse = function(xhr, statusText, error) {
+      return this.record.trigger('ajaxError', xhr, statusText, error);
+    };
+
+    return DevelopCollection;
+
+  })(Base);
+
+  Dev = {
+    extended: function() {
+      var Extend, Include;
+      Include = {
+        dev: function(params, mode, callback, max) {
+          return new DevelopCollection(this, params, mode, callback, max).get();
+        }
+      };
+      Extend = {
+        dev: function(method, params, callback, data) {
+          return new Develop(this, method, params, callback, data).get();
+        }
+      };
+      this.include(Include);
+      return this.extend(Extend);
+    }
+  };
+
+  Dev.Ajax = Ajax;
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Dev = Dev;
+  }
+
+}).call(this);
+}, "extensions/drag": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Controller, Drag, Log, Photo, Product, ProductsPhoto, Spine, SpineDragItem;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Log = Spine.Log;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  ProductsPhoto = require('models/products_photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  SpineDragItem = require('models/drag_item');
+
+  Controller = Spine.Controller;
+
+  Controller.Drag = {
+    extended: function() {
+      var Include;
+      Include = {
+        dragstart: function(e) {
+          var className, data, el, event, img, modelOrRecord, parentEl, parentModel, parentRecord, rec, record, ref, ref1, ref2, ref3;
+          event = e.originalEvent;
+          el = $(e.target);
+          if (!(record = el.item())) {
+            e.stopPropagation();
+            e.preventDefault();
+            return;
+          }
+          parentEl = el.parents('.data');
+          parentModel = ((ref = parentEl.data('tmplItem')) != null ? ref.data.constructor : void 0) || ((ref1 = parentEl.data('current')) != null ? ref1.model : void 0);
+          parentRecord = ((ref2 = parentEl.data('tmplItem')) != null ? ref2.data : void 0) || (parentModel != null ? parentModel.record : void 0);
+          Spine.DragItem = SpineDragItem.first();
+          Spine.DragItem.updateAttributes({
+            el: el,
+            els: [],
+            source: record,
+            originModel: parentModel != null ? parentModel.className : void 0,
+            originRecord: parentRecord,
+            selection: []
+          });
+          this.trigger('drag:help', e);
+          this.trigger('drag:start', e, this, record);
+          parentEl.addClass('drag-in-progress');
+          modelOrRecord = (rec = Spine.DragItem.originRecord) ? rec : Model[Spine.DragItem.originModel];
+          if (modelOrRecord) {
+            data = [];
+            data.update(modelOrRecord.selectionList());
+          } else {
+            return;
+          }
+          event = e.originalEvent;
+          event.dataTransfer.effectAllowed = 'move';
+          event.dataTransfer.setData('text/json', JSON.stringify(data));
+          className = record.constructor.className;
+          switch (className) {
+            case 'Product':
+              img = data.length === 1 ? App.ALBUM_SINGLE_MOVE : App.ALBUM_DOUBLE_MOVE;
+              break;
+            case 'Photo':
+              img = data.length === 1 ? App.IMAGE_SINGLE_MOVE : App.IMAGE_DOUBLE_MOVE;
+          }
+          return (ref3 = event.dataTransfer) != null ? ref3.setDragImage(img, 45, 60) : void 0;
+        },
+        dragenter: function(e, data) {
+          var func;
+          func = (function(_this) {
+            return function() {
+              return _this.trigger('drag:timeout', e, Spine.timer);
+            };
+          })(this);
+          clearTimeout(Spine.timer);
+          Spine.timer = setTimeout(func, 1000);
+          return this.trigger('drag:enter', e, data);
+        },
+        dragover: function(e, data) {
+          var event;
+          event = e.originalEvent;
+          event.stopPropagation();
+          event.preventDefault();
+          return this.trigger('drag:over', e, this);
+        },
+        dragleave: function(e, data) {
+          return this.trigger('drag:leave', e, this);
+        },
+        dragend: function(e, data) {
+          $('.drag-in-progress').removeClass('drag-in-progress');
+          return this.trigger('drag:end', e, data);
+        },
+        drop: function(e, data) {
+          var error, event;
+          this.log('drop');
+          $('.drag-in-progress').removeClass('drag-in-progress');
+          clearTimeout(Spine.timer);
+          event = e.originalEvent;
+          data = event.dataTransfer.getData('text/json');
+          try {
+            data = JSON.parse(data);
+          } catch (error) {
+            e = error;
+          }
+          return this.trigger('drag:drop', e, data);
+        },
+        dragHelp: function(e, item, origin) {
+          var modelOrRecord, rec, ref, selection;
+          Spine.DragItem = SpineDragItem.first();
+          selection = [];
+          modelOrRecord = (rec = Spine.DragItem.originRecord) ? rec : Model[Spine.DragItem.originModel];
+          selection.update(modelOrRecord.selectionList().slice(0));
+          if (modelOrRecord.selectionList().indexOf(Spine.DragItem.source.id) === -1) {
+            Spine.DragItem.selected = true;
+            Spine.DragItem.save();
+            selection.add(Spine.DragItem.source.id);
+            return Model[Spine.DragItem.originModel].updateSelection(selection, (ref = Spine.DragItem.originRecord) != null ? ref.id : void 0, {
+              trigger: false
+            });
+          }
+        },
+        dragStart: function(e, controller, record) {
+          var el, event, originEl, selection, source;
+          this.log('dragStart');
+          Spine.DragItem = SpineDragItem.first();
+          el = $(e.currentTarget);
+          event = e.originalEvent;
+          source = Spine.DragItem.source;
+          selection = [];
+          if (!source) {
+            alert('no source');
+            return;
+          }
+          if (el.parents('#sidebar').length) {
+            originEl = el.parents('.gal.data');
+            selection.update(Spine.DragItem.originRecord.selectionList().slice(0));
+          } else {
+            switch (source.constructor.className) {
+              case 'Product':
+                selection.update(Category.selectionList().slice(0));
+                break;
+              case 'Photo':
+                selection.update(Product.selectionList().slice(0));
+            }
+          }
+          Spine.DragItem.selection = selection.slice(0);
+          return Spine.DragItem.save();
+        },
+        dragEnter: function(e) {
+          var el, indicator, origin, ref, ref1, ref2, selector, source, target;
+          Spine.DragItem = SpineDragItem.first();
+          if (!Spine.DragItem) {
+            return;
+          }
+          el = indicator = $(e.target).closest('.data');
+          selector = el.attr('data-drag-over');
+          if (selector) {
+            indicator = el.children('.' + selector);
+          }
+          target = Spine.DragItem.target = ((ref = el.data('tmplItem')) != null ? ref.data : void 0) || ((ref1 = el.data('current')) != null ? ref1.model.record : void 0);
+          source = Spine.DragItem.source;
+          origin = Spine.DragItem.originRecord;
+          if ((ref2 = Spine.DragItem.closest) != null) {
+            ref2.removeClass('over nodrop');
+          }
+          Spine.DragItem.closest = indicator;
+          Spine.DragItem.save();
+          if (this.validateDrop(target, source, origin)) {
+            return Spine.DragItem.closest.addClass('over');
+          }
+        },
+        dragOver: (function(_this) {
+          return function(e) {};
+        })(this),
+        dragLeave: (function(_this) {
+          return function(e) {};
+        })(this),
+        dragEnd: (function(_this) {
+          return function(e) {
+            var ref;
+            Spine.DragItem = SpineDragItem.first();
+            return (ref = Spine.DragItem.closest) != null ? ref.removeClass('over nodrop') : void 0;
+          };
+        })(this),
+        dragDrop: function(e, record) {
+          var hash, origin, photos, ref, selection, source, target;
+          Spine.DragItem = SpineDragItem.first();
+          target = Spine.DragItem.target;
+          source = Spine.DragItem.source;
+          origin = Spine.DragItem.originRecord;
+          if ((ref = Spine.DragItem.closest) != null) {
+            ref.removeClass('over nodrop');
+          }
+          if (!this.validateDrop(target, source, origin)) {
+            this.clearHelper();
+            return;
+          }
+          hash = location.hash;
+          switch (source.constructor.className) {
+            case 'Product':
+              selection = Spine.DragItem.selection;
+              if (!this.isCtrlClick(e)) {
+                Product.trigger('destroy:join', selection, origin);
+              }
+              Product.trigger('create:join', selection, target, (function(_this) {
+                return function() {};
+              })(this));
+              break;
+            case 'Photo':
+              selection = Spine.DragItem.selection;
+              photos = Photo.toRecords(selection);
+              Photo.trigger('create:join', {
+                photos: selection,
+                product: target
+              }, (function(_this) {
+                return function() {
+                  return _this.navigate(hash);
+                };
+              })(this));
+              if (!this.isCtrlClick(e)) {
+                Photo.trigger('destroy:join', {
+                  photos: selection,
+                  product: origin
+                });
+              }
+          }
+          return this.clearHelper();
+        },
+        clearHelper: function() {
+          var list, modelOrRecord, rec, ref;
+          modelOrRecord = (rec = Spine.DragItem.originRecord) ? rec : Model[Spine.DragItem.originModel];
+          if (Spine.DragItem.source && Spine.DragItem.selected) {
+            list = Model[Spine.DragItem.originModel].removeFromSelection((ref = Spine.DragItem.originRecord) != null ? ref.id : void 0, Spine.DragItem.source.id, {
+              trigger: false
+            });
+            Spine.DragItem.selected = false;
+            return Spine.DragItem.save();
+          }
+        },
+        validateDrop: (function(_this) {
+          return function(target, source, origin) {
+            var i, item, items, j, len, len1;
+            if (!(target && source)) {
+              return;
+            }
+            switch (source.constructor.className) {
+              case 'Product':
+                if (target.constructor.className !== 'Category') {
+                  return false;
+                }
+                if (!(origin.id !== target.id)) {
+                  return false;
+                }
+                items = CategoriesProduct.filter(target.id, {
+                  key: 'category_id'
+                });
+                for (i = 0, len = items.length; i < len; i++) {
+                  item = items[i];
+                  if (item.product_id === source.id) {
+                    return false;
+                  }
+                }
+                return true;
+              case 'Photo':
+                if (target.constructor.className !== 'Product') {
+                  return false;
+                }
+                if (!(origin.id !== target.id)) {
+                  return false;
+                }
+                items = ProductsPhoto.filter(target.id, {
+                  key: 'product_id'
+                });
+                for (j = 0, len1 = items.length; j < len1; j++) {
+                  item = items[j];
+                  if (item.photo_id === source.id) {
+                    return false;
+                  }
+                }
+                return true;
+              default:
+                return false;
+            }
+          };
+        })(this)
+      };
+      return this.include(Include);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Drag = Controller.Drag;
+  }
+
+}).call(this);
+}, "extensions/filter": function(exports, require, module) {(function() {
+  var $, Filter, Model, Spine;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Filter = {
+    extended: function() {
+      var extend, include;
+      extend = {
+        options: {
+          func: 'select'
+        },
+        filter: function(query, options) {
+          var opts;
+          opts = $.extend({}, this.options, options);
+          if (!query) {
+            return this.all();
+          }
+          return this.select(function(item) {
+            return item[opts.func](query, opts);
+          });
+        },
+        filterRelated_: function(id, options) {
+          var i, item, joinTableItems, key, len, model, record, res;
+          model = this.foreignModels()[options.model];
+          joinTableItems = Model[model.joinTable].filter(id, options);
+          key = options.key === model.foreignKey ? model.associationForeignKey : model.foreignKey;
+          res = [];
+          for (i = 0, len = joinTableItems.length; i < len; i++) {
+            item = joinTableItems[i];
+            if (record = this.irecords[item[key]]) {
+              res.push(record);
+            }
+          }
+          if (options.sorted) {
+            return this[options.sorted](res);
+          } else {
+            return res;
+          }
+        },
+        filterRelated: function(id, options) {
+          var joinTableItems, model;
+          model = this.foreignModels()[options.model];
+          joinTableItems = Model[model.joinTable].filter(id, options);
+          if (options.sorted) {
+            return this.sortByOrder(this.filter(joinTableItems));
+          } else {
+            return this.filter(joinTableItems);
+          }
+        },
+        nameSort: function(a, b) {
+          var aa, bb, ref, ref1;
+          aa = (ref = (a || '').name) != null ? ref.toLowerCase() : void 0;
+          bb = (ref1 = (b || '').name) != null ? ref1.toLowerCase() : void 0;
+          if (aa === bb) {
+            return 0;
+          } else if (aa < bb) {
+            return -1;
+          } else {
+            return 1;
+          }
+        },
+        sortSelectionListByOrder: function(list) {
+          if (list == null) {
+            list = this.selectionList();
+          }
+          return list.sort(function(a, b) {
+            var aInt, bInt;
+            aInt = parseInt(Product.find(a).order);
+            bInt = parseInt(Product.find(b).order);
+            if (aInt < bInt) {
+              return -1;
+            } else if (aInt > bInt) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+        },
+        sortByOrder: function(arr) {
+          return arr.sort(function(a, b) {
+            var aInt, bInt;
+            aInt = parseInt(a.order);
+            bInt = parseInt(b.order);
+            if (aInt < bInt) {
+              return -1;
+            } else if (aInt > bInt) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+        },
+        sortByReverseOrder: function(arr) {
+          return arr.sort(function(a, b) {
+            var aInt, bInt;
+            aInt = parseInt(a.order);
+            bInt = parseInt(b.order);
+            if (aInt < bInt) {
+              return 1;
+            } else if (aInt > bInt) {
+              return -1;
+            } else {
+              return 0;
+            }
+          });
+        },
+        sortByName: function(arr) {
+          return arr.sort(function(a, b) {
+            a = a._name;
+            b = b._name;
+            if (a < b) {
+              return -1;
+            } else if (a > b) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+        }
+      };
+      include = {
+        select: function(query) {
+          var atts, key, value;
+          query = query != null ? query.toLowerCase() : void 0;
+          atts = (this.selectAttributes || this.attributes).apply(this);
+          for (key in atts) {
+            value = atts[key];
+            value = value != null ? value.toLowerCase() : void 0;
+            if (!((value != null ? value.indexOf(query) : void 0) === -1)) {
+              return true;
+            }
+          }
+          return false;
+        }
+      };
+      this.extend(extend);
+      return this.include(include);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Filter = Filter;
+  }
+
+}).call(this);
+}, "extensions/key_enhancer": function(exports, require, module) {(function() {
+  var $, Controller, Spine;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Controller = Spine.Controller;
+
+  Controller.KeyEnhancer = {
+    extended: function() {
+      var Extend, Include;
+      Extend = {
+        events: {
+          'keyup': 'keyup',
+          'keypress input': 'stopPropagation',
+          'keypress textarea': 'stopPropagation'
+        }
+      };
+      Include = {
+        init: function() {
+          if (this.constructor.events) {
+            return this.delegateEvents(this.constructor.events);
+          }
+        },
+        stopPropagation: function(e) {
+          return e.stopPropagation();
+        },
+        keyup: function(e) {
+          this.log(e);
+          this.log(this);
+          return e.stopPropagation();
+        }
+      };
+      this.include(Include);
+      return this.extend(Extend);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Controller.KeyEnhancer;
+  }
+
+}).call(this);
+}, "extensions/manager": function(exports, require, module) {(function() {
+  var $, Log, Spine;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Log = Spine.Log;
+
+  Spine.Manager = require('spine/lib/manager');
+
+  Spine.Manager.extend.Log;
+
+  Spine.Manager.extend({
+    deactivate: function() {
+      this.log('deactivate');
+      return this.constructor.apply(this, arguments);
+    }
+  });
+
+  Spine.Manager.include({
+    disableDrag: function() {
+      this.el.draggable('disable');
+      return !this.el.draggable("option", "disabled");
+    },
+    enableDrag: function() {
+      this.el.draggable('enable');
+      return !this.el.draggable("option", "disabled");
+    },
+    initDrag: function(el, opts) {
+      var defaults, dim, max, min, options, ori, rev;
+      if (!el) {
+        return;
+      }
+      this.el = el;
+      defaults = {
+        manager: this,
+        initSize: function() {
+          return 500;
+        },
+        disabled: false,
+        sleep: false,
+        axis: 'x',
+        min: function() {
+          return 20;
+        },
+        max: function() {
+          return 300;
+        },
+        tol: 10,
+        handle: '.draghandle',
+        goSleep: function() {},
+        awake: function() {}
+      };
+      options = $.extend({}, defaults, opts);
+      ori = options.axis === 'y' ? 'top' : 'left';
+      dim = options.axis === 'y' ? 'height' : 'width';
+      rev = options.axis === 'y' ? 1 : -1;
+      min = options.min;
+      max = options.max;
+      this.sleep = options.sleep;
+      this.currentDim = options.initSize.call(this);
+      if (options.disabled) {
+        this.disableDrag();
+      }
+      this.goSleep = (function(_this) {
+        return function() {
+          _this.sleep = true;
+          options.goSleep();
+          return _this.trigger('sleep');
+        };
+      })(this);
+      this.awake = (function(_this) {
+        return function() {
+          _this.sleep = false;
+          options.awake();
+          return _this.trigger('awake');
+        };
+      })(this);
+      return el.draggable({
+        create: (function(_this) {
+          return function(e, ui) {
+            return _this.el.css({
+              position: 'inherit'
+            });
+          };
+        })(this),
+        axis: options.axis,
+        handle: options.handle,
+        start: (function(_this) {
+          return function(e, ui) {
+            return _this.currentDim = $(ui.helper)[dim]();
+          };
+        })(this),
+        stop: (function(_this) {
+          return function(e, ui) {
+            if (!_this.el.draggable("option", "disabled")) {
+              if (!_this.sleep) {
+                return _this.currentDim = $(ui.helper)[dim]();
+              }
+            }
+          };
+        })(this),
+        drag: (function(_this) {
+          return function(e, ui) {
+            var _cur, _max, _min, _ori, _pos;
+            _ori = ui.originalPosition[ori];
+            _pos = ui.position[ori];
+            _cur = _this.currentDim;
+            _max = max.call(_this);
+            _min = min.call(_this);
+            return $(ui.helper)[dim](function() {
+              var d;
+              d = (_cur + _ori) - (_pos * rev);
+              if (!_this.sleep) {
+                if (d >= _min && d <= _max) {
+                  return d;
+                }
+                if (d < _min) {
+                  if (!_this.el.draggable("option", "disabled")) {
+                    _this.goSleep();
+                  }
+                  return _min;
+                }
+                if (d > _max) {
+                  return _max;
+                }
+              } else if (d >= _min) {
+                if (!_this.el.draggable("option", "disabled")) {
+                  _this.awake();
+                }
+                return d;
+              }
+            });
+          };
+        })(this)
+      });
+    },
+    hasActive: function() {
+      var controller, i, len, ref;
+      ref = this.controllers;
+      for (i = 0, len = ref.length; i < len; i++) {
+        controller = ref[i];
+        if (controller.isActive()) {
+          return this.controller = this.last = controller;
+        }
+      }
+      return false;
+    },
+    active: function() {
+      return this.hasActive();
+    },
+    lastActive: function() {
+      return this.last || this.controllers[0];
+    },
+    externalUI: function(controller) {
+      var activeController;
+      activeController = controller || this.lastActive();
+      return $(activeController.externalClass, this.external.el);
+    }
+  });
+
+}).call(this);
 }, "extensions/model_extender": function(exports, require, module) {(function() {
-  var $, Log, Model, Spine;
+  var $, Log, Model, Spine, SpineError,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Spine = require("spine");
 
@@ -30431,6 +45642,8 @@ Released under the MIT License
   Model = Spine.Model;
 
   Log = Spine.Log;
+
+  SpineError = require("models/spine_error");
 
   Model.Extender = {
     extended: function() {
@@ -30469,6 +45682,84 @@ Released under the MIT License
           return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
         },
         selectAttributes: [],
+        record: false,
+        selection: [
+          {
+            global: []
+          }
+        ],
+        current: function(recordOrID) {
+          var id, prev, rec, ref, same;
+          id = (recordOrID != null ? recordOrID.id : void 0) || recordOrID;
+          rec = this.find(id) || false;
+          prev = this.record;
+          this.record = rec;
+          same = !!(((ref = this.record) != null ? typeof ref.eql === "function" ? ref.eql(prev) : void 0 : void 0) && !!prev);
+          Model[this.className].trigger('current', this.record, !same);
+          if (!same) {
+            Model[this.className].trigger('change:current', this.record, this.className);
+          }
+          return this.record;
+        },
+        selectionList: function(recordID) {
+          var i, id, item, len, ref, ref1, ref2, ret;
+          ret = [];
+          id = recordID || ((ref = this.record) != null ? ref.id : void 0) || ((ref1 = this.record) != null ? ref1.cid : void 0);
+          if (!id) {
+            return this.selection[0].global;
+          }
+          ref2 = this.selection;
+          for (i = 0, len = ref2.length; i < len; i++) {
+            item = ref2[i];
+            if (item[id]) {
+              return item[id];
+            }
+          }
+          return ret;
+        },
+        updateSelection: function(list, id, options) {
+          var defaults, option, ret;
+          defaults = {
+            trigger: true
+          };
+          option = $().extend(defaults, options);
+          ret = this.emptySelection(id, list);
+          if (option.trigger) {
+            this.trigger('change:selection', ret, id);
+          }
+          Model[this.childType].current(ret.first());
+          return ret;
+        },
+        emptySelection: function(id, idOrList) {
+          var originalList;
+          if (idOrList == null) {
+            idOrList = [];
+          }
+          if (!this.isArray(idOrList)) {
+            idOrList = [idOrList];
+          }
+          originalList = this.selectionList(id);
+          [].splice.apply(originalList, [0, originalList.length - 0].concat(idOrList)), idOrList;
+          return originalList;
+        },
+        removeFromSelection: function(id, idOrList, options) {
+          var i, index, len, list, originalList;
+          if (idOrList == null) {
+            idOrList = [];
+          }
+          originalList = this.selectionList(id);
+          if (!this.isArray(idOrList)) {
+            idOrList = [idOrList];
+          }
+          for (i = 0, len = idOrList.length; i < len; i++) {
+            id = idOrList[i];
+            if ((index = originalList.indexOf(id)) !== -1) {
+              originalList.splice(index, 1);
+            }
+          }
+          list = this.updateSelection(id, originalList.slice(0), options);
+          return list;
+        },
         isArray: function(value) {
           return Object.prototype.toString.call(value) === "[object Array]";
         },
@@ -30528,13 +45819,286 @@ Released under the MIT License
               flash: '<strong style="color:red">Login failed</strong>',
               xhr: xhr
             });
-            return error.save();
+            error.save();
+            return User.redirect('users/login');
           }
+        },
+        contains: function() {
+          return [];
+        },
+        createJoinTables: function(arr) {
+          var i, joinTables, key, len, results;
+          if (!this.isArray(arr)) {
+            return;
+          }
+          joinTables = this.joinTables();
+          results = [];
+          for (i = 0, len = joinTables.length; i < len; i++) {
+            key = joinTables[i];
+            results.push(Model[key].refresh(this.createJoins(arr, key), {
+              clear: true
+            }));
+          }
+          return results;
+        },
+        make: function(arr, key) {
+          var i, len, obj, results;
+          if (!Array.isArray(arr)) {
+            return new this(arr);
+          }
+          results = [];
+          for (i = 0, len = arr.length; i < len; i++) {
+            obj = arr[i];
+            results.push(new this(obj[key]));
+          }
+          return results;
+        },
+        activePhotos: function() {
+          return Category.activePhotos();
+        },
+        joinTables: function() {
+          var fModels, joinTables, key, value;
+          fModels = this.foreignModels();
+          joinTables = (function() {
+            var results;
+            results = [];
+            for (key in fModels) {
+              value = fModels[key];
+              results.push(fModels[key]['joinTable']);
+            }
+            return results;
+          })();
+          return joinTables;
+        },
+        createJoins: function(json, tableName) {
+          var i, introspect, len, obj, res;
+          res = [];
+          introspect = (function(_this) {
+            return function(obj) {
+              var i, item, j, key, len, len1, results, val;
+              if (_this.isObject(obj)) {
+                for (key in obj) {
+                  val = obj[key];
+                  if (key === tableName) {
+                    for (i = 0, len = val.length; i < len; i++) {
+                      item = val[i];
+                      res.push(item);
+                    }
+                  } else {
+                    introspect(obj[key]);
+                  }
+                }
+              }
+              if (_this.isArray(obj)) {
+                results = [];
+                for (j = 0, len1 = obj.length; j < len1; j++) {
+                  val = obj[j];
+                  results.push(introspect(val));
+                }
+                return results;
+              }
+            };
+          })(this);
+          for (i = 0, len = json.length; i < len; i++) {
+            obj = json[i];
+            introspect(obj);
+          }
+          return res;
         }
       };
       Include = {
         trace: !Spine.isProduction,
-        logPrefix: this.className + '::'
+        logPrefix: this.className + '::',
+        selectionList: function() {
+          return this.constructor.selectionList(this.id);
+        },
+        selectionParentList: function() {
+          var e, error1, modelName;
+          modelName = this.constructor['parent'];
+          try {
+            return Model[modelName].selectionList();
+          } catch (error1) {
+            e = error1;
+            return [];
+          }
+        },
+        updateSelectionID: function() {
+          var i, idx, index, item, len, ref;
+          ref = this.constructor.selection;
+          for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
+            item = ref[idx];
+            if (item[this.cid]) {
+              index = idx;
+            }
+          }
+          if (index) {
+            this.constructor.selection.splice(index, 1);
+          }
+          return this.init(this);
+        },
+        removeSelectionID: function() {
+          var __itm, __key, __val, __x, _idx, _item, _x, i, j, len, len1, list, modelName, ref, results;
+          ref = this.constructor.selection;
+          for (_idx = i = 0, len = ref.length; i < len; _idx = ++i) {
+            _item = ref[_idx];
+            if (_item[this.id]) {
+              _x = _idx;
+            }
+          }
+          if (_x) {
+            this.constructor.selection.splice(_x, 1);
+          }
+          modelName = this.constructor['parent'];
+          if (!modelName) {
+            return;
+          }
+          list = Model[modelName].selection;
+          results = [];
+          for (j = 0, len1 = list.length; j < len1; j++) {
+            __itm = list[j];
+            results.push((function() {
+              var results1;
+              results1 = [];
+              for (__key in __itm) {
+                __val = __itm[__key];
+                if (!(__x = __val.indexOf(this.id) === -1)) {
+                  results1.push(__val.splice(__x, 1));
+                } else {
+                  results1.push(void 0);
+                }
+              }
+              return results1;
+            }).call(this));
+          }
+          return results;
+        },
+        removeFromSelection: function(list, options) {
+          return this.constructor.removeFromSelection(this.id, list, options);
+        },
+        updateSelection: function(list, options) {
+          if (list == null) {
+            list = [];
+          }
+          if (!this.constructor.isArray(list)) {
+            list = [list];
+          }
+          return list = this.constructor.updateSelection(list, this.id, options);
+        },
+        emptySelection: function() {
+          var list;
+          return list = this.constructor.emptySelection(this.id);
+        },
+        addRemoveSelection: function(isMetaKey) {
+          var originalList;
+          originalList = this.constructor.selectionList(this.id);
+          if (!originalList) {
+            return;
+          }
+          if (isMetaKey) {
+            this.addUnique(originalList);
+          } else {
+            this.toggleSelected(originalList);
+          }
+          return originalList;
+        },
+        addToSelection: function(isMetaKey) {
+          var originalList, ref;
+          originalList = this.constructor.selectionList(this.id);
+          if (!originalList) {
+            return;
+          }
+          if (isMetaKey) {
+            this.addUnique(originalList);
+          } else {
+            if (ref = this.id, indexOf.call(originalList, ref) < 0) {
+              originalList.unshift(this.id);
+            }
+          }
+          return originalList;
+        },
+        shiftSelection: function() {
+          var index, originalList, rm;
+          originalList = this.constructor.selectionList(this.id);
+          if (!originalList) {
+            return;
+          }
+          if (index = originalList.indexOf(this.id) === 0) {
+            return originalList;
+          }
+          rm = originalList.splice(0, 1, originalList[index]);
+          originalList.splice(index, 1);
+          originalList.push(rm[0]);
+          index = originalList.indexOf(this.id);
+          return originalList;
+        },
+        updateChangedAttributes: function(atts) {
+          var invalid, key, origAtts, value;
+          origAtts = this.attributes();
+          for (key in atts) {
+            value = atts[key];
+            if (origAtts[key] !== value) {
+              invalid = true;
+              this[key] = value;
+            }
+          }
+          if (invalid) {
+            return this.save();
+          }
+        },
+        addUnique: function(list) {
+          var ref;
+          [].splice.apply(list, [0, list.length - 0].concat(ref = [this.id])), ref;
+          return list;
+        },
+        toggleSelected: function(list) {
+          var index, ref;
+          if (ref = this.id, indexOf.call(list, ref) < 0) {
+            list.unshift(this.id);
+          } else {
+            index = list.indexOf(this.id);
+            if (index !== -1) {
+              list.splice(index, 1);
+            }
+          }
+          return list;
+        },
+        searchSelect: function(query) {
+          var atts, key, value;
+          query = query.toLowerCase();
+          atts = this.selectAttributes.apply(this);
+          for (key in atts) {
+            value = atts[key];
+            value = value.toLowerCase();
+            if (!((value != null ? value.indexOf(query) : void 0) === -1)) {
+              return true;
+            }
+          }
+          return false;
+        },
+        idSelect: function(query) {
+          var value;
+          query = query.toLowerCase();
+          value = this.id.toLowerCase();
+          if (!((value != null ? value.indexOf(query) : void 0) === -1)) {
+            return true;
+          }
+          return false;
+        },
+        idExcludeSelect: function(query) {
+          if (query.indexOf(this.id) === -1) {
+            return true;
+          }
+          return false;
+        },
+        toRecords: function(ids) {
+          return this.constructor.toRecords(ids);
+        },
+        defaultDetails: {
+          iCount: 0,
+          aCount: 0,
+          sCount: 0,
+          author: ''
+        }
       };
       this.include(Log);
       this.extend(Log);
@@ -30546,6 +46110,403 @@ Released under the MIT License
   if (typeof module !== "undefined" && module !== null) {
     module.exports = Model.Extender;
   }
+
+}).call(this);
+}, "extensions/model_test": function(exports, require, module) {(function() {
+  var $, Log, Model, Spine;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Log = Spine.Log;
+
+  Model.Model_Test = {
+    extended: function() {
+      var Extend;
+      Extend = {
+        print: function() {
+          return alert('Hi, this is a Test');
+        }
+      };
+      return this.extend(Extend);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Model_Test;
+  }
+
+}).call(this);
+}, "extensions/selector": function(exports, require, module) {(function() {
+  var $, Model, Spine;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Model.Selector = {
+    extended: function() {
+      var Extend, Include;
+      Extend = {
+        selections_: [
+          {
+            global: []
+          }
+        ],
+        selectionsList: (function(_this) {
+          return function(recordID) {
+            var i, id, item, len, ref;
+            id = recordID || 'global';
+            if (!id) {
+              return;
+            }
+            ref = _this.selections;
+            for (i = 0, len = ref.length; i < len; i++) {
+              item = ref[i];
+              if (item[id]) {
+                return item[id];
+              }
+            }
+            throw 'record ' + id + ' is not configured ';
+          };
+        })(this),
+        selection_: function(id) {
+          var i, item, key, len, selected, val;
+          this.log(this.parent);
+          return;
+          selected = this.selectionsList(id);
+          if (!selected) {
+            return;
+          }
+          for (i = 0, len = selected.length; i < len; i++) {
+            item = selected[i];
+            for (key in item) {
+              val = item[key];
+              if (item[url]) {
+                return val[0];
+              }
+            }
+          }
+        },
+        initSelection_: function(id) {
+          var arr;
+          arr = this.selections;
+          arr.push(this.hash(id));
+          return arr;
+        },
+        hash_: function(key) {
+          var o;
+          o = new Object();
+          o[key] = [];
+          return o;
+        },
+        add: function(item) {
+          return this.log(item.parent());
+        },
+        hasCache_: function(url, id) {
+          return !!(this.cache(url, id));
+        },
+        addToCache_: function(url, uris) {
+          var i, item, itm, itm_url, key, len, results, uri, val;
+          results = [];
+          for (i = 0, len = uris.length; i < len; i++) {
+            uri = uris[i];
+            results.push((function() {
+              var results1;
+              results1 = [];
+              for (key in uri) {
+                val = uri[key];
+                item = this.cacheList(key);
+                if (!this.keyExists.call(item, url)) {
+                  item.push(this.hash(url));
+                }
+                results1.push((function() {
+                  var j, len1, ref, results2;
+                  results2 = [];
+                  for (j = 0, len1 = item.length; j < len1; j++) {
+                    itm = item[j];
+                    if (itm_url = itm[url]) {
+                      [].splice.apply(itm_url, [0, itm_url.length - 0].concat(ref = [])), ref;
+                      results2.push(itm_url.push(uri));
+                    } else {
+                      results2.push(void 0);
+                    }
+                  }
+                  return results2;
+                })());
+              }
+              return results1;
+            }).call(this));
+          }
+          return results;
+        },
+        itemExists: function(item) {
+          var i, key, len, thisItem, val;
+          for (key in item) {
+            val = item[key];
+            for (i = 0, len = this.length; i < len; i++) {
+              thisItem = this[i];
+              if (thisItem[key]) {
+                return thisItem;
+              }
+            }
+          }
+          return false;
+        },
+        keyExists: function(key) {
+          var i, len, thisItem;
+          for (i = 0, len = this.length; i < len; i++) {
+            thisItem = this[i];
+            if (thisItem[key]) {
+              return thisItem;
+            }
+          }
+          return false;
+        },
+        destroyCache: function(id) {
+          var findIdFromObject, findItemsFromArray, i, idx, itm, len, list, results;
+          list = this.cacheList();
+          findIdFromObject = function(id, obj) {
+            var arr, i, idx, itm, key, len, value;
+            for (key in obj) {
+              value = obj[key];
+              arr = obj[key];
+              for (idx = i = 0, len = arr.length; i < len; idx = ++i) {
+                itm = arr[idx];
+                if (itm[id]) {
+                  return arr.splice(idx, 1);
+                }
+              }
+            }
+          };
+          findItemsFromArray = function(items) {
+            var i, itm, ix, len, results;
+            results = [];
+            for (ix = i = 0, len = items.length; i < len; ix = ++i) {
+              itm = items[ix];
+              results.push(findIdFromObject(id, itm));
+            }
+            return results;
+          };
+          results = [];
+          for (idx = i = 0, len = list.length; i < len; idx = ++i) {
+            itm = list[idx];
+            if (itm[id]) {
+              results.push(list.splice(idx, 1));
+            } else {
+              results.push(void 0);
+            }
+          }
+          return results;
+        },
+        clearCache: function(id) {
+          var originalList, ref;
+          originalList = this.cacheList(id);
+          [].splice.apply(originalList, [0, originalList.length - 0].concat(ref = [])), ref;
+          return originalList;
+        }
+      };
+      Include = {
+        cache: function(url) {
+          return this.constructor.cache(this, url);
+        },
+        addToCache: function(url, uri, mode) {
+          return this.constructor.addToCache(this, url, uri, mode);
+        },
+        destroyCache: function() {
+          return this.constructor.destroyCache(this.id);
+        },
+        clearCache: function() {
+          var list;
+          return list = this.constructor.clearCache(this.id);
+        },
+        add: function() {
+          return this.constructor.add(this);
+        }
+      };
+      this.extend(Extend);
+      return this.include(Include);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Selector;
+  }
+
+}).call(this);
+}, "extensions/sortable": function(exports, require, module) {(function() {
+  $.fn.sortable = function(type) {
+    return $(this).Html5Sortable({
+      type: type,
+      drop: function(source, target) {
+        return true;
+      }
+    });
+  };
+
+  $.Html5Sortable = function() {
+    return $.Html5Sortable.s_currentID = Math.floor(Math.random() * 10000001);
+  };
+
+  $.Html5Sortable.DRAGANDDROP_DEFAULT_TYPE = "de.webpremiere.html5sortable";
+
+  $.Html5Sortable.s_currentID = 0;
+
+  $.Html5Sortable.defaultOptions = {
+    dragTarget: function(source) {
+      return $(source);
+    },
+    text: function(source) {
+      return $('<div></div>').append($(source).clone(true)).html();
+    },
+    css: function(source) {
+      var el;
+      el = $(source);
+      return {
+        'height': el.css('height'),
+        'padding-top': el.css('padding-top'),
+        'padding-bottom': el.css('padding-bottom'),
+        'margin-top': el.css('margin-top'),
+        'margin-bottom': el.css('margin-bottom')
+      };
+    },
+    klass: function(source) {
+      return 'html5sortable-state-highlight';
+    },
+    splitter: function(source) {
+      return ($($('li.' + this.klass())[0] || $('<li class="' + this.klass() + '"></li>'))).css(this.css(source));
+    },
+    type: $.Html5Sortable.DRAGANDDROP_DEFAULT_TYPE,
+    drop: function(source, target) {
+      return false;
+    }
+  };
+
+  $.fn.Html5Sortable = function(opts) {
+    var options;
+    options = $.extend({}, $.Html5Sortable.defaultOptions, opts);
+    $.Html5Sortable.s_currentID++;
+    if (options.type === $.Html5Sortable.DRAGANDDROP_DEFAULT_TYPE) {
+      options.type = options.type + '_' + $.Html5Sortable.s_currentID;
+    }
+    return this.each(function() {
+      var that;
+      that = $(this);
+      that.init = function(el) {
+        return options.dragTarget(el).attr('draggable', true).bind('dragstart', function(e) {
+          var dt;
+          dt = e.originalEvent.dataTransfer;
+          dt.effectAllowed = 'move';
+          dt.setData('Text', JSON.stringify({
+            html: options.text(el),
+            type: options.type
+          }));
+          Spine.sortItem = {
+            el: el,
+            data: el.data(),
+            splitter: options.splitter(this),
+            cond: null
+          };
+          $('._dragging').removeClass('_dragging');
+          el.addClass('_dragging out');
+          alert('clear');
+          return this.log($('._dragging'));
+        }).bind('dragend', function(e) {
+          var ref;
+          this.log('dragend');
+          $('._dragging').removeClass('_dragging');
+          if ((ref = Spine.sortItem.el) != null) {
+            ref.addClass('in').removeClass('out');
+          }
+          return Spine.sortItem.splitter.remove();
+        }).bind('dragenter', function(e) {
+          var cond;
+          if (!Spine.sortItem) {
+            return;
+          }
+          Spine.sortItem.cond = cond = (e.originalEvent.pageX - $(this).position().left) > ($(this).width());
+          if (cond) {
+            Spine.sortItem.splitter.insertAfter(this);
+          } else {
+            Spine.sortItem.splitter.insertBefore(this);
+          }
+          return false;
+        }).bind('dragleave', function(e) {
+          var error;
+          try {
+            if (!(e.originalEvent.dataTransfer.getData('Text') && JSON.parse(e.originalEvent.dataTransfer.getData('Text')).type === options.type)) {
+              return true;
+            }
+          } catch (error) {
+            e = error;
+            return true;
+          }
+          return false;
+        }).bind('drop', function(e) {
+          var cond, error, it, model, sourceEl;
+          try {
+            this.log('drop');
+            cond = Spine.sortItem.cond;
+            if (!(JSON.parse(e.originalEvent.dataTransfer.getData('Text')).type === options.type)) {
+              return true;
+            }
+          } catch (error) {
+            e = error;
+            return true;
+          }
+          sourceEl = $('._dragging');
+          if (!sourceEl.length) {
+            alert('no element for sourceEl');
+          }
+          Spine.sortItem.splitter.remove();
+          it = $(JSON.parse(e.originalEvent.dataTransfer.getData('Text')).html).addClass('out');
+          it.data(Spine.sortItem.data);
+          model = $(it).item().constructor.className;
+          if (!options.drop(sourceEl.get(0), it.get(0))) {
+            return it.remove();
+          } else {
+            if (cond) {
+              it.insertAfter(this);
+            } else {
+              it.insertBefore(this);
+            }
+            sourceEl.remove();
+            that.init(it);
+            it.addClass('in');
+            $('._dragging').removeClass('_dragging');
+            it.removeClass('out');
+            return Spine.Model[model].trigger('sortupdate', e, it);
+          }
+        });
+      };
+      return that.children('li').each(function() {
+        return that.init($(this));
+      });
+    });
+  };
+
+}).call(this);
+}, "extensions/test": function(exports, require, module) {(function() {
+  var $, Spine;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Spine.Module.extend({
+    isProduction: function(bool) {
+      if (bool != null) {
+        return Spine.isProduction = bool;
+      } else {
+        return Spine.isProduction;
+      }
+    }
+  });
 
 }).call(this);
 }, "extensions/tmpl": function(exports, require, module) {(function() {
@@ -30578,6 +46539,348 @@ Released under the MIT License
       return result[item.name] = item.value;
     });
     return result;
+  };
+
+}).call(this);
+}, "extensions/tmpl_1": function(exports, require, module) {(function() {
+  var $;
+
+  $ = typeof jQuery !== "undefined" && jQuery !== null ? jQuery : require("jqueryify");
+
+  $.fn.item = function(keep) {
+    var item;
+    item = $(this).tmplItem().data;
+    if (!keep) {
+      return typeof item.reload === "function" ? item.reload() : void 0;
+    } else {
+      return item;
+    }
+  };
+
+  $.fn.forItem = function(item, keep) {
+    return this.filter(function() {
+      var compare;
+      compare = $(this).item(keep);
+      return (typeof item.eql === "function" ? item.eql(compare) : void 0) || item === compare;
+    });
+  };
+
+  $.fn.serializeForm = function() {
+    var result;
+    result = {};
+    $.each($(this).find('input,textarea').serializeArray(), function(i, item) {
+      return result[item.name] = item.value;
+    });
+    return result;
+  };
+
+}).call(this);
+}, "extensions/uri": function(exports, require, module) {(function() {
+  var $, Ajax, Base, CategoriesProduct, Category, Model, Photo, Product, ProductsPhoto, Spine, URI, URICollection, Uri,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  ProductsPhoto = require('models/products_photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  Ajax = {
+    enabled: true,
+    cache: true,
+    pending: false,
+    requests: [],
+    requestNext: function() {
+      var next;
+      next = this.requests.shift();
+      if (next) {
+        return this.request(next);
+      } else {
+        this.pending = false;
+        return Spine.trigger('uri:alldone');
+      }
+    },
+    request: function(callback) {
+      return (callback()).complete((function(_this) {
+        return function() {
+          return _this.requestNext();
+        };
+      })(this));
+    },
+    queue: function(callback) {
+      if (!this.enabled) {
+        return;
+      }
+      if (this.pending) {
+        this.requests.push(callback);
+      } else {
+        this.pending = true;
+        this.request(callback);
+      }
+      return callback;
+    }
+  };
+
+  Base = (function() {
+    function Base() {}
+
+    Base.prototype.defaults = {
+      contentType: 'application/json',
+      processData: false,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      dataType: 'json'
+    };
+
+    Base.prototype.ajax = function(params, defaults) {
+      return $.ajax($.extend({}, this.defaults, defaults, params));
+    };
+
+    Base.prototype.ajaxQueue = function(callback) {
+      return Ajax.queue(callback);
+    };
+
+    Base.prototype.get = function() {
+      return this.ajaxQueue((function(_this) {
+        return function() {
+          return _this.ajax({
+            type: "POST",
+            url: base_url + 'photos/uri/' + _this.url,
+            data: JSON.stringify(_this.data)
+          }).done(_this.recordResponse).fail(_this.failResponse);
+        };
+      })(this));
+    };
+
+    Base.prototype.uri = function(options) {
+      return options.width + '/' + options.height + '/' + options.square + '/' + options.quality;
+    };
+
+    return Base;
+
+  })();
+
+  URI = (function(superClass) {
+    extend(URI, superClass);
+
+    function URI(model, params, callback1, data1) {
+      var options;
+      this.model = model;
+      this.callback = callback1;
+      this.data = data1 != null ? data1 : [];
+      this.failResponse = bind(this.failResponse, this);
+      this.recordResponse = bind(this.recordResponse, this);
+      URI.__super__.constructor.apply(this, arguments);
+      options = $.extend({}, this.settings, params);
+      this.url = this.uri(options);
+      if (!this.data.length) {
+        return;
+      }
+    }
+
+    URI.prototype.settings = {
+      square: 1,
+      quality: 70
+    };
+
+    URI.prototype.init = function() {
+      if (!this.cache()) {
+        return this.get();
+      }
+    };
+
+    URI.prototype.cache = function() {
+      var data, i, idx, len, raw, ref, res;
+      if (!Ajax.cache) {
+        return;
+      }
+      res = [];
+      ref = this.data;
+      for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
+        data = ref[idx];
+        raw = this.model.cache(this.url, data.id);
+        if (raw) {
+          res.push(raw);
+        } else {
+          return;
+        }
+      }
+      this.callback(res);
+      return true;
+    };
+
+    URI.prototype.recordResponse = function(uris) {
+      this.model.addToCache(this.url, uris);
+      return this.callback(uris);
+    };
+
+    URI.prototype.failResponse = function(xhr, statusText, error) {
+      return this.model.trigger('ajaxError', xhr, statusText, error);
+    };
+
+    return URI;
+
+  })(Base);
+
+  URICollection = (function(superClass) {
+    extend(URICollection, superClass);
+
+    function URICollection(record, params, mode, callback1, max) {
+      var options, photos, type;
+      this.record = record;
+      this.callback = callback1;
+      this.failResponse = bind(this.failResponse, this);
+      this.recordResponse = bind(this.recordResponse, this);
+      URICollection.__super__.constructor.apply(this, arguments);
+      type = this.record.constructor.className;
+      switch (type) {
+        case 'Product':
+          photos = ProductsPhoto.photos(this.record.id);
+          max = max || photos.length;
+          this.mode = mode;
+          this.photos = photos.slice(0, max);
+          break;
+        case 'Photo':
+          this.photos = [this.record];
+      }
+      options = $.extend({}, this.settings, params);
+      this.url = this.uri(options);
+    }
+
+    URICollection.prototype.settings = {
+      width: 140,
+      height: 140,
+      square: 1,
+      quality: 70
+    };
+
+    URICollection.prototype.init = function() {
+      var cache;
+      cache = this.record.cache(this.url);
+      if (cache != null ? cache.length : void 0) {
+        return this.callback(cache, this.record);
+      } else {
+        return this.get();
+      }
+    };
+
+    URICollection.prototype.all = function() {
+      return this.ajaxQueue((function(_this) {
+        return function() {
+          return _this.ajax({
+            type: "POST",
+            url: base_url + 'photos/uri/' + _this.url,
+            data: JSON.stringify(_this.photos)
+          }).done(_this.recordResponse).fail(_this.failResponse);
+        };
+      })(this));
+    };
+
+    URICollection.prototype.recordResponse = function(uris) {
+      this.record.addToCache(this.url, uris, this.mode);
+      return this.callback(uris, this.record);
+    };
+
+    URICollection.prototype.failResponse = function(xhr, statusText, error) {
+      return this.record.trigger('ajaxError', xhr, statusText, error);
+    };
+
+    return URICollection;
+
+  })(Base);
+
+  Uri = {
+    extended: function() {
+      var Extend, Include;
+      Include = {
+        uri: function(params, mode, callback, max) {
+          return new URICollection(this, params, mode, callback, max).init();
+        }
+      };
+      Extend = {
+        uri: function(params, callback, data) {
+          return new URI(this, params, callback, data).init();
+        }
+      };
+      this.include(Include);
+      return this.extend(Extend);
+    }
+  };
+
+  Uri.Ajax = Ajax;
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Uri = Uri;
+  }
+
+}).call(this);
+}, "extensions/utils": function(exports, require, module) {(function() {
+  var $;
+
+  $ = typeof jQuery !== "undefined" && jQuery !== null ? jQuery : require("jqueryify");
+
+  $.fn.deselect = function(sel) {
+    return $(this).children(sel).removeClass('active hot');
+  };
+
+  $.extend(jQuery.tmpl.tag, {
+    "for": {
+      _default: {
+        $2: "var i=1;i<=1;i++"
+      },
+      open: 'for ($2){',
+      close: '};'
+    }
+  });
+
+  $.fn.isFormElement = function(o) {
+    var formElements, str;
+    if (o == null) {
+      o = [];
+    }
+    str = Object.prototype.toString.call(o[0]);
+    formElements = ['[object HTMLInputElement]', '[object HTMLTextAreaElement]'];
+    return formElements.indexOf(str) !== -1;
+  };
+
+  $.fn.state = function(state) {
+    var d;
+    d = 'disabled';
+    return this.each(function() {
+      var $this;
+      $this = $(this);
+      $this.html($this.data()[state]);
+      if (state === 'loading') {
+        return $this.addClass(d).attr(d, d);
+      } else {
+        return $this.removeClass(d).removeAttr(d);
+      }
+    });
+  };
+
+  $.fn.unparam = function(value) {
+    var i, len, pair, params, piece, pieces;
+    params = {};
+    pieces = value.split('&');
+    for (i = 0, len = pieces.length; i < len; i++) {
+      piece = pieces[i];
+      pair = piece.split('=', 2);
+      params[decodeURIComponent(pair[0])] = pair.length === 2 ? decodeURIComponent(pair[1].replace(/\+|false/g, '')) : true;
+    }
+    return params;
   };
 
 }).call(this);
@@ -30652,6 +46955,9 @@ Released under the MIT License
       if (this.getData(base_url, this.arr) === 'defense') {
         this.checkWarning();
       }
+      this.routes({
+        '/home/': function(params) {}
+      });
     }
 
     App.prototype.checkWarning = function() {
@@ -30983,6 +47289,2093 @@ Released under the MIT License
   require('spine/lib/route');
 
 }).call(this);
+}, "login": function(exports, require, module) {(function() {
+  var $, Login, Spine, SpineError, User,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  SpineError = require("models/spine_error");
+
+  User = require("models/user");
+
+  Login = (function(superClass) {
+    extend(Login, superClass);
+
+    Login.prototype.elements = {
+      'form': 'form',
+      '.flash': 'flashEl',
+      '.info': 'infoEl',
+      '#UserPassword': 'passwordEl',
+      '#UserUsername': 'usernameEl',
+      '#flashTemplate': 'flashTemplate',
+      '#infoTemplate': 'infoTemplate',
+      '#login .dialogue-content': 'contentEl',
+      '#loader': 'loader'
+    };
+
+    Login.prototype.events = {
+      'keypress': 'submitOnEnter',
+      'click #guestLogin': 'guestLogin',
+      'click #cancel': 'cancel'
+    };
+
+    Login.prototype.template = function(el, item) {
+      this.log(item);
+      return el.tmpl(item);
+    };
+
+    function Login(form) {
+      this.error = bind(this.error, this);
+      this.success = bind(this.success, this);
+      this.complete = bind(this.complete, this);
+      this.submit = bind(this.submit, this);
+      var lastError;
+      Login.__super__.constructor.apply(this, arguments);
+      SpineError.fetch();
+      if (SpineError.count()) {
+        lastError = SpineError.first();
+      }
+      if (lastError) {
+        this.render(this.flashEl, this.flashTemplate, lastError);
+        if (lastError.record) {
+          this.render(this.infoEl, this.infoTemplate, lastError);
+        }
+      }
+      SpineError.destroyAll();
+    }
+
+    Login.prototype.render = function(el, tmpl, item) {
+      el.html(this.template(tmpl, item));
+      return this.el;
+    };
+
+    Login.prototype.submit = function() {
+      return $.ajax({
+        data: this.form.serialize(),
+        type: 'POST',
+        success: this.success,
+        error: this.error,
+        complete: this.complete
+      });
+    };
+
+    Login.prototype.complete = function(xhr) {
+      var json;
+      json = xhr.responseText;
+      this.passwordEl.val('');
+      return this.usernameEl.val('').focus();
+    };
+
+    Login.prototype.success = function(json) {
+      var delayedFunc, user;
+      json = $.parseJSON(json);
+      User.fetch();
+      User.destroyAll();
+      user = new User(this.newAttributes(json));
+      user.save();
+      this.render(this.flashEl, this.flashTemplate, json);
+      delayedFunc = function() {
+        this.log(json.User);
+        return User.redirect(json.User.redirect);
+      };
+      this.contentEl.addClass('fade500');
+      return this.delay(delayedFunc, 500);
+    };
+
+    Login.prototype.error = function(xhr) {
+      var delayedFunc, json;
+      json = $.parseJSON(xhr.responseText);
+      if (!this.oldMessage) {
+        this.oldMessage = this.flashEl.html();
+      }
+      delayedFunc = function() {
+        return this.flashEl.html(this.oldMessage);
+      };
+      this.render(this.flashEl, this.flashTemplate, json);
+      return this.delay(delayedFunc, 2000);
+    };
+
+    Login.prototype.newAttributes = function(json) {
+      return {
+        id: json.id,
+        username: json.username,
+        name: json.name,
+        groupname: json.groupname,
+        sessionid: json.sessionid
+      };
+    };
+
+    Login.prototype.cancel = function(e) {
+      User.redirect();
+      return e.preventDefault();
+    };
+
+    Login.prototype.guestLogin = function() {
+      this.usernameEl.val('guest');
+      this.passwordEl.val('guest');
+      return this.submit();
+    };
+
+    Login.prototype.submitOnEnter = function(e) {
+      if (e.keyCode !== 13) {
+        return;
+      }
+      this.submit();
+      return e.preventDefault();
+    };
+
+    return Login;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Login;
+  }
+
+}).call(this);
+}, "models/admin_settings": function(exports, require, module) {(function() {
+  var $, Log, Model, Settings, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require('spine');
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Log = Spine.Log;
+
+  require('spine/lib/local');
+
+  Settings = (function(superClass) {
+    extend(Settings, superClass);
+
+    function Settings() {
+      return Settings.__super__.constructor.apply(this, arguments);
+    }
+
+    Settings.configure('Settings', 'id', 'user_id', 'autoupload', 'hash', 'previousHash');
+
+    Settings.extend(Model.Local);
+
+    Settings.include(Log);
+
+    Settings.prototype.init = function(instance) {};
+
+    Settings.findUserSettings = function() {
+      return Settings.findByAttribute('user_id', User.first().id);
+    };
+
+    Settings.isAutoUpload = function() {
+      var ret, setting, user;
+      if (!(user = User.first())) {
+        return;
+      }
+      setting = this.findByAttribute('user_id', user.id);
+      ret = (setting != null ? setting.autoupload : void 0) || false;
+      return ret;
+    };
+
+    return Settings;
+
+  })(Spine.Model);
+
+  module.exports = Model.Settings = Settings;
+
+}).call(this);
+}, "models/categories_product": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Extender, Filter, Model, Photo, ProductsPhoto, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Filter = require("extensions/filter");
+
+  Model.Category = require('models/category');
+
+  Model.Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Extender = require("extensions/model_extender");
+
+  require("spine/lib/ajax");
+
+  CategoriesProduct = (function(superClass) {
+    extend(CategoriesProduct, superClass);
+
+    function CategoriesProduct() {
+      this.allCategoryProducts = bind(this.allCategoryProducts, this);
+      return CategoriesProduct.__super__.constructor.apply(this, arguments);
+    }
+
+    CategoriesProduct.configure("CategoriesProduct", 'id', 'cid', 'category_id', 'product_id', 'order', 'ignore');
+
+    CategoriesProduct.extend(Model.Ajax);
+
+    CategoriesProduct.extend(Filter);
+
+    CategoriesProduct.extend(Extender);
+
+    CategoriesProduct.url = 'categories_products';
+
+    CategoriesProduct.categoryProductExists = function(aid, gid) {
+      var gas;
+      gas = this.filter('placeholder', {
+        product_id: aid,
+        category_id: gid,
+        func: 'selectUnique'
+      });
+      return gas[0] || false;
+    };
+
+    CategoriesProduct.categories = function(aid) {
+      return Category.filterRelated(aid, {
+        model: 'Product',
+        key: 'product_id',
+        sorted: 'sortByOrder'
+      });
+    };
+
+    CategoriesProduct.products = function(gid) {
+      return Product.filterRelated(gid, {
+        model: 'Category',
+        key: 'category_id',
+        sorted: 'sortByOrder'
+      });
+    };
+
+    CategoriesProduct.activeProducts = function(gid) {
+      return this.filter(gid, {
+        key: 'category_id',
+        func: 'selectNotIgnored'
+      });
+    };
+
+    CategoriesProduct.inactiveProducts = function(gid) {
+      return this.filter(gid, {
+        key: 'category_id',
+        func: 'selectIgnored'
+      });
+    };
+
+    CategoriesProduct.photos = function(id) {
+      var i, j, len, len1, photo, photos, product, products, ret;
+      ret = [];
+      if (!id) {
+        this.each((function(_this) {
+          return function(item) {
+            var i, len, photo, photos, results;
+            photos = ProductsPhoto.productPhotos(item.product_id);
+            results = [];
+            for (i = 0, len = photos.length; i < len; i++) {
+              photo = photos[i];
+              results.push(ret.push(photo));
+            }
+            return results;
+          };
+        })(this));
+      } else {
+        products = this.products(id);
+        for (i = 0, len = products.length; i < len; i++) {
+          product = products[i];
+          photos = ProductsPhoto.productPhotos(product.id);
+          for (j = 0, len1 = photos.length; j < len1; j++) {
+            photo = photos[j];
+            ret.push(photo);
+          }
+        }
+      }
+      return ret;
+    };
+
+    CategoriesProduct.isActiveProduct = function(gid, aid) {
+      var ga, gas, i, len;
+      gas = this.filter(gid, {
+        key: 'category_id',
+        func: 'selectNotIgnored'
+      });
+      for (i = 0, len = gas.length; i < len; i++) {
+        ga = gas[i];
+        if (ga.product_id === aid) {
+          return !ga.ignore;
+        }
+      }
+      return false;
+    };
+
+    CategoriesProduct.c = 0;
+
+    CategoriesProduct.prototype.validate = function() {
+      var ga, valid_1, valid_2;
+      valid_1 = (Product.find(this.product_id)) && (Category.find(this.category_id));
+      valid_2 = !(ga = this.constructor.categoryProductExists(this.product_id, this.category_id) && this.isNew());
+      if (!valid_1) {
+        return 'No valid action!';
+      }
+      if (!valid_2) {
+        return 'Product already exists in Category';
+      }
+      return false;
+    };
+
+    CategoriesProduct.prototype.categories = function() {
+      return this.constructor.categories(this.product_id);
+    };
+
+    CategoriesProduct.prototype.products = function() {
+      return this.constructor.products(this.category_id);
+    };
+
+    CategoriesProduct.prototype.allCategoryProducts = function() {
+      var category, ga, gas, i, len, products;
+      category = Category.record;
+      if (!category) {
+        return;
+      }
+      products = [];
+      gas = CategoriesProduct.filter(category.id, {
+        key: 'category_id'
+      });
+      for (i = 0, len = gas.length; i < len; i++) {
+        ga = gas[i];
+        if (Product.exists(ga.product_id)) {
+          products.push(Product.find(ga.product_id));
+        }
+      }
+      return products;
+    };
+
+    CategoriesProduct.prototype.isActiveProduct = function(aid) {
+      return this.constructor.isActiveProduct(this.category_id, aid);
+    };
+
+    CategoriesProduct.prototype.select = function(id, options) {
+      if (this[options.key] === id) {
+        return true;
+      }
+    };
+
+    CategoriesProduct.prototype.selectProduct = function(id, gid) {
+      if (this.product_id === id && this.category_id === Category.record.id) {
+        return true;
+      }
+    };
+
+    CategoriesProduct.prototype.selectUnique = function(empty, options) {
+      if (this.product_id === options.product_id && this.category_id === options.category_id) {
+        return true;
+      }
+    };
+
+    CategoriesProduct.prototype.selectNotIgnored = function(id) {
+      if (this.category_id === id && this.ignore === false) {
+        return true;
+      }
+    };
+
+    CategoriesProduct.prototype.selectIgnored = function(id) {
+      if (this.category_id === id && this.ignore === true) {
+        return true;
+      }
+    };
+
+    return CategoriesProduct;
+
+  })(Spine.Model);
+
+  module.exports = Model.CategoriesProduct = CategoriesProduct;
+
+}).call(this);
+}, "models/category": function(exports, require, module) {(function() {
+  var $, AjaxRelations, CategoriesProduct, Category, Extender, Filter, Model, Photo, ProductsPhoto, Spine, Uri, User,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  User = require('models/user');
+
+  Photo = require('models/photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Filter = require("extensions/filter");
+
+  AjaxRelations = require("extensions/ajax_relations");
+
+  Uri = require("extensions/uri");
+
+  Extender = require("extensions/model_extender");
+
+  require("spine/lib/ajax");
+
+  Category = (function(superClass) {
+    extend(Category, superClass);
+
+    function Category() {
+      this.details = bind(this.details, this);
+      return Category.__super__.constructor.apply(this, arguments);
+    }
+
+    Category.configure('Category', 'id', 'cid', 'name', "photo", 'user_id');
+
+    Category.extend(Filter);
+
+    Category.extend(Model.Ajax);
+
+    Category.extend(AjaxRelations);
+
+    Category.extend(Uri);
+
+    Category.extend(Extender);
+
+    Category.selectAttributes = ['name'];
+
+    Category.parent = 'Root';
+
+    Category.childType = 'Product';
+
+    Category.url = '' + base_url + 'categories';
+
+    Category.fromJSON = function(objects) {
+      var json, key;
+      Category.__super__.constructor.fromJSON.apply(this, arguments);
+      this.createJoinTables(objects);
+      key = this.className;
+      json = this.make(objects, key);
+      return json;
+    };
+
+    Category.foreignModels = function() {
+      return {
+        'Product': {
+          className: 'Product',
+          joinTable: 'CategoriesProduct',
+          foreignKey: 'category_id',
+          associationForeignKey: 'product_id'
+        }
+      };
+    };
+
+    Category.contains = function(id) {
+      if (id == null) {
+        id = this.record.id;
+      }
+      if (!id) {
+        return Product.all();
+      }
+      return this.products(id);
+    };
+
+    Category.products = function(id) {
+      var filterOptions;
+      filterOptions = {
+        model: 'Category',
+        key: 'category_id'
+      };
+      return Product.filterRelated(id, filterOptions);
+    };
+
+    Category.selectedProductsHasPhotos = function() {
+      var alb, i, len, products;
+      products = Product.toRecords(this.selectionList());
+      for (i = 0, len = products.length; i < len; i++) {
+        alb = products[i];
+        if (alb.contains().length) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    Category.activePhotos = function(id) {
+      var ga, gas, i, ids, j, len, len1, pho, photos, product, ref, ret, search;
+      if (id == null) {
+        id = (ref = this.record) != null ? ref.id : void 0;
+      }
+      ret = [];
+      if (id) {
+        gas = CategoriesProduct.filter(id, {
+          key: 'category_id',
+          func: 'selectNotIgnored'
+        });
+        search = 'product_id';
+      } else {
+        ids = Category.selectionList();
+        gas = Product.toRecords(ids);
+        search = 'id';
+      }
+      for (i = 0, len = gas.length; i < len; i++) {
+        ga = gas[i];
+        product = Product.find(ga[search]);
+        photos = product.photos() || [];
+        for (j = 0, len1 = photos.length; j < len1; j++) {
+          pho = photos[j];
+          ret.push(pho);
+        }
+      }
+      return ret;
+    };
+
+    Category.details = function() {
+      var i, imagesCount, len, product, products;
+      if (Category.record) {
+        return Category.record.details();
+      }
+      products = Product.all();
+      imagesCount = 0;
+      for (i = 0, len = products.length; i < len; i++) {
+        product = products[i];
+        imagesCount += product.count = ProductsPhoto.filter(product.id, {
+          key: 'product_id'
+        }).length;
+      }
+      return $().extend(Category.defaultDetails, {
+        gCount: Category.count(),
+        iCount: imagesCount,
+        aCount: products.length,
+        sCount: Category.selectionList().length,
+        author: User.first().name
+      });
+    };
+
+    Category.prototype.init = function(instance) {
+      var id, s;
+      if (!(id = instance.id)) {
+        return;
+      }
+      s = new Object();
+      s[id] = [];
+      return this.constructor.selection.push(s);
+    };
+
+    Category.prototype.activePhotos = function() {
+      return this.constructor.activePhotos(this.id);
+    };
+
+    Category.prototype.details = function() {
+      var i, imagesCount, len, product, products;
+      products = Category.products(this.id);
+      imagesCount = 0;
+      for (i = 0, len = products.length; i < len; i++) {
+        product = products[i];
+        imagesCount += product.count = ProductsPhoto.filter(product.id, {
+          key: 'product_id'
+        }).length;
+      }
+      return $().extend(this.defaultDetails, {
+        name: this.name,
+        iCount: imagesCount,
+        aCount: products.length,
+        pCount: this.activePhotos().length,
+        sCount: Category.selectionList().length,
+        author: User.first().name
+      });
+    };
+
+    Category.prototype.count_ = function(inc) {
+      var filterOptions;
+      if (inc == null) {
+        inc = 0;
+      }
+      filterOptions = {
+        model: 'Category',
+        key: 'category_id'
+      };
+      return Product.filterRelated(this.id, filterOptions).length + inc;
+    };
+
+    Category.prototype.count = function(inc) {
+      if (inc == null) {
+        inc = 0;
+      }
+      return this.constructor.contains(this.id).length + inc;
+    };
+
+    Category.prototype.products = function() {
+      return this.constructor.products(this.id);
+    };
+
+    Category.prototype.updateAttributes = function(atts, options) {
+      if (options == null) {
+        options = {};
+      }
+      this.load(atts);
+      return this.save();
+    };
+
+    Category.prototype.updateAttribute = function(name, value, options) {
+      if (options == null) {
+        options = {};
+      }
+      this[name] = value;
+      return this.save();
+    };
+
+    Category.prototype.selectAttributes = function() {
+      var attr, i, len, ref, result;
+      result = {};
+      ref = this.constructor.selectAttributes;
+      for (i = 0, len = ref.length; i < len; i++) {
+        attr = ref[i];
+        result[attr] = this[attr];
+      }
+      return result;
+    };
+
+    Category.prototype.select = function(joinTableItems) {
+      var i, len, record;
+      for (i = 0, len = joinTableItems.length; i < len; i++) {
+        record = joinTableItems[i];
+        if (record.category_id === this.id) {
+          return true;
+        }
+      }
+    };
+
+    Category.prototype.select_ = function(joinTableItems) {
+      var ref;
+      if (ref = this.id, indexOf.call(joinTableItems, ref) >= 0) {
+        return true;
+      }
+    };
+
+    return Category;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Category = Category;
+  }
+
+}).call(this);
+}, "models/category_1": function(exports, require, module) {(function() {
+  var $, AjaxRelations, CategoriesProduct, Category, Extender, Filter, Model, Photo, ProductsPhoto, Spine, Uri, User,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  User = require('models/user');
+
+  Photo = require('models/photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Filter = require("extensions/filter");
+
+  AjaxRelations = require("extensions/ajax_relations");
+
+  Uri = require("extensions/uri");
+
+  Extender = require("extensions/model_extender");
+
+  require("spine/lib/ajax");
+
+  Category = (function(superClass) {
+    extend(Category, superClass);
+
+    function Category() {
+      this.details = bind(this.details, this);
+      return Category.__super__.constructor.apply(this, arguments);
+    }
+
+    Category.configure('Category', 'id', 'cid', 'name', "photo", 'user_id');
+
+    Category.extend(Filter);
+
+    Category.extend(Model.Ajax);
+
+    Category.extend(AjaxRelations);
+
+    Category.extend(Uri);
+
+    Category.extend(Extender);
+
+    Category.selectAttributes = ['name'];
+
+    Category.parent = 'Root';
+
+    Category.childType = 'Product';
+
+    Category.url = '' + base_url + 'categories';
+
+    Category.fromJSON = function(objects) {
+      var json, key;
+      Category.__super__.constructor.fromJSON.apply(this, arguments);
+      this.createJoinTables(objects);
+      key = this.className;
+      json = this.make(objects, key);
+      return json;
+    };
+
+    Category.foreignModels = function() {
+      return {
+        'Product': {
+          className: 'Product',
+          joinTable: 'CategoriesProduct',
+          foreignKey: 'category_id',
+          associationForeignKey: 'product_id'
+        }
+      };
+    };
+
+    Category.contains = function(id) {
+      if (id == null) {
+        id = this.record.id;
+      }
+      if (!id) {
+        return Product.all();
+      }
+      return this.products(id);
+    };
+
+    Category.products = function(id) {
+      var filterOptions;
+      filterOptions = {
+        model: 'Category',
+        key: 'category_id'
+      };
+      return Product.filterRelated(id, filterOptions);
+    };
+
+    Category.selectedProductsHasPhotos = function() {
+      var alb, i, len, products;
+      products = Product.toRecords(this.selectionList());
+      for (i = 0, len = products.length; i < len; i++) {
+        alb = products[i];
+        if (alb.contains().length) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    Category.activePhotos = function(id) {
+      var ga, gas, i, ids, j, len, len1, pho, photos, product, ref, ret, search;
+      if (id == null) {
+        id = (ref = this.record) != null ? ref.id : void 0;
+      }
+      ret = [];
+      if (id) {
+        gas = CategoriesProduct.filter(id, {
+          key: 'category_id',
+          func: 'selectNotIgnored'
+        });
+        search = 'product_id';
+      } else {
+        ids = Category.selectionList();
+        gas = Product.toRecords(ids);
+        search = 'id';
+      }
+      for (i = 0, len = gas.length; i < len; i++) {
+        ga = gas[i];
+        product = Product.find(ga[search]);
+        photos = product.photos() || [];
+        for (j = 0, len1 = photos.length; j < len1; j++) {
+          pho = photos[j];
+          ret.push(pho);
+        }
+      }
+      return ret;
+    };
+
+    Category.details = function() {
+      var i, imagesCount, len, product, products;
+      if (Category.record) {
+        return Category.record.details();
+      }
+      products = Product.all();
+      imagesCount = 0;
+      for (i = 0, len = products.length; i < len; i++) {
+        product = products[i];
+        imagesCount += product.count = ProductsPhoto.filter(product.id, {
+          key: 'product_id'
+        }).length;
+      }
+      return $().extend(Category.defaultDetails, {
+        gCount: Category.count(),
+        iCount: imagesCount,
+        aCount: products.length,
+        sCount: Category.selectionList().length,
+        author: User.first().name
+      });
+    };
+
+    Category.prototype.init = function(instance) {
+      var id, s;
+      console.log('CATEGORY INSTANCE');
+      console.log(instance);
+      if (!(id = instance.id)) {
+        return;
+      }
+      s = new Object();
+      s[id] = [];
+      return this.constructor.selection.push(s);
+    };
+
+    Category.prototype.activePhotos = function() {
+      return this.constructor.activePhotos(this.id);
+    };
+
+    Category.prototype.details = function() {
+      var i, imagesCount, len, product, products;
+      products = Category.products(this.id);
+      imagesCount = 0;
+      for (i = 0, len = products.length; i < len; i++) {
+        product = products[i];
+        imagesCount += product.count = ProductsPhoto.filter(product.id, {
+          key: 'product_id'
+        }).length;
+      }
+      return $().extend(this.defaultDetails, {
+        name: this.name,
+        iCount: imagesCount,
+        aCount: products.length,
+        pCount: this.activePhotos().length,
+        sCount: Category.selectionList().length,
+        author: User.first().name
+      });
+    };
+
+    Category.prototype.count_ = function(inc) {
+      var filterOptions;
+      if (inc == null) {
+        inc = 0;
+      }
+      filterOptions = {
+        model: 'Category',
+        key: 'category_id'
+      };
+      return Product.filterRelated(this.id, filterOptions).length + inc;
+    };
+
+    Category.prototype.count = function(inc) {
+      if (inc == null) {
+        inc = 0;
+      }
+      return this.constructor.contains(this.id).length + inc;
+    };
+
+    Category.prototype.products = function() {
+      return this.constructor.products(this.id);
+    };
+
+    Category.prototype.updateAttributes = function(atts, options) {
+      if (options == null) {
+        options = {};
+      }
+      this.load(atts);
+      return this.save();
+    };
+
+    Category.prototype.updateAttribute = function(name, value, options) {
+      if (options == null) {
+        options = {};
+      }
+      this[name] = value;
+      return this.save();
+    };
+
+    Category.prototype.selectAttributes = function() {
+      var attr, i, len, ref, result;
+      result = {};
+      ref = this.constructor.selectAttributes;
+      for (i = 0, len = ref.length; i < len; i++) {
+        attr = ref[i];
+        result[attr] = this[attr];
+      }
+      return result;
+    };
+
+    Category.prototype.select = function(joinTableItems) {
+      var i, len, record;
+      for (i = 0, len = joinTableItems.length; i < len; i++) {
+        record = joinTableItems[i];
+        if (record.category_id === this.id) {
+          return true;
+        }
+      }
+    };
+
+    Category.prototype.select_ = function(joinTableItems) {
+      var ref;
+      if (ref = this.id, indexOf.call(joinTableItems, ref) >= 0) {
+        return true;
+      }
+    };
+
+    return Category;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Category = Category;
+  }
+
+}).call(this);
+}, "models/clipboard": function(exports, require, module) {(function() {
+  var $, Clipboard, Model, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  require('spine/lib/local');
+
+  Clipboard = (function(superClass) {
+    extend(Clipboard, superClass);
+
+    function Clipboard() {
+      return Clipboard.__super__.constructor.apply(this, arguments);
+    }
+
+    Clipboard.configure('Clipboard', 'id', 'item', 'type', 'cut');
+
+    Clipboard.extend(Model.Local);
+
+    Clipboard.prototype.init = function(instance) {
+      if (!instance) {
+
+      }
+    };
+
+    return Clipboard;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Clipboard = Clipboard;
+  }
+
+}).call(this);
+}, "models/clipboard_1": function(exports, require, module) {(function() {
+  var $, Clipboard, Model, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  require('spine/lib/local');
+
+  Clipboard = (function(superClass) {
+    extend(Clipboard, superClass);
+
+    function Clipboard() {
+      return Clipboard.__super__.constructor.apply(this, arguments);
+    }
+
+    Clipboard.configure('Clipboard', 'id', 'item', 'type', 'cut');
+
+    Clipboard.extend(Model.Local);
+
+    Clipboard.prototype.init = function(instance) {
+      if (!instance) {
+
+      }
+    };
+
+    return Clipboard;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Clipboard = Clipboard;
+  }
+
+}).call(this);
+}, "models/config": function(exports, require, module) {(function() {
+  var $, Config, Filter, Model, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Filter = require("extensions/filter");
+
+  require('spine/lib/local');
+
+  Config = (function(superClass) {
+    extend(Config, superClass);
+
+    function Config() {
+      return Config.__super__.constructor.apply(this, arguments);
+    }
+
+    Config.configure('Config', 'id', 'key', 'value');
+
+    Config.extend(Model.Local);
+
+    Config.extend(Filter);
+
+    Config.prototype.init = function(instance) {};
+
+    Config.prototype.select = function(query) {
+      if (this.key === query) {
+        return true;
+      }
+      return false;
+    };
+
+    return Config;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Config;
+  }
+
+}).call(this);
+}, "models/drag_item": function(exports, require, module) {(function() {
+  var $, Model, Spine, SpineDragItem,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  SpineDragItem = (function(superClass) {
+    extend(SpineDragItem, superClass);
+
+    function SpineDragItem() {
+      return SpineDragItem.__super__.constructor.apply(this, arguments);
+    }
+
+    SpineDragItem.configure('SpineDragItem', 'el', 'els', 'target', 'source', 'originModel', 'originRecord', 'selection', 'selected', 'closest');
+
+    SpineDragItem.prototype.init = function() {};
+
+    return SpineDragItem;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.SpineDragItem = SpineDragItem;
+  }
+
+}).call(this);
+}, "models/photo": function(exports, require, module) {(function() {
+  var $, AjaxRelations, Cache, Category, Clipboard, Dev, Extender, Filter, Model, Photo, Product, ProductsPhoto, Spine, Uri,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Filter = require("extensions/filter");
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Clipboard = require('models/clipboard');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Extender = require("extensions/model_extender");
+
+  AjaxRelations = require("extensions/ajax_relations");
+
+  Uri = require("extensions/uri");
+
+  Dev = require("extensions/dev");
+
+  Cache = require("extensions/cache");
+
+  require("spine/lib/ajax");
+
+  Photo = (function(superClass) {
+    extend(Photo, superClass);
+
+    function Photo() {
+      this.details = bind(this.details, this);
+      return Photo.__super__.constructor.apply(this, arguments);
+    }
+
+    Photo.configure("Photo", 'id', 'title', "photo", 'filesize', 'captured', 'exposure', "iso", 'longitude', 'aperture', 'software', 'model', 'user_id', 'active', 'src', 'selected');
+
+    Photo.extend(Cache);
+
+    Photo.extend(Model.Ajax);
+
+    Photo.extend(Uri);
+
+    Photo.extend(Dev);
+
+    Photo.extend(AjaxRelations);
+
+    Photo.extend(Filter);
+
+    Photo.extend(Extender);
+
+    Photo.selectAttributes = ['title', "photo", 'user_id'];
+
+    Photo.parent = 'Product';
+
+    Photo.foreignModels = function() {
+      return {
+        'Product': {
+          className: 'Product',
+          joinTable: 'ProductsPhoto',
+          foreignKey: 'photo_id',
+          associationForeignKey: 'product_id'
+        }
+      };
+    };
+
+    Photo.url = '' + base_url + Photo.className.toLowerCase() + 's';
+
+    Photo.fromJSON = function(objects) {
+      var json, key;
+      Photo.__super__.constructor.fromJSON.apply(this, arguments);
+      this.createJoinTables(objects);
+      key = this.className;
+      json = this.make(objects, key);
+      return json;
+    };
+
+    Photo.nameSort = function(a, b) {
+      var aa, bb, ref, ref1;
+      aa = (ref = (a || '').name) != null ? ref.toLowerCase() : void 0;
+      bb = (ref1 = (b || '').name) != null ? ref1.toLowerCase() : void 0;
+      if (aa === bb) {
+        return 0;
+      } else if (aa < bb) {
+        return -1;
+      } else {
+        return 1;
+      }
+    };
+
+    Photo.defaults = {
+      width: 140,
+      height: 140,
+      square: 1,
+      quality: 70
+    };
+
+    Photo.success = function(uri) {
+      Photo.log('success');
+      return Photo.trigger('uri', uri);
+    };
+
+    Photo.error = function(json) {
+      return Photo.trigger('ajaxError', json);
+    };
+
+    Photo.create = function(atts) {
+      return this.__super__.constructor.create.call(this, atts);
+    };
+
+    Photo.refresh = function(values, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.__super__.constructor.refresh.call(this, values, options);
+    };
+
+    Photo.trashed = function() {
+      var item, res;
+      res = [];
+      for (item in this.irecords) {
+        if (!ProductsPhoto.find(item.id)) {
+          res.push(item);
+        }
+      }
+      return res;
+    };
+
+    Photo.inactive = function() {
+      return this.findAllByAttribute('active', false);
+    };
+
+    Photo.activePhotos = function() {
+      return [this.record];
+    };
+
+    Photo.createJoin = function(items, target, callback) {
+      var ap, cb, isValid, item, ret, valid;
+      if (items == null) {
+        items = [];
+      }
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      if (!items.length) {
+        return;
+      }
+      isValid = true;
+      cb = function() {
+        Product.trigger('change:collection', target);
+        if (typeof callback === 'function') {
+          return callback.call(this);
+        }
+      };
+      items = items.toID();
+      ret = (function() {
+        var i, len, ref, results;
+        results = [];
+        for (i = 0, len = items.length; i < len; i++) {
+          item = items[i];
+          ap = new ProductsPhoto({
+            product_id: target.id,
+            photo_id: item.id || item,
+            order: parseInt((ref = ProductsPhoto.photos(target.id).last()) != null ? ref.order : void 0) + 1 || 0
+          });
+          valid = ap.save({
+            validate: true,
+            ajax: false
+          });
+          if (!valid) {
+            results.push(isValid = valid);
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      })();
+      if (isValid) {
+        target.save({
+          done: cb
+        });
+      } else {
+        Spine.trigger('refresh:all');
+      }
+      return ret;
+    };
+
+    Photo.destroyJoin = function(items, target, cb) {
+      var ap, aps, i, id, len;
+      if (items == null) {
+        items = [];
+      }
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      if (!(items.length && target)) {
+        return;
+      }
+      items = items.toID();
+      for (i = 0, len = items.length; i < len; i++) {
+        id = items[i];
+        aps = ProductsPhoto.filter(id, {
+          key: 'photo_id'
+        });
+        ap = ProductsPhoto.productPhotoExists(id, target.id);
+        if (ap) {
+          ap.destroy({
+            done: cb
+          });
+        }
+      }
+      return Product.trigger('change:collection', target);
+    };
+
+    Photo.products = function(id) {
+      var filterOptions;
+      filterOptions = {
+        model: 'Photo',
+        key: 'photo_id',
+        sorted: 'sortByOrder'
+      };
+      return Product.filterRelated(id, filterOptions);
+    };
+
+    Photo.prototype.init = function(instance) {
+      if (!(instance != null ? instance.id : void 0)) {
+        return;
+      }
+      return this.constructor.initCache(instance.id);
+    };
+
+    Photo.prototype.parent = function() {
+      return this.constructor.parent;
+    };
+
+    Photo.prototype.createJoin = function(target) {
+      return this.constructor.createJoin([this.id], target);
+    };
+
+    Photo.prototype.destroyJoin = function(target) {
+      return this.constructor.destroyJoin([this.id], target);
+    };
+
+    Photo.prototype.products = function() {
+      return this.constructor.products(this.id);
+    };
+
+    Photo.prototype.selectAttributes = function() {
+      var attr, i, len, ref, result;
+      result = {};
+      ref = this.constructor.selectAttributes;
+      for (i = 0, len = ref.length; i < len; i++) {
+        attr = ref[i];
+        result[attr] = this[attr];
+      }
+      return result;
+    };
+
+    Photo.prototype.select = function(joinTableItems) {
+      var i, len, record;
+      for (i = 0, len = joinTableItems.length; i < len; i++) {
+        record = joinTableItems[i];
+        if (record.photo_id === this.id && ((this['order'] = record.order) != null)) {
+          return true;
+        }
+      }
+    };
+
+    Photo.prototype.select_ = function(joinTableItems) {
+      var ref;
+      if (ref = this.id, indexOf.call(joinTableItems, ref) >= 0) {
+        return true;
+      }
+    };
+
+    Photo.prototype.selectPhoto = function(id) {
+      if (this.id === id) {
+        return true;
+      }
+    };
+
+    Photo.prototype.details = function() {
+      return {
+        category: Model.Category.record,
+        product: Model.Product.record,
+        photo: Model.Photo.record,
+        author: User.first().name
+      };
+    };
+
+    return Photo;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Photo = Photo;
+  }
+
+}).call(this);
+}, "models/product": function(exports, require, module) {(function() {
+  var $, AjaxRelations, CategoriesProduct, Clipboard, Extender, Filter, Model, Product, Spine, Uri, Utils,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  CategoriesProduct = require('models/categories_product');
+
+  Clipboard = require('models/clipboard');
+
+  AjaxRelations = require("extensions/ajax_relations");
+
+  Uri = require("extensions/uri");
+
+  Utils = require("extensions/utils");
+
+  Filter = require("extensions/filter");
+
+  Extender = require("extensions/model_extender");
+
+  require("extensions/cache");
+
+  require("spine/lib/ajax");
+
+  Product = (function(superClass) {
+    extend(Product, superClass);
+
+    function Product() {
+      this.details = bind(this.details, this);
+      this.count = bind(this.count, this);
+      return Product.__super__.constructor.apply(this, arguments);
+    }
+
+    Product.configure("Product", 'id', 'cid', 'title', 'price', 'user_id', 'order', 'invalid', 'active', 'selected');
+
+    Product.extend(Model.Cache);
+
+    Product.extend(Model.Ajax);
+
+    Product.extend(Uri);
+
+    Product.extend(Utils);
+
+    Product.extend(AjaxRelations);
+
+    Product.extend(Filter);
+
+    Product.extend(Extender);
+
+    Product.selectAttributes = ['title'];
+
+    Product.parent = 'Category';
+
+    Product.childType = 'Photo';
+
+    Product.previousID = false;
+
+    Product.url = '' + base_url + Product.className.toLowerCase() + 's';
+
+    Product.fromJSON = function(objects) {
+      var json, key;
+      Product.__super__.constructor.fromJSON.apply(this, arguments);
+      this.createJoinTables(objects);
+      key = this.className;
+      json = this.make(objects, key);
+      return json;
+    };
+
+    Product.nameSort = function(a, b) {
+      var aa, bb, ref, ref1;
+      aa = (ref = (a || '').title) != null ? ref.toLowerCase() : void 0;
+      bb = (ref1 = (b || '').title) != null ? ref1.toLowerCase() : void 0;
+      if (aa === bb) {
+        return 0;
+      } else if (aa < bb) {
+        return -1;
+      } else {
+        return 1;
+      }
+    };
+
+    Product.foreignModels = function() {
+      return {
+        'Category': {
+          className: 'Category',
+          joinTable: 'CategoriesProduct',
+          foreignKey: 'product_id',
+          associationForeignKey: 'category_id'
+        },
+        'Photo': {
+          className: 'Photo',
+          joinTable: 'ProductsPhoto',
+          foreignKey: 'product_id',
+          associationForeignKey: 'photo_id'
+        }
+      };
+    };
+
+    Product.contains = function(id) {
+      if (id == null) {
+        id = this.record.id;
+      }
+      if (!id) {
+        return Photo.all();
+      }
+      return this.photos(id);
+    };
+
+    Product.photos = function(id, max) {
+      var filterOptions, ret;
+      filterOptions = {
+        model: 'Product',
+        key: 'product_id',
+        sorted: 'sortByOrder'
+      };
+      ret = Photo.filterRelated(id, filterOptions);
+      ret.slice(0, max || ret.length);
+      return ret;
+    };
+
+    Product.activePhotos = function() {
+      var id;
+      if (id = this.record.id) {
+        return this.photos(id);
+      }
+      return this.contains();
+    };
+
+    Product.inactive = function() {
+      return this.findAllByAttribute('active', false);
+    };
+
+    Product.createJoin = function(items, target, callback) {
+      var cb, ga, id, ids, isValid, ret, valid;
+      if (items == null) {
+        items = [];
+      }
+      this.log('createJoin');
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      if (!(items.length && target)) {
+        return;
+      }
+      isValid = true;
+      cb = function() {
+        Category.trigger('change:collection', target);
+        if (typeof callback === 'function') {
+          return callback.call(this);
+        }
+      };
+      ids = items.toID();
+      ret = (function() {
+        var i, len, ref, results;
+        results = [];
+        for (i = 0, len = ids.length; i < len; i++) {
+          id = ids[i];
+          ga = new CategoriesProduct({
+            category_id: target.id,
+            product_id: id,
+            ignore: true,
+            order: parseInt((ref = CategoriesProduct.products(target.id).last()) != null ? ref.order : void 0) + 1 || 0
+          });
+          valid = ga.save({
+            validate: true,
+            ajax: false
+          });
+          if (!valid) {
+            results.push(isValid = valid);
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      })();
+      if (isValid) {
+        target.save({
+          done: cb
+        });
+      } else {
+        Spine.trigger('refresh:all');
+      }
+      return ret;
+    };
+
+    Product.destroyJoin = function(items, target, cb) {
+      var ga, gas, i, id, len;
+      if (items == null) {
+        items = [];
+      }
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      if (!(items.length && target)) {
+        return;
+      }
+      items = items.toID();
+      for (i = 0, len = items.length; i < len; i++) {
+        id = items[i];
+        gas = CategoriesProduct.filter(id, {
+          key: 'product_id'
+        });
+        ga = CategoriesProduct.categoryProductExists(id, target.id);
+        if (ga) {
+          ga.destroy({
+            done: cb
+          });
+        }
+      }
+      return Category.trigger('change:collection', target);
+    };
+
+    Product.throwWarning = function() {};
+
+    Product.categorySelectionList = function() {
+      var productId;
+      if (Category.record && Product.record) {
+        productId = Category.selectionList()[0];
+        return Product.selectionList(productId);
+      } else {
+        return [];
+      }
+    };
+
+    Product.details = function() {
+      if (Product.record) {
+        return Product.record.details();
+      }
+      return $().extend(Product.defaultDetails, {
+        iCount: Photo.count(),
+        sCount: Product.selectionList().length
+      });
+    };
+
+    Product.findEmpties = function() {
+      var ret;
+      ret = [];
+      this.each(function(item) {
+        if (!item.photos().length) {
+          return ret.push(item);
+        }
+      });
+      return ret;
+    };
+
+    Product.prototype.init = function(instance) {
+      var id, s;
+      if (!(id = instance.id)) {
+        return;
+      }
+      s = new Object();
+      s[id] = [];
+      this.constructor.selection.push(s);
+      return this.constructor.childType = 'Photo';
+    };
+
+    Product.prototype.parent = function() {
+      return this.constructor.parent;
+    };
+
+    Product.prototype.selChange = function(list) {};
+
+    Product.prototype.createJoin = function(target) {
+      return this.constructor.createJoin([this.id], target);
+    };
+
+    Product.prototype.destroyJoin = function(target) {
+      return this.constructor.destroyJoin([this.id], target);
+    };
+
+    Product.prototype.count = function(inc) {
+      if (inc == null) {
+        inc = 0;
+      }
+      return this.constructor.contains(this.id).length + inc;
+    };
+
+    Product.prototype.contains = function() {
+      return this.constructor.contains(this.id);
+    };
+
+    Product.prototype.photos = function(max) {
+      return this.constructor.photos(this.id, max);
+    };
+
+    Product.prototype.details = function() {
+      return $().extend(this.defaultDetails, {
+        iCount: this.photos().length,
+        sCount: Product.selectionList().length,
+        product: Product.record,
+        category: Category.record
+      });
+    };
+
+    Product.prototype.selectAttributes = function() {
+      var attr, i, len, ref, result;
+      result = {};
+      ref = this.constructor.selectAttributes;
+      for (i = 0, len = ref.length; i < len; i++) {
+        attr = ref[i];
+        result[attr] = this[attr];
+      }
+      return result;
+    };
+
+    Product.prototype.select = function(joinTableItems) {
+      var i, len, record;
+      for (i = 0, len = joinTableItems.length; i < len; i++) {
+        record = joinTableItems[i];
+        if (record.product_id === this.id && ((this['order'] = record.order) != null)) {
+          return true;
+        }
+      }
+    };
+
+    Product.prototype.select_ = function(joinTableItems) {
+      var ref;
+      if (ref = this.id, indexOf.call(joinTableItems, ref) >= 0) {
+        return true;
+      }
+    };
+
+    Product.prototype.selectProduct = function(id) {
+      if (this.id === id) {
+        return true;
+      }
+    };
+
+    return Product;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Product = Product;
+  }
+
+}).call(this);
+}, "models/product__": function(exports, require, module) {(function() {
+  var $, Extender, Model, Product, Spine, Test,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Extender = require("extensions/model_extender");
+
+  Test = require("extensions/model_test");
+
+  require("spine/lib/ajax");
+
+  Product = (function(superClass) {
+    extend(Product, superClass);
+
+    function Product() {
+      return Product.__super__.constructor.apply(this, arguments);
+    }
+
+    Product.configure("Product", 'id', 'cid', 'title', 'price', 'user_id', 'order');
+
+    Product.extend(Model.Ajax);
+
+    Product.extend(Extender);
+
+    Product.extend(Test);
+
+    return Product;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Product = Product;
+  }
+
+}).call(this);
+}, "models/products_photo": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Extender, Filter, Model, ProductsPhoto, Selector, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Filter = require("extensions/filter");
+
+  Category = require('models/category');
+
+  Model.Product = require('models/product');
+
+  Model.Photo = require('models/photo');
+
+  CategoriesProduct = require('models/categories_product');
+
+  Selector = require("extensions/selector");
+
+  Extender = require("extensions/model_extender");
+
+  require("spine/lib/ajax");
+
+  ProductsPhoto = (function(superClass) {
+    extend(ProductsPhoto, superClass);
+
+    function ProductsPhoto() {
+      this.allProductPhotos = bind(this.allProductPhotos, this);
+      return ProductsPhoto.__super__.constructor.apply(this, arguments);
+    }
+
+    ProductsPhoto.configure("ProductsPhoto", 'id', 'cid', 'product_id', 'photo_id', 'order');
+
+    ProductsPhoto.extend(Model.Ajax);
+
+    ProductsPhoto.extend(Filter);
+
+    ProductsPhoto.extend(Selector);
+
+    ProductsPhoto.extend(Extender);
+
+    ProductsPhoto.url = 'products_photos';
+
+    ProductsPhoto.productPhotoExists = function(pid, aid) {
+      var aps;
+      aps = this.filter('placeholder', {
+        photo_id: pid,
+        product_id: aid,
+        func: 'selectUnique'
+      });
+      return aps[0] || false;
+    };
+
+    ProductsPhoto.productsPhotos = function(aid) {
+      var aps;
+      return aps = this.filter(aid, {
+        key: 'product_id'
+      });
+    };
+
+    ProductsPhoto.productPhotos = function(aid) {
+      var ret;
+      ret = [];
+      this.each(function(item) {
+        var photo;
+        if (item['product_id'] === aid && (photo = Photo.find(item['photo_id']))) {
+          return ret.push(photo);
+        }
+      });
+      return ret;
+    };
+
+    ProductsPhoto.photos = function(aid, max) {
+      return Photo.filterRelated(aid, {
+        model: 'Product',
+        key: 'product_id',
+        sorted: 'sortByOrder'
+      }).slice(0, max);
+    };
+
+    ProductsPhoto.products = function(pid, max) {
+      return Product.filterRelated(pid, {
+        model: 'Photo',
+        key: 'photo_id',
+        sorted: 'sortByOrder'
+      }).slice(0, max);
+    };
+
+    ProductsPhoto.c = 0;
+
+    ProductsPhoto.prototype.validate = function() {
+      var ap, valid_1, valid_2;
+      valid_1 = (Product.find(this.product_id)) && (Photo.find(this.photo_id));
+      valid_2 = !(ap = this.constructor.productPhotoExists(this.photo_id, this.product_id) && this.isNew());
+      if (!valid_1) {
+        return 'No valid action!';
+      }
+      if (!valid_2) {
+        return 'Photo already exists in Product';
+      }
+    };
+
+    ProductsPhoto.prototype.products = function() {
+      return this.constructor.products(this.photo_id);
+    };
+
+    ProductsPhoto.prototype.photos = function() {
+      return this.constructor.photos(this.product_id);
+    };
+
+    ProductsPhoto.prototype.allProductPhotos = function() {
+      var ap, aps, i, len, photos, product;
+      product = Product.record;
+      if (!product) {
+        return;
+      }
+      photos = [];
+      aps = ProductsPhoto.filter(product.id, {
+        key: 'product_id'
+      });
+      for (i = 0, len = aps.length; i < len; i++) {
+        ap = aps[i];
+        if (Photo.exists(ap.product_id)) {
+          photos.push(Photo.find(ap.product_id));
+        }
+      }
+      return photos;
+    };
+
+    ProductsPhoto.prototype.select = function(id, options) {
+      if (this[options.key] === id) {
+        return true;
+      }
+    };
+
+    ProductsPhoto.prototype.selectPhoto = function(id) {
+      if (this.photo_id === id && this.product_id === Product.record.id) {
+        return true;
+      }
+    };
+
+    ProductsPhoto.prototype.selectUnique = function(empty, options) {
+      if (this.product_id === options.product_id && this.photo_id === options.photo_id) {
+        return true;
+      }
+    };
+
+    return ProductsPhoto;
+
+  })(Spine.Model);
+
+  module.exports = Model.ProductsPhoto = ProductsPhoto;
+
+}).call(this);
+}, "models/recent": function(exports, require, module) {(function() {
+  var $, Model, Photo, Recent, Spine, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Photo = require("models/photo");
+
+  User = require("models/user");
+
+  require('spine/lib/local');
+
+  Recent = (function(superClass) {
+    extend(Recent, superClass);
+
+    function Recent() {
+      return Recent.__super__.constructor.apply(this, arguments);
+    }
+
+    Recent.configure('Recent', 'id');
+
+    Recent.extend(Model.Local);
+
+    Recent.logout = function() {
+      this.destroyAll();
+      return this.redirect('logout');
+    };
+
+    Recent.redirect = function(url) {
+      return location.href = base_url + url;
+    };
+
+    Recent.prototype.init = function(instance) {
+      if (!instance) {
+
+      }
+    };
+
+    Recent.loadRecent = function(max, callback) {
+      if (max == null) {
+        max = 100;
+      }
+      return $.ajax({
+        contentType: 'application/json',
+        dataType: 'json',
+        processData: false,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        url: base_url + 'photos/recent/' + max,
+        type: 'GET',
+        success: function(json) {
+          return callback.call(this, json);
+        },
+        error: this.proxy(this.error)
+      });
+    };
+
+    Recent.success = function(json) {};
+
+    Recent.error = function(xhr) {
+      this.logout();
+      return this.redirect('users/login');
+    };
+
+    return Recent;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Recent = Recent;
+  }
+
+}).call(this);
+}, "models/root": function(exports, require, module) {(function() {
+  var $, Category, Extender, Filter, Model, Root, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Category = require('models/category');
+
+  Filter = require("extensions/filter");
+
+  Extender = require("extensions/model_extender");
+
+  Root = (function(superClass) {
+    extend(Root, superClass);
+
+    function Root() {
+      return Root.__super__.constructor.apply(this, arguments);
+    }
+
+    Root.configure("Root", 'id');
+
+    Root.extend(Extender);
+
+    Root.childType = 'Category';
+
+    Root.prototype.init = function(instance) {
+      var id;
+      if (!(id = instance.id)) {
+
+      }
+    };
+
+    return Root;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Root = Root;
+  }
+
+}).call(this);
 }, "models/settings": function(exports, require, module) {(function() {
   var $, Extender, Log, Model, Settings, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -31007,7 +49400,7 @@ Released under the MIT License
       return Settings.__super__.constructor.apply(this, arguments);
     }
 
-    Settings.configure('Settings', 'hidden', 'agreed', 'sidebaropened');
+    Settings.configure('Settings', 'hidden', 'agreed', 'sidebaropened', 'user_id', 'autoupload', 'hash', 'previousHash');
 
     Settings.extend(Model.Local);
 
@@ -31017,6 +49410,20 @@ Released under the MIT License
 
     Settings.prototype.init = function(instance) {};
 
+    Settings.findUserSettings = function() {
+      return Settings.findByAttribute('user_id', User.first().id);
+    };
+
+    Settings.isAutoUpload = function() {
+      var ret, setting, user;
+      if (!(user = User.first())) {
+        return;
+      }
+      setting = this.findByAttribute('user_id', user.id);
+      ret = (setting != null ? setting.autoupload : void 0) || false;
+      return ret;
+    };
+
     Settings.findLogoSettings = function() {};
 
     return Settings;
@@ -31024,6 +49431,814 @@ Released under the MIT License
   })(Spine.Model);
 
   module.exports = Model.Settings = Settings;
+
+}).call(this);
+}, "models/spine_error": function(exports, require, module) {(function() {
+  var $, Model, Spine, SpineError,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  require('spine/lib/local');
+
+  SpineError = (function(superClass) {
+    extend(SpineError, superClass);
+
+    function SpineError() {
+      return SpineError.__super__.constructor.apply(this, arguments);
+    }
+
+    SpineError.configure('SpineError', 'record', 'xhr', 'statusText', 'error');
+
+    SpineError.extend(Model.Local);
+
+    SpineError.prototype.init = function() {};
+
+    return SpineError;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = SpineError;
+  }
+
+}).call(this);
+}, "models/spine_error_1": function(exports, require, module) {(function() {
+  var $, Model, Spine, SpineError,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  require('spine/lib/local');
+
+  SpineError = (function(superClass) {
+    extend(SpineError, superClass);
+
+    function SpineError() {
+      return SpineError.__super__.constructor.apply(this, arguments);
+    }
+
+    SpineError.configure('SpineError', 'record', 'xhr', 'statusText', 'error');
+
+    SpineError.extend(Model.Local);
+
+    SpineError.prototype.init = function() {};
+
+    return SpineError;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = SpineError;
+  }
+
+}).call(this);
+}, "models/toolbar": function(exports, require, module) {(function() {
+  var $, Category, Clipboard, Filter, Model, Product, Settings, Spine, Toolbar,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Clipboard = require('models/clipboard');
+
+  Settings = require('models/settings');
+
+  Filter = require("extensions/filter");
+
+  Toolbar = (function(superClass) {
+    extend(Toolbar, superClass);
+
+    function Toolbar() {
+      return Toolbar.__super__.constructor.apply(this, arguments);
+    }
+
+    Toolbar.configure('Toolbar', 'id', 'name', 'content');
+
+    Toolbar.extend(Filter);
+
+    Toolbar.load = function() {
+      return this.refresh(this.tools(), {
+        clear: true
+      });
+    };
+
+    Toolbar.tools = function() {
+      var key, ref, results, val;
+      ref = this.data;
+      results = [];
+      for (key in ref) {
+        val = ref[key];
+        results.push(val);
+      }
+      return results;
+    };
+
+    Toolbar.dropdownGroups = {
+      group_help: {
+        name: 'Help',
+        icon: 'question-sign',
+        content: [
+          {
+            name: 'Quick Help',
+            klass: 'opt-Help '
+          }, {
+            name: 'About',
+            klass: 'opt-Version '
+          }
+        ]
+      },
+      group0: {
+        name: 'View',
+        content: [
+          {
+            name: 'Overview',
+            klass: 'opt-Overview '
+          }, {
+            name: 'Preview',
+            klass: 'opt-SlideshowPreview ',
+            disabled: function() {
+              return !App.activePhotos().length;
+            }
+          }, {
+            devider: true
+          }, {
+            name: function() {
+              return 'Product Library';
+            },
+            klass: 'opt-ShowAllProducts',
+            icon: 'book',
+            disabled: function() {
+              return false;
+            }
+          }, {
+            name: function() {
+              return 'Photo Library';
+            },
+            klass: 'opt-ShowAllPhotos',
+            icon: 'book',
+            disabled: function() {
+              return false;
+            }
+          }, {
+            devider: true
+          }, {
+            name: 'Invert Selection',
+            klass: 'opt-SelectInv',
+            shortcut: 'Ctrl+I'
+          }, {
+            name: 'Select All',
+            klass: 'opt-SelectAll',
+            shortcut: 'Ctrl+A'
+          }, {
+            devider: true
+          }, {
+            name: 'Toggle Fullscreen',
+            klass: 'opt-FullScreen',
+            icon: 'fullscreen',
+            iconcolor: 'black'
+          }, {
+            name: 'Toggle Sidebar',
+            klass: 'opt-Sidebar',
+            shortcut: '->|'
+          }
+        ]
+      },
+      group1: {
+        name: 'Category',
+        content: [
+          {
+            name: 'New',
+            icon: 'asterisk',
+            klass: 'opt-CreateCategory'
+          }, {
+            name: 'New from Product Selection',
+            icon: 'certificate',
+            klass: 'opt-CopyProductsToNewCategory',
+            disabled: function() {
+              return !Category.selectionList().length;
+            }
+          }, {
+            devider: true
+          }, {
+            name: 'Edit',
+            icon: 'pencil',
+            klass: 'opt-Category',
+            disabled: function() {}
+          }, {
+            name: 'Destroy',
+            icon: 'trash',
+            klass: 'opt-DestroyCategory',
+            disabled: function() {
+              return !Category.record;
+            },
+            shortcut: '<-'
+          }
+        ]
+      },
+      group2: {
+        name: 'Product',
+        content: [
+          {
+            name: 'New',
+            icon: 'asterisk',
+            klass: 'opt-CreateProduct'
+          }, {
+            name: 'New from Photo Selection',
+            icon: 'asterisk',
+            klass: 'opt-CopyPhotosToNewProduct',
+            disabled: function() {
+              return !Product.selectionList().length;
+            }
+          }, {
+            name: 'Add from Library',
+            icon: 'plus',
+            klass: 'opt-AddProducts',
+            disabled: function() {
+              return !Category.record;
+            }
+          }, {
+            name: 'Duplicate',
+            icon: 'certificate',
+            klass: 'opt-DuplicateProducts',
+            disabled: function() {
+              return !Product.record;
+            }
+          }, {
+            devider: true
+          }, {
+            name: 'Edit',
+            icon: 'pencil',
+            klass: 'opt-Product',
+            disabled: function() {}
+          }, {
+            name: function() {
+              var len, type;
+              len = '(' + Category.selectionList().length + ')';
+              type = Category.record ? 'Remove' : 'Destroy';
+              return type + ' ' + len;
+            },
+            icon: 'trash',
+            klass: 'opt-DestroyProduct',
+            disabled: function() {
+              return !Category.selectionList().length;
+            },
+            shortcut: '<-'
+          }, {
+            name: function() {
+              return 'Destroy Empty Products (' + Product.findEmpties().length + ')';
+            },
+            icon: 'trash',
+            klass: 'opt-DestroyEmptyProducts',
+            disabled: function() {
+              return !Product.findEmpties().length;
+            }
+          }, {
+            name: 'Empty Products',
+            icon: 'fire',
+            klass: 'opt-EmptyProduct',
+            disabled: function() {
+              return !Category.selectionList().length || !Category.selectedProductsHasPhotos();
+            }
+          }, {
+            name: function() {
+              var a, b;
+              a = 'Toggle visible';
+              b = ' (' + Category.selectionList().length + ')';
+              if (Category.record) {
+                return a + b;
+              } else {
+                return a;
+              }
+            },
+            icon: 'eye',
+            klass: 'opt-ToggleVisible',
+            shortcut: 'Ctrl-M',
+            disabled: function() {
+              return !Category.selectionList().length || !Category.record;
+            }
+          }, {
+            devider: true
+          }, {
+            name: 'Copy',
+            icon: '',
+            klass: 'opt-CopyProduct',
+            disabled: function() {
+              return !Category.selectionList().length;
+            },
+            shortcut: 'Ctrl+C'
+          }, {
+            name: 'Cut',
+            icon: '',
+            klass: 'opt-CutProduct',
+            disabled: function() {
+              return !Category.selectionList().length;
+            },
+            shortcut: 'Ctrl+X'
+          }, {
+            name: 'Paste',
+            icon: '',
+            klass: 'opt-PasteProduct',
+            disabled: function() {
+              return !Clipboard.findAllByAttribute('type', 'copy').length || !Category.record;
+            },
+            shortcut: 'Ctrl+V'
+          }, {
+            devider: true
+          }, {
+            name: function() {
+              return 'Product Library';
+            },
+            klass: 'opt-ShowAllProducts',
+            icon: 'book',
+            disabled: function() {
+              return false;
+            }
+          }
+        ]
+      },
+      group3: {
+        name: 'Photo',
+        content: [
+          {
+            name: 'Upload',
+            icon: 'upload',
+            klass: 'opt-Upload'
+          }, {
+            name: 'Add from Library',
+            icon: 'plus',
+            klass: 'opt-AddPhotos',
+            disabled: function() {
+              return !Product.record;
+            }
+          }, {
+            devider: true
+          }, {
+            name: function() {
+              return 'Rotate (' + Product.selectionList().length + ')';
+            },
+            header: true,
+            disabled: true
+          }, {
+            name: 'cw',
+            klass: 'opt-Rotate-cw',
+            shortcut: 'Ctrl+R',
+            icon: 'circle-arrow-right',
+            disabled: function() {
+              return !Product.selectionList().length;
+            }
+          }, {
+            name: 'ccw',
+            klass: 'opt-Rotate-ccw',
+            icon: 'circle-arrow-left',
+            disabled: function() {
+              return !Product.selectionList().length;
+            }
+          }, {
+            devider: true
+          }, {
+            name: 'Edit',
+            icon: 'pencil',
+            klass: 'opt-Photo',
+            disabled: function() {}
+          }, {
+            name: function() {
+              var len, type;
+              if (Product.record) {
+                type = 'Remove';
+              } else {
+                type = 'Destroy';
+              }
+              len = Product.selectionList().length;
+              return type + ' (' + len + ')';
+            },
+            shortcut: '<-',
+            icon: 'trash',
+            klass: 'opt-DestroyPhoto ',
+            disabled: function() {
+              return !Product.selectionList().length;
+            }
+          }, {
+            devider: true
+          }, {
+            name: 'Copy',
+            icon: '',
+            klass: 'opt-CopyPhoto',
+            disabled: function() {
+              return !Product.selectionList().length;
+            },
+            shortcut: 'Ctrl+C'
+          }, {
+            name: 'Cut',
+            icon: '',
+            klass: 'opt-CutPhoto',
+            disabled: function() {
+              return !Product.selectionList().length;
+            },
+            shortcut: 'Ctrl+X'
+          }, {
+            name: 'Paste',
+            icon: '',
+            klass: 'opt-PastePhoto',
+            disabled: function() {
+              return !Clipboard.findAllByAttribute('type', 'copy').length || !Product.record;
+            },
+            shortcut: 'Ctrl+V'
+          }, {
+            devider: true
+          }, {
+            name: function() {
+              return 'Photo Library';
+            },
+            klass: 'opt-ShowAllPhotos',
+            icon: 'book',
+            disabled: function() {
+              return false;
+            }
+          }, {
+            devider: true
+          }, {
+            name: 'Auto Upload',
+            icon: function() {
+              if (Settings.isAutoUpload()) {
+                return 'ok';
+              } else {
+                return '';
+              }
+            },
+            klass: 'opt-AutoUpload',
+            disabled: function() {
+              return false;
+            }
+          }
+        ]
+      },
+      group4: {
+        name: function() {
+          var len;
+          len = App.activePhotos().length;
+          return 'Slideshow  <span class="badge">' + len + '</span>';
+        },
+        content: [
+          {
+            name: function() {
+              return 'Preview';
+            },
+            klass: 'opt-SlideshowPreview',
+            icon: 'picture',
+            disabled: function() {
+              return !App.activePhotos().length;
+            }
+          }, {
+            name: 'Start',
+            klass: 'opt-SlideshowPlay',
+            shortcut: 'Space',
+            icon: 'play',
+            dataToggle: 'modal-category',
+            disabled: function() {
+              return !App.activePhotos().length;
+            }
+          }
+        ]
+      }
+    };
+
+    Toolbar.data = {
+      package_00: {
+        name: 'Empty',
+        content: []
+      },
+      package_01: {
+        name: 'Default',
+        content: [
+          {
+            dropdown: true,
+            itemGroup: Toolbar.dropdownGroups.group_help
+          }, {
+            dropdown: true,
+            itemGroup: Toolbar.dropdownGroups.group0
+          }, {
+            dropdown: true,
+            itemGroup: Toolbar.dropdownGroups.group1
+          }, {
+            dropdown: true,
+            itemGroup: Toolbar.dropdownGroups.group2
+          }, {
+            dropdown: true,
+            itemGroup: Toolbar.dropdownGroups.group3
+          }, {
+            dropdown: true,
+            itemGroup: Toolbar.dropdownGroups.group4
+          }
+        ]
+      },
+      package_02: {
+        name: 'Close',
+        content: [
+          {
+            name: '&times;',
+            klass: 'opt opt-Previous',
+            innerklass: 'close white',
+            type: 'button'
+          }
+        ]
+      },
+      package_09: {
+        name: 'Slideshow',
+        content: [
+          {
+            name: function() {
+              return 'Start';
+            },
+            icon: 'picture',
+            icon2: 'play',
+            klass: 'opt-SlideshowPlay',
+            innerklass: function() {
+              if (App.activePhotos().length) {
+                return 'azur puls';
+              } else {
+                return '';
+              }
+            },
+            dataToggle: 'modal-category',
+            disabled: function() {
+              return !App.activePhotos().length;
+            }
+          }
+        ]
+      },
+      package_10: {
+        name: 'Back_',
+        locked: true,
+        content: [
+          {
+            name: '&times;',
+            klass: 'opt-Previous',
+            type: 'span',
+            icon: 'arrow-left',
+            outerstyle: 'float: right;'
+          }
+        ]
+      },
+      package_11: {
+        name: 'Chromeless',
+        locked: true,
+        content: [
+          {
+            name: 'Chromeless',
+            klass: function() {
+              return 'opt-FullScreen' + (App.showView.slideshowView.fullScreenEnabled() ? ' active' : '');
+            },
+            icon: '',
+            dataToggle: 'button',
+            outerstyle: ''
+          }, {
+            name: function() {
+              return '';
+            },
+            klass: 'opt-SlideshowPlay',
+            icon: 'play',
+            iconcolor: 'white',
+            disabled: function() {
+              return !App.activePhotos().length;
+            }
+          }
+        ]
+      },
+      package_12: {
+        name: 'Slider',
+        content: [
+          {
+            name: '<span class="slider" style=""></span>',
+            klass: 'opt-Thumbsize ',
+            type: 'div',
+            innerstyle: 'width: 190px; position: relative;'
+          }
+        ]
+      },
+      package_13: {
+        name: 'SlideshowPackage',
+        content: [
+          {
+            name: 'Fullscreen',
+            klass: function() {
+              return 'opt-FullScreen' + (App.showView.slideshowView.fullScreenEnabled() ? ' active' : '');
+            },
+            icon: 'fullscreen',
+            dataToggle: 'button',
+            outerstyle: ''
+          }, {
+            name: 'Start',
+            klass: 'opt-SlideshowPlay',
+            innerklass: 'symbol',
+            icon: 'play',
+            iconcolor: '',
+            disabled: function() {
+              return !App.activePhotos().length;
+            }
+          }, {
+            name: '<span class="slider" style=""></span>',
+            klass: 'opt-Thumbsize ',
+            type: 'div',
+            innerstyle: 'width: 190px; position: relative;'
+          }
+        ]
+      },
+      package_14: {
+        name: 'FlickrRecent',
+        content: [
+          {
+            name: function() {
+              var details;
+              details = App.flickrView.details('recent');
+              return 'Recent Photos (' + details.from + '-' + details.to + ')';
+            },
+            klass: 'opt',
+            innerklass: 'symbol',
+            icon: 'picture',
+            type: 'span'
+          }, {
+            name: '',
+            klass: 'opt opt-Prev',
+            icon: 'chevron-left',
+            disabled: function() {}
+          }, {
+            name: '',
+            klass: 'opt opt-Next',
+            icon: 'chevron-right',
+            disabled: function() {}
+          }
+        ]
+      },
+      package_15: {
+        name: 'FlickrInter',
+        content: [
+          {
+            name: function() {
+              var details;
+              details = App.flickrView.details('inter');
+              return 'Interesting Stuff (' + details.from + '-' + details.to + ')';
+            },
+            icon: 'picture',
+            klass: 'opt',
+            type: 'span'
+          }, {
+            name: '',
+            klass: 'opt opt-Prev',
+            icon: 'chevron-left',
+            disabled: function() {}
+          }, {
+            name: '',
+            klass: 'opt opt-Next',
+            icon: 'chevron-right',
+            disabled: function() {}
+          }
+        ]
+      },
+      package_16: {
+        name: 'Close_',
+        content: [
+          {
+            icon: 'arrow-left',
+            klass: 'opt opt-Previous',
+            type: 'span'
+          }
+        ]
+      }
+    };
+
+    Toolbar.prototype.init = function(ins) {};
+
+    Toolbar.prototype.select = function(list) {
+      var ref;
+      return ref = this.name, indexOf.call(list, ref) >= 0;
+    };
+
+    return Toolbar;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Toolbar;
+  }
+
+}).call(this);
+}, "models/user": function(exports, require, module) {(function() {
+  var $, Clipboard, Log, Model, Settings, Spine, User,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Log = Spine.Log;
+
+  Model = Spine.Model;
+
+  Settings = require("models/settings");
+
+  Clipboard = require("models/clipboard");
+
+  require('spine/lib/local');
+
+  User = (function(superClass) {
+    extend(User, superClass);
+
+    function User() {
+      this.error = bind(this.error, this);
+      this.success = bind(this.success, this);
+      return User.__super__.constructor.apply(this, arguments);
+    }
+
+    User.configure('User', 'id', 'username', 'name', 'groupname', 'sessionid', 'hash');
+
+    User.extend(Model.Local);
+
+    User.include(Log);
+
+    User.trace = true;
+
+    User.ping = function() {
+      var user;
+      this.fetch();
+      if (user = this.first()) {
+        return user.confirm();
+      } else {
+        alert('not confirmed');
+        return this.redirect('users/login');
+      }
+    };
+
+    User.logout = function() {
+      this.destroyAll();
+      Clipboard.destroyAll();
+      $(window).off();
+      return this.redirect('logout');
+    };
+
+    User.test = function() {
+      return alert('test');
+    };
+
+    User.redirect = function(url, hash) {
+      if (url == null) {
+        url = '';
+      }
+      if (hash == null) {
+        hash = '';
+      }
+      return location.href = url + hash;
+    };
+
+    User.prototype.init = function(instance) {};
+
+    User.prototype.confirm = function() {
+      return $.ajax({
+        url: base_url + 'users/ping',
+        data: JSON.stringify(this),
+        type: 'POST',
+        success: this.success,
+        error: this.error
+      });
+    };
+
+    User.prototype.success = function(json) {
+      return this.constructor.trigger('pinger', this, $.parseJSON(json));
+    };
+
+    User.prototype.error = function(xhr) {
+      this.constructor.logout();
+      return this.constructor.redirect('users/login');
+    };
+
+    return User;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = User;
+  }
 
 }).call(this);
 }, "views/agb": function(exports, require, module) {module.exports = function template(locals) {

@@ -37,6 +37,12 @@ class PagesController extends AppController {
  */
 	public $uses = array();
 
+  function beforeFilter() {
+    $this->autoRender = true;
+    $this->Auth->allowedActions = array('display');
+    parent::beforeFilter();
+  }
+  
 /**
  * Displays a view
  *

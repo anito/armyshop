@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 class AdminController extends AppController {
 
   public $name = 'Admin';
-  public $uses = array();
+  public $uses = array('Category', 'Product', 'Photo');
 
   function beforeFilter() {
     $this->autoRender = true;
@@ -18,7 +18,12 @@ class AdminController extends AppController {
 //  }
   
   public function index() {
-    
+    $this->Product->recursive = 1;
+
+    $categories = $this->Category->findAllByUser_id((string) $this->Auth->user('id'));
+    $products = $this->Product->findAllByUser_id((string) $this->Auth->user('id'));
+    $photos = $this->Photo->findAllByUser_id((string) $this->Auth->user('id'));
+    $this->set(compact('categories', 'products', 'photos'));
   }
 }
 

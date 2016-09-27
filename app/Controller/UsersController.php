@@ -1,5 +1,7 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('Debugger', 'Utilities');
+App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
 
 class UsersController extends AppController {
 
@@ -7,7 +9,7 @@ class UsersController extends AppController {
   public $helpers = array('Form');
 
   function beforeFilter() {
-//    $this->Auth->allow = array('login', 'logout', 'auth', 'ping', 'add');
+    $this->Auth->allowedActions = array('login', 'logout', 'ping');//, 'add', 'index', 'edit', 'view');
     $this->layout = 'cake';
     parent::beforeFilter();
   }
@@ -35,9 +37,6 @@ class UsersController extends AppController {
     if ($this->request->is('ajax')) {
       
       if (!empty($this->data)) {
-        $this->data = $this->data['User'];
-        $this->log($this->data, LOG_DEBUG);
-        
         if($this->Auth->login()) {
           $this->set('_serialize', array_merge($this->data, array(
               'id' => $this->Auth->user('id'),
@@ -48,11 +47,12 @@ class UsersController extends AppController {
               'groupname' => $this->_groupname(),
               'flash' => '<strong style="color:#49AFCD">You\'re successfully logged in as ' . $this->Auth->user('name') . '</strong>',
               'success' => 'true',
-              'redirect' => $this->Session->loginRedirect
+              'redirect' => $this->data['User']['redirect']
               )));
+//          $this->log( $this->Session, LOG_DEBUG);
         } else {
           $this->response->header("WWW-Authenticate: Negotiate");
-          $this->set('_serialize', array_merge($this->request->data, array(
+          $this->set('_serialize', array_merge($this->data, array(
               'id' => '',
               'username' => '',
               'name' => '',
@@ -64,6 +64,7 @@ class UsersController extends AppController {
         $this->render(SIMPLE_JSON);
       }
     } else {
+      $this->set('redirect', $this->Auth->redirect());
       $this->layout = 'login_layout';
     }
   }
@@ -103,7 +104,7 @@ class UsersController extends AppController {
 //      $this->redirect(array('action' => 'login'));
     }
     if (!$id) {
-      $this->Session->setFlash(__('Invalid user', true));
+      $this->Flash->error(__('Invalid user', true));
 //      $this->redirect(array('action' => 'index'));
     }
     $this->set('user', $this->User->read(null, $id));
@@ -116,7 +117,7 @@ class UsersController extends AppController {
     if (!empty($this->request->data)) {
       $this->User->create();
       if ($this->User->save($this->data)) {
-        $this->Session->setFlash(__('The user has been saved', true));
+        $this->Flash->success(__('The user has been saved', true));
         if ($this->request->is('ajax')) {
           $this->render(SIMPLE_JSON);
         } else {
@@ -132,7 +133,7 @@ class UsersController extends AppController {
           $this->response->header("HTTP/1.1 500 Internal Server Error");
           $this->render(SIMPLE_JSON);
         } else {
-          $this->Session->setFlash(__('The user could not be saved. Please, try again.', true));
+          $this->Flash->error(__('The user could not be saved. Please, try again.', true));
           $this->redirect(array('action' => 'index'));
         }
       }
@@ -151,10 +152,10 @@ class UsersController extends AppController {
     }
     if (!empty($this->data)) {
       if ($this->User->save($this->request->data)) {
-        $this->Session->setFlash(__('The user has been saved', true));
+        $this->Flash->success(__('The user has been saved', true));
         $this->redirect(array('action' => 'index'));
       } else {
-        $this->Session->setFlash(__('The user could not be saved. Please, try again.', true));
+        $this->Flash->eror(__('The user could not be saved. Please, try again.', true));
       }
     }
     if (empty($this->request->data)) {
@@ -173,15 +174,18 @@ class UsersController extends AppController {
       $this->redirect(array('action' => 'index'));
     }
     if ($this->User->delete($id)) {
-      $this->Session->setFlash(__('User deleted', true));
+      $this->Flash->success(__('User deleted', true));
       $this->redirect(array('action' => 'index'));
     }
-    $this->Session->setFlash(__('User was not deleted', true));
+    $this->Flash->error(__('User was not deleted', true));
     $this->redirect(array('action' => 'index'));
   }
   
   function ping() {
     $user = $this->Auth->user();
+    $this->log($this->Auth->user(), LOG_DEBUG);
+    $this->log($this->Auth->user('id'), LOG_DEBUG);
+    $this->log($this->data, LOG_DEBUG);
     if($this->request->is('ajax')) {
       if(!empty($this->data) && !empty($user)) {
         $this->set('_serialize', array_merge($this->data, array('id' => $this->Auth->user('id'), 'sessionid' => $this->Session->id(), 'success' => true)));

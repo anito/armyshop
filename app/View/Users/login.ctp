@@ -10,7 +10,7 @@
           </header>
           <div class="dialogue-inner-wrap">
             <div class="drag-handle">
-                <h1>Login</h1>
+                <h1>Login </h1>
                 <h4 class="flash">Enter Username and Password</h4>
               <div class="clearfix"></div>
             </div>
@@ -31,6 +31,7 @@
             <span class="info"><label>no messages</label></span
             <span>
               <fieldset>
+                <?php echo $this->Form->hidden('redirect', array('value' => $redirect)); ?>
                 <?php echo $this->Form->button('Guest Login', array('type'=>'button', 'class' => 'light', 'id' => 'guestLogin')); ?>
                 <?php echo $this->Form->button('Cancel', array('type'=>'submit', 'class' => 'light', 'id' => 'cancel')); ?>
                 <?php echo $this->Form->button('  ', array('type'=>'submit', 'class' => 'light glyphicon glyphicon-log-in')); ?>

@@ -9,9 +9,9 @@ class ModalSimpleView extends Spine.Controller
     '.modal-footer'       : 'footer'
   
   events:
-    'click .opt-ShowAllAlbums' : 'allAlbums'
+    'click .opt-ShowAllProducts' : 'allProducts'
     'click .opt-AddPhotos'     : 'addPhotos'
-    'click .opt-CreateAlbum'   : 'createAlbum'
+    'click .opt-CreateProduct'   : 'createProduct'
     'click .btnClose'          : 'close'
     'hidden.bs.modal'          : 'hiddenmodal'
     'show.bs.modal'            : 'showmodal'
@@ -53,14 +53,14 @@ class ModalSimpleView extends Spine.Controller
     @log 'close'
     @el.modal('hide')
     
-  allAlbums: ->
-    @navigate '/gallery', ''
+  allProducts: ->
+    @navigate '/category', ''
     
   addPhotos: (e) ->
     Spine.trigger('photos:add')
     
-  createAlbum: ->
-    Spine.trigger('create:album')
+  createProduct: ->
+    Spine.trigger('create:product')
     
   hiddenmodal: ->
     @log 'hiddenmodal...'

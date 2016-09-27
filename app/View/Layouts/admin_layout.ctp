@@ -34,14 +34,14 @@
     echo $this->Html->css('blueimp/blueimp-gallery');
     echo $this->Html->css('blueimp/blueimp-gallery-indicator');
     echo $this->Html->css('html5sortable/jquery.sortable');
-    echo $this->Html->css('/js/temp/public/application');
+    echo $this->Html->css('/js/app/public/application');
 
     echo $this->Html->scriptStart();
     ?>
     var base_url = '<?php echo $this->Html->url('/'); ?>';
     <?php
     echo $this->Html->scriptEnd();
-    echo $this->Html->script('temp/public/application');
+    echo $this->Html->script('app/public/application');
     ?>
 
     <?php
@@ -52,12 +52,13 @@
       
       var isProduction = true
       
-      var galleries = []//<?php //echo $this->Js->object($galleries); ?>;
-      var albums = []<?php //echo $this->Js->object($albums); ?>;
-      var photos = []<?php //echo $this->Js->object($photos); ?>;
+      var categories = <?php echo $this->Js->object($categories); ?>;
+      var products = <?php echo $this->Js->object($products); ?>;
+      var photos = <?php echo $this->Js->object($photos); ?>;
+      
       var startScript = function() {
         setTimeout(function() {
-          //App.showView.toggleDraghandle('');
+          App.showView.toggleDraghandle('');
         }, 2000)
         setTimeout(function(){
           App.sidebar.toggleDraghandle('');
@@ -67,21 +68,22 @@
       Spine = require('spine');
       Model = Spine.Model
       Spine.isProduction = (localStorage.isProduction != null) ? !(localStorage.isProduction === 'false') : isProduction
-      User    = require("models/user");
-      Main    = require("index");
-      Spine.Route = require('spine/lib/route');
       
-      Gallery= require('models/gallery')
-      Album = require('models/album')
-      Photo= require('models/photo')
+      Category = require('models/category')
+      Product = require('models/product')
+      Photo = require('models/photo')
+      
+      User    = require("models/user");
+      Main    = require("admin");
+      
+      Spine.Route = require('spine/lib/route');
       
       exports.App = new Main({el: $("body")});
       User.ping();
       
-      
+      Category.refresh(categories, {clear: true});
+      Product.refresh(products, {clear: true});
       Photo.refresh(photos, {clear: true});
-      Album.refresh(albums, {clear: true});
-      Gallery.refresh(galleries, {clear: true});
       
       Spine.Route.setup()
       startScript()
