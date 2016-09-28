@@ -12,7 +12,7 @@
   <div class="pricing__item">
     <h3 class="pricing__title">Mobile Mini Alarmanlage</h3>
     <p class="pricing__sentence">Handalarm mit LED Lampe und Sirene</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>9,99
+    <div class="pricing__price"><span class="pricing__currency">€</span>6,99
       <a href="https://www.hood.de/i/mobile-mini-alarmanlage-handalarm-mit-led-lampe-und-sirene-65760794.htm" target="blank" class="" aria-disabled="false">
         <div class="pricing__image"><img  src="/img/products/94228886.jpg"/></div>
       </a>
