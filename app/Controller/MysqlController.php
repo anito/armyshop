@@ -51,10 +51,10 @@ class MysqlController extends AppController {
   
   function mysql($action, $args = '') {
     if($action == 'dump') {
-      $postfix = '/usr/local/mysql/bin/mysqldump';
+      $postfix = MYSQL_CMD_PATH . 'mysqldump';
       $io = '>';
     } elseif ($action == 'restore') {
-      $postfix = '/usr/local/mysql/bin/mysql';
+      $postfix = MYSQL_CMD_PATH . 'mysql';
       $io = '<';
     } elseif (isempty($action)) {
       $cmd = 'mysql connect localhost 2>&1';

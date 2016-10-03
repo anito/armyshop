@@ -122,6 +122,16 @@ define('WEB_URL', '/' . APP_DIR . '/' . WEBROOT_DIR);
 define('UPLOADS', ROOT . DS . 'uploads');
 define('PHOTOS', UPLOADS . DS . 'photos');
 define('MYSQLUPLOAD', ROOT . DS . 'mysql');
+if (!defined('MYSQL_CMD_PATH')) {
+  $a = explode('.', DIR_HOST);
+  $last = count($a)-1;
+  $tl = $a[$last];
+  $path = '';
+  if ($tl == 'dev') {
+    $path = '/usr/local/mysql/bin/';
+  }
+  define('MYSQL_CMD_PATH', $path);
+}
 if (!defined('TOPLEVEL')) {
   $a = explode('.', DIR_HOST);
   $last = count($a)-1;
