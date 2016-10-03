@@ -53,11 +53,14 @@ class PhotosList extends Spine.Controller
     switch mode
       when 'create'
         @wipe()
-        @append @template photo
-        @callDeferred [photo]
+        
+        @append @template item
         @size(App.showView.sOutValue)
         @el.sortable('destroy').sortable()
         $('.dropdown-toggle', @el).dropdown()
+        
+        @callDeferred [photo]
+        
       when 'destroy'
         el = @findModelElement(photo)
         el.detach()
@@ -72,11 +75,15 @@ class PhotosList extends Spine.Controller
     
     if items.length
       @wipe()
-      @[mode] @template items
-      @callDeferred items
+      sorted = Product.sortByReverseOrder items
+      @[mode] @template sorted
       @size(App.showView.sOutValue)
+      @el.sortable('destroy').sortable()
       @exposeSelection()
       $('.dropdown-toggle', @el).dropdown()
+      
+      @callDeferred sorted
+      
     else if mode is 'add'
       @html '<h3 class="invite"><span class="enlightened">Es können keine Fotos hinzugefügt werden.</span></h3>'
       @append '<h3><label class="invite label label-default"><span class="enlightened">Es können keine Fotos hinzugefügt werden. Eventuell muss erst ein Produkt ausgewählt werden.</span></label></h3>'
@@ -99,10 +106,12 @@ class PhotosList extends Spine.Controller
     @log 'renderAll'
     items = Photo.all()
     if items.length
-      @html @template items
       @activateRecord()
-      @callDeferred  items
+      sorted = Product.sortByReverseOrder items
+      @html @template sorted
       @size(App.showView.sOutValue)
+      @el.sortable('destroy').sortable()
+      @callDeferred  sorted
     @el
   
   wipe: ->
@@ -127,11 +136,12 @@ class PhotosList extends Spine.Controller
     css = elements.tb.attr('style')
     active = elements.el.hasClass('active')
     hot = elements.el.hasClass('hot')
-    photoEl = elements.el.tmplItem()
-    photoEl.data = item
+    tmplItem = elements.el.tmplItem()
+    tmplItem.data = item
     try
-      photoEl.update()
+      tmplItem.update()
     catch e
+    
     elements = helper.refresh()
     elements.tb.attr('style', css).addClass('in')
     elements.el.toggleClass('active', active)
@@ -166,7 +176,7 @@ class PhotosList extends Spine.Controller
       
     deferred.promise()
   
-  callback: (json, items) =>
+  callback: (json, items) =>  
     result = for jsn in json
       ret = for key, val of jsn
         src: val.src

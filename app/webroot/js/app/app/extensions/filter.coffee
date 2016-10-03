@@ -16,23 +16,14 @@ Filter =
         @select (item) ->
           item[opts.func] query, opts
           
-      filterRelated_: (id, options) ->
-        model = @foreignModels()[options.model]
-        joinTableItems = Model[model.joinTable].filter(id, options)
-        key = if options.key is model.foreignKey then model.associationForeignKey else model.foreignKey
-        res = []
-        for item in joinTableItems
-          res.push record if record = @irecords[item[key]]
-        if options.sorted then @[options.sorted] res else res
-          
       filterSortByOrder: (query, options) ->
         @sortByOrder @filter query, options
           
       filterRelated: (id, options) ->
         model = @foreignModels()[options.model]
         joinTableItems = Model[model.joinTable].filter(id, options)
-        if options.sorted
-          @sortByOrder @filter joinTableItems
+        if sort = options?.sorted
+          @[sort] @filter joinTableItems
         else
           @filter joinTableItems
           

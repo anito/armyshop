@@ -53,7 +53,7 @@ class Info extends Spine.Controller
     if(maxy>=(h+t))
       posy=e.pageY-(info_h)-y_offset
     @el.css
-      top:posy+'px'
-      left:posx+'px'
+      top:posy-200+'px'
+      left:posx-400+'px'
 
 module?.exports = Info

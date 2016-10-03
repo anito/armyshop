@@ -66,7 +66,7 @@ class Product extends Spine.Model
     filterOptions =
       model: 'Product'
       key:'product_id'
-      sorted: 'sortByOrder'
+      sorted: 'sortByReverseOrder'
     ret = Photo.filterRelated(id, filterOptions)
     ret[0...max || ret.length]
     ret

@@ -754,7 +754,7 @@ body.on .pricing--norbu .pricing__image img {
 .pricing--norbu .pricing__feature-list {
   font-size: 1.15em;
   margin: 0em 1.5em;
-  padding: 1.5em 10px 1em;
+  padding: 1em 10px 1em;
   list-style: none;
   background: rgba(250,250,250,1);
   height: 150px;

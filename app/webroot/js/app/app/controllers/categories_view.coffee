@@ -58,7 +58,7 @@ class CategoriesView extends Spine.Controller
     unless Category.record
       Category.updateSelection()
     App.showView.trigger('change:toolbarOne', ['Default'])
-    App.showView.trigger('change:toolbarTwo', ['Slideshow'])
+    App.showView.trigger('change:toolbarTwo', ['Speichern'])
     @render()
     
   click: (e) ->

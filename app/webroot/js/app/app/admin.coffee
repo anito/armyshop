@@ -147,7 +147,7 @@ class Main extends Spine.Controller
     @vmanager = new Spine.Manager(@sidebar)
     @vmanager.external = @showView.toolbarOne
     @vmanager.initDrag @vDrag,
-      initSize: => @el.width()/4
+      initSize: => 400 #@el.width()/3.5
       sleep: true
       disabled: false
       axis: 'x'

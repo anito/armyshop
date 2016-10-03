@@ -69,4 +69,15 @@ class DATABASE_CONFIG {
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
+  
+	public $dev = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'localhost',
+		'login' => 'axel',
+		'password' => 'kakadax',
+		'database' => 'halehmann_dev',
+		'prefix' => '',
+		//'encoding' => 'utf8',
+	);
 }

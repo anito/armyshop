@@ -115,7 +115,7 @@ class ProductsView extends Spine.Controller
     filterOptions =
       model: 'Category'
       key: 'category_id'
-      sorted: 'sortByOrder'
+      sorted: 'sortByReverseOrder'
     
     if category
       items = Product.filterRelated(category.id, filterOptions)
@@ -135,7 +135,7 @@ class ProductsView extends Spine.Controller
   active: ->
     return unless @isActive()
     App.showView.trigger('change:toolbarOne', ['Default', 'Help'])
-    App.showView.trigger('change:toolbarTwo', ['Slideshow'])
+    App.showView.trigger('change:toolbarTwo', ['Speichern'])
     
     products = CategoriesProduct.products(Category.record.id)
     for alb in products

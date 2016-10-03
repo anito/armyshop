@@ -42,11 +42,11 @@ class MysqlController extends AppController {
     
     if(!in_array($action, $allowed_actions)) {
       echo 'command not in list of allowed commands';
-      header("Location: http://".$_SERVER['HTTP_HOST'].str_replace('//', '/', '/'.BASE_URL.'/admin#'));
+      header("Location: http://".$_SERVER['HTTP_HOST'].str_replace('//', '/', '/'.BASE_URL.'/admin'));
     }
     
     $mysql = $this->mysql($action, $args);
-    header("Location: http://".$_SERVER['HTTP_HOST'].str_replace('//', '/', '/'.BASE_URL.'/admin#'));
+    header("Location: http://".$_SERVER['HTTP_HOST'].str_replace('//', '/', '/'.BASE_URL.'/admin'));
   }
   
   function mysql($action, $args = '') {

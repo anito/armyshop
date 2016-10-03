@@ -233,7 +233,7 @@ class Toolbar extends Spine.Model
           devider: true
         ,
           name: 'Auto Upload'
-          icon: -> if Settings.isAutoUpload() then 'ok' else ''
+          icon: -> if Model.Settings.isAutoUpload() then 'ok' else ''
           klass: 'opt-AutoUpload'
           disabled: -> false
         ]
@@ -289,6 +289,9 @@ class Toolbar extends Spine.Model
           itemGroup: @dropdownGroups.group0
         ,
           dropdown: true
+          itemGroup: @dropdownGroups.group1
+        ,
+          dropdown: true
           itemGroup: @dropdownGroups.group2
         ,
           dropdown: true
@@ -304,13 +307,12 @@ class Toolbar extends Spine.Model
           type: 'button'
         ]
     package_09:
-      name: 'Slideshow'
+      name: 'Speichern'
       content:
         [
-          name: -> 'Start'
-          icon: 'picture'
-          icon2: 'play'
-          klass: 'opt-SlideshowPlay'
+          name: -> 'Synchronisieren'
+          icon: 'floppy-disk'
+          klass: 'opt-Save'
           innerklass: -> if App.activePhotos().length then 'azur puls' else ''
           dataToggle: 'modal-category'
           disabled: -> !App.activePhotos().length

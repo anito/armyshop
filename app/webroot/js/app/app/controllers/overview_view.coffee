@@ -107,6 +107,7 @@ class OverviewView extends Spine.Controller
       'backgroundPosition': 'center, center'
     
   showPhoto: (e) ->
+    return
     index = @item.index($(e.currentTarget))
     @slideshow.trigger('play'
       index:index
@@ -123,7 +124,7 @@ class OverviewView extends Spine.Controller
     e.preventDefault()
     e.stopPropagation()
     
-    if previousHash = Settings.findUserSettings().previousHash
+    if previousHash = Model.Settings.findUserSettings().previousHash
       location.hash = previousHash
     else
       @navigate '/categories/'

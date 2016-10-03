@@ -9,7 +9,6 @@ Photo         = require('models/photo')
 ProductsPhoto = require('models/products_photo')
 CategoriesProduct   = require('models/categories_product')
 Clipboard           = require("models/clipboard")
-Settings            = require("models/settings")
 ToolbarView         = require("controllers/toolbar_view")
 WaitView            = require("controllers/wait_view")
 ProductsView        = require("controllers/products_view")
@@ -23,9 +22,6 @@ PhotosAddView       = require('controllers/photos_add_view')
 CategoriesView      = require('controllers/categories_view')
 CategoriesHeader    = require('controllers/categories_header')
 SlideshowView       = require('controllers/slideshow_view')
-SlideshowHeader     = require('controllers/slideshow_header')
-OverviewHeader      = require('controllers/overview_header')
-OverviewView        = require('controllers/overview_view')
 ModalSimpleView     = require("controllers/modal_simple_view")
 Extender            = require('extensions/controller_extender')
 Drag                = require('extensions/drag')
@@ -44,9 +40,6 @@ class ShowView extends Spine.Controller
     '.header .products'       : 'productsHeaderEl'
     '.header .photos'         : 'photosHeaderEl'
     '.header .photo'          : 'photoHeaderEl'
-    '.header .overview'       : 'overviewHeaderEl'
-    '.header .slideshow'      : 'slideshowHeaderEl'
-    '.opt-Overview'           : 'btnOverview'
     '.opt-EditCategory'       : 'btnEditCategory'
     '.opt-Category .ui-icon'  : 'btnCategory'
     '.opt-AutoUpload'         : 'btnAutoUpload'
@@ -66,7 +59,6 @@ class ShowView extends Spine.Controller
     '#modal-action'           : 'modalActionEl'
     '#modal-addProduct'       : 'modalAddProductEl'
     '#modal-addPhoto'         : 'modalAddPhotoEl'
-    '.overview'               : 'overviewEl'
     
     '.slider'                 : 'slider'
     '.opt-Product'            : 'btnProduct'
@@ -76,7 +68,6 @@ class ShowView extends Spine.Controller
     
   events:
     'click .opt-AutoUpload:not(.disabled)'            : 'toggleAutoUpload'
-    'click .opt-Overview:not(.disabled)'              : 'showOverview'
     'click .opt-Previous:not(.disabled)'              : 'back'
     'click .opt-Sidebar:not(.disabled)'               : 'toggleSidebar'
     'click .opt-FullScreen:not(.disabled)'            : 'toggleFullScreen'
@@ -110,10 +101,6 @@ class ShowView extends Spine.Controller
     'click .opt-ShowAllPhotos:not(.disabled)'         : 'showPhotoMasters'
     'click .opt-AddPhotos:not(.disabled)'             : 'showPhotoMastersAdd'
     'click .opt-ActionCancel:not(.disabled)'          : 'cancelAdd'
-    'click .opt-SlideshowAutoStart:not(.disabled)'    : 'toggleSlideshowAutoStart'
-    'click .opt-SlideshowPreview:not(.disabled)'      : 'slideshowPreview'
-    'click .opt-SlideshowPhoto:not(.disabled)'        : 'slideshowPhoto'
-    'click .opt-SlideshowPlay:not(.disabled)'         : 'slideshowPlay'
     'click .opt-ShowPhotoSelection:not(.disabled)'    : 'showPhotoSelection'
     'click .opt-ShowProductSelection:not(.disabled)'    : 'showProductSelection'
     'click .opt-SelectAll:not(.disabled)'             : 'selectAll'
@@ -176,7 +163,6 @@ class ShowView extends Spine.Controller
       header: @photosHeader
       parentModel: Product
       parent: @
-      slideshow: @slideshowView
     @photoView = new PhotoView
       el: @photoEl
       className: 'items'
@@ -250,8 +236,8 @@ class ShowView extends Spine.Controller
     Product.bind('change:current', @proxy @scrollTo)
     Photo.bind('change:current', @proxy @scrollTo)
     
-    Settings.bind('change', @proxy @changeSettings)
-    Settings.bind('refresh', @proxy @refreshSettings)
+    Model.Settings.bind('change', @proxy @changeSettings)
+    Model.Settings.bind('refresh', @proxy @refreshSettings)
     
   active: (controller, params) ->
     # preactivate controller
@@ -532,26 +518,27 @@ class ShowView extends Spine.Controller
     App.sidebar.toggleDraghandle()
     
   toggleFullScreen: () ->
-    App.trigger('chromeless')
+    @toggleFullScreen()
     @refreshToolbars()
     
-  toggleFullScreen: () ->
-    @slideshowView.toggleFullScreen()
-    @refreshToolbars()
-    
-  toggleSlideshow: ->
-    active = @btnSlideshow.toggleClass('active').hasClass('active')
-    @slideshowView.slideshowMode(active)
-    @refreshToolbars()
-
-  toggleSlideshowAutoStart: ->
-    res = App.slideshow.data('bs.modal').options.toggleAutostart()
-    @refreshToolbars()
-    res
-    
-  isAutoplay: ->
-    @slideshowView.autoplay
+  # Toggle fullscreen mode:
+  toggleFullScreen: (activate) ->
   
+    root = document.documentElement
+    
+    if activate or !(isActive = @fullScreenEnabled())
+      if(root.webkitRequestFullScreen)
+        root.webkitRequestFullScreen(window.Element.ALLOW_KEYBOARD_INPUT)
+      else if(root.mozRequestFullScreen)
+        root.mozRequestFullScreen()
+    else
+      (document.webkitCancelFullScreen || document.mozCancelFullScreen || $.noop).apply(document)
+      
+    @fullScreenEnabled()
+
+  fullScreenEnabled: ->
+    !!(window.fullScreen)
+
   toggleDraghandle: ->
     @animateView()
     
@@ -559,14 +546,14 @@ class ShowView extends Spine.Controller
 #    active = !@isAutoUpload()
 #    console.log first = Setting.first()
 #    active = !first.autoupload
-    @settings = Settings.findUserSettings()
+    @settings = Model.Settings.findUserSettings()
     active = @settings.autoupload = !@settings.autoupload
     $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active
     @settings.save()
     @refreshToolbars()
   
   refreshSettings: (records) ->
-    @changeSettings settings if settings = Settings.findUserSettings()
+    @changeSettings settings if settings = Model.Settings.findUserSettings()
     @refreshToolbars()
   
   changeSettings: (rec) ->
@@ -691,19 +678,6 @@ class ShowView extends Spine.Controller
     Spine.trigger('slider:change', newVal)
     newVal
     
-  slideshowPlay: (e) =>
-    @slideshowView.trigger('play')
-    
-  slideshowPreview: (e) ->
-    @navigate '/slideshow', ''
-    
-  slideshowPhoto: (e) ->
-    if Photo.record
-      @slideshowView.trigger('play', {}, [Photo.record])
-    
-  showOverview: (e) ->
-    @navigate '/overview', ''
-
   toggleVisible: (e, list = Category.selectionList()) ->
     for id in list
       ga =  CategoriesProduct.categoryProductExists id, Category.record?.id
@@ -1172,11 +1146,6 @@ class ShowView extends Spine.Controller
       when 32 #Space
         unless isFormfield
           photos = App.activePhotos()
-          
-          if photos.length
-            @slideshowView.play(null, photos)
-          else
-            @noSlideShow() 
           e.preventDefault()
       when 37 #Left
         unless isFormfield

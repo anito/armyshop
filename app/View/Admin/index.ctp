@@ -39,7 +39,6 @@
                     <span class="opt-preview">Preview</span>
                   </div>
               </div>
-              <hr>
               <ul class="sublist" style="">
                 <li class="content item item-content"></li>
               </ul>
@@ -51,19 +50,19 @@
             <div id="refresh"></div>
             <button class="opt-CreateCategory dark hide">
               <i class="glyphicon glyphicon-plus"></i>
-              <span>Category</span>
+              <span>Kategorie</span>
             </button>
             <button class="opt-CreateProduct dark">
               <i class="glyphicon glyphicon-plus"></i>
-              <span>Product</span>
+              <span>Produkt</span>
             </button>
           </div>
         </footer>
       </div>
       <div class="vdivide draghandle"></div>
     </div>
-    <div id="content" class="views bg-medium vbox flex">
-      <div tabindex="1" id="show" class="view canvas bg-dark vbox flex fade">
+    <div id="content" class="views vbox flex">
+      <div tabindex="1" id="show" class="view canvas vbox flex fade">
         <div id="modal-action" class="modal fade"></div>
         <div id="modal-addProduct" class="modal fade"></div>
         <div id="modal-addPhoto" class="modal fade"></div>
@@ -100,24 +99,32 @@
             <div class="items flex" data-toggle="blueimp-category" data-target="#blueimp-category" data-selector="a.thumbnail"></div>
           </div>
         </div>
-        <div id="views" class="settings bg-light hbox autoflow bg-medium">
-          <div class="views canvas content vbox flex autoflow hdraggable" style="position: relative">
+        <div id="views" class="settings hbox autoflow">
+          <div class="views contents bg-medium vbox flex autoflow hdraggable" style="position: relative">
             <div class="hdivide draghandle">
               <span class="opt opt-CloseDraghandle glyphicon glyphicon-resize-vertical glyphicon glyphicon-white right" style="cursor: pointer;"></span>
             </div>
             <div id="ga" class="view flex" style=""></div>
             <div id="al" class="view views flex vbox content" style="">
               <div class="footer" style="">
-                <div class="span6 left" style="margin: 10px; white-space: nowrap; overflow: hidden;">
+                <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
+                  <section class="left">
                       <button type="submit" class="dark opt-EditorProduct">
                           <i class="glyphicon glyphicon-tasks"></i>
                           <span>Details</span>
                       </button>
                       <button type="submit" class="dark opt-EditorDescription">
-                          <i class="glyphicon glyphicon-plus"></i>
+                          <i class="glyphicon glyphicon-tasks"></i>
                           <span>Beschreibungen</span>
                       </button>
-                  </div>
+                  </section>
+                  <section class="right">
+                      <button type="submit" class="dark opt-CreateProduct">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Produkt</span>
+                      </button>
+                  </section>
+                </div>
               </div>
               <div class="vbox flex autoflow views" style="">
                 <table role="presentation" class="table description view"></table>
@@ -379,7 +386,6 @@
       <div class="expander"></div>
       {{tmpl "#sidebarContentTemplate"}}
     </div>
-    <hr>
     <ul class="sublist" style=""></ul>
   </li>
 </script>
@@ -411,7 +417,6 @@
           <span class="opt-flickr" style="color: rgba(255,255,255, 1); text-shadow: 0 -1px 0 rgba(0,0,0,0.9); font-size: 1.5em;">${name}</span>
         </div>
     </div>
-    <hr>
     <ul class="sublist" style="">
       {{tmpl($item.data.sub) "#sidebarFlickrSublistTemplate"}}
     </ul>
@@ -525,19 +530,9 @@
 </script>
 
 <script id="editCategoryTemplate" type="text/x-jquery-tmpl">
-  <div class="content">
-    <div class="editcategory">
-      <div class="categoryEditor">
-        <label>
-          <span class="enlightened">category - Name</span>
-        </label>
-        <input class="name" data-toggle="tooltip" placeholder="category name" data-placement="right" data-trigger="manual" data-title="Press Enter to save" data-content="${name}" type="text" name="name" value="${name}">
-        <label>
-          <span class="enlightened">Photo</span>
-        </label>
-        <textarea name="photo">${photo}</textarea>
-      </div>
-    </div>
+  <div class="input-group left">
+    <span class="input-group-addon" id="basic-addon1">Name</span>
+    <input type="text" class="form-control" placeholder="Name der Kategory" aria-describedby="basic-addon1" name="name" value="{{html name}}">
   </div>
 </script>
 
@@ -568,9 +563,6 @@
     <div class="titles">
       <div class="title">{{if title}}${$().name(title, 50)}{{/if}}</div>
       <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 113)}}{{/if}}</div>
-      <div class="rule">
-        <hr>
-      </div>
     </div>
   </li>
 </script>
@@ -688,9 +680,9 @@
         <h3>
         <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">{{if category.name}}${$().name(category.name, 10)}{{else}}...{{/if}}</span>
         </h3>
-        <h4 style="display: inline-block;">
+        <h3 style="display: inline-block;">
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
-        </h4>
+        </h3>
         {{else}}
         <h1>Fotokatalog</h1>
         {{/if}}
@@ -713,9 +705,9 @@
         <h3>
         <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">{{if category.name}}${$().name(category.name, 10)}{{else}}...{{/if}}</span>
         </h3>
-        <h4>
+        <h3>
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 10)}{{else}}...{{/if}}{{else}}{{/if}}</span>
-        </h4>
+        </h3>
         {{else}}
         <h1>Fotokatalog</h1>
         {{/if}}
@@ -848,7 +840,7 @@
 <script id="photosTemplate" type="text/x-jquery-tmpl">
   <li  id="${id}" data-id="${id}" class="item data fade in pho-trigger-edit" draggable="true">
     {{tmpl "#photosThumbnailTemplate"}}
-    <div class="title center hide">{{if title}}${title.substring(0, 15)}{{else}}{{if src}}${src.substring(0, 15)}{{else}}no title{{/if}}{{/if}}</div>
+    <div class="title center" style="color: aliceblue">{{if title}}${title.substring(0, 15)}{{else}}{{if order}}${order}{{else}}no title{{/if}}{{/if}}</div>
   </li>
 </script>
 
@@ -1158,7 +1150,6 @@
           <span class="opt-preview">${name}</span>
         </div>
     </div>
-    <hr>
     <ul class="sublist" style="">
       <li class="sublist-item item item-content ${klass}">
         {{tmpl($item.data.product) "#norbuPricingTemplate"}}
@@ -1168,21 +1159,25 @@
 </script>
 
 <script id="norbuPricingTemplate" type="text/x-tmpl">
-  <div class="pricing pricing--norbu" style="margin:0;">
-    <div class="pricing__item" style="font-size: 0.6rem; font-weight: 100;">
+  <div id="${product.id}" class="pricing pricing--norbu" style="margin:0;">              
+    <div class="pricing__item">
       <h3 class="pricing__title">${product.title}</h3>
       <p class="pricing__sentence">${product.subtitle}</p>
       <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
-        <a href="" target="blank" class="" aria-disabled="false">
-          <div class="pricing__image"><img  src="/img/products/dummy.jpg"/></div>
+        <a href="${product.link}" target="blank" class="" aria-disabled="false">
+          {{tmpl($item.data.photos) "#norbuImageListTemplate" }}
         </a>
       </div>
       <div class="pricing__feature-list">
         <ul class="">{{tmpl($item.data.descriptions) "#norbuFeatureListTemplate" }}</ul>
       </div>
-      <a href="#" target="blank" class="pricing__action btn btn-dark btn-lg" role="button">Zum Shop</a>
+      <a href="${product.link}" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
     </div>
   </div>
+</script>
+
+<script id="norbuImageListTemplate" type="text/x-tmpl">
+  <div id="${id}" class="pricing__image"><img class="image" src="/img/products/dummy.jpg"/></div>
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">

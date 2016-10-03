@@ -98,10 +98,8 @@ class ProductsList extends Spine.Controller
     @el
     
   updateIgnored: (item) ->
-    @log item
     ignored = item.ignored
     productEl = @children().forItem(Product.find(item.product_id))
-    @log Product.find(item.product_id)
     productEl.toggleClass('ignored', ignored)
     
   updateTemplate: (product) ->
@@ -112,18 +110,19 @@ class ProductsList extends Spine.Controller
     
     style = contentEl.attr('style')
     tmplItem = productEl.tmplItem()
+    tmplItem2 = contentEl.tmplItem()
+    @log tmplItem
+    @log tmplItem2
     tmplItem.data = product
     try
       tmplItem.update()
     catch e
-
     productEl = @children().forItem(product)
     contentEl = $('.thumbnail', productEl)
     productEl.toggleClass('active', active)
     productEl.toggleClass('hot', hot)
-    
-    @log productEl
     contentEl.attr('style', style)
+    
       
     @el.sortable()
   
@@ -175,7 +174,10 @@ class ProductsList extends Spine.Controller
   processProductDeferred: (product) ->
     @log 'processProductDeferred'
     deferred = $.Deferred()
-    data = product.photos(4)
+    all = product.photos()
+    sorted = Photo.sortByReverseOrder all
+    data = sorted.slice(4)
+    console.log data
     
     Photo.uri
       width: 50

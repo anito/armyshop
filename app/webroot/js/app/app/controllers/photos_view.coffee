@@ -121,7 +121,7 @@ class PhotosView extends Spine.Controller
         @parent.slideshowView.play()
     
     App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider])
-    App.showView.trigger('change:toolbarTwo', ['Slideshow'])
+    App.showView.trigger('change:toolbarTwo', ['Speichern'])
     @refresh()
     @parent.scrollTo(@el.data('current').models.record)
     
@@ -198,7 +198,7 @@ class PhotosView extends Spine.Controller
     @stopInfo()
     
     photos = ids || Product.selectionList().slice(0)
-    photos = [photos] unless Photo.isArray photos
+    photos = [photos] unless Array.isArray photos
     
     for id in photos
       if item = Photo.find(id)

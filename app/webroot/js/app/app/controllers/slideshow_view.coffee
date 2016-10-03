@@ -169,20 +169,7 @@ class SlideshowView extends Spine.Controller
       'width'           : val+'px'
       'backgroundSize'  : bg
     
-  # Toggle fullscreen mode:
-  toggleFullScreen: (activate) ->
   
-    root = document.documentElement
-    
-    if activate or !(isActive = @fullScreenEnabled())
-      if(root.webkitRequestFullScreen)
-        root.webkitRequestFullScreen(window.Element.ALLOW_KEYBOARD_INPUT)
-      else if(root.mozRequestFullScreen)
-        root.mozRequestFullScreen()
-    else
-      (document.webkitCancelFullScreen || document.mozCancelFullScreen || $.noop).apply(document)
-      
-    @fullScreenEnabled()
       
   fullScreenEnabled: ->
     !!(window.fullScreen)

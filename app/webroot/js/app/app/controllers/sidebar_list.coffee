@@ -206,7 +206,7 @@ class SidebarList extends Spine.Controller
     
     switch item.constructor.className
       when 'Category'
-#        @expand(item, !(Category.record?.id is item.id) or !@isOpen(el))
+        @expand(item, !(Category.record?.id is item.id) or !@isOpen(el))
         @navigate '/category', item.id
 #        @closeAllOtherSublists item
       when 'Product'

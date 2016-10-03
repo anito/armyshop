@@ -96,7 +96,6 @@ Controller.Drag =
         catch e
         @trigger('drag:drop', e, data)
         event = e.originalEvent
-        event.stopPropagation()
         
       # helper methods
         
@@ -171,33 +170,36 @@ Controller.Drag =
         source = Spine.DragItem.source
         origin = Spine.DragItem.originRecord
         
-        Spine.DragItem.closest?.removeClass('over nodrop')
+        return unless source or target or source
         
-        unless @validateDrop target, source, origin
-          @clearHelper()
-          return
-        hash = location.hash
-        switch source.constructor.className
-          when 'Product'
-            selection = Spine.DragItem.selection
-            Product.trigger('destroy:join', selection, origin) unless @isCtrlClick(e)# and origin
-            Product.trigger('create:join', selection, target, => )#@navigate hash)
+        Spine.DragItem.closest?.removeClass('over nodrop')
+        try
+          unless @validateDrop target, source, origin
+            @clearHelper()
+            return
+          hash = location.hash
+          switch source.constructor.className
+            when 'Product'
+              selection = Spine.DragItem.selection
+              Product.trigger('destroy:join', selection, origin) unless @isCtrlClick(e)# and origin
+              Product.trigger('create:join', selection, target, => )#@navigate hash)
 
-          when 'Photo'
-            selection = Spine.DragItem.selection
-            photos = Photo.toRecords(selection)
+            when 'Photo'
+              selection = Spine.DragItem.selection
+              photos = Photo.toRecords(selection)
 
-            Photo.trigger 'create:join',
-              photos: selection
-              product: target
-            , => @navigate hash
-            
-            unless @isCtrlClick(e)
-              Photo.trigger 'destroy:join',
+              Photo.trigger 'create:join',
                 photos: selection
-                product: origin
+                product: target
+              , => @navigate hash
+
+              unless @isCtrlClick(e)
+                Photo.trigger 'destroy:join',
+                  photos: selection
+                  product: origin
           
-                
+        catch e
+        
         @clearHelper()
                 
       clearHelper: ->
@@ -210,8 +212,6 @@ Controller.Drag =
       validateDrop: (target, source, origin) =>
         return true unless target and source
         return true if target.eql source
-        console.log target
-        console.log source
         switch source.constructor.className
           when 'Product'
             unless target.constructor.className is 'Category'

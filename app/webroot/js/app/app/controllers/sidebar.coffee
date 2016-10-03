@@ -110,9 +110,8 @@ class Sidebar extends Spine.Controller
     Category.one('refresh', @proxy @refresh)
     
   render: (selectType='searchSelect') ->
-    model = Model[@model] or Model[@defaultModel]
-    items = model.filter(@query, func: selectType)
-    items = items.sort model.nameSort
+    items = Category.filter(@query, func: selectType)
+    items = items.sort Category.nameSort
     Category.trigger('refresh:category') #rerenders CategoryView
     @list.render items
     @refreshView.render()

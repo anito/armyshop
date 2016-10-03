@@ -85,7 +85,7 @@ class PhotoView extends Spine.Controller
   active: ->
     return unless @isActive()
     App.showView.trigger('change:toolbarOne', ['Default'])
-    App.showView.trigger('change:toolbarTwo', ['Slideshow'])
+    App.showView.trigger('change:toolbarTwo', ['Speichern'])
     @render()
     
   refresh: ->
@@ -158,6 +158,7 @@ class PhotoView extends Spine.Controller
     @navigate '/category', Category.record.id, Product.record.id
   
   zoom: (e) ->
+    return
     @parent.slideshowView.trigger('play', {}, [Photo.record])
     
   infoUp: (e) =>

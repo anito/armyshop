@@ -35802,7 +35802,7 @@ Released under the MIT License
       this.vmanager.initDrag(this.vDrag, {
         initSize: (function(_this) {
           return function() {
-            return _this.el.width() / 4;
+            return 400;
           };
         })(this),
         sleep: true,
@@ -36610,7 +36610,7 @@ Released under the MIT License
         Category.updateSelection();
       }
       App.showView.trigger('change:toolbarOne', ['Default']);
-      App.showView.trigger('change:toolbarTwo', ['Slideshow']);
+      App.showView.trigger('change:toolbarTwo', ['Speichern']);
       return this.render();
     };
 
@@ -37152,8 +37152,8 @@ Released under the MIT License
         posy = e.pageY - info_h - y_offset;
       }
       return this.el.css({
-        top: posy + 'px',
-        left: posx + 'px'
+        top: posy - 200 + 'px',
+        left: posx - 400 + 'px'
       });
     };
 
@@ -37797,6 +37797,7 @@ Released under the MIT License
 
     OverviewView.prototype.showPhoto = function(e) {
       var index;
+      return;
       index = this.item.index($(e.currentTarget));
       this.slideshow.trigger('play', {
         index: index,
@@ -37815,7 +37816,7 @@ Released under the MIT License
       var previousHash;
       e.preventDefault();
       e.stopPropagation();
-      if (previousHash = Settings.findUserSettings().previousHash) {
+      if (previousHash = Model.Settings.findUserSettings().previousHash) {
         return location.hash = previousHash;
       } else {
         return this.navigate('/categories/');
@@ -38253,7 +38254,7 @@ Released under the MIT License
         return;
       }
       App.showView.trigger('change:toolbarOne', ['Default']);
-      App.showView.trigger('change:toolbarTwo', ['Slideshow']);
+      App.showView.trigger('change:toolbarTwo', ['Speichern']);
       return this.render();
     };
 
@@ -38351,6 +38352,7 @@ Released under the MIT License
     };
 
     PhotoView.prototype.zoom = function(e) {
+      return;
       return this.parent.slideshowView.trigger('play', {}, [Photo.record]);
     };
 
@@ -38797,11 +38799,11 @@ Released under the MIT License
       switch (mode) {
         case 'create':
           this.wipe();
-          this.append(this.template(photo));
-          this.callDeferred([photo]);
+          this.append(this.template(item));
           this.size(App.showView.sOutValue);
           this.el.sortable('destroy').sortable();
           $('.dropdown-toggle', this.el).dropdown();
+          this.callDeferred([photo]);
           break;
         case 'destroy':
           el = this.findModelElement(photo);
@@ -38815,17 +38817,20 @@ Released under the MIT License
     };
 
     PhotosList.prototype.render = function(items, mode) {
+      var sorted;
       if (items == null) {
         items = [];
       }
       this.log('PhotosList::render ' + mode);
       if (items.length) {
         this.wipe();
-        this[mode](this.template(items));
-        this.callDeferred(items);
+        sorted = Product.sortByReverseOrder(items);
+        this[mode](this.template(sorted));
         this.size(App.showView.sOutValue);
+        this.el.sortable('destroy').sortable();
         this.exposeSelection();
         $('.dropdown-toggle', this.el).dropdown();
+        this.callDeferred(sorted);
       } else if (mode === 'add') {
         this.html('<h3 class="invite"><span class="enlightened">Es können keine Fotos hinzugefügt werden.</span></h3>');
         this.append('<h3><label class="invite label label-default"><span class="enlightened">Es können keine Fotos hinzugefügt werden. Eventuell muss erst ein Produkt ausgewählt werden.</span></label></h3>');
@@ -38840,14 +38845,16 @@ Released under the MIT License
     };
 
     PhotosList.prototype.renderAll = function() {
-      var items;
+      var items, sorted;
       this.log('renderAll');
       items = Photo.all();
       if (items.length) {
-        this.html(this.template(items));
         this.activateRecord();
-        this.callDeferred(items);
+        sorted = Product.sortByReverseOrder(items);
+        this.html(this.template(sorted));
         this.size(App.showView.sOutValue);
+        this.el.sortable('destroy').sortable();
+        this.callDeferred(sorted);
       }
       return this.el;
     };
@@ -38866,7 +38873,7 @@ Released under the MIT License
     };
 
     PhotosList.prototype.update = function(item) {
-      var active, css, e, elements, error, helper, hot, photoEl;
+      var active, css, e, elements, error, helper, hot, tmplItem;
       this.log('update');
       helper = {
         refresh: (function(_this) {
@@ -38885,10 +38892,10 @@ Released under the MIT License
       css = elements.tb.attr('style');
       active = elements.el.hasClass('active');
       hot = elements.el.hasClass('hot');
-      photoEl = elements.el.tmplItem();
-      photoEl.data = item;
+      tmplItem = elements.el.tmplItem();
+      tmplItem.data = item;
       try {
-        photoEl.update();
+        tmplItem.update();
       } catch (error) {
         e = error;
       }
@@ -39401,7 +39408,7 @@ Released under the MIT License
         }
       }
       App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider]);
-      App.showView.trigger('change:toolbarTwo', ['Slideshow']);
+      App.showView.trigger('change:toolbarTwo', ['Speichern']);
       this.refresh();
       return this.parent.scrollTo(this.el.data('current').models.record);
     };
@@ -39503,7 +39510,7 @@ Released under the MIT License
       this.log('destroyPhoto');
       this.stopInfo();
       photos = ids || Product.selectionList().slice(0);
-      if (!Photo.isArray(photos)) {
+      if (!Array.isArray(photos)) {
         photos = [photos];
       }
       for (i = 0, len = photos.length; i < len; i++) {
@@ -39640,7 +39647,8 @@ Released under the MIT License
 
 }).call(this);
 }, "controllers/preview_view": function(exports, require, module) {(function() {
-  var $, CategoriesProduct, Model, PreviewView, Product, Spine,
+  var $, CategoriesProduct, Extender, Model, PreviewView, Product, Spine, UriHelper,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -39654,10 +39662,18 @@ Released under the MIT License
 
   CategoriesProduct = require('models/categories_product');
 
+  UriHelper = require('extensions/uri_helper');
+
+  Extender = require('extensions/controller_extender');
+
   require('spine/lib/local');
 
   PreviewView = (function(superClass) {
     extend(PreviewView, superClass);
+
+    PreviewView.extend(Extender);
+
+    PreviewView.extend(UriHelper);
 
     PreviewView.prototype.elements = {
       '.items': 'items',
@@ -39673,12 +39689,15 @@ Released under the MIT License
     PreviewView.prototype.template = function(item) {
       item = {
         product: item,
-        descriptions: Description.filterSortByOrder(item.id)
+        descriptions: Description.filterSortByOrder(item.id),
+        photos: Product.photos(item.id).slice(-1)
       };
+      console.log(item.photos);
       return $('#norbuPricingTemplate').tmpl(item);
     };
 
     function PreviewView() {
+      this.callback = bind(this.callback, this);
       PreviewView.__super__.constructor.apply(this, arguments);
       Product.bind('change', this.proxy(this.change));
       Product.bind('current', this.proxy(this.change));
@@ -39716,7 +39735,72 @@ Released under the MIT License
     };
 
     PreviewView.prototype.render = function() {
-      return this.contentEl.html(this.template(this.current));
+      var p, photos;
+      this.contentEl.html(this.template(this.current));
+      p = Product.photos(this.current.id);
+      if (p.length) {
+        console.log(photos = p.slice(-1));
+        return this.callDeferred(photos, this.callback);
+      }
+    };
+
+    PreviewView.prototype.size = function(width, height) {
+      return {
+        width: 300,
+        height: 300
+      };
+    };
+
+    PreviewView.prototype.callback = function(json, items) {
+      var i, jsn, key, len, res, result, results, ret, val;
+      result = (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = json.length; i < len; i++) {
+          jsn = json[i];
+          ret = (function() {
+            var results1;
+            results1 = [];
+            for (key in jsn) {
+              val = jsn[key];
+              results1.push({
+                src: val.src,
+                id: key
+              });
+            }
+            return results1;
+          })();
+          results.push(ret[0]);
+        }
+        return results;
+      })();
+      results = [];
+      for (i = 0, len = result.length; i < len; i++) {
+        res = result[i];
+        results.push(this.snap(res));
+      }
+      return results;
+    };
+
+    PreviewView.prototype.snap = function(res) {
+      var img, imgEl;
+      imgEl = $('#' + res.id + ' img', this.el);
+      img = this.createImage();
+      img.imgEl = imgEl;
+      img["this"] = this;
+      img.res = res;
+      img.onload = this.onLoad;
+      img.onerror = this.onError;
+      return img.src = res.src;
+    };
+
+    PreviewView.prototype.onLoad = function() {
+      this.imgEl.attr('src', this.src);
+      return this.imgEl.addClass('in');
+    };
+
+    PreviewView.prototype.onError = function(e) {
+      return this["this"].snap(this.res);
     };
 
     PreviewView.prototype.expand = function(e) {
@@ -40313,21 +40397,22 @@ Released under the MIT License
 
     ProductsList.prototype.updateIgnored = function(item) {
       var ignored, productEl;
-      this.log(item);
       ignored = item.ignored;
       productEl = this.children().forItem(Product.find(item.product_id));
-      this.log(Product.find(item.product_id));
       return productEl.toggleClass('ignored', ignored);
     };
 
     ProductsList.prototype.updateTemplate = function(product) {
-      var active, contentEl, e, error, hot, productEl, style, tmplItem;
+      var active, contentEl, e, error, hot, productEl, style, tmplItem, tmplItem2;
       productEl = this.children().forItem(product);
       contentEl = $('.thumbnail', productEl);
       active = productEl.hasClass('active');
       hot = productEl.hasClass('hot');
       style = contentEl.attr('style');
       tmplItem = productEl.tmplItem();
+      tmplItem2 = contentEl.tmplItem();
+      this.log(tmplItem);
+      this.log(tmplItem2);
       tmplItem.data = product;
       try {
         tmplItem.update();
@@ -40338,7 +40423,6 @@ Released under the MIT License
       contentEl = $('.thumbnail', productEl);
       productEl.toggleClass('active', active);
       productEl.toggleClass('hot', hot);
-      this.log(productEl);
       contentEl.attr('style', style);
       return this.el.sortable();
     };
@@ -40428,10 +40512,13 @@ Released under the MIT License
     };
 
     ProductsList.prototype.processProductDeferred = function(product) {
-      var data, deferred;
+      var all, data, deferred, sorted;
       this.log('processProductDeferred');
       deferred = $.Deferred();
-      data = product.photos(4);
+      all = product.photos();
+      sorted = Photo.sortByReverseOrder(all);
+      data = sorted.slice(4);
+      console.log(data);
       Photo.uri({
         width: 50,
         height: 50
@@ -40713,7 +40800,7 @@ Released under the MIT License
       filterOptions = {
         model: 'Category',
         key: 'category_id',
-        sorted: 'sortByOrder'
+        sorted: 'sortByReverseOrder'
       };
       if (category) {
         items = Product.filterRelated(category.id, filterOptions);
@@ -40744,7 +40831,7 @@ Released under the MIT License
         return;
       }
       App.showView.trigger('change:toolbarOne', ['Default', 'Help']);
-      App.showView.trigger('change:toolbarTwo', ['Slideshow']);
+      App.showView.trigger('change:toolbarTwo', ['Speichern']);
       products = CategoriesProduct.products(Category.record.id);
       for (j = 0, len = products.length; j < len; j++) {
         alb = products[j];
@@ -41219,7 +41306,7 @@ Released under the MIT License
 
 }).call(this);
 }, "controllers/show_view": function(exports, require, module) {(function() {
-  var $, CategoriesHeader, CategoriesProduct, CategoriesView, Category, Clipboard, Controller, Drag, Extender, ModalSimpleView, Model, OverviewHeader, OverviewView, Photo, PhotoHeader, PhotoView, PhotosAddView, PhotosHeader, PhotosView, Product, ProductsAddView, ProductsHeader, ProductsPhoto, ProductsView, Root, Settings, ShowView, SlideshowHeader, SlideshowView, Spine, ToolbarView, WaitView,
+  var $, CategoriesHeader, CategoriesProduct, CategoriesView, Category, Clipboard, Controller, Drag, Extender, ModalSimpleView, Model, Photo, PhotoHeader, PhotoView, PhotosAddView, PhotosHeader, PhotosView, Product, ProductsAddView, ProductsHeader, ProductsPhoto, ProductsView, Root, ShowView, SlideshowView, Spine, ToolbarView, WaitView,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty,
@@ -41248,8 +41335,6 @@ Released under the MIT License
 
   Clipboard = require("models/clipboard");
 
-  Settings = require("models/settings");
-
   ToolbarView = require("controllers/toolbar_view");
 
   WaitView = require("controllers/wait_view");
@@ -41276,12 +41361,6 @@ Released under the MIT License
 
   SlideshowView = require('controllers/slideshow_view');
 
-  SlideshowHeader = require('controllers/slideshow_header');
-
-  OverviewHeader = require('controllers/overview_header');
-
-  OverviewView = require('controllers/overview_view');
-
   ModalSimpleView = require("controllers/modal_simple_view");
 
   Extender = require('extensions/controller_extender');
@@ -41305,9 +41384,6 @@ Released under the MIT License
       '.header .products': 'productsHeaderEl',
       '.header .photos': 'photosHeaderEl',
       '.header .photo': 'photoHeaderEl',
-      '.header .overview': 'overviewHeaderEl',
-      '.header .slideshow': 'slideshowHeaderEl',
-      '.opt-Overview': 'btnOverview',
       '.opt-EditCategory': 'btnEditCategory',
       '.opt-Category .ui-icon': 'btnCategory',
       '.opt-AutoUpload': 'btnAutoUpload',
@@ -41327,7 +41403,6 @@ Released under the MIT License
       '#modal-action': 'modalActionEl',
       '#modal-addProduct': 'modalAddProductEl',
       '#modal-addPhoto': 'modalAddPhotoEl',
-      '.overview': 'overviewEl',
       '.slider': 'slider',
       '.opt-Product': 'btnProduct',
       '.opt-Category': 'btnCategory',
@@ -41337,7 +41412,6 @@ Released under the MIT License
 
     ShowView.prototype.events = {
       'click .opt-AutoUpload:not(.disabled)': 'toggleAutoUpload',
-      'click .opt-Overview:not(.disabled)': 'showOverview',
       'click .opt-Previous:not(.disabled)': 'back',
       'click .opt-Sidebar:not(.disabled)': 'toggleSidebar',
       'click .opt-FullScreen:not(.disabled)': 'toggleFullScreen',
@@ -41371,10 +41445,6 @@ Released under the MIT License
       'click .opt-ShowAllPhotos:not(.disabled)': 'showPhotoMasters',
       'click .opt-AddPhotos:not(.disabled)': 'showPhotoMastersAdd',
       'click .opt-ActionCancel:not(.disabled)': 'cancelAdd',
-      'click .opt-SlideshowAutoStart:not(.disabled)': 'toggleSlideshowAutoStart',
-      'click .opt-SlideshowPreview:not(.disabled)': 'slideshowPreview',
-      'click .opt-SlideshowPhoto:not(.disabled)': 'slideshowPhoto',
-      'click .opt-SlideshowPlay:not(.disabled)': 'slideshowPlay',
       'click .opt-ShowPhotoSelection:not(.disabled)': 'showPhotoSelection',
       'click .opt-ShowProductSelection:not(.disabled)': 'showProductSelection',
       'click .opt-SelectAll:not(.disabled)': 'selectAll',
@@ -41396,7 +41466,6 @@ Released under the MIT License
     };
 
     function ShowView() {
-      this.slideshowPlay = bind(this.slideshowPlay, this);
       this.sliderSlide = bind(this.sliderSlide, this);
       this.initSlider = bind(this.initSlider, this);
       ShowView.__super__.constructor.apply(this, arguments);
@@ -41442,8 +41511,7 @@ Released under the MIT License
         className: 'items',
         header: this.photosHeader,
         parentModel: Product,
-        parent: this,
-        slideshow: this.slideshowView
+        parent: this
       });
       this.photoView = new PhotoView({
         el: this.photoEl,
@@ -41500,8 +41568,8 @@ Released under the MIT License
       Category.bind('change:current', this.proxy(this.scrollTo));
       Product.bind('change:current', this.proxy(this.scrollTo));
       Photo.bind('change:current', this.proxy(this.scrollTo));
-      Settings.bind('change', this.proxy(this.changeSettings));
-      Settings.bind('refresh', this.proxy(this.refreshSettings));
+      Model.Settings.bind('change', this.proxy(this.changeSettings));
+      Model.Settings.bind('refresh', this.proxy(this.refreshSettings));
     }
 
     ShowView.prototype.active = function(controller, params) {
@@ -41898,31 +41966,27 @@ Released under the MIT License
     };
 
     ShowView.prototype.toggleFullScreen = function() {
-      App.trigger('chromeless');
+      this.toggleFullScreen();
       return this.refreshToolbars();
     };
 
-    ShowView.prototype.toggleFullScreen = function() {
-      this.slideshowView.toggleFullScreen();
-      return this.refreshToolbars();
+    ShowView.prototype.toggleFullScreen = function(activate) {
+      var isActive, root;
+      root = document.documentElement;
+      if (activate || !(isActive = this.fullScreenEnabled())) {
+        if (root.webkitRequestFullScreen) {
+          root.webkitRequestFullScreen(window.Element.ALLOW_KEYBOARD_INPUT);
+        } else if (root.mozRequestFullScreen) {
+          root.mozRequestFullScreen();
+        }
+      } else {
+        (document.webkitCancelFullScreen || document.mozCancelFullScreen || $.noop).apply(document);
+      }
+      return this.fullScreenEnabled();
     };
 
-    ShowView.prototype.toggleSlideshow = function() {
-      var active;
-      active = this.btnSlideshow.toggleClass('active').hasClass('active');
-      this.slideshowView.slideshowMode(active);
-      return this.refreshToolbars();
-    };
-
-    ShowView.prototype.toggleSlideshowAutoStart = function() {
-      var res;
-      res = App.slideshow.data('bs.modal').options.toggleAutostart();
-      this.refreshToolbars();
-      return res;
-    };
-
-    ShowView.prototype.isAutoplay = function() {
-      return this.slideshowView.autoplay;
+    ShowView.prototype.fullScreenEnabled = function() {
+      return !!window.fullScreen;
     };
 
     ShowView.prototype.toggleDraghandle = function() {
@@ -41931,7 +41995,7 @@ Released under the MIT License
 
     ShowView.prototype.toggleAutoUpload = function() {
       var active;
-      this.settings = Settings.findUserSettings();
+      this.settings = Model.Settings.findUserSettings();
       active = this.settings.autoupload = !this.settings.autoupload;
       $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active;
       this.settings.save();
@@ -41940,7 +42004,7 @@ Released under the MIT License
 
     ShowView.prototype.refreshSettings = function(records) {
       var settings;
-      if (settings = Settings.findUserSettings()) {
+      if (settings = Model.Settings.findUserSettings()) {
         this.changeSettings(settings);
       }
       return this.refreshToolbars();
@@ -42118,24 +42182,6 @@ Released under the MIT License
       newVal = this.sliderOutValue(val);
       Spine.trigger('slider:change', newVal);
       return newVal;
-    };
-
-    ShowView.prototype.slideshowPlay = function(e) {
-      return this.slideshowView.trigger('play');
-    };
-
-    ShowView.prototype.slideshowPreview = function(e) {
-      return this.navigate('/slideshow', '');
-    };
-
-    ShowView.prototype.slideshowPhoto = function(e) {
-      if (Photo.record) {
-        return this.slideshowView.trigger('play', {}, [Photo.record]);
-      }
-    };
-
-    ShowView.prototype.showOverview = function(e) {
-      return this.navigate('/overview', '');
     };
 
     ShowView.prototype.toggleVisible = function(e, list) {
@@ -42697,11 +42743,6 @@ Released under the MIT License
         case 32:
           if (!isFormfield) {
             photos = App.activePhotos();
-            if (photos.length) {
-              this.slideshowView.play(null, photos);
-            } else {
-              this.noSlideShow();
-            }
             return e.preventDefault();
           }
           break;
@@ -42931,15 +42972,14 @@ Released under the MIT License
     };
 
     Sidebar.prototype.render = function(selectType) {
-      var items, model;
+      var items;
       if (selectType == null) {
         selectType = 'searchSelect';
       }
-      model = Model[this.model] || Model[this.defaultModel];
-      items = model.filter(this.query, {
+      items = Category.filter(this.query, {
         func: selectType
       });
-      items = items.sort(model.nameSort);
+      items = items.sort(Category.nameSort);
       Category.trigger('refresh:category');
       this.list.render(items);
       return this.refreshView.render();
@@ -43515,11 +43555,12 @@ Released under the MIT License
     };
 
     SidebarList.prototype.click = function(e) {
-      var category, el, item;
+      var category, el, item, ref;
       el = $(e.target).closest('li');
       item = el.item();
       switch (item.constructor.className) {
         case 'Category':
+          this.expand(item, !(((ref = Category.record) != null ? ref.id : void 0) === item.id) || !this.isOpen(el));
           return this.navigate('/category', item.id);
         case 'Product':
           category = $(e.target).closest('li.gal').item();
@@ -43945,21 +43986,6 @@ Released under the MIT License
         'width': val + 'px',
         'backgroundSize': bg
       });
-    };
-
-    SlideshowView.prototype.toggleFullScreen = function(activate) {
-      var isActive, root;
-      root = document.documentElement;
-      if (activate || !(isActive = this.fullScreenEnabled())) {
-        if (root.webkitRequestFullScreen) {
-          root.webkitRequestFullScreen(window.Element.ALLOW_KEYBOARD_INPUT);
-        } else if (root.mozRequestFullScreen) {
-          root.mozRequestFullScreen();
-        }
-      } else {
-        (document.webkitCancelFullScreen || document.mozCancelFullScreen || $.noop).apply(document);
-      }
-      return this.fullScreenEnabled();
     };
 
     SlideshowView.prototype.fullScreenEnabled = function() {
@@ -45487,8 +45513,7 @@ Released under the MIT License
             e = error;
           }
           this.trigger('drag:drop', e, data);
-          event = e.originalEvent;
-          return event.stopPropagation();
+          return event = e.originalEvent;
         },
         dragHelp: function(e, item, origin) {
           var modelOrRecord, rec, ref, selection;
@@ -45571,46 +45596,53 @@ Released under the MIT License
           };
         })(this),
         dragDrop: function(e, record) {
-          var hash, origin, photos, ref, selection, source, target;
+          var error, hash, origin, photos, ref, selection, source, target;
           Spine.DragItem = SpineDragItem.first();
           target = Spine.DragItem.target;
           source = Spine.DragItem.source;
           origin = Spine.DragItem.originRecord;
+          if (!(source || target || source)) {
+            return;
+          }
           if ((ref = Spine.DragItem.closest) != null) {
             ref.removeClass('over nodrop');
           }
-          if (!this.validateDrop(target, source, origin)) {
-            this.clearHelper();
-            return;
-          }
-          hash = location.hash;
-          switch (source.constructor.className) {
-            case 'Product':
-              selection = Spine.DragItem.selection;
-              if (!this.isCtrlClick(e)) {
-                Product.trigger('destroy:join', selection, origin);
-              }
-              Product.trigger('create:join', selection, target, (function(_this) {
-                return function() {};
-              })(this));
-              break;
-            case 'Photo':
-              selection = Spine.DragItem.selection;
-              photos = Photo.toRecords(selection);
-              Photo.trigger('create:join', {
-                photos: selection,
-                product: target
-              }, (function(_this) {
-                return function() {
-                  return _this.navigate(hash);
-                };
-              })(this));
-              if (!this.isCtrlClick(e)) {
-                Photo.trigger('destroy:join', {
+          try {
+            if (!this.validateDrop(target, source, origin)) {
+              this.clearHelper();
+              return;
+            }
+            hash = location.hash;
+            switch (source.constructor.className) {
+              case 'Product':
+                selection = Spine.DragItem.selection;
+                if (!this.isCtrlClick(e)) {
+                  Product.trigger('destroy:join', selection, origin);
+                }
+                Product.trigger('create:join', selection, target, (function(_this) {
+                  return function() {};
+                })(this));
+                break;
+              case 'Photo':
+                selection = Spine.DragItem.selection;
+                photos = Photo.toRecords(selection);
+                Photo.trigger('create:join', {
                   photos: selection,
-                  product: origin
-                });
-              }
+                  product: target
+                }, (function(_this) {
+                  return function() {
+                    return _this.navigate(hash);
+                  };
+                })(this));
+                if (!this.isCtrlClick(e)) {
+                  Photo.trigger('destroy:join', {
+                    photos: selection,
+                    product: origin
+                  });
+                }
+            }
+          } catch (error) {
+            e = error;
           }
           return this.clearHelper();
         },
@@ -45634,8 +45666,6 @@ Released under the MIT License
             if (target.eql(source)) {
               return true;
             }
-            console.log(target);
-            console.log(source);
             switch (source.constructor.className) {
               case 'Product':
                 if (target.constructor.className !== 'Category') {
@@ -45712,33 +45742,15 @@ Released under the MIT License
             return item[opts.func](query, opts);
           });
         },
-        filterRelated_: function(id, options) {
-          var i, item, joinTableItems, key, len, model, record, res;
-          model = this.foreignModels()[options.model];
-          joinTableItems = Model[model.joinTable].filter(id, options);
-          key = options.key === model.foreignKey ? model.associationForeignKey : model.foreignKey;
-          res = [];
-          for (i = 0, len = joinTableItems.length; i < len; i++) {
-            item = joinTableItems[i];
-            if (record = this.irecords[item[key]]) {
-              res.push(record);
-            }
-          }
-          if (options.sorted) {
-            return this[options.sorted](res);
-          } else {
-            return res;
-          }
-        },
         filterSortByOrder: function(query, options) {
           return this.sortByOrder(this.filter(query, options));
         },
         filterRelated: function(id, options) {
-          var joinTableItems, model;
+          var joinTableItems, model, sort;
           model = this.foreignModels()[options.model];
           joinTableItems = Model[model.joinTable].filter(id, options);
-          if (options.sorted) {
-            return this.sortByOrder(this.filter(joinTableItems));
+          if (sort = options != null ? options.sorted : void 0) {
+            return this[sort](this.filter(joinTableItems));
           } else {
             return this.filter(joinTableItems);
           }
@@ -47250,6 +47262,57 @@ Released under the MIT License
   }
 
 }).call(this);
+}, "extensions/uri_helper": function(exports, require, module) {(function() {
+  var $, Photo, Spine, UriHelper;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Photo = require("models/photo");
+
+  UriHelper = {
+    extended: function() {
+      var include;
+      include = {
+        callDeferred: function(items, cb) {
+          this.log('callDeferred');
+          if (!Array.isArray(items)) {
+            items = [items];
+          }
+          return $.when(this.uriDeferred(items)).done((function(_this) {
+            return function(xhr, rec) {
+              return cb(xhr, rec);
+            };
+          })(this));
+        },
+        uriDeferred: function(items) {
+          var deferred;
+          this.log('uriDeferred');
+          deferred = $.Deferred();
+          Photo.uri(this.size(), (function(_this) {
+            return function(xhr, record) {
+              return deferred.resolve(xhr, items);
+            };
+          })(this), items);
+          return deferred.promise();
+        },
+        size: function(width, height) {
+          return {
+            width: 200,
+            height: 200
+          };
+        }
+      };
+      return this.include(include);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = UriHelper;
+  }
+
+}).call(this);
 }, "extensions/utils": function(exports, require, module) {(function() {
   var $;
 
@@ -48180,7 +48243,7 @@ Released under the MIT License
       return Category.__super__.constructor.apply(this, arguments);
     }
 
-    Category.configure('Category', 'id', 'cid', 'name', "photo", 'user_id');
+    Category.configure('Category', 'id', 'cid', 'name', 'user_id');
 
     Category.extend(Filter);
 
@@ -49330,7 +49393,7 @@ Released under the MIT License
       filterOptions = {
         model: 'Product',
         key: 'product_id',
-        sorted: 'sortByOrder'
+        sorted: 'sortByReverseOrder'
       };
       ret = Photo.filterRelated(id, filterOptions);
       ret.slice(0, max || ret.length);
@@ -50332,7 +50395,7 @@ Released under the MIT License
           }, {
             name: 'Auto Upload',
             icon: function() {
-              if (Settings.isAutoUpload()) {
+              if (Model.Settings.isAutoUpload()) {
                 return 'ok';
               } else {
                 return '';
@@ -50419,6 +50482,9 @@ Released under the MIT License
             itemGroup: Toolbar.dropdownGroups.group0
           }, {
             dropdown: true,
+            itemGroup: Toolbar.dropdownGroups.group1
+          }, {
+            dropdown: true,
             itemGroup: Toolbar.dropdownGroups.group2
           }, {
             dropdown: true,
@@ -50438,15 +50504,14 @@ Released under the MIT License
         ]
       },
       package_09: {
-        name: 'Slideshow',
+        name: 'Speichern',
         content: [
           {
             name: function() {
-              return 'Start';
+              return 'Synchronisieren';
             },
-            icon: 'picture',
-            icon2: 'play',
-            klass: 'opt-SlideshowPlay',
+            icon: 'floppy-disk',
+            klass: 'opt-Save',
             innerklass: function() {
               if (App.activePhotos().length) {
                 return 'azur puls';
