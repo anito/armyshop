@@ -8,7 +8,7 @@ $.fn.item = (keep) ->
     return item.reload?()
   else return item
 
-$.fn.forItem = (item, keep) ->
+$.fn.forItem = (item={}, keep) ->
   @filter ->
     compare = $(@).item(keep)
     item.eql?(compare) or item is compare

@@ -70,13 +70,13 @@ class ProductsView extends Spine.Controller
 
     CategoriesProduct.bind('beforeDestroy', @proxy @beforeDestroyCategoriesProduct)
     CategoriesProduct.bind('destroy', @proxy @destroyCategoriesProduct)
-    CategoriesProduct.bind('ignore', @proxy @ignoreProduct)
+    CategoriesProduct.bind('ignored', @proxy @ignoreProduct)
     
 #    Category.bind('change:collection', @proxy @collectionChanged)
     
+    Product.bind('create', @proxy @create)
     Product.bind('refresh:one', @proxy @refreshOne)
     Product.bind('ajaxError', Product.errorHandler)
-    Product.bind('create', @proxy @create)
     Product.bind('beforeDestroy', @proxy @beforeDestroyProduct)
     Product.bind('destroy', @proxy @destroy)
     Product.bind('create:join', @proxy @createJoin)
@@ -102,9 +102,6 @@ class ProductsView extends Spine.Controller
     
   deactivate: ->
     @el.removeClass('active')
-#    if !Category.record
-#      Category.updateSelection(null)
-#      Category.preservedSel.update Category.selectionList()
     @
     
   refreshOne: ->
@@ -129,7 +126,6 @@ class ProductsView extends Spine.Controller
     
   render: (items, mode='html') ->
     return unless @isActive()
-    @log items
     @list.render(items || @updateBuffer(), mode)
     @list.sortable('product') if Category.record
 #    $('.tooltips', @el).tooltip(title:'default title')
@@ -142,7 +138,6 @@ class ProductsView extends Spine.Controller
     App.showView.trigger('change:toolbarTwo', ['Slideshow'])
     
     products = CategoriesProduct.products(Category.record.id)
-    @log products
     for alb in products
       if alb.invalid
         alb.invalid = false
@@ -190,11 +185,14 @@ class ProductsView extends Spine.Controller
       Photo.trigger('activate')
       
   newAttributes: ->
-    if User.first()
+    if user_id = User.first()?.id
       title   : @productName()
+      subtitle: ''
+      notes   : ''
+      link    : 'https://www.hood.de/'
       author  : User.first().name
       invalid : false
-      user_id : User.first().id
+      user_id : user_id
       order   : Product.count()
     else
       User.ping()
@@ -208,15 +206,16 @@ class ProductsView extends Spine.Controller
         return proposal = @productName(proposal + proposal.split(' ')[1][0])
     return proposal
   
+  create: (record) -> record.updateSelectionID()
+  
   createProduct: (target=Category.record, options={}) ->
     cb = (record, ido) ->
       if target
         record.createJoin(target)
         target.updateSelection(record.id)
       else
-        Category.updateSelection(null, record.id)
-        
-      record.updateSelectionID()
+        @render([record], 'append')
+        Category.updateSelection([record.id], Category.record?.id)
       
       # fill in / remove photos
       $().extend options, product: record
@@ -231,7 +230,6 @@ class ProductsView extends Spine.Controller
         options.cb.apply(@, [record, options.deferred])
         
       Product.trigger('activate', product.id)
-      
       @navigate '/category', target?.id or ''
     
     product = new Product @newAttributes()
@@ -247,9 +245,9 @@ class ProductsView extends Spine.Controller
     products = CategoriesProduct.products ga.category_id
     @render(null, 'html') unless products.length
        
-  ignoreProduct: (ga, ignore) ->
+  ignoreProduct: (ga, ignored) ->
     @log 'ignoreProduct'
-    ga.ignore = ignore
+    ga.ignored = ignored
     ga.save()
   
   destroyProduct: (ids) ->
@@ -276,11 +274,7 @@ class ProductsView extends Spine.Controller
       for id in products
         product.destroy() if product = Product.find(id)
   
-  create: (product) ->
-    @render([product], 'append') unless Category.record 
-   
   beforeDestroyProduct: (product) ->
-    
     # remove selection from root
     Category.removeFromSelection null, product.id
     
@@ -294,7 +288,6 @@ class ProductsView extends Spine.Controller
 #      @list.findModelElement(product).detach()
       
       # remove all associated products
-      @log product
       photos = ProductsPhoto.photos(product.id).toID()
       Photo.trigger('destroy:join', photos, product)
       # remove all associated products
@@ -367,7 +360,8 @@ class ProductsView extends Spine.Controller
       
   click: (e, excl) ->
     e.preventDefault()
-    e.stopPropagation()
+    #don't propagate to bubble up -edit-trigger
+#    e.stopPropagation()
     
     item = $(e.currentTarget).item()
     @select(e, item.id)
@@ -381,7 +375,7 @@ class ProductsView extends Spine.Controller
       when 'keyup'
         selection = items
       when 'click'
-        Category.emptySelection() if @isCtrlClick(e)
+        Category.emptySelection() unless @isCtrlClick(e)
         selection = Category.selectionList()[..]
         items = selection[..] unless items.length
         for id in items

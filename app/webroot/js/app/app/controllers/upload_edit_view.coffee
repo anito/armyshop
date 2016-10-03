@@ -52,9 +52,11 @@ class UploadEditView extends Spine.Controller
     
   destroyed: ->
     
-  fail: (xhr, textStatus, errorThrown) ->
+  fail: (e, data) ->
+    @log data.textStatus
+    @log data.errorThrown
     product = Product.find(@data.link)
-    Spine.trigger('loading:fail', product, textStatus, errorThrown)
+    Spine.trigger('loading:fail', product, data.errorThrown)
       
   drop: (e, data) ->
 

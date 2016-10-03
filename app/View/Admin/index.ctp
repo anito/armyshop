@@ -15,8 +15,11 @@
 <div id="main" class="view vbox flex">
   <header id="title" class="">
     <div class="left" style="position: relative;">
-      <h1 class="" style="line-height: 3em;"><a style="font-size: 3em;" href="/"><span class="chopin">HA Lehmann</span></a></h1>
-      <span style="position: absolute; top: 10px; right: 67px;"><a href="http://glyphicons.com/" target="_blank" style="font-size: 0.7em;" class="anim-link" title="GLYPHICONS is a library of precisely prepared monochromatic icons and symbols, created with an emphasis on simplicity and easy orientation.">GLYPHICONS.com</a></span>
+      <h2 class="lehmann">
+        <span class="chopin">Admin</span>
+        <span class="lehmann-01"></span>
+        <span class="lehmann-02"></span>
+      </h2>
     </div>
     <div id="login" class="right" style="margin: 15px 5px;"></div>
   </header>
@@ -25,19 +28,28 @@
       <div class="vbox sidebar canvas bg-dark flex inner" style="display: none">
         <div class="search">
           <form class="form-search">
-            <input class="search-query" type="search" placeholder="Search" results="0" incremental="true">
+            <input class="search-query" type="search" placeholder="Search">
           </form>
         </div>
-        <div class="originals hbox">
-          <ul class="opt-ions flex">
-            <li id="" class="splitter flickr noborder disabled"></li>
+          <ul class="preview splitter autoflow noborder">
+            <li class="parent flex">
+              <div class="item-header">
+                <div class="expander"></div>
+                  <div class="item-content">
+                    <span class="opt-preview">Preview</span>
+                  </div>
+              </div>
+              <hr>
+              <ul class="sublist" style="">
+                <li class="content item item-content"></li>
+              </ul>
+            </li>
           </ul>
-        </div>
-        <ul class="items vbox flex autoflow"></ul>
+        <ul class="items flex vbox autoflow"></ul>
         <footer class="footer">
           <div style="white-space: nowrap; overflow: hidden;">
             <div id="refresh"></div>
-            <button class="opt-CreateCategory dark">
+            <button class="opt-CreateCategory dark hide">
               <i class="glyphicon glyphicon-plus"></i>
               <span>Category</span>
             </button>
@@ -56,9 +68,9 @@
         <div id="modal-addProduct" class="modal fade"></div>
         <div id="modal-addPhoto" class="modal fade"></div>
         <ul class="options hbox">
-          <ul class="toolbarOne hbox nav"></ul>
+          <nav class="toolbarOne hbox nav"></nav>
           <li class="splitter disabled flex"></li>
-          <ul class="toolbarTwo hbox nav"></ul>
+          <nav class="toolbarTwo hbox nav"></nav>
         </ul>
         <div class="contents views vbox flex deselector" style="height: 0;">
           <div class="header views vbox">
@@ -70,15 +82,15 @@
           </div>
           <div class="view wait content vbox flex autoflow" style=""></div>
           <div class="view  categories opt-SelectNone content vbox flex data parent autoflow" style="">
-            <div class="items fadein">categories</div>
+            <div class="items flex fadein in3">Categories</div>
           </div>
           <div class="view products opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
-            <div class="items flex fadein">Products</div>
+            <div class="items flex fadein in3">Products</div>
           </div>
           <div class="view photos opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
-            <div class="items flex fadein" data-toggle="modal-category" data-target="#modal-category" data-selector="a">Photos</div>
+            <div class="items flex fadein in3" data-toggle="modal-category" data-target="#modal-category" data-selector="a">Photos</div>
           </div>
           <div tabindex="1" class="view photo content vbox flex data parent autoflow fadeelement nopad" style="">
             <div class="hoverinfo fadeslow"></div>
@@ -93,8 +105,26 @@
             <div class="hdivide draghandle">
               <span class="opt opt-CloseDraghandle glyphicon glyphicon-resize-vertical glyphicon glyphicon-white right" style="cursor: pointer;"></span>
             </div>
-            <div id="ga" class="view flex autoflow" style=""></div>
-            <div id="al" class="view flex autoflow" style=""></div>
+            <div id="ga" class="view flex" style=""></div>
+            <div id="al" class="view views flex vbox content" style="">
+              <div class="footer" style="">
+                <div class="span6 left" style="margin: 10px; white-space: nowrap; overflow: hidden;">
+                      <button type="submit" class="dark opt-EditorProduct">
+                          <i class="glyphicon glyphicon-tasks"></i>
+                          <span>Details</span>
+                      </button>
+                      <button type="submit" class="dark opt-EditorDescription">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Beschreibungen</span>
+                      </button>
+                  </div>
+              </div>
+              <div class="vbox flex autoflow views" style="">
+                <table role="presentation" class="table description view"></table>
+                <table role="presentation" class="table product view"></table>
+                <table role="presentation" class="table noproduct view"></table>
+              </div>
+            </div>
             <div id="ph" class="view flex autoflow" style=""></div>
             <div id="fu" class="view hbox flex bg-dark" style="margin: 0px">
               <!-- The file upload form used as target for the file upload widget -->
@@ -218,12 +248,12 @@
 
 <script id="footerTemplate" type="text/x-jquery-tmpl">
   <div class="btn-group left">
-    <button type="button" class="opt-SelectInv dark {{if !contains}}disabled{{/if}}">Invert</button>
-    <button type="button" class="opt-SelectAll dark {{if !contains}}disabled{{/if}}">All</button>
+    <button type="button" class="opt-SelectAll dark {{if !contains}}disabled{{/if}}">Alles auswählen</button>
+    <button type="button" class="opt-SelectInv dark {{if !contains}}disabled{{/if}}">Auswahl invertieren</button>
   </div>
   <div class="btn-group right">
-    <button type="button" class="opt-AddExecute dark {{if disabled}}disabled{{/if}}">Add</button>
-    <button type="button" class="opt- dark" data-dismiss="modal">Cancel</button>
+    <button type="button" class="opt-AddExecute dark {{if disabled}}disabled{{/if}}">Hinzufügen</button>
+    <button type="button" class="opt- dark" data-dismiss="modal">Abbrechen</button>
   </div>
 </script>
 
@@ -344,7 +374,7 @@
 </script>
 
 <script id="sidebarTemplate" type="text/x-jquery-tmpl">
-  <li data-id="${id}" class="gal gal-trigger-edit item data parent">
+  <li data-id="${id}" class="gal item data parent alb-trigger-edit">
     <div class="item-header">
       <div class="expander"></div>
       {{tmpl "#sidebarContentTemplate"}}
@@ -356,9 +386,21 @@
 
 <script id="sidebarContentTemplate" type="text/x-jquery-tmpl">
   <div class="item-content">
-    <span class="name">{{if name}}${name.slice(0, 20)}{{else}}${title.slice(0, 20)}{{/if}}</span>
-    <span class="gal cta gal-trigger-edit">{{tmpl($item.data.details()) "#categoryDetailsTemplate"}}</span>
+    <span class="name">{{if name}}${$().name(name, 20)}{{/if}}</span>
+    <span class="gal cta alb-trigger-edit">{{tmpl($item.data.details()) "#categoryDetailsTemplate"}}</span>
   </div>
+</script>
+
+<script id="productsSublistTemplate" type="text/x-jquery-tmpl">
+  {{if flash}}
+  <span class="author">${flash}</span>
+  {{else}}
+  <li data-id="${id}" class="sublist-item alb alb-trigger-edit item data {{if ignored}}ignored{{/if}}" title="${title}">
+    <span class="glyphicon glyphicon-picture"></span>
+    <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
+    <span class="cta">€ {{if price}}${price}{{else}}0{{/if}}</span>
+  </li>
+  {{/if}}
 </script>
 
 <script id="sidebarFlickrTemplate" type="text/x-jquery-tmpl">
@@ -387,7 +429,7 @@
 </script>
 
 <script id="categoryDetailsTemplate" type="text/x-jquery-tmpl">
-    <span>${aCount} </span><span style="font-size: 0.6em;"> (${iCount})</span>
+    <span>${aCount} </span>
 </script>
 
 <script id="categoriesTemplate" type="text/x-jquery-tmpl">
@@ -482,21 +524,17 @@
   {{/if}}
 </script>
 
-<script id="editcategoryTemplate" type="text/x-jquery-tmpl">
+<script id="editCategoryTemplate" type="text/x-jquery-tmpl">
   <div class="content">
     <div class="editcategory">
       <div class="categoryEditor">
         <label>
           <span class="enlightened">category - Name</span>
         </label>
-        <br>
         <input class="name" data-toggle="tooltip" placeholder="category name" data-placement="right" data-trigger="manual" data-title="Press Enter to save" data-content="${name}" type="text" name="name" value="${name}">
-        <br>
-        <br>
         <label>
           <span class="enlightened">Photo</span>
         </label>
-        <br>
         <textarea name="photo">${photo}</textarea>
       </div>
     </div>
@@ -504,12 +542,12 @@
 </script>
 
 <script id="productsTemplate" type="text/x-jquery-tmpl">
-  <li id="${id}" data-id="${id}" class="item fade in alb-trigger-edit {{if Category.record}}{{if ignore}}ignore{{/if}}{{/if}}" draggable="true">
+  <li id="${id}" data-id="${id}" class="item fade in alb-trigger-edit {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
     <div class="thumbnail"></div>
     {{if Category.record}}
     <div class="glyphicon-set left" style="">
       <span class="dd">
-        <a href="#" title="{{if ignore}}Show{{else}}Ignore{{/if}} in Slideshow" class="glyphicon glyphicon-eye glyphicon-white opt-ignore"></a>
+        <a href="#" title="{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}" class="glyphicon glyphicon-eye glyphicon-white opt-ignored"></a>
       </span>
     </div>
     {{/if}}
@@ -518,50 +556,72 @@
       <span class="left">
         <a href="#" class="dd dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Open" href="#"><i class="tooltips glyphicon glyphicon-folder-close"></i>Open</a></li>
+          <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#"><i class="tooltips glyphicon glyphicon-picture"></i>Fotos anzeigen</a></li>
           {{if Category.record}}
-          <li role="presentation" class="opt-original"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Show in Library" href="#"><i class="glyphicon glyphicon glyphicon-file"></i>Show in Library</a></li>
+          <li role="presentation" class="opt-original"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Im Katalog anzeigen" href="#"><i class="glyphicon glyphicon glyphicon-file"></i>Im Katalog anzeigen</a></li>
           {{/if}}
           <li class="divider"></li>
-          <li role="presentation" class="opt-delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="{{if Category.record}}Remove{{else}}Destroy{{/if}} " href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Category.record}}Remove{{else}}Destroy{{/if}}</a></li>
+          <li role="presentation" class="opt-delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="{{if Category.record}}Entfernen{{else}}Löschen{{/if}} " href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Category.record}}Entfernen{{else}}Löschen{{/if}}</a></li>
         </ul>
       </span>
     </div>
-    <div class="title center">{{if title}}{{html title.slice(0, 15)}}{{else}}...{{/if}}</div>
+    <div class="titles">
+      <div class="title">{{if title}}${$().name(title, 50)}{{/if}}</div>
+      <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 113)}}{{/if}}</div>
+      <div class="rule">
+        <hr>
+      </div>
+    </div>
   </li>
 </script>
 
-<script id="editProductTemplate" type="text/x-jquery-tmpl">
-  <div class="content">
-    <label class="">
-      <span class="enlightened">Product Title</span>
-    </label>
-    <br>
-    <input placeholder="product title" type="text" name="title" value="${title}" {{if newRecord}}autofocus{{/if}}>
-    <br>
-    <br>
-    <label class="">
-      <span class="enlightened">Photo</span>
-    </label>
-    <br>
-    <textarea name="photo">${photo}</textarea>
+<script id="editProductTemplate" type="text/x-jquery-tmpl">            
+  <div class="input-group left" style="width: 68%">
+    <span class="input-group-addon" id="basic-addon1">Titel</span>
+    <input type="text" class="form-control" placeholder="Produkttitel" aria-describedby="basic-addon1" name="title" value="{{html title}}">
+  </div>
+
+  <div class="input-group right" style="width: 22%">
+    <span class="input-group-addon" id="basic-addon2">Preis (€)</span>
+    <input type="text" class="form-control" placeholder="Preis" aria-describedby="price" name="price" value="${price}">
+  </div>
+
+  <div class="input-group left">
+    <span class="input-group-addon" id="subtitle">Kurzbeschreibung</span>
+    <textarea type="text" class="form-control" placeholder="Kurzbeschreibung" aria-describedby="subtitle" name="subtitle" value="{{html subtitle}}">{{html subtitle}}</textarea>
+  </div>
+  
+  <div class="input-group left">
+    <span class="input-group-addon" id="notes">Notizen</span>
+    <textarea type="text" class="form-control" aria-describedby="notes" placeholder="Notizen" name="notes">{{html notes}}</textarea>
+  </div>
+
+  <div class="input-group left">
+    <div class="input-group-btn">
+      <button type="button" class="btn btn-default" aria-label="Help">
+        <span class="glyphicon glyphicon-link"></span>
+      </button>
+    </div>
+    <input type="text" class="form-control" aria-describedby="link"  placeholder="Link to Hood.de" name="link" value="${link}">
+  </div>
+              
+</script>
+
+<script id="editDescriptionTemplate" type="text/x-jquery-tmpl">
+  <div id="${id}" class="input-group data" draggable="true">
+    <span class="input-group-addon" id="basic-addon1">${order}</span>
+    <input class="form-control" placeholder="Beschreibung #${order}" aria-label="Text input with segmented button dropdown" name="description" value="{{html description}}">
+    <div class="input-group-btn">
+      <button type="button" class="btn btn-default opt-remove">-</button>
+      <button type="button" class="btn btn-default opt-add">+</button>
+    </div>
   </div>
 </script>
 
 <script id="editPhotoTemplate" type="text/x-jquery-tmpl">
-  <div class="content">
-    <label class="">
-      <span class="enlightened">Photo Title</span>
-    </label>
-    <br>
-    <input placeholder="${src}" type="text" name="title" value="{{if title}}${title}{{else}}{{if src}}${src}{{/if}}{{/if}}" >
-    <br>
-    <br>
-    <label class="">
-      <span class="enlightened">Photo</span>
-    </label>
-    <br>
-    <textarea name="photo">${photo}</textarea>
+  <div class="input-group left">
+    <span class="input-group-addon" id="basic-addon1">Titel</span>
+    <input type="text" class="form-control" placeholder="Fototitel" aria-describedby="basic-addon1" name="name" value="{{html name}}">
   </div>
 </script>
 
@@ -569,16 +629,16 @@
   <option {{if ((constructor.record) && (constructor.record.id == id))}}selected{{/if}} value="${id}">${title}</option>
 </script>
 
-<script id="headercategoryTemplate" type="text/x-jquery-tmpl">
+<script id="headerCategoryTemplate" type="text/x-jquery-tmpl">
   <section class="top viewheader fadeelement">
     <div class="left">
       <div class="title">
-        <h1>categories Overview</h1>
+        <h1>Categories Overview</h1>
       </div>
     </div>
     {{tmpl() "#categorySpecsTemplate"}}
   </section>
-  <section class="">
+  <section class="hide">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
@@ -590,24 +650,24 @@
 <script id="headerProductTemplate" type="text/x-jquery-tmpl">
   <section class="top viewheader fadeelement">
     <div class="left">  
-      {{if model.record}}
-      <div class="">
-        You are here:
-      </div>
-      {{/if}}
       <div class="title">
         {{if model.record}}
         <h3>
-        <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">category: {{if category.name}}${category.name.slice(0, 25)}{{else}}none{{/if}}</span>
+        <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">{{if category.name}}${$().name(category.name, 10)}{{else}}...{{/if}}</span>
+        </h3>
+        <h3>
+        {{if modelProduct.record}}
+        <span class="label label-primary">${$().name(modelProduct.record.title, 15)}</span>
+        {{/if}}
         </h3>
         {{else}}
-        <h1>Product Library</h1>
+        <h1>Produktkatalog</h1>
         {{/if}}
       </div>
     </div>
     {{tmpl() "#productSpecsTemplate"}}
   </section>
-  <section class="">
+  <section class="hide">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
@@ -623,19 +683,16 @@
 <script id="headerPhotosTemplate" type="text/x-jquery-tmpl">
   <section class="top viewheader fadeelement">
     <div class="left">  
-      {{if model.record}}
-      <div class="">
-        You are here:
-      </div>
-      {{/if}}
       <div class="title">
         {{if product}}
         <h3>
-        <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">category: {{if category.name}}${category.name.slice(0, 25)}{{else}}none{{/if}}</span>
-        <span class="label label-{{if model.record}}default{{else}}warning{{/if}}">{{if modelProduct.record}}Product: {{if product.title}}${product.title.slice(0, 25)}{{else}}...{{/if}}{{else}}none{{/if}}</span>
+        <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">{{if category.name}}${$().name(category.name, 10)}{{else}}...{{/if}}</span>
         </h3>
+        <h4 style="display: inline-block;">
+        <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
+        </h4>
         {{else}}
-        <h1>Photo Library</h1>
+        <h1>Fotokatalog</h1>
         {{/if}}
       </div>
     </div>
@@ -651,20 +708,16 @@
 <script id="headerPhotoTemplate" type="text/x-jquery-tmpl">
   <section class="top viewheader fadeelement">
     <div class="left">  
-      {{if model.record}}
-      <div class="">
-        You are here:
-      </div>
-      {{/if}}
       <div class="title">
         {{if product}}
         <h3>
-        <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">category: {{if category.name}}${category.name.slice(0, 25)}{{else}}none{{/if}}</span>
-        <span class="label label-{{if model.record}}default{{else}}warning{{/if}}">{{if modelProduct.record}}Product: {{if product.title}}${product.title.slice(0, 25)}{{else}}...{{/if}}{{else}}none{{/if}}</span>
-        <span class="label label-{{if model.record}}default{{else}}warning{{/if}}" title="{{if photo.title}}${photo.title.slice(0, 100)}{{else}}${photo.src.slice(0, 100)}{{/if}}">{{if modelPhoto.record}}Photo: {{if photo.title}}${photo.title.slice(0, 25)}{{else}}${photo.src.slice(0, 35)}{{/if}}{{else}}none{{/if}}</span>
+        <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">{{if category.name}}${$().name(category.name, 10)}{{else}}...{{/if}}</span>
         </h3>
+        <h4>
+        <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 10)}{{else}}...{{/if}}{{else}}{{/if}}</span>
+        </h4>
         {{else}}
-        <h1>Photo Library</h1>
+        <h1>Fotokatalog</h1>
         {{/if}}
       </div>
     </div>
@@ -674,7 +727,7 @@
 </script>
 
 <script id="photosBreadcrumbTemplate" type="text/x-jquery-tmpl">
-  <section class="">
+  <section class="hide">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
@@ -692,7 +745,7 @@
 
 
 <script id="photoBreadcrumbTemplate" type="text/x-jquery-tmpl">
-  <section class="">
+  <section class="hide">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
@@ -715,13 +768,13 @@
 <script id="categorySpecsTemplate" type="text/x-jquery-tmpl">
   <div class="right">
     <span class="">
-    <div class="btn btn-sm">categories<b><div>${model.count()}</div></b></div>
+    <div class="btn btn-sm">Kategorien<b><div>${model.count()}</div></b></div>
     </span> 
     <span class="">
-    <div class="btn btn-sm">Products<b><div>${modelGas.count()} of ${Product.count()}</div></b></div>
+    <div class="btn btn-sm">Produkte<b><div>${modelGas.count()} von ${Product.count()}</div></b></div>
     </span> 
     <span class="">
-    <div class="btn btn-sm">Images<b><div>${modelGas.photos().length} of ${Photo.count()}</div></b></div>
+    <div class="btn btn-sm">Fotos<b><div>${modelGas.photos().length} von ${Photo.count()}</div></b></div>
     </span>
   </div>
 </script>
@@ -729,13 +782,13 @@
 <script id="productSpecsTemplate" type="text/x-jquery-tmpl">
   <div class="right">
     <span class="">
-      <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}btn-info{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
+      <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
     </span> 
     <span class="">
-    <div class="btn btn-sm">Products<b><div>${model.details().aCount}{{if model.record}} of ${modelProduct.count()}{{/if}}</div></b></div>
+    <div class="btn btn-sm">Produkte<b><div>${model.details().aCount}{{if model.record}} von ${modelProduct.count()}{{/if}}</div></b></div>
     </span> 
     <span class="">
-    <div class="btn btn-sm">Images<b><div>${model.details().iCount} of ${modelProduct.count()}</div></b></div>
+    <div class="btn btn-sm">Fotos<b><div>${model.details().iCount} von ${modelProduct.count()}</div></b></div>
     </span>
   </div>
 </script>
@@ -743,34 +796,22 @@
 <script id="photoSpecsTemplate" type="text/x-jquery-tmpl">
   <div class="right">
     <span class="">
-    <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}btn-info{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
+    <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
     </span> 
     <span class="">
-    <div class="btn btn-sm">Images<b><div>${model.details().iCount}{{if modelProduct.record}} of ${modelPhoto.count()}{{/if}}</div></b></div>
+    <div class="btn btn-sm">Fotos<b><div>${model.details().iCount}{{if modelProduct.record}} von ${modelPhoto.count()}{{/if}}</div></b></div>
     </span> 
   </div>
 </script>
 
 <script id="productCountTemplate" type="text/x-jquery-tmpl">
-  <span class="cta">${iCount}</span>
-</script>
-
-<script id="productsSublistTemplate" type="text/x-jquery-tmpl">
-  {{if flash}}
-  <span class="author">${flash}</span>
-  {{else}}
-  <li data-id="${id}" class="sublist-item alb alb-trigger-edit item data {{if ignore}}ignore{{/if}}" title="move (Hold Cmd-Key to Copy)">
-    <span class="glyphicon glyphicon-folder-close"></span>
-    <span class="title center">{{if title}}${title.slice(0, 20)}{{else}}...{{/if}}</span>
-    <span class="cta">{{if count}}${count}{{else}}0{{/if}}</span>
-  </li>
-  {{/if}}
+  <span class="cta">€ ${price}</span>
 </script>
 
 <script id="productInfoTemplate" type="text/x-jquery-tmpl">
   <ul>
     <li class="tr name">
-      <span class="td left">{{if title}}${title}{{else}}no title{{/if}} </span><span class="td"></span><span class="td right"> {{tmpl($item.data.details()) "#productCountTemplate"}}</span>
+      <span class="td left">{{if title}}${title}{{else}}no title{{/if}} </span><span class="td"></span><span class="td right"> {{tmpl($item.data) "#productCountTemplate"}}</span>
     </li>
     <li class="tr italic">{{if photo}}
       <span class="td">Photo</span><span class="td">:</span><span class="td">${photo}</span>{{/if}}
@@ -830,17 +871,17 @@
     <span class="left">
       <a href="#" class="dd dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Open" href="#"><i class="tooltips glyphicon glyphicon-resize-full"></i>Open</a></li>
+        <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Open" href="#"><i class="tooltips glyphicon glyphicon-resize-full"></i>Öffnen</a></li>
         <li class="divider"></li>
-        <li role="presentation" class="dropdown-header disabled"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate" href="#"><i class="tooltips"></i>Rotate:</a></li>
-        <li role="presentation" class="rotate-cw"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate cw" href="#"><i class="tooltips glyphicon glyphicon glyphicon-circle-arrow-right"></i>cw</a></li>
-        <li role="presentation" class="rotate-ccw"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate ccw" href="#"><i class="tooltips glyphicon glyphicon glyphicon-circle-arrow-left"></i>ccw</a></li>
+        <li role="presentation" class="dropdown-header disabled"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate" href="#"><i class="tooltips"></i>Rotieren:</a></li>
+        <li role="presentation" class="rotate-cw"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Im Uhrzeiger drehen" href="#"><i class="tooltips glyphicon glyphicon glyphicon-circle-arrow-right"></i>Im Uhrzeiger</a></li>
+        <li role="presentation" class="rotate-ccw"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Gegen Uhrzeiger drehen" href="#"><i class="tooltips glyphicon glyphicon glyphicon-circle-arrow-left"></i>Gegen Uhrzeiger</a></li>
         <li class="divider"></li>
         {{if Product.record}}
-        <li role="presentation" class="original"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Show in Library" href="#"><i class="glyphicon glyphicon glyphicon-file"></i>Show in Library</a></li>
+        <li role="presentation" class="original"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Im Katalog anzeigen" href="#"><i class="glyphicon glyphicon glyphicon-file"></i>Im Katalog anzeigen</a></li>
         <li class="divider"></li>
         {{/if}}
-        <li role="presentation" class="delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="{{if Product.record}}Remove{{else}}Destroy{{/if}}" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Product.record}}Remove{{else}}Destroy{{/if}}</a></li>
+        <li role="presentation" class="delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="{{if Product.record}}Entfernen{{else}}Löschen{{/if}}" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}</a></li>
       </ul>
     </span>
   </div>
@@ -1108,5 +1149,47 @@
     </tr>
 {% } %}
 </script>
+
+<script id="sidebarPreviewTemplate" type="text/x-jquery-tmpl">
+  <li class="" title="">
+    <div class="item-header">
+      <div class="expander"></div>
+        <div class="item-content">
+          <span class="opt-preview">${name}</span>
+        </div>
+    </div>
+    <hr>
+    <ul class="sublist" style="">
+      <li class="sublist-item item item-content ${klass}">
+        {{tmpl($item.data.product) "#norbuPricingTemplate"}}
+      </li>
+    </ul>
+  </li>
+</script>
+
+<script id="norbuPricingTemplate" type="text/x-tmpl">
+  <div class="pricing pricing--norbu" style="margin:0;">
+    <div class="pricing__item" style="font-size: 0.6rem; font-weight: 100;">
+      <h3 class="pricing__title">${product.title}</h3>
+      <p class="pricing__sentence">${product.subtitle}</p>
+      <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
+        <a href="" target="blank" class="" aria-disabled="false">
+          <div class="pricing__image"><img  src="/img/products/dummy.jpg"/></div>
+        </a>
+      </div>
+      <div class="pricing__feature-list">
+        <ul class="">{{tmpl($item.data.descriptions) "#norbuFeatureListTemplate" }}</ul>
+      </div>
+      <a href="#" target="blank" class="pricing__action btn btn-dark btn-lg" role="button">Zum Shop</a>
+    </div>
+  </div>
+</script>
+
+<script id="norbuFeatureListTemplate" type="text/x-tmpl">
+  <li class="pricing__feature">${description}</li>
+</script>
+
+
+
 
 

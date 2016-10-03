@@ -14,7 +14,7 @@ require("spine/lib/ajax")
 
 class Product extends Spine.Model
 
-  @configure "Product", 'id', 'cid', 'title', 'price', 'user_id', 'order', 'invalid', 'active', 'selected'
+  @configure "Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'order', 'invalid', 'active', 'selected'
 
   @extend Model.Cache
   @extend Model.Ajax
@@ -24,7 +24,7 @@ class Product extends Spine.Model
   @extend Filter
   @extend Extender
 
-  @selectAttributes: ['title']
+  @selectAttributes: ['title', 'subtitle']
   
   @parent: 'Category'
   
@@ -95,9 +95,9 @@ class Product extends Spine.Model
     ret = for id in ids
       ga = new CategoriesProduct
         category_id  : target.id
-        product_id    : id
-        ignore      : true
-        order       : parseInt(CategoriesProduct.products(target.id).last()?.order)+1 or 0
+        product_id   : id
+        ignored      : false
+        order        : parseInt(CategoriesProduct.products(target.id).last()?.order)+1 or 0
       valid = ga.save
         validate: true
         ajax: false
@@ -135,8 +135,8 @@ class Product extends Spine.Model
   @details: =>
     return @record.details() if @record
     $().extend @defaultDetails,
-      iCount : Photo.count()
-      sCount : Product.selectionList().length
+      iCount      : Photo.count()
+      sCount      : Product.selectionList().length
       
   @findEmpties: ->
     ret = []
@@ -149,7 +149,6 @@ class Product extends Spine.Model
     s = new Object()
     s[id] = []
     @constructor.selection.push s
-    @constructor.childType = 'Photo'
     
   parent: -> @constructor.parent
     

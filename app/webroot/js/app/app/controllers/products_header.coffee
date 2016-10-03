@@ -21,6 +21,7 @@ class ProductsHeader extends Spine.Controller
     Category.bind('change:selection', @proxy @render)
     Product.bind('refresh', @proxy @render)
     Product.bind('change', @proxy @render)
+    Product.bind('change:current', @proxy @render)
     Product.bind('change:collection', @proxy @render)
 
   render: ->
@@ -28,12 +29,12 @@ class ProductsHeader extends Spine.Controller
     @html @template
       model             : Category
       modelProduct      : Product
-      modelPhoto  : Photo
+      modelPhoto        : Photo
       modelGas          : CategoriesProduct
       modelAps          : ProductsPhoto
       category          : Category.record
       product           : Product.record
-      photo       : Photo.record
+      photo             : Photo.record
       author            : User.first().name
         
     @refreshElements()

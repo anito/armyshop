@@ -25,12 +25,14 @@ class RefreshView extends Spine.Controller
     Category.trigger('refresh:one')
     Product.trigger('refresh:one')
     Photo.trigger('refresh:one')
+    Description.trigger('refresh:one')
     @fetchAll()
     
   fetchAll: ->
     Photo.fetch(null, clear:true)
     Product.fetch(null, clear:true)
     Category.fetch(null, clear:true)
+    Description.fetch(null, clear:true)
     
   render: (icon) ->
     @html @template icon

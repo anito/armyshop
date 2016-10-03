@@ -30,10 +30,15 @@
     
     echo $this->Html->css('themes/jquery-ui/ui-darkness/jquery-ui-1.8.16.custom');
     echo $this->Html->css('bootstrap/css/bootstrap');
+//    echo $this->Html->css("bootstrap.min");
     echo $this->Html->css('blueimp/jquery.fileupload-ui');
     echo $this->Html->css('blueimp/blueimp-gallery');
     echo $this->Html->css('blueimp/blueimp-gallery-indicator');
     echo $this->Html->css('html5sortable/jquery.sortable');
+    echo $this->Html->css("muli");
+    echo $this->Html->css("lehmann");
+    echo $this->Html->css("icons");
+    echo $this->Html->css("component");
     echo $this->Html->css('/js/app/public/application');
 
     echo $this->Html->scriptStart();
@@ -55,6 +60,7 @@
       var categories = <?php echo $this->Js->object($categories); ?>;
       var products = <?php echo $this->Js->object($products); ?>;
       var photos = <?php echo $this->Js->object($photos); ?>;
+      var descriptions = <?php echo $this->Js->object($descriptions); ?>;
       
       var startScript = function() {
         setTimeout(function() {
@@ -72,6 +78,7 @@
       Category = require('models/category')
       Product = require('models/product')
       Photo = require('models/photo')
+      Description = require('models/description')
       
       User    = require("models/user");
       Main    = require("admin");
@@ -81,9 +88,10 @@
       exports.App = new Main({el: $("body")});
       User.ping();
       
-      Category.refresh(categories, {clear: true});
-      Product.refresh(products, {clear: true});
+      Description.refresh(descriptions, {clear: true});
       Photo.refresh(photos, {clear: true});
+      Product.refresh(products, {clear: true});
+      Category.refresh(categories, {clear: true});
       
       Spine.Route.setup()
       startScript()

@@ -36,7 +36,6 @@ class SidebarList extends Spine.Controller
   constructor: ->
     super
     
-#    @trace = false
     Category.bind('change:collection', @proxy @renderCategory)
     CategoriesProduct.bind('update', @proxy @renderFromCategoriesProduct)
     Product.bind('change:collection', @proxy @renderProduct)
@@ -61,7 +60,7 @@ class SidebarList extends Spine.Controller
         @current = item
         @update item
       when 'destroy'
-        @current = false
+        @current = null
         @destroy item
           
   create: (item) ->
@@ -77,7 +76,6 @@ class SidebarList extends Spine.Controller
     @children().forItem(item, true).detach()
   
   render: (items, mode) ->
-    @log 'render'
     @children().addClass('invalid')
     for item in items
       categoryEl = @children().forItem(item)
@@ -136,7 +134,7 @@ class SidebarList extends Spine.Controller
     products = Product.filterRelated(category.id, filterOptions)
     for product in products
       product.count = ProductsPhoto.filter(product.id, key: 'product_id').length
-      product.ignore = !(CategoriesProduct.isActiveProduct(category.id, product.id))
+      product.ignored = !(CategoriesProduct.isActiveProduct(category.id, product.id))
       
     products.push {flash: ' '} unless products.length
     categoryEl = @children().forItem(category)
@@ -146,11 +144,10 @@ class SidebarList extends Spine.Controller
     @exposeSublistSelection(null, category.id)
     
   updateTemplate: (item) ->
-    @log 'updateTemplate'
     categoryEl = @children().forItem(item)
     categoryContentEl = $('.item-content', categoryEl)
     tmplItem = categoryContentEl.tmplItem()
-    tmplItem.tmpl = $( "#sidebarContentTemplate" ).template()
+    tmplItem.data = item
     try
       tmplItem.update()
     catch e
@@ -181,7 +178,7 @@ class SidebarList extends Spine.Controller
   exposeSelection: (item = Category.record) ->
     @children().removeClass('active')
     @children().forItem(item).addClass("active") if item
-    @expand item, true
+#    @expand item, true
     @exposeSublistSelection null, item?.id
     
   exposeSublistSelection: (selection = Category.selectionList(), id=Category.record?.id) ->
@@ -191,7 +188,7 @@ class SidebarList extends Spine.Controller
       categoryEl = @children().forItem(item)
       productsEl = categoryEl.find('li')
       productsEl.removeClass('selected active')
-      $('.glyphicon', categoryEl).removeClass('glyphicon-folder-open')
+#      $('.glyphicon', categoryEl).removeClass('glyphicon-folder-open')
       
       for sel in item.selectionList()
         if product = Product.find(sel)
@@ -199,7 +196,7 @@ class SidebarList extends Spine.Controller
 
       if activeProduct = Product.find item.selectionList().first()
         activeEl = productsEl.forItem(activeProduct).addClass('active')
-        $('.glyphicon', activeEl).addClass('glyphicon-folder-open')
+#        $('.glyphicon', activeEl).addClass('glyphicon-folder-open')
         
     @refreshElements()
 
@@ -209,7 +206,7 @@ class SidebarList extends Spine.Controller
     
     switch item.constructor.className
       when 'Category'
-        @expand(item, !(Category.record?.id is item.id) or !@isOpen(el))
+#        @expand(item, !(Category.record?.id is item.id) or !@isOpen(el))
         @navigate '/category', item.id
 #        @closeAllOtherSublists item
       when 'Product'
@@ -231,11 +228,9 @@ class SidebarList extends Spine.Controller
     e.stopPropagation()
     e.preventDefault()
     
-  expand: (item, open, e) ->
-    categoryEl = @categoryFromItem(item)
+  expand: (item, open) ->
+    categoryEl = @categoryElFromItem(item)
     expander = $('.expander', categoryEl)
-    if e
-      targetIsExpander = $(e.currentTarget).hasClass('expander')
     
     if open
       @openSublist(categoryEl)
@@ -251,12 +246,6 @@ class SidebarList extends Spine.Controller
   closeSublist: (el) ->
     el.removeClass('open manual')
     
-  closeAllSublists_: (item) ->
-    for category in Category.all()
-      parentEl = @categoryFromItem category
-      unless parentEl.hasClass('manual')
-        @expand category, item?.id is category.id
-  
   closeAllSublists: ->
     for category in Category.all()
       @expand category
@@ -265,7 +254,7 @@ class SidebarList extends Spine.Controller
     for category in Category.all()
       @expand category, item?.id is category.id
   
-  categoryFromItem: (item) ->
+  categoryElFromItem: (item) ->
     @children().forItem(item)
 
   close: () ->

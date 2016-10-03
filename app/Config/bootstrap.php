@@ -121,6 +121,7 @@ define('BASE_URL', Configure::read('App.baseUrl'));
 define('WEB_URL', '/' . APP_DIR . '/' . WEBROOT_DIR);
 define('UPLOADS', ROOT . DS . 'uploads');
 define('PHOTOS', UPLOADS . DS . 'photos');
+define('MYSQLUPLOAD', ROOT . DS . 'mysql');
 if (!defined('TOPLEVEL')) {
   $a = explode('.', DIR_HOST);
   $last = count($a)-1;

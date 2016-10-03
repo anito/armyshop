@@ -18,9 +18,9 @@ class ProductsList extends Spine.Controller
   
   events:
     'click .dropdown-toggle'       : 'dropdownToggle'
-    'click .opt-AddProducts'         : 'addProducts'
+    'click .opt-AddProducts'       : 'addProducts'
     'click .opt-delete'            : 'deleteProduct'
-    'click .opt-ignore'            : 'ignoreProduct'
+    'click .opt-ignored'           : 'ignoreProduct'
     'click .opt-original'          : 'original'
     'click .zoom'                  : 'zoom'
     
@@ -40,12 +40,11 @@ class ProductsList extends Spine.Controller
     return unless Category.record
     return unless Category.record.id is item['category_id']
     return unless product = Product.find(item['product_id'])
-    @log 'changeRelated'
     
     switch mode
       when 'create'
         @wipe()
-        @append @template @mixinAttributes([product], ['ignore'])
+        @append @template @mixinAttributes([product], ['ignored'])
         @renderBackgrounds [product]
         @el.sortable('destroy').sortable()
 #        $('.tooltips', @el).tooltip()
@@ -53,10 +52,9 @@ class ProductsList extends Spine.Controller
       when 'destroy'
         el = @findModelElement(product)
         el.detach()
-        
       when 'update'
-        @updateTemplate product
-        @el.sortable('destroy').sortable()
+        #for the ignore attribute
+        @updateIgnored(item)
     
     @refreshElements()
     @el
@@ -73,61 +71,70 @@ class ProductsList extends Spine.Controller
         
     if items.length
       @wipe()
-      items = @mixinAttributes(items, ['ignore']) unless @modal
+      items = @mixinAttributes(items, ['ignored']) unless @modal
       @[mode] @template items
       @renderBackgrounds items
       @exposeSelection()
       $('.dropdown-toggle', @el).dropdown()
     else if mode is 'add'
       @html '<label class="invite"><span class="enlightened">Nothing to add.  &nbsp;</span></label>'
-      @append '<h3><label class="invite label label-default"><span class="enlightened">Either no more products can be added or there is no category selected.</span></label></h3>'
+      @append '<h3><label class="invite label label-default"><span class="enlightened">Es können keine Produkte hinzugefügt werden. Eventuell muss erst eine Kategorie ausgewählt werden.</span></label></h3>'
     else
       if Category.record
         if Product.count()
-          @html '<label class="invite"><span class="enlightened">This Category has no products. &nbsp;</span><br><br>
-          <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>New Product</span></button>
-          <button class="opt-AddProducts dark large"><span style="font-size: .6em; position: absolute; top: -18px;">import from</span><i class="glyphicon glyphicon-book"></i><span>Library</span></button>
+          @html '<label class="invite"><span class="enlightened">Keine Produkte in dieser Kategorie. &nbsp;</span><br><br>
+          <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>Neues Produkt erstellen</span></button>
+          <button class="opt-AddProducts dark large"><i class="glyphicon glyphicon-book"></i><span>Katalog</span></button>
           </label>'
         else
-          @html '<label class="invite"><span class="enlightened">This Category has no products.<br>It\'s time to create one.</span><br><br>
-          <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>New Product</span></button>
+          @html '<label class="invite"><span class="enlightened">Keine Produkte in dieser Kategorie</span><br><br>
+          <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>Neues Produkt erstellen</span></button>
           </label>'
       else
-        @html '<label class="invite"><span class="enlightened">You don\'t have any products yet</span><br><br>
-        <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>New Product</span></button>
+        @html '<label class="invite"><span class="enlightened">Keine Produkte im Katalog vorhanden</span><br><br>
+        <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>Neues Produkt erstellen</span></button>
         </label>'
     
     @el
+    
+  updateIgnored: (item) ->
+    @log item
+    ignored = item.ignored
+    productEl = @children().forItem(Product.find(item.product_id))
+    @log Product.find(item.product_id)
+    productEl.toggleClass('ignored', ignored)
     
   updateTemplate: (product) ->
     productEl = @children().forItem(product)
     contentEl = $('.thumbnail', productEl)
     active = productEl.hasClass('active')
     hot = productEl.hasClass('hot')
-    if Category.record
-      ignore = CategoriesProduct.categoryProductExists(product.id, Category.record.id)?.ignore
-    else
-      ignore = false
+    
     style = contentEl.attr('style')
-    tmplItem = contentEl.tmplItem()
-    alert 'no tmpl item' unless tmplItem
-    if tmplItem
-      tmplItem.tmpl = $( "#productsTemplate" ).template()
-      tmplItem.update?()
-      productEl = @children().forItem(product)
-      contentEl = $('.thumbnail', productEl)
-      productEl.toggleClass('active', active)
-      productEl.toggleClass('hot', hot)
-      productEl.toggleClass('ignore', ignore)
-      contentEl.attr('style', style)
+    tmplItem = productEl.tmplItem()
+    tmplItem.data = product
+    try
+      tmplItem.update()
+    catch e
+
+    productEl = @children().forItem(product)
+    contentEl = $('.thumbnail', productEl)
+    productEl.toggleClass('active', active)
+    productEl.toggleClass('hot', hot)
+    
+    @log productEl
+    contentEl.attr('style', style)
+      
     @el.sortable()
   
   exposeSelection: (selection=Category.selectionList(), id=Category.record?.id) ->
     if Category.record
       return unless Category.record.id is id
     @deselect()
-    for sel in selection
-      $('#'+sel, @el).addClass("active")
+    
+    for id in selection
+      $('#'+id, @el).addClass("active")
+      
     if first = selection.first()
       $('#'+first, @el).addClass("hot")
       
@@ -239,11 +246,11 @@ class ProductsList extends Spine.Controller
     e.preventDefault()
 
   ignoreProduct: (e) ->
-    e.preventDefault()
+    e.stopPropagation()
     item = $(e.currentTarget).item()
     return unless item?.constructor?.className is 'Product'
     if ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id)
-      CategoriesProduct.trigger('ignore', ga, !ga.ignore)
+      CategoriesProduct.trigger('ignored', ga, !ga.ignored)
     
   deleteProduct: (e) ->
     @log 'deleteProduct'

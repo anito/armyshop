@@ -78,22 +78,19 @@ class PhotosList extends Spine.Controller
       @exposeSelection()
       $('.dropdown-toggle', @el).dropdown()
     else if mode is 'add'
-      @html '<h3 class="invite"><span class="enlightened">Nothing to add.  &nbsp;</span></h3>'
-      @append '<h3><label class="invite label label-default"><span class="enlightened">Either no more photos can be added or there is no product selected.</span></label></h3>'
+      @html '<h3 class="invite"><span class="enlightened">Es können keine Fotos hinzugefügt werden.</span></h3>'
+      @append '<h3><label class="invite label label-default"><span class="enlightened">Es können keine Fotos hinzugefügt werden. Eventuell muss erst ein Produkt ausgewählt werden.</span></label></h3>'
     else 
       if Photo.count()
         @html '<label class="invite">
-        <span class="enlightened">No photos here. &nbsp;
-        <p>Simply drop your photos to your browser window</p>
-        <p>Note: You can also drag existing photos to a sidebars folder</p>
-        </span>
-        <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>Upload</span></button>
-        <button class="opt-AddPhotos dark large"><span style="font-size: .6em; position: absolute; top: -18px;">import from</span><i class="glyphicon glyphicon-book"></i><span>Library</span></button>
+        <div class="enlightened">Es sind keine Fotos vorhanden</div><br>
+        <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button>
+        <button class="opt-AddPhotos dark large"><i class="glyphicon glyphicon-book"></i><span>&nbsp;Katalog</span></button>
         </label>'
       else
-        @html '<label class="invite"><span class="enlightened">No photos here. &nbsp;
-        <p>Simply drop your photos to your browser window</p>
-        <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>Upload</span></button>
+        @html '<label class="invite">
+        <div class="enlightened">Es sind keine Fotos vorhanden &nbsp;</div><br>
+        <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button>
         </label>'
       
     @el

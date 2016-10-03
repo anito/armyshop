@@ -13,7 +13,7 @@ require("spine/lib/ajax")
 
 class CategoriesProduct extends Spine.Model
 
-  @configure "CategoriesProduct", 'id', 'cid', 'category_id', 'product_id', 'order', 'ignore'
+  @configure "CategoriesProduct", 'id', 'cid', 'category_id', 'product_id', 'order', 'ignored'
 
   @extend Model.Ajax
   @extend Filter
@@ -64,7 +64,7 @@ class CategoriesProduct extends Spine.Model
   @isActiveProduct: (gid, aid) ->
     gas = @filter(gid, {key: 'category_id', func: 'selectNotIgnored'})
     for ga in gas
-      return !ga.ignore if ga.product_id is aid
+      return !ga.ignored if ga.product_id is aid
     return false
       
   @c: 0
@@ -104,9 +104,9 @@ class CategoriesProduct extends Spine.Model
     return true if @product_id is options.product_id and @category_id is options.category_id
     
   selectNotIgnored: (id) ->
-    return true if @category_id is id and @ignore is false
+    return true if @category_id is id and @ignored is false
     
   selectIgnored: (id) ->
-    return true if @category_id is id and @ignore is true
+    return true if @category_id is id and @ignored is true
     
 module.exports = Model.CategoriesProduct = CategoriesProduct

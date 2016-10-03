@@ -374,6 +374,9 @@ div.td {
   background-color: #212122;
   border-color: #223528;
 }
+.hal .pricing {
+  padding-right: 80px;
+}
 .btn.sm {
   font-size: .8rem;
 }

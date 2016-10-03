@@ -5,6 +5,13 @@ $ = jQuery ? require("jqueryify")
 $.fn.deselect = (sel) ->
   $(@).children(sel).removeClass('active hot')
   
+$.fn.name = (str, l=1000, repl='...') ->
+  str = str.toString()
+  repl = repl.toString()
+  ret = str.slice(0, l)
+  ret = ret + repl if str.length > l
+  ret
+  
 $.extend jQuery.tmpl.tag,
   "for": 
     _default: {$2: "var i=1;i<=1;i++"},

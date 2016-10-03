@@ -30,7 +30,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->meta('http-equiv', "x-ua-compatible");
 		echo $this->Html->meta('icon');
 
-    echo $this->Html->css('/js/app/public/application_dummy');
     echo $this->Html->css('jquery-ui-1.8.16.custom');
     echo $this->Html->css("bootstrap.min");
     echo $this->Html->css("websymbols");

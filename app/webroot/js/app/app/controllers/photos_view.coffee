@@ -48,12 +48,10 @@ class PhotosView extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
-    @log @el.data()
     @el.data('current',
       model: Product
       models: Photo
     )
-    @log @el.data()
     @type = 'Photo'
     @info = new Info
       el: @infoEl
@@ -135,22 +133,6 @@ class PhotosView extends Spine.Controller
       ids = [ids]
     
     Photo.current ids[0]
-    
-  activateRecord_: (records) ->
-    unless records
-      records = Product.selectionList()
-
-    unless Array.isArray(records)
-      records = [records]
-      
-    list = []
-    for id in records
-      list.push photo.id if photo = Photo.find(id)
-    
-    id = list[0]
-    
-    Product.updateSelection(list)
-    Photo.current(id)
   
   click: (e) ->
     e.preventDefault()
@@ -170,7 +152,7 @@ class PhotosView extends Spine.Controller
       when 'keyup'
         selection = items
       when 'click'
-        Product.emptySelection() if @isCtrlClick(e)
+        Product.emptySelection() unless @isCtrlClick(e)
         selection = Product.selectionList()[..]
         items = selection[..] unless items.length
         for id in items

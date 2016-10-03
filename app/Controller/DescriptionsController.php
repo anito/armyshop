@@ -28,8 +28,10 @@ class DescriptionsController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Description->recursive = 0;
-		$this->set('descriptions', $this->Paginator->paginate());
+    $this->Description->recursive = 1;
+    $products = $this->Description->findAllByUser_id((string)($this->Auth->user('id')));
+    $this->set('_serialize', $products);
+    $this->render(SIMPLE_JSON);
 	}
 
 /**
@@ -55,6 +57,7 @@ class DescriptionsController extends AppController {
 	public function add() {
 		if ($this->request->is('ajax')) {
 			$this->Description->create();
+      $this->log($this->request->data, LOG_DEBUG);
 			if ($this->Description->save($this->request->data)) {
 				$this->Flash->success(__('The description has been saved.'));
 				return $this->redirect(array('action' => 'index'));

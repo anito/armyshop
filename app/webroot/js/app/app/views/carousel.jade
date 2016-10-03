@@ -1,0 +1,28 @@
+div.carousel.slide(tabindex="3", data-ride="", id=id, style="min-height: 330px;") 
+            
+  div.carousel-inner
+    each vals, index in slides
+      .item(class=index==0 ? 'active' : '')
+        if vals.items
+          ul.liststyle
+            each val, index in vals.items
+              if val.items
+                li=val.items[0]
+                  ul
+                    each subval, index in val.items
+                      if index != 0
+                        li=subval
+              else
+                li=val
+                
+        else if vals.img
+          img(src=vals.img width=vals.width)
+        
+  a.left.carousel-control(href='#'+id, data-slide="prev")
+    span.glyphicon.glyphicon-chevron-left
+  a.right.carousel-control(href='#'+id, data-slide="next")
+    span.glyphicon.glyphicon-chevron-right
+
+  ol.carousel-indicators.top
+    each val, index in slides
+      li(data-target='#'+id, data-slide-to=index, class=index==0 ? 'active' : '')

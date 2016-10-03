@@ -13,11 +13,13 @@ Settings            = require("models/settings")
 ToolbarView         = require("controllers/toolbar_view")
 WaitView            = require("controllers/wait_view")
 ProductsView        = require("controllers/products_view")
-PhotosHeader  = require('controllers/photos_header')
-PhotosView    = require('controllers/photos_view')
+PhotosHeader        = require('controllers/photos_header')
+PhotosView          = require('controllers/photos_view')
+PhotoHeader         = require('controllers/photo_header')
+PhotoView           = require('controllers/photo_view')
 ProductsHeader      = require('controllers/products_header')
 ProductsAddView     = require('controllers/products_add_view')
-PhotosAddView = require('controllers/photos_add_view')
+PhotosAddView       = require('controllers/photos_add_view')
 CategoriesView      = require('controllers/categories_view')
 CategoriesHeader    = require('controllers/categories_header')
 SlideshowView       = require('controllers/slideshow_view')
@@ -40,7 +42,8 @@ class ShowView extends Spine.Controller
     '.items'                  : 'lists'
     '.header .categories'     : 'categoriesHeaderEl'
     '.header .products'       : 'productsHeaderEl'
-    '.header .photos'   : 'photosHeaderEl'
+    '.header .photos'         : 'photosHeaderEl'
+    '.header .photo'          : 'photoHeaderEl'
     '.header .overview'       : 'overviewHeaderEl'
     '.header .slideshow'      : 'slideshowHeaderEl'
     '.opt-Overview'           : 'btnOverview'
@@ -56,19 +59,19 @@ class ShowView extends Spine.Controller
     '.props'                  : 'propsEl'
     '.content.categories'     : 'categoriesEl'
     '.content.products'       : 'productsEl'
-    '.content.photos'   : 'photosEl'
-    '.content.photo'    : 'photoEl'
+    '.content.photos'         : 'photosEl'
+    '.content.photo'          : 'photoEl'
     '.content.wait'           : 'waitEl'
     '#slideshow'              : 'slideshowEl'
     '#modal-action'           : 'modalActionEl'
     '#modal-addProduct'       : 'modalAddProductEl'
-    '#modal-addPhoto'   : 'modalAddPhotoEl'
+    '#modal-addPhoto'         : 'modalAddPhotoEl'
     '.overview'               : 'overviewEl'
     
     '.slider'                 : 'slider'
     '.opt-Product'            : 'btnProduct'
     '.opt-Category'           : 'btnCategory'
-    '.opt-Photo'        : 'btnPhoto'
+    '.opt-Photo'              : 'btnPhoto'
     '.opt-Upload'             : 'btnUpload'
     
   events:
@@ -120,6 +123,7 @@ class ShowView extends Spine.Controller
     'click .opt-Help'                                 : 'help'
     'click .opt-Version'                              : 'version'
     'click .opt-Prev'                                 : 'prev'
+    'click [class*="-trigger-edit"]'                  : 'activateEditor'
     
     'dblclick .draghandle'                            : 'toggleDraghandle'
     
@@ -151,15 +155,9 @@ class ShowView extends Spine.Controller
     @photosHeader = new PhotosHeader
       el: @photosHeaderEl
       parent: @
-    @slideshowHeader = new SlideshowHeader
-      header: @slideshowHeaderEl
-    @slideshowView = new SlideshowView
-      el: @slideshowEl
-      className: 'items'
-      header: @slideshowHeader
+    @photoHeader = new PhotoHeader
+      el: @photoHeaderEl
       parent: @
-      parentModel: 'Photo'
-      subview: true
     @categoriesView = new CategoriesView
       el: @categoriesEl
       className: 'items'
@@ -179,6 +177,13 @@ class ShowView extends Spine.Controller
       parentModel: Product
       parent: @
       slideshow: @slideshowView
+    @photoView = new PhotoView
+      el: @photoEl
+      className: 'items'
+      header: @photoHeader
+      photosView: @photosView
+      parent: @
+      parentModel: Photo
     @productsAddView = new ProductsAddView
       el: @modalAddProductEl
       parent: @productsView
@@ -234,8 +239,8 @@ class ShowView extends Spine.Controller
     @sliderRatio = 50
     @thumbSize = 240 # size thumbs are created serverside (should be as large as slider max for best quality)
     
-    @canvasManager = new Spine.Manager(@categoriesView, @productsView, @photosView, @slideshowView, @waitView)
-    @headerManager = new Spine.Manager(@categoriesHeader, @productsHeader, @photosHeader, @slideshowHeader)
+    @canvasManager = new Spine.Manager(@categoriesView, @productsView, @photosView, @photoView)
+    @headerManager = new Spine.Manager(@categoriesHeader, @productsHeader, @photosHeader, @photoHeader)
     
     @canvasManager.bind('change', @proxy @changeCanvas)
     @headerManager.bind('change', @proxy @changeHeader)
@@ -329,7 +334,8 @@ class ShowView extends Spine.Controller
     @toolbarTwo.refresh()
     
   renderViewControl: (controller) ->
-    App.hmanager.change(controller)
+#    App.hmanager.change(controller)
+    App[controller].trigger('active')
   
   createCategory: (e) ->
     Spine.trigger('create:category')
@@ -500,6 +506,9 @@ class ShowView extends Spine.Controller
     @trigger('activate:editview', 'upload', e.target)
     e.preventDefault()
     @refreshToolbars()
+    
+  activateEditor: (e) ->
+    App.activateEditor e
     
   toggleCategory: (e) ->
     @changeToolbarOne ['Category']
@@ -698,7 +707,7 @@ class ShowView extends Spine.Controller
   toggleVisible: (e, list = Category.selectionList()) ->
     for id in list
       ga =  CategoriesProduct.categoryProductExists id, Category.record?.id
-      ga.ignore = !ga.ignore
+      ga.ignored = !ga.ignored
       ga.save()
 
   showPhotosTrash: ->
@@ -1140,15 +1149,11 @@ class ShowView extends Spine.Controller
     el=$(document.activeElement)
     isFormfield = $().isFormElement(el)
     
-    @log e.type, code
-    
   keyup: (e) ->
     code = e.charCode or e.keyCode
     
     el=$(document.activeElement)
     isFormfield = $().isFormElement(el)
-    
-    @log e.type, code
     
     switch code
       when 8 #Backspace

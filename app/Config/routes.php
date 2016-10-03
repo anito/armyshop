@@ -31,6 +31,7 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
   Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
+  Router::connect('/mysql/*', array('controller' => 'mysql', 'action' => 'exec'));
   Router::connect('/q/*', array('controller' => 'kodaks', 'action' => 'develop'));
 
   Router::mapResources(array('users', 'categories', 'products', 'photos', 'descriptions', 'categories_products', 'products_photos'));

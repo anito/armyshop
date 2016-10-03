@@ -25,6 +25,9 @@ Filter =
           res.push record if record = @irecords[item[key]]
         if options.sorted then @[options.sorted] res else res
           
+      filterSortByOrder: (query, options) ->
+        @sortByOrder @filter query, options
+          
       filterRelated: (id, options) ->
         model = @foreignModels()[options.model]
         joinTableItems = Model[model.joinTable].filter(id, options)

@@ -57,6 +57,8 @@ Controller.Drag =
         event.dataTransfer.setData('text/json', JSON.stringify(data));
         
         className = record.constructor.className
+        return
+        # don't use drag images
         switch className
           when 'Product'
             img = if data.length is 1 then App.ALBUM_SINGLE_MOVE else App.ALBUM_DOUBLE_MOVE
@@ -93,6 +95,8 @@ Controller.Drag =
           data = JSON.parse(data)
         catch e
         @trigger('drag:drop', e, data)
+        event = e.originalEvent
+        event.stopPropagation()
         
       # helper methods
         
@@ -149,6 +153,9 @@ Controller.Drag =
         
         if @validateDrop target, source, origin
           Spine.DragItem.closest.addClass('over')
+        else
+          Spine.DragItem.closest.addClass('over nodrop')
+          
 
       dragOver: (e) =>
 
@@ -189,6 +196,7 @@ Controller.Drag =
               Photo.trigger 'destroy:join',
                 photos: selection
                 product: origin
+          
                 
         @clearHelper()
                 
@@ -200,7 +208,10 @@ Controller.Drag =
           Spine.DragItem.save()
         
       validateDrop: (target, source, origin) =>
-        return unless target and source
+        return true unless target and source
+        return true if target.eql source
+        console.log target
+        console.log source
         switch source.constructor.className
           when 'Product'
             unless target.constructor.className is 'Category'
@@ -224,7 +235,7 @@ Controller.Drag =
               if item.photo_id is source.id
                 return false
             return true
-
+          
           else return false
           
     @include Include

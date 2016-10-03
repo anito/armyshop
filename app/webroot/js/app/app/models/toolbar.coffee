@@ -22,137 +22,100 @@ class Toolbar extends Spine.Model
     
   @dropdownGroups:
     group_help:
-      name: 'Help'
+      name: 'Hilfe'
       icon: 'question-sign'
       content:
         [
-          name: 'Quick Help'
+          name: 'Übersicht'
           klass: 'opt-Help '
         ,
-          name: 'About'
+          name: 'Über'
           klass: 'opt-Version '
         ]
     group0:
-      name: 'View'
+      name: 'Ansicht'
       content:
         [
-          name: 'Overview'
-          klass: 'opt-Overview '
-        ,
-          name: 'Preview'
-          klass: 'opt-SlideshowPreview '
-          disabled: -> !App.activePhotos().length
-        ,
-          devider: true
-        ,
-          name: -> 'Product Library'
+          name: -> 'Produktkatalog'
           klass: 'opt-ShowAllProducts'
           icon: 'book'
           disabled: -> false
         ,
-          name: -> 'Photo Library'
+          name: -> 'Fotokatalog'
           klass: 'opt-ShowAllPhotos'
           icon: 'book'
           disabled: -> false
         ,
           devider: true
         ,
-          name: 'Invert Selection'
-          klass: 'opt-SelectInv'
-          shortcut: 'Ctrl+I'
-        ,
-          name: 'Select All'
-          klass: 'opt-SelectAll'
-          shortcut: 'Ctrl+A'
-        ,
-          devider: true
-        ,
-          name: 'Toggle Fullscreen'
+          name: 'Vollbild Aus/Ein'
           klass: 'opt-FullScreen'
           icon: 'fullscreen'
           iconcolor: 'black'
         ,
-          name: 'Toggle Sidebar'
+          name: 'Seitenleiste Ein/Aus'
           klass: 'opt-Sidebar'
           shortcut: '->|'
         ]
     group1:
-      name: 'Category'
+      name: 'Kategorie'
       content:
         [
-          name: 'New'
+          name: 'Neu'
           icon: 'asterisk'
           klass: 'opt-CreateCategory'
         ,
-          name: 'New from Product Selection'
-          icon: 'certificate'
-          klass: 'opt-CopyProductsToNewCategory'
-          disabled: -> !Category.selectionList().length
-        ,
           devider: true
         ,
-          name: 'Edit'
+          name: 'Bearbeiten'
           icon: 'pencil'
           klass: 'opt-Category'
           disabled: ->
         ,
-          name: 'Destroy'
+          name: 'Löschen'
           icon: 'trash'
           klass: 'opt-DestroyCategory'
           disabled: -> !Category.record
           shortcut: '<-'
         ]
     group2:
-      name: 'Product'
+      name: 'Produkt'
       content:
         [
-          name: 'New'
+          name: 'Neu'
           icon: 'asterisk'
           klass: 'opt-CreateProduct'
         ,
-          name: 'New from Photo Selection'
-          icon: 'asterisk'
-          klass: 'opt-CopyPhotosToNewProduct'
-          disabled: -> !Product.selectionList().length
-        ,
-          name: 'Add from Library'
+          name: 'Aus Katalog hinzufügen'
           icon: 'plus'
           klass: 'opt-AddProducts'
           disabled: -> !Category.record
         ,
-          name: 'Duplicate'
+          name: 'Dupizieren'
           icon: 'certificate'
           klass: 'opt-DuplicateProducts'
           disabled: -> !Product.record
         ,
           devider: true
         ,
-          name: 'Edit'
+          name: 'Bearbeiten'
           icon: 'pencil'
           klass: 'opt-Product'
           disabled: ->
         ,
           name: ->
             len = '('+Category.selectionList().length+')'
-            type = if Category.record then 'Remove' else 'Destroy'
+            type = if Category.record then 'Entfernen' else 'Löschen'
             return type+' '+len
           icon: 'trash'
           klass: 'opt-DestroyProduct'
           disabled: -> !Category.selectionList().length
           shortcut: '<-'
         ,
-          name: -> 'Destroy Empty Products (' + Product.findEmpties().length + ')'
-          icon: 'trash'
-          klass: 'opt-DestroyEmptyProducts'
-          disabled: -> !Product.findEmpties().length
-        ,
-          name: 'Empty Products'
-          icon: 'fire'
-          klass: 'opt-EmptyProduct'
-          disabled: -> !Category.selectionList().length or !Category.selectedProductsHasPhotos()
+          devider: true
         ,
           name: ->
-            a = 'Toggle visible'
+            a = 'Sichtbarkeit Ein/Aus'
             b = ' (' + Category.selectionList().length + ')'
             if Category.record
               return a + b
@@ -165,19 +128,19 @@ class Toolbar extends Spine.Model
         ,
           devider: true
         ,
-          name: 'Copy'
+          name: 'Kopieren'
           icon: ''
           klass: 'opt-CopyProduct'
           disabled: -> !Category.selectionList().length
           shortcut: 'Ctrl+C'
         ,
-          name: 'Cut'
+          name: 'Auschneiden'
           icon: ''
           klass: 'opt-CutProduct'
           disabled: -> !Category.selectionList().length
           shortcut: 'Ctrl+X'
         ,
-          name: 'Paste'
+          name: 'Einfügen'
           icon: ''
           klass: 'opt-PasteProduct'
           disabled: -> !Clipboard.findAllByAttribute('type', 'copy').length or !Category.record
@@ -185,20 +148,20 @@ class Toolbar extends Spine.Model
         ,
           devider: true
         ,
-          name: -> 'Product Library'
+          name: -> 'Produktkatalog'
           klass: 'opt-ShowAllProducts'
           icon: 'book'
           disabled: -> false
         ]
     group3:
-      name: 'Photo'
+      name: 'Foto'
       content:
         [
           name: 'Upload'
           icon: 'upload'
           klass: 'opt-Upload'
         ,
-          name: 'Add from Library'
+          name: 'Foto aus Katalog hinzufügen'
           icon: 'plus'
           klass: 'opt-AddPhotos'
           disabled: -> !Product.record
@@ -206,33 +169,33 @@ class Toolbar extends Spine.Model
           devider: true
         ,
           name: ->
-            'Rotate ('+ Product.selectionList().length + ')'
+            'Rotieren ('+ Product.selectionList().length + ')'
           header: true
           disabled: true
         ,
-          name: 'cw'
+          name: 'Im Uhrzeiger'
           klass: 'opt-Rotate-cw'
           shortcut: 'Ctrl+R'
           icon: 'circle-arrow-right'
           disabled: -> !Product.selectionList().length
         ,
-          name: 'ccw'
+          name: 'Gegen Uhrzeiger'
           klass: 'opt-Rotate-ccw'
           icon: 'circle-arrow-left'
           disabled: -> !Product.selectionList().length
         ,
           devider: true
         ,
-          name: 'Edit'
+          name: 'Bearbeiten'
           icon: 'pencil'
           klass: 'opt-Photo'
           disabled: ->
         ,
           name: ->
             if Product.record
-              type = 'Remove'
+              type = 'Entfernen'
             else
-              type = 'Destroy'
+              type = 'Löschen'
             len = Product.selectionList().length
             return type+' ('+len+')'
           shortcut: '<-'
@@ -242,19 +205,19 @@ class Toolbar extends Spine.Model
         ,
           devider: true
         ,
-          name: 'Copy'
+          name: 'Kopieren'
           icon: ''
           klass: 'opt-CopyPhoto'
           disabled: -> !Product.selectionList().length
           shortcut: 'Ctrl+C'
         ,
-          name: 'Cut'
+          name: 'Ausschneiden'
           icon: ''
           klass: 'opt-CutPhoto'
           disabled: -> !Product.selectionList().length
           shortcut: 'Ctrl+X'
         ,
-          name: 'Paste'
+          name: 'Einfügen'
           icon: ''
           klass: 'opt-PastePhoto'
           disabled: -> !Clipboard.findAllByAttribute('type', 'copy').length or !Product.record
@@ -262,7 +225,7 @@ class Toolbar extends Spine.Model
         ,
           devider: true
         ,
-          name: -> 'Photo Library'
+          name: -> 'Fotokatalog'
           klass: 'opt-ShowAllPhotos'
           icon: 'book'
           disabled: -> false
@@ -275,6 +238,24 @@ class Toolbar extends Spine.Model
           disabled: -> false
         ]
     group4:
+      name: -> 
+        len = App.activePhotos().length
+        'Slideshow  <span class="badge">' + len + '</span>'
+      content:
+        [
+          name: -> 'Preview'
+          klass: 'opt-SlideshowPreview'
+          icon: 'picture'
+          disabled: -> !App.activePhotos().length
+        ,
+          name: 'Start'
+          klass: 'opt-SlideshowPlay'
+          shortcut: 'Space'
+          icon: 'play'
+          dataToggle: 'modal-category'
+          disabled: -> !App.activePhotos().length
+        ]
+    group5:
       name: -> 
         len = App.activePhotos().length
         'Slideshow  <span class="badge">' + len + '</span>'
@@ -308,16 +289,10 @@ class Toolbar extends Spine.Model
           itemGroup: @dropdownGroups.group0
         ,
           dropdown: true
-          itemGroup: @dropdownGroups.group1
-        ,
-          dropdown: true
           itemGroup: @dropdownGroups.group2
         ,
           dropdown: true
           itemGroup: @dropdownGroups.group3
-        ,
-          dropdown: true
-          itemGroup: @dropdownGroups.group4
         ]
     package_02:
       name: 'Close'

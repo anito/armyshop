@@ -20,10 +20,11 @@ ModalActionView         = require("controllers/modal_action_view")
 ToolbarView             = require("controllers/toolbar_view")
 LoginView               = require("controllers/login_view")
 ProductEditView         = require("controllers/product_edit_view")
-PhotoEditView     = require("controllers/photo_edit_view")
+PhotoEditView           = require("controllers/photo_edit_view")
 UploadEditView          = require("controllers/upload_edit_view")
 CategoryEditView        = require("controllers/category_edit_view")
 OverviewView            = require('controllers/overview_view')
+PreviewView             = require('controllers/preview_view')
 MissingView             = require("controllers/missing_view")
 Extender                = require('extensions/controller_extender')
 SpineDragItem           = require('models/drag_item')
@@ -43,7 +44,7 @@ class Main extends Spine.Controller
   
   elements:
     '#fileupload'         : 'uploader'
-    '#flickr'             : 'flickrEl'
+    '#sidebar .preview'   : 'previewEl'
     '#main'               : 'mainEl'
     '#sidebar'            : 'sidebarEl'
     '#show'               : 'showEl'
@@ -83,10 +84,10 @@ class Main extends Spine.Controller
     
     Spine.DragItem = SpineDragItem.create()
     
-    @ALBUM_SINGLE_MOVE = @createImage('/img/cursor_folder_1.png')
-    @ALBUM_DOUBLE_MOVE = @createImage('/img/cursor_folder_3.png')
-    @IMAGE_SINGLE_MOVE = @createImage('/img/cursor_images_1.png')
-    @IMAGE_DOUBLE_MOVE = @createImage('/img/cursor_images_3.png')
+#    @ALBUM_SINGLE_MOVE = @createImage('/img/cursor_folder_1.png')
+#    @ALBUM_DOUBLE_MOVE = @createImage('/img/cursor_folder_3.png')
+#    @IMAGE_SINGLE_MOVE = @createImage('/img/cursor_images_1.png')
+#    @IMAGE_DOUBLE_MOVE = @createImage('/img/cursor_images_3.png')
     
     @modal = exists: false
     
@@ -139,7 +140,8 @@ class Main extends Spine.Controller
       parent: @
     @overviewView = new OverviewView
       el: @overviewEl
-      slideshow: @showView.slideshowView
+    @previewView = new PreviewView
+      el: @previewEl
     @slideshowView = @showView.slideshowView
 
     @vmanager = new Spine.Manager(@sidebar)
@@ -158,7 +160,7 @@ class Main extends Spine.Controller
     @hmanager = new Spine.Manager(@category, @product, @photo, @upload)
     @hmanager.external = @showView.toolbarOne
     @hmanager.initDrag @hDrag,
-      initSize: => @el.height()/4
+      initSize: => @el.height()*0.4
       disabled: false
       axis: 'y'
       min: -> 50
@@ -180,7 +182,8 @@ class Main extends Spine.Controller
     
     @bind('canvas', @proxy @canvas)
 
-    @upload.trigger('active')
+    @product.trigger('active')
+    
     @loaderView.trigger('active')
     
     @initializeFileupload()
@@ -188,31 +191,26 @@ class Main extends Spine.Controller
     @routes
       
       '/category/:gid/:aid/:pid': (params) ->
-        Root.updateSelection params.gid or null
-        Category.updateSelection params.aid or null
-        Product.updateSelection params.pid or null
-        @showView.trigger('active', @showView.photosView, params.pid)
+        Root.updateSelection params.gid or []
+        Category.updateSelection params.aid or []
+        Product.updateSelection params.pid or []
+        @showView.trigger('active', @showView.photoView, params.pid)
       '/category/:gid/:aid': (params) ->
-        Root.updateSelection params.gid or null
-        Category.updateSelection params.aid or null
+        Root.updateSelection params.gid or []
+        Category.updateSelection params.aid or []
+        Product.updateSelection()
         @showView.trigger('active', @showView.photosView)
       '/category/:gid': (params) ->
-        Root.updateSelection params.gid or null
+        Root.updateSelection params.gid or []
+        Category.updateSelection()
+        Product.updateSelection()
         @showView.trigger('active', @showView.productsView)
       '/categories/*': ->
         @showView.trigger('active', @showView.categoriesView)
       '/overview/*': ->
         @overviewView.trigger('active')
-      '/slideshow/:index': (params) ->
-        @showView.trigger('active', @showView.slideshowView, params.index)
-#      '/slideshow/*glob': (params) ->
-#        @showView.trigger('active', @showView.slideshowView, params.glob)
       '/wait/*glob': (params) ->
         @showView.trigger('active', @showView.waitView)
-      '/flickr/:type/:page': (params) ->
-        @flickrView.trigger('active', params.type, params.page)
-      '/flickr/': (params) ->
-        @flickrView.trigger('active', @showView.flickrView)
       '/*glob': (params) ->
         @missingView.trigger('active')
 
@@ -292,13 +290,11 @@ class Main extends Spine.Controller
       
   finalizeView: ->
     @loginView.render()
-    @mainView.el.fadeIn(1500, @proxy @showIt)
+    @mainView.el.fadeIn(500, @proxy @showIt)
       
   showIt: ->
-    @showView.trigger('active', @showView.productsView)
-    return
     unless /^#\/category\//.test(location.hash)
-      @navigate '/category', ''
+      @navigate '/category', Category.first().id
       
   canvas: (controller) ->
     controller.trigger 'active'
@@ -343,11 +339,11 @@ class Main extends Spine.Controller
   activateEditor: (e) ->
     el = $(e.currentTarget)
     test = el.prop('class')
-    if /\bgal-*/.test(test)
+    if /\bgal-trigger*/.test(test)
       @category.trigger('active')
-    else if /\balb-*/.test(test)
+    else if /\balb-trigger*/.test(test)
       @product.trigger('active')
-    else if /\bpho-*/.test(test)
+    else if /\bpho-trigger*/.test(test)
       @photo.trigger('active')
       
     e.preventDefault()
@@ -356,8 +352,6 @@ class Main extends Spine.Controller
   key: (e) ->
     code = e.charCode or e.keyCode
     type = e.type
-    
-    @log e.type , code
     
     el=$(document.activeElement)
     isFormfield = $().isFormElement(el)

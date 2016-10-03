@@ -90,7 +90,7 @@ class Sidebar extends Spine.Controller
     @query = @input.val()
     @render()
     
-  filterById: (id, model) ->
+  filterById: (id, model='Product') ->
     @filter() unless model and /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(id or '')
     @query = id
     @model = model

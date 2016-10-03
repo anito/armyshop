@@ -26,7 +26,7 @@ class LoginView extends Spine.Controller
     Spine.isProduction = localStorage.isProduction = localStorage.isProduction is 'false'
     alert 'Trace: ' + (if Spine.isProduction then 'Off' else 'On') + '\nApplication will now restart'
     $(window).off()
-    User.redirect('director_app')
+    User.redirect('admin')
     
   render: ->
     @html @template()

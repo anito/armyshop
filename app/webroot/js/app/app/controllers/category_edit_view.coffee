@@ -1,16 +1,16 @@
 Spine       = require("spine")
+$           = Spine.$
 KeyEnhancer = require('extensions/key_enhancer')
 Extender    = require('extensions/controller_extender')
 Category     = require("models/category")
 Root        = require("models/root")
-$           = Spine.$
 
 class CategoryEditView extends Spine.Controller
   
   @extend Extender
   
   events:
-    'keyup'                   : 'saveOnKeyup'
+    'keyup'                         : 'saveOnKeyup'
     
   template: (item) ->
     $('#editCategoryTemplate').tmpl item
@@ -19,7 +19,7 @@ class CategoryEditView extends Spine.Controller
     super
     @bind('active', @proxy @active)
     Category.bind('current', @proxy @change)
-
+    
   active: ->
     @render()
 

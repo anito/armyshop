@@ -32,10 +32,8 @@ class PhotoEditView extends Spine.Controller
     if @current #and !item.destroyed 
       @html @template @current
     else
-      info = ''
-      info += '<label class="invite"><span class="enlightened">No photo selected.</span></label>' unless Product.selectionList().length and !Product.count()
-      info += '<label class="invite"><span class="enlightened">You should create an product first to catalogue your photos.</span></label>' unless Product.count()
-      @html $("#noSelectionTemplate").tmpl({type: info})
+      info = '<label class="invite"><span class="enlightened">Kein Foto ausgewählt.</span></label>' unless Product.selectionList().length and !Product.count()
+      @html $("#noSelectionTemplate").tmpl({type: info || ''})
     @el
   
   save: (el) ->
