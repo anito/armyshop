@@ -115,6 +115,9 @@ class PreviewView extends Spine.Controller
     
   followLink: (e) -> location.href $(e.target).attr('href')
     
+  togglePreview: ->
+    @expander.click()
+    
   expand: (e) ->
     parent = $(e.target).closest('li')
     parent.toggleClass('open')

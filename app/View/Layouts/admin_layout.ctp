@@ -69,6 +69,9 @@
         setTimeout(function(){
           App.sidebar.toggleDraghandle('');
         }, 2500)
+        setTimeout(function(){
+          App.previewView.togglePreview();
+        }, 3000)
       };
       
       Spine = require('spine');
