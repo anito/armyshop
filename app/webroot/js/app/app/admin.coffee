@@ -440,6 +440,11 @@ class Main extends Spine.Controller
         unless isFormfield
           @delegateFocus(e, @showView)
           e.preventDefault()
+      when 86 #CTRL V
+        if isFormfield
+          if e.metaKey or e.ctrlKey
+            alert 'paste'
+            e.stopPropagation()
           
   delegateFocus: (e, controller = @showView) ->
     el=$(document.activeElement)

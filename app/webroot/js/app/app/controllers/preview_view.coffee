@@ -20,8 +20,9 @@ class PreviewView extends Spine.Controller
     '.content'              : 'contentEl'
 
   events:
+    'click [href]'          : 'followLink'
     'click      .expander'        : 'expand'
-    'click      .item-content'         : 'expand'
+    'click      .item-content'    : 'expand'
 
   template:  (item) ->
     return unless item
@@ -112,11 +113,12 @@ class PreviewView extends Spine.Controller
     return if parent.hasClass('open')
     @exapand(e)
     
+  followLink: (e) -> location.href $(e.target).attr('href')
+    
   expand: (e) ->
     parent = $(e.target).closest('li')
     parent.toggleClass('open')
 
-    e.stopPropagation()
     e.preventDefault()
     
 module?.exports = PreviewView

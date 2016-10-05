@@ -14,9 +14,9 @@ class UploadEditView extends Spine.Controller
     'fileuploaddone'              : 'done'
     'fileuploadsubmit'            : 'submit'
     'fileuploadfail'              : 'fail'
-    'fileuploaddrop'              : 'drop'
+#    'fileuploaddrop'              : 'drop'
     'fileuploadadd'               : 'add'
-    'fileuploadpaste'             : 'paste'
+#    'fileuploadpaste'             : 'paste'
     'fileuploadsend'              : 'send'
     'fileuploadprogressall'       : 'alldone'
     'fileuploadprogress'          : 'progress'
@@ -113,7 +113,7 @@ class UploadEditView extends Spine.Controller
     
   paste: (e, data) ->
     @log 'paste'
-    @drop(e, data)
+    @drop(e, data) if data.files.length
     
   submit: (e, data) ->
     

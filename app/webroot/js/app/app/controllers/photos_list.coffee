@@ -140,7 +140,6 @@ class PhotosList extends Spine.Controller
     
     tmplItem = elements.el.tmplItem()
     tmplItem.data = item
-    console.log tmplItem
     try
       tmplItem.update()
     catch e
