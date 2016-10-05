@@ -645,7 +645,7 @@
       <div class="title">
         {{if model.record}}
         <h3>
-        <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}...{{/if}}</span>
+        <span class="label label-{{if category.screenname}}default{{else}}warning{{/if}}">{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}...{{/if}}</span>
         </h3>
         <h3>
         {{if modelProduct.record}}
