@@ -2,6 +2,7 @@ Spine = require("spine")
 $     = Spine.$
 Model   = Spine.Model
 Product  = require('models/product')
+ProductsPhoto  = require('models/products_photo')
 CategoriesProduct       = require('models/categories_product')
 UriHelper = require('extensions/uri_helper')
 Extender  = require('extensions/controller_extender')
@@ -19,22 +20,23 @@ class PreviewView extends Spine.Controller
     '.content'              : 'contentEl'
 
   events:
-    'click      .expander'         : 'expand'
+    'click      .expander'        : 'expand'
+    'click      .item-content'         : 'expand'
 
   template:  (item) ->
-    item =
-      product: item
-      descriptions: Description.filterSortByOrder(item.id)
-      photos: Product.photos(item.id).slice(-1)
-    console.log item.photos
+    return unless item
+    phs = Product.photos(item.id)
+    ph = Product.photos(item.id)[0]#.reverse()[0]
+    
+
     $('#norbuPricingTemplate').tmpl item
     
   constructor: ->
     super
-    Product.bind('change', @proxy @change)
+    Product.bind('create update destroy', @proxy @change)
     Product.bind('current', @proxy @change)
-    Product.bind('destroy', @proxy @change)
     Description.bind('change', @proxy @render)
+    ProductsPhoto.bind('update', @proxy @changedRelatedPhoto)
     CategoriesProduct.bind('destroy', @proxy @change)
     @createDummy()
     @render()
@@ -44,25 +46,36 @@ class PreviewView extends Spine.Controller
     id: '12345'
     price: '123,45'
     subtitle: 'Test Subtitle Dummy'
-
+    src:  'dummy.jpg'
+    
   createDummy: ->
     @dummy = new Product @newAttributes()
     @dummy.save(ajax:false)
     
   change: (item) ->
-    @log item
     if item.destroyed or !item
       @current = @dummy
     else
       @current = item
     @render() 
     
+  changedRelatedPhoto: (item) ->
+    item = Product.find(item.product_id)
+    if item then @change item
+    
+  item: (item) ->
+    product: item
+    descriptions: Description.filterSortByOrder(item.id)
+    photo: Product.photos(item.id).first()
+    
+    
   render: ->
-    @contentEl.html @template @current
-    p = Product.photos(@current.id)
-    if p.length
-      console.log photos = p.slice(-1)
-      @callDeferred photos, @callback
+    return unless @current
+    item = @item(@current)
+    photo = item.photo
+    @contentEl.html @template item
+    return unless Photo.exists(photo?.id)
+    @callDeferred photo, @callback
     
   size: (width, height) ->
     width: 300
@@ -94,6 +107,10 @@ class PreviewView extends Spine.Controller
 
   onError: (e) ->
     @this.snap @res
+    
+  click: (e) ->
+    return if parent.hasClass('open')
+    @exapand(e)
     
   expand: (e) ->
     parent = $(e.target).closest('li')

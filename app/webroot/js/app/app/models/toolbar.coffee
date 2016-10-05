@@ -75,7 +75,8 @@ class Toolbar extends Spine.Model
           name: 'Löschen'
           icon: 'trash'
           klass: 'opt-DestroyCategory'
-          disabled: -> !Category.record
+          disabled: ->
+            ret = !Category.record or (c for c in App.arr when c is Category.record.name ).length
           shortcut: '<-'
         ]
     group2:

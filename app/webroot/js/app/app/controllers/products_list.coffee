@@ -110,9 +110,6 @@ class ProductsList extends Spine.Controller
     
     style = contentEl.attr('style')
     tmplItem = productEl.tmplItem()
-    tmplItem2 = contentEl.tmplItem()
-    @log tmplItem
-    @log tmplItem2
     tmplItem.data = product
     try
       tmplItem.update()
@@ -122,7 +119,6 @@ class ProductsList extends Spine.Controller
     productEl.toggleClass('active', active)
     productEl.toggleClass('hot', hot)
     contentEl.attr('style', style)
-    
       
     @el.sortable()
   
@@ -176,8 +172,7 @@ class ProductsList extends Spine.Controller
     deferred = $.Deferred()
     all = product.photos()
     sorted = Photo.sortByReverseOrder all
-    data = sorted.slice(4)
-    console.log data
+    data = sorted.slice(0, 4)
     
     Photo.uri
       width: 50

@@ -1,18 +1,20 @@
 Spine           = require("spine")
 $               = Spine.$
 Photo           = require('models/photo')
-Product           = require('models/product')
-ProductsPhoto     = require('models/products_photo')
+Product         = require('models/product')
+ProductsPhoto   = require('models/products_photo')
 ToolbarView     = require("controllers/toolbar_view")
 Extender        = require('extensions/controller_extender')
 Drag            = require('extensions/drag')
+UriHelper       = require('extensions/uri_helper')
 
 require('extensions/tmpl')
 
 class PhotosList extends Spine.Controller
   
-  @extend Drag
+#  @extend Drag
   @extend Extender
+  @extend UriHelper
   
   elements:
     '.thumbnail'              : 'thumbEl'
@@ -38,7 +40,7 @@ class PhotosList extends Spine.Controller
     Spine.bind('slider:start', @proxy @sliderStart)
     Spine.bind('slider:change', @proxy @size)
     Spine.bind('rotate', @proxy @rotate)
-    Photo.bind('update', @proxy @update)
+#    Photo.bind('update', @proxy @update)
     Product.bind('ajaxError', Product.errorHandler)
     Product.bind('change:selection', @proxy @exposeSelection)
     ProductsPhoto.bind('change', @proxy @changeRelated)
@@ -47,24 +49,26 @@ class PhotosList extends Spine.Controller
 #    return unless @parent.isActive()
     return unless Product.record
     return unless Product.record.id is item['product_id']
-    return unless photo = Photo.find(item['photo_id'])
+    return unless item = Photo.find(item['photo_id'])
     @log 'changeRelated'
     
     switch mode
       when 'create'
         @wipe()
         
-        @append @template item
+        @el.prepend @template item
+        @updateTemplate item
         @size(App.showView.sOutValue)
         @el.sortable('destroy').sortable()
         $('.dropdown-toggle', @el).dropdown()
         
-        @callDeferred [photo]
+        @callDeferred [item]
         
       when 'destroy'
-        el = @findModelElement(photo)
+        el = @findModelElement(item)
         el.detach()
       when 'update'
+        @updateTemplate item
         @el.sortable('destroy').sortable()
     
     @refreshElements()
@@ -78,7 +82,6 @@ class PhotosList extends Spine.Controller
       sorted = Product.sortByReverseOrder items
       @[mode] @template sorted
       @size(App.showView.sOutValue)
-      @el.sortable('destroy').sortable()
       @exposeSelection()
       $('.dropdown-toggle', @el).dropdown()
       
@@ -122,9 +125,7 @@ class PhotosList extends Spine.Controller
     @el.empty() if first
     @el
 
-  update: (item) ->
-    @log 'update'
-    
+  updateTemplate: (item) ->
     helper =
       refresh: =>
         el = @children().forItem(item, true)
@@ -136,8 +137,10 @@ class PhotosList extends Spine.Controller
     css = elements.tb.attr('style')
     active = elements.el.hasClass('active')
     hot = elements.el.hasClass('hot')
+    
     tmplItem = elements.el.tmplItem()
     tmplItem.data = item
+    console.log tmplItem
     try
       tmplItem.update()
     catch e
@@ -146,8 +149,9 @@ class PhotosList extends Spine.Controller
     elements.tb.attr('style', css).addClass('in')
     elements.el.toggleClass('active', active)
     elements.el.toggleClass('hot', hot)
-    @el.sortable('destroy').sortable('photos')# if Product.record
+    @el.sortable('destroy').sortable('photos')
     @refreshElements()
+    tmplItem
   
   thumbSize: (width, height) ->
     width: width or App.showView.thumbSize

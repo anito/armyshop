@@ -1193,9 +1193,8 @@ ul {
   font-size: 0.7em;
   font-style: italic;
 }
-.sublist-item {
-  cursor: move;
-  margin: 10px 0 0;
+.item-content {
+  cursor: pointer;
 }
 .sublist-item span {
   display: inline-block;
@@ -2121,6 +2120,15 @@ li.over.nodrop:not(.view) {
 }
 .preview {
   background: url("/img/background.png") #39f;
+}
+.defense li.parent.preview {
+  background: url("/img/defense_creative.jpg") -497px -265px;
+}
+.goodies li.parent.preview {
+  background: url("/img/goodies_creative.jpg");
+}
+.outdoor li.parent.preview {
+  background: url("/img/outdoor_creative.jpg") -497px -365px;
 }
 @-webkit-keyframes pulsate {
   from {

@@ -14,7 +14,7 @@ require("spine/lib/ajax")
 
 class Product extends Spine.Model
 
-  @configure "Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'order', 'invalid', 'active', 'selected'
+  @configure "Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'invalid', 'active', 'selected'
 
   @extend Model.Cache
   @extend Model.Ajax
@@ -24,7 +24,7 @@ class Product extends Spine.Model
   @extend Filter
   @extend Extender
 
-  @selectAttributes: ['title', 'subtitle']
+  @selectAttributes: ['title', 'subtitle', 'link', 'notes', 'price']
   
   @parent: 'Category'
   
@@ -175,11 +175,6 @@ class Product extends Spine.Model
       sCount : Product.selectionList().length
       product  : Product.record
       category: Category.record
-    
-  selectAttributes: ->
-    result = {}
-    result[attr] = @[attr] for attr in @constructor.selectAttributes
-    result
   
   # loops over each record and make sure to set the copy property
   select: (joinTableItems) ->

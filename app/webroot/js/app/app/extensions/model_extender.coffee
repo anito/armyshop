@@ -36,8 +36,6 @@ Model.Extender =
         s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
 
       
-      selectAttributes: []
-      
       record: false
 
       selection: [global:[]]
@@ -247,13 +245,21 @@ Model.Extender =
 
       #prevents an update if model hasn't changed
       updateChangedAttributes: (atts) ->
-        origAtts = @attributes()
+        @log 'updateChangedAttributes'
+        invalid = false
+        origAtts = @selectAttributes()
         for key, value of atts
+          console.log key
           unless origAtts[key] is value
             invalid = yes
             @[key] = value
 
         @save() if invalid
+        
+      selectAttributes: ->
+        result = {}
+        result[attr] = @[attr] for attr in @constructor.selectAttributes
+        result
         
       #private
       

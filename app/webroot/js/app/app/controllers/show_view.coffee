@@ -46,7 +46,7 @@ class ShowView extends Spine.Controller
     '.opt-Previous'           : 'btnPrevious'
     '.opt-Sidebar'            : 'btnSidebar'
     '.opt-FullScreen'         : 'btnFullScreen'
-    '.opt-SlideshowPlay'      : 'btnSlideshowPlay'
+    '.opt-Save'               : 'btnSave'
     '.toolbarOne'             : 'toolbarOneEl'
     '.toolbarTwo'             : 'toolbarTwoEl'
     '.props'                  : 'propsEl'
@@ -107,6 +107,7 @@ class ShowView extends Spine.Controller
     'click .opt-SelectNone:not(.disabled)'            : 'selectNone'
     'click .opt-SelectInv:not(.disabled)'             : 'selectInv'
     'click .opt-CloseDraghandle'                      : 'toggleDraghandle'
+    'click .opt-Save'                                 : 'saveToDb'
     'click .opt-Help'                                 : 'help'
     'click .opt-Version'                              : 'version'
     'click .opt-Prev'                                 : 'prev'
@@ -246,6 +247,21 @@ class ShowView extends Spine.Controller
       controller.header?.trigger('active')
       @activated(controller)
     @focus()
+    
+  saveToDb: -> 
+  
+  updatePhotoTemplates: ->
+    c = @photosView.list
+    els = c.children().each (index) ->
+      item = $(@).item()
+      ap = ProductsPhoto.fromPhotoId(item.id)
+      console.log ap
+      return unless ap
+      ap.order = index
+      ap.save(ajax:false)
+      t = c.update item
+    Product.record.save()
+      
     
   changeCanvas: (controller, args) ->
     @controllers = (c for c in @canvasManager.controllers when c isnt controller)
@@ -850,66 +866,56 @@ class ShowView extends Spine.Controller
         width: '700px'
       ,
         items: [
-            'What is Photo Director?',
-            'Photo Director is a (experimental) content management tool for your photos',
-            'Manage your photo content using different types of sets, such as products and categories',
-            'As a result products can than be used to present your content in slideshows'
-          ]
-      ,
-        items: [
-            'Upload photos'
-            'Select the product you want to upload photos to'
-            'If no product is selected, Director will change to the photos library after upload'
+            'Abschnitt 1'
             items: [
-              'To start uploading your content, you can:'
-              'Drag photos from the desktop to your browser, or'
-              'Use the appropriate upload menu item'
-            ]
-            'Director currently supports JPG, JPE, GIF and PNG'
-          ]
-      ,
-        items: [
-            'Arrange your content',
-            'Host your photo content in products'
-            'On the other hand, products are supposed to be hosted in categories'
-            'This also gives you the flexibility to reuse identical products in different places (categories)'
-          ]
-      ,
-        items: [
-            'Order to your content'
-            'After the content is part of a set, it will become sortable'
-          ]
-      ,
-        items: [
-            'Interaction',
-            items: [
-              'Organize your products or photos in sets'
-              'Drag your content from your main view to your sidebar or vice versa'
-              'You can also quickly reorder products within the sidebar only, without opening another category'
+              'Abschnitt 1.1'
             ]
           ]
       ,
         items: [
-            'Navigation'
+            'Abschnitt 2'
             items: [
-              'You can navigate through objects using arrow keys:',
-              'To open the active object (dark blue border) hit Enter',
-              'To close it again hit Esc'
+              'Abschnitt 2.1'
             ]
           ]
       ,
         items: [
-            'Selecting content',
+            'Abschnitt 3'
             items: [
-              'You can easily select one or more items. To do this, either...'
-              'Select multiple objects using both ctrl-key and arrow key(s), or'
-              'Single click multiple objects'
+              'Abschnitt 3.1'
             ]
           ]
       ,
         items: [
-            'Clipboard support'
-            'You can copy, paste or cut objects just as you would do on a regular PC (by keybord or mouse)'
+            'Abschnitt 4'
+            items: [
+              'Abschnitt 4.1'
+            ]
+          ]
+      ,
+        items: [
+            'Abschnitt 5'
+            items: [
+              'Abschnitt 5.1'
+            ]
+          ]
+      ,
+        items: [
+            'Abschnitt 6'
+            items: [
+              'Abschnitt 6.1'
+            ]
+          ]
+      ,
+        items: [
+            'Abschnitt 7'
+            items: [
+              'Abschnitt 7.1'
+            ]
+          ]
+      ,
+        items: [
+            'Abschnitt 1'
           ]
       ]
     

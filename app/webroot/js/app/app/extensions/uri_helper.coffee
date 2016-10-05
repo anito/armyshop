@@ -10,14 +10,12 @@ UriHelper =
     include =
     
       callDeferred: (items, cb) ->
-        @log 'callDeferred'
         items = [items] unless Array.isArray(items)
           
         $.when(@uriDeferred(items)).done (xhr, rec) =>
           cb xhr, rec
 
       uriDeferred: (items) ->
-        @log 'uriDeferred'
         deferred = $.Deferred()
 
         Photo.uri @size(),

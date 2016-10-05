@@ -24,7 +24,7 @@ class Sidebar extends Spine.Controller
     '.items'                : 'items'
     '.inner'                : 'inner'
     '.droppable'            : 'droppable'
-    '.opt-AllProducts'        : 'products'
+    '.opt-AllProducts'      : 'products'
     '.opt-AllPhotos'        : 'photos'
     '.expander'             : 'expander'
     '#refresh'              : 'refreshEl'
@@ -32,8 +32,8 @@ class Sidebar extends Spine.Controller
 
   events:
     'keyup input'               : 'filter'
-    'click .opt-CreateProduct'    : 'createProduct'
-    'click .opt-CreateCategory'  : 'createCategory'
+    'click .opt-CreateProduct'  : 'createProduct'
+    'click .opt-CreateCategory' : 'createCategory'
     'dblclick .draghandle'      : 'toggleDraghandle'
 
     'sortupdate .sublist'         : 'sortupdate'
@@ -118,9 +118,9 @@ class Sidebar extends Spine.Controller
   
   newAttributes: ->
     if User.first()
-      name    : @categoryName()
-      author  : User.first().name
-      user_id : User.first().id
+      screenname  : @categoryName()
+      author      : User.first().name
+      user_id     : User.first().id
     else
       User.ping()
       

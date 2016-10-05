@@ -38,8 +38,11 @@ class ProductsPhoto extends Spine.Model
       ret.push photo if item['product_id'] is aid and photo = Photo.find(item['photo_id'])
     ret
     
+  @fromPhotoId: (photo_id) ->
+    (@filter photo_id, func: 'selectByPhotoId')[0] || []
+    
   @photos: (aid, max) ->
-    Photo.filterRelated(aid,
+    func = Photo.filterRelated(aid,
       model: 'Product'
       key: 'product_id'
       sorted: 'sortByOrder'
@@ -63,7 +66,7 @@ class ProductsPhoto extends Spine.Model
   products: ->
     @constructor.products @photo_id
     
-  photos: ->
+  photos: (id) ->
     @constructor.photos @product_id
 
   allProductPhotos: =>
@@ -78,10 +81,10 @@ class ProductsPhoto extends Spine.Model
   select: (id, options) ->
     return true if @[options.key] is id
     
-  selectPhoto: (id) ->
+  selectByPhotoId: (id) ->
     return true if @photo_id is id and @product_id is Product.record.id
     
   selectUnique: (empty, options) ->
-    return true if @product_id is options.product_id and @photo_id is options.photo_id
+    return true if @photo_id is options.photo_id and @product_id is options.product_id
 
 module.exports = Model.ProductsPhoto = ProductsPhoto

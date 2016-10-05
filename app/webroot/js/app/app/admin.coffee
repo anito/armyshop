@@ -44,7 +44,7 @@ class Main extends Spine.Controller
   
   elements:
     '#fileupload'         : 'uploader'
-    '#sidebar .preview'   : 'previewEl'
+    '#preview'            : 'previewEl'
     '#main'               : 'mainEl'
     '#sidebar'            : 'sidebarEl'
     '#show'               : 'showEl'
@@ -94,6 +94,7 @@ class Main extends Spine.Controller
     $(window).bind('hashchange', @proxy @storeHash)
     
     @ignoredHashes = ['slideshow', 'overview', 'preview', 'flickr', 'logout']
+    @arr = ['outdoor', 'defense', 'goodies']
     
     User.bind('pinger', @proxy @validate)
     
@@ -180,6 +181,8 @@ class Main extends Spine.Controller
     @appManager.bind('change', @proxy @changeMainCanvas)
     @contentManager.bind('change', @proxy @changeContentCanvas)
     
+    Category.bind('current', @proxy @changeBackground)
+    
     @bind('canvas', @proxy @canvas)
 
     @product.trigger('active')
@@ -205,7 +208,7 @@ class Main extends Spine.Controller
         Category.updateSelection()
         Product.updateSelection()
         @showView.trigger('active', @showView.productsView)
-      '/categories/*': ->
+      '/categories_/*': ->
         @showView.trigger('active', @showView.categoriesView)
       '/overview/*': ->
         @overviewView.trigger('active')
@@ -240,7 +243,16 @@ class Main extends Spine.Controller
     else
       @loadUserSettings(user.id)
       @delay @setupView, 1000
-      
+  
+  changeBackground: (cat) ->
+    
+    arr = @arr
+    res = @getData cat, arr
+    
+    for c in arr
+      @el.removeClass(c)
+    @el.addClass(res)
+  
   drop: (e) ->
     @log 'drop'
     
@@ -348,6 +360,13 @@ class Main extends Spine.Controller
       
     e.preventDefault()
     e.stopPropagation()
+    
+  getData: (s, arr=[]) ->
+    test = (s, a) -> 
+      matcher = new RegExp(".*"+a+".*", "g");
+      found = matcher.test(s);
+    for a, i in arr
+      return arr[i] if test s, a
     
   key: (e) ->
     code = e.charCode or e.keyCode

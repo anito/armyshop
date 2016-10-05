@@ -13,7 +13,7 @@ require("spine/lib/ajax")
 
 class Category extends Spine.Model
 
-  @configure 'Category', 'id', 'cid', 'name', 'user_id'
+  @configure 'Category', 'id', 'cid', 'name', 'screenname', 'user_id'
 
   @extend Filter
   @extend Model.Ajax
@@ -21,7 +21,7 @@ class Category extends Spine.Model
   @extend Uri
   @extend Extender
 
-  @selectAttributes: ['name']
+  @selectAttributes: ['screenname']
   
   @parent: 'Root'
   

@@ -31,8 +31,8 @@
             <input class="search-query" type="search" placeholder="Search">
           </form>
         </div>
-          <ul class="preview splitter autoflow noborder">
-            <li class="parent flex">
+        <ul id="preview" class="splitter autoflow noborder">
+            <li class="preview parent flex">
               <div class="item-header">
                 <div class="expander"></div>
                   <div class="item-content">
@@ -392,7 +392,7 @@
 
 <script id="sidebarContentTemplate" type="text/x-jquery-tmpl">
   <div class="item-content">
-    <span class="name">{{if name}}${$().name(name, 20)}{{/if}}</span>
+    <span class="name">{{if screenname}}${$().name(screenname, 20)}{{/if}}</span>
     <span class="gal cta alb-trigger-edit">{{tmpl($item.data.details()) "#categoryDetailsTemplate"}}</span>
   </div>
 </script>
@@ -449,9 +449,9 @@
       <span class="left">
         <a href="#" class="dd dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Open" href="#"><i class="tooltips glyphicon glyphicon-folder-close"></i>Open</a></li>
+          <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#"><i class="tooltips glyphicon glyphicon-folder-close"></i>Öffnen</a></li>
           <li class="divider"></li>
-          <li role="presentation" class="delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Destroy" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>Destroy</a></li>
+          <li role="presentation" class="delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>Löschen</a></li>
         </ul>
       </span>
     </div>
@@ -532,7 +532,7 @@
 <script id="editCategoryTemplate" type="text/x-jquery-tmpl">
   <div class="input-group left">
     <span class="input-group-addon" id="basic-addon1">Name</span>
-    <input type="text" class="form-control" placeholder="Name der Kategory" aria-describedby="basic-addon1" name="name" value="{{html name}}">
+    <input type="text" class="form-control" placeholder="Name der Kategorie" aria-describedby="basic-addon1" name="screenname" value="{{html screenname}}">
   </div>
 </script>
 
@@ -840,7 +840,7 @@
 <script id="photosTemplate" type="text/x-jquery-tmpl">
   <li  id="${id}" data-id="${id}" class="item data fade in pho-trigger-edit" draggable="true">
     {{tmpl "#photosThumbnailTemplate"}}
-    <div class="title center" style="color: aliceblue">{{if title}}${title.substring(0, 15)}{{else}}{{if order}}${order}{{else}}no title{{/if}}{{/if}}</div>
+    <div class="title center {{if order}}hide{{/if}}" style="color: aliceblue">{{if order}}${order}{{/if}}</div>
   </li>
 </script>
 
@@ -863,7 +863,7 @@
     <span class="left">
       <a href="#" class="dd dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Open" href="#"><i class="tooltips glyphicon glyphicon-resize-full"></i>Öffnen</a></li>
+        <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#"><i class="tooltips glyphicon glyphicon-resize-full"></i>Öffnen</a></li>
         <li class="divider"></li>
         <li role="presentation" class="dropdown-header disabled"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate" href="#"><i class="tooltips"></i>Rotieren:</a></li>
         <li role="presentation" class="rotate-cw"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Im Uhrzeiger drehen" href="#"><i class="tooltips glyphicon glyphicon glyphicon-circle-arrow-right"></i>Im Uhrzeiger</a></li>
@@ -892,7 +892,7 @@
         <li role="presentation" class="rotate-cw"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate cw" href="#"><i class="tooltips glyphicon glyphicon-circle-arrow-right"></i>cw</a></li>
         <li role="presentation" class="rotate-ccw"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate ccw" href="#"><i class="tooltips glyphicon glyphicon-circle-arrow-left"></i>ccw</a></li>
         <li class="divider"></li>
-        <li role="presentation" class="delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="{{if Product.record}}Remove{{else}}Destroy{{/if}}" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Product.record}}Remove{{else}}Destroy{{/if}}</a></li>
+        <li role="presentation" class="delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="{{if Product.record}}Entfernen{{else}}Löschen{{/if}}" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}</a></li>
       </ul>
     </span>
   </div>
@@ -1165,7 +1165,7 @@
       <p class="pricing__sentence">${product.subtitle}</p>
       <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
         <a href="${product.link}" target="blank" class="" aria-disabled="false">
-          {{tmpl($item.data.photos) "#norbuImageListTemplate" }}
+          {{tmpl($item.data.photo) "#norbuImageListTemplate" }}
         </a>
       </div>
       <div class="pricing__feature-list">

@@ -26,9 +26,9 @@ class PhotosView extends Spine.Controller
     'click .item'                  : 'click'
     'sortupdate .items'            : 'sortupdate'
     
-    'dragstart .item'              : 'dragstart'
-    'dragstart'                    : 'stopInfo'
-    'dragover .item'               : 'dragover'
+#    'dragstart .item'              : 'dragstart'
+#    'dragstart'                    : 'stopInfo'
+#    'dragover .item'               : 'dragover'
     
     'mousemove .item'              : 'infoUp'
     'mouseleave  .item'            : 'infoBye'
@@ -109,7 +109,7 @@ class PhotosView extends Spine.Controller
     return unless @isActive() or force
     # if view is dirty but inactive we'll use the buffer next time
     @list.render(items || @updateBuffer(), mode)
-    @list.sortable('photo') if Product.record
+    @list.sortable() if Product.record
     delete @buffer
     @el
   
@@ -124,6 +124,21 @@ class PhotosView extends Spine.Controller
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
     @refresh()
     @parent.scrollTo(@el.data('current').models.record)
+    
+  update: (items) ->
+    return unless Product.record
+    @list.children().each (index) ->
+      item = $(@).item()
+      ap = ProductsPhoto.fromPhotoId(item.id)
+      console.log ap
+      return unless ap
+      ap.order = index
+      ap.save(ajax:false)
+      t = c.update item
+      
+    for item in items
+      tmplItem = @list.update item
+      console.log tmplItem
     
   activateRecord: (ids) ->
     unless (ids)
@@ -248,22 +263,22 @@ class PhotosView extends Spine.Controller
     Photo.destroyJoin photos, product, callback
     product.updateSelection()
     
-  sortupdate: ->
-    @log 'sortupdate'
-    
-    cb = ->
-    
+  sortupdate: (e) ->
+#    $(e).preventDefault()
+    f = @list.children().length-1
     @list.children().each (index) ->
+      idx = f-index
       item = $(@).item()
       if item and Product.record
-        ap = ProductsPhoto.filter(item.id, func: 'selectPhoto')[0]
-        if ap and parseInt(ap.order) isnt index
-          ap.order = index
+        ap = ProductsPhoto.fromPhotoId(item.id)
+        if ap and parseInt(ap.order) isnt idx
+          ap.order = idx
           ap.save(ajax:false)
-        # set a *invalid flag*, so when we return to products cover view, thumbnails can get regenerated
+        # set a *invalid flag*, so when we return to products cover view, thumbnails will be regenerated
         Product.record.invalid = true
         
-    Product.record.save(done: cb)
+    # saving Product to automatically save foreign model to the database
+    Product.record.save()
     
   backToProductView: (ga) ->
     return unless @isActive()

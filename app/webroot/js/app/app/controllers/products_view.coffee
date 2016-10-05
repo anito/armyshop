@@ -140,6 +140,7 @@ class ProductsView extends Spine.Controller
     products = CategoriesProduct.products(Category.record.id)
     for alb in products
       if alb.invalid
+        # reset flag for regenerating photo thumbnails in product
         alb.invalid = false
         alb.save(ajax:false)
         
@@ -189,7 +190,7 @@ class ProductsView extends Spine.Controller
       title   : @productName()
       subtitle: ''
       notes   : ''
-      link    : 'https://www.hood.de/'
+      link    : ''
       author  : User.first().name
       invalid : false
       user_id : user_id
@@ -197,7 +198,7 @@ class ProductsView extends Spine.Controller
     else
       User.ping()
   
-  productName: (proposal = 'Product ' + (->
+  productName: (proposal = 'New Product ' + (->
     s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     index = if (i = Product.count()+1) < s.length then i else (i % s.length)
     s.split('')[index])()) ->
