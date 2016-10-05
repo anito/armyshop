@@ -330,6 +330,7 @@ class Main extends Spine.Controller
       autoUpload        : true
       singleFileUploads : false
       sequentialUploads : true
+      pasteZone         : false
       maxFileSize       : 10000000 #5MB
       maxNumberOfFiles  : 20
       acceptFileTypes   : /(\.|\/)(gif|jpe?g|png)$/i
@@ -443,7 +444,6 @@ class Main extends Spine.Controller
       when 86 #CTRL V
         if isFormfield
           if e.metaKey or e.ctrlKey
-            alert 'paste'
             e.stopPropagation()
           
   delegateFocus: (e, controller = @showView) ->
