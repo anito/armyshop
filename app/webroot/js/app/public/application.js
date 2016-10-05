@@ -35978,7 +35978,7 @@ Released under the MIT License
       var settings;
       Settings.fetch();
       if (!(settings = Settings.findByAttribute('user_id', id))) {
-        this.notify('You seem to be using this App for the first time.<br>The Auto Upload will be set to ' + this.autoupload + '.<br>To change this setting<br>go to Photo->Auto Upload');
+        this.notify('<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>');
         return Settings.create({
           user_id: id,
           autoupload: this.autoupload,
