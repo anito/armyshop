@@ -72,12 +72,6 @@
         setTimeout(function(){
           App.previewView.togglePreview();
         }, 3000)
-        setTimeout(function(){
-          App.previewView.togglePreview();
-        }, 3200)
-        setTimeout(function(){
-          App.previewView.togglePreview();
-        }, 4200)
       };
       
       Spine = require('spine');
