@@ -206,7 +206,7 @@ class SidebarList extends Spine.Controller
     
     switch item.constructor.className
       when 'Category'
-        @expand(item, !(Category.record?.id is item.id) or !@isOpen(el))
+        @expand(item, (@isOpen(el)) or (!(Category.record?.id is item.id) or !@isOpen(el)))
         @navigate '/category', item.id
 #        @closeAllOtherSublists item
       when 'Product'
@@ -214,24 +214,26 @@ class SidebarList extends Spine.Controller
         @navigate '/category', category.id, item.id
     
   clickExpander: (e) ->
-    categoryEl = $(e.target).closest('li.gal')
-    isOpen = categoryEl.hasClass('open')
-    unless isOpen
-      categoryEl.addClass('manual')
+    el = $(e.target).closest('li.gal')
+    
+    unless @isOpen(el)
+      el.addClass('manual')
     else
-      categoryEl.removeClass('manual')
+      el.removeClass('manual')
       
-    item = categoryEl.item()
+    item = el.item()
     if item
-      @expand(item, !isOpen, e)
+      @expand(item, !@isOpen(el))
     
     e.stopPropagation()
     e.preventDefault()
     
   expand: (item, open) ->
-    categoryEl = @categoryElFromItem(item)
-    expander = $('.expander', categoryEl)
+    el = @categoryElFromItem(item)
+    expander = $('.expander', el)
     
+    el.toggleClass('open', open)
+    return
     if open
       @openSublist(categoryEl)
     else
