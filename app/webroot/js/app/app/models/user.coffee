@@ -21,7 +21,7 @@ class User extends Spine.Model
     if user = @first()
       user.confirm()
     else
-      alert 'not confirmed'
+      alert 'Ungültige Authorisierung.'
       @redirect 'users/login'
     
   @logout: ->

@@ -40594,19 +40594,6 @@ Released under the MIT License
       return Model.Uri.Ajax.cache = true;
     };
 
-    ProductsList.prototype.processProduct = function(product) {
-      var data;
-      data = product.photos(4);
-      return Photo.uri({
-        width: 50,
-        height: 50
-      }, (function(_this) {
-        return function(xhr, rec) {
-          return _this.callback(xhr, product);
-        };
-      })(this), data);
-    };
-
     ProductsList.prototype.processProductDeferred = function(product) {
       var all, data, deferred, sorted;
       this.log('processProductDeferred');
@@ -47969,7 +47956,6 @@ Released under the MIT License
     };
 
     Login.prototype.template = function(el, item) {
-      this.log(item);
       return el.tmpl(item);
     };
 
@@ -48025,7 +48011,7 @@ Released under the MIT License
       this.render(this.flashEl, this.flashTemplate, json);
       delayedFunc = function() {
         this.log(json.User);
-        return User.redirect(json.User.redirect);
+        return User.redirect(json.User.redirect || '/admin');
       };
       this.contentEl.addClass('fade500');
       return this.delay(delayedFunc, 500);
@@ -49581,7 +49567,7 @@ Released under the MIT License
           ga = new CategoriesProduct({
             category_id: target.id,
             product_id: id,
-            ignored: false,
+            ignored: true,
             order: parseInt((ref = CategoriesProduct.products(target.id).last()) != null ? ref.order : void 0) + 1 || 0
           });
           valid = ga.save({
@@ -50874,7 +50860,7 @@ Released under the MIT License
       if (user = this.first()) {
         return user.confirm();
       } else {
-        alert('not confirmed');
+        alert('Ungültige Authorisierung.');
         return this.redirect('users/login');
       }
     };

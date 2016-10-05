@@ -22,7 +22,6 @@ class Login extends Spine.Controller
     'click #cancel'     : 'cancel'
 
   template: (el, item) ->
-    @log item
     el.tmpl(item)
     
   constructor: (form) ->
@@ -60,7 +59,7 @@ class Login extends Spine.Controller
     @render(@flashEl, @flashTemplate, json)
     delayedFunc = ->
       @log json.User
-      User.redirect json.User.redirect
+      User.redirect json.User.redirect or '/admin'
     @contentEl.addClass('fade500')
     @delay delayedFunc, 500
 
