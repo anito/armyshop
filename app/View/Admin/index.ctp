@@ -765,9 +765,6 @@
     <span class="">
     <div class="btn btn-sm">Produkte<b><div>${modelGas.count()} von ${Product.count()}</div></b></div>
     </span> 
-    <span class="">
-    <div class="btn btn-sm">Fotos<b><div>${modelGas.photos().length} von ${Photo.count()}</div></b></div>
-    </span>
   </div>
 </script>
 
@@ -779,9 +776,6 @@
     <span class="">
     <div class="btn btn-sm">Produkte<b><div>${model.details().aCount}{{if model.record}} von ${modelProduct.count()}{{/if}}</div></b></div>
     </span> 
-    <span class="">
-    <div class="btn btn-sm">Fotos<b><div>${model.details().iCount} von ${modelProduct.count()}</div></b></div>
-    </span>
   </div>
 </script>
 
@@ -789,9 +783,6 @@
   <div class="right">
     <span class="">
     <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
-    </span> 
-    <span class="">
-    <div class="btn btn-sm">Fotos<b><div>${model.details().iCount}{{if modelProduct.record}} von ${modelPhoto.count()}{{/if}}</div></b></div>
     </span> 
   </div>
 </script>
