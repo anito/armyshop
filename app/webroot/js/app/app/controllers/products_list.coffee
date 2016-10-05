@@ -158,15 +158,6 @@ class ProductsList extends Spine.Controller
     @widows = []
     Model.Uri.Ajax.cache = true
   
-  processProduct: (product) ->
-    data = product.photos(4)
-  
-    Photo.uri
-      width: 50
-      height: 50,
-      (xhr, rec) => @callback(xhr, product)
-      data
-  
   processProductDeferred: (product) ->
     @log 'processProductDeferred'
     deferred = $.Deferred()
