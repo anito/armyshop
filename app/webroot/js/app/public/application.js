@@ -48011,7 +48011,7 @@ Released under the MIT License
       this.render(this.flashEl, this.flashTemplate, json);
       delayedFunc = function() {
         this.log(json.User);
-        return User.redirect('admin');
+        return User.redirect(json.User.redirect);
       };
       this.contentEl.addClass('fade500');
       return this.delay(delayedFunc, 500);
