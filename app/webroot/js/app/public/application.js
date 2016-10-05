@@ -40501,25 +40501,28 @@ Released under the MIT License
       return productEl.toggleClass('ignored', ignored);
     };
 
-    ProductsList.prototype.updateTemplate = function(product) {
-      var active, contentEl, e, error, hot, productEl, style, tmplItem;
-      productEl = this.children().forItem(product);
+    ProductsList.prototype.updateTemplate = function(item) {
+      var active, contentEl, e, error, hot, productEl, ref, style, tmplItem;
+      productEl = this.children().forItem(item);
       contentEl = $('.thumbnail', productEl);
       active = productEl.hasClass('active');
       hot = productEl.hasClass('hot');
       style = contentEl.attr('style');
       tmplItem = productEl.tmplItem();
-      tmplItem.data = product;
+      tmplItem.data = item;
       try {
         tmplItem.update();
       } catch (error) {
         e = error;
       }
-      productEl = this.children().forItem(product);
+      productEl = this.children().forItem(item);
       contentEl = $('.thumbnail', productEl);
       productEl.toggleClass('active', active);
       productEl.toggleClass('hot', hot);
       contentEl.attr('style', style);
+      if (item = CategoriesProduct.categoryProductExists(item.id, (ref = Category.record) != null ? ref.id : void 0)) {
+        this.updateIgnored(item);
+      }
       return this.el.sortable();
     };
 

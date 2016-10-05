@@ -102,24 +102,25 @@ class ProductsList extends Spine.Controller
     productEl = @children().forItem(Product.find(item.product_id))
     productEl.toggleClass('ignored', ignored)
     
-  updateTemplate: (product) ->
-    productEl = @children().forItem(product)
+  updateTemplate: (item) ->
+    productEl = @children().forItem(item)
     contentEl = $('.thumbnail', productEl)
     active = productEl.hasClass('active')
     hot = productEl.hasClass('hot')
     
     style = contentEl.attr('style')
     tmplItem = productEl.tmplItem()
-    tmplItem.data = product
+    tmplItem.data = item
     try
       tmplItem.update()
     catch e
-    productEl = @children().forItem(product)
+    productEl = @children().forItem(item)
     contentEl = $('.thumbnail', productEl)
     productEl.toggleClass('active', active)
     productEl.toggleClass('hot', hot)
     contentEl.attr('style', style)
-      
+    @updateIgnored item if item = CategoriesProduct.categoryProductExists(item.id, Category.record?.id)
+    
     @el.sortable()
   
   exposeSelection: (selection=Category.selectionList(), id=Category.record?.id) ->
