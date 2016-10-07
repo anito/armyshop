@@ -39898,7 +39898,9 @@ Released under the MIT License
     };
 
     PreviewView.prototype.followLink = function(e) {
-      return window.open($(e.target).attr('href'), '_blank');
+      var strWindowFeatures;
+      strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
+      return window.open($(e.target).attr('href'), 'new', strWindowFeatures);
     };
 
     PreviewView.prototype.togglePreview = function() {

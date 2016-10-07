@@ -113,7 +113,8 @@ class PreviewView extends Spine.Controller
     @exapand(e)
     
   followLink: (e) ->
-    window.open($(e.target).attr('href'), '_blank')
+    strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes"
+    window.open($(e.target).attr('href'), 'new', strWindowFeatures)
     
   togglePreview: ->
     @expander.click()
