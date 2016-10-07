@@ -928,9 +928,15 @@ ul {
 }
 #content .products .item .thumbnail {
   background-repeat: no-repeat;
-  -moz-background-position: 13px 13px, 77px 13px, 13px 77px, 77px 77px;
-	 -webkit-background-position: 13px 13px, 77px 13px, 13px 77px, 77px 77px;
-	 background-position: 13px 13px, 77px 13px, 13px 77px, 77px 77px;
+  -moz-background-position: 13px 10px, 74px 10px, 13px 71px, 74px 71px;
+	 -webkit-background-position: 13px 10px, 74px 10px, 13px 71px, 74px 71px;
+	 background-position: 13px 10px, 74px 10px, 13px 71px, 74px 71px;
+}
+#content .products .item .thumbnail.load {
+  background-repeat: no-repeat;
+  -moz-background-position: 25px 29px, 77px 29px, 25px 81px, 77px 81px;
+	 -webkit-background-position: 25px 29px, 77px 29px, 25px 81px, 77px 81px;
+	 background-position: 25px 29px, 77px 29px, 25px 81px, 77px 81px;
 }
 #content .content .items:not(.nopad) {
   padding: 37px 10px 0;
@@ -1635,16 +1641,16 @@ section.addAction {
   background-color: #212122;
   border-color: #223528;
 }
-.preview {
-  background: url(/img/background.png) $medium-blue;
+body.cat li.parent.preview {
+  background: url(/img/home_creative.jpg) -700px -300px;
 }
-.defense li.parent.preview {
+body.cat.defense li.parent.preview {
   background: url(/img/defense_creative.jpg) -497px -265px;
 }
-.goodies li.parent.preview {
-  background: url(/img/goodies_creative.jpg)
+body.cat.goodies li.parent.preview {
+  background: url(/img/goodies_creative.jpg) -700px -100px;
 }
-.outdoor li.parent.preview {
+body.cat.outdoor li.parent.preview {
   background: url("/img/outdoor_creative.jpg") -497px -365px;
 }
 @-webkit-keyframes pulsate {

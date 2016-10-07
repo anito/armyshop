@@ -31,6 +31,7 @@ class ProductsList extends Spine.Controller
     Product.bind('update', @proxy @updateTemplate)
     Product.bind("ajaxError", Product.errorHandler)
     CategoriesProduct.bind('change', @proxy @changeRelated)
+    Product.bind('change:collection', @proxy @renderBackgrounds)
     Category.bind('change:selection', @proxy @exposeSelection)
     
   changedProducts: (category) ->
@@ -148,8 +149,9 @@ class ProductsList extends Spine.Controller
     products = [products] unless Product.isArray(products)
     @removeWidows @widows
     for product in products
-      $.when(@processProductDeferred(product)).done (xhr, rec) =>
-        @callback xhr, rec
+      if product
+        $.when(@processProductDeferred(product)).done (xhr, rec) =>
+          @callback xhr, rec
         
   removeWidows: (widows=[]) ->
     Model.Uri.Ajax.cache = false
@@ -167,8 +169,8 @@ class ProductsList extends Spine.Controller
     data = sorted.slice(0, 4)
     
     Photo.uri
-      width: 50
-      height: 50,
+      width: 60
+      height: 60,
       (xhr, rec) -> deferred.resolve(xhr, product)
       data
       
@@ -178,33 +180,52 @@ class ProductsList extends Spine.Controller
     el = $('#'+product.id, @el)
     thumb = $('.thumbnail', el)
     
-    res = for jsn in json
-      ret = for key, val of jsn
-        val.src
-      ret[0]
-    
-    
+    sources = []
     css = []
-    for url in res
-      css.push 'url(' + url + ')'
-      @snap url, thumb, css
+    cssdefault = []
+    for jsn in json
+      for key, val of jsn
+        sources.push src if src = val.src
+        css.push 'url('+src+')'
+        cssdefault.push 'url(/img/ajax-loader-product-thumbs.gif)'
+    
+    if sources.length
+      thumb.addClass('load')
+      thumb.css('backgroundImage', c for c in cssdefault)
+      @snap thumb, src, css for src in sources
+    else
+      thumb.css('backgroundImage', ['url(/img/drag_info.png)'])
       
-    thumb.css('backgroundImage', 'url(/img/drag_info.png)') unless css.length
-      
-  snap: (src, el, css) ->
+  delay: -> setTimeout (me) ->
+      me.thumb.css('backgroundImage', me.sources)
+    , 6000, @
+    
+  snap: (el, src, css) ->
     img = @createImage()
-    img.element = el
-    img.this = @
+    img.el = el
+    img.me = @
     img.css = css
+    img.src = src
     img.onload = @onLoad
     img.onerror = @onError
-    img.src = src
-      
-  onLoad: ->
-    @element.css('backgroundImage', @css)
     
-  onError: ->
-    @this.snap @src, @element, @css
+  onLoad: ->
+      console.log 'image loaded'
+      @el.removeClass('load')
+      @el.css('backgroundImage', @css)
+    
+  onError: (e) ->
+    console.log 'could not load image, trying again'
+#    @el.removeClass('load')
+    @onload = @me.renderBackgrounds([Product.record])
+    @onerror = this.onerror
+    @src =  @src #could be any existing image
+    @el.css('backgroundImage', @css)
+      
+  onErrorRefresh: ->
+    console.log 'could not load image again, trying once more'
+    @onload = this.onLoad
+    @src =  '/cake.icon.png'
       
   original: (e) ->
     id = $(e.currentTarget).item().id

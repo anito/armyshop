@@ -35739,12 +35739,8 @@ Released under the MIT License
       this.version = "2.0.0";
       this.autoupload = true;
       Spine.DragItem = SpineDragItem.create();
-      this.modal = {
-        exists: false
-      };
-      $(window).bind('hashchange', this.proxy(this.storeHash));
       this.ignoredHashes = ['slideshow', 'overview', 'preview', 'flickr', 'logout'];
-      this.arr = ['outdoor', 'defense', 'goodies'];
+      this.arr = ['false', 'outdoor', 'defense', 'goodies'];
       User.bind('pinger', this.proxy(this.validate));
       Clipboard.fetch();
       Clipboard.destroyAll();
@@ -35853,6 +35849,10 @@ Released under the MIT License
         goSleep: function() {},
         awake: function() {}
       });
+      $(window).bind('hashchange', this.proxy(this.storeHash));
+      this.modal = {
+        exists: false
+      };
       this.appManager = new Spine.Manager(this.mainView, this.loaderView);
       this.contentManager = new Spine.Manager(this.overviewView, this.showView);
       this.hmanager.bind('awake', (function(_this) {
@@ -37191,8 +37191,8 @@ Released under the MIT License
         posy = e.pageY - info_h - y_offset;
       }
       return this.el.css({
-        top: posy - 200 + 'px',
-        left: posx - 400 + 'px'
+        top: posy + 'px',
+        left: posx + 'px'
       });
     };
 
@@ -39776,11 +39776,10 @@ Released under the MIT License
 
     PreviewView.prototype.newAttributes = function() {
       return {
-        title: 'Test Dummy',
+        title: 'Dummy',
         id: '12345',
         price: '123,45',
-        subtitle: 'Test Subtitle Dummy',
-        src: 'dummy.jpg'
+        subtitle: 'Subtitle Dummy'
       };
     };
 
@@ -40412,6 +40411,7 @@ Released under the MIT License
       Product.bind('update', this.proxy(this.updateTemplate));
       Product.bind("ajaxError", Product.errorHandler);
       CategoriesProduct.bind('change', this.proxy(this.changeRelated));
+      Product.bind('change:collection', this.proxy(this.renderBackgrounds));
       Category.bind('change:selection', this.proxy(this.exposeSelection));
     }
 
@@ -40570,11 +40570,15 @@ Released under the MIT License
       results = [];
       for (i = 0, len = products.length; i < len; i++) {
         product = products[i];
-        results.push($.when(this.processProductDeferred(product)).done((function(_this) {
-          return function(xhr, rec) {
-            return _this.callback(xhr, rec);
-          };
-        })(this)));
+        if (product) {
+          results.push($.when(this.processProductDeferred(product)).done((function(_this) {
+            return function(xhr, rec) {
+              return _this.callback(xhr, rec);
+            };
+          })(this)));
+        } else {
+          results.push(void 0);
+        }
       }
       return results;
     };
@@ -40605,8 +40609,8 @@ Released under the MIT License
       sorted = Photo.sortByReverseOrder(all);
       data = sorted.slice(0, 4);
       Photo.uri({
-        width: 50,
-        height: 50
+        width: 60,
+        height: 60
       }, function(xhr, rec) {
         return deferred.resolve(xhr, product);
       }, data);
@@ -40614,55 +40618,80 @@ Released under the MIT License
     };
 
     ProductsList.prototype.callback = function(json, product) {
-      var css, el, i, jsn, key, len, res, ret, thumb, url, val;
+      var c, css, cssdefault, el, i, j, jsn, key, len, len1, results, sources, src, thumb, val;
       el = $('#' + product.id, this.el);
       thumb = $('.thumbnail', el);
-      res = (function() {
-        var i, len, results;
+      sources = [];
+      css = [];
+      cssdefault = [];
+      for (i = 0, len = json.length; i < len; i++) {
+        jsn = json[i];
+        for (key in jsn) {
+          val = jsn[key];
+          if (src = val.src) {
+            sources.push(src);
+          }
+          css.push('url(' + src + ')');
+          cssdefault.push('url(/img/ajax-loader-product-thumbs.gif)');
+        }
+      }
+      if (sources.length) {
+        thumb.addClass('load');
+        thumb.css('backgroundImage', (function() {
+          var j, len1, results;
+          results = [];
+          for (j = 0, len1 = cssdefault.length; j < len1; j++) {
+            c = cssdefault[j];
+            results.push(c);
+          }
+          return results;
+        })());
         results = [];
-        for (i = 0, len = json.length; i < len; i++) {
-          jsn = json[i];
-          ret = (function() {
-            var results1;
-            results1 = [];
-            for (key in jsn) {
-              val = jsn[key];
-              results1.push(val.src);
-            }
-            return results1;
-          })();
-          results.push(ret[0]);
+        for (j = 0, len1 = sources.length; j < len1; j++) {
+          src = sources[j];
+          results.push(this.snap(thumb, src, css));
         }
         return results;
-      })();
-      css = [];
-      for (i = 0, len = res.length; i < len; i++) {
-        url = res[i];
-        css.push('url(' + url + ')');
-        this.snap(url, thumb, css);
-      }
-      if (!css.length) {
-        return thumb.css('backgroundImage', 'url(/img/drag_info.png)');
+      } else {
+        return thumb.css('backgroundImage', ['url(/img/drag_info.png)']);
       }
     };
 
-    ProductsList.prototype.snap = function(src, el, css) {
+    ProductsList.prototype.delay = function() {
+      return setTimeout(function(me) {
+        return me.thumb.css('backgroundImage', me.sources);
+      }, 6000, this);
+    };
+
+    ProductsList.prototype.snap = function(el, src, css) {
       var img;
       img = this.createImage();
-      img.element = el;
-      img["this"] = this;
+      img.el = el;
+      img.me = this;
       img.css = css;
+      img.src = src;
       img.onload = this.onLoad;
-      img.onerror = this.onError;
-      return img.src = src;
+      return img.onerror = this.onError;
     };
 
     ProductsList.prototype.onLoad = function() {
-      return this.element.css('backgroundImage', this.css);
+      console.log('image loaded');
+      this.el.removeClass('load');
+      return this.el.css('backgroundImage', this.css);
     };
 
-    ProductsList.prototype.onError = function() {
-      return this["this"].snap(this.src, this.element, this.css);
+    ProductsList.prototype.onError = function(e) {
+      console.log('could not load image, trying again');
+      this.onload = this.me.renderBackgrounds([Product.record]);
+      this.onerror = this.onerror;
+      this.src = this.src;
+      return this.el.css('backgroundImage', this.css);
+    };
+
+    ProductsList.prototype.onErrorRefresh = function() {
+      console.log('could not load image again, trying once more');
+      this.onload = this.onLoad;
+      return this.src = '/cake.icon.png';
     };
 
     ProductsList.prototype.original = function(e) {

@@ -89,12 +89,8 @@ class Main extends Spine.Controller
 #    @IMAGE_SINGLE_MOVE = @createImage('/img/cursor_images_1.png')
 #    @IMAGE_DOUBLE_MOVE = @createImage('/img/cursor_images_3.png')
     
-    @modal = exists: false
-    
-    $(window).bind('hashchange', @proxy @storeHash)
-    
     @ignoredHashes = ['slideshow', 'overview', 'preview', 'flickr', 'logout']
-    @arr = ['outdoor', 'defense', 'goodies']
+    @arr = ['false', 'outdoor', 'defense', 'goodies']
     
     User.bind('pinger', @proxy @validate)
     
@@ -172,6 +168,9 @@ class Main extends Spine.Controller
       awake: ->
 #        controller.el.show() if controller = @manager.active()
     
+    $(window).bind('hashchange', @proxy @storeHash)
+    @modal = exists: false
+    
     @appManager = new Spine.Manager(@mainView, @loaderView)
     @contentManager = new Spine.Manager(@overviewView, @showView)
     
@@ -247,7 +246,7 @@ class Main extends Spine.Controller
   changeBackground: (cat) ->
     
     arr = @arr
-    res = @getData cat, arr
+    res = @getData(cat, arr)
     
     for c in arr
       @el.removeClass(c)

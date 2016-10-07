@@ -1168,7 +1168,7 @@
 </script>
 
 <script id="norbuImageListTemplate" type="text/x-tmpl">
-  <div id="${id}" class="pricing__image"><img class="image" src="/img/dcad5c81297acbdfe9d5bcbba7df7d4b5547bd7c.jpg"/></div>
+  <div id="${id}" class="pricing__image"><img class="image" src="/img/semperfi.png"/></div>
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">

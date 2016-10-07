@@ -43,11 +43,10 @@ class PreviewView extends Spine.Controller
     @render()
     
   newAttributes: ->
-    title: 'Test Dummy'
+    title: 'Dummy'
     id: '12345'
     price: '123,45'
-    subtitle: 'Test Subtitle Dummy'
-    src:  'dummy.jpg'
+    subtitle: 'Subtitle Dummy'
     
   createDummy: ->
     @dummy = new Product @newAttributes()
