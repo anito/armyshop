@@ -2041,7 +2041,6 @@ li.over:not(.view) {
 }
 .over.nodrop,
 li.over.nodrop:not(.view) {
-  background-color: rgba(200,0,0,0.17);
   border: 4px solid #ff584d !important;
 }
 .over li {
