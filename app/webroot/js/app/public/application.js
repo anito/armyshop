@@ -39898,7 +39898,8 @@ Released under the MIT License
     };
 
     PreviewView.prototype.followLink = function(e) {
-      return location.href($(e.target).attr('href'));
+      var location;
+      return location = $(e.target).attr('href');
     };
 
     PreviewView.prototype.togglePreview = function() {
