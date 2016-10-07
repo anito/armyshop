@@ -1155,14 +1155,14 @@
       <h3 class="pricing__title">${product.title}</h3>
       <p class="pricing__sentence">${product.subtitle}</p>
       <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
-        <a href="${product.link}" target="blank" class="" aria-disabled="false">
+        <a href="#" class="" aria-disabled="false" onclick="return false;">
           {{tmpl($item.data.photo) "#norbuImageListTemplate" }}
         </a>
       </div>
       <div class="pricing__feature-list">
         <ul class="">{{tmpl($item.data.descriptions) "#norbuFeatureListTemplate" }}</ul>
       </div>
-      <a href="${product.link}" target="blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
+      <a href="${product.link}" target="_blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
     </div>
   </div>
 </script>
