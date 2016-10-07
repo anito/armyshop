@@ -39622,6 +39622,9 @@ Released under the MIT License
         photos = [photos];
       }
       Product.updateSelection(photos.toID());
+      if (!Product.record) {
+        this.list.wipe();
+      }
       this.render(photos, 'append');
       return this.list.el.sortable('destroy').sortable('photos');
     };
@@ -40683,7 +40686,7 @@ Released under the MIT License
     ProductsList.prototype.onError = function(e) {
       console.log('could not load image, trying again');
       this.onload = this.me.renderBackgrounds([Product.record]);
-      this.onerror = this.onerror;
+      this.onerror = null;
       this.src = this.src;
       return this.el.css('backgroundImage', this.css);
     };

@@ -244,6 +244,7 @@ class PhotosView extends Spine.Controller
     unless Photo.isArray photos
       photos = [photos]
     Product.updateSelection(photos.toID())
+    @list.wipe() unless Product.record
     @render(photos, 'append')
     @list.el.sortable('destroy').sortable('photos')
       

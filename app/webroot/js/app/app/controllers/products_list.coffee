@@ -218,7 +218,7 @@ class ProductsList extends Spine.Controller
     console.log 'could not load image, trying again'
 #    @el.removeClass('load')
     @onload = @me.renderBackgrounds([Product.record])
-    @onerror = this.onerror
+    @onerror = null
     @src =  @src #could be any existing image
     @el.css('backgroundImage', @css)
       
