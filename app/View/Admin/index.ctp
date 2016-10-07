@@ -392,7 +392,7 @@
 
 <script id="sidebarContentTemplate" type="text/x-jquery-tmpl">
   <div class="item-content">
-    <span class="name">{{if screenname}}${$().name(screenname, 20)}{{/if}}</span>
+    <span class="name">{{if screenname}}${$().name(screenname, 20)}{{else}}${$().name(name, 20)}{{/if}}</span>
     <span class="gal cta alb-trigger-edit">{{tmpl($item.data.details()) "#categoryDetailsTemplate"}}</span>
   </div>
 </script>
@@ -563,6 +563,7 @@
     <div class="titles">
       <div class="title">{{if title}}${$().name(title, 50)}{{/if}}</div>
       <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 113)}}{{/if}}</div>
+      <div class="price {{if price}}{{else}}warning-price{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</div>
     </div>
   </li>
 </script>
@@ -642,10 +643,10 @@
 <script id="headerProductTemplate" type="text/x-jquery-tmpl">
   <section class="top viewheader fadeelement">
     <div class="left">  
-      <div class="title">
+      <div class="header-title">
         {{if model.record}}
         <h3>
-        <span class="label label-{{if category.screenname}}default{{else}}warning{{/if}}">{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}...{{/if}}</span>
+        <span class="label label-default">{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}</span>
         </h3>
         <h3>
         {{if modelProduct.record}}
@@ -1155,7 +1156,7 @@
       <h3 class="pricing__title">${product.title}</h3>
       <p class="pricing__sentence">${product.subtitle}</p>
       <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
-        <a href="#" class="" aria-disabled="false" onclick="return false;">
+        <a href="${product.link}" target="_blank" class="" aria-disabled="false">
           {{tmpl($item.data.photo) "#norbuImageListTemplate" }}
         </a>
       </div>

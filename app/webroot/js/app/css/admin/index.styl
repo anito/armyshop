@@ -432,7 +432,7 @@ label input[type="text"] {
   font-size: 0.7em;
   line-height: 35px;
 }
-.view .viewheader .title {
+.view .viewheader .header-title {
   line-height: 2em;
 }
 button:disabled {
@@ -847,29 +847,47 @@ ul {
 #content .items .item .titles div:not(.rule) {
   position: absolute;
   margin-right: 17px;
-  /* margin-left: 147px; */
-  overflow: scroll;
 }
 #content .items .item .titles {
-  padding-left: 9px;
   width: 62%;
   color: #fff;
   text-shadow: 0 1px 0px #000;
   cursor: auto;
-  /* background: rgba(10,10,10,0.2); */
-  position: absolute;
   top: 0;
-  left: 38%;
+  overflow: auto;
+  z-index: 0;
+  padding-left: 173px;
 }
 .titles .title {
   top: 26px;
   font-size: 1.2em;
   height: 50px;
 }
-.titles .subtitle {
+#content .title::after {
+  content: '______________________________';
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+#content .titles .subtitle {
   top: 82px;
   font-size: 0.9em;
   height: 60px;
+}
+#content .titles .price {
+  bottom: 0;
+  font-size: 1.2rem;
+  height: 35px;
+  right: -17px;
+  min-width: 60px;
+  padding: 5px 8px;
+  background-color: #fff;
+  color: #535354;
+  z-index: 0;
+}
+#content .price.warning-price {
+  color: #fff;
+  background-color: #ff0000;
 }
 .options {
   background: #ffffff;
@@ -1614,6 +1632,7 @@ section.addAction {
   color: #ccc7c7;
   z-index: 1000;
   display: inline-table;
+  display: -moz-inline-box;
   line-height: 1.5em;
   position: relative;
   top: 9px;

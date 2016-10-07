@@ -20,17 +20,12 @@ class PreviewView extends Spine.Controller
     '.content'              : 'contentEl'
 
   events:
-    'click [href]'          : 'followLink'
+    'click a[href]'          : 'followLink'
     'click      .expander'        : 'expand'
     'click      .item-content'    : 'expand'
 
   template:  (item) ->
-    return unless item
-    phs = Product.photos(item.id)
-    ph = Product.photos(item.id)[0]#.reverse()[0]
-    
-
-    $('#norbuPricingTemplate').tmpl item
+    $('#norbuPricingTemplate').tmpl item if item
     
   constructor: ->
     super
@@ -113,8 +108,10 @@ class PreviewView extends Spine.Controller
     @exapand(e)
     
   followLink: (e) ->
-    strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes"
-    window.open($(e.target).attr('href'), 'new', strWindowFeatures)
+    @log 'followLink'
+    @log $(e.target).closest('a').attr('href')
+    strWindowFeatures = "menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no"
+    window.open($(e.target).closest('a').attr('href'), 'new', strWindowFeatures)
     
   togglePreview: ->
     @expander.click()

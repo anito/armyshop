@@ -39750,19 +39750,15 @@ Released under the MIT License
     };
 
     PreviewView.prototype.events = {
-      'click [href]': 'followLink',
+      'click a[href]': 'followLink',
       'click      .expander': 'expand',
       'click      .item-content': 'expand'
     };
 
     PreviewView.prototype.template = function(item) {
-      var ph, phs;
-      if (!item) {
-        return;
+      if (item) {
+        return $('#norbuPricingTemplate').tmpl(item);
       }
-      phs = Product.photos(item.id);
-      ph = Product.photos(item.id)[0];
-      return $('#norbuPricingTemplate').tmpl(item);
     };
 
     function PreviewView() {
@@ -39899,8 +39895,10 @@ Released under the MIT License
 
     PreviewView.prototype.followLink = function(e) {
       var strWindowFeatures;
-      strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
-      return window.open($(e.target).attr('href'), 'new', strWindowFeatures);
+      this.log('followLink');
+      this.log($(e.target).closest('a').attr('href'));
+      strWindowFeatures = "menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no";
+      return window.open($(e.target).closest('a').attr('href'), 'new', strWindowFeatures);
     };
 
     PreviewView.prototype.togglePreview = function() {
