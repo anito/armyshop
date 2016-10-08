@@ -832,7 +832,7 @@
 <script id="photosTemplate" type="text/x-jquery-tmpl">
   <li  id="${id}" data-id="${id}" class="item data fade in pho-trigger-edit" draggable="true">
     {{tmpl "#photosThumbnailTemplate"}}
-    <div class="title center {{if order}}hide{{/if}}" style="color: aliceblue">{{if order}}${order}{{/if}}</div>
+    <div class="center hide" style="color: aliceblue">{{if order}}${order}{{/if}}</div>
   </li>
 </script>
 
@@ -888,7 +888,7 @@
       </ul>
     </span>
   </div>
-  <div class="title center hide">{{if title}}${title.substring(0, 15)}{{else}}{{if src}}${src.substring(0, 15)}{{else}}no title{{/if}}{{/if}}</div>
+  <div class="center">{{if title}}${title.substring(0, 15)}{{else}}{{if src}}${src.substring(0, 15)}{{else}}no title{{/if}}{{/if}}</div>
 </script>
 
 <script id="photoThumbnailSimpleTemplate" type="text/x-jquery-tmpl">
