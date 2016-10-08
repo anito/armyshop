@@ -1410,10 +1410,10 @@ section.info-badges>span {
 }
 section span.link {
   font-size: 1rem;
+  color: #228b22;
 }
 section span.price {
   font-size: 1.1rem;
-  width: 216px;
 }
 .options {
   background: #fff;
