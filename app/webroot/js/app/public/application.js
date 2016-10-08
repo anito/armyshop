@@ -48046,7 +48046,7 @@ Released under the MIT License
       this.render(this.flashEl, this.flashTemplate, json);
       delayedFunc = function() {
         this.log(json.User);
-        return User.redirect(json.User.redirect);
+        return User.redirect('admin' + location.hash);
       };
       this.contentEl.addClass('fade500');
       return this.delay(delayedFunc, 500);
@@ -50918,7 +50918,7 @@ Released under the MIT License
       if (hash == null) {
         hash = '';
       }
-      return location.href = url + hash;
+      return location.href = base_url + url + hash;
     };
 
     User.prototype.init = function(instance) {};

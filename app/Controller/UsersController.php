@@ -47,9 +47,10 @@ class UsersController extends AppController {
               'groupname' => $this->_groupname(),
               'flash' => '<strong style="color:#49AFCD">You\'re successfully logged in as ' . $this->Auth->user('name') . '</strong>',
               'success' => 'true',
-              'redirect' => $this->data['User']['redirect']
+              'redirect' => '/admin'#$this->data['User']['redirect']
               )));
-//          $this->log( $this->Session, LOG_DEBUG);
+          $this->log( $this->Session, LOG_DEBUG);
+          $this->log('redirect after login: '.$this->data['User']['redirect'], LOG_DEBUG);
         } else {
           $this->response->header("WWW-Authenticate: Negotiate");
           $this->set('_serialize', array_merge($this->data, array(

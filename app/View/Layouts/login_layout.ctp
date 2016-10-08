@@ -35,7 +35,7 @@
     echo $this->Html->scriptStart();
     ?>
 
-    var base_url = '<?php echo $this->Html->url('/admin'); ?>';
+    var base_url = '<?php echo $this->Html->url('/'); ?>';
 
     var exports = this;
     $(function(){

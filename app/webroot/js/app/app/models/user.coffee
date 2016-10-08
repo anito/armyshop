@@ -33,7 +33,7 @@ class User extends Spine.Model
   @test: -> alert 'test'
   
   @redirect: (url='', hash='') ->
-    location.href = url + hash
+    location.href = base_url + url + hash
 
   init: (instance) ->
     
