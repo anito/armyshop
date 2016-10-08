@@ -1176,7 +1176,7 @@
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">
-  <li class="pricing__feature">${description}</li>
+  <li class="pricing__feature">{{html description}</li>
 </script>
 
 
