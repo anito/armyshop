@@ -563,7 +563,10 @@
     <div class="titles">
       <div class="title">{{if title}}${$().name(title, 50)}{{/if}}</div>
       <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 113)}}{{/if}}</div>
-      <div class="price {{if price}}{{else}}warning-price{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</div>
+        <section class="info-badges">
+          <span class="link glyphicon glyphicon-link {{if link}}{{else}}warning-badge{{/if}}"></span>
+          <span class="price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</span>
+        </section>
     </div>
   </li>
 </script>
@@ -625,7 +628,7 @@
 <script id="headerCategoryTemplate" type="text/x-jquery-tmpl">
   <section class="top viewheader fadeelement">
     <div class="left">
-      <div class="title">
+      <div class="header-title">
         <h1>Categories Overview</h1>
       </div>
     </div>
@@ -676,7 +679,7 @@
 <script id="headerPhotosTemplate" type="text/x-jquery-tmpl">
   <section class="top viewheader fadeelement">
     <div class="left">  
-      <div class="title">
+      <div class="header-title">
         {{if product}}
         <h3>
         <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">{{if category.name}}${$().name(category.name, 10)}{{else}}...{{/if}}</span>
@@ -701,7 +704,7 @@
 <script id="headerPhotoTemplate" type="text/x-jquery-tmpl">
   <section class="top viewheader fadeelement">
     <div class="left">  
-      <div class="title">
+      <div class="header-title">
         {{if product}}
         <h3>
         <span class="label label-{{if category.name}}default{{else}}warning{{/if}}">{{if category.name}}${$().name(category.name, 10)}{{else}}...{{/if}}</span>
