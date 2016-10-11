@@ -45,7 +45,6 @@ class HomepageView extends Spine.Controller
     items = []
     products = Category.publishedProducts @current.id
     items.push @item(product) for product in products
-    return unless items.length
     
     @list.render(items)
     @callDeferred item.photo, @callback for item in items

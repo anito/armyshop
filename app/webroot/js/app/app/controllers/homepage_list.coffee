@@ -4,7 +4,7 @@ $     = Spine.$
 class HomepageList extends Spine.Controller
   
   template:  (item) ->
-    $('#norbuPricingTemplate').tmpl item if item
+    $('#norbuPricingTemplate').tmpl item
     
   constructor: ->
     super

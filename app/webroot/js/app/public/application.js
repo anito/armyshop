@@ -37120,9 +37120,7 @@ Released under the MIT License
     extend(HomepageList, superClass);
 
     HomepageList.prototype.template = function(item) {
-      if (item) {
-        return $('#norbuPricingTemplate').tmpl(item);
-      }
+      return $('#norbuPricingTemplate').tmpl(item);
     };
 
     function HomepageList() {
@@ -37221,9 +37219,6 @@ Released under the MIT License
       for (i = 0, len = products.length; i < len; i++) {
         product = products[i];
         items.push(this.item(product));
-      }
-      if (!items.length) {
-        return;
       }
       this.list.render(items);
       results = [];
