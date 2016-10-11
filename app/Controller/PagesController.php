@@ -72,20 +72,17 @@ class PagesController extends AppController {
     $this->Product->recursive = 1;
     
     if(!empty($this->Auth->user())) {
-//      $user_id = $this->Auth->user('id');
-      $user = $this->User->find('first', array(
-          'conditions' => array('User.username' => 'angela')
-      ));
+      $user_id = $this->Auth->user('id');
     } else {
       $user = $this->User->find('first', array(
-          'conditions' => array('User.username' => 'angela')
+          'conditions' => array('User.username' => DEFAULT_USER)
       ));
       if(!empty($user['User']['id'])) {
         $user_id = $user['User']['id'];
       }
     }
     if(empty($user_id)) {
-//      $this->response->header("WWW-Authenticate: Negotiate");
+      $this->response->header("WWW-Authenticate: Negotiate");
     }
     $categories = $this->Category->findAllByUserId($user_id);
     $products = $this->Product->findAllByUserId($user_id);
