@@ -85,7 +85,7 @@ class PagesController extends AppController {
       }
     }
     if(empty($user_id)) {
-      $this->response->header("WWW-Authenticate: Negotiate");
+//      $this->response->header("WWW-Authenticate: Negotiate");
     }
     $categories = $this->Category->findAllByUserId($user_id);
     $products = $this->Product->findAllByUserId($user_id);
