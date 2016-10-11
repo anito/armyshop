@@ -72,10 +72,13 @@ class PagesController extends AppController {
     $this->Product->recursive = 1;
     
     if(!empty($this->Auth->user())) {
-      $user_id = $this->Auth->user('id');
+//      $user_id = $this->Auth->user('id');
+      $user = $this->User->find('first', array(
+          'conditions' => array('User.username' => 'angela')
+      ));
     } else {
       $user = $this->User->find('first', array(
-          'conditions' => array('User.username' => DEFAULT_USER)
+          'conditions' => array('User.username' => 'angela')
       ));
       if(!empty($user['User']['id'])) {
         $user_id = $user['User']['id'];
