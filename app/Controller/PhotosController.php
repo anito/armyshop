@@ -5,7 +5,8 @@ App::uses('AppController', 'Controller');
 class PhotosController extends AppController {
 
   public $name = 'Photos';
-
+  public $uses = array('User', 'Photo');
+  
   public function beforeFilter() {
     $this->Auth->allowedActions = array('uri', 'dev');
     parent::beforeFilter();
@@ -139,31 +140,34 @@ class PhotosController extends AppController {
 
   public function uri($width = 550, $height = 550, $square = 2) {
     $json = array();
-    if ($this->Auth->user('id')) {
-      $user_id = $uid = $this->Auth->user('id');
-      
-      if (!empty($this->data)) {
-        foreach ($this->data as $data) {
-          $id = $data['id'];
-          $path = PHOTOS . DS . $uid . DS . $id . DS . 'lg' . DS . '*.*';
-          $files = glob($path);
-          if (!empty($files[0])) {
-            $fn = basename($files[0]);
-            $options = compact(array('uid', 'id', 'fn', 'width', 'height', 'square'));
-            if($square == 4)
-              $src = p($options);
-            else
-              $src = __p($options);
+    if(!empty($this->Auth->user())) {
+      $user_id = $this->Auth->user('id');
+    } else {
+      $user = $this->User->find('first', array(
+          'conditions' => array('User.username' => DEFAULT_USER)
+      ));
+      $user_id = $user['User']['id'];
+    }
+    $uid = $user_id;
+    if (!empty($this->data)) {
+      foreach ($this->data as $data) {
+        $id = $data['id'];
+        $path = PHOTOS . DS . $uid . DS . $id . DS . 'lg' . DS . '*.*';
+        $files = glob($path);
+        if (!empty($files[0])) {
+          $fn = basename($files[0]);
+          $options = compact(array('uid', 'id', 'fn', 'width', 'height', 'square'));
+          if($square == 4)
+            $src = p($options);
+          else
+            $src = __p($options);
 
-            $return = array($id => array('src' => $src));
-            $json[] = $return;
-          }
+          $return = array($id => array('src' => $src));
+          $json[] = $return;
         }
       }
-    } else {
-      $json = array('flash' => '<strong style="color:red">No valid user</strong>');
-      $this->response->header("WWW-Authenticate: Negotiate");
     }
+      
     $this->set('_serialize', $json);
     $this->render(SIMPLE_JSON);
   }

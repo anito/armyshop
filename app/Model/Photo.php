@@ -8,7 +8,19 @@ class Photo extends AppModel {
   public $useDbConfig = 'default';
   
   public $hasMany = array(
-      'ProductsPhoto' => array('dependent' => true)
+      'ProductsPhoto' => array(
+        'dependent' => true,
+        'foreignKey' => 'product_id',
+        'dependent' => true,
+        'conditions' => '',
+        'fields' => '',
+        'order' => '',
+        'limit' => '',
+        'offset' => '',
+        'exclusive' => '',
+        'finderQuery' => '',
+        'counterQuery' => ''
+    )
   );
 }
 

@@ -132,6 +132,9 @@ if (!defined('MYSQL_CMD_PATH')) {
   }
   define('MYSQL_CMD_PATH', $path);
 }
+if (!defined('DEFAULT_USER')) {
+  define('DEFAULT_USER', 'angela');
+}
 if (!defined('TOPLEVEL')) {
   $a = explode('.', DIR_HOST);
   $last = count($a)-1;

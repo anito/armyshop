@@ -26,6 +26,6 @@ class Description extends Spine.Model
     json
   
   select: (id) ->
-    return true if @product_id is id and @user_id is User.first().id
+    return true if @product_id is id #and @user_id is User.first().id
   
 module?.exports = Model.Description = Description

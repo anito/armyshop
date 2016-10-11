@@ -10,10 +10,6 @@ class Description extends AppModel {
 
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
 
-  public $hasMany_ = array(
-      'ProductsDescription' => array('dependent' => true),
-  );
-  
 /**
  * belongsTo associations
  *

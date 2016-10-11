@@ -9,7 +9,7 @@ UriHelper =
 
     include =
     
-      callDeferred: (items, cb) ->
+      callDeferred: (items=[], cb) ->
         items = [items] unless Array.isArray(items)
           
         $.when(@uriDeferred(items)).done (xhr, rec) =>

@@ -46,7 +46,6 @@ class ModalSimpleView extends Spine.Controller
       
   show: ->
     @log 'show'
-    @log @el
     @el.modal('show')
     
   close: (e) ->

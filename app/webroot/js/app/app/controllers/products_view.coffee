@@ -72,8 +72,6 @@ class ProductsView extends Spine.Controller
     CategoriesProduct.bind('destroy', @proxy @destroyCategoriesProduct)
     CategoriesProduct.bind('ignored', @proxy @ignoreProduct)
     
-#    Category.bind('change:collection', @proxy @collectionChanged)
-    
     Product.bind('create', @proxy @create)
     Product.bind('refresh:one', @proxy @refreshOne)
     Product.bind('ajaxError', Product.errorHandler)
@@ -81,7 +79,6 @@ class ProductsView extends Spine.Controller
     Product.bind('destroy', @proxy @destroy)
     Product.bind('create:join', @proxy @createJoin)
     Product.bind('destroy:join', @proxy @destroyJoin)
-#    Category.bind('change:selection', @proxy @activateRecord)
     Product.bind('change:collection', @proxy @renderBackgrounds)
     
 #    CategoriesProduct.bind('ajaxError', Product.errorHandler)

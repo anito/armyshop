@@ -72,10 +72,8 @@ class Product extends AppModel {
  * @var array
  */
   public $hasMany = array(
-    'ProductsPhoto' => array('dependent' => true),
-    'CategoriesProduct' => array('dependent' => true),
-    'Descriptions' => array(
-      'className' => 'Description',
+    'ProductsPhoto' => array(
+      'dependent' => true,
 			'foreignKey' => 'product_id',
 			'dependent' => true,
 			'conditions' => '',
@@ -86,15 +84,11 @@ class Product extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-        
-    )
-  );
-  
-	public $hasMany_ = array(
-		'Description' => array(
-			'className' => 'Description',
+    ),
+    'CategoriesProduct' => array(
+      'dependent' => true,
 			'foreignKey' => 'product_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -103,7 +97,8 @@ class Product extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-		)
+    ),
+    'Description' => array('dependent' => true)
 	);
 
 /**

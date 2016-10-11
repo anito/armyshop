@@ -3,6 +3,7 @@ $     = Spine.$
 Category  = require('models/category')
 Product  = require('models/product')
 Photo  = require('models/photo')
+Description  = require('models/description')
 
 class RefreshView extends Spine.Controller
 
@@ -10,7 +11,7 @@ class RefreshView extends Spine.Controller
     'button'              : 'logoutEl'
 
   events:
-    'click .opt-Refresh'        : 'refresh'
+    'click .opt-ref'        : 'refresh'
     
     
   template:  (icon = 'repeat') ->
@@ -22,17 +23,14 @@ class RefreshView extends Spine.Controller
     
   refresh: ->
     @render 'cloud-download'
-    Category.trigger('refresh:one')
-    Product.trigger('refresh:one')
-    Photo.trigger('refresh:one')
-    Description.trigger('refresh:one')
+    Spine.trigger('refresh:one')
     @fetchAll()
     
   fetchAll: ->
+    Description.fetch(null, clear:true)
     Photo.fetch(null, clear:true)
     Product.fetch(null, clear:true)
     Category.fetch(null, clear:true)
-    Description.fetch(null, clear:true)
     
   render: (icon) ->
     @html @template icon

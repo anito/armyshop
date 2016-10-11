@@ -35,7 +35,7 @@ class PagesController extends AppController {
  *
  * @var array
  */
-	public $uses = array();
+  public $uses = array('CategoriesProduct', 'ProductsPhoto', 'Category', 'Product', 'Photo', 'Description', 'User');
 
   function beforeFilter() {
     $this->autoRender = true;
@@ -68,8 +68,31 @@ class PagesController extends AppController {
 		if (!empty($path[$count - 1])) {
 			$title_for_layout = Inflector::humanize($path[$count - 1]);
 		}
-		$this->set(compact('page', 'subpage', 'title_for_layout'));
+    
+    $this->Product->recursive = 1;
+    
+    if(!empty($this->Auth->user())) {
+      $user_id = $this->Auth->user('id');
+    } else {
+      $user = $this->User->find('first', array(
+          'conditions' => array('User.username' => DEFAULT_USER)
+      ));
+      if(!empty($user['User']['id'])) {
+        $user_id = $user['User']['id'];
+      }
+    }
+    if(empty($user_id)) {
+      $this->response->header("WWW-Authenticate: Negotiate");
+    }
+    $categories = $this->Category->findAllByUserId($user_id);
+    $products = $this->Product->findAllByUserId($user_id);
+    $photos = $this->Photo->findAllByUserId($user_id);
+    $descriptions = $this->Description->findAllByUserId($user_id);
 
+    $this->set(compact('categories', 'products', 'photos', 'descriptions'));
+    
+		$this->set(compact('page', 'subpage', 'title_for_layout'));
+    
 		try {
 			$this->render(implode('/', $path));
 		} catch (MissingViewException $e) {

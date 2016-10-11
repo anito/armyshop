@@ -1,0 +1,3 @@
+.views > .view:not(.active) {
+  display: none !important;
+}

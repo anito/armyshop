@@ -249,7 +249,6 @@ Model.Extender =
         invalid = false
         origAtts = @selectAttributes()
         for key, value of atts
-          console.log key
           unless origAtts[key] is value
             invalid = yes
             @[key] = value

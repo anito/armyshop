@@ -37107,6 +37107,191 @@ Released under the MIT License
   module.exports = FlickrView;
 
 }).call(this);
+}, "controllers/homepage_list": function(exports, require, module) {(function() {
+  var $, HomepageList, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  HomepageList = (function(superClass) {
+    extend(HomepageList, superClass);
+
+    HomepageList.prototype.template = function(item) {
+      if (item) {
+        return $('#norbuPricingTemplate').tmpl(item);
+      }
+    };
+
+    function HomepageList() {
+      HomepageList.__super__.constructor.apply(this, arguments);
+    }
+
+    HomepageList.prototype.render = function(items) {
+      return this.html(this.template(items));
+    };
+
+    return HomepageList;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = HomepageList;
+  }
+
+}).call(this);
+}, "controllers/homepage_view": function(exports, require, module) {(function() {
+  var $, Category, Extender, HomepageList, HomepageView, Spine, UriHelper,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Extender = require('extensions/controller_extender');
+
+  UriHelper = require('extensions/uri_helper');
+
+  HomepageList = require('controllers/homepage_list');
+
+  HomepageView = (function(superClass) {
+    extend(HomepageView, superClass);
+
+    HomepageView.prototype.elements = {
+      '.items': 'items'
+    };
+
+    HomepageView.extend(Extender);
+
+    HomepageView.extend(UriHelper);
+
+    function HomepageView() {
+      this.callback = bind(this.callback, this);
+      HomepageView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.list = new HomepageList({
+        el: this.items,
+        parent: this
+      });
+      Spine.bind('refresh:one', this.proxy(this.refreshOne));
+      Category.bind('refresh', this.proxy(this.render));
+    }
+
+    HomepageView.prototype.active = function(e) {
+      this.current = Category.current(Category.findByAttribute('name', this.categoryName));
+      return this.render();
+    };
+
+    HomepageView.prototype.refreshOne = function() {
+      return Category.one('refresh', this.proxy(this.render));
+    };
+
+    HomepageView.prototype.render = function() {
+      var i, item, items, j, len, len1, product, products, results;
+      this.refreshView.render('repeat');
+      if (!this.current) {
+        return;
+      }
+      items = [];
+      products = Category.publishedProducts(this.current.id);
+      for (i = 0, len = products.length; i < len; i++) {
+        product = products[i];
+        items.push(this.item(product));
+      }
+      if (!items.length) {
+        return;
+      }
+      this.list.render(items);
+      results = [];
+      for (j = 0, len1 = items.length; j < len1; j++) {
+        item = items[j];
+        results.push(this.callDeferred(item.photo != null, this.callback));
+      }
+      return results;
+    };
+
+    HomepageView.prototype.item = function(item) {
+      return {
+        product: item,
+        descriptions: Description.filterSortByOrder(item.id),
+        photo: Product.photos(item.id).first()
+      };
+    };
+
+    HomepageView.prototype.size = function(width, height) {
+      return {
+        width: 300,
+        height: 300
+      };
+    };
+
+    HomepageView.prototype.callback = function(json, items) {
+      var i, jsn, key, len, res, result, results, ret, val;
+      result = (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = json.length; i < len; i++) {
+          jsn = json[i];
+          ret = (function() {
+            var results1;
+            results1 = [];
+            for (key in jsn) {
+              val = jsn[key];
+              results1.push({
+                src: val.src,
+                id: key
+              });
+            }
+            return results1;
+          })();
+          results.push(ret[0]);
+        }
+        return results;
+      })();
+      results = [];
+      for (i = 0, len = result.length; i < len; i++) {
+        res = result[i];
+        results.push(this.snap(res));
+      }
+      return results;
+    };
+
+    HomepageView.prototype.snap = function(res) {
+      var img, imgEl;
+      imgEl = $('#' + res.id + ' img', this.el);
+      img = this.createImage();
+      img.imgEl = imgEl;
+      img["this"] = this;
+      img.res = res;
+      img.onload = this.onLoad;
+      img.onerror = this.onError;
+      return img.src = res.src;
+    };
+
+    HomepageView.prototype.onLoad = function() {
+      this.imgEl.attr('src', this.src);
+      return this.imgEl.addClass('in');
+    };
+
+    HomepageView.prototype.onError = function(e) {
+      return this["this"].snap(this.res);
+    };
+
+    return HomepageView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = HomepageView;
+  }
+
+}).call(this);
 }, "controllers/info": function(exports, require, module) {(function() {
   var $, Info, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -37570,7 +37755,6 @@ Released under the MIT License
 
     ModalSimpleView.prototype.show = function() {
       this.log('show');
-      this.log(this.el);
       return this.el.modal('show');
     };
 
@@ -41346,7 +41530,7 @@ Released under the MIT License
 
 }).call(this);
 }, "controllers/refresh_view": function(exports, require, module) {(function() {
-  var $, Category, Photo, Product, RefreshView, Spine,
+  var $, Category, Description, Photo, Product, RefreshView, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -41360,6 +41544,8 @@ Released under the MIT License
 
   Photo = require('models/photo');
 
+  Description = require('models/description');
+
   RefreshView = (function(superClass) {
     extend(RefreshView, superClass);
 
@@ -41368,7 +41554,7 @@ Released under the MIT License
     };
 
     RefreshView.prototype.events = {
-      'click .opt-Refresh': 'refresh'
+      'click .opt-ref': 'refresh'
     };
 
     RefreshView.prototype.template = function(icon) {
@@ -41387,24 +41573,21 @@ Released under the MIT License
 
     RefreshView.prototype.refresh = function() {
       this.render('cloud-download');
-      Category.trigger('refresh:one');
-      Product.trigger('refresh:one');
-      Photo.trigger('refresh:one');
-      Description.trigger('refresh:one');
+      Spine.trigger('refresh:one');
       return this.fetchAll();
     };
 
     RefreshView.prototype.fetchAll = function() {
+      Description.fetch(null, {
+        clear: true
+      });
       Photo.fetch(null, {
         clear: true
       });
       Product.fetch(null, {
         clear: true
       });
-      Category.fetch(null, {
-        clear: true
-      });
-      return Description.fetch(null, {
+      return Category.fetch(null, {
         clear: true
       });
     };
@@ -46622,7 +46805,6 @@ Released under the MIT License
           origAtts = this.selectAttributes();
           for (key in atts) {
             value = atts[key];
-            console.log(key);
             if (origAtts[key] !== value) {
               invalid = true;
               this[key] = value;
@@ -47441,6 +47623,9 @@ Released under the MIT License
       var include;
       include = {
         callDeferred: function(items, cb) {
+          if (items == null) {
+            items = [];
+          }
           if (!Array.isArray(items)) {
             items = [items];
           }
@@ -47548,6 +47733,468 @@ Released under the MIT License
     }
     return params;
   };
+
+}).call(this);
+}, "home": function(exports, require, module) {(function() {
+  var $, App, HomepageView, ModalSimpleView, RefreshView, Settings, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  require('lib/setup');
+
+  Spine = require('spine');
+
+  $ = Spine.$;
+
+  ModalSimpleView = require("controllers/modal_simple_view");
+
+  HomepageView = require("controllers/homepage_view");
+
+  RefreshView = require('controllers/refresh_view');
+
+  Settings = require("models/settings");
+
+  App = (function(superClass) {
+    extend(App, superClass);
+
+    App.prototype.elements = {
+      '#header': 'header',
+      '#header .nav.items': 'navItems',
+      '#header .nav-item': 'item',
+      '#home': 'homeEl',
+      '#defense': 'defenseEl',
+      '#goodies': 'goodiesEl',
+      '#outdoor': 'outdoorEl',
+      '#nav': 'nav',
+      '#menu-trigger': 'menutrigger',
+      '.logo-1': 'logo1',
+      '.logo-2': 'logo2',
+      '.sidebar': 'sidebar',
+      '#refresh': 'refreshEl'
+    };
+
+    App.prototype.events = {
+      'mouseenter .item-menu': 'background',
+      'mouseenter .opt-sidebar': 'showSidebar',
+      'mouseleave .opt-sidebar': 'hideSidebar',
+      'click .opt-hint': 'showWarning',
+      'click .opt-agreed': 'agreed',
+      'click .opt-close': 'closeSidebar',
+      'click .opt-sidebar': 'toggleSidebar',
+      'click .sidebar .td:first-child': 'toggleSidebar',
+      'click .paypal': 'toggleView',
+      'click .opt-del': 'showDelivery',
+      'click .opt-agb': 'showAgb',
+      'click .opt-imp': 'showImp',
+      'click .opt-pay': 'showPay',
+      'click .opt-reset': 'reset',
+      'click [class^="logo-"], [class*=" logo-"]': 'redirectHome'
+    };
+
+    function App() {
+      var setting;
+      App.__super__.constructor.apply(this, arguments);
+      this.modal = {
+        exists: false
+      };
+      setting = {
+        hidden: false,
+        agreed: false,
+        sidebaropened: false
+      };
+      this.refreshView = new RefreshView({
+        el: this.refreshEl
+      });
+      this.home = new HomepageView({
+        el: this.homeEl,
+        nav: this.navItems,
+        categoryName: 'home',
+        refreshView: this.refreshView
+      });
+      this.defense = new HomepageView({
+        el: this.defenseEl,
+        nav: this.navItems,
+        categoryName: 'defense',
+        refreshView: this.refreshView
+      });
+      this.outdoor = new HomepageView({
+        el: this.outdoorEl,
+        nav: this.navItems,
+        categoryName: 'outdoor',
+        refreshView: this.refreshView
+      });
+      this.goodies = new HomepageView({
+        el: this.goodiesEl,
+        nav: this.navItems,
+        categoryName: 'goodies',
+        refreshView: this.refreshView
+      });
+      this.manager = new Spine.Manager(this.home, this.defense, this.outdoor, this.goodies);
+      this.manager.bind('change', this.proxy(this.viewChanged));
+      this.setData();
+      this.initSettings(setting);
+      this.initSidebar();
+      this.initLogos();
+      this.routes({
+        '/defense/': function(params) {
+          return this.defense.trigger('active');
+        },
+        '/outdoor/': function(params) {
+          return this.outdoor.trigger('active');
+        },
+        '/goodies/': function(params) {
+          return this.goodies.trigger('active');
+        },
+        '/home/': function(params) {
+          return this.home.trigger('active');
+        },
+        '/*glob': function(params) {
+          return this.navigate('/home', '');
+        }
+      });
+    }
+
+    App.prototype.checkWarning = function() {
+      if (!this.isAgreed()) {
+        return this.showWarning();
+      }
+    };
+
+    App.prototype.initSettings = function(setting) {
+      var i, ref, s;
+      Settings.fetch();
+      if (i = (ref = Settings.first()) != null ? ref.id : void 0) {
+        return i;
+      }
+      s = new Settings(setting);
+      s.save();
+      return s.id;
+    };
+
+    App.prototype.initLogos = function() {
+      var flag;
+      flag = Settings.records[0].hidden;
+      this.logo1.toggleClass('hide', !!flag);
+      return this.logo2.toggleClass('hide', !!!flag);
+    };
+
+    App.prototype.initSidebar = function() {
+      var isOpen;
+      isOpen = Settings.records[0].sidebaropened;
+      return this.setSidebar(!isOpen, true);
+    };
+
+    App.prototype.isAgreed = function() {
+      var ref;
+      return (ref = Settings.first()) != null ? ref.agreed : void 0;
+    };
+
+    App.prototype.viewChanged = function(c) {
+      this.changeNavbar(c.categoryName);
+      this.changeBackground(c.categoryName);
+      if (c.categoryName === 'defense') {
+        this.checkWarning();
+      }
+      return this.refreshView.render();
+    };
+
+    App.prototype.background = function(e) {
+      var el, res, s;
+      e.preventDefault();
+      e.stopPropagation();
+      el = $(e.currentTarget);
+      s = el.attr('id');
+      res = this.getData(s, this.arr);
+      return this.changeBackground(res);
+    };
+
+    App.prototype.changeNavbar = function(cat) {
+      $('.nav-item', this.navItems).removeClass('active');
+      return $('.' + cat, this.navItems).addClass('active');
+    };
+
+    App.prototype.changeBackground = function(k) {
+      var c, j, len, ref;
+      ref = this.manager.controllers;
+      for (j = 0, len = ref.length; j < len; j++) {
+        c = ref[j];
+        this.el.removeClass(c.categoryName);
+      }
+      return this.el.addClass(k);
+    };
+
+    App.prototype.removeBackground = function(e) {
+      var arr, c, j, len;
+      e.preventDefault();
+      e.stopPropagation();
+      arr = this.arr;
+      for (j = 0, len = arr.length; j < len; j++) {
+        c = arr[j];
+        this.el.removeClass(c);
+      }
+      return this.el.addClass('out');
+    };
+
+    App.prototype.showAgb = function(e) {
+      var dialog;
+      dialog = new ModalSimpleView({
+        options: {
+          small: false,
+          css: 'alert alert-warning',
+          header: 'AGBs',
+          body: function() {
+            return require("views/agb")({
+              copyright: 'Axel Nitzschner',
+              spine_version: Spine.version,
+              app_version: App.version,
+              bs_version: '1.1.1'
+            });
+          }
+        },
+        modalOptions: {
+          keyboard: true,
+          show: false
+        }
+      });
+      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
+      dialog.render().show();
+      return e.preventDefault();
+    };
+
+    App.prototype.showImp = function(e) {
+      var dialog;
+      dialog = new ModalSimpleView({
+        options: {
+          small: true,
+          css: 'alert alert-warning',
+          header: 'Impressum',
+          body: function() {
+            return require("views/imp")({
+              copyright: 'Axel Nitzschner',
+              spine_version: Spine.version,
+              app_version: App.version,
+              bs_version: '1.1.1'
+            });
+          }
+        },
+        modalOptions: {
+          keyboard: true,
+          show: false
+        }
+      });
+      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
+      dialog.render().show();
+      return e.preventDefault();
+    };
+
+    App.prototype.showPay = function(e) {
+      var dialog;
+      dialog = new ModalSimpleView({
+        options: {
+          small: false,
+          css: 'alert alert-warning',
+          header: 'Zahlungsmöglichkeiten',
+          body: function() {
+            return require("views/pay")({
+              copyright: 'Axel Nitzschner',
+              spine_version: Spine.version,
+              app_version: App.version,
+              bs_version: '1.1.1'
+            });
+          }
+        },
+        modalOptions: {
+          keyboard: true,
+          show: false
+        }
+      });
+      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
+      dialog.render().show();
+      return e.preventDefault();
+    };
+
+    App.prototype.showWarning = function(e) {
+      var agreed, dialog;
+      agreed = this.isAgreed();
+      dialog = new ModalSimpleView({
+        options: {
+          small: false,
+          css: 'alert alert-danger',
+          header: 'Hinweis zum Versand von Pfeffer- und CS Gas-Sprays',
+          body: function() {
+            return require("views/warning")({
+              copyright: 'Axel Nitzschner',
+              spine_version: Spine.version,
+              app_version: App.version,
+              bs_version: '1.1.1'
+            });
+          },
+          footer: {
+            footerButtonText: function() {
+              if (!agreed) {
+                return "Verstanden";
+              }
+            }
+          }
+        },
+        modalOptions: {
+          keyboard: true,
+          show: false
+        }
+      });
+      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
+      return dialog.render().show();
+    };
+
+    App.prototype.showDelivery = function() {
+      var dialog;
+      dialog = new ModalSimpleView({
+        options: {
+          small: false,
+          css: 'alert alert-warning',
+          header: 'Versand',
+          body: function() {
+            return require("views/delivery")({
+              copyright: 'Axel Nitzschner',
+              spine_version: Spine.version,
+              app_version: App.version,
+              bs_version: '1.1.1'
+            });
+          }
+        },
+        modalOptions: {
+          keyboard: true,
+          show: false
+        }
+      });
+      dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
+      dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
+      dialog.el.one('show.bs.modal', this.proxy(this.showmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
+      return dialog.render().show();
+    };
+
+    App.prototype.hidemodal = function(e) {
+      return this.log('hidemodal');
+    };
+
+    App.prototype.hiddenmodal = function(e) {
+      this.log('hiddenmodal');
+      return this.modal.exists = false;
+    };
+
+    App.prototype.showmodal = function(e) {
+      this.log('showmodal');
+      return this.modal.exists = true;
+    };
+
+    App.prototype.shownmodal = function(e) {
+      return this.log('shownmodal');
+    };
+
+    App.prototype.redirectHome = function() {
+      return location.href = '/';
+    };
+
+    App.prototype.toggleView = function(e) {
+      e.preventDefault();
+      return this.el.toggleClass('on');
+    };
+
+    App.prototype.toggleSidebar = function(e) {
+      e.preventDefault();
+      return this.setSidebar();
+    };
+
+    App.prototype.closeSidebar = function(e) {
+      e.preventDefault();
+      return this.setSidebar(true);
+    };
+
+    App.prototype.setSidebar = function(bol, notrans) {
+      var isOpen;
+      if (notrans == null) {
+        notrans = false;
+      }
+      this.sidebar.toggleClass('notrans', notrans);
+      this.sidebar.toggleClass('off', bol);
+      isOpen = !this.sidebar.hasClass('off');
+      return Settings.update(Settings.first().id, {
+        sidebaropened: isOpen
+      });
+    };
+
+    App.prototype.showSidebar = function(e) {
+      e.preventDefault();
+      return this.sidebar.addClass('glinch');
+    };
+
+    App.prototype.hideSidebar = function(e) {
+      return;
+      e.preventDefault();
+      return this.sidebar.addClass('off');
+    };
+
+    App.prototype.reset = function() {
+      return Settings.update(Settings.first().id, {
+        hidden: false,
+        agreed: false
+      });
+    };
+
+    App.prototype.agreed = function() {
+      return Settings.update(Settings.first().id, {
+        agreed: true
+      });
+    };
+
+    App.prototype.setData = function() {
+      var c, j, len, ref, results;
+      this.arr = [];
+      ref = this.manager.controllers;
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        c = ref[j];
+        results.push(this.arr.push(c.categoryName));
+      }
+      return results;
+    };
+
+    App.prototype.getData = function(s, arr) {
+      var a, i, j, len, test;
+      if (arr == null) {
+        arr = [];
+      }
+      test = function(s, a) {
+        var found, matcher;
+        matcher = new RegExp(".*" + a + ".*", "g");
+        return found = matcher.test(s);
+      };
+      for (i = j = 0, len = arr.length; j < len; i = ++j) {
+        a = arr[i];
+        if (test(s, a)) {
+          return arr[i];
+        }
+      }
+    };
+
+    return App;
+
+  })(Spine.Controller);
+
+  module.exports = App;
 
 }).call(this);
 }, "index": function(exports, require, module) {(function() {
@@ -48459,7 +49106,19 @@ Released under the MIT License
       var filterOptions;
       filterOptions = {
         model: 'Category',
-        key: 'category_id'
+        key: 'category_id',
+        sorted: 'sortByReverseOrder'
+      };
+      return Product.filterRelated(id, filterOptions);
+    };
+
+    Category.publishedProducts = function(id) {
+      var filterOptions;
+      filterOptions = {
+        model: 'Category',
+        key: 'category_id',
+        func: 'selectNotIgnored',
+        sorted: 'sortByOrder'
       };
       return Product.filterRelated(id, filterOptions);
     };
@@ -48611,15 +49270,7 @@ Released under the MIT License
       return result;
     };
 
-    Category.prototype.select = function(joinTableItems) {
-      var i, len, record;
-      for (i = 0, len = joinTableItems.length; i < len; i++) {
-        record = joinTableItems[i];
-        if (record.category_id === this.id) {
-          return true;
-        }
-      }
-    };
+    Category.prototype.select = function(joinTableItems) {};
 
     Category.prototype.select_ = function(joinTableItems) {
       var ref;
@@ -49083,7 +49734,7 @@ Released under the MIT License
     };
 
     Description.prototype.select = function(id) {
-      if (this.product_id === id && this.user_id === User.first().id) {
+      if (this.product_id === id) {
         return true;
       }
     };

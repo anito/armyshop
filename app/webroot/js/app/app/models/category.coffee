@@ -51,6 +51,15 @@ class Category extends Spine.Model
     filterOptions =
       model: 'Category'
       key:'category_id'
+      sorted: 'sortByReverseOrder'
+    Product.filterRelated(id, filterOptions)
+    
+  @publishedProducts: (id) ->
+    filterOptions =
+      model: 'Category'
+      key:'category_id'
+      func: 'selectNotIgnored'
+      sorted: 'sortByOrder'
     Product.filterRelated(id, filterOptions)
 
   @selectedProductsHasPhotos: ->
@@ -137,8 +146,6 @@ class Category extends Spine.Model
     result
 
   select: (joinTableItems) ->
-    for record in joinTableItems
-      return true if record.category_id is @id
     
   select_: (joinTableItems) ->
     return true if @id in joinTableItems

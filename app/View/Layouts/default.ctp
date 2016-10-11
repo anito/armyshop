@@ -31,7 +31,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->meta('icon');
 
     echo $this->Html->css('jquery-ui-1.8.16.custom');
-    echo $this->Html->css("bootstrap.min");
+    echo $this->Html->css('bootstrap.min');
+    echo $this->Html->css('bootstrap_glyphicons');
     echo $this->Html->css("websymbols");
     echo $this->Html->css("component");
     echo $this->Html->css("font");
@@ -42,10 +43,68 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("demo");
     echo $this->Html->css("style7");
     echo $this->Html->css("jumbotron");
+    echo $this->Html->css("spine");
     
 //    jQuery first, then Tether, then Bootstrap JS.
     echo $this->Html->script('app/public/application');
 
+    echo $this->Html->scriptStart();
+    ?>
+    var base_url = '<?php echo $this->Html->url('/'); ?>';
+    <?php
+    echo $this->Html->scriptEnd();
+    echo $this->Html->script('app/public/application');
+    ?>
+
+    <?php
+    echo $this->Html->scriptStart();
+    ?>
+    var exports = this;
+    $(function() {
+      
+      var isProduction = true
+      
+      
+      var categories = <?php echo $this->Js->object($categories); ?>;
+      var products = <?php echo $this->Js->object($products); ?>;
+      var photos = <?php echo $this->Js->object($photos); ?>;
+      var descriptions = <?php echo $this->Js->object($descriptions); ?>;
+      
+      var startScript = function() {
+        setTimeout(function() {}, 2000)
+      };
+      
+      Spine = require('spine');
+      Model = Spine.Model
+      Spine.isProduction = (localStorage.isProduction != null) ? !(localStorage.isProduction === 'false') : isProduction
+      
+      Category = require('models/category')
+      Product = require('models/product')
+      Photo = require('models/photo')
+      Description = require('models/description')
+      
+      User    = require("models/user");
+      Main    = require("home");
+      
+      Spine.Route = require('spine/lib/route');
+      
+      exports.App = new Main({el: $("body")});
+      
+      Description.refresh(descriptions, {clear: true});
+      Photo.refresh(photos, {clear: true});
+      Product.refresh(products, {clear: true});
+      Category.refresh(categories, {clear: true});
+      
+      Spine.Route.setup()
+      App.navigate('/home', '')
+      startScript()
+      
+    });
+    <?php
+    
+    echo $this->Html->scriptEnd();
+    
+    
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
@@ -54,25 +113,22 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body class="hal fade in">
   <div class="logos">
     <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
-    <div class="logo hide logo-2 hide"></div>
+    <div class="logo logo-2 hide"></div>
   </div>
   <header id="header" class="header">
     <nav class="navbar navbar-static-top navbar-dark bg-inverse">
-      <a class="navbar-brand" href="/">
-        <span class="flaticon-menu hide" style="font-size: 2.5em"></span>
-      </a>
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
-          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/#/home/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item defense">
-          <a class="nav-link" href="/pages/defense">Selbstschutz & Security</a>
+          <a class="nav-link" href="/#/defense/">Selbstschutz & Security</a>
         </li>
         <li id="" class="nav-item outdoor">
-          <a class="nav-link" href="/pages/outdoor">Outdoor & Fitness</a>
+          <a class="nav-link" href="/#/outdoor/">Outdoor & Fitness</a>
         </li>
         <li id="" class="nav-item goodies">
-          <a class="nav-link" href="/pages/goodies">Restposten & Specials</a>
+          <a class="nav-link" href="/#/goodies/">Restposten & Specials</a>
         </li>
       </ul>
       <ul class="nav navbar-nav items">
@@ -133,7 +189,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
   </div>
   <div id="container" style="">
-    <div id="content">
+    <div id="content" class="views">
 
 
       <?php echo $this->fetch('content'); ?>
@@ -142,7 +198,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
   </div>
   <footer class="footer bg-inverse">
-    <span class="opt-reset" title="Reset Hinweis">© HA Lehman</span>
+    <span id='refresh'></span>
+    <span class="opt-reset" title="FSK 18 Hinweis zurücksetzen">© HA Lehman</span>
     <span><a href="#" class="opt-imp">Impressum</a></span>
     <span><a href="#" class=" opt-agb">AGB</a></span>
     <span><a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a></span>
@@ -154,40 +211,17 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <?php echo $this->element('sql_dump'); ?>
 <script charset="utf-8">
 
-  var exports = this;
-  jQuery(function(){
-    var App = require("index");
-    exports.App = new App({el: $("body")});
-  });
+//  var exports = this;
+//  jQuery(function(){
+//    var App = require("index");
+//    exports.App = new App({el: $("body")});
+//  });
 
 </script>
-<script id="modalSimpleTemplate" type="text/x-jquery-tmpl">
-  <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}">
-    <div class="modal-content">
-      {{if header}}
-      <div class="modal-header {{if css}}{{html css}}{{/if}}">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="h3" style="padding-left: 26px;">${header}</h3>
-      </div>
-      {{/if}}
-      {{if body}}
-      <div class="modal-body">
-        {{html body}}
-      </div>
-      {{if info}}
-      <div class="modal-header label-info">
-        <div class="label label-info">${info}</div>
-      </div>
-      {{/if}}
-      {{/if}}
-      {{if (typeof footer != 'undefined' && footer.footerButtonText)}}
-      <div class="modal-footer" style="position: relative">
-        <div class="" style="text-align: left; max-width: 90%">{{if footer.footerBody}}{{html footer.footerBody}}{{/if}} </div>
-        <button class="btn btn-dark opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
-      </div>
-      {{/if}}
-    </div>
-  </div>
-</script>
+
 </body>
 </html>
+
+<script id="refreshTemplate" type="text/x-tmpl">
+  <a href="#" class="opt-ref"><i class="glyphicon glyphicon-${icon}"></i></a>
+</script>

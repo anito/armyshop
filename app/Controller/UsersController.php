@@ -49,8 +49,6 @@ class UsersController extends AppController {
               'success' => 'true',
               'redirect' => '/admin'#$this->data['User']['redirect']
               )));
-          $this->log( $this->Session, LOG_DEBUG);
-          $this->log('redirect after login: '.$this->data['User']['redirect'], LOG_DEBUG);
         } else {
           $this->response->header("WWW-Authenticate: Negotiate");
           $this->set('_serialize', array_merge($this->data, array(
