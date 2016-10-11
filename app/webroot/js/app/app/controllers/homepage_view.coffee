@@ -20,27 +20,23 @@ class HomepageView extends Spine.Controller
       el: @items
       parent: @
     
-    Spine.bind('refresh:one', @proxy @refreshOne)
-    Category.bind('refresh', @proxy @render)
+    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     
   active: (e) ->
     @current = Category.current(Category.findByAttribute('name', @categoryName))
     @render()
     
-  refreshOne: ->
-    @refreshPhotoOne()
+  bindRefresh: ->
+    @tracker = [Photo.className, Description.className, Product.className, Category.className]
+    Photo.one('refresh', @proxy @untrackBinds)
+    Description.one('refresh', @proxy @untrackBinds)
+    Product.one('refresh', @proxy @untrackBinds)
+    Category.one('refresh', @proxy @untrackBinds)
     
-  refreshPhotoOne: ->
-    Photo.one('refresh', @proxy @refreshDescriptionOne)
-    
-  refreshDescriptionOne: ->
-    Description.one('refresh', @proxy @refreshPhotoOne)
-    
-  refreshProductOne: ->
-    Product.one('refresh', @proxy @refreshCategoryOne)
-    
-  refreshCategoryOne: ->
-    Category.one('refresh', @proxy @render)
+  untrackBinds: (arr) ->
+    className = arr.first().constructor.className
+    @tracker.splice(index, 1) for t, index in @tracker when t is className
+    @render() unless @tracker.length
     
   render: ->
     @refreshView.render('repeat')

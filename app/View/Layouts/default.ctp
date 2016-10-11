@@ -62,7 +62,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     var exports = this;
     $(function() {
       
-      var isProduction = true
+      var isProduction = false
       
       
       var categories = <?php echo $this->Js->object($categories); ?>;
@@ -209,15 +209,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="top: 65px;"></div>
   <!-- /.modal -->
 <?php echo $this->element('sql_dump'); ?>
-<script charset="utf-8">
-
-//  var exports = this;
-//  jQuery(function(){
-//    var App = require("index");
-//    exports.App = new App({el: $("body")});
-//  });
-
-</script>
 
 </body>
 </html>

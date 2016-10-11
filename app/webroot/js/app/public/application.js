@@ -37179,8 +37179,7 @@ Released under the MIT License
         el: this.items,
         parent: this
       });
-      Spine.bind('refresh:one', this.proxy(this.refreshOne));
-      Category.bind('refresh', this.proxy(this.render));
+      Spine.bind('bindRefresh:one', this.proxy(this.bindRefresh));
     }
 
     HomepageView.prototype.active = function(e) {
@@ -37188,24 +37187,27 @@ Released under the MIT License
       return this.render();
     };
 
-    HomepageView.prototype.refreshOne = function() {
-      return this.refreshProductOne();
+    HomepageView.prototype.bindRefresh = function() {
+      this.tracker = [Photo.className, Description.className, Product.className, Category.className];
+      Photo.one('refresh', this.proxy(this.untrackBinds));
+      Description.one('refresh', this.proxy(this.untrackBinds));
+      Product.one('refresh', this.proxy(this.untrackBinds));
+      return Category.one('refresh', this.proxy(this.untrackBinds));
     };
 
-    HomepageView.prototype.refreshProductOne = function() {
-      return Product.one('refresh', this.proxy(this.refreshDescriptionOne));
-    };
-
-    HomepageView.prototype.refreshDescriptionOne = function() {
-      return Description.one('refresh', this.proxy(this.refreshPhotoOne));
-    };
-
-    HomepageView.prototype.refreshPhotoOne = function() {
-      return Photo.one('refresh', this.proxy(this.refreshCategoryOne));
-    };
-
-    HomepageView.prototype.refreshCategoryOne = function() {
-      return Category.one('refresh', this.proxy(this.render));
+    HomepageView.prototype.untrackBinds = function(arr) {
+      var className, i, index, len, ref, t;
+      className = arr.first().constructor.className;
+      ref = this.tracker;
+      for (index = i = 0, len = ref.length; i < len; index = ++i) {
+        t = ref[index];
+        if (t === className) {
+          this.tracker.splice(index, 1);
+        }
+      }
+      if (!this.tracker.length) {
+        return this.render();
+      }
     };
 
     HomepageView.prototype.render = function() {
@@ -41589,7 +41591,7 @@ Released under the MIT License
 
     RefreshView.prototype.refresh = function() {
       this.render('cloud-download');
-      Spine.trigger('refresh:one');
+      Spine.trigger('bindRefresh:one');
       return this.fetchAll();
     };
 

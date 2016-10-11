@@ -136,6 +136,6 @@
 </script>
 
 <script id="refreshTemplate" type="text/x-tmpl">
-  <a href="#" class="opt-ref"><i class="glyphicon glyphicon-${icon}"></i></a>
+  <a href="${location.hash}" class="opt-ref"><i class="glyphicon glyphicon-${icon}"></i></a>
 </script>
 
