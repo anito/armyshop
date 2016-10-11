@@ -67,6 +67,7 @@ class ShowView extends Spine.Controller
     '.opt-Upload'             : 'btnUpload'
     
   events:
+    'click .opt-ShowProducts'                         : 'showProducts'
     'click .opt-AutoUpload:not(.disabled)'            : 'toggleAutoUpload'
     'click .opt-Previous:not(.disabled)'              : 'back'
     'click .opt-Sidebar:not(.disabled)'               : 'toggleSidebar'
@@ -736,6 +737,13 @@ class ShowView extends Spine.Controller
     
   showProductSelection: ->
     @navigate '/category', Category.record.id or ''
+      
+  showProducts: (e) ->
+    if Category.record
+      @navigate '/category', Category.record.id
+      
+    e.preventDefault()
+    e.stopPropagation()
       
   copy: (e) ->
     #type of copied objects depends on view
