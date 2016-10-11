@@ -140,7 +140,7 @@ class PhotosController extends AppController {
 
   public function uri($width = 550, $height = 550, $square = 2) {
     $json = array();
-    if(!empty($this->Auth) and (!empty($this->Auth->user()))) {
+    if(isset($this->Auth)) {
       $user_id = $this->Auth->user('id');
     } else {
       $user = $this->User->find('first', array(
