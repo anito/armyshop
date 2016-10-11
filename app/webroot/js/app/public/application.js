@@ -37189,6 +37189,7 @@ Released under the MIT License
     };
 
     HomepageView.prototype.refreshOne = function() {
+      Product.one('refresh', this.proxy(this.render));
       return Category.one('refresh', this.proxy(this.render));
     };
 
@@ -37211,7 +37212,7 @@ Released under the MIT License
       results = [];
       for (j = 0, len1 = items.length; j < len1; j++) {
         item = items[j];
-        results.push(this.callDeferred(item.photo != null, this.callback));
+        results.push(this.callDeferred(item.photo, this.callback));
       }
       return results;
     };

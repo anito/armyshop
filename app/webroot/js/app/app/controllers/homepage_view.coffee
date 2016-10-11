@@ -28,6 +28,7 @@ class HomepageView extends Spine.Controller
     @render()
     
   refreshOne: ->
+    Product.one('refresh', @proxy @render)
     Category.one('refresh', @proxy @render)
     
   render: ->
@@ -40,7 +41,7 @@ class HomepageView extends Spine.Controller
     return unless items.length
     
     @list.render(items)
-    @callDeferred item.photo?, @callback for item in items
+    @callDeferred item.photo, @callback for item in items
     
   item: (item) ->
     product: item
