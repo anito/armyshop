@@ -37189,7 +37189,22 @@ Released under the MIT License
     };
 
     HomepageView.prototype.refreshOne = function() {
-      Product.one('refresh', this.proxy(this.render));
+      return this.refreshProductOne();
+    };
+
+    HomepageView.prototype.refreshProductOne = function() {
+      return Product.one('refresh', this.proxy(this.refreshDescriptionOne));
+    };
+
+    HomepageView.prototype.refreshDescriptionOne = function() {
+      return Description.one('refresh', this.proxy(this.refreshPhotoOne));
+    };
+
+    HomepageView.prototype.refreshPhotoOne = function() {
+      return Photo.one('refresh', this.proxy(this.refreshCategoryOne));
+    };
+
+    HomepageView.prototype.refreshCategoryOne = function() {
       return Category.one('refresh', this.proxy(this.render));
     };
 

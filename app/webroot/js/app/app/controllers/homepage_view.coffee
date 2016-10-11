@@ -28,7 +28,18 @@ class HomepageView extends Spine.Controller
     @render()
     
   refreshOne: ->
-    Product.one('refresh', @proxy @render)
+    @refreshPhotoOne()
+    
+  refreshPhotoOne: ->
+    Photo.one('refresh', @proxy @refreshDescriptionOne)
+    
+  refreshDescriptionOne: ->
+    Description.one('refresh', @proxy @refreshPhotoOne)
+    
+  refreshProductOne: ->
+    Product.one('refresh', @proxy @refreshCategoryOne)
+    
+  refreshCategoryOne: ->
     Category.one('refresh', @proxy @render)
     
   render: ->

@@ -128,11 +128,14 @@
 </script>
 
 <script id="norbuImageListTemplate" type="text/x-tmpl">
-  <div id="${id}" class="pricing__image"><img class="image" src="/img/semperfi.png"/></div>
+  <div id="${id}" class="pricing__image"><img class="image" src=""/></div>
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">
   <li class="pricing__feature">{{html description}}</li>
 </script>
 
+<script id="refreshTemplate" type="text/x-tmpl">
+  <a href="#" class="opt-ref"><i class="glyphicon glyphicon-${icon}"></i></a>
+</script>
 
