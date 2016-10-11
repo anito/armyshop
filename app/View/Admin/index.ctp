@@ -649,7 +649,7 @@
       <div class="header-title">
         {{if model.record}}
         <h3>
-        <span class="label label-default">{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}</span>
+        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</span>
         </h3>
         <h3>
         {{if modelProduct.record}}
@@ -682,7 +682,7 @@
       <div class="header-title">
         {{if product}}
         <h3>
-        <span class="label label-default">{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}</span>
+        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</span>
         </h3>
         <h3 style="display: inline-block;">
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
@@ -707,7 +707,7 @@
       <div class="header-title">
         {{if product}}
         <h3>
-        <span class="label label-default">{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}</span>
+        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</span>
         </h3>
         <h3>
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 10)}{{else}}...{{/if}}{{else}}{{/if}}</span>
