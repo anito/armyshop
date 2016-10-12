@@ -43678,6 +43678,7 @@ Released under the MIT License
         categoryEl = this.children().forItem(item);
         if (!categoryEl.length) {
           this.append(this.template(item));
+          this.reorder(item);
         } else {
           this.updateTemplate(item).removeClass('invalid');
         }
@@ -43703,7 +43704,7 @@ Released under the MIT License
       children = this.children();
       oldEl = this.children().forItem(item);
       idxBeforeSort = this.children().index(oldEl);
-      idxAfterSort = index(id, Category.all().sort(Category.nameSort));
+      idxAfterSort = index(id, Category.all().sort(Category.sortByScreenName));
       newEl = $(children[idxAfterSort]);
       if (idxBeforeSort < idxAfterSort) {
         return newEl.after(oldEl);

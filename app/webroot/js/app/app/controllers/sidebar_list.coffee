@@ -81,7 +81,7 @@ class SidebarList extends Spine.Controller
       categoryEl = @children().forItem(item)
       unless categoryEl.length
         @append @template item
-#        @reorder item
+        @reorder item
       else
         @updateTemplate(item).removeClass('invalid')
       @renderOneSublist item
@@ -98,7 +98,7 @@ class SidebarList extends Spine.Controller
     children = @children()
     oldEl = @children().forItem(item)
     idxBeforeSort =  @children().index(oldEl)
-    idxAfterSort = index(id, Category.all().sort(Category.nameSort))
+    idxAfterSort = index(id, Category.all().sort(Category.sortByScreenName))
     newEl = $(children[idxAfterSort])
     if idxBeforeSort < idxAfterSort
       newEl.after oldEl
