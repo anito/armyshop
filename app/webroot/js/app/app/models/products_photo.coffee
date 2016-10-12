@@ -45,14 +45,14 @@ class ProductsPhoto extends Spine.Model
     func = Photo.filterRelated(aid,
       model: 'Product'
       key: 'product_id'
-      sorted: 'sortByOrder'
+      sort: 'sortByOrder'
     ).slice(0, max)
     
   @products: (pid, max) ->
     Product.filterRelated(pid,
       model: 'Photo'
       key: 'photo_id'
-      sorted: 'sortByOrder'
+      sort: 'sortByOrder'
     ).slice(0, max)
 
   @c: 0

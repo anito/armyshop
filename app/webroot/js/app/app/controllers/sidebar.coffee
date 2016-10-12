@@ -89,19 +89,6 @@ class Sidebar extends Spine.Controller
   filter: ->
     @query = @input.val()
     @render()
-    
-  filterById: (id, model='Product') ->
-    @filter() unless model and /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(id or '')
-    @query = id
-    @model = model
-    switch model
-      when 'Product'
-        @list.template = @productTemplate
-      when 'Category'
-        @list.template = @categoryTemplate
-    @render('idSelect')
-    @model = @defaultModel
-    @list.template = @defaultTemplate
   
   refresh: (items) ->
     @render()
@@ -109,9 +96,10 @@ class Sidebar extends Spine.Controller
   refreshOne: ->
     Category.one('refresh', @proxy @refresh)
     
-  render: (selectType='searchSelect') ->
-    items = Category.filter(@query, func: selectType)
-    items = items.sort Category.nameSort
+  render: () ->
+    items = Category.filter(@query, func: 'searchSelect')
+    console.log items
+    items = items.sort Category.sortByScreenName
     Category.trigger('refresh:category') #rerenders CategoryView
     @list.render items
     @refreshView.render()

@@ -617,7 +617,7 @@
 <script id="editPhotoTemplate" type="text/x-jquery-tmpl">
   <div class="input-group left">
     <span class="input-group-addon" id="basic-addon1">Titel</span>
-    <input type="text" class="form-control" placeholder="Fototitel" aria-describedby="basic-addon1" name="name" value="{{html name}}">
+    <input type="text" class="form-control" placeholder="Fototitel" aria-describedby="basic-addon1" name="title" value="{{html title}}">
   </div>
 </script>
 
@@ -835,7 +835,7 @@
 <script id="photosTemplate" type="text/x-jquery-tmpl">
   <li  id="${id}" data-id="${id}" class="item data fade in pho-trigger-edit" draggable="true">
     {{tmpl "#photosThumbnailTemplate"}}
-    <div class="center hide" style="color: aliceblue">{{if order}}${order}{{/if}}</div>
+    <div class="center order" style="color: aliceblue">${order}</div>
   </li>
 </script>
 
@@ -1172,7 +1172,7 @@
 </script>
 
 <script id="norbuImageListTemplate" type="text/x-tmpl">
-  <div id="${id}" class="pricing__image"><img class="image" src="/img/semperfi.png"/></div>
+  <div id="${id}" class="pricing__image"><img class="image" src="/img/products/dummy.png"/></div>
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">

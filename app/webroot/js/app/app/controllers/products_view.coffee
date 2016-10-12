@@ -112,7 +112,7 @@ class ProductsView extends Spine.Controller
     filterOptions =
       model: 'Category'
       key: 'category_id'
-      sorted: 'sortByOrder'
+      sort: 'sortByOrder'
     
     if category
       items = Product.filterRelated(category.id, filterOptions)
@@ -338,13 +338,11 @@ class ProductsView extends Spine.Controller
     @list.renderBackgrounds products
     
   sortupdate: (e, o) ->
-    return unless Category.record
-    
     cb = -> Category.trigger('change:collection', Category.record)
       
     @list.children().each (index) ->
       item = $(@).item()
-      if item
+      if item and Category.record
         ga = CategoriesProduct.filter(item.id, func: 'selectProduct')[0]
         if ga and parseInt(ga.order) isnt index
           ga.order = index

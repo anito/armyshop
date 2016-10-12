@@ -81,7 +81,7 @@ class SidebarList extends Spine.Controller
       categoryEl = @children().forItem(item)
       unless categoryEl.length
         @append @template item
-        @reorder item
+#        @reorder item
       else
         @updateTemplate(item).removeClass('invalid')
       @renderOneSublist item
@@ -129,7 +129,7 @@ class SidebarList extends Spine.Controller
     filterOptions =
       model: 'Category'
       key:'category_id'
-      sorted: 'sortByOrder'
+      sort: 'sortByOrder'
       
     products = Product.filterRelated(category.id, filterOptions)
     for product in products

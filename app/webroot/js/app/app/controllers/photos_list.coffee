@@ -28,9 +28,10 @@ class PhotosList extends Spine.Controller
     'click .rotate-cw'            : 'rotateCW'
     'click .rotate-ccw'           : 'rotateCCW'
     'click .original'             : 'original'
+    'click li'                    : 'test'
     
   selectFirst: true
-    
+
   constructor: ->
     super
     
@@ -59,7 +60,7 @@ class PhotosList extends Spine.Controller
         @el.prepend @template item
         @updateTemplate item
         @size(App.showView.sOutValue)
-        @el.sortable('destroy').sortable()
+        @el.sortable('destroy').sortable('photo')
         $('.dropdown-toggle', @el).dropdown()
         
         @callDeferred [item]
@@ -69,7 +70,7 @@ class PhotosList extends Spine.Controller
         el.detach()
       when 'update'
         @updateTemplate item
-        @el.sortable('destroy').sortable()
+        @el.sortable('destroy').sortable('photo')
     
     @refreshElements()
     @el
@@ -79,7 +80,7 @@ class PhotosList extends Spine.Controller
     
     if items.length
       @wipe()
-      sorted = Product.sortByReverseOrder items
+      sorted = items.sort Product.sortByReverseOrder
       @[mode] @template sorted
       @size(App.showView.sOutValue)
       @exposeSelection()
@@ -113,7 +114,7 @@ class PhotosList extends Spine.Controller
       sorted = Product.sortByReverseOrder items
       @html @template sorted
       @size(App.showView.sOutValue)
-      @el.sortable('destroy').sortable()
+      @el.sortable('destroy').sortable('photo')
       @callDeferred  sorted
     @el
   

@@ -36015,8 +36015,9 @@ Released under the MIT License
     };
 
     Main.prototype.showIt = function() {
+      var ref;
       if (!/^#\/category\//.test(location.hash)) {
-        return this.navigate('/category', Category.first().id);
+        return this.navigate('/category', (ref = Category.first()) != null ? ref.id : void 0);
       }
     };
 
@@ -39001,7 +39002,8 @@ Released under the MIT License
       'click .zoom': 'zoom',
       'click .rotate-cw': 'rotateCW',
       'click .rotate-ccw': 'rotateCCW',
-      'click .original': 'original'
+      'click .original': 'original',
+      'click li': 'test'
     };
 
     PhotosList.prototype.selectFirst = true;
@@ -39039,7 +39041,7 @@ Released under the MIT License
           this.el.prepend(this.template(item));
           this.updateTemplate(item);
           this.size(App.showView.sOutValue);
-          this.el.sortable('destroy').sortable();
+          this.el.sortable('destroy').sortable('photo');
           $('.dropdown-toggle', this.el).dropdown();
           this.callDeferred([item]);
           break;
@@ -39049,7 +39051,7 @@ Released under the MIT License
           break;
         case 'update':
           this.updateTemplate(item);
-          this.el.sortable('destroy').sortable();
+          this.el.sortable('destroy').sortable('photo');
       }
       this.refreshElements();
       return this.el;
@@ -39063,7 +39065,7 @@ Released under the MIT License
       this.log('PhotosList::render ' + mode);
       if (items.length) {
         this.wipe();
-        sorted = Product.sortByReverseOrder(items);
+        sorted = items.sort(Product.sortByReverseOrder);
         this[mode](this.template(sorted));
         this.size(App.showView.sOutValue);
         this.exposeSelection();
@@ -39091,7 +39093,7 @@ Released under the MIT License
         sorted = Product.sortByReverseOrder(items);
         this.html(this.template(sorted));
         this.size(App.showView.sOutValue);
-        this.el.sortable('destroy').sortable();
+        this.el.sortable('destroy').sortable('photo');
         this.callDeferred(sorted);
       }
       return this.el;
@@ -39532,6 +39534,9 @@ Released under the MIT License
     PhotosView.prototype.events = {
       'click .item': 'click',
       'sortupdate .items': 'sortupdate',
+      'dragstart .item': 'dragstart',
+      'dragstart': 'stopInfo',
+      'dragover .item': 'dragover',
       'mousemove .item': 'infoUp',
       'mouseleave  .item': 'infoBye'
     };
@@ -39568,8 +39573,7 @@ Released under the MIT License
       this.list = new PhotosList({
         el: this.itemsEl,
         template: this.template,
-        parent: this,
-        slideshow: this.slideshow
+        parent: this
       });
       this.header.template = this.headerTemplate;
       this.viewport = this.list.el;
@@ -39602,7 +39606,7 @@ Released under the MIT License
       filterOptions = {
         model: 'Product',
         key: 'product_id',
-        sorted: 'sortByOrder'
+        sort: 'sortByOrder'
       };
       if (product) {
         items = Photo.filterRelated(product.id, filterOptions);
@@ -39626,7 +39630,7 @@ Released under the MIT License
       }
       this.list.render(items || this.updateBuffer(), mode);
       if (Product.record) {
-        this.list.sortable();
+        this.list.sortable('photo');
       }
       delete this.buffer;
       return this.el;
@@ -39657,7 +39661,6 @@ Released under the MIT License
         var ap, item, t;
         item = $(this).item();
         ap = ProductsPhoto.fromPhotoId(item.id);
-        console.log(ap);
         if (!ap) {
           return;
         }
@@ -39670,8 +39673,7 @@ Released under the MIT License
       results = [];
       for (i = 0, len = items.length; i < len; i++) {
         item = items[i];
-        tmplItem = this.list.update(item);
-        results.push(console.log(tmplItem));
+        results.push(tmplItem = this.list.update(item));
       }
       return results;
     };
@@ -39996,8 +39998,8 @@ Released under the MIT License
     };
 
     PreviewView.prototype.changedRelatedPhoto = function(item) {
-      item = Product.find(item.product_id);
-      if (item) {
+      item = Product.photos(item.product_id).first();
+      if (item !== this.current) {
         return this.change(item);
       }
     };
@@ -40806,7 +40808,7 @@ Released under the MIT License
       this.log('processProductDeferred');
       deferred = $.Deferred();
       all = product.photos();
-      sorted = Photo.sortByReverseOrder(all);
+      sorted = all.sort(Photo.sortByReverseOrder);
       data = sorted.slice(0, 4);
       Photo.uri({
         width: 60,
@@ -41114,7 +41116,7 @@ Released under the MIT License
       filterOptions = {
         model: 'Category',
         key: 'category_id',
-        sorted: 'sortByOrder'
+        sort: 'sortByOrder'
       };
       if (category) {
         items = Product.filterRelated(category.id, filterOptions);
@@ -41442,16 +41444,13 @@ Released under the MIT License
 
     ProductsView.prototype.sortupdate = function(e, o) {
       var cb;
-      if (!Category.record) {
-        return;
-      }
       cb = function() {
         return Category.trigger('change:collection', Category.record);
       };
       this.list.children().each(function(index) {
         var ga, item;
         item = $(this).item();
-        if (item) {
+        if (item && Category.record) {
           ga = CategoriesProduct.filter(item.id, {
             func: 'selectProduct'
           })[0];
@@ -43299,27 +43298,6 @@ Released under the MIT License
       return this.render();
     };
 
-    Sidebar.prototype.filterById = function(id, model) {
-      if (model == null) {
-        model = 'Product';
-      }
-      if (!(model && /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(id || ''))) {
-        this.filter();
-      }
-      this.query = id;
-      this.model = model;
-      switch (model) {
-        case 'Product':
-          this.list.template = this.productTemplate;
-          break;
-        case 'Category':
-          this.list.template = this.categoryTemplate;
-      }
-      this.render('idSelect');
-      this.model = this.defaultModel;
-      return this.list.template = this.defaultTemplate;
-    };
-
     Sidebar.prototype.refresh = function(items) {
       return this.render();
     };
@@ -43328,15 +43306,13 @@ Released under the MIT License
       return Category.one('refresh', this.proxy(this.refresh));
     };
 
-    Sidebar.prototype.render = function(selectType) {
+    Sidebar.prototype.render = function() {
       var items;
-      if (selectType == null) {
-        selectType = 'searchSelect';
-      }
       items = Category.filter(this.query, {
-        func: selectType
+        func: 'searchSelect'
       });
-      items = items.sort(Category.nameSort);
+      console.log(items);
+      items = items.sort(Category.sortByScreenName);
       Category.trigger('refresh:category');
       this.list.render(items);
       return this.refreshView.render();
@@ -43703,7 +43679,6 @@ Released under the MIT License
         categoryEl = this.children().forItem(item);
         if (!categoryEl.length) {
           this.append(this.template(item));
-          this.reorder(item);
         } else {
           this.updateTemplate(item).removeClass('invalid');
         }
@@ -43791,7 +43766,7 @@ Released under the MIT License
       filterOptions = {
         model: 'Category',
         key: 'category_id',
-        sorted: 'sortByOrder'
+        sort: 'sortByOrder'
       };
       products = Product.filterRelated(category.id, filterOptions);
       for (j = 0, len = products.length; j < len; j++) {
@@ -46101,14 +46076,14 @@ Released under the MIT License
           });
         },
         filterSortByOrder: function(query, options) {
-          return this.sortByOrder(this.filter(query, options));
+          return (this.filter(query, options)).sort(this.sortByOrder);
         },
         filterRelated: function(id, options) {
           var joinTableItems, model, sort;
           model = this.foreignModels()[options.model];
           joinTableItems = Model[model.joinTable].filter(id, options);
-          if (sort = options != null ? options.sorted : void 0) {
-            return this[sort](this.filter(joinTableItems));
+          if (sort = options != null ? options.sort : void 0) {
+            return (this.filter(joinTableItems)).sort(this[sort]);
           } else {
             return this.filter(joinTableItems);
           }
@@ -46125,63 +46100,40 @@ Released under the MIT License
             return 1;
           }
         },
-        sortSelectionListByOrder: function(list) {
-          if (list == null) {
-            list = this.selectionList();
+        sortByOrder: function(a, b) {
+          var aInt, bInt;
+          aInt = parseInt(a.order);
+          bInt = parseInt(b.order);
+          if (aInt < bInt) {
+            return -1;
+          } else if (aInt > bInt) {
+            return 1;
+          } else {
+            return 0;
           }
-          return list.sort(function(a, b) {
-            var aInt, bInt;
-            aInt = parseInt(Product.find(a).order);
-            bInt = parseInt(Product.find(b).order);
-            if (aInt < bInt) {
-              return -1;
-            } else if (aInt > bInt) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
         },
-        sortByOrder: function(arr) {
-          return arr.sort(function(a, b) {
-            var aInt, bInt;
-            aInt = parseInt(a.order);
-            bInt = parseInt(b.order);
-            if (aInt < bInt) {
-              return -1;
-            } else if (aInt > bInt) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
+        sortByReverseOrder: function(a, b) {
+          var aInt, bInt;
+          aInt = parseInt(a.order);
+          bInt = parseInt(b.order);
+          if (aInt < bInt) {
+            return 1;
+          } else if (aInt > bInt) {
+            return -1;
+          } else {
+            return 0;
+          }
         },
-        sortByReverseOrder: function(arr) {
-          return arr.sort(function(a, b) {
-            var aInt, bInt;
-            aInt = parseInt(a.order);
-            bInt = parseInt(b.order);
-            if (aInt < bInt) {
-              return 1;
-            } else if (aInt > bInt) {
-              return -1;
-            } else {
-              return 0;
-            }
-          });
-        },
-        sortByName: function(arr) {
-          return arr.sort(function(a, b) {
-            a = a._name;
-            b = b._name;
-            if (a < b) {
-              return -1;
-            } else if (a > b) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
+        sortByScreenName: function(a, b) {
+          a = a.screenname;
+          b = b.screenname;
+          if (a < b) {
+            return -1;
+          } else if (a > b) {
+            return 1;
+          } else {
+            return 0;
+          }
         }
       };
       include = {
@@ -48881,7 +48833,7 @@ Released under the MIT License
       return Category.filterRelated(aid, {
         model: 'Product',
         key: 'product_id',
-        sorted: 'sortByOrder'
+        sort: 'sortByOrder'
       });
     };
 
@@ -48889,7 +48841,7 @@ Released under the MIT License
       return Product.filterRelated(gid, {
         model: 'Category',
         key: 'category_id',
-        sorted: 'sortByOrder'
+        sort: 'sortByOrder'
       });
     };
 
@@ -49801,6 +49753,13 @@ Released under the MIT License
   }
 
 }).call(this);
+}, "models/newjavascript": function(exports, require, module) {/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
 }, "models/photo": function(exports, require, module) {(function() {
   var $, AjaxRelations, Cache, Category, Clipboard, Dev, Extender, Filter, Model, Photo, Product, ProductsPhoto, Spine, Uri,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -49844,7 +49803,7 @@ Released under the MIT License
       return Photo.__super__.constructor.apply(this, arguments);
     }
 
-    Photo.configure("Photo", 'id', 'title', "photo", 'filesize', 'captured', 'exposure', "iso", 'longitude', 'aperture', 'software', 'model', 'user_id', 'active', 'src', 'selected');
+    Photo.configure("Photo", 'id', 'title', "photo", 'filesize', 'captured', 'exposure', "iso", 'longitude', 'aperture', 'software', 'model', 'order', 'user_id', 'active', 'src', 'selected');
 
     Photo.extend(Cache);
 
@@ -50028,7 +49987,7 @@ Released under the MIT License
       filterOptions = {
         model: 'Photo',
         key: 'photo_id',
-        sorted: 'sortByOrder'
+        sort: 'sortByOrder'
       };
       return Product.filterRelated(id, filterOptions);
     };
@@ -50071,7 +50030,7 @@ Released under the MIT License
       var i, len, record;
       for (i = 0, len = joinTableItems.length; i < len; i++) {
         record = joinTableItems[i];
-        if (record.photo_id === this.id && ((this['order'] = record.order) != null)) {
+        if (record.photo_id === this.id && ((this['order'] = parseInt(record.order)) != null)) {
           return true;
         }
       }
@@ -50228,7 +50187,7 @@ Released under the MIT License
       filterOptions = {
         model: 'Product',
         key: 'product_id',
-        sorted: 'sortByReverseOrder'
+        sort: 'sortByReverseOrder'
       };
       ret = Photo.filterRelated(id, filterOptions);
       ret.slice(0, max || ret.length);
@@ -50412,7 +50371,7 @@ Released under the MIT License
       var i, len, record;
       for (i = 0, len = joinTableItems.length; i < len; i++) {
         record = joinTableItems[i];
-        if (record.product_id === this.id && ((this['order'] = record.order) != null)) {
+        if (record.product_id === this.id && ((this['order'] = parseInt(record.order)) != null)) {
           return true;
         }
       }
@@ -50569,7 +50528,7 @@ Released under the MIT License
       return func = Photo.filterRelated(aid, {
         model: 'Product',
         key: 'product_id',
-        sorted: 'sortByOrder'
+        sort: 'sortByOrder'
       }).slice(0, max);
     };
 
@@ -50577,7 +50536,7 @@ Released under the MIT License
       return Product.filterRelated(pid, {
         model: 'Photo',
         key: 'photo_id',
-        sorted: 'sortByOrder'
+        sort: 'sortByOrder'
       }).slice(0, max);
     };
 

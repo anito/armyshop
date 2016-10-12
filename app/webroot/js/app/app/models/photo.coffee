@@ -14,7 +14,7 @@ Cache         = require("extensions/cache")
 require("spine/lib/ajax")
 
 class Photo extends Spine.Model
-  @configure "Photo", 'id', 'title', "photo", 'filesize', 'captured', 'exposure', "iso", 'longitude', 'aperture', 'software', 'model', 'user_id', 'active', 'src', 'selected'
+  @configure "Photo", 'id', 'title', "photo", 'filesize', 'captured', 'exposure', "iso", 'longitude', 'aperture', 'software', 'model', 'order', 'user_id', 'active', 'src', 'selected'
 
   @extend Cache
   @extend Model.Ajax
@@ -125,7 +125,7 @@ class Photo extends Spine.Model
     filterOptions =
       model: 'Photo'
       key:'photo_id'
-      sorted: 'sortByOrder'
+      sort: 'sortByOrder'
     Product.filterRelated(id, filterOptions)
   
   init: (instance) ->
@@ -150,7 +150,7 @@ class Photo extends Spine.Model
 
   select: (joinTableItems) ->
     for record in joinTableItems
-      return true if record.photo_id is @id and (@['order'] = record.order)?
+      return true if record.photo_id is @id and (@['order'] = parseInt(record.order))?
       
   select_: (joinTableItems) ->
     return true if @id in joinTableItems

@@ -66,7 +66,7 @@ class Product extends Spine.Model
     filterOptions =
       model: 'Product'
       key:'product_id'
-      sorted: 'sortByReverseOrder'
+      sort: 'sortByReverseOrder'
     ret = Photo.filterRelated(id, filterOptions)
     ret[0...max || ret.length]
     ret
@@ -179,7 +179,7 @@ class Product extends Spine.Model
   # loops over each record and make sure to set the copy property
   select: (joinTableItems) ->
     for record in joinTableItems
-      return true if record.product_id is @id and (@['order'] = record.order)?
+      return true if record.product_id is @id and (@['order'] = parseInt(record.order))?
       
   select_: (joinTableItems) ->
     return true if @id in joinTableItems

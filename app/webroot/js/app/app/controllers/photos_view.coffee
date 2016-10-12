@@ -26,9 +26,9 @@ class PhotosView extends Spine.Controller
     'click .item'                  : 'click'
     'sortupdate .items'            : 'sortupdate'
     
-#    'dragstart .item'              : 'dragstart'
-#    'dragstart'                    : 'stopInfo'
-#    'dragover .item'               : 'dragover'
+    'dragstart .item'              : 'dragstart'
+    'dragstart'                    : 'stopInfo'
+    'dragover .item'               : 'dragover'
     
     'mousemove .item'              : 'infoUp'
     'mouseleave  .item'            : 'infoBye'
@@ -60,7 +60,6 @@ class PhotosView extends Spine.Controller
       el: @itemsEl
       template: @template
       parent: @
-      slideshow: @slideshow
     @header.template = @headerTemplate
     @viewport = @list.el
     
@@ -91,7 +90,7 @@ class PhotosView extends Spine.Controller
     filterOptions =
       model: 'Product'
       key: 'product_id'
-      sorted: 'sortByOrder'
+      sort: 'sortByOrder'
     
     if product
       items = Photo.filterRelated(product.id, filterOptions)
@@ -109,7 +108,7 @@ class PhotosView extends Spine.Controller
     return unless @isActive() or force
     # if view is dirty but inactive we'll use the buffer next time
     @list.render(items || @updateBuffer(), mode)
-    @list.sortable() if Product.record
+    @list.sortable('photo') if Product.record
     delete @buffer
     @el
   
@@ -130,7 +129,6 @@ class PhotosView extends Spine.Controller
     @list.children().each (index) ->
       item = $(@).item()
       ap = ProductsPhoto.fromPhotoId(item.id)
-      console.log ap
       return unless ap
       ap.order = index
       ap.save(ajax:false)
@@ -138,7 +136,6 @@ class PhotosView extends Spine.Controller
       
     for item in items
       tmplItem = @list.update item
-      console.log tmplItem
     
   activateRecord: (ids) ->
     unless (ids)
@@ -265,8 +262,8 @@ class PhotosView extends Spine.Controller
     product.updateSelection()
     
   sortupdate: (e) ->
-#    $(e).preventDefault()
     f = @list.children().length-1
+    
     @list.children().each (index) ->
       idx = f-index
       item = $(@).item()

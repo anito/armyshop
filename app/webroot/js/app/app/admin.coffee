@@ -305,7 +305,7 @@ class Main extends Spine.Controller
       
   showIt: ->
     unless /^#\/category\//.test(location.hash)
-      @navigate '/category', Category.first().id
+      @navigate '/category', Category.first()?.id
       
   canvas: (controller) ->
     controller.trigger 'active'

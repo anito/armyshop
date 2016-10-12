@@ -32,14 +32,14 @@ class CategoriesProduct extends Spine.Model
     Category.filterRelated(aid,
       model: 'Product'
       key: 'product_id'
-      sorted: 'sortByOrder'
+      sort: 'sortByOrder'
     )
     
   @products: (gid) ->
     Product.filterRelated(gid,
       model: 'Category'
       key: 'category_id'
-      sorted: 'sortByOrder'
+      sort: 'sortByOrder'
     )
       
   @activeProducts: (gid) ->

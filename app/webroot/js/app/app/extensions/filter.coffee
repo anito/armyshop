@@ -17,13 +17,13 @@ Filter =
           item[opts.func] query, opts
           
       filterSortByOrder: (query, options) ->
-        @sortByOrder @filter query, options
+        (@filter query, options).sort(@sortByOrder)
           
       filterRelated: (id, options) ->
         model = @foreignModels()[options.model]
         joinTableItems = Model[model.joinTable].filter(id, options)
-        if sort = options?.sorted
-          @[sort] @filter joinTableItems
+        if sort = options?.sort
+          (@filter joinTableItems).sort(@[sort])
         else
           @filter joinTableItems
           
@@ -32,29 +32,20 @@ Filter =
         bb = (b or '').name?.toLowerCase()
         return if aa == bb then 0 else if aa < bb then -1 else 1
           
-      sortSelectionListByOrder: (list = @selectionList())->
-        list.sort (a, b) ->
-          aInt = parseInt(Product.find(a).order)
-          bInt = parseInt(Product.find(b).order)
-          if aInt < bInt then -1 else if aInt > bInt then 1 else 0
+      sortByOrder: (a, b) ->
+        aInt = parseInt(a.order)
+        bInt = parseInt(b.order)
+        if aInt < bInt then -1 else if aInt > bInt then 1 else 0
 
-      sortByOrder: (arr) ->
-        arr.sort (a, b) ->
-          aInt = parseInt(a.order)
-          bInt = parseInt(b.order)
-          if aInt < bInt then -1 else if aInt > bInt then 1 else 0
-
-      sortByReverseOrder: (arr) ->
-        arr.sort (a, b) ->
-          aInt = parseInt(a.order)
-          bInt = parseInt(b.order)
-          if aInt < bInt then 1 else if aInt > bInt then -1 else 0
-
-      sortByName: (arr) ->
-        arr.sort (a, b) ->
-          a = a._name
-          b = b._name
-          if a < b then -1 else if a > b then 1 else 0
+      sortByReverseOrder: (a, b) ->
+        aInt = parseInt(a.order)
+        bInt = parseInt(b.order)
+        if aInt < bInt then 1 else if aInt > bInt then -1 else 0
+          
+      sortByScreenName: (a, b) ->
+        a = a.screenname
+        b = b.screenname
+        if a < b then -1 else if a > b then 1 else 0
 
     include =
     

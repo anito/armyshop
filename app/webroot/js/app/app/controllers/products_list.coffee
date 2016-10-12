@@ -165,7 +165,7 @@ class ProductsList extends Spine.Controller
     @log 'processProductDeferred'
     deferred = $.Deferred()
     all = product.photos()
-    sorted = Photo.sortByReverseOrder all
+    sorted = all.sort Photo.sortByReverseOrder
     data = sorted.slice(0, 4)
     
     Photo.uri
