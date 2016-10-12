@@ -41115,7 +41115,7 @@ Released under the MIT License
       filterOptions = {
         model: 'Category',
         key: 'category_id',
-        sort: 'sortByOrder'
+        sort: 'sortByReverseOrder'
       };
       if (category) {
         items = Product.filterRelated(category.id, filterOptions);

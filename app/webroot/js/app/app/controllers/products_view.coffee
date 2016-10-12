@@ -112,7 +112,7 @@ class ProductsView extends Spine.Controller
     filterOptions =
       model: 'Category'
       key: 'category_id'
-      sort: 'sortByOrder'
+      sort: 'sortByReverseOrder'
     
     if category
       items = Product.filterRelated(category.id, filterOptions)
