@@ -39002,8 +39002,7 @@ Released under the MIT License
       'click .zoom': 'zoom',
       'click .rotate-cw': 'rotateCW',
       'click .rotate-ccw': 'rotateCCW',
-      'click .original': 'original',
-      'click li': 'test'
+      'click .original': 'original'
     };
 
     PhotosList.prototype.selectFirst = true;

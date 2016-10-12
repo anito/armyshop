@@ -28,7 +28,6 @@ class PhotosList extends Spine.Controller
     'click .rotate-cw'            : 'rotateCW'
     'click .rotate-ccw'           : 'rotateCCW'
     'click .original'             : 'original'
-    'click li'                    : 'test'
     
   selectFirst: true
 
