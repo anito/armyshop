@@ -35647,7 +35647,7 @@ Released under the MIT License
 
   Toolbar = require("models/toolbar");
 
-  Settings = require('models/admin_settings');
+  Settings = require('models/settings');
 
   SpineError = require("models/spine_error");
 
@@ -50778,9 +50778,11 @@ Released under the MIT License
     Settings.prototype.init = function(instance) {};
 
     Settings.findUserSettings = function() {
-      if (User.count()) {
-        return Settings.findByAttribute('user_id', User.first().id);
+      var user;
+      if (!(user = User.first())) {
+        return;
       }
+      return Settings.findByAttribute('user_id', User.first().id);
     };
 
     Settings.isAutoUpload = function() {
