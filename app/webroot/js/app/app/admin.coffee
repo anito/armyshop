@@ -221,7 +221,14 @@ class Main extends Spine.Controller
       test: true
     
     @loadToolbars()
+    @initLocation()
     
+  initLocation: ->
+    return unless settings = Settings.findUserSettings()
+    if hash = settings.hash then hash else '/home'
+    App.navigate(hash, '')
+
+  
   storeHash: ->
     return unless settings = Settings.findUserSettings()
     if hash = location.hash

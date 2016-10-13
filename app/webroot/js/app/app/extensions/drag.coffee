@@ -219,7 +219,7 @@ Controller.Drag =
             unless (origin.id != target.id)
               return false
 
-            items = CategoriesProduct.filter(target.id, key: 'category_id')
+            items = CategoriesProduct.filter(target.id, associationForeignKey: 'category_id')
             for item in items
               if item.product_id is source.id
                 return false
@@ -230,7 +230,7 @@ Controller.Drag =
             unless (origin.id != target.id)
               return false
 
-            items = ProductsPhoto.filter(target.id, key: 'product_id')
+            items = ProductsPhoto.filter(target.id, associationForeignKey: 'product_id')
             for item in items
               if item.photo_id is source.id
                 return false

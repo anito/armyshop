@@ -116,7 +116,7 @@ class SidebarList extends Spine.Controller
       
   renderSublists: (product) ->
     @log 'renderSublists'
-    gas = CategoriesProduct.filter(product.id, key: 'product_id')
+    gas = CategoriesProduct.filter(product.id, associationForeignKey: 'product_id')
     for ga in gas
       @renderOneSublist category if category = Category.find ga['category_id']
       
@@ -126,17 +126,8 @@ class SidebarList extends Spine.Controller
       
   renderOneSublist: (category = Category.record) ->
     @log 'renderOneSublist'
-    filterOptions =
-      model: 'Category'
-      key:'category_id'
-      sort: 'sortByOrder'
-      
-    products = Product.filterRelated(category.id, filterOptions)
-    for product in products
-      product.count = ProductsPhoto.filter(product.id, key: 'product_id').length
-      product.ignored = !(CategoriesProduct.isActiveProduct(category.id, product.id))
-      
-    products.push {flash: ' '} unless products.length
+    products = Category.products(category.id)
+    products.push {flash: 'keine Produkte'} unless products.length
     categoryEl = @children().forItem(category)
     categorySublist = $('ul', categoryEl)
     categorySublist.html @sublistTemplate(products)
@@ -164,14 +155,14 @@ class SidebarList extends Spine.Controller
     @renderOneSublist item
     
   renderProduct: (item) ->
-    gas = CategoriesProduct.filter(item.id, key: 'product_id')
+    gas = CategoriesProduct.filter(item.id, associationForeignKey: 'product_id')
     for ga in gas
       if category = Category.find ga.category_id
         @renderCategory category
     
   renderItemFromProductsPhoto: (ap) ->
     @log 'renderItemFromProductsPhoto'
-    gas = CategoriesProduct.filter(ap.product_id, key: 'product_id')
+    gas = CategoriesProduct.filter(ap.product_id, associationForeignKey: 'product_id')
     for ga in gas
       @renderItemFromCategoriesProduct ga
   

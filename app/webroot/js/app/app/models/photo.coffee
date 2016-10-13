@@ -14,6 +14,7 @@ Cache         = require("extensions/cache")
 require("spine/lib/ajax")
 
 class Photo extends Spine.Model
+
   @configure "Photo", 'id', 'title', "photo", 'filesize', 'captured', 'exposure', "iso", 'longitude', 'aperture', 'software', 'model', 'order', 'user_id', 'active', 'src', 'selected'
 
   @extend Cache
@@ -24,7 +25,7 @@ class Photo extends Spine.Model
   @extend Filter
   @extend Extender
 
-  @selectAttributes: ['title', "photo", 'user_id']
+  @selectAttributes: ['title', "photo", 'user_id', 'order']
   
   @parent: 'Product'
   
@@ -115,7 +116,7 @@ class Photo extends Spine.Model
     
     items = items.toID()
     for id in items
-      aps = ProductsPhoto.filter(id, key: 'photo_id')
+      aps = ProductsPhoto.filter(id, associationForeignKey: 'photo_id')
       ap = ProductsPhoto.productPhotoExists(id, target.id)
       ap.destroy(done: cb) if ap
       
@@ -124,9 +125,12 @@ class Photo extends Spine.Model
   @products: (id) ->
     filterOptions =
       model: 'Photo'
-      key:'photo_id'
       sort: 'sortByOrder'
+      
     Product.filterRelated(id, filterOptions)
+
+  @findRelated: (joins = [], joinid = '') ->
+    record for join in joins when (record = @find(join[joinid])) and !!typeof(record.order = join.order)
   
   init: (instance) ->
     return unless instance?.id
@@ -149,11 +153,7 @@ class Photo extends Spine.Model
     result
 
   select: (joinTableItems) ->
-    for record in joinTableItems
-      return true if record.photo_id is @id and (@['order'] = parseInt(record.order))?
-      
-  select_: (joinTableItems) ->
-    return true if @id in joinTableItems
+    return true for record in joinTableItems when record.photo_id is @id and (@['order'] = parseInt(record.order))?
       
   selectPhoto: (id) ->
     return true if @id is id

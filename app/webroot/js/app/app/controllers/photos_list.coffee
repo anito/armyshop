@@ -40,7 +40,6 @@ class PhotosList extends Spine.Controller
     Spine.bind('slider:start', @proxy @sliderStart)
     Spine.bind('slider:change', @proxy @size)
     Spine.bind('rotate', @proxy @rotate)
-#    Photo.bind('update', @proxy @update)
     Product.bind('ajaxError', Product.errorHandler)
     Product.bind('change:selection', @proxy @exposeSelection)
     ProductsPhoto.bind('change', @proxy @changeRelated)
@@ -57,12 +56,12 @@ class PhotosList extends Spine.Controller
         @wipe()
         
         @el.prepend @template item
-        @updateTemplate item
+        @refreshElements()
         @size(App.showView.sOutValue)
         @el.sortable('destroy').sortable('photo')
         $('.dropdown-toggle', @el).dropdown()
-        
         @callDeferred [item]
+#        @updateTemplate item
         
       when 'destroy'
         el = @findModelElement(item)
@@ -73,7 +72,7 @@ class PhotosList extends Spine.Controller
     
     @refreshElements()
     @el
-    
+  
   render: (items=[], mode) ->
     @log 'PhotosList::render ' + mode
     
@@ -102,7 +101,7 @@ class PhotosList extends Spine.Controller
         <div class="enlightened">Es sind keine Fotos vorhanden &nbsp;</div><br>
         <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button>
         </label>'
-      
+    
     @el
   
   renderAll: ->
@@ -126,30 +125,27 @@ class PhotosList extends Spine.Controller
     @el
 
   updateTemplate: (item) ->
-    helper =
-      refresh: =>
-        el = @children().forItem(item, true)
-        tb = $('.thumbnail', el)
-        el: el
-        tb: tb
-
-    elements = helper.refresh()
-    css = elements.tb.attr('style')
-    active = elements.el.hasClass('active')
-    hot = elements.el.hasClass('hot')
+    console.log item.title
+    el = @children().forItem(item)
+    tb = $('.thumbnail', el)
     
-    tmplItem = elements.el.tmplItem()
+    css = tb.attr('style')
+    active = el.hasClass('active')
+    hot = el.hasClass('hot')
+    
+    tmplItem = el.tmplItem()
     tmplItem.data = item
     try
       tmplItem.update()
     catch e
     
-    elements = helper.refresh()
-    elements.tb.attr('style', css).addClass('in')
-    elements.el.toggleClass('active', active)
-    elements.el.toggleClass('hot', hot)
+    el = @children().forItem(item)
+    tb = $('.thumbnail', el)
+    
+    tb.attr('style', css).addClass('in')
+    el.toggleClass('active', active)
+    el.toggleClass('hot', hot)
     @el.sortable('destroy').sortable('photos')
-    @refreshElements()
     tmplItem
   
   thumbSize: (width, height) ->

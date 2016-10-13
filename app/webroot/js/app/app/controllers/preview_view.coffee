@@ -55,7 +55,7 @@ class PreviewView extends Spine.Controller
     @render() 
     
   changedRelatedPhoto: (item) ->
-    item = Product.photos(item.product_id).first()
+    item = Product.find(item.product_id)
     if item isnt @current then @change item
     
   item: (item) ->

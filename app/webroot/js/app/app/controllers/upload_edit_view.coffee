@@ -86,6 +86,7 @@ class UploadEditView extends Spine.Controller
   done: (e, data) ->
     product = Product.find(@data.link)
     raws = $.parseJSON(data.jqXHR.responseText)
+    console.log raws
     selection = []
     photos = []
     photos.push new Photo(raw['Photo']).save(ajax: false) for raw in raws

@@ -15,7 +15,7 @@ class Settings extends Spine.Model
   init: (instance) ->
   
   @findUserSettings: ->
-    Settings.findByAttribute('user_id', User.first().id)
+    Settings.findByAttribute('user_id', User.first().id) if User.count()
   
   @isAutoUpload: ->
     return unless user = User.first()

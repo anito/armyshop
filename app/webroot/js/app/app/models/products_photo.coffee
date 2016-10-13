@@ -30,7 +30,7 @@ class ProductsPhoto extends Spine.Model
     aps[0] or false
     
   @productsPhotos: (aid) ->
-    aps = @filter aid, key: 'product_id'
+    aps = @filter aid, associationForeignKey: 'product_id'
     
   @productPhotos: (aid) ->
     ret = []
@@ -44,14 +44,12 @@ class ProductsPhoto extends Spine.Model
   @photos: (aid, max) ->
     func = Photo.filterRelated(aid,
       model: 'Product'
-      key: 'product_id'
       sort: 'sortByOrder'
     ).slice(0, max)
     
   @products: (pid, max) ->
     Product.filterRelated(pid,
       model: 'Photo'
-      key: 'photo_id'
       sort: 'sortByOrder'
     ).slice(0, max)
 
@@ -73,13 +71,13 @@ class ProductsPhoto extends Spine.Model
     product = Product.record
     return unless product
     photos = []
-    aps = ProductsPhoto.filter(product.id, key:'product_id')
+    aps = ProductsPhoto.filter(product.id, associationForeignKey:'product_id')
     for ap in aps
       photos.push Photo.find(ap.product_id) if Photo.exists(ap.product_id)
     photos
 
   select: (id, options) ->
-    return true if @[options.key] is id
+    return true if @[options.associationForeignKey] is id
     
   selectByPhotoId: (id) ->
     return true if @photo_id is id and @product_id is Product.record.id

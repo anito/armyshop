@@ -89,6 +89,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       Spine.Route = require('spine/lib/route');
       
       exports.App = new Main({el: $("body")});
+      User.ping()
       
       Description.refresh(descriptions, {clear: true});
       Photo.refresh(photos, {clear: true});
@@ -96,7 +97,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       Category.refresh(categories, {clear: true});
       
       Spine.Route.setup()
-      App.navigate('/home', '')
+      
       startScript()
       
     });

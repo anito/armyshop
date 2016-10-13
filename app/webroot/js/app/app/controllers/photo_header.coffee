@@ -43,7 +43,7 @@ class PhotoHeader extends Spine.Controller
     
   count: ->
     if Product.record
-      ProductsPhoto.filter(Product.record.id, key: 'product_id').length
+      ProductsPhoto.filter(Product.record.id, associationForeignKey: 'product_id').length
     else
       Photo.count()
     

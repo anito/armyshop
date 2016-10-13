@@ -72,8 +72,9 @@ class ProductsView extends Spine.Controller
     CategoriesProduct.bind('destroy', @proxy @destroyCategoriesProduct)
     CategoriesProduct.bind('ignored', @proxy @ignoreProduct)
     
+    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
+    
     Product.bind('create', @proxy @create)
-    Product.bind('refresh:one', @proxy @refreshOne)
     Product.bind('ajaxError', Product.errorHandler)
     Product.bind('beforeDestroy', @proxy @beforeDestroyProduct)
     Product.bind('destroy', @proxy @destroy)
@@ -101,7 +102,7 @@ class ProductsView extends Spine.Controller
     @el.removeClass('active')
     @
     
-  refreshOne: ->
+  bindRefresh: ->
     Product.one('refresh', @proxy @refresh)
     
   refresh: ->
@@ -111,11 +112,10 @@ class ProductsView extends Spine.Controller
   updateBuffer: (category=Category.record) ->
     filterOptions =
       model: 'Category'
-      key: 'category_id'
       sort: 'sortByReverseOrder'
     
     if category
-      items = Product.filterRelated(category.id, filterOptions)
+      items = Category.products(category.id, filterOptions)
     else
       items = Product.filter()
     

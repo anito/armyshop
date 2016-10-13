@@ -31,22 +31,20 @@ class CategoriesProduct extends Spine.Model
   @categories: (aid) ->
     Category.filterRelated(aid,
       model: 'Product'
-      key: 'product_id'
       sort: 'sortByOrder'
     )
     
   @products: (gid) ->
     Product.filterRelated(gid,
       model: 'Category'
-      key: 'category_id'
       sort: 'sortByOrder'
     )
       
-  @activeProducts: (gid) ->
-    @filter(gid, {key: 'category_id', func: 'selectNotIgnored'})
+  @publishedProducts: (gid) ->
+    @filter(gid, {associationForeignKey: 'category_id', func: 'selectNotIgnored'})
       
-  @inactiveProducts: (gid) ->
-    @filter(gid, {key: 'category_id', func: 'selectIgnored'})
+  @unpublishedProducts: (gid) ->
+    @filter(gid, {associationForeignKey: 'category_id', func: 'selectIgnored'})
       
   @photos: (id) ->
     ret = []
@@ -62,7 +60,7 @@ class CategoriesProduct extends Spine.Model
     ret
       
   @isActiveProduct: (gid, aid) ->
-    gas = @filter(gid, {key: 'category_id', func: 'selectNotIgnored'})
+    gas = @filter(gid, {associationForeignKey: 'category_id', func: 'selectNotIgnored'})
     for ga in gas
       return !ga.ignored if ga.product_id is aid
     return false
@@ -86,7 +84,7 @@ class CategoriesProduct extends Spine.Model
     category = Category.record
     return unless category
     products = []
-    gas = CategoriesProduct.filter(category.id, key:'category_id')
+    gas = CategoriesProduct.filter(category.id, associationForeignKey:'category_id')
     for ga in gas
       products.push Product.find(ga.product_id) if Product.exists(ga.product_id)
     products
@@ -95,7 +93,7 @@ class CategoriesProduct extends Spine.Model
     @constructor.isActiveProduct @category_id, aid
       
   select: (id, options) ->
-    return true if @[options.key] is id
+    return true if @[options.associationForeignKey] is id
     
   selectProduct: (id, gid) ->
     return true if @product_id is id and @category_id is Category.record.id

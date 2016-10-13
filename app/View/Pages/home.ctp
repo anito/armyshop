@@ -112,6 +112,7 @@
 </script>
 
 <script id="norbuPricingTemplate" type="text/x-tmpl">
+  {{if !product.ignored}}
   <div class="pricing__item">
     <h3 class="pricing__title">${product.title}</h3>
     <p class="pricing__sentence">${product.subtitle}</p>
@@ -125,6 +126,7 @@
     </div>
     <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">Zum Shop</a>
   </div>
+  {{/if}}
 </script>
 
 <script id="norbuImageListTemplate" type="text/x-tmpl">
@@ -136,6 +138,6 @@
 </script>
 
 <script id="refreshTemplate" type="text/x-tmpl">
-  <a href="${location.hash}" class="opt-ref"><i class="glyphicon glyphicon-${icon}"></i></a>
+  <a href="${location.hash}" class="opt-Refresh"><i class="glyphicon glyphicon-${icon}"></i></a>
 </script>
 

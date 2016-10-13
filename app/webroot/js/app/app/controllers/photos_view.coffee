@@ -71,8 +71,9 @@ class PhotosView extends Spine.Controller
     ProductsPhoto.bind('beforeDestroy', @proxy @beforeDestroyProductsPhoto)
     CategoriesProduct.bind('destroy', @proxy @backToProductView)
     
-    Photo.bind('refresh:one', @proxy @refreshOne)
-    Photo.bind('created', @proxy @add)
+    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
+    
+    Photo.bind('create', @proxy @add)
     Photo.bind('destroy', @proxy @destroy)
     Photo.bind('beforeDestroy', @proxy @beforeDestroyPhoto)
     Photo.bind('create:join', @proxy @createJoin)
@@ -83,23 +84,18 @@ class PhotosView extends Spine.Controller
     Spine.bind('destroy:photo', @proxy @destroyPhoto)
     Spine.bind('loading:done', @proxy @updateBuffer)
     
-  refreshOne: ->
-    Photo.one('refresh', @proxy @refresh)
+  bindRefresh: ->
+    Product.one('refresh', @proxy @refresh)
     
   updateBuffer: (product=Product.record) ->
-    filterOptions =
-      model: 'Product'
-      key: 'product_id'
-      sort: 'sortByOrder'
-    
     if product
-      items = Photo.filterRelated(product.id, filterOptions)
+      items = Product.photos(product.id)
     else
       items = Photo.filter()
       
     @buffer = items
   
-  refresh: ->
+  refresh: (d) ->
     @updateBuffer()
     @render @buffer, 'html', true
   
@@ -238,12 +234,13 @@ class PhotosView extends Spine.Controller
     @add photo
   
   add: (photos) ->
-    unless Photo.isArray photos
+    unless Array.isArray photos
       photos = [photos]
     Product.updateSelection(photos.toID())
-    @list.wipe() unless Product.record
-    @render(photos, 'append')
-    @list.el.sortable('destroy').sortable('photos')
+    unless Product.record
+      @list.wipe() 
+      @render(photos, 'append')
+      @list.el.sortable('destroy').sortable('photos')
       
   createJoin: (options, cb) ->
     Photo.createJoin options.photos, options.product, cb
@@ -262,15 +259,18 @@ class PhotosView extends Spine.Controller
     product.updateSelection()
     
   sortupdate: (e) ->
+    console.log 'sortupdate'
     f = @list.children().length-1
     
     @list.children().each (index) ->
       idx = f-index
       item = $(@).item()
       if item and Product.record
+        console.log item.title
         ap = ProductsPhoto.fromPhotoId(item.id)
         if ap and parseInt(ap.order) isnt idx
           ap.order = idx
+          console.log 'save'
           ap.save(ajax:false)
         # set a *invalid flag*, so when we return to products cover view, thumbnails will be regenerated
         Product.record.invalid = true

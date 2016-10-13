@@ -6,6 +6,7 @@ class Info extends Spine.Controller
   constructor: ->
     super
     @el.addClass('away').removeClass('in')
+    @parent = @el.parent()
     
   render: (item) ->
     @html @template item
@@ -43,8 +44,8 @@ class Info extends Spine.Controller
     t=$(window).scrollTop()
     x_offset = 10
     y_offset = 10
-    posx=e.pageX+x_offset
-    posy=e.pageY+y_offset
+    posx=e.pageX+x_offset-@parent.offset().left
+    posy=e.pageY+y_offset-@parent.offset().top
     maxx=posx+info_w
     minx=posx-info_w
     maxy=posy+info_h

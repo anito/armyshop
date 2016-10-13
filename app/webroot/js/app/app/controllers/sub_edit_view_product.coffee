@@ -18,9 +18,9 @@ class SubEditViewProduct extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
-    Product.bind('refresh:one', @proxy @refreshOne)
+    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     
-  refreshOne: ->
+  bindRefresh: ->
     Product.one('refresh', @proxy @refresh)
     
   refresh: ->

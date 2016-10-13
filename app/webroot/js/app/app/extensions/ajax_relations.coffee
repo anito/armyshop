@@ -30,7 +30,7 @@ class Builder
 
       for key in @fModels
         foreignRecords = Model[key.joinTable].filter @record.id,
-          key: key.foreignKey
+          associationForeignKey: key.foreignKey
         
         @data[key.joinTable] = foreignRecords
     

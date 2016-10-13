@@ -92,7 +92,6 @@ class UploadsController extends AppController {
                   $this->request->data['Photo']['longitude'] = $longitude;
                   $this->request->data['Photo']['aperture'] = $aperture;
                   $this->request->data['Photo']['model'] = $model;
-                  $this->request->data['Photo']['order'] = -1;
                   $this->request->data['Photo']['title'] = "";
 
                 }
