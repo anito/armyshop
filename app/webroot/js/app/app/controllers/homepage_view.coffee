@@ -43,7 +43,7 @@ class HomepageView extends Spine.Controller
     return unless @current
     
     items = []
-    products = Category.publishedProducts @current.id
+    products = Model.CategoriesProduct.publishedProducts @current.id
     items.push @item(product) for product in products
     
     @list.render(items)

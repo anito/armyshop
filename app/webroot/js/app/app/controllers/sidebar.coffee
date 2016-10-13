@@ -68,7 +68,7 @@ class Sidebar extends Spine.Controller
       
     Category.one('refresh', @proxy @refresh)
     
-    Category.bind('refresh:one', @proxy @refreshOne)
+    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     Category.bind("ajaxError", Category.errorHandler)
     Category.bind("ajaxSuccess", Category.successHandler)
     
@@ -93,12 +93,11 @@ class Sidebar extends Spine.Controller
   refresh: (items) ->
     @render()
     
-  refreshOne: ->
+  bindRefresh: ->
     Category.one('refresh', @proxy @refresh)
     
   render: () ->
     items = Category.filter(@query, func: 'searchSelect')
-    console.log items
     items = items.sort Category.sortByScreenName
     Category.trigger('refresh:category') #rerenders CategoryView
     @list.render items
@@ -181,7 +180,8 @@ class Sidebar extends Spine.Controller
   sortupdate: (e, o) ->
     list = o.item.parent()
     category = list.parent().item()
-    gas = CategoriesProduct.filter(category.id, key: 'category_id')
+    gas = CategoriesProduct.filter(category.id, associationForeignKey: 'category_id')
+    console.log gas
     result = []
     list.children().each (index) ->
       product = $(@).item()

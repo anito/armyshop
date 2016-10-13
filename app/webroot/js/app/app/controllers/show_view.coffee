@@ -456,7 +456,7 @@ class ShowView extends Spine.Controller
     products = Category.selectionList()
     for aid in products
       if product = Product.find aid
-        aps = ProductsPhoto.filter(product.id, key: 'product_id')
+        aps = ProductsPhoto.filter(product.id, associationForeignKey: 'product_id')
         for ap in aps
           ap.destroy()
     
@@ -741,6 +741,8 @@ class ShowView extends Spine.Controller
   showProducts: (e) ->
     if Category.record
       @navigate '/category', Category.record.id
+    else
+      @navigate '/category', ''
       
     e.preventDefault()
     e.stopPropagation()
@@ -983,7 +985,7 @@ class ShowView extends Spine.Controller
           noProductsView        : !(!Category.record and @productsView.isActive())
           productsCount         : CategoriesProduct.products(Category.record?.id).length
           photosCount         : CategoriesProduct.photos(Category.record?.id).length
-          activeProductsCount   : CategoriesProduct.activeProducts(Category.record?.id).length
+          activeProductsCount   : CategoriesProduct.publishedProducts(Category.record?.id).length
           activePhotosCount   : App.activePhotos().length
           bs_version          : $.fn.tooltip.Constructor.VERSION
       modalOptions:

@@ -96,7 +96,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       Category.refresh(categories, {clear: true});
       
       Spine.Route.setup()
-      App.navigate('/home', '')
+      
       startScript()
       
     });

@@ -50,16 +50,17 @@ class Category extends Spine.Model
   @products: (id) ->
     filterOptions =
       model: 'Category'
-      key:'category_id'
-      sorted: 'sortByReverseOrder'
+      sort: 'sortByOrder'
+    printOrder = (arr) ->
+      i.order for i in arr
+      
     Product.filterRelated(id, filterOptions)
     
   @publishedProducts: (id) ->
     filterOptions =
       model: 'Category'
-      key:'category_id'
       func: 'selectNotIgnored'
-      sorted: 'sortByOrder'
+      sort: 'sortByOrder'
     Product.filterRelated(id, filterOptions)
 
   @selectedProductsHasPhotos: ->
@@ -71,12 +72,13 @@ class Category extends Spine.Model
   @activePhotos: (id = @record?.id) ->
     ret = []
     if id
-      gas = CategoriesProduct.filter(id, {key: 'category_id', func: 'selectNotIgnored'})
+      gas = CategoriesProduct.filter(id, {associationForeignKey: 'category_id', func: 'selectNotIgnored'})
       search = 'product_id'
     else
       ids = Category.selectionList()
       gas = Product.toRecords(ids)
       search = 'id'
+      
     for ga in gas
       product = Product.find ga[search]
       photos = product.photos() or []
@@ -88,7 +90,7 @@ class Category extends Spine.Model
     products = Product.all()
     imagesCount = 0
     for product in products
-      imagesCount += product.count = ProductsPhoto.filter(product.id, key: 'product_id').length
+      imagesCount += product.count = ProductsPhoto.filter(product.id, associationForeignKey: 'product_id').length
     
     $().extend @defaultDetails,
       gCount: Category.count()
@@ -111,7 +113,7 @@ class Category extends Spine.Model
     products = Category.products(@id)
     imagesCount = 0
     for product in products
-      imagesCount += product.count = ProductsPhoto.filter(product.id, key: 'product_id').length
+      imagesCount += product.count = ProductsPhoto.filter(product.id, associationForeignKey: 'product_id').length
     $().extend @defaultDetails,
       name: @name
       iCount: imagesCount
@@ -123,7 +125,7 @@ class Category extends Spine.Model
   count_: (inc = 0) ->
     filterOptions =
       model: 'Category'
-      key:'category_id'
+      
     Product.filterRelated(@id, filterOptions).length + inc
     
   count: (inc = 0) ->

@@ -108,13 +108,12 @@ class ProductsList extends Spine.Controller
     contentEl = $('.thumbnail', productEl)
     active = productEl.hasClass('active')
     hot = productEl.hasClass('hot')
-    
     style = contentEl.attr('style')
+    
     tmplItem = productEl.tmplItem()
     tmplItem.data = item
-    try
-      tmplItem.update()
-    catch e
+    tmplItem.update?()
+    
     productEl = @children().forItem(item)
     contentEl = $('.thumbnail', productEl)
     productEl.toggleClass('active', active)

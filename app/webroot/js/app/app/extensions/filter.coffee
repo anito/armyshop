@@ -20,13 +20,15 @@ Filter =
         (@filter query, options).sort(@sortByOrder)
           
       filterRelated: (id, options) ->
-        model = @foreignModels()[options.model]
-        joinTableItems = Model[model.joinTable].filter(id, options)
+        definition = @foreignModels()[options.model]
+        model = definition.model
+        foreignKey = definition.foreignKey
+        joinTableItems = Model[definition.joinTable].filter(id, definition)
+        ret = @findRelated(joinTableItems, foreignKey)
         if sort = options?.sort
-          (@filter joinTableItems).sort(@[sort])
-        else
-          @filter joinTableItems
-          
+          return ret.sort(@[sort])
+        ret
+        
       nameSort: (a, b) ->
         aa = (a or '').name?.toLowerCase()
         bb = (b or '').name?.toLowerCase()

@@ -11,8 +11,7 @@ class RefreshView extends Spine.Controller
     'button'              : 'logoutEl'
 
   events:
-    'click .opt-ref'        : 'refresh'
-    
+    'click .opt-Refresh'        : 'refresh'
     
   template:  (icon = 'repeat') ->
     $('#refreshTemplate').tmpl icon: icon
@@ -27,10 +26,10 @@ class RefreshView extends Spine.Controller
     @fetchAll()
     
   fetchAll: ->
-    Description.fetch(null, clear:true)
     Photo.fetch(null, clear:true)
     Product.fetch(null, clear:true)
     Category.fetch(null, clear:true)
+    Description.fetch(null, clear:true)
     
   render: (icon) ->
     @html @template icon

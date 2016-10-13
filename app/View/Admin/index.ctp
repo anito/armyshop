@@ -649,7 +649,7 @@
       <div class="header-title">
         {{if model.record}}
         <h3>
-        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</span>
+        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
         </h3>
         <h3>
         {{if modelProduct.record}}
@@ -682,7 +682,7 @@
       <div class="header-title">
         {{if product}}
         <h3>
-        <span class="label label-default"><a class="opt-ShowProducts">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</a></span>
+        <span class="label label-default"><a class="opt-ShowProducts">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</a></span>
         </h3>
         <h3 style="display: inline-block;">
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
@@ -835,7 +835,7 @@
 <script id="photosTemplate" type="text/x-jquery-tmpl">
   <li  id="${id}" data-id="${id}" class="item data fade in pho-trigger-edit" draggable="true">
     {{tmpl "#photosThumbnailTemplate"}}
-    <div class="center order" style="color: aliceblue">${order}</div>
+    <div class="center order hide" style="color: aliceblue">{{if order}}${order}{{else}}0{{/if}}</div>
   </li>
 </script>
 

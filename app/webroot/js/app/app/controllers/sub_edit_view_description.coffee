@@ -26,7 +26,7 @@ class SubEditViewDescription extends Spine.Controller
     super
     @bind('active', @proxy @active)
     Description.bind('destroy', @proxy @destroy)
-    Description.bind('refresh:one', @proxy @refreshOne)
+    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     
   newAttributes: (object={}) ->
     if (user_id = User.first()?.id) and (product_id = @parent.current.id)
@@ -40,7 +40,7 @@ class SubEditViewDescription extends Spine.Controller
     else
       User.ping()
     
-  refreshOne: ->
+  bindRefresh: ->
     Description.one('refresh', @proxy @refresh)
     
   refresh: ->

@@ -43,7 +43,7 @@ class ProductsHeader extends Spine.Controller
     if Category.record
       filterOptions =
         model: 'Category'
-        key:'category_id'
+        
       Product.filterRelated(Category.record.id, filterOptions).length
     else
       Product.filter()

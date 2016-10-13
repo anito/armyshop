@@ -14,7 +14,7 @@ require("spine/lib/ajax")
 
 class Product extends Spine.Model
 
-  @configure "Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'invalid', 'active', 'selected'
+  @configure "Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'ignored', 'order', 'invalid', 'active', 'selected'
 
   @extend Model.Cache
   @extend Model.Ajax
@@ -65,7 +65,6 @@ class Product extends Spine.Model
   @photos: (id, max) ->
     filterOptions =
       model: 'Product'
-      key:'product_id'
       sort: 'sortByReverseOrder'
     ret = Photo.filterRelated(id, filterOptions)
     ret[0...max || ret.length]
@@ -117,7 +116,7 @@ class Product extends Spine.Model
     
     items = items.toID()
     for id in items
-      gas = CategoriesProduct.filter(id, key: 'product_id')
+      gas = CategoriesProduct.filter(id, associationForeignKey: 'product_id')
       ga = CategoriesProduct.categoryProductExists(id, target.id)
       ga.destroy(done: cb) if ga
       
@@ -143,6 +142,9 @@ class Product extends Spine.Model
     @each (item) ->
       ret.push item unless item.photos().length
     ret
+  
+  @findRelated: (joins = [], joinid = '') ->
+    record for join in joins when (record = @find(join[joinid])) and !!(typeof(record.order = join.order) and !!typeof(record.ignored = join.ignored))
       
   init: (instance) ->
     return unless id = instance.id
@@ -179,7 +181,7 @@ class Product extends Spine.Model
   # loops over each record and make sure to set the copy property
   select: (joinTableItems) ->
     for record in joinTableItems
-      return true if record.product_id is @id and (@['order'] = parseInt(record.order))?
+      return true if record.product_id is @id and (@['order'] = parseInt(record.order))? and (@['ignored'] = !!record.ignored )?
       
   select_: (joinTableItems) ->
     return true if @id in joinTableItems
