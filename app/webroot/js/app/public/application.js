@@ -37230,7 +37230,7 @@ Released under the MIT License
         return;
       }
       items = [];
-      products = Model.CategoriesProduct.publishedProducts(this.current.id);
+      products = Category.products(this.current.id);
       for (i = 0, len = products.length; i < len; i++) {
         product = products[i];
         items.push(this.item(product));
@@ -50778,7 +50778,9 @@ Released under the MIT License
     Settings.prototype.init = function(instance) {};
 
     Settings.findUserSettings = function() {
-      return Settings.findByAttribute('user_id', User.first().id);
+      if (User.count()) {
+        return Settings.findByAttribute('user_id', User.first().id);
+      }
     };
 
     Settings.isAutoUpload = function() {
