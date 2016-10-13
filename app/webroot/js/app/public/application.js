@@ -50778,8 +50778,7 @@ Released under the MIT License
     Settings.prototype.init = function(instance) {};
 
     Settings.findUserSettings = function() {
-      var ref;
-      return Settings.findByAttribute('user_id', (ref = User.first()) != null ? ref.id : void 0);
+      return Settings.findByAttribute('user_id', User.first().id);
     };
 
     Settings.isAutoUpload = function() {
