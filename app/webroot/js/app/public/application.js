@@ -48715,57 +48715,6 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/admin_settings": function(exports, require, module) {(function() {
-  var $, Log, Model, Settings, Spine,
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
-
-  Spine = require('spine');
-
-  $ = Spine.$;
-
-  Model = Spine.Model;
-
-  Log = Spine.Log;
-
-  require('spine/lib/local');
-
-  Settings = (function(superClass) {
-    extend(Settings, superClass);
-
-    function Settings() {
-      return Settings.__super__.constructor.apply(this, arguments);
-    }
-
-    Settings.configure('Settings', 'id', 'user_id', 'autoupload', 'hash', 'previousHash');
-
-    Settings.extend(Model.Local);
-
-    Settings.include(Log);
-
-    Settings.prototype.init = function(instance) {};
-
-    Settings.findUserSettings = function() {
-      return Settings.findByAttribute('user_id', User.first().id);
-    };
-
-    Settings.isAutoUpload = function() {
-      var ret, setting, user;
-      if (!(user = User.first())) {
-        return;
-      }
-      setting = this.findByAttribute('user_id', user.id);
-      ret = (setting != null ? setting.autoupload : void 0) || false;
-      return ret;
-    };
-
-    return Settings;
-
-  })(Spine.Model);
-
-  module.exports = Model.Settings = Settings;
-
-}).call(this);
 }, "models/categories_product": function(exports, require, module) {(function() {
   var $, CategoriesProduct, Extender, Filter, Model, Photo, ProductsPhoto, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
