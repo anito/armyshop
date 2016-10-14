@@ -32,21 +32,15 @@ class CategoriesController extends AppController {
 	public function index() {
 		$this->Category->recursive = 1;
     
-    if(isset($this->Auth->user)) {
+    if ($this->Auth->user()) {
       $user_id = $this->Auth->user('id');
     } else {
-      $user = $this->User->find('first', array(
-          'conditions' => array('User.username' => DEFAULT_USER)
-      ));
-      if(!empty($user['User']['id'])) {
-        $user_id = $user['User']['id'];
-      }
+      $user = $this->User->find('first', array('conditions' => array('User.username' => DEFAULT_USER)));
+      $user_id = $user['User']['id'];
     }
     
-    
-    
-    $categories = $this->Category->findAllByUser_id((string)($user_id));
-    $this->set('_serialize', $categories);
+    $return = $this->Category->findAllByUser_id((string)($user_id));
+    $this->set('_serialize', $return);
     $this->render(SIMPLE_JSON);
 	}
 

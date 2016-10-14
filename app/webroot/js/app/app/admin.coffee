@@ -93,6 +93,7 @@ class Main extends Spine.Controller
     @arr = ['false', 'outdoor', 'defense', 'goodies']
     
     User.bind('pinger', @proxy @validate)
+    $(window).bind('hashchange', @proxy @storeHash)
     
     #reset clipboard
     Clipboard.fetch()
@@ -168,7 +169,6 @@ class Main extends Spine.Controller
       awake: ->
 #        controller.el.show() if controller = @manager.active()
     
-    $(window).bind('hashchange', @proxy @storeHash)
     @modal = exists: false
     
     @appManager = new Spine.Manager(@mainView, @loaderView)
@@ -226,7 +226,7 @@ class Main extends Spine.Controller
   initLocation: ->
     settings = Settings.loadSettings()
     if hash = settings?.hash then hash else '/admin'
-    @navigate(hash, '')
+    location.hash
     
   storeHash: ->
     return unless settings = Settings.loadSettings()

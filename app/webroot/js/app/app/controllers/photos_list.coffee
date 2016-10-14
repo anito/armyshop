@@ -175,7 +175,7 @@ class PhotosList extends Spine.Controller
       
     deferred.promise()
   
-  callback: (json, items) =>  
+  callback: (json, items) =>
     result = for jsn in json
       ret = for key, val of jsn
         src: val.src
@@ -205,7 +205,6 @@ class PhotosList extends Spine.Controller
     @thumb.addClass('in')
     
   onError: (e) ->
-    @this.snap @res
     
   photos: (mode) ->
     if mode is 'add' or !Product.record

@@ -15,6 +15,7 @@ class Login extends Spine.Controller
     '#infoTemplate'             : 'infoTemplate'
     '#login .dialogue-content'  : 'contentEl'
     '#loader'                   : 'loader'
+    '.guest'                    : 'btnGuest'
     
   events:
     'keypress'          : 'submitOnEnter'
@@ -32,6 +33,8 @@ class Login extends Spine.Controller
       @render @flashEl, @flashTemplate, lastError 
       @render @infoEl, @infoTemplate, lastError if lastError.record
     SpineError.destroyAll()
+    
+    @renderGuestLogin()
     
   render: (el, tmpl, item) ->  
     el.html @template tmpl, item
@@ -58,7 +61,6 @@ class Login extends Spine.Controller
     user.save()
     @render(@flashEl, @flashTemplate, json)
     delayedFunc = ->
-      @log json.User
       User.redirect 'admin' + location.hash
     @contentEl.addClass('fade500')
     @delay delayedFunc, 500
@@ -80,6 +82,10 @@ class Login extends Spine.Controller
   cancel: (e) ->
     User.redirect()
     e.preventDefault()
+    
+  renderGuestLogin: ->
+    unless Spine.isProduction
+      @btnGuest.removeClass('hide')
     
   guestLogin: ->
     @usernameEl.val('guest')

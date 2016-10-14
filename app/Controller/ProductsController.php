@@ -36,19 +36,15 @@ class ProductsController extends AppController {
 	public function index() {
 		$this->Product->recursive = 1;
     
-    if(isset($this->Auth->user)) {
+    if ($this->Auth->user()) {
       $user_id = $this->Auth->user('id');
     } else {
-      $user = $this->User->find('first', array(
-          'conditions' => array('User.username' => DEFAULT_USER)
-      ));
-      if(!empty($user['User']['id'])) {
-        $user_id = $user['User']['id'];
-      }
+      $user = $this->User->find('first', array('conditions' => array('User.username' => DEFAULT_USER)));
+      $user_id = $user['User']['id'];
     }
     
-    $products = $this->Product->findAllByUserId(((string)($user_id)));
-    $this->set('_serialize', $products);
+    $return = $this->Product->findAllByUserId(((string)($user_id)));
+    $this->set('_serialize', $return);
     $this->render(SIMPLE_JSON);
 	}
 

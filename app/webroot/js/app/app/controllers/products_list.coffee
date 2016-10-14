@@ -72,7 +72,7 @@ class ProductsList extends Spine.Controller
         
     if items.length
       @wipe()
-      items = @mixinAttributes(items, ['ignored']) unless @modal
+#      items = @mixinAttributes(items, ['ignored']) unless @modal
       @[mode] @template items
       @renderBackgrounds items
       @exposeSelection()
@@ -195,10 +195,6 @@ class ProductsList extends Spine.Controller
     else
       thumb.css('backgroundImage', ['url(/img/drag_info.png)'])
       
-  delay: -> setTimeout (me) ->
-      me.thumb.css('backgroundImage', me.sources)
-    , 6000, @
-    
   snap: (el, src, css) ->
     img = @createImage()
     img.el = el
@@ -209,22 +205,16 @@ class ProductsList extends Spine.Controller
     img.onerror = @onError
     
   onLoad: ->
-      console.log 'image loaded'
-      @el.removeClass('load')
-      @el.css('backgroundImage', @css)
+    @me.log 'image loaded'
+    @el.removeClass('load')
+    @el.css('backgroundImage', @css)
     
   onError: (e) ->
     console.log 'could not load image, trying again'
-#    @el.removeClass('load')
     @onload = @me.renderBackgrounds([Product.record])
     @onerror = null
     @src =  @src #could be any existing image
     @el.css('backgroundImage', @css)
-      
-  onErrorRefresh: ->
-    console.log 'could not load image again, trying once more'
-    @onload = this.onLoad
-    @src =  '/cake.icon.png'
       
   original: (e) ->
     id = $(e.currentTarget).item().id

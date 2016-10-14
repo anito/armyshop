@@ -35742,6 +35742,7 @@ Released under the MIT License
       this.ignoredHashes = ['slideshow', 'overview', 'preview', 'flickr', 'logout'];
       this.arr = ['false', 'outdoor', 'defense', 'goodies'];
       User.bind('pinger', this.proxy(this.validate));
+      $(window).bind('hashchange', this.proxy(this.storeHash));
       Clipboard.fetch();
       Clipboard.destroyAll();
       Settings.one('refresh', this.proxy(this.refreshSettings));
@@ -35849,7 +35850,6 @@ Released under the MIT License
         goSleep: function() {},
         awake: function() {}
       });
-      $(window).bind('hashchange', this.proxy(this.storeHash));
       this.modal = {
         exists: false
       };
@@ -35921,7 +35921,7 @@ Released under the MIT License
       } else {
         '/admin';
       }
-      return this.navigate(hash, '');
+      return location.hash;
     };
 
     Main.prototype.storeHash = function() {
@@ -37194,6 +37194,10 @@ Released under the MIT License
     }
 
     HomepageView.prototype.active = function(e) {
+      return this.change();
+    };
+
+    HomepageView.prototype.change = function() {
       this.current = Category.current(Category.findByAttribute('name', this.categoryName));
       return this.render();
     };
@@ -37209,7 +37213,7 @@ Released under the MIT License
     HomepageView.prototype.untrackBinds = function(arr) {
       this.tracker.pop();
       if (!this.tracker.length) {
-        return this.render();
+        return this.change();
       }
     };
 
@@ -39230,9 +39234,7 @@ Released under the MIT License
       return this.thumb.addClass('in');
     };
 
-    PhotosList.prototype.onError = function(e) {
-      return this["this"].snap(this.res);
-    };
+    PhotosList.prototype.onError = function(e) {};
 
     PhotosList.prototype.photos = function(mode) {
       var product;
@@ -40660,9 +40662,6 @@ Released under the MIT License
       this.log('render', mode);
       if (items.length) {
         this.wipe();
-        if (!this.modal) {
-          items = this.mixinAttributes(items, ['ignored']);
-        }
         this[mode](this.template(items));
         this.renderBackgrounds(items);
         this.exposeSelection();
@@ -40845,12 +40844,6 @@ Released under the MIT License
       }
     };
 
-    ProductsList.prototype.delay = function() {
-      return setTimeout(function(me) {
-        return me.thumb.css('backgroundImage', me.sources);
-      }, 6000, this);
-    };
-
     ProductsList.prototype.snap = function(el, src, css) {
       var img;
       img = this.createImage();
@@ -40863,7 +40856,7 @@ Released under the MIT License
     };
 
     ProductsList.prototype.onLoad = function() {
-      console.log('image loaded');
+      this.me.log('image loaded');
       this.el.removeClass('load');
       return this.el.css('backgroundImage', this.css);
     };
@@ -40874,12 +40867,6 @@ Released under the MIT License
       this.onerror = null;
       this.src = this.src;
       return this.el.css('backgroundImage', this.css);
-    };
-
-    ProductsList.prototype.onErrorRefresh = function() {
-      console.log('could not load image again, trying once more');
-      this.onload = this.onLoad;
-      return this.src = '/cake.icon.png';
     };
 
     ProductsList.prototype.original = function(e) {
@@ -48601,7 +48588,8 @@ Released under the MIT License
       '#flashTemplate': 'flashTemplate',
       '#infoTemplate': 'infoTemplate',
       '#login .dialogue-content': 'contentEl',
-      '#loader': 'loader'
+      '#loader': 'loader',
+      '.guest': 'btnGuest'
     };
 
     Login.prototype.events = {
@@ -48632,6 +48620,7 @@ Released under the MIT License
         }
       }
       SpineError.destroyAll();
+      this.renderGuestLogin();
     }
 
     Login.prototype.render = function(el, tmpl, item) {
@@ -48665,7 +48654,6 @@ Released under the MIT License
       user.save();
       this.render(this.flashEl, this.flashTemplate, json);
       delayedFunc = function() {
-        this.log(json.User);
         return User.redirect('admin' + location.hash);
       };
       this.contentEl.addClass('fade500');
@@ -48698,6 +48686,12 @@ Released under the MIT License
     Login.prototype.cancel = function(e) {
       User.redirect();
       return e.preventDefault();
+    };
+
+    Login.prototype.renderGuestLogin = function() {
+      if (!Spine.isProduction) {
+        return this.btnGuest.removeClass('hide');
+      }
     };
 
     Login.prototype.guestLogin = function() {

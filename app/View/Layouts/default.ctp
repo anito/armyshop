@@ -62,7 +62,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     var exports = this;
     $(function() {
       
-      var isProduction = true
+      var isProduction = false
       
       
       var categories = <?php echo $this->Js->object($categories); ?>;

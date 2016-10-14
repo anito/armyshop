@@ -23,6 +23,9 @@ class HomepageView extends Spine.Controller
     Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     
   active: (e) ->
+    @change()
+    
+  change: ->
     @current = Category.current(Category.findByAttribute('name', @categoryName))
     @render()
     
@@ -35,7 +38,7 @@ class HomepageView extends Spine.Controller
     
   untrackBinds: (arr) ->
     @tracker.pop()
-    @render() unless @tracker.length
+    @change() unless @tracker.length
     
   render: ->
     @refreshView.render('repeat')

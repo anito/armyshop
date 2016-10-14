@@ -38,6 +38,8 @@ class UsersController extends AppController {
       
       if (!empty($this->data)) {
         if($this->Auth->login()) {
+//          $this->log($this->Session->id());
+//          $this->log($this->Session);
           $this->set('_serialize', array_merge($this->data, array(
               'id' => $this->Auth->user('id'),
               'username' => $this->Auth->user('username'),
@@ -61,6 +63,8 @@ class UsersController extends AppController {
               )));
         }
         $this->render(SIMPLE_JSON);
+      } else {
+        $this->Auth->login();
       }
     } else {
       $this->set('redirect', $this->Auth->redirect());
@@ -70,6 +74,8 @@ class UsersController extends AppController {
   
   function logout() {
     $this->Auth->logout();
+//    $this->log($this->Session->id());
+//    $this->log($this->Session);
     if (!$this->request->is('ajax')) {
       $this->redirect(array('controller' => 'users', 'action' => 'login'));
     } else {

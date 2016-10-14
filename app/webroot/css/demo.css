@@ -28,6 +28,7 @@ header::before {
 .container {
   margin-top: 0px;
   margin-bottom: 0px;;
+  min-width: 1185px;
 }
 .container .inner {
   position: relative;
@@ -69,6 +70,7 @@ header::before {
   width: 400px;
   padding: 100px 13px 16px;
   float: left;
+  min-width: 400px;
 }
 .sidebar.off button.close {
 }

@@ -15,16 +15,11 @@ class PhotosController extends AppController {
   public function index() {
     $this->Photo->recursive = 1;
     
-    if(isset($this->Auth->user)) {
+    if ($this->Auth->user()) {
       $user_id = $this->Auth->user('id');
-      $this->log('Auth', LOG_DEBUG);
     } else {
-      $user = $this->User->find('first', array(
-          'conditions' => array('User.username' => DEFAULT_USER)
-      ));
-      if(!empty($user['User']['id'])) {
-        $user_id = $user['User']['id'];
-      }
+      $user = $this->User->find('first', array('conditions' => array('User.username' => DEFAULT_USER)));
+      $user_id = $user['User']['id'];
     }
     
     $photos = $this->Photo->findAllByUser_id((string)($user_id));
@@ -153,19 +148,20 @@ class PhotosController extends AppController {
 
   public function uri($width = 550, $height = 550, $square = 2) {
     $json = array();
-    if(isset($this->Auth->user)) {
+    if ($this->Auth->user()) {
       $user_id = $this->Auth->user('id');
     } else {
-      $user = $this->User->find('first', array(
-          'conditions' => array('User.username' => DEFAULT_USER)
-      ));
+      $user = $this->User->find('first', array('conditions' => array('User.username' => DEFAULT_USER)));
       $user_id = $user['User']['id'];
     }
     $uid = $user_id;
+    
     if (!empty($this->data)) {
+      $this->log($this->data, LOG_DEBUG);
       foreach ($this->data as $data) {
         $id = $data['id'];
         $path = PHOTOS . DS . $uid . DS . $id . DS . 'lg' . DS . '*.*';
+        $this->log($path, LOG_DEBUG);
         $files = glob($path);
         if (!empty($files[0])) {
           $fn = basename($files[0]);
@@ -177,9 +173,12 @@ class PhotosController extends AppController {
 
           $return = array($id => array('src' => $src));
           $json[] = $return;
+        } else {
+          $this->log('files are empty', LOG_DEBUG);
         }
       }
     }
+//    $this->log($this->data, LOG_DEBUG);
       
     $this->set('_serialize', $json);
     $this->render(SIMPLE_JSON);

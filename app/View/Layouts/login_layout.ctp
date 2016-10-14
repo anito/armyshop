@@ -36,8 +36,12 @@
     ?>
 
     var base_url = '<?php echo $this->Html->url('/'); ?>';
-
+    var isProduction = false
     var exports = this;
+    
+    Spine = require('spine');
+    Spine.isProduction = (localStorage.isProduction != null) ? !(localStorage.isProduction === 'false') : isProduction
+    
     $(function(){
       var Login = require("login");
       exports.Login = new Login({el: $("body")})

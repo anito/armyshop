@@ -32,9 +32,11 @@
             <span>
               <fieldset>
                 <?php echo $this->Form->hidden('redirect', array('value' => $redirect)); ?>
-                <?php echo $this->Form->button('Guest Login', array('type'=>'button', 'class' => 'light', 'id' => 'guestLogin')); ?>
+                <?php echo $this->Form->button('Guest Login', array('type'=>'button', 'class' => array('light', 'hide', 'guest'), 'id' => 'guestLogin')); ?>
                 <?php echo $this->Form->button('Cancel', array('type'=>'submit', 'class' => 'light', 'id' => 'cancel')); ?>
-                <?php echo $this->Form->button('  ', array('type'=>'submit', 'class' => 'light glyphicon glyphicon-log-in')); ?>
+                <?php echo $this->Form->button('<i class="glyphicon glyphicon-log-in"></i><span>  Submit</span>', array('type'=>'submit', 'class' => 'light', 'label' => array(
+                 TRUE
+                ))); ?>
               </fieldset>
             </span>
           </footer>
