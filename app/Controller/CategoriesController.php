@@ -10,8 +10,10 @@ App::uses('AppController', 'Controller');
  */
 class CategoriesController extends AppController {
 
+  public $uses = array('User', 'Category');
+  
   function beforeFilter() {
-    $this->Auth->allowedActions = array('index', 'view', 'add', 'edit', 'delete');
+    $this->Auth->allowedActions = array('index');
     parent::beforeFilter();
   }
   
@@ -27,13 +29,23 @@ class CategoriesController extends AppController {
  *
  * @return void
  */
-	public function index_() {
-		$this->Category->recursive = 0;
-		$this->set('categories', $this->Paginator->paginate());
-	}
 	public function index() {
 		$this->Category->recursive = 1;
-    $categories = $this->Category->findAllByUser_id((string) $this->Auth->user('id'));
+    
+    if(isset($this->Auth->user)) {
+      $user_id = $this->Auth->user('id');
+    } else {
+      $user = $this->User->find('first', array(
+          'conditions' => array('User.username' => DEFAULT_USER)
+      ));
+      if(!empty($user['User']['id'])) {
+        $user_id = $user['User']['id'];
+      }
+    }
+    
+    
+    
+    $categories = $this->Category->findAllByUser_id((string)($user_id));
     $this->set('_serialize', $categories);
     $this->render(SIMPLE_JSON);
 	}

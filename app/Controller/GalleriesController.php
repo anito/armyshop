@@ -6,7 +6,7 @@ class GalleriesController extends AppController {
   public $name = 'Galleries';
 
   function beforeFilter() {
-    $this->Auth->allowedActions = array('index', 'view', 'add', 'edit', 'delete');
+    $this->Auth->allowedActions = array('index');
     parent::beforeFilter();
   }
 

@@ -16,10 +16,10 @@ class ProductsController extends AppController {
  * @var array
  */
 	public $components = array('Paginator', 'Session', 'Flash');
+  public $uses = array('User', 'Product');
 
   function beforeFilter() {
-    $this->Auth->allowedActions = array('*');
-    $this->layout = 'cake';
+    $this->Auth->allowedActions = array('index');
     parent::beforeFilter();
   }
   
@@ -33,13 +33,21 @@ class ProductsController extends AppController {
  *
  * @return void
  */
-	public function index_() {
-		$this->Product->recursive = 0;
-		$this->set('products', $this->Paginator->paginate());
-	}
 	public function index() {
 		$this->Product->recursive = 1;
-    $products = $this->Product->findAllByUser_id((string)($this->Auth->user('id')));
+    
+    if(isset($this->Auth->user)) {
+      $user_id = $this->Auth->user('id');
+    } else {
+      $user = $this->User->find('first', array(
+          'conditions' => array('User.username' => DEFAULT_USER)
+      ));
+      if(!empty($user['User']['id'])) {
+        $user_id = $user['User']['id'];
+      }
+    }
+    
+    $products = $this->Product->findAllByUserId(((string)($user_id)));
     $this->set('_serialize', $products);
     $this->render(SIMPLE_JSON);
 	}

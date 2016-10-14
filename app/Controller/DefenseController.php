@@ -36,7 +36,7 @@ class DefenseController extends AppController {
 //  public $components = array('RequestHandler', 'Session', 'Auth', 'Cookie');
   
   function beforeFilter() {
-    $this->Auth->allowedActions = array('');
+    $this->Auth->allowedActions = array('index');
     $this->layout = '';
     parent::beforeFilter();
   }

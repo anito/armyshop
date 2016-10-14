@@ -35915,20 +35915,18 @@ Released under the MIT License
 
     Main.prototype.initLocation = function() {
       var hash, settings;
-      if (!(settings = Settings.findUserSettings())) {
-        return;
-      }
-      if (hash = settings.hash) {
+      settings = Settings.loadSettings();
+      if (hash = settings != null ? settings.hash : void 0) {
         hash;
       } else {
-        '/home';
+        '/admin';
       }
-      return App.navigate(hash, '');
+      return this.navigate(hash, '');
     };
 
     Main.prototype.storeHash = function() {
       var hash, settings;
-      if (!(settings = Settings.findUserSettings())) {
+      if (!(settings = Settings.loadSettings())) {
         return;
       }
       if (hash = location.hash) {
@@ -36006,7 +36004,7 @@ Released under the MIT License
       var hash, settings;
       if (hash = location.hash) {
         return this.navigate(hash);
-      } else if (settings = Settings.findUserSettings()) {
+      } else if (settings = Settings.loadSettings()) {
         return this.navigate(settings.hash);
       }
     };
@@ -37108,7 +37106,7 @@ Released under the MIT License
       var previousHash;
       e.preventDefault();
       e.stopPropagation();
-      if (previousHash = Settings.findUserSettings().previousHash) {
+      if (previousHash = Settings.loadSettings().previousHash) {
         return location.hash = previousHash;
       } else {
         return this.navigate('/categories/');
@@ -37201,7 +37199,7 @@ Released under the MIT License
     };
 
     HomepageView.prototype.bindRefresh = function() {
-      this.tracker = [Photo.className, Description.className, Product.className, Category.className];
+      this.tracker = [1, 2, 3, 4];
       Photo.one('refresh', this.proxy(this.untrackBinds));
       Description.one('refresh', this.proxy(this.untrackBinds));
       Product.one('refresh', this.proxy(this.untrackBinds));
@@ -37209,15 +37207,7 @@ Released under the MIT License
     };
 
     HomepageView.prototype.untrackBinds = function(arr) {
-      var className, i, index, len, ref, t;
-      className = arr.first().constructor.className;
-      ref = this.tracker;
-      for (index = i = 0, len = ref.length; i < len; index = ++i) {
-        t = ref[index];
-        if (t === className) {
-          this.tracker.splice(index, 1);
-        }
-      }
+      this.tracker.pop();
       if (!this.tracker.length) {
         return this.render();
       }
@@ -37307,9 +37297,7 @@ Released under the MIT License
       return this.imgEl.addClass('in');
     };
 
-    HomepageView.prototype.onError = function(e) {
-      return this["this"].snap(this.res);
-    };
+    HomepageView.prototype.onError = function(e) {};
 
     return HomepageView;
 
@@ -38068,7 +38056,7 @@ Released under the MIT License
       var previousHash;
       e.preventDefault();
       e.stopPropagation();
-      if (previousHash = Model.Settings.findUserSettings().previousHash) {
+      if (previousHash = Model.Settings.loadSettings().previousHash) {
         return location.hash = previousHash;
       } else {
         return this.navigate('/categories/');
@@ -42328,7 +42316,7 @@ Released under the MIT License
 
     ShowView.prototype.toggleAutoUpload = function() {
       var active;
-      this.settings = Model.Settings.findUserSettings();
+      this.settings = Model.Settings.loadSettings();
       active = this.settings.autoupload = !this.settings.autoupload;
       $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active;
       this.settings.save();
@@ -42337,7 +42325,7 @@ Released under the MIT License
 
     ShowView.prototype.refreshSettings = function(records) {
       var settings;
-      if (settings = Model.Settings.findUserSettings()) {
+      if (settings = Model.Settings.loadSettings()) {
         this.changeSettings(settings);
       }
       return this.refreshToolbars();
@@ -44400,7 +44388,7 @@ Released under the MIT License
 
     SlideshowView.prototype.back = function(e) {
       var previousHash;
-      if (previousHash = Settings.findUserSettings().previousHash) {
+      if (previousHash = Settings.loadSettings().previousHash) {
         return location.hash = previousHash;
       } else {
         return this.navigate('/categories/');
@@ -47796,10 +47784,12 @@ Released under the MIT License
       });
       this.manager = new Spine.Manager(this.home, this.defense, this.outdoor, this.goodies);
       this.manager.bind('change', this.proxy(this.viewChanged));
+      $(window).bind('hashchange', this.proxy(this.storeHash));
       this.setData();
       this.initSettings(setting);
       this.initSidebar();
       this.initLogos();
+      this.initLocation();
       this.routes({
         '/defense/': function(params) {
           return this.defense.trigger('active');
@@ -47836,6 +47826,13 @@ Released under the MIT License
       return s.id;
     };
 
+    App.prototype.initLocation = function() {
+      var hash, settings;
+      settings = Settings.loadSettings();
+      hash = (hash = settings.hash) ? hash : '/home';
+      return location.hash = hash;
+    };
+
     App.prototype.initLogos = function() {
       var flag;
       flag = Settings.records[0].hidden;
@@ -47847,6 +47844,17 @@ Released under the MIT License
       var isOpen;
       isOpen = Settings.records[0].sidebaropened;
       return this.setSidebar(!isOpen, true);
+    };
+
+    App.prototype.storeHash = function() {
+      var hash, settings;
+      if (!(settings = Settings.loadSettings())) {
+        return;
+      }
+      if (hash = location.hash) {
+        settings.hash = hash;
+        return settings.save();
+      }
     };
 
     App.prototype.isAgreed = function() {
@@ -50726,12 +50734,12 @@ Released under the MIT License
 
     Settings.prototype.init = function(instance) {};
 
-    Settings.findUserSettings = function() {
-      var user;
-      if (!(user = User.first())) {
+    Settings.loadSettings = function() {
+      var setting;
+      if (!(setting = this.first())) {
         return;
       }
-      return Settings.findByAttribute('user_id', User.first().id);
+      return setting;
     };
 
     Settings.isAutoUpload = function() {

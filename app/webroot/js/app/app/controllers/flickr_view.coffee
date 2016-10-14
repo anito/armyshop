@@ -187,7 +187,7 @@ class FlickrView extends Spine.Controller
     e.preventDefault()
     e.stopPropagation()
     
-    if previousHash = Settings.findUserSettings().previousHash
+    if previousHash = Settings.loadSettings().previousHash
       location.hash = previousHash
     else
       @navigate '/categories/'

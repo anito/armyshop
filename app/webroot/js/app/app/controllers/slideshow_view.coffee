@@ -230,7 +230,7 @@ class SlideshowView extends Spine.Controller
     $('#blueimp-category').hasClass(@defaults.displayClass)
     
   back: (e) ->
-    if previousHash = Settings.findUserSettings().previousHash
+    if previousHash = Settings.loadSettings().previousHash
       location.hash = previousHash
     else
       @navigate '/categories/'

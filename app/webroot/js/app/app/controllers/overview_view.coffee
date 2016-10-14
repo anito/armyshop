@@ -124,7 +124,7 @@ class OverviewView extends Spine.Controller
     e.preventDefault()
     e.stopPropagation()
     
-    if previousHash = Model.Settings.findUserSettings().previousHash
+    if previousHash = Model.Settings.loadSettings().previousHash
       location.hash = previousHash
     else
       @navigate '/categories/'

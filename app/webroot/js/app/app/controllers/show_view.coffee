@@ -563,14 +563,14 @@ class ShowView extends Spine.Controller
 #    active = !@isAutoUpload()
 #    console.log first = Setting.first()
 #    active = !first.autoupload
-    @settings = Model.Settings.findUserSettings()
+    @settings = Model.Settings.loadSettings()
     active = @settings.autoupload = !@settings.autoupload
     $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active
     @settings.save()
     @refreshToolbars()
   
   refreshSettings: (records) ->
-    @changeSettings settings if settings = Model.Settings.findUserSettings()
+    @changeSettings settings if settings = Model.Settings.loadSettings()
     @refreshToolbars()
   
   changeSettings: (rec) ->

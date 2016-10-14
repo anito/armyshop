@@ -89,7 +89,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       Spine.Route = require('spine/lib/route');
       
       exports.App = new Main({el: $("body")});
-      User.ping()
+      //User.ping()
       
       Description.refresh(descriptions, {clear: true});
       Photo.refresh(photos, {clear: true});

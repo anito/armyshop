@@ -79,11 +79,14 @@ class App extends Spine.Controller
       
     @manager = new Spine.Manager(@home, @defense, @outdoor, @goodies)
     @manager.bind('change', @proxy @viewChanged)
+    
+    $(window).bind('hashchange', @proxy @storeHash)
    
     @setData()
     @initSettings(setting)
     @initSidebar()
     @initLogos()
+    @initLocation()
     
     @routes
       '/defense/' : (params) ->
@@ -97,8 +100,6 @@ class App extends Spine.Controller
       '/*glob' : (params) ->
         @navigate '/home', ''
     
-#    @navigate '/home/'
-    
   checkWarning: ->
     if !@isAgreed() then @showWarning()
     
@@ -109,6 +110,11 @@ class App extends Spine.Controller
     s.save()
     s.id
     
+  initLocation: ->
+    settings = Settings.loadSettings()
+    hash = if hash = settings.hash then hash else '/home'
+    location.hash = hash
+    
   initLogos: ->
     flag = Settings.records[0].hidden
     @logo1.toggleClass('hide', !!flag)
@@ -117,6 +123,12 @@ class App extends Spine.Controller
   initSidebar: ->
     isOpen = Settings.records[0].sidebaropened
     @setSidebar(!isOpen, true)
+    
+  storeHash: ->
+    return unless settings = Settings.loadSettings()
+    if hash = location.hash
+      settings.hash = hash
+      settings.save()
     
   isAgreed: ->
     Settings.first()?.agreed

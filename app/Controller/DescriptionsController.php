@@ -16,9 +16,10 @@ class DescriptionsController extends AppController {
  * @var array
  */
 	public $components = array('Paginator', 'Session', 'Flash');
+  public $uses = array('User', 'Description');
 
   function beforeFilter() {
-    $this->Auth->allowedActions = array('*');
+    $this->Auth->allowedActions = array('index');
     parent::beforeFilter();
   }
   
@@ -29,7 +30,20 @@ class DescriptionsController extends AppController {
  */
 	public function index() {
     $this->Description->recursive = 1;
-    $products = $this->Description->findAllByUser_id((string)($this->Auth->user('id')));
+    
+    if(isset($this->Auth->user)) {
+      $user_id = $this->Auth->user('id');
+    } else {
+      $user = $this->User->find('first', array(
+          'conditions' => array('User.username' => DEFAULT_USER)
+      ));
+      if(!empty($user['User']['id'])) {
+        $user_id = $user['User']['id'];
+      }
+    }
+    
+    
+    $products = $this->Description->findAllByUser_id(((string)($user_id)));
     $this->set('_serialize', $products);
     $this->render(SIMPLE_JSON);
 	}

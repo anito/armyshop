@@ -122,6 +122,7 @@ define('WEB_URL', '/' . APP_DIR . '/' . WEBROOT_DIR);
 define('UPLOADS', ROOT . DS . 'uploads');
 define('PHOTOS', UPLOADS . DS . 'photos');
 define('MYSQLUPLOAD', ROOT . DS . 'mysql');
+define('DEFAULT_USER', 'angela');
 if (!defined('MYSQL_CMD_PATH')) {
   $a = explode('.', DIR_HOST);
   $last = count($a)-1;
@@ -131,9 +132,6 @@ if (!defined('MYSQL_CMD_PATH')) {
     $path = '/usr/local/mysql/bin/';
   }
   define('MYSQL_CMD_PATH', $path);
-}
-if (!defined('DEFAULT_USER')) {
-  define('DEFAULT_USER', 'angela');
 }
 if (!defined('TOPLEVEL')) {
   $a = explode('.', DIR_HOST);

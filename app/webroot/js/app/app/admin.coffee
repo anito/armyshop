@@ -224,13 +224,12 @@ class Main extends Spine.Controller
     @initLocation()
     
   initLocation: ->
-    return unless settings = Settings.findUserSettings()
-    if hash = settings.hash then hash else '/home'
-    App.navigate(hash, '')
-
-  
+    settings = Settings.loadSettings()
+    if hash = settings?.hash then hash else '/admin'
+    @navigate(hash, '')
+    
   storeHash: ->
-    return unless settings = Settings.findUserSettings()
+    return unless settings = Settings.loadSettings()
     if hash = location.hash
       if !@ignoredHashes.contains(hash)
         settings.previousHash = hash
@@ -292,7 +291,7 @@ class Main extends Spine.Controller
   refreshSettings: (records) ->
     if hash = location.hash
       @navigate hash
-    else if settings = Settings.findUserSettings()
+    else if settings = Settings.loadSettings()
       @navigate settings.hash
       
     

@@ -8,13 +8,26 @@ class PhotosController extends AppController {
   public $uses = array('User', 'Photo');
   
   public function beforeFilter() {
-    $this->Auth->allowedActions = array('uri', 'dev');
+    $this->Auth->allowedActions = array('index', 'uri', 'dev');
     parent::beforeFilter();
   }
 
   public function index() {
     $this->Photo->recursive = 1;
-    $photos = $this->Photo->findAllByUser_id((string)($this->Auth->user('id')));
+    
+    if(isset($this->Auth->user)) {
+      $user_id = $this->Auth->user('id');
+      $this->log('Auth', LOG_DEBUG);
+    } else {
+      $user = $this->User->find('first', array(
+          'conditions' => array('User.username' => DEFAULT_USER)
+      ));
+      if(!empty($user['User']['id'])) {
+        $user_id = $user['User']['id'];
+      }
+    }
+    
+    $photos = $this->Photo->findAllByUser_id((string)($user_id));
     $this->set('_serialize', $photos);
     $this->render(SIMPLE_JSON);
   }
@@ -140,7 +153,7 @@ class PhotosController extends AppController {
 
   public function uri($width = 550, $height = 550, $square = 2) {
     $json = array();
-    if(isset($this->Auth)) {
+    if(isset($this->Auth->user)) {
       $user_id = $this->Auth->user('id');
     } else {
       $user = $this->User->find('first', array(

@@ -71,12 +71,15 @@ class PagesController extends AppController {
     
     $this->Product->recursive = 1;
     
-    if(isset($this->Auth)) {
+    if(isset($this->Auth->user)) {
       $user_id = $this->Auth->user('id');
+      $this->log('Auth', LOG_DEBUG);
     } else {
       $user = $this->User->find('first', array(
           'conditions' => array('User.username' => DEFAULT_USER)
       ));
+      $this->log('no Auth', LOG_DEBUG);
+      $this->log($user, LOG_DEBUG);
       if(!empty($user['User']['id'])) {
         $user_id = $user['User']['id'];
       }
@@ -84,6 +87,7 @@ class PagesController extends AppController {
     if(empty($user_id)) {
       $this->response->header("WWW-Authenticate: Negotiate");
     }
+    $this->log('$user_id', LOG_DEBUG);
     $categories = $this->Category->findAllByUserId($user_id);
     $products = $this->Product->findAllByUserId($user_id);
     $photos = $this->Photo->findAllByUserId($user_id);

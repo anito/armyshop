@@ -27,15 +27,14 @@ class HomepageView extends Spine.Controller
     @render()
     
   bindRefresh: ->
-    @tracker = [Photo.className, Description.className, Product.className, Category.className]
+    @tracker = [1,2,3,4]
     Photo.one('refresh', @proxy @untrackBinds)
     Description.one('refresh', @proxy @untrackBinds)
     Product.one('refresh', @proxy @untrackBinds)
     Category.one('refresh', @proxy @untrackBinds)
     
   untrackBinds: (arr) ->
-    className = arr.first().constructor.className
-    @tracker.splice(index, 1) for t, index in @tracker when t is className
+    @tracker.pop()
     @render() unless @tracker.length
     
   render: ->
@@ -45,7 +44,6 @@ class HomepageView extends Spine.Controller
     items = []
     products = Category.products @current.id
     items.push @item(product) for product in products
-    
     @list.render(items)
     @callDeferred item.photo, @callback for item in items
     
@@ -83,6 +81,5 @@ class HomepageView extends Spine.Controller
     @imgEl.addClass('in')
 
   onError: (e) ->
-    @this.snap @res
     
  module?.exports = HomepageView
