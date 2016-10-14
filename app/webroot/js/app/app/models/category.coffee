@@ -99,7 +99,9 @@ class Category extends Spine.Model
       sCount: Category.selectionList().length
       author: User.first().name
     
-  
+  @findRelated: (joins = [], joinid = '') ->
+    record for join in joins when (record = @find(join[joinid]))
+   
   init: (instance) ->
     return unless id = instance.id
     s = new Object()
