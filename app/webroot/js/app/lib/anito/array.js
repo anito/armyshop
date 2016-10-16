@@ -1,7 +1,7 @@
 (function() {
   var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  Array.prototype.toID = function() {
+  Array.prototype.toId = function() {
     var id, item, res, _i, _len;
     res = [];
     for (_i = 0, _len = this.length; _i < _len; _i++) {

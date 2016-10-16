@@ -93,7 +93,7 @@ class PhotosList extends Spine.Controller
       if Photo.count()
         @html '<label class="invite">
         <div class="enlightened">Es sind keine Fotos vorhanden</div><br>
-        <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button>
+        <button class="opt-UploadDialogue dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button>
         <button class="opt-AddPhotos dark large"><i class="glyphicon glyphicon-book"></i><span>&nbsp;Katalog</span></button>
         </label>'
       else
@@ -101,7 +101,6 @@ class PhotosList extends Spine.Controller
         <div class="enlightened">Es sind keine Fotos vorhanden &nbsp;</div><br>
         <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button>
         </label>'
-    
     @el
   
   renderAll: ->
@@ -125,7 +124,6 @@ class PhotosList extends Spine.Controller
     @el
 
   updateTemplate: (item) ->
-    console.log item.title
     el = @children().forItem(item)
     tb = $('.thumbnail', el)
     
@@ -186,18 +184,20 @@ class PhotosList extends Spine.Controller
       @snap(res)
         
   snap: (res) ->
+    @log 'snap'
     el = $('#'+res.id, @el)
     thumb = $('.thumbnail', el)
     img = @createImage()
     img.element = el
     img.thumb = thumb
-    img.this = @
+    img.me = @
     img.res = res
     img.onload = @onLoad
     img.onerror = @onError
     img.src = res.src
     
   onLoad: ->
+    @me.log 'image loaded'
     css = 'url(' + @src + ')'
     @thumb.css
       'backgroundImage': css
@@ -205,6 +205,9 @@ class PhotosList extends Spine.Controller
     @thumb.addClass('in')
     
   onError: (e) ->
+    @me.log 'could not load image, trying again'
+    @onload = @me.snap @res
+    @onerror = null
     
   photos: (mode) ->
     if mode is 'add' or !Product.record
@@ -360,10 +363,11 @@ class PhotosList extends Spine.Controller
       @callDeferred res
       products = Product.toRecords(products)
       Product.trigger('change:collection', products)
+      Photo.trigger('develop', items)
       
     
     $('#'+item.id+'>.thumbnail', @el).removeClass('in') for item in items
-    Photo.dev('rotate', options, callback, items)
+    Photo.develop('rotate', options, callback, items)
     false
     
 module?.exports = PhotosList

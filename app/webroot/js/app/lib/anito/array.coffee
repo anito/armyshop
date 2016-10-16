@@ -1,4 +1,4 @@
-Array.prototype.toID = ->
+Array.prototype.toId = ->
   res = []
   for item in @
     id = if typeof item is 'object' then item.id else if typeof item is 'string' then item

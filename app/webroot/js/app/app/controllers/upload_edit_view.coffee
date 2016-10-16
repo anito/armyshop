@@ -86,27 +86,24 @@ class UploadEditView extends Spine.Controller
   done: (e, data) ->
     product = Product.find(@data.link)
     raws = $.parseJSON(data.jqXHR.responseText)
-    console.log raws
-    selection = []
+    
     photos = []
     photos.push new Photo(raw['Photo']).save(ajax: false) for raw in raws
     
-    
-    for photo in photos
-      selection.addRemoveSelection photo.id
-      
     if product
       options = $().extend {},
-        photos: selection
+        photos: photos
         product: product
-        
+      
       Photo.trigger('create:join', options)
+#      @navigate '/category', Category.record?.id or '', product.id
     else
       Photo.trigger('created', photos)
-      @navigate '/category', '', ''
+      @navigate '/category', Category.record?.id or '', ''
       
     Spine.trigger('loading:done', product)
-    Photo.trigger('activate', selection.last())
+    selection = photos.toId()
+    Product.updateSelection(selection)
     
     e.preventDefault()
     

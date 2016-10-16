@@ -152,7 +152,6 @@ class CategoriesList extends Spine.Controller
   slideshowPlay: (e) ->
     category = $(e.currentTarget).closest('.item').item()
     if App.activePhotos().length
-      #Category.trigger('activate', category.id)
       App.slideshowView.trigger('play')
     else
       App.showView.noSlideShow()

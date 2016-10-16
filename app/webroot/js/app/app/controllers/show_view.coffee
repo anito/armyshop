@@ -25,12 +25,14 @@ SlideshowView       = require('controllers/slideshow_view')
 ModalSimpleView     = require("controllers/modal_simple_view")
 Extender            = require('extensions/controller_extender')
 Drag                = require('extensions/drag')
+MysqlAjax           = require('extensions/mysql_ajax')
 require('spine/lib/manager')
 
 class ShowView extends Spine.Controller
 
   @extend Drag
   @extend Extender
+  @extend MysqlAjax
 
   elements:
     '#views .views'           : 'views'
@@ -91,19 +93,20 @@ class ShowView extends Spine.Controller
     'click .opt-DestroyProduct:not(.disabled)'          : 'destroyProduct'
     'click .opt-DestroyPhoto:not(.disabled)'          : 'destroyPhoto'
     'click .opt-EditCategory:not(.disabled)'           : 'editCategory' # for the large edit view
-    'click .opt-Category:not(.disabled)'               : 'toggleCategoryShow'
+    'click .opt-Category:not(.disabled)'              : 'toggleCategoryShow'
     'click .opt-Rotate-cw:not(.disabled)'             : 'rotatePhotoCW'
     'click .opt-Rotate-ccw:not(.disabled)'            : 'rotatePhotoCCW'
-    'click .opt-Product:not(.disabled)'                 : 'toggleProductShow'
+    'click .opt-Product:not(.disabled)'               : 'toggleProductShow'
     'click .opt-Photo:not(.disabled)'                 : 'togglePhotoShow'
     'click .opt-Upload:not(.disabled)'                : 'toggleUploadShow'
-    'click .opt-ShowAllProducts:not(.disabled)'         : 'showProductMasters'
-    'click .opt-AddProducts:not(.disabled)'             : 'showProductMastersAdd'
+    'click .opt-UploadDialogue:not(.disabled)'        : 'uploadDialogue'
+    'click .opt-ShowAllProducts:not(.disabled)'       : 'showProductMasters'
+    'click .opt-AddProducts:not(.disabled)'           : 'showProductMastersAdd'
     'click .opt-ShowAllPhotos:not(.disabled)'         : 'showPhotoMasters'
     'click .opt-AddPhotos:not(.disabled)'             : 'showPhotoMastersAdd'
     'click .opt-ActionCancel:not(.disabled)'          : 'cancelAdd'
     'click .opt-ShowPhotoSelection:not(.disabled)'    : 'showPhotoSelection'
-    'click .opt-ShowProductSelection:not(.disabled)'    : 'showProductSelection'
+    'click .opt-ShowProductSelection:not(.disabled)'  : 'showProductSelection'
     'click .opt-SelectAll:not(.disabled)'             : 'selectAll'
     'click .opt-SelectNone:not(.disabled)'            : 'selectNone'
     'click .opt-SelectInv:not(.disabled)'             : 'selectInv'
@@ -112,7 +115,6 @@ class ShowView extends Spine.Controller
     'click .opt-Help'                                 : 'help'
     'click .opt-Version'                              : 'version'
     'click .opt-Prev'                                 : 'prev'
-    'click [class*="-trigger-edit"]'                  : 'activateEditor'
     
     'dblclick .draghandle'                            : 'toggleDraghandle'
     
@@ -249,14 +251,15 @@ class ShowView extends Spine.Controller
       @activated(controller)
     @focus()
     
-  saveToDb: -> 
+  saveToDb: ->
+    @ajax 'dump'
   
   updatePhotoTemplates: ->
     c = @photosView.list
     els = c.children().each (index) ->
       item = $(@).item()
       ap = ProductsPhoto.fromPhotoId(item.id)
-      console.log ap
+      @log ap
       return unless ap
       ap.order = index
       ap.save(ajax:false)
@@ -374,14 +377,10 @@ class ShowView extends Spine.Controller
   duplicateStart: ->
       
   donecallback: (rec) ->
-    console.log 'DONE'
       
   failcallback: (t) ->
-    console.log 'FAIL'
   
   progresscallback: (rec) ->
-    console.log 'PROGRESS'
-    console.log @state()
   
   duplicateProducts: ->
     @deferred = $.Deferred()
@@ -399,11 +398,30 @@ class ShowView extends Spine.Controller
   duplicateProduct: (id) ->
     return unless product = Product.find(id)
     callback = (a, def) => @deferred.always(->
-      console.log 'completed with success ' + a.id
+      @log 'completed with success ' + a.id
     )
-    photos = product.photos().toID()
+    photos = product.photos().toId()
     @photosToProduct photos, callback
+    
+  duplicateProduct_new: (id) ->
+    return unless product = Product.find(id)
+    target = Category.record
+    productPhotos = ProductsPhoto.productsPhotos(product.id)
+    descr = product.descriptions()
+    options = 
+      ajax: false
+      validate: false
       
+    newProduct = product.dup(true, options)
+#    descriptions = Description.duplicate(descr, {'product_id': newProduct.id}, options)
+    productPhotos = ProductsPhoto.duplicate(productPhotos, {'product_id': newProduct.id}, options)
+    Product.createJoin(newProduct, Category.record) if Category.record
+    
+    newProduct.save()
+    Category.record.save() if Category.record
+    
+    @log newProduct
+    
   productsToCategory: (products, category) ->
     Spine.trigger('create:category',
       products: products
@@ -421,12 +439,12 @@ class ShowView extends Spine.Controller
       deferred: @deferred
       cb: callback
     )
-    
+      
   createProductCopy: (products=Category.selectionList(), target=Category.record) ->
     @log 'createProductCopy'
     for id in products
       if Product.find(id)
-        photos = Product.photos(id).toID()
+        photos = Product.photos(id).toId()
         
         Spine.trigger('create:product', target
           photos: photos
@@ -441,7 +459,7 @@ class ShowView extends Spine.Controller
   createProductMove: (products=Category.selectionList(), target=Category.record) ->
     for id in products
       if Product.find(id)
-        photos = Product.photos(id).toID()
+        photos = Product.photos(id).toId()
         Spine.trigger('create:product', target
           photos: photos
           from:Product.record
@@ -463,7 +481,6 @@ class ShowView extends Spine.Controller
       Product.trigger('change:collection', product)
     
     e.preventDefault()
-    e.stopPropagation()
     
   editCategory: (e) ->
     Spine.trigger('edit:category')
@@ -479,7 +496,6 @@ class ShowView extends Spine.Controller
   destroySelected: (e) ->
     models = @controller.el.data('current').models
     @['destroy'+models.className]()
-    e.stopPropagation()
 
   destroyCategory: (e) ->
     return unless Category.record
@@ -507,11 +523,9 @@ class ShowView extends Spine.Controller
 
   toggleUploadShow: (e) ->
     @trigger('activate:editview', 'upload', e.target)
-    e.preventDefault()
     @refreshToolbars()
-    
-  activateEditor: (e) ->
-    App.activateEditor e
+    e.preventDefault()
+    e.stopPropagation()
     
   toggleCategory: (e) ->
     @changeToolbarOne ['Category']
@@ -560,13 +574,10 @@ class ShowView extends Spine.Controller
     @animateView()
     
   toggleAutoUpload: ->
-#    active = !@isAutoUpload()
-#    console.log first = Setting.first()
-#    active = !first.autoupload
-    @settings = Model.Settings.loadSettings()
-    active = @settings.autoupload = !@settings.autoupload
+    settings = Model.Settings.loadSettings()
+    active = settings.autoupload = !settings.autoupload
     $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active
-    @settings.save()
+    settings.save()
     @refreshToolbars()
   
   refreshSettings: (records) ->
@@ -641,24 +652,25 @@ class ShowView extends Spine.Controller
     
   selectAll: (e) ->
     try
-      list = @select_()
+      list = @select()
       @current.select(e, list)
     catch e
     
   selectNone: (e) ->
     try
-      @current.select(e, [])
+      unless $(e.target).item?()
+        @current.el.data('current').model.updateSelection([])
     catch e
     
   selectInv: (e)->
     try
-      list = @select_()
+      list = @select()
       selList = @current.el.data('current').model.selectionList()
       list.removeFromList(selList)
       @current.select(e, list)
     catch e
     
-  select_: ->
+  select: ->
     list = []
     root = @current.itemsEl
     items = $('.item', root)
@@ -715,12 +727,10 @@ class ShowView extends Spine.Controller
     
   showProductMastersAdd: (e) ->
     e.preventDefault()
-    e.stopPropagation()
     Spine.trigger('products:add')
     
   showPhotoMastersAdd: (e) ->
     e.preventDefault()
-    e.stopPropagation()
     Spine.trigger('photos:add')
     
   cancelAdd: (e) ->
@@ -745,7 +755,6 @@ class ShowView extends Spine.Controller
       @navigate '/category', ''
       
     e.preventDefault()
-    e.stopPropagation()
       
   copy: (e) ->
     #type of copied objects depends on view
@@ -865,7 +874,7 @@ class ShowView extends Spine.Controller
     for clb in clipboard
       items.push clb.item
       
-    Product.trigger('create:join', items.toID(), category, callback)
+    Product.trigger('create:join', items.toId(), category, callback)
       
   help: (e) ->
     carousel_id = 'help-carousel'
@@ -1013,6 +1022,10 @@ class ShowView extends Spine.Controller
   shownmodal: (e) ->
     @log 'shownmodal'
       
+  uploadDialogue: (e) ->
+    @toggleUploadShow(e)
+    $('input','#fu').click()
+      
   selectByKey: (e, direction) ->
     @log 'selectByKey'
     isMeta = e.metaKey or e.ctrlKey
@@ -1123,7 +1136,6 @@ class ShowView extends Spine.Controller
     $('.zoom', activeEl).click()
     
     e.preventDefault()
-    e.stopPropagation()
         
   back: (e) ->
     @controller.list?.back(e) or @controller.back?(e)
@@ -1131,7 +1143,6 @@ class ShowView extends Spine.Controller
   prev: (e) ->
     history.back()
     e.preventDefault()
-    e.stopPropagation()
   
   keydown: (e) ->
     code = e.charCode or e.keyCode
@@ -1153,7 +1164,6 @@ class ShowView extends Spine.Controller
       when 13 #Return
         unless isFormfield
           @zoom(e)
-          e.stopPropagation()
           e.preventDefault()
       when 27 #Esc
         unless isFormfield or App.modal.exists

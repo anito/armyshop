@@ -90,8 +90,8 @@ class Category extends Spine.Model
     
   
   init: (instance) ->
-    console.log 'CATEGORY INSTANCE'
-    console.log instance
+    @log 'CATEGORY INSTANCE'
+    @log instance
     return unless id = instance.id
     s = new Object()
     s[id] = []

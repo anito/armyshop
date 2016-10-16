@@ -73,7 +73,7 @@ class PhotosAddView extends Spine.Controller
     
   show: ->
     product = Product.record
-    list = ProductsPhoto.photos(product.id).toID()
+    list = ProductsPhoto.photos(product.id).toId()
     records = Photo.filter list, func: 'idExcludeSelect'
     @render records, product
     @el.modal('show')
@@ -134,7 +134,7 @@ class PhotosAddView extends Spine.Controller
   add: ->
     Photo.trigger('create:join',
       product: Product.record
-      photos: @selectionList
+      photos: Photo.toRecords(@selectionList)
     )
     @hide()
     

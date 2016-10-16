@@ -357,16 +357,14 @@ class Main extends Spine.Controller
   activateEditor: (e) ->
     el = $(e.currentTarget)
     test = el.prop('class')
-    if /\bgal-trigger*/.test(test)
+    if /\bcat-trigger*/.test(test)
       @category.trigger('active')
-    else if /\balb-trigger*/.test(test)
+    else if /\bpro-trigger*/.test(test)
       @product.trigger('active')
     else if /\bpho-trigger*/.test(test)
       @photo.trigger('active')
-      
-    e.preventDefault()
     e.stopPropagation()
-    
+      
   getData: (s, arr=[]) ->
     test = (s, a) -> 
       matcher = new RegExp(".*"+a+".*", "g");

@@ -9,7 +9,7 @@ ProductsPhoto   = require('models/products_photo')
 Extender      = require("extensions/model_extender")
 AjaxRelations = require("extensions/ajax_relations")
 Uri           = require("extensions/uri")
-Dev           = require("extensions/dev")
+Develop       = require("extensions/develop")
 Cache         = require("extensions/cache")
 require("spine/lib/ajax")
 
@@ -20,7 +20,7 @@ class Photo extends Spine.Model
   @extend Cache
   @extend Model.Ajax
   @extend Uri
-  @extend Dev
+  @extend Develop
   @extend AjaxRelations
   @extend Filter
   @extend Extender
@@ -91,11 +91,10 @@ class Photo extends Spine.Model
       if typeof callback is 'function'
         callback.call(@)
     
-    items = items.toID()
     ret = for item in items
       ap = new ProductsPhoto
-        product_id    : target.id
-        photo_id    : item.id or item
+        product_id  : target.id
+        photo_id    : item.id
         order       : parseInt(ProductsPhoto.photos(target.id).last()?.order)+1 or 0
       valid = ap.save
         validate: true
@@ -111,13 +110,11 @@ class Photo extends Spine.Model
   @destroyJoin: (items=[], target, cb) ->
     unless Array.isArray items
       items = [items]
-      
     return unless items.length and target
-    
-    items = items.toID()
-    for id in items
-      aps = ProductsPhoto.filter(id, associationForeignKey: 'photo_id')
-      ap = ProductsPhoto.productPhotoExists(id, target.id)
+
+    for item in items
+      aps = ProductsPhoto.filter(item.id, associationForeignKey: 'photo_id')
+      ap = ProductsPhoto.productPhotoExists(item.id, target.id)
       ap.destroy(done: cb) if ap
       
     Product.trigger('change:collection', target)
@@ -139,10 +136,10 @@ class Photo extends Spine.Model
   parent: -> @constructor.parent
   
   createJoin: (target) ->
-    @constructor.createJoin [@id], target
+    @constructor.createJoin [@], target
   
   destroyJoin: (target) ->
-    @constructor.destroyJoin [@id], target
+    @constructor.destroyJoin [@], target
         
   products: ->
     @constructor.products @id

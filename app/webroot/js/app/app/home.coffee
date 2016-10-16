@@ -112,7 +112,7 @@ class App extends Spine.Controller
     
   initLocation: ->
     settings = Settings.loadSettings()
-    hash = if hash = settings.hash then hash else '/home'
+    hash = if hash = settings?.hash then hash else '/home'
     location.hash = hash
     
   initLogos: ->

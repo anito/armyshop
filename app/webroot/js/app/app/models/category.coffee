@@ -118,6 +118,7 @@ class Category extends Spine.Model
       imagesCount += product.count = ProductsPhoto.filter(product.id, associationForeignKey: 'product_id').length
     $().extend @defaultDetails,
       name: @name
+      screenname: @screenname
       iCount: imagesCount
       aCount: products.length
       pCount: @activePhotos().length

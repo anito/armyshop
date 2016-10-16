@@ -9,6 +9,9 @@ class PhotoEditView extends Spine.Controller
 
   @extend Extender
   
+  elements:
+    '.content'      : 'content'
+  
   events:
     'click'           : 'click'
     'keyup'           : 'saveOnKeyup'
@@ -30,10 +33,10 @@ class PhotoEditView extends Spine.Controller
   
   render: () ->
     if @current #and !item.destroyed 
-      @html @template @current
+      @content.html @template @current
     else
       info = '<label class="invite"><span class="enlightened">Kein Foto ausgewählt.</span></label>' unless Product.selectionList().length and !Product.count()
-      @html $("#noSelectionTemplate").tmpl({type: info || ''})
+      @content.html $("#noSelectionTemplate").tmpl({type: info || ''})
     @el
   
   save: (el) ->

@@ -66,7 +66,7 @@ class ProductsAddView extends Spine.Controller
     @footer.html @footerTemplate selection
   
   show: ->
-    list = CategoriesProduct.products(Category.record.id).toID()
+    list = CategoriesProduct.products(Category.record.id).toId()
     records = Product.filter list, func: 'idExcludeSelect'
     @render records
     @el.modal('show')
@@ -121,7 +121,7 @@ class ProductsAddView extends Spine.Controller
     list
       
   add: ->
-    Product.trigger('create:join', @selectionList, Category.record)
+    Product.trigger('create:join', Product.toRecords(@selectionList), Category.record)
     @hide()
     
   keyup: (e) ->

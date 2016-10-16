@@ -145,6 +145,7 @@ class ProductsList extends Spine.Controller
   
   renderBackgrounds: (products) ->
     @log 'renderBackgrounds'
+    return unless @parent.isActive()
     products = [products] unless Product.isArray(products)
     @removeWidows @widows
     for product in products
@@ -210,11 +211,9 @@ class ProductsList extends Spine.Controller
     @el.css('backgroundImage', @css)
     
   onError: (e) ->
-    console.log 'could not load image, trying again'
+    @me.log 'could not load image, trying again'
     @onload = @me.renderBackgrounds([Product.record])
     @onerror = null
-    @src =  @src #could be any existing image
-    @el.css('backgroundImage', @css)
       
   original: (e) ->
     id = $(e.currentTarget).item().id

@@ -36,12 +36,12 @@ class Toolbar extends Spine.Model
       name: 'Ansicht'
       content:
         [
-          name: -> 'Produktkatalog'
+          name: -> 'Produkte-Katalog'
           klass: 'opt-ShowAllProducts'
           icon: 'book'
           disabled: -> false
         ,
-          name: -> 'Fotokatalog'
+          name: -> 'Foto-Katalog'
           klass: 'opt-ShowAllPhotos'
           icon: 'book'
           disabled: -> false
@@ -94,7 +94,7 @@ class Toolbar extends Spine.Model
         ,
           name: 'Dupizieren'
           icon: 'certificate'
-          klass: 'opt-DuplicateProducts'
+          klass: 'opt-DuplicateProducts hide'
           disabled: -> !Product.record
         ,
           devider: true
@@ -149,7 +149,7 @@ class Toolbar extends Spine.Model
         ,
           devider: true
         ,
-          name: -> 'Produktkatalog'
+          name: -> 'Produkte-Katalog'
           klass: 'opt-ShowAllProducts'
           icon: 'book'
           disabled: -> false
@@ -226,7 +226,7 @@ class Toolbar extends Spine.Model
         ,
           devider: true
         ,
-          name: -> 'Fotokatalog'
+          name: -> 'Foto-Katalog'
           klass: 'opt-ShowAllPhotos'
           icon: 'book'
           disabled: -> false
@@ -313,7 +313,7 @@ class Toolbar extends Spine.Model
         [
           name: -> 'Synchronisieren'
           icon: 'floppy-disk'
-          klass: 'opt-Save'
+          klass: 'opt-Save hide'
           innerklass: -> if App.activePhotos().length then 'azur puls' else ''
           dataToggle: 'modal-category'
           disabled: -> !App.activePhotos().length

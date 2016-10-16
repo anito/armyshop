@@ -98,11 +98,22 @@ Model.Extender =
       selected: ->
         @record
         
-      toID: (records = @records) ->
+      toId: (records = @records) ->
         record.id for record in records
       
       toRecords: (ids = []) ->
         @find id for id in ids
+      
+      duplicate: (items, atts={}, options) ->
+        unless Array.isArray(items)
+          items = [items]
+          
+        ret = []
+        ret = for item in items
+          newItem = item.dup(true).save(options)
+          newItem.updateAttributes(atts, options)
+          newItem
+        ret
       
       successHandler: (data, status, xhr) ->
         
@@ -116,7 +127,7 @@ Model.Extender =
             error       : error
 
           error.save()
-          User.redirect 'users/login'
+#          User.redirect 'users/login'
           
       customErrorHandler: (record, xhr) ->
         status = xhr.status
@@ -295,9 +306,6 @@ Model.Extender =
           return true
         false
         
-      toRecords: (ids) ->
-        @constructor.toRecords ids  
-      
       defaultDetails:
         iCount: 0
         aCount: 0

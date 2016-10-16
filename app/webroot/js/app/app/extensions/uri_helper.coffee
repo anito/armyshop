@@ -25,8 +25,8 @@ UriHelper =
         deferred.promise()
         
       size: (width, height) ->
-        width: 200
-        height: 200
+        width: 300
+        height: 300
 
     @include include
 

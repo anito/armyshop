@@ -70,6 +70,9 @@ class Product extends Spine.Model
     ret[0...max || ret.length]
     ret
     
+  @descriptions: (id) ->
+    Description.filterSortByOrder(id)
+    
   @activePhotos: ->
     if id = @record.id
       return @photos(id)
@@ -90,12 +93,11 @@ class Product extends Spine.Model
       if typeof callback is 'function'
         callback.call(@)
     
-    ids = items.toID()
-    ret = for id in ids
+    ret = for item in items
       ga = new CategoriesProduct
         category_id  : target.id
-        product_id   : id
-        ignored      : true
+        product_id   : item.id
+        ignored      : item.ignored
         order        : parseInt(CategoriesProduct.products(target.id).last()?.order)+1 or 0
       valid = ga.save
         validate: true
@@ -112,12 +114,11 @@ class Product extends Spine.Model
     unless Array.isArray items
       items = [items]
     
-    return unless items.length and target
+    return unless target
     
-    items = items.toID()
-    for id in items
-      gas = CategoriesProduct.filter(id, associationForeignKey: 'product_id')
-      ga = CategoriesProduct.categoryProductExists(id, target.id)
+    for item in items
+      gas = CategoriesProduct.filter(item.id, associationForeignKey: 'product_id')
+      ga = CategoriesProduct.categoryProductExists(item.id, target.id)
       ga.destroy(done: cb) if ga
       
     Category.trigger('change:collection', target)
@@ -157,10 +158,10 @@ class Product extends Spine.Model
   selChange: (list) ->
   
   createJoin: (target) ->
-    @constructor.createJoin [@id], target
+    @constructor.createJoin [@], target
   
   destroyJoin: (target) ->
-    @constructor.destroyJoin [@id], target
+    @constructor.destroyJoin [@], target
         
   count: (inc = 0) =>
     @constructor.contains(@id).length + inc
@@ -170,6 +171,9 @@ class Product extends Spine.Model
   
   photos: (max) ->
     @constructor.photos @id, max
+  
+  descriptions: ->
+    @constructor.descriptions @id
   
   details: =>
     $().extend @defaultDetails,

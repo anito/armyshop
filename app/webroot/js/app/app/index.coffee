@@ -70,11 +70,9 @@ class App extends Spine.Controller
     
   initSettings: (setting) ->
     Settings.fetch()
-    @log Settings.records
     if i = Settings.first()?.id then return i
     s = new Settings(setting)
     s.save()
-    @log s
     s.id
     
   initBackground: ->

@@ -52,9 +52,6 @@ class Sidebar extends Spine.Controller
   categoryTemplate: (items) ->
     $("#sidebarTemplate").tmpl(items)
     
-  productTemplate: (items) ->
-    $("#productsSublistTemplate").tmpl(items)
-    
   constructor: ->
     super
     @el.width(8)
@@ -181,7 +178,6 @@ class Sidebar extends Spine.Controller
     list = o.item.parent()
     category = list.parent().item()
     gas = CategoriesProduct.filter(category.id, associationForeignKey: 'category_id')
-    console.log gas
     result = []
     list.children().each (index) ->
       product = $(@).item()

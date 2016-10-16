@@ -70,7 +70,7 @@
           App.sidebar.toggleDraghandle('');
         }, 2500)
         setTimeout(function(){
-          App.previewView.togglePreview();
+          //App.previewView.togglePreview();
         }, 3000)
       };
       

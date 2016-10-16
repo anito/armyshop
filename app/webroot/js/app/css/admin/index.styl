@@ -20,6 +20,7 @@ $btn-default = rgb(255, 255, 255)
 $btn-primary = rgb(134, 134, 134)
 $dark-from-gradient = rgb(51, 51, 51)
 $dark-to-gradient = rgb(35, 35, 35)
+$allview = rgba(241, 105, 0, 0.9)
 
 * {
   user-select: none;
@@ -658,6 +659,14 @@ ul {
   height: 23px;
   margin: 8px;
 }*/
+ul.sublist::before {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 100%;
+  margin: 10px 0;
+  background: rgba(0, 0, 0, 0.29);
+}
 .sublist span {
   vertical-align: baseline;
 }
@@ -674,7 +683,7 @@ ul {
     background-color: $light-blue-semi;
 }
 .item span.author {
-  font-size: 0.7em;
+  font-size: 0.8em;
   font-style: italic;
 }
 .item-content {
@@ -792,6 +801,12 @@ ul {
 .sidebar .expander {
   background: url('/img/arrow.png') no-repeat -22px 0;
 }
+.sidebar .preview .expander {
+  background: url(/img/arrow.png) no-repeat -43px 0px;
+}
+.sidebar .preview.open .expander {
+  background: url(/img/arrow.png) no-repeat -43px -23px;
+}
 .sidebar .open .expander {
   background: url('/img/arrow.png') no-repeat -22px -23px;
 }
@@ -809,12 +824,14 @@ ul {
   font-weight: bold;
 }
 .opt-Preview {
-  color: #afcde6;
+  color: rgba(245, 245, 245, 0.91);
   font-family: "ChopinScript", serif;
-  font-size: 3rem;
+  font-size: 2rem;
   vertical-align: initial;
   position: relative;
-  top: -17px;
+  top: 9px;
+  line-height: 0.4em;
+  text-shadow: 1px 0px 1px rgba(35, 35, 35, 0.72);
 }
 .sidebar .parent.active {
   background-color: rgba(200, 200, 200, 0.77);
@@ -890,7 +907,6 @@ section.info-badges {
 section.info-badges>span {
   background-color: #fff;
   color: #535354;
-  padding: 2px 7px;
 }
 section span.link {
   font-size: 1rem;
@@ -1043,12 +1059,7 @@ li .thumbnail.image {
   margin: 0;
   color: rgba(200, 200, 200, 0.5);
   line-height: 1.2em;
-  border-radius: 0;
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  border-radius: 0px;
 }
 .categories .items .thumbnail {
   width: 460px;
@@ -1064,18 +1075,24 @@ li .thumbnail.image {
   padding-left: 2px;
 }
 .products .thumbnail {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(51, 51, 51, 0.53);
   background-image: none;
-  width: 440px;
-  height: 160px;
+  width: 420px;
+  height: 140px;
 }
 #overview .thumbnail {
   width: 70px;
   height: 70px;
   border: 0 none;
 }
-.thumbnail {
-  border: 9px solid rgb(87, 87, 87);
+.content li.item {
+  border: 9px solid;
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 .photos .thumbnail {
   background-image: url("/img/photo-loader.gif");
@@ -1101,14 +1118,68 @@ li .thumbnail.image {
   top: -20px;
   right: -14px;
 }
-.content .item.active .thumbnail {
-  border-color: $light-blue;
+.content .item.active {
+  border-color: $light-blue !important;
 }
-.item.ignored .thumbnail, .ignored {
-  opacity: .5;
+.content .item.ignored .thumbnail {
+  opacity: .3;
 }
-.content:not(.modal-content) .item.hot .thumbnail {
-  border-color: $medium-blue;
+li.active .sublist-item:not(.ignored) {
+  background: rgba(200, 200, 200, 0.9);
+}
+li.active .sublist-item.active:not(.ignored) {
+  background: rgba(200, 200, 200, 0.9);
+}
+.sublist-item:not(.ignored) {
+  background: rgba(80,80,80,0.4);
+}
+.content .item:not(.ignored) {
+  border-color: rgba(200,200,200,0.9);
+}
+.content .item:not(.ignored) .glyphicon-set  {
+  background-color: rgba(200,200,200,0.9);
+}
+.glyphicon {
+  line-height: inherit;
+}
+nav .glyphicon {
+  line-height: 1;
+}
+.glyphicon-set.left {
+  left: 0;
+}
+.glyphicon-set.right {
+  right: 0;
+}
+.glyphicon-set {
+  background-color: rgb(51, 51, 51);
+  position: absolute;
+  top: 0;
+  padding: 5px 13px 9px 13px;
+}
+.glyphicon-set.blue {
+  background-color: $medium-blue;
+}
+.glyphicon-white {
+  color: white !important;
+}
+.glyphicon-red {
+  color: red !important;
+}
+li.item.active .glyphicon-set {
+  opacity: 1;
+}
+.glyphicon-set .glyphicon {
+  text-shadow: 1px 0px 0px #000000;
+}
+li.item.active.hot .glyphicon-set {
+  background-color: $medium-blue !important;
+}
+li.item.active .glyphicon-set {
+  background-color: $light-blue !important;
+}
+.content:not(.modal-content) .item.hot {
+  border-color: $medium-blue !important;
 }
 #content .content .item ul {
   float: left;
@@ -1291,17 +1362,17 @@ li .thumbnail.image {
   transition: background 1s linear 0s;
 }
 .views .header.views .view.active .fadeelement {
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 224, 241, 1)), to(rgba(0, 224, 241, 1)));
-  background: -moz-linear-gradient(center top , rgba(0, 224, 241, 1), rgba(0, 224, 241, 1));
-  background: linear-gradient(center top , rgba(0, 224, 241, 1), rgba(0, 224, 241, 1));
+  background: -webkit-gradient(linear, left top, left bottom, from($allview), to($allview));
+  background: -moz-linear-gradient(center top , $allview, $allview);
+  background: linear-gradient(center top , $allview, $allview);
   background: rgba(220,220,220,.9);
   transition: background 1s linear 0s;
 }
 .all.views .header.views .view.active .fadeelement {
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 224, 241, 1)), to(rgba(0, 224, 241, 1)));
-  background: -moz-linear-gradient(center top , rgba(0, 224, 241, 1), rgba(0, 224, 241, 1));
-  background: linear-gradient(center top , rgba(0, 224, 241, 1), rgba(0, 224, 241, 1));
-  background: rgba(0, 224, 241, .9);
+  background: -webkit-gradient(linear, left top, left bottom, from($allview), to($allview));
+  background: -moz-linear-gradient(center top , $allview, $allview);
+  background: linear-gradient(center top , $allview, $allview);
+  background: $allview;
   transition: background 1s linear 0s;
 }
 .all.views .view.active .fadeelement {
@@ -1313,7 +1384,10 @@ li .thumbnail.image {
   padding: 0;
 }
 .dd {
-  padding: 2px 3px 1px 12px;
+  padding: 2px 7px;
+}
+.cc {
+  padding: 2px 7px;
 }
 .photo .thumbnail {
   border: 0 none;
@@ -1375,6 +1449,13 @@ button.active.dark {
   color: #eeeeee;
   border: 1px solid #888888;
 }
+.dark.btn.btn-label {
+  color: #868686;
+  opacity: inherit;
+  font-size: 1.5em;
+  padding: 6px 60px;
+  margin: 0 40px;
+}
 button.chromeless, button.chromeless:hover {
   background: -moz-linear-gradient(center center , #999999, #222222) repeat scroll 2px 0 transparent;
   border: 1px solid #888888;
@@ -1386,39 +1467,6 @@ button.chromeless, button.chromeless:hover {
   padding: 1px 5px;
   position: relative;
 }
-li.item.active .glyphicon-set {
-  opacity: 1;
-}
-.glyphicon-set .glyphicon {
-  text-shadow: 1px 0px 0px #000000;
-}
-li.item.active.hot .glyphicon-set {
-  background-color: $medium-blue;
-}
-li.item.active .glyphicon-set {
-  background-color: $light-blue;
-}
-.glyphicon-set.left {
-  left: 0;
-}
-.glyphicon-set.right {
-  right: 0;
-}
-.glyphicon-set {
-  background-color: transparent;
-  position: absolute;
-  top: 0;
-  padding: 4px 10px 5px 0;
-}
-.glyphicon-set.blue {
-  background-color: $medium-blue;
-}
-.glyphicon-white {
-  color: white !important;
-}
-.glyphicon-red {
-  color: red !important;
-}
 .item .container {
   position: relativ;
 }
@@ -1428,7 +1476,7 @@ li.item.active .glyphicon-set {
 .glyphicon-set [class^="glyphicon-"], .glyphicon-set  [class*=" glyphicon-"] {
 }
 [class*=" glyphicon-"], [class^="glyphicon-"] {
-  line-height: inherit;
+  /*line-height: inherit;*/
 }
 .glyphicon-set a {
   

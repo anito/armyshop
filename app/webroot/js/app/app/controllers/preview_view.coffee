@@ -31,8 +31,9 @@ class PreviewView extends Spine.Controller
     super
     Product.bind('create update destroy', @proxy @change)
     Product.bind('current', @proxy @change)
+    Photo.bind('develop',  @proxy @developed)
     Description.bind('change', @proxy @render)
-    ProductsPhoto.bind('update', @proxy @changedRelatedPhoto)
+    ProductsPhoto.bind('update destroy', @proxy @changedRelatedPhoto)
     CategoriesProduct.bind('destroy', @proxy @change)
     @createDummy()
     @render()
@@ -47,8 +48,12 @@ class PreviewView extends Spine.Controller
     @dummy = new Product @newAttributes()
     @dummy.save(ajax:false)
     
+  developed: (photos) ->
+    photo = photos[0].Photo
+    @callDeferred photo, @callback
+    
   change: (item) ->
-    if item.destroyed or !item
+    if item?.destroyed or !item
       @current = @dummy
     else
       @current = item

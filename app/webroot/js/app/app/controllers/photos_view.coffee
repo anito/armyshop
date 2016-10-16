@@ -79,7 +79,6 @@ class PhotosView extends Spine.Controller
     Photo.bind('create:join', @proxy @createJoin)
     Photo.bind('destroy:join', @proxy @destroyJoin)
     Photo.bind('ajaxError', Photo.errorHandler)
-#    Product.bind('change:selection', @proxy @activateRecord)
     
     Spine.bind('destroy:photo', @proxy @destroyPhoto)
     Spine.bind('loading:done', @proxy @updateBuffer)
@@ -143,9 +142,6 @@ class PhotosView extends Spine.Controller
     Photo.current ids[0]
   
   click: (e) ->
-    e.preventDefault()
-    e.stopPropagation()
-    
     App.showView.trigger('change:toolbarOne')
     
     item = $(e.currentTarget).item()
@@ -167,7 +163,8 @@ class PhotosView extends Spine.Controller
           selection.addRemoveSelection(id)
     
     Product.updateSelection(selection, Product.record?.id)
-      
+#    e.stopPropagation()
+
   clearPhotoCache: ->
     Photo.clearCache()
   
@@ -205,21 +202,19 @@ class PhotosView extends Spine.Controller
     
     @stopInfo()
     
-    photos = ids || Product.selectionList().slice(0)
-    photos = [photos] unless Array.isArray photos
+    ids = ids || Product.selectionList().slice(0)
+    photos = Photo.toRecords(ids)
     
-    for id in photos
-      if item = Photo.find(id)
-        el = @list.findModelElement(item)
-        el.removeClass('in')
+    for photo in photos
+      el = @list.findModelElement(photo)
+      el.removeClass('in')
+      if product = Product.record
+        @destroyJoin
+          photos: [photo]
+          product: product
+      else
+        photo.destroy()
       
-    if product = Product.record
-      @destroyJoin
-        photos: photos
-        product: product
-    else
-      for id in photos
-        photo.destroy() if photo = Photo.find(id)
         
     if typeof callback is 'function'
       callback.call()
@@ -236,7 +231,7 @@ class PhotosView extends Spine.Controller
   add: (photos) ->
     unless Array.isArray photos
       photos = [photos]
-    Product.updateSelection(photos.toID())
+    Product.updateSelection(photos.toId())
     unless Product.record
       @list.wipe() 
       @render(photos, 'append')
@@ -245,32 +240,30 @@ class PhotosView extends Spine.Controller
   createJoin: (options, cb) ->
     Photo.createJoin options.photos, options.product, cb
     Photo.trigger('activate', options.photos.last())
-    options.product.updateSelection options.photos
+    options.product.updateSelection options.photos.toId()
   
   destroyJoin: (options, callback) ->
     @log 'destroyJoin'
     product = options.product
     photos = options.photos
-    photos = [photos] unless Photo.isArray(photos)
-    photos = photos.toID()
+    photos = [photos] unless Array.isArray(photos)
     
     return unless product
     Photo.destroyJoin photos, product, callback
     product.updateSelection()
     
   sortupdate: (e) ->
-    console.log 'sortupdate'
+    @log 'sortupdate'
     f = @list.children().length-1
     
     @list.children().each (index) ->
       idx = f-index
       item = $(@).item()
       if item and Product.record
-        console.log item.title
+        @log item.title
         ap = ProductsPhoto.fromPhotoId(item.id)
         if ap and parseInt(ap.order) isnt idx
           ap.order = idx
-          console.log 'save'
           ap.save(ajax:false)
         # set a *invalid flag*, so when we return to products cover view, thumbnails will be regenerated
         Product.record.invalid = true

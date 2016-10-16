@@ -90,7 +90,7 @@ class ProductsView extends Spine.Controller
     Spine.bind('loading:done', @proxy @loadingDone)
     Spine.bind('loading:fail', @proxy @loadingFail)
     Spine.bind('destroy:product', @proxy @destroyProduct)
-    Spine.bind('select:product', @proxy @select)
+#    Spine.bind('select:product', @proxy @select)
     
     @bind('drag:start', @proxy @dragStart)
     @bind('drag:help', @proxy @dragHelp)
@@ -157,31 +157,6 @@ class ProductsView extends Spine.Controller
     
     Product.current ids[0]
   
-  activateRecord_: (ids) ->
-    unless (ids)
-      ids = Category.selectionList()
-      Product.current()
-      noid = true
-      
-    unless Array.isArray(ids)
-      ids = [ids]
-    
-    list = []
-    for id in ids
-      list.push product.id if product = Product.find(id)
-
-    id = list[0]
-    
-    if id
-      Product.current(id) unless noid
-      App.sidebar.list.expand(Category.record, true) 
-      
-    Category.updateSelection(list)
-    if Product.record
-      Photo.trigger('activate', Product.selectionList())
-    else
-      Photo.trigger('activate')
-      
   newAttributes: ->
     if user_id = User.first()?.id
       title   : @productName()
@@ -189,7 +164,8 @@ class ProductsView extends Spine.Controller
       notes   : ''
       link    : ''
       author  : User.first().name
-      invalid : false
+      invalid : true
+      ignored : true
       user_id : user_id
       order   : Product.count()
     else
@@ -256,22 +232,17 @@ class ProductsView extends Spine.Controller
     func = (el) =>
       $(el).detach()
   
-    products = ids || Category.selectionList().slice(0)
-    products = [products] unless Product.isArray(products)
+    ids = ids || Category.selectionList().slice(0)
+    products = Product.toRecords(ids)
     
-    for id in products
-      if item = Product.find(id)
-        el = @list.findModelElement(item)
-        el.removeClass('in')
-      
-#      setTimeout(func, 300, el)
+    for product in products
+      el = @list.findModelElement(product)
+      el.removeClass('in')
+      if Category.record
+        @destroyJoin product, Category.record
+      else
+        product.destroy()
     
-    if category = Category.record
-      @destroyJoin products, Category.record
-    else
-      for id in products
-        product.destroy() if product = Product.find(id)
-  
   beforeDestroyProduct: (product) ->
     # remove selection from root
     Category.removeFromSelection null, product.id
@@ -286,10 +257,10 @@ class ProductsView extends Spine.Controller
 #      @list.findModelElement(product).detach()
       
       # remove all associated products
-      photos = ProductsPhoto.photos(product.id).toID()
+      photos = ProductsPhoto.photos(product.id).toId()
       Photo.trigger('destroy:join', photos, product)
       # remove all associated products
-      @destroyJoin product.id, category
+      @destroyJoin product, category
    
   destroy: (item) ->
     item.removeSelectionID()
@@ -299,7 +270,7 @@ class ProductsView extends Spine.Controller
       
   createJoin: (products, category, callback) ->
     Product.createJoin products, category, callback
-    category.updateSelection products
+    category.updateSelection products.toId()
     
   destroyJoin: (products, category) ->
     @log 'destroyJoin'
@@ -308,8 +279,6 @@ class ProductsView extends Spine.Controller
     callback = ->
       
     products = [products] unless Product.isArray(products)
-    products = products.toID()
-    
     Product.destroyJoin products, category, callback
       
   loadingStart: (product) ->
@@ -355,12 +324,9 @@ class ProductsView extends Spine.Controller
       @render()
       
   click: (e, excl) ->
-    e.preventDefault()
-    #don't propagate to bubble up -edit-trigger
-#    e.stopPropagation()
-    
     item = $(e.currentTarget).item()
     @select(e, item.id)
+    
     
   select: (e, items = []) ->
     unless Array.isArray items
@@ -371,6 +337,7 @@ class ProductsView extends Spine.Controller
       when 'keyup'
         selection = items
       when 'click'
+        console.log 'click product '
         Category.emptySelection() unless @isCtrlClick(e)
         selection = Category.selectionList()[..]
         items = selection[..] unless items.length
@@ -379,6 +346,7 @@ class ProductsView extends Spine.Controller
     
     Category.updateSelection(selection, Category.record?.id)
     Product.updateSelection(Product.selectionList(), Product.record?.id)
+#    e.stopPropagation()
     
   infoUp: (e) =>
     @info.up(e)

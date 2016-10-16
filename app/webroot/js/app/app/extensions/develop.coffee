@@ -56,7 +56,7 @@ class Base
       val
     ret.join('/')
        
-class Develop extends Base
+class Developer extends Base
 
   constructor: (@model,  method, params, @callback, @data = []) ->
     super
@@ -74,7 +74,7 @@ class Develop extends Base
   failResponse: (xhr, statusText, error) =>
     @model.trigger('ajaxError', xhr, statusText, error)
 
-class DevelopCollection extends Base
+class DeveloperCollection extends Base
 
   constructor: (@record, params, mode, @callback, max) ->
     super
@@ -120,18 +120,18 @@ class DevelopCollection extends Base
   failResponse: (xhr, statusText, error) =>
     @record.trigger('ajaxError', xhr, statusText, error)
   
-Dev =
+Develop =
   
   extended: ->
     
     Include =
-      dev: (params, mode, callback, max) -> new DevelopCollection(@, params, mode, callback, max).get()
+      develop: (params, mode, callback, max) -> new DeveloperCollection(@, params, mode, callback, max).get()
       
     Extend =
-      dev: (method, params, callback, data) -> new Develop(@, method, params, callback, data).get()
+      develop: (method, params, callback, data) -> new Developer(@, method, params, callback, data).get()
       
     @include Include
     @extend Extend
 
-Dev.Ajax = Ajax
-module?.exports = Model.Dev = Dev
+Develop.Ajax = Ajax
+module?.exports = Model.Develop = Develop

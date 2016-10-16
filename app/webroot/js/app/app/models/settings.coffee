@@ -15,14 +15,15 @@ class Settings extends Spine.Model
   init: (instance) ->
   
   @loadSettings: ->
-    return unless setting = @first()
-    setting
+    if user = User.first()
+      setting = @findByAttribute('user_id', user.id)
+    else
+      setting = Settings.first()
+      
   
   @isAutoUpload: ->
-    return unless user = User.first()
-    setting = @findByAttribute('user_id', user.id)
-    ret = setting?.autoupload or false
-    ret
+    setting = @loadSettings()
+    !!setting?.autoupload
   
   @findLogoSettings: ->
 #    @findByAttribute('logo_id', 'logo1')

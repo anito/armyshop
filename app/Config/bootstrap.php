@@ -121,6 +121,7 @@ define('BASE_URL', Configure::read('App.baseUrl'));
 define('WEB_URL', '/' . APP_DIR . '/' . WEBROOT_DIR);
 define('UPLOADS', ROOT . DS . 'uploads');
 define('PHOTOS', UPLOADS . DS . 'photos');
+define('MYSQLCONFIG', ROOT . DS . 'mysqlconf');
 define('MYSQLUPLOAD', ROOT . DS . 'mysql');
 define('DEFAULT_USER', 'angela');
 if (!defined('MYSQL_CMD_PATH')) {

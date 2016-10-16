@@ -80,14 +80,14 @@
             <div class="overview view"></div>
           </div>
           <div class="view wait content vbox flex autoflow" style=""></div>
-          <div class="view  categories opt-SelectNone content vbox flex data parent autoflow" style="">
+          <div class="view categories opt-SelectNone content vbox flex data parent autoflow" style="">
             <div class="items flex fadein in3">Categories</div>
           </div>
-          <div class="view products opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
+          <div class="view cat-trigger-edit products opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
             <div class="items flex fadein in3">Products</div>
           </div>
-          <div class="view photos opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
+          <div class="view pro-trigger-edit photos opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
             <div class="items flex fadein in3" data-toggle="modal-category" data-target="#modal-category" data-selector="a">Photos</div>
           </div>
@@ -104,11 +104,35 @@
             <div class="hdivide draghandle">
               <span class="opt opt-CloseDraghandle glyphicon glyphicon-resize-vertical glyphicon glyphicon-white right" style="cursor: pointer;"></span>
             </div>
-            <div id="ga" class="view flex" style=""></div>
+            <div id="ga" class="view flex" style="">
+              <div class="footer" style="">
+                <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
+                  <section class="left">
+                    <button class="btn dark btn-label" disabled="">
+                        <i class="glyphicon glyphicon-tasks"></i>
+                        <span>Kategorie - Editor</span>
+                    </button>
+                  </section>
+                  <section class="right">
+                      <button type="submit" class="dark opt-CreateCategory">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Kategorie</span>
+                      </button>
+                  </section>
+                </div>
+              </div>
+              <div class="vbox flex autoflow views content" style=""></div>
+            </div>
             <div id="al" class="view views flex vbox content" style="">
               <div class="footer" style="">
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                   <section class="left">
+                      <button class="btn dark btn-label" disabled="">
+                        <i class="glyphicon glyphicon-tasks"></i>
+                        <span>Produkt - Editor</span>
+                      </button>
+                  </section>
+                  <section class="right">
                       <button type="submit" class="dark opt-EditorProduct">
                           <i class="glyphicon glyphicon-tasks"></i>
                           <span>Details</span>
@@ -117,8 +141,6 @@
                           <i class="glyphicon glyphicon-tasks"></i>
                           <span>Beschreibungen</span>
                       </button>
-                  </section>
-                  <section class="right">
                       <button type="submit" class="dark opt-CreateProduct">
                           <i class="glyphicon glyphicon-plus"></i>
                           <span>Produkt</span>
@@ -132,7 +154,25 @@
                 <table role="presentation" class="table noproduct view"></table>
               </div>
             </div>
-            <div id="ph" class="view flex autoflow" style=""></div>
+            <div id="ph" class="view flex autoflow" style="">
+              <div class="footer" style="">
+                <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
+                  <section class="left">
+                    <button class="btn dark btn-label" disabled="">
+                          <i class="glyphicon glyphicon-tasks"></i>
+                          <span>Foto - Editor</span>
+                      </button>
+                  </section>
+                  <section class="right">
+                    <button class="btn dark opt-UploadDialogue">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Add files...</span>
+                    </button>
+                  </section>
+                </div>
+              </div>
+              <div class="vbox flex autoflow content" style=""></div>
+            </div>
             <div id="fu" class="view hbox flex bg-dark" style="margin: 0px">
               <!-- The file upload form used as target for the file upload widget -->
               <form id="fileupload" class="vbox flex" action="uploads/image" method="POST" enctype="multipart/form-data">
@@ -381,7 +421,7 @@
 </script>
 
 <script id="sidebarTemplate" type="text/x-jquery-tmpl">
-  <li data-id="${id}" class="gal item data parent alb-trigger-edit">
+  <li data-id="${id}" class="gal item data parent pro-trigger-edit">
     <div class="item-header">
       <div class="expander"></div>
       {{tmpl "#sidebarContentTemplate"}}
@@ -399,10 +439,13 @@
 
 <script id="productsSublistTemplate" type="text/x-jquery-tmpl">
   {{if flash}}
-  <span class="author">${flash}</span>
+  <li data-id="${id}" class="sublist-item" title="${flash}">
+    <span class="author">${flash}</span>
+  </li>
   {{else}}
-  <li data-id="${id}" class="sublist-item alb alb-trigger-edit item data {{if ignored}}ignored{{/if}}" title="${title}">
-    <span class="glyphicon glyphicon-picture"></span>
+  <li data-id="${id}" class="sublist-item alb pro-trigger-edit item data {{if ignored}}ignored{{/if}}" title="${title}">
+    <span class="glyphicon glyphicon-{{if details().iCount}}picture{{else}}camera{{/if}}"></span>
+    <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}}"></span>
     <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
     <span class="cta">€ {{if price}}${price}{{else}}0{{/if}}</span>
   </li>
@@ -438,16 +481,16 @@
 </script>
 
 <script id="categoriesTemplate" type="text/x-jquery-tmpl">
-  <li id="${id}" data-id="${id}" class="item container data fade in gal-trigger-edit" data-drag-over="thumbnail">
+  <li id="${id}" data-id="${id}" class="item container data fade in cat-trigger-edit" data-drag-over="thumbnail">
     <div class="thumbnail">
       <div class="inner">
         {{tmpl($item.data.details()) "#galDetailsTemplate"}}
       </div>
     </div>
-    <div class="glyphicon-set right blue fade out" style="">
+    <div class="glyphicon-set right fade out" style="">
       <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
       <span class="left">
-        <a href="#" class="dd dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
+        <a href="#" class="dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
           <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#"><i class="tooltips glyphicon glyphicon-folder-close"></i>Öffnen</a></li>
           <li class="divider"></li>
@@ -515,10 +558,10 @@
 </script>
 
 <script id="galDetailsTemplate" type="text/x-jquery-tmpl">
-  <div style="">{{if name}}${name.slice(0, 15)}{{else}}...{{/if}}</div>
+  <div style="">{{if screenname}}${$().name(screenname, 15)}{{else}}${name}{{/if}}</div>
   <div style="font-size: 0.8em; font-style: oblique;">Products: ${aCount}</div>
   <div style="font-size: 0.8em; font-style: oblique;">Images: ${iCount}</div>
-  <div class="opt-SlideshowPlay" style="">
+  <div class="opt-SlideshowPlay hide" style="">
     <span class="label label-default">
     <i class="glyphicon glyphicon-picture"></i><i class="glyphicon glyphicon-play"></i>
     ${pCount}
@@ -537,19 +580,19 @@
 </script>
 
 <script id="productsTemplate" type="text/x-jquery-tmpl">
-  <li id="${id}" data-id="${id}" class="item fade in alb-trigger-edit {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
+  <li id="${id}" data-id="${id}" class="item fade in pro-trigger-edit {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
     <div class="thumbnail"></div>
     {{if Category.record}}
     <div class="glyphicon-set left" style="">
-      <span class="dd">
+      <span class="">
         <a href="#" title="{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}" class="glyphicon glyphicon-eye glyphicon-white opt-ignored"></a>
       </span>
     </div>
     {{/if}}
-    <div class="glyphicon-set blue right fade out" style="">
-      <span class="dd tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
+    <div class="glyphicon-set right fade out" style="">
+      <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
       <span class="left">
-        <a href="#" class="dd dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
+        <a href="#" class="dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
           <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#"><i class="tooltips glyphicon glyphicon-picture"></i>Fotos anzeigen</a></li>
           {{if Category.record}}
@@ -564,8 +607,8 @@
       <div class="title">{{if title}}${$().name(title, 50)}{{/if}}</div>
       <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 113)}}{{/if}}</div>
         <section class="info-badges">
-          <span class="link glyphicon glyphicon-link {{if link}}{{else}}warning-badge{{/if}}"></span>
-          <span class="price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</span>
+          <span class="cc link glyphicon glyphicon-link {{if link}}{{else}}warning-badge{{/if}}"></span>
+          <span class="dd price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</span>
         </section>
     </div>
   </li>
@@ -634,7 +677,7 @@
     </div>
     {{tmpl() "#categorySpecsTemplate"}}
   </section>
-  <section class="hide">
+  <section class="">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
@@ -657,21 +700,21 @@
         {{/if}}
         </h3>
         {{else}}
-        <h1>Produktkatalog</h1>
+        <h1>Produkte-Katalog</h1>
         {{/if}}
       </div>
     </div>
     {{tmpl() "#productSpecsTemplate"}}
   </section>
-  <section class="hide">
+  <section class="">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
       </li>
-      <li class="gal gal-trigger-edit">
+      <li class="gal cat-trigger-edit">
         <a href="#">categories</a>
       </li>
-      <li class="alb active alb-trigger-edit">Products</li>
+      <li class="alb active pro-trigger-edit">Products</li>
     </span>
   </section>
 </script>
@@ -688,7 +731,7 @@
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
         </h3>
         {{else}}
-        <h1>Fotokatalog</h1>
+        <h1>Foto-Katalog</h1>
         {{/if}}
       </div>
     </div>
@@ -710,7 +753,7 @@
         <span class="label label-default"><a href="" class="opt-ShowProducts" >{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</a></span>
         </h3>
         <h3>
-        <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 10)}{{else}}...{{/if}}{{else}}{{/if}}</span>
+        <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}{{/if}}</span>
         </h3>
         {{else}}
         <h1>Fotokatalog</h1>
@@ -723,15 +766,15 @@
 </script>
 
 <script id="photosBreadcrumbTemplate" type="text/x-jquery-tmpl">
-  <section class="hide">
+  <section class="">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
       </li>
-      <li class="gal gal-trigger-edit">
+      <li class="gal cat-trigger-edit">
         <a href="#">categories</a>
       </li>
-      <li class="alb alb-trigger-edit">
+      <li class="alb pro-trigger-edit">
         <a href="#">Products</a>
       </li>
       <li class="pho active">Photos</li>
@@ -741,15 +784,15 @@
 
 
 <script id="photoBreadcrumbTemplate" type="text/x-jquery-tmpl">
-  <section class="hide">
+  <section class="">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
       </li>
-      <li class="gal gal-trigger-edit">
+      <li class="gal cat-trigger-edit">
         <a href="#">categories</a>
       </li>
-      <li class="alb alb-trigger-edit">
+      <li class="alb pro-trigger-edit">
         <a href="#">Products</a>
       </li>
       <li class="pho pho-trigger-edit">
@@ -846,17 +889,17 @@
 </script>
 
 <script id="photoTemplate" type="text/x-jquery-tmpl">
-  <li data-id="${id}" class="item pho-trigger-edit">
+  <li data-id="${id}" class="item pho-trigger-edit noborder">
     {{tmpl "#photoThumbnailTemplate"}}
   </li>
 </script>
 
 <script id="photosThumbnailTemplate" type="text/x-jquery-tmpl">
-  <div class="thumbnail image left fadeslow"></div>
-  <div class="glyphicon-set right blue fade out" style="">
+  <div class="pho-trigger-edit thumbnail image left fadeslow"></div>
+  <div class="glyphicon-set right fade out" style="">
     <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
     <span class="left">
-      <a href="#" class="dd dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
+      <a href="#" class="dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
         <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#"><i class="tooltips glyphicon glyphicon-resize-full"></i>Öffnen</a></li>
         <li class="divider"></li>
@@ -876,13 +919,11 @@
 
 <script id="photoThumbnailTemplate" type="text/x-jquery-tmpl">
   <div class="thumbnail image left"></div>
-  <div class="glyphicon-set right blue fade out" style="">
+  <div class="glyphicon-set right fade out" style="">
     <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
     <span class="left">
-      <a href="#" class="dd dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
+      <a href="#" class="dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Full Size" href="#"><i class="tooltips glyphicon glyphicon-resize-full"></i>Full size</a></li>
-        <li class="divider"></li>
         <li role="presentation" class="dropdown-header disabled"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate" href="#"><i class="tooltips"></i>Rotate:</a></li>
         <li role="presentation" class="rotate-cw"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate cw" href="#"><i class="tooltips glyphicon glyphicon-circle-arrow-right"></i>cw</a></li>
         <li role="presentation" class="rotate-ccw"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate ccw" href="#"><i class="tooltips glyphicon glyphicon-circle-arrow-left"></i>ccw</a></li>

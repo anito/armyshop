@@ -181,21 +181,21 @@ Controller.Drag =
           switch source.constructor.className
             when 'Product'
               selection = Spine.DragItem.selection
-              Product.trigger('destroy:join', selection, origin) unless @isCtrlClick(e)# and origin
-              Product.trigger('create:join', selection, target, => )#@navigate hash)
+              Product.trigger('destroy:join', Product.toRecords(selection), origin) unless @isCtrlClick(e)# and origin
+              Product.trigger('create:join', Product.toRecords(selection), target, => )#@navigate hash)
 
             when 'Photo'
               selection = Spine.DragItem.selection
               photos = Photo.toRecords(selection)
 
               Photo.trigger 'create:join',
-                photos: selection
+                photos: photos
                 product: target
               , => @navigate hash
 
               unless @isCtrlClick(e)
                 Photo.trigger 'destroy:join',
-                  photos: selection
+                  photos: photos
                   product: origin
           
         catch e
