@@ -104,11 +104,11 @@ Controller.Drag =
         selection = []
         modelOrRecord = if rec = Spine.DragItem.originRecord then rec else Model[Spine.DragItem.originModel]
         selection.update modelOrRecord.selectionList()[..]
-        if modelOrRecord.selectionList().indexOf(Spine.DragItem.source.id) is -1
-          Spine.DragItem.selected = true
-          Spine.DragItem.save()
-          selection.add Spine.DragItem.source.id
-          Model[Spine.DragItem.originModel].updateSelection selection, Spine.DragItem.originRecord?.id, trigger: false
+#        if modelOrRecord.selectionList().indexOf(Spine.DragItem.source.id) is -1
+#          Spine.DragItem.selected = true
+#          Spine.DragItem.save()
+#          selection.add Spine.DragItem.source.id
+#          Model[Spine.DragItem.originModel].updateSelection selection, Spine.DragItem.originRecord?.id, trigger: false
         
       dragStart: (e, controller, record) ->
         @log 'dragStart'

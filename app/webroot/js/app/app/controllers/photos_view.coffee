@@ -259,9 +259,11 @@ class PhotosView extends Spine.Controller
     @list.children().each (index) ->
       idx = f-index
       item = $(@).item()
+      console.log item
+      console.log Product.record
       if item and Product.record
-        @log item.title
         ap = ProductsPhoto.fromPhotoId(item.id)
+        console.log ap
         if ap and parseInt(ap.order) isnt idx
           ap.order = idx
           ap.save(ajax:false)

@@ -39849,9 +39849,11 @@ Released under the MIT License
         var ap, idx, item;
         idx = f - index;
         item = $(this).item();
+        console.log(item);
+        console.log(Product.record);
         if (item && Product.record) {
-          this.log(item.title);
           ap = ProductsPhoto.fromPhotoId(item.id);
+          console.log(ap);
           if (ap && parseInt(ap.order) !== idx) {
             ap.order = idx;
             ap.save({
@@ -45823,19 +45825,11 @@ Released under the MIT License
           return event = e.originalEvent;
         },
         dragHelp: function(e, item, origin) {
-          var modelOrRecord, rec, ref, selection;
+          var modelOrRecord, rec, selection;
           Spine.DragItem = SpineDragItem.first();
           selection = [];
           modelOrRecord = (rec = Spine.DragItem.originRecord) ? rec : Model[Spine.DragItem.originModel];
-          selection.update(modelOrRecord.selectionList().slice(0));
-          if (modelOrRecord.selectionList().indexOf(Spine.DragItem.source.id) === -1) {
-            Spine.DragItem.selected = true;
-            Spine.DragItem.save();
-            selection.add(Spine.DragItem.source.id);
-            return Model[Spine.DragItem.originModel].updateSelection(selection, (ref = Spine.DragItem.originRecord) != null ? ref.id : void 0, {
-              trigger: false
-            });
-          }
+          return selection.update(modelOrRecord.selectionList().slice(0));
         },
         dragStart: function(e, controller, record) {
           var el, event, originEl, selection, source;
