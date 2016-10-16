@@ -29,7 +29,7 @@ class SubEditViewDescription extends Spine.Controller
     Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     
   newAttributes: (object={}) ->
-    if (user_id = User.first()?.id) and (product_id = @parent.current.id)
+    if (user_id = User.first()?.id) and (product_id = @parent.current?.id)
       count = Description.filter(product_id).length
       obj =
         product_id  : product_id

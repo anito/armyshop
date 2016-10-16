@@ -44464,11 +44464,11 @@ Released under the MIT License
     }
 
     SubEditViewDescription.prototype.newAttributes = function(object) {
-      var count, obj, product_id, ref, user_id;
+      var count, obj, product_id, ref, ref1, user_id;
       if (object == null) {
         object = {};
       }
-      if ((user_id = (ref = User.first()) != null ? ref.id : void 0) && (product_id = this.parent.current.id)) {
+      if ((user_id = (ref = User.first()) != null ? ref.id : void 0) && (product_id = (ref1 = this.parent.current) != null ? ref1.id : void 0)) {
         count = Description.filter(product_id).length;
         obj = {
           product_id: product_id,
