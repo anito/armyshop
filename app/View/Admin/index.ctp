@@ -677,7 +677,7 @@
     </div>
     {{tmpl() "#categorySpecsTemplate"}}
   </section>
-  <section class="">
+  <section class="hide">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
@@ -706,7 +706,7 @@
     </div>
     {{tmpl() "#productSpecsTemplate"}}
   </section>
-  <section class="">
+  <section class="hide">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
@@ -756,7 +756,7 @@
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}{{/if}}</span>
         </h3>
         {{else}}
-        <h1>Fotokatalog</h1>
+        <h1>Foto-Katalog</h1>
         {{/if}}
       </div>
     </div>
@@ -766,7 +766,7 @@
 </script>
 
 <script id="photosBreadcrumbTemplate" type="text/x-jquery-tmpl">
-  <section class="">
+  <section class="hide">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
@@ -784,7 +784,7 @@
 
 
 <script id="photoBreadcrumbTemplate" type="text/x-jquery-tmpl">
-  <section class="">
+  <section class="hide">
     <span class="fadeelement breadcrumb">
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
