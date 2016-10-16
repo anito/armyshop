@@ -27,6 +27,7 @@ class User extends Spine.Model
   @logout: ->
     @destroyAll()
     Clipboard.destroyAll()
+    delete localStorage.isProduction
     $(window).off()
     @redirect 'logout'
   

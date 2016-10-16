@@ -51599,6 +51599,7 @@ Released under the MIT License
     User.logout = function() {
       this.destroyAll();
       Clipboard.destroyAll();
+      delete localStorage.isProduction;
       $(window).off();
       return this.redirect('logout');
     };

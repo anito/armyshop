@@ -36,7 +36,7 @@
     ?>
 
     var base_url = '<?php echo $this->Html->url('/'); ?>';
-    var isProduction = false
+    var isProduction = true
     var exports = this;
     
     Spine = require('spine');

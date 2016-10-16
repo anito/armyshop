@@ -55,7 +55,7 @@
     var exports = this;
     $(function() {
       
-      var isProduction = false
+      var isProduction = true
       
       var categories = <?php echo $this->Js->object($categories); ?>;
       var products = <?php echo $this->Js->object($products); ?>;
