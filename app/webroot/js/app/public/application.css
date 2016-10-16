@@ -1119,7 +1119,7 @@ textarea {
 }
 .sidebar li.parent,
 .sidebar li li div {
-  color: #787878;
+  color: #989898;
   text-shadow: 0 -1px 0px rgba(0,0,0,0.7);
 }
 li.parent:not(.open) {
