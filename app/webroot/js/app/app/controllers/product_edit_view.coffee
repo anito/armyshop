@@ -49,20 +49,31 @@ class ProductEditView extends Spine.Controller
     @activeController = @productView
     
     @manager.bind('change', @proxy @changedController)
-    Product.bind('current', @proxy @change)
-    CategoriesProduct.bind('destroy', @proxy @change)
+    Product.bind('current', @proxy @currentProduct)
+    CategoriesProduct.bind('destroy, update', @proxy @changeRelated)
     Product.bind('destroy', @proxy @change)
     
   active: ->
     @render()
   
   change: (item) ->
-    if item.destroyed
+    if item and item?.destroyed
       @current = null
     else
       @current = item
     @render() 
   
+  changeRelated: (item) ->
+    return unless item.product_id is Product.record?.id
+    product = Category.product(item.category_id, item.product_id)
+    @change product
+  
+  currentProduct: (item) ->
+    return unless item.id is Product.record?.id
+    if cat = Category.record
+      item = Category.product(cat.id, item.id)
+    @change item
+    
   changedController: (controller) ->
     c.btn?.removeClass('active') for c in @manager.controllers when c isnt controller
     controller.btn?.addClass('active')

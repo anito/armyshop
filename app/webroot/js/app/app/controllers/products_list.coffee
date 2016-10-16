@@ -244,11 +244,7 @@ class ProductsList extends Spine.Controller
     e.preventDefault()
 
   ignoreProduct: (e) ->
-    e.stopPropagation()
-    item = $(e.currentTarget).item()
-    return unless item?.constructor?.className is 'Product'
-    if ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id)
-      CategoriesProduct.trigger('ignored', ga, !ga.ignored)
+    Spine.trigger('product:ignore', e)
     
   deleteProduct: (e) ->
     @log 'deleteProduct'

@@ -614,35 +614,56 @@
   </li>
 </script>
 
-<script id="editProductTemplate" type="text/x-jquery-tmpl">            
-  <div class="input-group left" style="width: 68%">
-    <span class="input-group-addon" id="basic-addon1">Titel</span>
-    <input type="text" class="form-control" placeholder="Produkttitel" aria-describedby="basic-addon1" name="title" value="{{html title}}">
-  </div>
-
-  <div class="input-group right" style="width: 22%">
-    <span class="input-group-addon" id="basic-addon2">Preis (€)</span>
-    <input type="text" class="form-control" placeholder="Preis" aria-describedby="price" name="price" value="${price}">
-  </div>
-
-  <div class="input-group left">
-    <span class="input-group-addon" id="subtitle">Kurzbeschreibung</span>
-    <textarea type="text" class="form-control" placeholder="Kurzbeschreibung" aria-describedby="subtitle" name="subtitle" value="{{html subtitle}}">{{html subtitle}}</textarea>
-  </div>
-  
-  <div class="input-group left">
-    <span class="input-group-addon" id="notes">Notizen</span>
-    <textarea type="text" class="form-control" aria-describedby="notes" placeholder="Notizen" name="notes">{{html notes}}</textarea>
-  </div>
-
-  <div class="input-group left">
-    <div class="input-group-btn">
-      <button type="button" class="btn btn-default" aria-label="Help">
-        <span class="glyphicon glyphicon-link"></span>
-      </button>
+<script id="editProductTemplate" type="text/x-jquery-tmpl">
+  <div class="row">
+    <div class="col-lg-9" style="">
+      <div class="input-group" style="">
+        <span class="input-group-addon" id="basic-addon1">Titel</span>
+        <input type="text" class="form-control" placeholder="Produkttitel" aria-describedby="basic-addon1" name="title" value="{{html title}}">
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default opt-ignore" aria-label="Help">
+            <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}}"></span>
+          </button>
+        </div>
+      </div>
     </div>
-    <input type="text" class="form-control" aria-describedby="link"  placeholder="Link to Hood.de" name="link" value="${link}">
+    <div class="col-lg-3" style="">
+      <div class="input-group" style="">
+        <span class="input-group-addon" id="basic-addon2">Preis (€)</span>
+        <input type="text" class="form-control" placeholder="Preis" aria-describedby="price" name="price" value="${price}">
+      </div>
+    </div>
   </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="input-group" style="">
+        <span class="input-group-addon" id="subtitle">Kurzbeschreibung</span>
+        <textarea type="text" class="form-control" placeholder="Kurzbeschreibung" aria-describedby="subtitle" name="subtitle" value="{{html subtitle}}">{{html subtitle}}</textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="input-group" style="">
+        <span class="input-group-addon" id="notes">Notizen</span>
+        <textarea type="text" class="form-control" aria-describedby="notes" placeholder="Notizen" name="notes">{{html notes}}</textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="input-group" style="">
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default" aria-label="Help">
+            <span class="glyphicon glyphicon-link"></span>
+          </button>
+        </div>
+        <input type="text" class="form-control" aria-describedby="link"  placeholder="Link to Hood.de" name="link" value="${link}">
+      </div>
+    </div>
+  </div>
+    
               
 </script>
 

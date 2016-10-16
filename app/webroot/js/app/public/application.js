@@ -40188,8 +40188,8 @@ Released under the MIT License
       this.manager = new Spine.Manager(this.productView, this.descriptionView, this.noProductView);
       this.activeController = this.productView;
       this.manager.bind('change', this.proxy(this.changedController));
-      Product.bind('current', this.proxy(this.change));
-      CategoriesProduct.bind('destroy', this.proxy(this.change));
+      Product.bind('current', this.proxy(this.currentProduct));
+      CategoriesProduct.bind('destroy, update', this.proxy(this.changeRelated));
       Product.bind('destroy', this.proxy(this.change));
     }
 
@@ -40198,12 +40198,32 @@ Released under the MIT License
     };
 
     ProductEditView.prototype.change = function(item) {
-      if (item.destroyed) {
+      if (item && (item != null ? item.destroyed : void 0)) {
         this.current = null;
       } else {
         this.current = item;
       }
       return this.render();
+    };
+
+    ProductEditView.prototype.changeRelated = function(item) {
+      var product, ref;
+      if (item.product_id !== ((ref = Product.record) != null ? ref.id : void 0)) {
+        return;
+      }
+      product = Category.product(item.category_id, item.product_id);
+      return this.change(product);
+    };
+
+    ProductEditView.prototype.currentProduct = function(item) {
+      var cat, ref;
+      if (item.id !== ((ref = Product.record) != null ? ref.id : void 0)) {
+        return;
+      }
+      if (cat = Category.record) {
+        item = Category.product(cat.id, item.id);
+      }
+      return this.change(item);
     };
 
     ProductEditView.prototype.changedController = function(controller) {
@@ -40911,15 +40931,7 @@ Released under the MIT License
     };
 
     ProductsList.prototype.ignoreProduct = function(e) {
-      var ga, item, ref;
-      e.stopPropagation();
-      item = $(e.currentTarget).item();
-      if ((item != null ? (ref = item.constructor) != null ? ref.className : void 0 : void 0) !== 'Product') {
-        return;
-      }
-      if (ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id)) {
-        return CategoriesProduct.trigger('ignored', ga, !ga.ignored);
-      }
+      return Spine.trigger('product:ignore', e);
     };
 
     ProductsList.prototype.deleteProduct = function(e) {
@@ -41812,6 +41824,7 @@ Released under the MIT License
       Product.bind('current', this.proxy(this.refreshToolbars));
       Spine.bind('products:copy', this.proxy(this.copyProducts));
       Spine.bind('photos:copy', this.proxy(this.copyPhotos));
+      Spine.bind('product:ignore', this.proxy(this.ignoreProduct));
       this.current = this.controller = this.categoriesView;
       this.sOutValue = 160;
       this.sliderRatio = 50;
@@ -42717,6 +42730,18 @@ Released under the MIT License
         items.push(clb.item);
       }
       return Product.trigger('create:join', items.toId(), category, callback);
+    };
+
+    ShowView.prototype.ignoreProduct = function(e) {
+      var ga, item, ref;
+      e.stopPropagation();
+      item = $(e.currentTarget).item();
+      if ((item != null ? (ref = item.constructor) != null ? ref.className : void 0 : void 0) !== 'Product') {
+        return;
+      }
+      if (ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id)) {
+        return CategoriesProduct.trigger('ignored', ga, !ga.ignored);
+      }
     };
 
     ShowView.prototype.help = function(e) {
@@ -44588,7 +44613,8 @@ Released under the MIT License
     SubEditViewProduct.extend(Extender);
 
     SubEditViewProduct.prototype.events = {
-      'keyup': 'saveOnKeyup'
+      'keyup': 'saveOnKeyup',
+      'click .opt-ignore': 'ignoreProduct'
     };
 
     SubEditViewProduct.prototype.template = function(item) {
@@ -44625,6 +44651,10 @@ Released under the MIT License
         atts = (typeof el.serializeForm === "function" ? el.serializeForm() : void 0) || this.el.serializeForm();
         return this.parent.current.updateChangedAttributes(atts);
       }
+    };
+
+    SubEditViewProduct.prototype.ignoreProduct = function(e) {
+      return Spine.trigger('product:ignore', e);
     };
 
     SubEditViewProduct.prototype.saveOnKeyup = function(e) {
@@ -49069,6 +49099,22 @@ Released under the MIT License
         return results;
       };
       return Product.filterRelated(id, filterOptions);
+    };
+
+    Category.product = function(id, pid) {
+      var filterOptions, j, len, pro, pros, res;
+      filterOptions = {
+        model: 'Category'
+      };
+      pros = this.products(id);
+      res = [];
+      for (j = 0, len = pros.length; j < len; j++) {
+        pro = pros[j];
+        if (pro.id === pid) {
+          res.push(pro);
+        }
+      }
+      return res[0];
     };
 
     Category.publishedProducts = function(id) {

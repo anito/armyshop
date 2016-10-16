@@ -221,6 +221,7 @@ class ShowView extends Spine.Controller
     Product.bind('current', @proxy @refreshToolbars)
     Spine.bind('products:copy', @proxy @copyProducts)
     Spine.bind('photos:copy', @proxy @copyPhotos)
+    Spine.bind('product:ignore', @proxy @ignoreProduct)
 #    Spine.bind('deselect', @proxy @deselect)
     
     @current = @controller = @categoriesView
@@ -875,6 +876,13 @@ class ShowView extends Spine.Controller
       items.push clb.item
       
     Product.trigger('create:join', items.toId(), category, callback)
+      
+  ignoreProduct: (e) ->
+    e.stopPropagation()
+    item = $(e.currentTarget).item()
+    return unless item?.constructor?.className is 'Product'
+    if ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id)
+      CategoriesProduct.trigger('ignored', ga, !ga.ignored)
       
   help: (e) ->
     carousel_id = 'help-carousel'

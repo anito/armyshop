@@ -56,6 +56,16 @@ class Category extends Spine.Model
       
     Product.filterRelated(id, filterOptions)
     
+  @product: (id, pid) ->
+    filterOptions =
+      model: 'Category'
+    pros = @products id
+    res = []
+    res.push pro for pro in pros when pro.id is pid
+    res[0]
+    
+    
+    
   @publishedProducts: (id) ->
     filterOptions =
       model: 'Category'

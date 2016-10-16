@@ -11,6 +11,7 @@ class SubEditViewProduct extends Spine.Controller
   
   events:
     'keyup'                         : 'saveOnKeyup'
+    'click .opt-ignore'             : 'ignoreProduct'
   
   template: (item) ->
     @templ.tmpl item
@@ -37,6 +38,9 @@ class SubEditViewProduct extends Spine.Controller
     if @parent.current
       atts = el.serializeForm?() or @el.serializeForm()
       @parent.current.updateChangedAttributes(atts)
+
+  ignoreProduct: (e) ->
+    Spine.trigger('product:ignore', e)
 
   saveOnKeyup: (e) =>
     code = e.charCode or e.keyCode
