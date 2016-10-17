@@ -48756,8 +48756,8 @@ Released under the MIT License
     };
 
     Login.prototype.guestLogin = function() {
-      this.usernameEl.val('guest');
-      this.passwordEl.val('guest');
+      this.usernameEl.val('semper');
+      this.passwordEl.val('fidelis');
       return this.submit();
     };
 
