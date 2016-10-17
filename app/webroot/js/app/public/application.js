@@ -50278,7 +50278,7 @@ Released under the MIT License
           ga = new CategoriesProduct({
             category_id: target.id,
             product_id: item.id,
-            ignored: item.ignored,
+            ignored: true,
             order: parseInt((ref = CategoriesProduct.products(target.id).last()) != null ? ref.order : void 0) + 1 || 0
           });
           valid = ga.save({

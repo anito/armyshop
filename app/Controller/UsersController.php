@@ -11,6 +11,7 @@ class UsersController extends AppController {
   function beforeFilter() {
     $this->Auth->allowedActions = array('login', 'logout', 'ping');//, 'add', 'index', 'edit', 'view');
     $this->layout = 'cake';
+    $this->allowedGroups = array('Administrators', 'Managers');
     parent::beforeFilter();
   }
   
@@ -25,6 +26,14 @@ class UsersController extends AppController {
       $group = $this->User->Group->findById($this->Auth->user('group_id'));
       return $group['Group']['name'];
     }
+  }
+  
+  function isAuthGroup() {
+    $groups = $this->allowedGroups;
+    if (in_array($this->_groupName(), $groups)) {
+        return TRUE;
+    }
+    return FALSE;
   }
   
   function ajax_login() {
@@ -64,11 +73,14 @@ class UsersController extends AppController {
         }
         $this->render(SIMPLE_JSON);
       } else {
-        $this->Auth->login();
+        if($this->isAuthGroup()) {
+          $this->Auth->login();
+        }
       }
     } else {
-      $this->set('redirect', $this->Auth->redirect());
+      $this->set('redirect', $this->Auth->redirect(array('controller' => 'users', 'action' => 'index')));
       $this->layout = 'login_layout';
+//      $this->redirect(array('controller' => 'users', 'action' => 'login'));
     }
   }
   
@@ -97,16 +109,16 @@ class UsersController extends AppController {
   }
 
   function index() {
-    if ($this->groupname != 'Administrators') {
-//      $this->redirect(array('action' => 'login'));
+    if (!$this->isAuthGroup()) {
+      $this->redirect(array('action' => 'login'));
     }
     $this->User->recursive = 0;
     $this->set('users', $this->paginate());
   }
 
   function view($id = null) {
-    if ($this->groupname != 'Administrators') {
-//      $this->redirect(array('action' => 'login'));
+    if (!$this->isAuthGroup()) {
+      $this->redirect(array('action' => 'login'));
     }
     if (!$id) {
       $this->Flash->error(__('Invalid user', true));
@@ -116,8 +128,8 @@ class UsersController extends AppController {
   }
 
   function add() {
-    if ($this->groupname != 'Administrators') {
-//      $this->redirect(array('action' => 'login'));
+    if (!$this->isAuthGroup()) {
+      $this->redirect(array('action' => 'login'));
     }
     if (!empty($this->request->data)) {
       $this->User->create();
@@ -148,8 +160,8 @@ class UsersController extends AppController {
   }
 
   function edit($id = null) {
-    if ($this->groupname != 'Administrators') {
-//      $this->redirect(array('action' => 'login'));
+    if (!$this->isAuthGroup()) {
+      $this->redirect(array('action' => 'login'));
     }
     if (!$id && empty($this->data)) {
       $this->Session->setFlash(__('Invalid user', true));
@@ -171,8 +183,8 @@ class UsersController extends AppController {
   }
 
   function delete($id = null) {
-    if ($this->groupname != 'Administrators') {
-//      $this->redirect(array('action' => 'login'));
+    if (!$this->isAuthGroup()) {
+      $this->redirect(array('action' => 'login'));
     }
     if (!$id) {
       $this->Session->setFlash(__('Invalid id for user', true));
@@ -188,9 +200,9 @@ class UsersController extends AppController {
   
   function ping() {
     $user = $this->Auth->user();
-    $this->log($this->Auth->user(), LOG_DEBUG);
-    $this->log($this->Auth->user('id'), LOG_DEBUG);
-    $this->log($this->data, LOG_DEBUG);
+//    $this->log($this->Auth->user(), LOG_DEBUG);
+//    $this->log($this->Auth->user('id'), LOG_DEBUG);
+//    $this->log($this->data, LOG_DEBUG);
     if($this->request->is('ajax')) {
       if(!empty($this->data) && !empty($user)) {
         $this->set('_serialize', array_merge($this->data, array('id' => $this->Auth->user('id'), 'sessionid' => $this->Session->id(), 'success' => true)));

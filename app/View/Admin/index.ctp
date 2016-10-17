@@ -1065,7 +1065,7 @@
       <li class="opt-logout"><a href="#">Logout</a></li>
       <li class="divider"></li>
       <li class="opt-trace"><a href="#">
-        <i class="glyphicon {{if trace}}glyphicon-ok{{/if}}"></i>Trace</a>
+        <i class="glyphicon {{if trace}}glyphicon-ok{{/if}}"></i>Dev Modus</a>
       </li>
     </ul>
   </div>
