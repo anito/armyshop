@@ -1,5 +1,6 @@
 Spine     = require("spine")
 $         = Spine.$
+Model     = Spine.Model
 Extender  = require('extensions/controller_extender')
 
 class MainView extends Spine.Controller
@@ -9,6 +10,10 @@ class MainView extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
+    @el.data('current',
+      model: Model.Root
+      models: Model.Category
+    )
     
   active: ->
     

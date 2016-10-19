@@ -76,7 +76,7 @@ class Toolbar extends Spine.Model
           icon: 'trash'
           klass: 'opt-DestroyCategory'
           disabled: ->
-            ret = !Category.record or (c for c in App.arr when c is Category.record.name ).length
+            ret = !Category.record or (c for c in Category.protected when c is Category.record.name ).length
           shortcut: '<-'
         ]
     group2:

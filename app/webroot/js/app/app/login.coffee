@@ -54,10 +54,9 @@ class Login extends Spine.Controller
     @usernameEl.val('').focus()
     
   success: (json) =>
-    json = $.parseJSON(json)
     User.fetch()
     User.destroyAll()
-    user = new User @newAttributes(json)
+    user = new User @newAttributes($.parseJSON json)
     user.save()
     @render(@flashEl, @flashTemplate, json)
     delayedFunc = ->

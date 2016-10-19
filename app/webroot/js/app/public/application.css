@@ -1123,7 +1123,7 @@ textarea {
   text-shadow: 0 -1px 0px rgba(0,0,0,0.7);
 }
 li.parent:not(.open) {
-  height: 58px;
+  height: 62px;
 }
 .open ul.sublist {
   display: block !important;
@@ -1488,7 +1488,7 @@ section span.price {
   background-position: 25px 29px, 77px 29px, 25px 81px, 77px 81px;
 }
 #content .content .items:not(.nopad) {
-  padding: 37px 10px 0;
+  padding: 20px 10px 0;
 }
 .all .item {
   padding: 0;
@@ -1507,10 +1507,20 @@ section span.price {
 #content .content li.item {
   position: relative;
 }
+#overview {
+  margin: 0;
+  padding: 0;
+}
 #overview div.recents .carousel-item {
   margin: 0 auto;
   padding: 0;
   width: 420px;
+}
+#overview .thumbnail {
+  width: 70px;
+  height: 70px;
+  margin: 2px;
+  border: 0 none;
 }
 .carousel-control.right,
 .carousel-control.left {
@@ -1563,24 +1573,25 @@ li .thumbnail.image {
   line-height: 1.2em;
   border-radius: 0px;
 }
-.categories .items .thumbnail {
-  width: 460px;
-  height: 160px;
+.categories li {
+  margin: 0 5px 10px;
 }
-.categories .items .thumbnail {
+.categories.items li.item .thumbnail {
+  width: 320px;
+  height: 160px;
+  margin: 20px 5px 0 0;
+  padding: 10px;
   color: rgba(255,255,255,0.9);
+  font-size: 1.4rem;
   line-height: 2em;
   text-shadow: 0 1px 0.1px rgba(0,0,0,0.9);
-}
-.categories .items .thumbnail .inner {
-  margin: 20px 5px 0 0;
-  padding-left: 2px;
+  margin: 0;
 }
 .products .thumbnail {
   background-color: rgba(51,51,51,0.53);
   background-image: none;
-  width: 420px;
-  height: 140px;
+  width: 400px;
+  height: 160px;
 }
 #overview .thumbnail {
   width: 70px;
@@ -1588,7 +1599,7 @@ li .thumbnail.image {
   border: 0 none;
 }
 .content li.item {
-  border: 9px solid;
+  border: 5px solid;
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
@@ -1876,9 +1887,6 @@ li.item.active .glyphicon-set {
   border: 0 none;
   padding: 0px;
 }
-.categories .thumbnail {
-  background-position: 0 -160px;
-}
 #content .hoverinfo li {
   color: rgba(255,255,255,0.8);
   font-family: monospace;
@@ -1973,7 +1981,7 @@ button.chromeless:hover {
   content: "Auswahl aufheben";
 }
 [class^="opt-Select"] {
-  min-width: 170px;
+  min-width: 140px;
 }
 .select:hover,
 .deselect:hover {
@@ -2104,7 +2112,7 @@ section.addAction {
   opacity: 1;
 }
 .drag-in-progress .active[draggable] {
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .sortable-dragging {
   background: inherit;
@@ -2117,11 +2125,12 @@ li.over:not(.view) {
 /*  background-color: rgba(50, 250, 50, 0.7) !important;*/
 /*  color: rgba(40, 40, 40, 0.9) !important;*/
 /*  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.33) !important;*/
-  border: 4px solid #ffd700 !important;
+  border: 5px solid #ffd700 !important;
 }
 .over.nodrop,
 li.over.nodrop:not(.view) {
-  border: 4px solid #ff584d !important;
+  border: 5px solid #ff584d !important;
+  transition: color 0.3s;
 }
 .over li {
 /*  background-color: inherit !important;*/
@@ -2129,8 +2138,9 @@ li.over.nodrop:not(.view) {
 /*  color: inherit !important;*/
 /*  text-shadow: inherit !important;*/
 }
-.data.items:not(.nopad) {
-  border: 4px solid transparent;
+.data.items:not(.nopad),
+li.data {
+  border: 5px solid transparent;
 }
 .noborder {
   border: 0 none !important;

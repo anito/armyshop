@@ -132,10 +132,8 @@ class PhotosAddView extends Spine.Controller
     list
     
   add: ->
-    Photo.trigger('create:join',
-      product: Product.record
-      photos: Photo.toRecords(@selectionList)
-    )
+    photos = Photo.toRecords(@selectionList)
+    Photo.trigger('create:join', photos, Product.record)
     @hide()
     
   keyup: (e) ->

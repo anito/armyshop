@@ -17,6 +17,7 @@ Controller.Drag =
     Include =
         
       dragstart: (e) ->
+        @log 'dragstart'
         event = e.originalEvent
         el = $(e.target)
         
@@ -28,37 +29,45 @@ Controller.Drag =
           
         parentEl = el.parents('.data')
         parentModel = parentEl.data('tmplItem')?.data.constructor or parentEl.data('current')?.model
-        parentRecord = parentEl.data('tmplItem')?.data or parentModel?.record# or parentModel
+        parentRecord = parentEl.data('tmplItem')?.data or Model[parentModel.className].record# or parentModel
         
-        
-        Spine.DragItem = SpineDragItem.first()
-        Spine.DragItem.updateAttributes
+        Spine.dragItem.updateAttributes
           el: el
           els: []
           source: record
-          originModel: parentModel?.className
+          sourceModelName: record.constructor.className
+          sourceModelId: record.id
+          originModel: parentModel
+          originModelName: parentModel.className
           originRecord: parentRecord
+          originRecordName: parentRecord.constructor.className
+          originRecordId: parentRecord.id
           selection: []
-        
-        @trigger('drag:help', e)
-        @trigger('drag:start', e, @, record)
+          
+        @trigger('drag:start', e, record)
         
         parentEl.addClass('drag-in-progress')
+        model = Spine.dragItem.originRecord or Spine.dragItem.originModel
+        source = Spine.dragItem.source
         
-        modelOrRecord = if rec = Spine.DragItem.originRecord then rec else Model[Spine.DragItem.originModel]
-        if modelOrRecord
-          data = []
-          data.update modelOrRecord.selectionList() 
-        else
-          return
+        selection = [].concat model.selectionList()
+
+        if selection.indexOf(id = source.id) is -1 then selection.unshift id
         
+        Spine.dragItem.selection = selection
+        Spine.dragItem.save()
+        
+        data = []
+        data.push selection
+
         event = e.originalEvent
         event.dataTransfer.effectAllowed = 'move'
         event.dataTransfer.setData('text/json', JSON.stringify(data));
         
+        # use drag images
+        return unless App.useDragImage
+        
         className = record.constructor.className
-        return
-        # don't use drag images
         switch className
           when 'Product'
             img = if data.length is 1 then App.ALBUM_SINGLE_MOVE else App.ALBUM_DOUBLE_MOVE
@@ -67,26 +76,35 @@ Controller.Drag =
         event.dataTransfer?.setDragImage(img, 45, 60);
 
       dragenter: (e, data) ->
+        @log 'enter'
+        event = e.originalEvent
+#        event.stopPropagation()
         func =  => @trigger('drag:timeout', e, Spine.timer)
         clearTimeout Spine.timer
         Spine.timer = setTimeout(func, 1000)
         @trigger('drag:enter', e, data)
+        false
         
       dragover: (e, data) ->
+        @log 'over'
         event = e.originalEvent
         event.stopPropagation()
         event.preventDefault()
         @trigger('drag:over', e, @)
+        false
 
       dragleave: (e, data) ->
         @trigger('drag:leave', e, @)
+        false
 
       dragend: (e, data) ->
         $('.drag-in-progress').removeClass('drag-in-progress')
         @trigger('drag:end', e, data)
+        false
 
       drop: (e, data) ->
-        @log 'drop'
+        
+        @trigger('drag:drop', e, data)
         $('.drag-in-progress').removeClass('drag-in-progress')
         clearTimeout Spine.timer
         event = e.originalEvent
@@ -94,129 +112,92 @@ Controller.Drag =
         try
           data = JSON.parse(data)
         catch e
-        @trigger('drag:drop', e, data)
-        event = e.originalEvent
+        false
         
-      # helper methods
-        
-      dragHelp: (e, item, origin) ->
-        Spine.DragItem = SpineDragItem.first()
-        selection = []
-        modelOrRecord = if rec = Spine.DragItem.originRecord then rec else Model[Spine.DragItem.originModel]
-        selection.update modelOrRecord.selectionList()[..]
-#        if modelOrRecord.selectionList().indexOf(Spine.DragItem.source.id) is -1
-#          Spine.DragItem.selected = true
-#          Spine.DragItem.save()
-#          selection.add Spine.DragItem.source.id
-#          Model[Spine.DragItem.originModel].updateSelection selection, Spine.DragItem.originRecord?.id, trigger: false
-        
-      dragStart: (e, controller, record) ->
-        @log 'dragStart'
-        Spine.DragItem = SpineDragItem.first()
-        el = $(e.currentTarget)
-        event = e.originalEvent
-        source = Spine.DragItem.source
-        selection = []
-        unless source
-          alert 'no source'
-          return
-        # check for drags from sublist and set its origin
-        if el.parents('#sidebar').length
-          originEl = el.parents('.gal.data')
-          selection.update Spine.DragItem.originRecord.selectionList()[..]
-        else
-          switch source.constructor.className
-            when 'Product'
-              selection.update Category.selectionList()[..]
-            when 'Photo'
-              selection.update Product.selectionList()[..]
-        
-        Spine.DragItem.selection = selection[..]
-        Spine.DragItem.save()
+      dragStart: (e, record) ->
         
       dragEnter: (e) ->
-        Spine.DragItem = SpineDragItem.first()
-        return unless Spine.DragItem
+        @log 'dragEnter'
         el = indicator = $(e.target).closest('.data')
         selector = el.attr('data-drag-over')
         if selector then indicator = el.children('.'+selector)
         
-        target = Spine.DragItem.target = el.data('tmplItem')?.data or el.data('current')?.model.record
-        source = Spine.DragItem.source
-        origin = Spine.DragItem.originRecord
+        target = Spine.dragItem.target = el.data('current')?.model.record or el.data('tmplItem')?.data
+        source = Spine.dragItem.source
+        origin = Spine.dragItem.originRecord
         
-        Spine.DragItem.closest?.removeClass('over nodrop')
-        Spine.DragItem.closest = indicator
-        
-        Spine.DragItem.save()
+        Spine.dragItem.closest?.removeClass('over nodrop')
+        Spine.dragItem.closest = indicator
         
         if @validateDrop target, source, origin
-          Spine.DragItem.closest.addClass('over')
+          Spine.dragItem.closest.addClass('over')
         else
-          Spine.DragItem.closest.addClass('over nodrop')
+          Spine.dragItem.closest.addClass('over nodrop')
           
+        Spine.dragItem.save()
 
       dragOver: (e) =>
 
       dragLeave: (e) =>
 
       dragEnd: (e) =>
-        Spine.DragItem = SpineDragItem.first()
-        Spine.DragItem.closest?.removeClass('over nodrop')
+        @log 'dragEnd'
+        Spine.dragItem.closest?.removeClass('over nodrop')
 
       dragDrop: (e, record) ->
-        Spine.DragItem = SpineDragItem.first()
-        target = Spine.DragItem.target
-        source = Spine.DragItem.source
-        origin = Spine.DragItem.originRecord
+        # stops the browser from redirecting
+        @log 'dragDrop'
+        # prevent ui drops
+        unless e.originalEvent.dataTransfer.files.length
+          e.stopPropagation()
+          e.preventDefault()
+
+        # clean up placeholders, jquery-sortable-plugin sometimes leaves alone
+        $('.sortable-placeholder').detach()
+        
+        
+        target = Spine.dragItem.target
+        source = Spine.dragItem.source
+        origin = Spine.dragItem.originRecord #or Model[Spine.dragItem.originModelName].record
         
         return unless source or target or source
         
-        Spine.DragItem.closest?.removeClass('over nodrop')
-        try
-          unless @validateDrop target, source, origin
-            @clearHelper()
-            return
-          hash = location.hash
-          switch source.constructor.className
-            when 'Product'
-              selection = Spine.DragItem.selection
-              Product.trigger('destroy:join', Product.toRecords(selection), origin) unless @isCtrlClick(e)# and origin
-              Product.trigger('create:join', Product.toRecords(selection), target, => )#@navigate hash)
+        Spine.dragItem.closest?.removeClass('over nodrop')
+#        try
+        unless @validateDrop target, source, origin, true
+          return false
 
-            when 'Photo'
-              selection = Spine.DragItem.selection
-              photos = Photo.toRecords(selection)
-
-              Photo.trigger 'create:join',
-                photos: photos
-                product: target
-              , => @navigate hash
-
+        hash = location.hash
+        selection = Spine.dragItem.selection
+        switch source.constructor.className
+          when 'Product'
+            cb = =>
               unless @isCtrlClick(e)
-                Photo.trigger 'destroy:join',
+                Product.trigger('destroy:join', Product.toRecords(selection), origin)
+            Product.trigger('create:join', Product.toRecords(selection), target, cb)
+
+          when 'Photo'
+            photos = Photo.toRecords(selection)
+
+            cb = => 
+              unless @isCtrlClick(e)
+                Photo.trigger('destroy:join',
                   photos: photos
                   product: origin
+                )
+              @navigate hash
+
+            Photo.trigger('create:join', photos, target, cb)
           
-        catch e
+#        catch e
         
-        @clearHelper()
-                
-      clearHelper: ->
-        modelOrRecord = if rec = Spine.DragItem.originRecord then rec else Model[Spine.DragItem.originModel]
-        if Spine.DragItem.source and Spine.DragItem.selected
-          list = Model[Spine.DragItem.originModel].removeFromSelection(Spine.DragItem.originRecord?.id, Spine.DragItem.source.id, trigger: false)
-          Spine.DragItem.selected = false
-          Spine.DragItem.save()
-        
-      validateDrop: (target, source, origin) =>
-        return true unless target and source
-        return true if target.eql source
+      validateDrop: (target, source, origin, alrt) =>
+        return false unless (target and source) or (target?.eql source)
         switch source.constructor.className
           when 'Product'
             unless target.constructor.className is 'Category'
               return false
-            unless (origin.id != target.id)
+            if ((o = origin.id) is (t = target.id))
               return false
 
             items = CategoriesProduct.filter(target.id, associationForeignKey: 'category_id')
@@ -224,6 +205,7 @@ Controller.Drag =
               if item.product_id is source.id
                 return false
             return true
+            
           when 'Photo'
             unless target.constructor.className is 'Product'
               return false

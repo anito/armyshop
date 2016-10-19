@@ -34055,7 +34055,7 @@ Released under the MIT License
       if (options == null) {
         options = {};
       }
-      if (options.validate !== false) {
+      if (options.validate === true) {
         error = this.validate();
         if (error) {
           this.trigger('error', this, error);
@@ -35633,11 +35633,11 @@ Released under the MIT License
 
   $ = Spine.$;
 
-  Drag = require("extensions/drag");
-
   User = require('models/user');
 
   Config = require('models/config');
+
+  Drag = require('extensions/drag');
 
   Product = require('models/product');
 
@@ -35738,7 +35738,12 @@ Released under the MIT License
       Main.__super__.constructor.apply(this, arguments);
       this.version = "2.0.0";
       this.autoupload = true;
-      Spine.DragItem = SpineDragItem.create();
+      this.useDragImage = false;
+      Spine.dragItem = SpineDragItem.create();
+      this.ALBUM_SINGLE_MOVE = this.createImage('/img/cursor_folder_1.png');
+      this.ALBUM_DOUBLE_MOVE = this.createImage('/img/cursor_folder_3.png');
+      this.IMAGE_SINGLE_MOVE = this.createImage('/img/cursor_images_1.png');
+      this.IMAGE_DOUBLE_MOVE = this.createImage('/img/cursor_images_3.png');
       this.ignoredHashes = ['slideshow', 'overview', 'preview', 'flickr', 'logout'];
       this.arr = ['false', 'outdoor', 'defense', 'goodies'];
       User.bind('pinger', this.proxy(this.validate));
@@ -35800,7 +35805,7 @@ Released under the MIT License
       this.vmanager.initDrag(this.vDrag, {
         initSize: (function(_this) {
           return function() {
-            return 400;
+            return 375;
           };
         })(this),
         sleep: true,
@@ -35892,7 +35897,7 @@ Released under the MIT License
           Product.updateSelection();
           return this.showView.trigger('active', this.showView.productsView);
         },
-        '/categories_/*': function() {
+        '/categories/*': function() {
           return this.showView.trigger('active', this.showView.categoriesView);
         },
         '/overview/*': function() {
@@ -35948,6 +35953,10 @@ Released under the MIT License
       valid = user.sessionid === json.sessionid;
       valid = user.id === json.id && valid;
       if (!valid) {
+        console.log(user.sessionid);
+        console.log(json.sessionid);
+        console.log(user.id);
+        console.log(json.id);
         return User.logout();
       } else {
         this.loadUserSettings(user.id);
@@ -35964,15 +35973,6 @@ Released under the MIT License
         this.el.removeClass(c);
       }
       return this.el.addClass(res);
-    };
-
-    Main.prototype.drop = function(e) {
-      this.log('drop');
-      if (!e.originalEvent.dataTransfer.files.length) {
-        e.stopPropagation();
-        e.preventDefault();
-      }
-      return $('.sortable-placeholder').detach();
     };
 
     Main.prototype.notify = function(text) {
@@ -36378,8 +36378,7 @@ Released under the MIT License
       'click .delete': 'deleteCategory',
       'click .zoom': 'zoom',
       'mousemove .item': 'infoUp',
-      'mouseleave .item': 'infoBye',
-      'dragover': 'dragover'
+      'mouseleave .item': 'infoBye'
     };
 
     function CategoriesList() {
@@ -36458,7 +36457,7 @@ Released under the MIT License
     };
 
     CategoriesList.prototype.updateOneTemplate = function(category) {
-      var active, categoryEl, contentEl, tmplItem;
+      var active, categoryEl, contentEl, e, error, tmplItem;
       categoryEl = this.children().forItem(category);
       active = categoryEl.hasClass('active');
       contentEl = $('.thumbnail', categoryEl);
@@ -36466,13 +36465,14 @@ Released under the MIT License
       if (!tmplItem) {
         alert('no tmpl item');
       }
-      if (tmplItem) {
-        tmplItem.tmpl = $("#categoriesTemplate").template();
+      try {
         if (typeof tmplItem.update === "function") {
           tmplItem.update();
         }
-        return categoryEl = this.children().forItem(category).toggleClass('active hot', active);
+      } catch (error) {
+        e = error;
       }
+      return categoryEl = this.children().forItem(category).toggleClass('active hot', active);
     };
 
     CategoriesList.prototype.reorder = function(item) {
@@ -36609,7 +36609,11 @@ Released under the MIT License
     };
 
     CategoriesView.prototype.events = {
-      'click .item': 'click'
+      'click .item': 'click',
+      'dragend': 'dragend',
+      'drop       ': 'drop',
+      'dragover   ': 'dragover',
+      'dragenter  ': 'dragenter'
     };
 
     CategoriesView.prototype.headerTemplate = function(items) {
@@ -36639,6 +36643,11 @@ Released under the MIT License
       Category.bind('beforeDestroy', this.proxy(this.beforeDestroy));
       Category.bind('destroy', this.proxy(this.destroy));
       Category.bind('refresh:category', this.proxy(this.render));
+      this.bind('drag:start', this.proxy(this.dragStart));
+      this.bind('drag:enter', this.proxy(this.dragEnter));
+      this.bind('drag:over', this.proxy(this.dragOver));
+      this.bind('drag:leave', this.proxy(this.dragLeave));
+      this.bind('drag:drop', this.proxy(this.dragDrop));
     }
 
     CategoriesView.prototype.render = function(items) {
@@ -36646,7 +36655,7 @@ Released under the MIT License
         return;
       }
       if (Category.count()) {
-        items = Category.records.sort(Category.nameSort);
+        items = Category.records.sort(Category.sortByScreenName);
         return this.list.render(items);
       } else {
         return this.list.el.html('<label class="invite"><span class="enlightened">This Application has no categories. &nbsp;<button class="opt-CreateCategory dark large">New Category</button>');
@@ -36667,46 +36676,13 @@ Released under the MIT License
 
     CategoriesView.prototype.click = function(e) {
       var item;
-      e.preventDefault();
-      e.stopPropagation();
       App.showView.trigger('change:toolbarOne', ['Default']);
-      item = $(e.currentTarget).item();
-      return this.select(e, item.id);
+      item = $(e.target).closest('li').item();
+      return this.select(item);
     };
 
-    CategoriesView.prototype.select_ = function(item) {
-      return Category.trigger('activate', item.id);
-    };
-
-    CategoriesView.prototype.select__ = function(ids, exclusive) {
-      var i, id, len, selection;
-      if (ids == null) {
-        ids = [];
-      }
-      if (!Array.isArray(ids)) {
-        ids = [ids];
-      }
-      if (exclusive) {
-        Root.emptySelection();
-      }
-      selection = Root.selectionList().slice(0);
-      for (i = 0, len = ids.length; i < len; i++) {
-        id = ids[i];
-        selection.addRemoveSelection(id);
-      }
-      Root.updateSelection(selection);
-      Category.updateSelection(Category.selectionList());
-      return Product.updateSelection(Product.selectionList());
-    };
-
-    CategoriesView.prototype.select = function(e, items) {
-      if (items == null) {
-        items = [];
-      }
-      if (!Array.isArray(items)) {
-        items = [items];
-      }
-      Root.updateSelection(items.first());
+    CategoriesView.prototype.select = function(item) {
+      Root.updateSelection(item.id);
       Category.updateSelection(Category.selectionList());
       return Product.updateSelection(Product.selectionList());
     };
@@ -37487,7 +37463,7 @@ Released under the MIT License
     LoginView.prototype.toggleTrace = function() {
       Spine.isProduction = localStorage.isProduction = localStorage.isProduction === 'false';
       this.render();
-      if (confirm('Trace: ' + (Spine.isProduction ? 'Off' : 'On') + '\n\nApplication will now restart.\n\nContinue?')) {
+      if (confirm('Entwickler Modus: ' + (Spine.isProduction ? 'Aus' : 'An') + '\n\Die Anwendung muss neu gestartet werden.\n\nFortfahren mit OK')) {
         $(window).off();
         return User.redirect('admin');
       }
@@ -37507,13 +37483,15 @@ Released under the MIT License
 
 }).call(this);
 }, "controllers/main_view": function(exports, require, module) {(function() {
-  var $, Extender, MainView, Spine,
+  var $, Extender, MainView, Model, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
   Spine = require("spine");
 
   $ = Spine.$;
+
+  Model = Spine.Model;
 
   Extender = require('extensions/controller_extender');
 
@@ -37525,6 +37503,10 @@ Released under the MIT License
     function MainView() {
       MainView.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
+      this.el.data('current', {
+        model: Model.Root,
+        models: Model.Category
+      });
     }
 
     MainView.prototype.active = function() {};
@@ -38824,10 +38806,9 @@ Released under the MIT License
     };
 
     PhotosAddView.prototype.add = function() {
-      Photo.trigger('create:join', {
-        product: Product.record,
-        photos: Photo.toRecords(this.selectionList)
-      });
+      var photos;
+      photos = Photo.toRecords(this.selectionList);
+      Photo.trigger('create:join', photos, Product.record);
       return this.hide();
     };
 
@@ -39093,7 +39074,7 @@ Released under the MIT License
         if (Photo.count()) {
           this.html('<label class="invite"> <div class="enlightened">Es sind keine Fotos vorhanden</div><br> <button class="opt-UploadDialogue dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button> <button class="opt-AddPhotos dark large"><i class="glyphicon glyphicon-book"></i><span>&nbsp;Katalog</span></button> </label>');
         } else {
-          this.html('<label class="invite"> <div class="enlightened">Es sind keine Fotos vorhanden &nbsp;</div><br> <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button> </label>');
+          this.html('<label class="invite"> <div class="enlightened">Es sind keine Fotos vorhanden &nbsp;</div><br> <button class="opt-UploadDialogue dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button> </label>');
         }
       }
       return this.el;
@@ -39545,6 +39526,7 @@ Released under the MIT License
       'dragstart .item': 'dragstart',
       'dragstart': 'stopInfo',
       'dragover .item': 'dragover',
+      'drop': 'drop',
       'mousemove .item': 'infoUp',
       'mouseleave  .item': 'infoBye'
     };
@@ -39585,9 +39567,7 @@ Released under the MIT License
       });
       this.header.template = this.headerTemplate;
       this.viewport = this.list.el;
-      this.bind('drag:help', this.proxy(this.dragHelp));
-      this.bind('drag:start', this.proxy(this.dragStart));
-      this.bind('drag:drop', this.proxy(this.dragComplete));
+      this.bind('drag:drop', this.proxy(this.dragDrop));
       ProductsPhoto.bind('destroy', this.proxy(this.destroyProductsPhoto));
       ProductsPhoto.bind('beforeDestroy', this.proxy(this.beforeDestroyProductsPhoto));
       CategoriesProduct.bind('destroy', this.proxy(this.backToProductView));
@@ -39695,7 +39675,8 @@ Released under the MIT License
       var item;
       App.showView.trigger('change:toolbarOne');
       item = $(e.currentTarget).item();
-      return this.select(e, item.id);
+      this.select(e, item.id);
+      return e.stopPropagation();
     };
 
     PhotosView.prototype.select = function(e, items) {
@@ -39820,10 +39801,10 @@ Released under the MIT License
       }
     };
 
-    PhotosView.prototype.createJoin = function(options, cb) {
-      Photo.createJoin(options.photos, options.product, cb);
-      Photo.trigger('activate', options.photos.last());
-      return options.product.updateSelection(options.photos.toId());
+    PhotosView.prototype.createJoin = function(photos, target, cb) {
+      Photo.createJoin(photos, target, cb);
+      Photo.trigger('activate', photos.last());
+      return target.updateSelection(photos.toId());
     };
 
     PhotosView.prototype.destroyJoin = function(options, callback) {
@@ -40523,6 +40504,7 @@ Released under the MIT License
       ProductsHeader.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
       Category.bind('change', this.proxy(this.render));
+      CategoriesProduct.bind('change', this.proxy(this.render));
       Category.bind('change:selection', this.proxy(this.render));
       Product.bind('refresh', this.proxy(this.render));
       Product.bind('change', this.proxy(this.render));
@@ -41024,10 +41006,12 @@ Released under the MIT License
 
     ProductsView.prototype.events = {
       'click      .item': 'click',
-      'dragstart .item': 'dragstart',
+      'dragstart ': 'dragstart',
       'dragstart': 'stopInfo',
-      'drop .item': 'drop',
-      'dragover   .item': 'dragover',
+      'dragend': 'dragend',
+      'drop': 'drop',
+      'dragover   ': 'dragover',
+      'dragenter  ': 'dragenter',
       'sortupdate .items': 'sortupdate',
       'mousemove .item': 'infoUp',
       'mouseleave .item': 'infoBye'
@@ -41085,7 +41069,9 @@ Released under the MIT License
       Spine.bind('loading:fail', this.proxy(this.loadingFail));
       Spine.bind('destroy:product', this.proxy(this.destroyProduct));
       this.bind('drag:start', this.proxy(this.dragStart));
-      this.bind('drag:help', this.proxy(this.dragHelp));
+      this.bind('drag:enter', this.proxy(this.dragEnter));
+      this.bind('drag:over', this.proxy(this.dragOver));
+      this.bind('drag:leave', this.proxy(this.dragLeave));
       this.bind('drag:drop', this.proxy(this.dragDrop));
       $(this.views).queue('fx');
     }
@@ -41237,10 +41223,15 @@ Released under the MIT License
           product: record
         });
         if (options.photos) {
-          Photo.trigger('create:join', options, false);
-          if (options.deleteFromOrigin) {
-            Photo.trigger('destroy:join', options.photos, options.deleteFromOrigin);
-          }
+          Photo.trigger('create:join', options.photos, record, cb);
+          cb = (function(_this) {
+            return function() {
+              var origin;
+              if (origin = options.deleteFromOrigin) {
+                return Photo.trigger('destroy:join', options.photos, origin);
+              }
+            };
+          })(this);
         }
         if (options.deferred) {
           options.deferred.notify(record);
@@ -41445,7 +41436,6 @@ Released under the MIT License
           selection = items;
           break;
         case 'click':
-          console.log('click product ');
           if (!this.isCtrlClick(e)) {
             Category.emptySelection();
           }
@@ -41717,8 +41707,9 @@ Released under the MIT License
       'click .opt-ActionCancel:not(.disabled)': 'cancelAdd',
       'click .opt-ShowPhotoSelection:not(.disabled)': 'showPhotoSelection',
       'click .opt-ShowProductSelection:not(.disabled)': 'showProductSelection',
-      'click .opt-SelectAll:not(.disabled)': 'selectAll',
-      'click .opt-SelectNone:not(.disabled)': 'selectNone',
+      'click .opt-SelectAll': 'selectAll',
+      'click .opt-SelectNone.btn': 'selectNone',
+      'click .opt-SelectNone:not(.btn)': 'deselect',
       'click .opt-SelectInv:not(.disabled)': 'selectInv',
       'click .opt-CloseDraghandle': 'toggleDraghandle',
       'click .opt-Save': 'saveToDb',
@@ -41727,10 +41718,6 @@ Released under the MIT License
       'click .opt-Prev': 'prev',
       'dblclick .draghandle': 'toggleDraghandle',
       'hidden.bs.modal': 'hiddenmodal',
-      'dragstart .item': 'dragstart',
-      'dragenter .view': 'dragenter',
-      'dragend': 'dragend',
-      'drop': 'drop',
       'keydown': 'keydown',
       'keyup': 'keyup'
     };
@@ -41806,10 +41793,6 @@ Released under the MIT License
       this.bind('change:toolbarOne', this.proxy(this.changeToolbarOne));
       this.bind('change:toolbarTwo', this.proxy(this.changeToolbarTwo));
       this.bind('activate:editview', this.proxy(this.activateEditView));
-      this.bind('drag:start', this.proxy(this.dragStart));
-      this.bind('drag:enter', this.proxy(this.dragEnter));
-      this.bind('drag:end', this.proxy(this.dragEnd));
-      this.bind('drag:drop', this.proxy(this.dragDrop));
       this.toolbarOne.bind('refresh', this.proxy(this.refreshToolbar));
       this.bind('awake', this.proxy(this.awake));
       this.bind('sleep', this.proxy(this.sleep));
@@ -42011,12 +41994,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.copyPhotos = function(photos, product) {
-      var options;
-      options = {
-        photos: photos,
-        product: product
-      };
-      return Photo.trigger('create:join', options);
+      return Photo.trigger('create:join', photos, product);
     };
 
     ShowView.prototype.copyProductsToNewCategory = function() {
@@ -42411,6 +42389,17 @@ Released under the MIT License
       return target.click();
     };
 
+    ShowView.prototype.deselect = function(e) {
+      if (!$('.thumbnail', e.target).length) {
+        return;
+      }
+      return this.selectNone(e);
+    };
+
+    ShowView.prototype.selectNone = function(e) {
+      return this.current.select(e, []);
+    };
+
     ShowView.prototype.selectAll = function(e) {
       var error, list;
       try {
@@ -42421,10 +42410,10 @@ Released under the MIT License
       }
     };
 
-    ShowView.prototype.selectNone = function(e) {
-      var base, error;
+    ShowView.prototype.selectNone_ = function() {
+      var e, error, ref;
       try {
-        if (!(typeof (base = $(e.target)).item === "function" ? base.item() : void 0)) {
+        if ((ref = $(e.target).parents().data('current')) != null ? ref.model : void 0) {
           return this.current.el.data('current').model.updateSelection([]);
         }
       } catch (error) {
@@ -42630,7 +42619,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.pastePhoto = function() {
-      var callback, clb, clipboard, i, items, len, options, product;
+      var callback, clb, clipboard, i, items, len, product;
       if (!(product = Product.record)) {
         return;
       }
@@ -42656,11 +42645,7 @@ Released under the MIT License
           return _this.refreshToolbars();
         };
       })(this);
-      options = {
-        photos: items,
-        product: product
-      };
-      return Photo.trigger('create:join', options, callback);
+      return Photo.trigger('create:join', items, product, callback);
     };
 
     ShowView.prototype.rotatePhotoCW = function(e) {
@@ -42731,7 +42716,7 @@ Released under the MIT License
         clb = clipboard[i];
         items.push(clb.item);
       }
-      return Product.trigger('create:join', items.toId(), category, callback);
+      return Product.trigger('create:join', items, category, callback);
     };
 
     ShowView.prototype.ignoreProduct = function(e) {
@@ -43261,6 +43246,7 @@ Released under the MIT License
         el: this.refreshEl
       });
       Category.one('refresh', this.proxy(this.refresh));
+      Category.bind('error', this.proxy(this.error));
       Spine.bind('bindRefresh:one', this.proxy(this.bindRefresh));
       Category.bind("ajaxError", Category.errorHandler);
       Category.bind("ajaxSuccess", Category.successHandler);
@@ -43355,7 +43341,11 @@ Released under the MIT License
       };
       category = new Category(this.newAttributes());
       category.one('ajaxSuccess', this.proxy(cb));
-      return category.save();
+      return category.save(options);
+    };
+
+    Sidebar.prototype.error = function(err) {
+      return alert(err);
     };
 
     Sidebar.prototype.createProduct = function() {
@@ -43404,11 +43394,11 @@ Released under the MIT License
     };
 
     Sidebar.prototype.expandAfterTimeout = function(e, timer) {
-      var categoryEl, item;
+      var categoryEl, item, ref;
       clearTimeout(timer);
       categoryEl = $(e.target).closest('.gal.item');
       item = categoryEl.item();
-      if (!(item && item.id !== Spine.DragItem.originRecord.id)) {
+      if (!(item && item.id !== ((ref = Model[Spine.dragItem.originModelName].record) != null ? ref.id : void 0))) {
         return;
       }
       return this.list.expand(item, true);
@@ -44478,7 +44468,7 @@ Released under the MIT License
         };
         return object = $.extend({}, obj, object);
       } else {
-        return User.ping();
+        return User.login();
       }
     };
 
@@ -44491,9 +44481,9 @@ Released under the MIT License
     };
 
     SubEditViewDescription.prototype.active = function() {
-      var items;
+      var items, ref;
       $(this.btn, this.parent.el).addClass('active');
-      items = Description.filterSortByOrder(this.parent.current.id);
+      items = Description.filterSortByOrder((ref = this.parent.current) != null ? ref.id : void 0);
       if (!items.length) {
         items = this.create();
       }
@@ -44948,7 +44938,7 @@ Released under the MIT License
     UploadEditView.prototype.alldone = function(e, data) {};
 
     UploadEditView.prototype.done = function(e, data) {
-      var i, len, options, photos, product, raw, raws, ref, selection;
+      var i, len, photos, product, raw, raws, ref, selection;
       product = Product.find(this.data.link);
       raws = $.parseJSON(data.jqXHR.responseText);
       photos = [];
@@ -44959,11 +44949,7 @@ Released under the MIT License
         }));
       }
       if (product) {
-        options = $().extend({}, {
-          photos: photos,
-          product: product
-        });
-        Photo.trigger('create:join', options);
+        Photo.trigger('create:join', photos, product);
       } else {
         Photo.trigger('created', photos);
         this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', '');
@@ -45740,7 +45726,8 @@ Released under the MIT License
       var Include;
       Include = {
         dragstart: function(e) {
-          var className, data, el, event, img, modelOrRecord, parentEl, parentModel, parentRecord, rec, record, ref, ref1, ref2, ref3;
+          var className, data, el, event, id, img, model, parentEl, parentModel, parentRecord, record, ref, ref1, ref2, ref3, selection, source;
+          this.log('dragstart');
           event = e.originalEvent;
           el = $(e.target);
           if (!(record = el.item())) {
@@ -45750,31 +45737,39 @@ Released under the MIT License
           }
           parentEl = el.parents('.data');
           parentModel = ((ref = parentEl.data('tmplItem')) != null ? ref.data.constructor : void 0) || ((ref1 = parentEl.data('current')) != null ? ref1.model : void 0);
-          parentRecord = ((ref2 = parentEl.data('tmplItem')) != null ? ref2.data : void 0) || (parentModel != null ? parentModel.record : void 0);
-          Spine.DragItem = SpineDragItem.first();
-          Spine.DragItem.updateAttributes({
+          parentRecord = ((ref2 = parentEl.data('tmplItem')) != null ? ref2.data : void 0) || Model[parentModel.className].record;
+          Spine.dragItem.updateAttributes({
             el: el,
             els: [],
             source: record,
-            originModel: parentModel != null ? parentModel.className : void 0,
+            sourceModelName: record.constructor.className,
+            sourceModelId: record.id,
+            originModel: parentModel,
+            originModelName: parentModel.className,
             originRecord: parentRecord,
+            originRecordName: parentRecord.constructor.className,
+            originRecordId: parentRecord.id,
             selection: []
           });
-          this.trigger('drag:help', e);
-          this.trigger('drag:start', e, this, record);
+          this.trigger('drag:start', e, record);
           parentEl.addClass('drag-in-progress');
-          modelOrRecord = (rec = Spine.DragItem.originRecord) ? rec : Model[Spine.DragItem.originModel];
-          if (modelOrRecord) {
-            data = [];
-            data.update(modelOrRecord.selectionList());
-          } else {
-            return;
+          model = Spine.dragItem.originRecord || Spine.dragItem.originModel;
+          source = Spine.dragItem.source;
+          selection = [].concat(model.selectionList());
+          if (selection.indexOf(id = source.id) === -1) {
+            selection.unshift(id);
           }
+          Spine.dragItem.selection = selection;
+          Spine.dragItem.save();
+          data = [];
+          data.push(selection);
           event = e.originalEvent;
           event.dataTransfer.effectAllowed = 'move';
           event.dataTransfer.setData('text/json', JSON.stringify(data));
+          if (!App.useDragImage) {
+            return;
+          }
           className = record.constructor.className;
-          return;
           switch (className) {
             case 'Product':
               img = data.length === 1 ? App.ALBUM_SINGLE_MOVE : App.ALBUM_DOUBLE_MOVE;
@@ -45785,7 +45780,9 @@ Released under the MIT License
           return (ref3 = event.dataTransfer) != null ? ref3.setDragImage(img, 45, 60) : void 0;
         },
         dragenter: function(e, data) {
-          var func;
+          var event, func;
+          this.log('enter');
+          event = e.originalEvent;
           func = (function(_this) {
             return function() {
               return _this.trigger('drag:timeout', e, Spine.timer);
@@ -45793,25 +45790,30 @@ Released under the MIT License
           })(this);
           clearTimeout(Spine.timer);
           Spine.timer = setTimeout(func, 1000);
-          return this.trigger('drag:enter', e, data);
+          this.trigger('drag:enter', e, data);
+          return false;
         },
         dragover: function(e, data) {
           var event;
+          this.log('over');
           event = e.originalEvent;
           event.stopPropagation();
           event.preventDefault();
-          return this.trigger('drag:over', e, this);
+          this.trigger('drag:over', e, this);
+          return false;
         },
         dragleave: function(e, data) {
-          return this.trigger('drag:leave', e, this);
+          this.trigger('drag:leave', e, this);
+          return false;
         },
         dragend: function(e, data) {
           $('.drag-in-progress').removeClass('drag-in-progress');
-          return this.trigger('drag:end', e, data);
+          this.trigger('drag:end', e, data);
+          return false;
         },
         drop: function(e, data) {
           var error, event;
-          this.log('drop');
+          this.trigger('drag:drop', e, data);
           $('.drag-in-progress').removeClass('drag-in-progress');
           clearTimeout(Spine.timer);
           event = e.originalEvent;
@@ -45821,67 +45823,30 @@ Released under the MIT License
           } catch (error) {
             e = error;
           }
-          this.trigger('drag:drop', e, data);
-          return event = e.originalEvent;
+          return false;
         },
-        dragHelp: function(e, item, origin) {
-          var modelOrRecord, rec, selection;
-          Spine.DragItem = SpineDragItem.first();
-          selection = [];
-          modelOrRecord = (rec = Spine.DragItem.originRecord) ? rec : Model[Spine.DragItem.originModel];
-          return selection.update(modelOrRecord.selectionList().slice(0));
-        },
-        dragStart: function(e, controller, record) {
-          var el, event, originEl, selection, source;
-          this.log('dragStart');
-          Spine.DragItem = SpineDragItem.first();
-          el = $(e.currentTarget);
-          event = e.originalEvent;
-          source = Spine.DragItem.source;
-          selection = [];
-          if (!source) {
-            alert('no source');
-            return;
-          }
-          if (el.parents('#sidebar').length) {
-            originEl = el.parents('.gal.data');
-            selection.update(Spine.DragItem.originRecord.selectionList().slice(0));
-          } else {
-            switch (source.constructor.className) {
-              case 'Product':
-                selection.update(Category.selectionList().slice(0));
-                break;
-              case 'Photo':
-                selection.update(Product.selectionList().slice(0));
-            }
-          }
-          Spine.DragItem.selection = selection.slice(0);
-          return Spine.DragItem.save();
-        },
+        dragStart: function(e, record) {},
         dragEnter: function(e) {
           var el, indicator, origin, ref, ref1, ref2, selector, source, target;
-          Spine.DragItem = SpineDragItem.first();
-          if (!Spine.DragItem) {
-            return;
-          }
+          this.log('dragEnter');
           el = indicator = $(e.target).closest('.data');
           selector = el.attr('data-drag-over');
           if (selector) {
             indicator = el.children('.' + selector);
           }
-          target = Spine.DragItem.target = ((ref = el.data('tmplItem')) != null ? ref.data : void 0) || ((ref1 = el.data('current')) != null ? ref1.model.record : void 0);
-          source = Spine.DragItem.source;
-          origin = Spine.DragItem.originRecord;
-          if ((ref2 = Spine.DragItem.closest) != null) {
+          target = Spine.dragItem.target = ((ref = el.data('current')) != null ? ref.model.record : void 0) || ((ref1 = el.data('tmplItem')) != null ? ref1.data : void 0);
+          source = Spine.dragItem.source;
+          origin = Spine.dragItem.originRecord;
+          if ((ref2 = Spine.dragItem.closest) != null) {
             ref2.removeClass('over nodrop');
           }
-          Spine.DragItem.closest = indicator;
-          Spine.DragItem.save();
+          Spine.dragItem.closest = indicator;
           if (this.validateDrop(target, source, origin)) {
-            return Spine.DragItem.closest.addClass('over');
+            Spine.dragItem.closest.addClass('over');
           } else {
-            return Spine.DragItem.closest.addClass('over nodrop');
+            Spine.dragItem.closest.addClass('over nodrop');
           }
+          return Spine.dragItem.save();
         },
         dragOver: (function(_this) {
           return function(e) {};
@@ -45892,87 +45857,70 @@ Released under the MIT License
         dragEnd: (function(_this) {
           return function(e) {
             var ref;
-            Spine.DragItem = SpineDragItem.first();
-            return (ref = Spine.DragItem.closest) != null ? ref.removeClass('over nodrop') : void 0;
+            _this.log('dragEnd');
+            return (ref = Spine.dragItem.closest) != null ? ref.removeClass('over nodrop') : void 0;
           };
         })(this),
         dragDrop: function(e, record) {
-          var error, hash, origin, photos, ref, selection, source, target;
-          Spine.DragItem = SpineDragItem.first();
-          target = Spine.DragItem.target;
-          source = Spine.DragItem.source;
-          origin = Spine.DragItem.originRecord;
+          var cb, hash, origin, photos, ref, selection, source, target;
+          this.log('dragDrop');
+          if (!e.originalEvent.dataTransfer.files.length) {
+            e.stopPropagation();
+            e.preventDefault();
+          }
+          $('.sortable-placeholder').detach();
+          target = Spine.dragItem.target;
+          source = Spine.dragItem.source;
+          origin = Spine.dragItem.originRecord;
           if (!(source || target || source)) {
             return;
           }
-          if ((ref = Spine.DragItem.closest) != null) {
+          if ((ref = Spine.dragItem.closest) != null) {
             ref.removeClass('over nodrop');
           }
-          try {
-            if (!this.validateDrop(target, source, origin)) {
-              this.clearHelper();
-              return;
-            }
-            hash = location.hash;
-            switch (source.constructor.className) {
-              case 'Product':
-                selection = Spine.DragItem.selection;
-                if (!this.isCtrlClick(e)) {
-                  Product.trigger('destroy:join', Product.toRecords(selection), origin);
-                }
-                Product.trigger('create:join', Product.toRecords(selection), target, (function(_this) {
-                  return function() {};
-                })(this));
-                break;
-              case 'Photo':
-                selection = Spine.DragItem.selection;
-                photos = Photo.toRecords(selection);
-                Photo.trigger('create:join', {
-                  photos: photos,
-                  product: target
-                }, (function(_this) {
-                  return function() {
-                    return _this.navigate(hash);
-                  };
-                })(this));
-                if (!this.isCtrlClick(e)) {
-                  Photo.trigger('destroy:join', {
-                    photos: photos,
-                    product: origin
-                  });
-                }
-            }
-          } catch (error) {
-            e = error;
+          if (!this.validateDrop(target, source, origin, true)) {
+            return false;
           }
-          return this.clearHelper();
-        },
-        clearHelper: function() {
-          var list, modelOrRecord, rec, ref;
-          modelOrRecord = (rec = Spine.DragItem.originRecord) ? rec : Model[Spine.DragItem.originModel];
-          if (Spine.DragItem.source && Spine.DragItem.selected) {
-            list = Model[Spine.DragItem.originModel].removeFromSelection((ref = Spine.DragItem.originRecord) != null ? ref.id : void 0, Spine.DragItem.source.id, {
-              trigger: false
-            });
-            Spine.DragItem.selected = false;
-            return Spine.DragItem.save();
+          hash = location.hash;
+          selection = Spine.dragItem.selection;
+          switch (source.constructor.className) {
+            case 'Product':
+              cb = (function(_this) {
+                return function() {
+                  if (!_this.isCtrlClick(e)) {
+                    return Product.trigger('destroy:join', Product.toRecords(selection), origin);
+                  }
+                };
+              })(this);
+              return Product.trigger('create:join', Product.toRecords(selection), target, cb);
+            case 'Photo':
+              photos = Photo.toRecords(selection);
+              cb = (function(_this) {
+                return function() {
+                  if (!_this.isCtrlClick(e)) {
+                    Photo.trigger('destroy:join', {
+                      photos: photos,
+                      product: origin
+                    });
+                  }
+                  return _this.navigate(hash);
+                };
+              })(this);
+              return Photo.trigger('create:join', photos, target, cb);
           }
         },
         validateDrop: (function(_this) {
-          return function(target, source, origin) {
-            var i, item, items, j, len, len1;
-            if (!(target && source)) {
-              return true;
-            }
-            if (target.eql(source)) {
-              return true;
+          return function(target, source, origin, alrt) {
+            var i, item, items, j, len, len1, o, t;
+            if (!((target && source) || (target != null ? target.eql(source) : void 0))) {
+              return false;
             }
             switch (source.constructor.className) {
               case 'Product':
                 if (target.constructor.className !== 'Category') {
                   return false;
                 }
-                if (!(origin.id !== target.id)) {
+                if ((o = origin.id) === (t = target.id)) {
                   return false;
                 }
                 items = CategoriesProduct.filter(target.id, {
@@ -46128,6 +46076,521 @@ Released under the MIT License
 
   if (typeof module !== "undefined" && module !== null) {
     module.exports = Model.Filter = Filter;
+  }
+
+}).call(this);
+}, "extensions/init_db": function(exports, require, module) {(function() {
+  var $, Log, Model, Spine, SpineError,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Log = Spine.Log;
+
+  SpineError = require("models/spine_error");
+
+  Model.Extender = {
+    extended: function() {
+      var Extend, Include;
+      Extend = {
+        trace: !Spine.isProduction,
+        logPrefix: '(' + this.className + ')',
+        guid: function() {
+          var back, diff, mask, milli, re1, re2, re3, re4, res, ret, sub;
+          mask = [8, 4, 4, 4, 12];
+          ret = [];
+          ret = (function() {
+            var i, len, results;
+            results = [];
+            for (i = 0, len = mask.length; i < len; i++) {
+              sub = mask[i];
+              res = null;
+              milli = new Date().getTime();
+              back = new Date().setTime(milli * (-200));
+              diff = milli - back;
+              re1 = diff.toString(16).split('');
+              re2 = re1.slice(sub * (-1));
+              re3 = re2.join('');
+              results.push(re3);
+            }
+            return results;
+          })();
+          re4 = ret.join('-');
+          return re4;
+        },
+        uuid: function() {
+          var s4;
+          s4 = function() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          };
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        },
+        record: false,
+        selection: [
+          {
+            global: []
+          }
+        ],
+        current: function(recordOrID) {
+          var id, prev, rec, ref, same;
+          id = (recordOrID != null ? recordOrID.id : void 0) || recordOrID;
+          rec = this.find(id) || false;
+          prev = this.record;
+          this.record = rec;
+          same = !!(((ref = this.record) != null ? typeof ref.eql === "function" ? ref.eql(prev) : void 0 : void 0) && !!prev);
+          Model[this.className].trigger('current', this.record, !same);
+          if (!same) {
+            Model[this.className].trigger('change:current', this.record, this.className);
+          }
+          return this.record;
+        },
+        selectionList: function(recordID) {
+          var i, id, item, len, ref, ref1, ref2, ret;
+          ret = [];
+          id = recordID || ((ref = this.record) != null ? ref.id : void 0) || ((ref1 = this.record) != null ? ref1.cid : void 0);
+          if (!id) {
+            return this.selection[0].global;
+          }
+          ref2 = this.selection;
+          for (i = 0, len = ref2.length; i < len; i++) {
+            item = ref2[i];
+            if (item[id]) {
+              return item[id];
+            }
+          }
+          return ret;
+        },
+        updateSelection: function(list, id, options) {
+          var defaults, option, ref, ret;
+          if (list == null) {
+            list = this.selectionList();
+          }
+          defaults = {
+            trigger: true
+          };
+          option = $().extend(defaults, options);
+          ret = this.emptySelection(id, list);
+          if (option.trigger) {
+            this.trigger('change:selection', ret, id);
+          }
+          if ((ref = Model[this.childType]) != null) {
+            ref.current(ret.first());
+          }
+          return ret;
+        },
+        emptySelection: function(id, idOrList) {
+          var originalList;
+          if (idOrList == null) {
+            idOrList = [];
+          }
+          if (!this.isArray(idOrList)) {
+            idOrList = [idOrList];
+          }
+          originalList = this.selectionList(id);
+          [].splice.apply(originalList, [0, originalList.length - 0].concat(idOrList)), idOrList;
+          return originalList;
+        },
+        removeFromSelection: function(id, idOrList, options) {
+          var i, index, len, list, originalList;
+          if (idOrList == null) {
+            idOrList = [];
+          }
+          originalList = this.selectionList(id);
+          if (!this.isArray(idOrList)) {
+            idOrList = [idOrList];
+          }
+          for (i = 0, len = idOrList.length; i < len; i++) {
+            id = idOrList[i];
+            if ((index = originalList.indexOf(id)) !== -1) {
+              originalList.splice(index, 1);
+            }
+          }
+          list = this.updateSelection(id, originalList.slice(0), options);
+          return list;
+        },
+        isArray: function(value) {
+          return Object.prototype.toString.call(value) === "[object Array]";
+        },
+        isObject: function(value) {
+          return Object.prototype.toString.call(value) === "[object Object]";
+        },
+        isString: function(value) {
+          return Object.prototype.toString.call(value) === "[object String]";
+        },
+        selected: function() {
+          return this.record;
+        },
+        toId: function(records) {
+          var i, len, record, results;
+          if (records == null) {
+            records = this.records;
+          }
+          results = [];
+          for (i = 0, len = records.length; i < len; i++) {
+            record = records[i];
+            results.push(record.id);
+          }
+          return results;
+        },
+        toRecords: function(ids) {
+          var i, id, len, results;
+          if (ids == null) {
+            ids = [];
+          }
+          results = [];
+          for (i = 0, len = ids.length; i < len; i++) {
+            id = ids[i];
+            results.push(this.find(id));
+          }
+          return results;
+        },
+        duplicate: function(items, atts, options) {
+          var item, newItem, ret;
+          if (atts == null) {
+            atts = {};
+          }
+          if (!Array.isArray(items)) {
+            items = [items];
+          }
+          ret = [];
+          ret = (function() {
+            var i, len, results;
+            results = [];
+            for (i = 0, len = items.length; i < len; i++) {
+              item = items[i];
+              newItem = item.dup(true).save(options);
+              newItem.updateAttributes(atts, options);
+              results.push(newItem);
+            }
+            return results;
+          })();
+          return ret;
+        },
+        successHandler: function(data, status, xhr) {},
+        errorHandler: function(record, xhr, statusText, error) {
+          var status;
+          status = xhr.status;
+          if (status !== 200) {
+            error = new SpineError({
+              record: record,
+              xhr: xhr,
+              statusText: statusText,
+              error: error
+            });
+            return error.save();
+          }
+        },
+        customErrorHandler: function(record, xhr) {
+          var error, status;
+          status = xhr.status;
+          if (status !== 200) {
+            error = new Error({
+              flash: '<strong style="color:red">Login failed</strong>',
+              xhr: xhr
+            });
+            error.save();
+            return User.redirect('users/login');
+          }
+        },
+        contains: function() {
+          return [];
+        },
+        createJoinTables: function(arr) {
+          var i, joinTables, key, len, results;
+          if (!this.isArray(arr)) {
+            return;
+          }
+          joinTables = this.joinTables();
+          results = [];
+          for (i = 0, len = joinTables.length; i < len; i++) {
+            key = joinTables[i];
+            results.push(Model[key].refresh(this.createJoins(arr, key), {
+              clear: true
+            }));
+          }
+          return results;
+        },
+        make: function(arr, key) {
+          var i, len, obj, results;
+          if (!Array.isArray(arr)) {
+            return new this(arr);
+          }
+          results = [];
+          for (i = 0, len = arr.length; i < len; i++) {
+            obj = arr[i];
+            results.push(new this(obj[key]));
+          }
+          return results;
+        },
+        activePhotos: function() {
+          return Category.activePhotos();
+        },
+        joinTables: function() {
+          var fModels, joinTables, key, value;
+          fModels = this.foreignModels();
+          joinTables = (function() {
+            var results;
+            results = [];
+            for (key in fModels) {
+              value = fModels[key];
+              results.push(fModels[key]['joinTable']);
+            }
+            return results;
+          })();
+          return joinTables;
+        },
+        createJoins: function(json, tableName) {
+          var i, introspect, len, obj, res;
+          res = [];
+          introspect = (function(_this) {
+            return function(obj) {
+              var i, item, j, key, len, len1, results, val;
+              if (_this.isObject(obj)) {
+                for (key in obj) {
+                  val = obj[key];
+                  if (key === tableName) {
+                    for (i = 0, len = val.length; i < len; i++) {
+                      item = val[i];
+                      res.push(item);
+                    }
+                  } else {
+                    introspect(obj[key]);
+                  }
+                }
+              }
+              if (_this.isArray(obj)) {
+                results = [];
+                for (j = 0, len1 = obj.length; j < len1; j++) {
+                  val = obj[j];
+                  results.push(introspect(val));
+                }
+                return results;
+              }
+            };
+          })(this);
+          for (i = 0, len = json.length; i < len; i++) {
+            obj = json[i];
+            introspect(obj);
+          }
+          return res;
+        }
+      };
+      Include = {
+        trace: !Spine.isProduction,
+        logPrefix: this.className + '::',
+        selectionList: function() {
+          return this.constructor.selectionList(this.id);
+        },
+        selectionParentList: function() {
+          var e, error1, modelName;
+          modelName = this.constructor['parent'];
+          try {
+            return Model[modelName].selectionList();
+          } catch (error1) {
+            e = error1;
+            return [];
+          }
+        },
+        updateSelectionID: function() {
+          var i, idx, index, item, len, ref;
+          ref = this.constructor.selection;
+          for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
+            item = ref[idx];
+            if (item[this.cid]) {
+              index = idx;
+            }
+          }
+          if (index) {
+            this.constructor.selection.splice(index, 1);
+          }
+          return this.init(this);
+        },
+        removeSelectionID: function() {
+          var __itm, __key, __val, __x, _idx, _item, _x, i, j, len, len1, list, modelName, ref, results;
+          ref = this.constructor.selection;
+          for (_idx = i = 0, len = ref.length; i < len; _idx = ++i) {
+            _item = ref[_idx];
+            if (_item[this.id]) {
+              _x = _idx;
+            }
+          }
+          if (_x) {
+            this.constructor.selection.splice(_x, 1);
+          }
+          modelName = this.constructor['parent'];
+          if (!modelName) {
+            return;
+          }
+          list = Model[modelName].selection;
+          results = [];
+          for (j = 0, len1 = list.length; j < len1; j++) {
+            __itm = list[j];
+            results.push((function() {
+              var results1;
+              results1 = [];
+              for (__key in __itm) {
+                __val = __itm[__key];
+                if (!(__x = __val.indexOf(this.id) === -1)) {
+                  results1.push(__val.splice(__x, 1));
+                } else {
+                  results1.push(void 0);
+                }
+              }
+              return results1;
+            }).call(this));
+          }
+          return results;
+        },
+        removeFromSelection: function(list, options) {
+          return this.constructor.removeFromSelection(this.id, list, options);
+        },
+        updateSelection: function(list, options) {
+          if (list == null) {
+            list = [];
+          }
+          if (!this.constructor.isArray(list)) {
+            list = [list];
+          }
+          return list = this.constructor.updateSelection(list, this.id, options);
+        },
+        emptySelection: function() {
+          var list;
+          return list = this.constructor.emptySelection(this.id);
+        },
+        addRemoveSelection: function(isMetaKey) {
+          var originalList;
+          originalList = this.constructor.selectionList(this.id);
+          if (!originalList) {
+            return;
+          }
+          if (isMetaKey) {
+            this.addUnique(originalList);
+          } else {
+            this.toggleSelected(originalList);
+          }
+          return originalList;
+        },
+        addToSelection: function(isMetaKey) {
+          var originalList, ref;
+          originalList = this.constructor.selectionList(this.id);
+          if (!originalList) {
+            return;
+          }
+          if (isMetaKey) {
+            this.addUnique(originalList);
+          } else {
+            if (ref = this.id, indexOf.call(originalList, ref) < 0) {
+              originalList.unshift(this.id);
+            }
+          }
+          return originalList;
+        },
+        shiftSelection: function() {
+          var index, originalList, rm;
+          originalList = this.constructor.selectionList(this.id);
+          if (!originalList) {
+            return;
+          }
+          if (index = originalList.indexOf(this.id) === 0) {
+            return originalList;
+          }
+          rm = originalList.splice(0, 1, originalList[index]);
+          originalList.splice(index, 1);
+          originalList.push(rm[0]);
+          index = originalList.indexOf(this.id);
+          return originalList;
+        },
+        updateChangedAttributes: function(atts) {
+          var invalid, key, origAtts, value;
+          this.log('updateChangedAttributes');
+          invalid = false;
+          origAtts = this.selectAttributes();
+          for (key in atts) {
+            value = atts[key];
+            if (origAtts[key] !== value) {
+              invalid = true;
+              this[key] = value;
+            }
+          }
+          if (invalid) {
+            return this.save();
+          }
+        },
+        selectAttributes: function() {
+          var attr, i, len, ref, result;
+          result = {};
+          ref = this.constructor.selectAttributes;
+          for (i = 0, len = ref.length; i < len; i++) {
+            attr = ref[i];
+            result[attr] = this[attr];
+          }
+          return result;
+        },
+        addUnique: function(list) {
+          var ref;
+          [].splice.apply(list, [0, list.length - 0].concat(ref = [this.id])), ref;
+          return list;
+        },
+        toggleSelected: function(list) {
+          var index, ref;
+          if (ref = this.id, indexOf.call(list, ref) < 0) {
+            list.unshift(this.id);
+          } else {
+            index = list.indexOf(this.id);
+            if (index !== -1) {
+              list.splice(index, 1);
+            }
+          }
+          return list;
+        },
+        searchSelect: function(query) {
+          var atts, key, value;
+          query = query.toLowerCase();
+          atts = this.selectAttributes.apply(this);
+          for (key in atts) {
+            value = atts[key];
+            value = value.toLowerCase();
+            if (!((value != null ? value.indexOf(query) : void 0) === -1)) {
+              return true;
+            }
+          }
+          return false;
+        },
+        idSelect: function(query) {
+          var value;
+          query = query.toLowerCase();
+          value = this.id.toLowerCase();
+          if (!((value != null ? value.indexOf(query) : void 0) === -1)) {
+            return true;
+          }
+          return false;
+        },
+        idExcludeSelect: function(query) {
+          if (query.indexOf(this.id) === -1) {
+            return true;
+          }
+          return false;
+        },
+        defaultDetails: {
+          iCount: 0,
+          aCount: 0,
+          sCount: 0,
+          author: ''
+        }
+      };
+      this.include(Log);
+      this.extend(Log);
+      this.extend(Extend);
+      return this.include(Include);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Extender;
   }
 
 }).call(this);
@@ -46763,8 +47226,11 @@ Released under the MIT License
           index = originalList.indexOf(this.id);
           return originalList;
         },
-        updateChangedAttributes: function(atts) {
+        updateChangedAttributes: function(atts, options) {
           var invalid, key, origAtts, value;
+          if (options == null) {
+            options = {};
+          }
           this.log('updateChangedAttributes');
           invalid = false;
           origAtts = this.selectAttributes();
@@ -46776,7 +47242,7 @@ Released under the MIT License
             }
           }
           if (invalid) {
-            return this.save();
+            return this.save(options);
           }
         },
         selectAttributes: function() {
@@ -47675,6 +48141,9 @@ Released under the MIT License
 
   $.fn.name = function(str, l, repl) {
     var ret;
+    if (str == null) {
+      str = new String;
+    }
     if (l == null) {
       l = 1000;
     }
@@ -48708,10 +49177,9 @@ Released under the MIT License
 
     Login.prototype.success = function(json) {
       var delayedFunc, user;
-      json = $.parseJSON(json);
       User.fetch();
       User.destroyAll();
-      user = new User(this.newAttributes(json));
+      user = new User(this.newAttributes($.parseJSON(json)));
       user.save();
       this.render(this.flashEl, this.flashTemplate, json);
       delayedFunc = function() {
@@ -48829,7 +49297,7 @@ Released under the MIT License
         category_id: gid,
         func: 'selectUnique'
       });
-      return gas[0] || false;
+      return gas.first() || !!gas.length;
     };
 
     CategoriesProduct.categories = function(aid) {
@@ -48847,6 +49315,10 @@ Released under the MIT License
     };
 
     CategoriesProduct.publishedProducts = function(gid) {
+      var ref;
+      if (gid == null) {
+        gid = (ref = this.record) != null ? ref.id : void 0;
+      }
       return this.filter(gid, {
         associationForeignKey: 'category_id',
         func: 'selectNotIgnored'
@@ -48908,14 +49380,17 @@ Released under the MIT License
     CategoriesProduct.c = 0;
 
     CategoriesProduct.prototype.validate = function() {
-      var ga, valid_1, valid_2;
+      var ret2, valid_1, valid_2;
       valid_1 = (Product.find(this.product_id)) && (Category.find(this.category_id));
-      valid_2 = !(ga = this.constructor.categoryProductExists(this.product_id, this.category_id) && this.isNew());
+      valid_2 = !(this.constructor.categoryProductExists(this.product_id, this.category_id) && this.isNew());
       if (!valid_1) {
-        return 'No valid action!';
+        return 'Ungültige Aktion!';
       }
+      ret2 = function(p) {
+        return 'Produkt ' + p.title + ' existiert bereits in dieser Kategorie';
+      };
       if (!valid_2) {
-        return 'Product already exists in Category';
+        return ret2(Product.find(this.product_id));
       }
       return false;
     };
@@ -48970,7 +49445,7 @@ Released under the MIT License
     };
 
     CategoriesProduct.prototype.selectNotIgnored = function(id) {
-      if (this.category_id === id && this.ignored === false) {
+      if (this.category_id === id && !this.ignored) {
         return true;
       }
     };
@@ -48992,8 +49467,7 @@ Released under the MIT License
   var $, AjaxRelations, CategoriesProduct, Category, Extender, Filter, Model, Photo, ProductsPhoto, Spine, Uri, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    hasProp = {}.hasOwnProperty;
 
   Spine = require("spine");
 
@@ -49046,6 +49520,8 @@ Released under the MIT License
     Category.childType = 'Product';
 
     Category.url = '' + base_url + 'categories';
+
+    Category["protected"] = ['defense', 'outdoor', 'goodies'];
 
     Category.fromJSON = function(objects) {
       var json, key;
@@ -49114,11 +49590,9 @@ Released under the MIT License
     Category.publishedProducts = function(id) {
       var filterOptions;
       filterOptions = {
-        model: 'Category',
-        func: 'selectNotIgnored',
-        sort: 'sortByOrder'
+        func: 'selectNotIgnored'
       };
-      return Product.filterRelated(id, filterOptions);
+      return CategoriesProduct.filter(id, filterOptions);
     };
 
     Category.selectedProductsHasPhotos = function() {
@@ -49212,6 +49686,26 @@ Released under the MIT License
       return this.constructor.selection.push(s);
     };
 
+    Category.prototype.validate = function() {
+      var c, valid;
+      valid = !((function() {
+        var j, len, ref, results;
+        ref = Category["protected"];
+        results = [];
+        for (j = 0, len = ref.length; j < len; j++) {
+          c = ref[j];
+          if (c === this.name) {
+            results.push(c);
+          }
+        }
+        return results;
+      }).call(this)).length;
+      if (!valid) {
+        return 'Can\'t delete protected Category';
+      }
+      return false;
+    };
+
     Category.prototype.activePhotos = function() {
       return this.constructor.activePhotos(this.id);
     };
@@ -49288,286 +49782,6 @@ Released under the MIT License
 
     Category.prototype.select = function(joinTableItems) {};
 
-    Category.prototype.select_ = function(joinTableItems) {
-      var ref;
-      if (ref = this.id, indexOf.call(joinTableItems, ref) >= 0) {
-        return true;
-      }
-    };
-
-    return Category;
-
-  })(Spine.Model);
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = Model.Category = Category;
-  }
-
-}).call(this);
-}, "models/category_1": function(exports, require, module) {(function() {
-  var $, AjaxRelations, CategoriesProduct, Category, Extender, Filter, Model, Photo, ProductsPhoto, Spine, Uri, User,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
-  Spine = require("spine");
-
-  $ = Spine.$;
-
-  Model = Spine.Model;
-
-  User = require('models/user');
-
-  Photo = require('models/photo');
-
-  CategoriesProduct = require('models/categories_product');
-
-  ProductsPhoto = require('models/products_photo');
-
-  Filter = require("extensions/filter");
-
-  AjaxRelations = require("extensions/ajax_relations");
-
-  Uri = require("extensions/uri");
-
-  Extender = require("extensions/model_extender");
-
-  require("spine/lib/ajax");
-
-  Category = (function(superClass) {
-    extend(Category, superClass);
-
-    function Category() {
-      this.details = bind(this.details, this);
-      return Category.__super__.constructor.apply(this, arguments);
-    }
-
-    Category.configure('Category', 'id', 'cid', 'name', "photo", 'user_id');
-
-    Category.extend(Filter);
-
-    Category.extend(Model.Ajax);
-
-    Category.extend(AjaxRelations);
-
-    Category.extend(Uri);
-
-    Category.extend(Extender);
-
-    Category.selectAttributes = ['name'];
-
-    Category.parent = 'Root';
-
-    Category.childType = 'Product';
-
-    Category.url = '' + base_url + 'categories';
-
-    Category.fromJSON = function(objects) {
-      var json, key;
-      Category.__super__.constructor.fromJSON.apply(this, arguments);
-      this.createJoinTables(objects);
-      key = this.className;
-      json = this.make(objects, key);
-      return json;
-    };
-
-    Category.foreignModels = function() {
-      return {
-        'Product': {
-          className: 'Product',
-          joinTable: 'CategoriesProduct',
-          foreignKey: 'category_id',
-          associationForeignKey: 'product_id'
-        }
-      };
-    };
-
-    Category.contains = function(id) {
-      if (id == null) {
-        id = this.record.id;
-      }
-      if (!id) {
-        return Product.all();
-      }
-      return this.products(id);
-    };
-
-    Category.products = function(id) {
-      var filterOptions;
-      filterOptions = {
-        model: 'Category',
-        key: 'category_id'
-      };
-      return Product.filterRelated(id, filterOptions);
-    };
-
-    Category.selectedProductsHasPhotos = function() {
-      var alb, i, len, products;
-      products = Product.toRecords(this.selectionList());
-      for (i = 0, len = products.length; i < len; i++) {
-        alb = products[i];
-        if (alb.contains().length) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    Category.activePhotos = function(id) {
-      var ga, gas, i, ids, j, len, len1, pho, photos, product, ref, ret, search;
-      if (id == null) {
-        id = (ref = this.record) != null ? ref.id : void 0;
-      }
-      ret = [];
-      if (id) {
-        gas = CategoriesProduct.filter(id, {
-          key: 'category_id',
-          func: 'selectNotIgnored'
-        });
-        search = 'product_id';
-      } else {
-        ids = Category.selectionList();
-        gas = Product.toRecords(ids);
-        search = 'id';
-      }
-      for (i = 0, len = gas.length; i < len; i++) {
-        ga = gas[i];
-        product = Product.find(ga[search]);
-        photos = product.photos() || [];
-        for (j = 0, len1 = photos.length; j < len1; j++) {
-          pho = photos[j];
-          ret.push(pho);
-        }
-      }
-      return ret;
-    };
-
-    Category.details = function() {
-      var i, imagesCount, len, product, products;
-      if (Category.record) {
-        return Category.record.details();
-      }
-      products = Product.all();
-      imagesCount = 0;
-      for (i = 0, len = products.length; i < len; i++) {
-        product = products[i];
-        imagesCount += product.count = ProductsPhoto.filter(product.id, {
-          key: 'product_id'
-        }).length;
-      }
-      return $().extend(Category.defaultDetails, {
-        gCount: Category.count(),
-        iCount: imagesCount,
-        aCount: products.length,
-        sCount: Category.selectionList().length,
-        author: User.first().name
-      });
-    };
-
-    Category.prototype.init = function(instance) {
-      var id, s;
-      this.log('CATEGORY INSTANCE');
-      this.log(instance);
-      if (!(id = instance.id)) {
-        return;
-      }
-      s = new Object();
-      s[id] = [];
-      return this.constructor.selection.push(s);
-    };
-
-    Category.prototype.activePhotos = function() {
-      return this.constructor.activePhotos(this.id);
-    };
-
-    Category.prototype.details = function() {
-      var i, imagesCount, len, product, products;
-      products = Category.products(this.id);
-      imagesCount = 0;
-      for (i = 0, len = products.length; i < len; i++) {
-        product = products[i];
-        imagesCount += product.count = ProductsPhoto.filter(product.id, {
-          key: 'product_id'
-        }).length;
-      }
-      return $().extend(this.defaultDetails, {
-        name: this.name,
-        iCount: imagesCount,
-        aCount: products.length,
-        pCount: this.activePhotos().length,
-        sCount: Category.selectionList().length,
-        author: User.first().name
-      });
-    };
-
-    Category.prototype.count_ = function(inc) {
-      var filterOptions;
-      if (inc == null) {
-        inc = 0;
-      }
-      filterOptions = {
-        model: 'Category',
-        key: 'category_id'
-      };
-      return Product.filterRelated(this.id, filterOptions).length + inc;
-    };
-
-    Category.prototype.count = function(inc) {
-      if (inc == null) {
-        inc = 0;
-      }
-      return this.constructor.contains(this.id).length + inc;
-    };
-
-    Category.prototype.products = function() {
-      return this.constructor.products(this.id);
-    };
-
-    Category.prototype.updateAttributes = function(atts, options) {
-      if (options == null) {
-        options = {};
-      }
-      this.load(atts);
-      return this.save();
-    };
-
-    Category.prototype.updateAttribute = function(name, value, options) {
-      if (options == null) {
-        options = {};
-      }
-      this[name] = value;
-      return this.save();
-    };
-
-    Category.prototype.selectAttributes = function() {
-      var attr, i, len, ref, result;
-      result = {};
-      ref = this.constructor.selectAttributes;
-      for (i = 0, len = ref.length; i < len; i++) {
-        attr = ref[i];
-        result[attr] = this[attr];
-      }
-      return result;
-    };
-
-    Category.prototype.select = function(joinTableItems) {
-      var i, len, record;
-      for (i = 0, len = joinTableItems.length; i < len; i++) {
-        record = joinTableItems[i];
-        if (record.category_id === this.id) {
-          return true;
-        }
-      }
-    };
-
-    Category.prototype.select_ = function(joinTableItems) {
-      var ref;
-      if (ref = this.id, indexOf.call(joinTableItems, ref) >= 0) {
-        return true;
-      }
-    };
-
     return Category;
 
   })(Spine.Model);
@@ -49578,45 +49792,6 @@ Released under the MIT License
 
 }).call(this);
 }, "models/clipboard": function(exports, require, module) {(function() {
-  var $, Clipboard, Model, Spine,
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
-
-  Spine = require("spine");
-
-  $ = Spine.$;
-
-  Model = Spine.Model;
-
-  require('spine/lib/local');
-
-  Clipboard = (function(superClass) {
-    extend(Clipboard, superClass);
-
-    function Clipboard() {
-      return Clipboard.__super__.constructor.apply(this, arguments);
-    }
-
-    Clipboard.configure('Clipboard', 'id', 'item', 'type', 'cut');
-
-    Clipboard.extend(Model.Local);
-
-    Clipboard.prototype.init = function(instance) {
-      if (!instance) {
-
-      }
-    };
-
-    return Clipboard;
-
-  })(Spine.Model);
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = Model.Clipboard = Clipboard;
-  }
-
-}).call(this);
-}, "models/clipboard_1": function(exports, require, module) {(function() {
   var $, Clipboard, Model, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -49782,7 +49957,7 @@ Released under the MIT License
       return SpineDragItem.__super__.constructor.apply(this, arguments);
     }
 
-    SpineDragItem.configure('SpineDragItem', 'el', 'els', 'target', 'source', 'originModel', 'originRecord', 'selection', 'selected', 'closest');
+    SpineDragItem.configure('SpineDragItem', 'el', 'els', 'target', 'source', 'sourceModelName', 'sourceModelId', 'originModel', 'originModelName', 'originRecord', 'originRecordName', 'originRecordId', 'selection', 'selected', 'closest');
 
     SpineDragItem.prototype.init = function() {};
 
@@ -49950,12 +50125,14 @@ Released under the MIT License
         return;
       }
       isValid = true;
-      cb = function() {
-        Product.trigger('change:collection', target);
-        if (typeof callback === 'function') {
-          return callback.call(this);
-        }
-      };
+      cb = (function(_this) {
+        return function() {
+          Product.trigger('change:collection', target);
+          if (typeof callback === 'function') {
+            return callback.call(_this);
+          }
+        };
+      })(this);
       ret = (function() {
         var i, len, ref, results;
         results = [];
@@ -50062,17 +50239,6 @@ Released under the MIT License
 
     Photo.prototype.products = function() {
       return this.constructor.products(this.id);
-    };
-
-    Photo.prototype.selectAttributes = function() {
-      var attr, i, len, ref, result;
-      result = {};
-      ref = this.constructor.selectAttributes;
-      for (i = 0, len = ref.length; i < len; i++) {
-        attr = ref[i];
-        result[attr] = this[attr];
-      }
-      return result;
     };
 
     Photo.prototype.select = function(joinTableItems) {
@@ -50320,7 +50486,7 @@ Released under the MIT License
           associationForeignKey: 'product_id'
         });
         ga = CategoriesProduct.categoryProductExists(item.id, target.id);
-        if (ga) {
+        if (ga != null) {
           ga.destroy({
             done: cb
           });
@@ -50610,11 +50776,12 @@ Released under the MIT License
       valid_1 = (Product.find(this.product_id)) && (Photo.find(this.photo_id));
       valid_2 = !(ap = this.constructor.productPhotoExists(this.photo_id, this.product_id) && this.isNew());
       if (!valid_1) {
-        return 'No valid action!';
+        return 'Ungültige Aktion!';
       }
       if (!valid_2) {
-        return 'Photo already exists in Product';
+        return 'Produkt existiert bereits in dieser Kategorie';
       }
+      return false;
     };
 
     ProductsPhoto.prototype.products = function() {
@@ -50887,41 +51054,6 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/spine_error_1": function(exports, require, module) {(function() {
-  var $, Model, Spine, SpineError,
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
-
-  Spine = require("spine");
-
-  $ = Spine.$;
-
-  Model = Spine.Model;
-
-  require('spine/lib/local');
-
-  SpineError = (function(superClass) {
-    extend(SpineError, superClass);
-
-    function SpineError() {
-      return SpineError.__super__.constructor.apply(this, arguments);
-    }
-
-    SpineError.configure('SpineError', 'record', 'xhr', 'statusText', 'error');
-
-    SpineError.extend(Model.Local);
-
-    SpineError.prototype.init = function() {};
-
-    return SpineError;
-
-  })(Spine.Model);
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = SpineError;
-  }
-
-}).call(this);
 }, "models/toolbar": function(exports, require, module) {(function() {
   var $, Category, Clipboard, Filter, Model, Product, Settings, Spine, Toolbar,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -51043,7 +51175,7 @@ Released under the MIT License
               var c, ret;
               return ret = !Category.record || ((function() {
                 var i, len1, ref, results;
-                ref = App.arr;
+                ref = Category["protected"];
                 results = [];
                 for (i = 0, len1 = ref.length; i < len1; i++) {
                   c = ref[i];
@@ -51585,7 +51717,7 @@ Released under the MIT License
 
     User.trace = true;
 
-    User.ping = function() {
+    User.login = function() {
       var user;
       this.fetch();
       if (user = this.first()) {
@@ -51633,7 +51765,9 @@ Released under the MIT License
       return this.constructor.trigger('pinger', this, $.parseJSON(json));
     };
 
-    User.prototype.error = function(xhr) {
+    User.prototype.error = function(xhr, e) {
+      console.log(xhr);
+      console.log(e);
       this.constructor.logout();
       return this.constructor.redirect('users/login');
     };

@@ -4,7 +4,7 @@ Model = Spine.Model
 
 class SpineDragItem extends Spine.Model
 
-  @configure 'SpineDragItem', 'el', 'els', 'target', 'source', 'originModel', 'originRecord', 'selection', 'selected', 'closest'
+  @configure 'SpineDragItem', 'el', 'els', 'target', 'source', 'sourceModelName', 'sourceModelId', 'originModel', 'originModelName', 'originRecord', 'originRecordName', 'originRecordId', 'selection', 'selected', 'closest'
   
   init: ->
 

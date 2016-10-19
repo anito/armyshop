@@ -81,15 +81,15 @@
           </div>
           <div class="view wait content vbox flex autoflow" style=""></div>
           <div class="view categories opt-SelectNone content vbox flex data parent autoflow" style="">
-            <div class="items flex fadein in3">Categories</div>
+            <div class="items flex fadein in1">Categories</div>
           </div>
           <div class="view cat-trigger-edit products opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
-            <div class="items flex fadein in3">Products</div>
+            <div class="items flex fadein in1">Products</div>
           </div>
           <div class="view pro-trigger-edit photos opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
-            <div class="items flex fadein in3" data-toggle="modal-category" data-target="#modal-category" data-selector="a">Photos</div>
+            <div class="items flex fadein in1" data-toggle="modal-category" data-target="#modal-category" data-selector="a">Photos</div>
           </div>
           <div tabindex="1" class="view photo content vbox flex data parent autoflow fadeelement nopad" style="">
             <div class="hoverinfo fadeslow"></div>
@@ -166,7 +166,7 @@
                   <section class="right">
                     <button class="btn dark opt-UploadDialogue">
                           <i class="glyphicon glyphicon-plus"></i>
-                          <span>Add files...</span>
+                          <span>Fotos</span>
                     </button>
                   </section>
                 </div>
@@ -186,7 +186,7 @@
                             <!-- The fileinput-button span is used to style the file input field as button -->
                             <span class="btn dark fileinput-button">
                                 <i class="glyphicon glyphicon-plus"></i>
-                                <span>Add files...</span>
+                                <span>Fotos</span>
                                 <input type="file" name="files[]" multiple>
                             </span>
                             <button type="submit" class="dark start">
@@ -222,7 +222,7 @@
         </div>
       </div>
       <div tabindex="1" id="overview" class="view content vbox flex data parent fade" style="position: relative;">
-        <div class="carousel-background bg-medium flex" style="z-index: 0;">
+        <div class="carousel-background flex" style="z-index: 0;">
 <!--          The data-ride="carousel" attribute is used to mark a carousel as animating starting at page load.-->
 <!--          We can't use it here, since it must be triggered via the controller-->
           <div id="overview-carousel" class="carousel slide" data-ride="" data-interval="2000">
@@ -242,7 +242,7 @@
             </a>
           </div>
           <div class="xxl" style="color: rgba(156, 156, 156, 0.99); top: 260px;">
-            Overview
+            Übersicht
             <div style="font-size: 0.3em; color: rgba(156, 156, 156, 0.59); line-height: 30px;">hit space (play/pause) or arrow keys (navigate)</div>
           </div>
         </div>
@@ -580,7 +580,7 @@
 </script>
 
 <script id="productsTemplate" type="text/x-jquery-tmpl">
-  <li id="${id}" data-id="${id}" class="item fade in pro-trigger-edit {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
+  <li id="${id}" data-id="${id}" data-drag-over="" class="data item fade in pro-trigger-edit {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
     <div class="thumbnail"></div>
     {{if Category.record}}
     <div class="glyphicon-set left" style="">
@@ -604,8 +604,8 @@
       </span>
     </div>
     <div class="titles">
-      <div class="title">{{if title}}${$().name(title, 50)}{{/if}}</div>
-      <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 113)}}{{/if}}</div>
+      <div class="title">{{if title}}${$().name(title, 25)}{{/if}}</div>
+      <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 120)}}{{/if}}</div>
         <section class="info-badges">
           <span class="cc link glyphicon glyphicon-link {{if link}}{{else}}warning-badge{{/if}}"></span>
           <span class="dd price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</span>
@@ -693,7 +693,7 @@
   <section class="top viewheader fadeelement">
     <div class="left">
       <div class="header-title">
-        <h1>Categories Overview</h1>
+        <h1>Kategorien</h1>
       </div>
     </div>
     {{tmpl() "#categorySpecsTemplate"}}
@@ -840,10 +840,12 @@
   <div class="right">
     <span class="">
       <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
-    </span> 
+    </span>
+    {{if category}}
     <span class="">
-    <div class="btn btn-sm">Produkte<b><div>${model.details().aCount}{{if model.record}} von ${modelProduct.count()}{{/if}}</div></b></div>
-    </span> 
+      <div class="btn btn-sm"><div>${model.publishedProducts(category.id).length} von ${model.details().aCount}</div>Veröffentl.</div>
+    </span>
+    {{/if}}
   </div>
 </script>
 
@@ -1065,7 +1067,7 @@
       <li class="opt-logout"><a href="#">Logout</a></li>
       <li class="divider"></li>
       <li class="opt-trace"><a href="#">
-        <i class="glyphicon {{if trace}}glyphicon-ok{{/if}}"></i>Dev Modus</a>
+        <i class="glyphicon {{if trace}}glyphicon-ok{{/if}}"></i>Entwickler Modus</a>
       </li>
     </ul>
   </div>
@@ -1078,8 +1080,8 @@
       {{tmpl($item.data.photos) "#overviewPhotosTemplate"}}
     </div>
     <div class="carousel-caption">
-      <h3>Recents</h3>
-      <p>Last uploaded images</p>
+      <h3>Letzte Fotos</h3>
+      <p>zuletzt hochgeladene Fotos</p>
     </div>  
   </div>
   <div class="item summary">
@@ -1103,9 +1105,9 @@
   <table class="carousel table center">
     <tbody>
       <tr>
-        <td>categories</td>
-        <td>Products</td>
-        <td>Photos</td>
+        <td>Kategorien</td>
+        <td>Produkte</td>
+        <td>Fotos</td>
       </tr>
       <tr class="h1">
         <td>${Category.records.length}</td>

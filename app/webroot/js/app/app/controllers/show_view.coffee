@@ -107,8 +107,9 @@ class ShowView extends Spine.Controller
     'click .opt-ActionCancel:not(.disabled)'          : 'cancelAdd'
     'click .opt-ShowPhotoSelection:not(.disabled)'    : 'showPhotoSelection'
     'click .opt-ShowProductSelection:not(.disabled)'  : 'showProductSelection'
-    'click .opt-SelectAll:not(.disabled)'             : 'selectAll'
-    'click .opt-SelectNone:not(.disabled)'            : 'selectNone'
+    'click .opt-SelectAll'                            : 'selectAll'
+    'click .opt-SelectNone.btn'                       : 'selectNone'
+    'click .opt-SelectNone:not(.btn)'                 : 'deselect'
     'click .opt-SelectInv:not(.disabled)'             : 'selectInv'
     'click .opt-CloseDraghandle'                      : 'toggleDraghandle'
     'click .opt-Save'                                 : 'saveToDb'
@@ -121,10 +122,11 @@ class ShowView extends Spine.Controller
     'hidden.bs.modal'                                 : 'hiddenmodal'
     
     # you must define dragover yourself in subview !!!!!!important
-    'dragstart .item'                                 : 'dragstart'
-    'dragenter .view'                                 : 'dragenter'
-    'dragend'                                         : 'dragend'
-    'drop'                                            : 'drop'
+#    'dragstart .item'                                 : 'dragstart'
+#    'dragenter'                                       : 'dragenter'
+#    'dragend'                                         : 'dragend'
+#    'dragover'                                        : 'dragover'
+#    'drop'                                            : 'drop'
     
     'keydown'                                         : 'keydown'
     'keyup'                                           : 'keyup'
@@ -198,10 +200,10 @@ class ShowView extends Spine.Controller
     @bind('change:toolbarTwo', @proxy @changeToolbarTwo)
     @bind('activate:editview', @proxy @activateEditView)
     
-    @bind('drag:start', @proxy @dragStart)
-    @bind('drag:enter', @proxy @dragEnter)
-    @bind('drag:end', @proxy @dragEnd)
-    @bind('drag:drop', @proxy @dragDrop)
+#    @bind('drag:start', @proxy @dragStart)
+#    @bind('drag:enter', @proxy @dragEnter)
+#    @bind('drag:end', @proxy @dragEnd)
+#    @bind('drag:drop', @proxy @dragDrop)
     
     @toolbarOne.bind('refresh', @proxy @refreshToolbar)
     
@@ -364,10 +366,7 @@ class ShowView extends Spine.Controller
     Product.trigger('create:join', products, category)
       
   copyPhotos: (photos, product) ->
-    options =
-      photos: photos
-      product: product
-    Photo.trigger('create:join', options)
+    Photo.trigger('create:join', photos, product)
       
   copyProductsToNewCategory: ->
     @productsToCategory Category.selectionList()[..]
@@ -651,15 +650,23 @@ class ShowView extends Spine.Controller
     App[controller].trigger('active')
     target.click()
     
+  deselect: (e) ->
+    # only if not for .thumbnail
+    return unless $('.thumbnail', e.target).length 
+    @selectNone(e)
+    
+  selectNone: (e) ->
+    @current.select(e, [])
+    
   selectAll: (e) ->
     try
       list = @select()
       @current.select(e, list)
     catch e
     
-  selectNone: (e) ->
+  selectNone_: ->
     try
-      unless $(e.target).item?()
+      if $(e.target).parents().data('current')?.model
         @current.el.data('current').model.updateSelection([])
     catch e
     
@@ -822,10 +829,7 @@ class ShowView extends Spine.Controller
         Photo.trigger('destroy:join', options)
       @refreshToolbars()
       
-    options = 
-      photos: items
-      product: product
-    Photo.trigger('create:join', options, callback)
+    Photo.trigger('create:join', items, product, callback)
       
   rotatePhotoCW: (e) ->
     Spine.trigger('rotate', false, -90)
@@ -875,7 +879,7 @@ class ShowView extends Spine.Controller
     for clb in clipboard
       items.push clb.item
       
-    Product.trigger('create:join', items.toId(), category, callback)
+    Product.trigger('create:join', items, category, callback)
       
   ignoreProduct: (e) ->
     e.stopPropagation()

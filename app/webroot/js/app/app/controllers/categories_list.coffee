@@ -24,7 +24,6 @@ class CategoriesList extends Spine.Controller
     'mousemove .item'               : 'infoUp'
     'mouseleave .item'              : 'infoBye'
     
-    'dragover'                      : 'dragover'
   
   constructor: ->
     super
@@ -82,10 +81,10 @@ class CategoriesList extends Spine.Controller
     contentEl = $('.thumbnail', categoryEl)
     tmplItem = contentEl.tmplItem()
     alert 'no tmpl item' unless tmplItem
-    if tmplItem
-      tmplItem.tmpl = $( "#categoriesTemplate" ).template()
+    try
       tmplItem.update?()
-      categoryEl = @children().forItem(category).toggleClass('active hot', active)
+    catch e
+    categoryEl = @children().forItem(category).toggleClass('active hot', active)
     
   reorder: (item) ->
     id = item.id

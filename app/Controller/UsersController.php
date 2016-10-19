@@ -10,8 +10,8 @@ class UsersController extends AppController {
 
   function beforeFilter() {
     $this->Auth->allowedActions = array('login', 'logout', 'ping');//, 'add', 'index', 'edit', 'view');
-    $this->layout = 'cake';
     $this->allowedGroups = array('Administrators', 'Managers');
+    $this->layout = 'cake';
     parent::beforeFilter();
   }
   
@@ -48,8 +48,8 @@ class UsersController extends AppController {
       if (!empty($this->data)) {
         if($this->Auth->login()) {
 //          $this->log($this->Session->id());
-//          $this->log($this->Session);
-          $this->set('_serialize', array_merge($this->data, array(
+//          $this->log($this->data, LOG_DEBUG);
+          $this->set('_serialize', array_merge($this->data['User'], array(
               'id' => $this->Auth->user('id'),
               'username' => $this->Auth->user('username'),
               'name' => $this->Auth->user('name'),
@@ -58,8 +58,8 @@ class UsersController extends AppController {
               'groupname' => $this->_groupname(),
               'flash' => '<strong style="color:#49AFCD">You\'re successfully logged in as ' . $this->Auth->user('name') . '</strong>',
               'success' => 'true',
-              'redirect' => '/admin'#$this->data['User']['redirect']
-              )));
+              'redirect' => $this->data['User']['redirect']
+          )));
         } else {
           $this->response->header("WWW-Authenticate: Negotiate");
           $this->set('_serialize', array_merge($this->data, array(
@@ -111,6 +111,7 @@ class UsersController extends AppController {
   function index() {
     if (!$this->isAuthGroup()) {
       $this->redirect(array('action' => 'login'));
+      $this->log('no Authgroup: index');
     }
     $this->User->recursive = 0;
     $this->set('users', $this->paginate());
@@ -118,6 +119,7 @@ class UsersController extends AppController {
 
   function view($id = null) {
     if (!$this->isAuthGroup()) {
+      $this->log('no Authgroup: view');
       $this->redirect(array('action' => 'login'));
     }
     if (!$id) {
@@ -129,6 +131,7 @@ class UsersController extends AppController {
 
   function add() {
     if (!$this->isAuthGroup()) {
+      $this->log('no Authgroup: add');
       $this->redirect(array('action' => 'login'));
     }
     if (!empty($this->request->data)) {
@@ -161,6 +164,7 @@ class UsersController extends AppController {
 
   function edit($id = null) {
     if (!$this->isAuthGroup()) {
+      $this->log('no Authgroup: edit');
       $this->redirect(array('action' => 'login'));
     }
     if (!$id && empty($this->data)) {
@@ -200,9 +204,7 @@ class UsersController extends AppController {
   
   function ping() {
     $user = $this->Auth->user();
-//    $this->log($this->Auth->user(), LOG_DEBUG);
-//    $this->log($this->Auth->user('id'), LOG_DEBUG);
-//    $this->log($this->data, LOG_DEBUG);
+    $this->log($this->data, LOG_DEBUG);
     if($this->request->is('ajax')) {
       if(!empty($this->data) && !empty($user)) {
         $this->set('_serialize', array_merge($this->data, array('id' => $this->Auth->user('id'), 'sessionid' => $this->Session->id(), 'success' => true)));

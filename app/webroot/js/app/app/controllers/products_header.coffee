@@ -18,6 +18,7 @@ class ProductsHeader extends Spine.Controller
     super
     @bind('active', @proxy @active)
     Category.bind('change', @proxy @render)
+    CategoriesProduct.bind('change', @proxy @render)
     Category.bind('change:selection', @proxy @render)
     Product.bind('refresh', @proxy @render)
     Product.bind('change', @proxy @render)

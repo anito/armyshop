@@ -28,6 +28,8 @@ class Category extends Spine.Model
   @childType: 'Product'
   
   @url: '' + base_url + 'categories'
+  
+  @protected: ['defense', 'outdoor', 'goodies']
 
   @fromJSON: (objects) ->
     super
@@ -64,14 +66,10 @@ class Category extends Spine.Model
     res.push pro for pro in pros when pro.id is pid
     res[0]
     
-    
-    
   @publishedProducts: (id) ->
     filterOptions =
-      model: 'Category'
       func: 'selectNotIgnored'
-      sort: 'sortByOrder'
-    Product.filterRelated(id, filterOptions)
+    CategoriesProduct.filter(id, filterOptions)
 
   @selectedProductsHasPhotos: ->
     products = Product.toRecords @selectionList()
@@ -118,6 +116,11 @@ class Category extends Spine.Model
     s[id] = []
     @constructor.selection.push s
     
+  validate: ->
+    valid = !(c for c in Category.protected when c is @name ).length
+    return 'Can\'t delete protected Category' unless valid
+    false
+    
   activePhotos: ->
     @constructor.activePhotos(@id)
     
@@ -154,15 +157,12 @@ class Category extends Spine.Model
   updateAttribute: (name, value, options={}) ->
     @[name] = value
     @save()
-
+    
   selectAttributes: ->
     result = {}
     result[attr] = @[attr] for attr in @constructor.selectAttributes
     result
 
   select: (joinTableItems) ->
-    
-  select_: (joinTableItems) ->
-    return true if @id in joinTableItems
     
 module?.exports = Model.Category = Category

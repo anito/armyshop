@@ -99,7 +99,7 @@ class PhotosList extends Spine.Controller
       else
         @html '<label class="invite">
         <div class="enlightened">Es sind keine Fotos vorhanden &nbsp;</div><br>
-        <button class="opt-Upload dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button>
+        <button class="opt-UploadDialogue dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button>
         </label>'
     @el
   

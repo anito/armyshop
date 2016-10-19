@@ -25,7 +25,7 @@ class LoginView extends Spine.Controller
   toggleTrace: ->
     Spine.isProduction = localStorage.isProduction = (localStorage.isProduction == 'false')
     @render()
-    if confirm('Trace: ' + (if Spine.isProduction then 'Off' else 'On') + '\n\nApplication will now restart.\n\nContinue?')
+    if confirm('Entwickler Modus: ' + (if Spine.isProduction then 'Aus' else 'An') + '\n\Die Anwendung muss neu gestartet werden.\n\nFortfahren mit OK')
       $(window).off()
       User.redirect('admin')
     

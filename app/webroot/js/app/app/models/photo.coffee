@@ -86,7 +86,7 @@ class Photo extends Spine.Model
 
     return unless items.length
     isValid = true
-    cb = ->
+    cb = =>
       Product.trigger('change:collection', target)
       if typeof callback is 'function'
         callback.call(@)
@@ -143,11 +143,6 @@ class Photo extends Spine.Model
         
   products: ->
     @constructor.products @id
-        
-  selectAttributes: ->
-    result = {}
-    result[attr] = @[attr] for attr in @constructor.selectAttributes
-    result
 
   select: (joinTableItems) ->
     return true for record in joinTableItems when record.photo_id is @id and (@['order'] = parseInt(record.order))?

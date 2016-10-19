@@ -58,8 +58,9 @@ class ProductsPhoto extends Spine.Model
   validate: ->
     valid_1 = (Product.find @product_id) and (Photo.find @photo_id)
     valid_2 = !(ap = @constructor.productPhotoExists(@photo_id, @product_id) and @isNew())
-    return 'No valid action!' unless valid_1
-    return 'Photo already exists in Product' unless valid_2
+    return 'Ungültige Aktion!' unless valid_1
+    return 'Produkt existiert bereits in dieser Kategorie' unless valid_2
+    false
 
   products: ->
     @constructor.products @photo_id

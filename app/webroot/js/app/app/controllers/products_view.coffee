@@ -27,10 +27,12 @@ class ProductsView extends Spine.Controller
   events:
     'click      .item'                : 'click'
     
-    'dragstart .item'                 : 'dragstart'
+    'dragstart '                      : 'dragstart'
     'dragstart'                       : 'stopInfo'
-    'drop .item'                      : 'drop'
-    'dragover   .item'                : 'dragover'
+    'dragend'                         : 'dragend'
+    'drop'                            : 'drop'
+    'dragover   '                     : 'dragover'
+    'dragenter  '                     : 'dragenter'
     
     'sortupdate .items'               : 'sortupdate'
     'mousemove .item'                 : 'infoUp'
@@ -72,6 +74,8 @@ class ProductsView extends Spine.Controller
     CategoriesProduct.bind('destroy', @proxy @destroyCategoriesProduct)
     CategoriesProduct.bind('ignored', @proxy @ignoreProduct)
     
+#    Category.bind('create destroy', @proxy @refresh)
+    
     Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     
     Product.bind('create', @proxy @create)
@@ -93,7 +97,9 @@ class ProductsView extends Spine.Controller
 #    Spine.bind('select:product', @proxy @select)
     
     @bind('drag:start', @proxy @dragStart)
-    @bind('drag:help', @proxy @dragHelp)
+    @bind('drag:enter', @proxy @dragEnter)
+    @bind('drag:over', @proxy @dragOver)
+    @bind('drag:leave', @proxy @dragLeave)
     @bind('drag:drop', @proxy @dragDrop)
     
     $(@views).queue('fx')
@@ -195,8 +201,10 @@ class ProductsView extends Spine.Controller
       $().extend options, product: record
       
       if options.photos
-        Photo.trigger('create:join', options, false)
-        Photo.trigger('destroy:join', options.photos, options.deleteFromOrigin) if options.deleteFromOrigin
+        Photo.trigger('create:join', options.photos, record, cb)
+        cb = =>
+          if origin = options.deleteFromOrigin
+            Photo.trigger('destroy:join', options.photos, origin) 
         
       if options.deferred
         options.deferred.notify(record)
@@ -326,7 +334,7 @@ class ProductsView extends Spine.Controller
   click: (e, excl) ->
     item = $(e.currentTarget).item()
     @select(e, item.id)
-    
+#    e.stopPropagation()
     
   select: (e, items = []) ->
     unless Array.isArray items
@@ -337,7 +345,6 @@ class ProductsView extends Spine.Controller
       when 'keyup'
         selection = items
       when 'click'
-        console.log 'click product '
         Category.emptySelection() unless @isCtrlClick(e)
         selection = Category.selectionList()[..]
         items = selection[..] unless items.length

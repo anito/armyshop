@@ -16,7 +16,7 @@ class User extends Spine.Model
   
   @trace: true
   
-  @ping: ->
+  @login: ->
     @fetch()
     if user = @first()
       user.confirm()
@@ -48,7 +48,10 @@ class User extends Spine.Model
   success: (json) =>
     @constructor.trigger('pinger', @, $.parseJSON(json))
 
-  error: (xhr) =>
+  error: (xhr, e) =>
+    console.log xhr
+    console.log e
+    
     @constructor.logout()
     @constructor.redirect 'users/login'
       

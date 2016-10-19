@@ -91,12 +91,7 @@ class UploadEditView extends Spine.Controller
     photos.push new Photo(raw['Photo']).save(ajax: false) for raw in raws
     
     if product
-      options = $().extend {},
-        photos: photos
-        product: product
-      
-      Photo.trigger('create:join', options)
-#      @navigate '/category', Category.record?.id or '', product.id
+      Photo.trigger('create:join', photos, product)
     else
       Photo.trigger('created', photos)
       @navigate '/category', Category.record?.id or '', ''

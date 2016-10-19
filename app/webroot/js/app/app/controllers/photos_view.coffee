@@ -29,7 +29,7 @@ class PhotosView extends Spine.Controller
     'dragstart .item'              : 'dragstart'
     'dragstart'                    : 'stopInfo'
     'dragover .item'               : 'dragover'
-    
+    'drop'                         : 'drop'
     'mousemove .item'              : 'infoUp'
     'mouseleave  .item'            : 'infoBye'
     
@@ -63,9 +63,7 @@ class PhotosView extends Spine.Controller
     @header.template = @headerTemplate
     @viewport = @list.el
     
-    @bind('drag:help', @proxy @dragHelp)
-    @bind('drag:start', @proxy @dragStart)
-    @bind('drag:drop', @proxy @dragComplete)
+    @bind('drag:drop', @proxy @dragDrop)
     
     ProductsPhoto.bind('destroy', @proxy @destroyProductsPhoto)
     ProductsPhoto.bind('beforeDestroy', @proxy @beforeDestroyProductsPhoto)
@@ -146,6 +144,7 @@ class PhotosView extends Spine.Controller
     
     item = $(e.currentTarget).item()
     @select e, item.id
+    e.stopPropagation()
     
   select: (e, items = []) ->
     unless Array.isArray items
@@ -163,7 +162,6 @@ class PhotosView extends Spine.Controller
           selection.addRemoveSelection(id)
     
     Product.updateSelection(selection, Product.record?.id)
-#    e.stopPropagation()
 
   clearPhotoCache: ->
     Photo.clearCache()
@@ -237,10 +235,10 @@ class PhotosView extends Spine.Controller
       @render(photos, 'append')
       @list.el.sortable('destroy').sortable('photos')
       
-  createJoin: (options, cb) ->
-    Photo.createJoin options.photos, options.product, cb
-    Photo.trigger('activate', options.photos.last())
-    options.product.updateSelection options.photos.toId()
+  createJoin: (photos, target, cb) ->
+    Photo.createJoin photos, target, cb
+    Photo.trigger('activate', photos.last())
+    target.updateSelection photos.toId()
   
   destroyJoin: (options, callback) ->
     @log 'destroyJoin'

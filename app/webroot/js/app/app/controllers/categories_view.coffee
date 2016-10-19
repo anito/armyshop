@@ -19,6 +19,11 @@ class CategoriesView extends Spine.Controller
   events:
     'click .item'             : 'click'
     
+    'dragend'                         : 'dragend'
+    'drop       '                     : 'drop'
+    'dragover   '                     : 'dragover'
+    'dragenter  '                     : 'dragenter'
+    
   headerTemplate: (items) ->
     $("#headerCategoryTemplate").tmpl(items)
 
@@ -44,11 +49,17 @@ class CategoriesView extends Spine.Controller
     Category.bind('beforeDestroy', @proxy @beforeDestroy)
     Category.bind('destroy', @proxy @destroy)
     Category.bind('refresh:category', @proxy @render)
+    
+    @bind('drag:start', @proxy @dragStart)
+    @bind('drag:enter', @proxy @dragEnter)
+    @bind('drag:over', @proxy @dragOver)
+    @bind('drag:leave', @proxy @dragLeave)
+    @bind('drag:drop', @proxy @dragDrop)
 
   render: (items) ->
     return unless @isActive()
     if Category.count()
-      items = Category.records.sort Category.nameSort
+      items = Category.records.sort Category.sortByScreenName
       @list.render items
     else  
       @list.el.html '<label class="invite"><span class="enlightened">This Application has no categories. &nbsp;<button class="opt-CreateCategory dark large">New Category</button>'
@@ -62,34 +73,12 @@ class CategoriesView extends Spine.Controller
     @render()
     
   click: (e) ->
-    e.preventDefault()
-    e.stopPropagation()
-    
     App.showView.trigger('change:toolbarOne', ['Default'])
-    item = $(e.currentTarget).item()
-    @select(e, item.id) #one category selected at a time
+    item = $(e.target).closest('li').item()
+    @select(item) #one category selected at a time
     
-  select_: (item) ->
-    Category.trigger('activate', item.id)
-    
-  select__: (ids = [], exclusive) ->
-    unless Array.isArray ids
-      ids = [ids]
-    Root.emptySelection() if exclusive
-      
-    selection = Root.selectionList()[..]
-    for id in ids
-      selection.addRemoveSelection(id)
-    
-    Root.updateSelection(selection)
-    Category.updateSelection(Category.selectionList())
-    Product.updateSelection(Product.selectionList())
-    
-  select: (e, items = []) ->
-    unless Array.isArray items
-      items = [items]
-      
-    Root.updateSelection(items.first())
+  select: (item) ->
+    Root.updateSelection(item.id)
     Category.updateSelection(Category.selectionList())
     Product.updateSelection(Product.selectionList())
     

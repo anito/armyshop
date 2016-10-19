@@ -38,7 +38,7 @@ class SubEditViewDescription extends Spine.Controller
         order       : count+1
       object = $.extend({}, obj, object)
     else
-      User.ping()
+      User.login()
     
   bindRefresh: ->
     Description.one('refresh', @proxy @refresh)
@@ -48,7 +48,7 @@ class SubEditViewDescription extends Spine.Controller
     
   active: ->
     $(@btn, @parent.el).addClass('active')
-    items = Description.filterSortByOrder @parent.current.id
+    items = Description.filterSortByOrder @parent.current?.id
     if !items.length
       items = @create()
     @render items

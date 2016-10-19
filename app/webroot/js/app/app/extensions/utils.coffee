@@ -5,7 +5,7 @@ $ = jQuery ? require("jqueryify")
 $.fn.deselect = (sel) ->
   $(@).children(sel).removeClass('active hot')
   
-$.fn.name = (str, l=1000, repl='...') ->
+$.fn.name = (str=new String, l=1000, repl='...') ->
   str = str.toString()
   repl = repl.toString()
   ret = str.slice(0, l)

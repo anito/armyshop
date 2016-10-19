@@ -119,7 +119,7 @@ class Product extends Spine.Model
     for item in items
       gas = CategoriesProduct.filter(item.id, associationForeignKey: 'product_id')
       ga = CategoriesProduct.categoryProductExists(item.id, target.id)
-      ga.destroy(done: cb) if ga
+      ga?.destroy(done: cb)
       
     Category.trigger('change:collection', target)
       
@@ -179,7 +179,7 @@ class Product extends Spine.Model
     $().extend @defaultDetails,
       iCount : @photos().length
       sCount : Product.selectionList().length
-      product  : Product.record
+      product: Product.record
       category: Category.record
   
   # loops over each record and make sure to set the copy property

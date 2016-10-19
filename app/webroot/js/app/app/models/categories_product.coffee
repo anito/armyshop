@@ -26,7 +26,7 @@ class CategoriesProduct extends Spine.Model
       product_id: aid
       category_id: gid
       func: 'selectUnique'
-    gas[0] or false
+    gas.first() or !!gas.length
     
   @categories: (aid) ->
     Category.filterRelated(aid,
@@ -40,7 +40,7 @@ class CategoriesProduct extends Spine.Model
       sort: 'sortByOrder'
     )
       
-  @publishedProducts: (gid) ->
+  @publishedProducts: (gid=@record?.id) ->
     @filter(gid, {associationForeignKey: 'category_id', func: 'selectNotIgnored'})
       
   @unpublishedProducts: (gid) ->
@@ -69,9 +69,10 @@ class CategoriesProduct extends Spine.Model
   
   validate: ->
     valid_1 = (Product.find @product_id) and (Category.find @category_id)
-    valid_2 = !(ga = @constructor.categoryProductExists(@product_id, @category_id) and @isNew())
-    return 'No valid action!' unless valid_1
-    return 'Product already exists in Category' unless valid_2
+    valid_2 = !(@constructor.categoryProductExists(@product_id, @category_id) and @isNew())
+    return 'Ungültige Aktion!' unless valid_1
+    ret2 = (p) -> 'Produkt ' + p.title + ' existiert bereits in dieser Kategorie'
+    return ret2(Product.find(@product_id)) unless valid_2
     false
     
   categories: ->
@@ -102,7 +103,7 @@ class CategoriesProduct extends Spine.Model
     return true if @product_id is options.product_id and @category_id is options.category_id
     
   selectNotIgnored: (id) ->
-    return true if @category_id is id and @ignored is false
+    return true if @category_id is id and !@ignored
     
   selectIgnored: (id) ->
     return true if @category_id is id and @ignored is true

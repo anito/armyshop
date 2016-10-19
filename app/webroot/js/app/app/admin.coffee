@@ -1,8 +1,8 @@
 Spine                   = require("spine")
 $                       = Spine.$
-Drag                    = require("extensions/drag")
 User                    = require('models/user')
 Config                  = require('models/config')
+Drag                    = require('extensions/drag')
 Product                 = require('models/product')
 Root                    = require('models/root')
 Category                = require('models/category')
@@ -78,16 +78,15 @@ class Main extends Spine.Controller
     super
     
     @version = "2.0.0"
-    
-    # default user settings if none found
     @autoupload = true
+    @useDragImage = false
     
-    Spine.DragItem = SpineDragItem.create()
+    Spine.dragItem = SpineDragItem.create()
     
-#    @ALBUM_SINGLE_MOVE = @createImage('/img/cursor_folder_1.png')
-#    @ALBUM_DOUBLE_MOVE = @createImage('/img/cursor_folder_3.png')
-#    @IMAGE_SINGLE_MOVE = @createImage('/img/cursor_images_1.png')
-#    @IMAGE_DOUBLE_MOVE = @createImage('/img/cursor_images_3.png')
+    @ALBUM_SINGLE_MOVE = @createImage('/img/cursor_folder_1.png')
+    @ALBUM_DOUBLE_MOVE = @createImage('/img/cursor_folder_3.png')
+    @IMAGE_SINGLE_MOVE = @createImage('/img/cursor_images_1.png')
+    @IMAGE_DOUBLE_MOVE = @createImage('/img/cursor_images_3.png')
     
     @ignoredHashes = ['slideshow', 'overview', 'preview', 'flickr', 'logout']
     @arr = ['false', 'outdoor', 'defense', 'goodies']
@@ -145,7 +144,7 @@ class Main extends Spine.Controller
     @vmanager = new Spine.Manager(@sidebar)
     @vmanager.external = @showView.toolbarOne
     @vmanager.initDrag @vDrag,
-      initSize: => 400 #@el.width()/3.5
+      initSize: => 375 #@el.width()/3.5
       sleep: true
       disabled: false
       axis: 'x'
@@ -207,7 +206,7 @@ class Main extends Spine.Controller
         Category.updateSelection()
         Product.updateSelection()
         @showView.trigger('active', @showView.productsView)
-      '/categories_/*': ->
+      '/categories/*': ->
         @showView.trigger('active', @showView.categoriesView)
       '/overview/*': ->
         @overviewView.trigger('active')
@@ -244,6 +243,10 @@ class Main extends Spine.Controller
     valid = user.sessionid is json.sessionid
     valid = user.id is json.id and valid
     unless valid
+      console.log user.sessionid
+      console.log json.sessionid
+      console.log user.id
+      console.log json.id
       User.logout()
     else
       @loadUserSettings(user.id)
@@ -257,17 +260,6 @@ class Main extends Spine.Controller
     for c in arr
       @el.removeClass(c)
     @el.addClass(res)
-  
-  drop: (e) ->
-    @log 'drop'
-    
-    # prevent ui drops
-    unless e.originalEvent.dataTransfer.files.length
-      e.stopPropagation()
-      e.preventDefault()
-      
-    # clean up placeholders, jquery-sortable-plugin sometimes leaves alone
-    $('.sortable-placeholder').detach()
       
   notify: (text) ->
     @modalView.render

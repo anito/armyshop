@@ -255,7 +255,7 @@ Model.Extender =
         
 
       #prevents an update if model hasn't changed
-      updateChangedAttributes: (atts, options={}) ->
+      updateChangedAttributes: (atts) ->
         @log 'updateChangedAttributes'
         invalid = false
         origAtts = @selectAttributes()
@@ -264,7 +264,7 @@ Model.Extender =
             invalid = yes
             @[key] = value
 
-        @save(options) if invalid
+        @save() if invalid
         
       selectAttributes: ->
         result = {}

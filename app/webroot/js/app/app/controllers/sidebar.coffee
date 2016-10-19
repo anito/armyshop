@@ -64,7 +64,7 @@ class Sidebar extends Spine.Controller
       el: @refreshEl
       
     Category.one('refresh', @proxy @refresh)
-    
+    Category.bind('error', @proxy @error)
     Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     Category.bind("ajaxError", Category.errorHandler)
     Category.bind("ajaxSuccess", Category.successHandler)
@@ -135,7 +135,10 @@ class Sidebar extends Spine.Controller
         
     category = new Category @newAttributes()
     category.one('ajaxSuccess', @proxy cb)
-    category.save()
+    category.save(options)
+    
+  error: (err) ->
+    alert err
     
   createProduct: ->
     Spine.trigger('create:product')
@@ -171,7 +174,7 @@ class Sidebar extends Spine.Controller
     clearTimeout timer
     categoryEl = $(e.target).closest('.gal.item')
     item = categoryEl.item()
-    return unless item and item.id isnt Spine.DragItem.originRecord.id
+    return unless item and item.id isnt Model[Spine.dragItem.originModelName].record?.id
     @list.expand(item, true)
     
   sortupdate: (e, o) ->
