@@ -282,7 +282,9 @@ class SidebarList extends Spine.Controller
         el_ = el[0]
         ohc = el_.offsetHeight if el_
         speed = 200
-      
+      else
+        return
+        
     return unless el.length
       
     otc = el.offset().top

@@ -43967,6 +43967,9 @@ Released under the MIT License
             ohc = el_.offsetHeight;
           }
           speed = 200;
+          break;
+        default:
+          return;
       }
       if (!el.length) {
         return;
