@@ -1253,7 +1253,7 @@ ul.sublist::before {
   margin: 0 auto;
 }
 .sidebar ul.sublist li.sublist-item {
-  margin: 0;
+  margin: 1px 0;
   position: relative;
   padding: 13px 18px;
   font-size: 1rem;
