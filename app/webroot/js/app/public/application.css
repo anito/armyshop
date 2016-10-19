@@ -1369,13 +1369,6 @@ ul.sublist::before {
 #content .products .items .item {
   margin: -10px 6px 24px;
 }
-#content .items .item .titles {
-  padding-left: 160px;
-  width: 100%;
-  color: #fff;
-  text-shadow: 0 1px 0px #000;
-  cursor: auto;
-}
 #content .items .item .titles div:not(.rule) {
   position: absolute;
   margin-right: 17px;
@@ -1388,7 +1381,7 @@ ul.sublist::before {
   top: 0;
   overflow: auto;
   z-index: 0;
-  padding-left: 173px;
+  padding-left: 160px;
 }
 .titles .title {
   top: 26px;
@@ -1477,15 +1470,15 @@ section span.price {
 }
 #content .products .item .thumbnail {
   background-repeat: no-repeat;
-  -moz-background-position: 13px 10px, 74px 10px, 13px 71px, 74px 71px;
-  -webkit-background-position: 13px 10px, 74px 10px, 13px 71px, 74px 71px;
-  background-position: 13px 10px, 74px 10px, 13px 71px, 74px 71px;
+  -moz-background-position: 13px 17px, 83px 17px, 13px 83px, 83px 83px;
+  -webkit-background-position: 13px 17px, 83px 17px, 13px 83px, 83px 83px;
+  background-position: 13px 17px, 83px 17px, 13px 83px, 83px 83px;
 }
 #content .products .item .thumbnail.load {
   background-repeat: no-repeat;
-  -moz-background-position: 25px 29px, 77px 29px, 25px 81px, 77px 81px;
-  -webkit-background-position: 25px 29px, 77px 29px, 25px 81px, 77px 81px;
-  background-position: 25px 29px, 77px 29px, 25px 81px, 77px 81px;
+  -moz-background-position: 25px 32px, 92px 32px, 25px 100px, 92px 100px;
+  -webkit-background-position: 25px 32px, 92px 32px, 25px 100px, 92px 100px;
+  background-position: 25px 32px, 92px 32px, 25px 100px, 92px 100px;
 }
 #content .content .items:not(.nopad) {
   padding: 20px 10px 0;
