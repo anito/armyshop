@@ -1101,6 +1101,7 @@ class ShowView extends Spine.Controller
       list.parent.select e, [id]
         
   scrollTo: (item) ->
+    App.sidebar.list.scrollTo item
     return unless @controller.isActive() and item
     return unless item.constructor.className is @controller.el.data('current').models.className
     parentEl = @controller.el

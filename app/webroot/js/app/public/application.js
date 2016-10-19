@@ -42969,6 +42969,7 @@ Released under the MIT License
 
     ShowView.prototype.scrollTo = function(item) {
       var e, el, error, marginBottom, marginTop, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, parentEl, res, resMax, resMin, stp;
+      App.sidebar.list.scrollTo(item);
       if (!(this.controller.isActive() && item)) {
         return;
       }
@@ -43606,8 +43607,6 @@ Released under the MIT License
       Product.bind('create destroy update', this.proxy(this.renderSublists));
       Category.bind('change:selection', this.proxy(this.exposeSublistSelection));
       Category.bind('current', this.proxy(this.exposeSelection));
-      Product.bind('current', this.proxy(this.scrollTo));
-      Category.bind('current', this.proxy(this.scrollTo));
     }
 
     SidebarList.prototype.template = function() {
