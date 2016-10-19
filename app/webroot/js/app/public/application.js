@@ -42515,7 +42515,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.showProductMasters = function() {
-      return this.navigate('/categories', '');
+      return this.navigate('/category', '', '');
     };
 
     ShowView.prototype.showPhotoMasters = function() {
