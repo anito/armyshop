@@ -723,7 +723,7 @@ class ShowView extends Spine.Controller
     Product.inactive()
 
   showProductMasters: ->
-    @navigate '/category', '', ''
+    @navigate '/category', ''
     
   showPhotoMasters: ->
     @navigate '/category', '/'
