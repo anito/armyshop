@@ -104,7 +104,6 @@ class PhotosList extends Spine.Controller
     @el
   
   renderAll: ->
-    @log 'renderAll'
     items = Photo.all()
     if items.length
       @activateRecord()

@@ -64,7 +64,6 @@ class CategoriesList extends Spine.Controller
     @el
 
   render: (items, mode) ->
-    @log 'render'
     @html @template items
     @exposeSelection()
     $('.dropdown-toggle', @el).dropdown()

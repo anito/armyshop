@@ -71,7 +71,6 @@ class SlideshowView extends Spine.Controller
     @render()
     
   render: ->
-    @log 'render'
     items = @temp
     unless items.length
       @itemsEl.html '<label class="invite">

@@ -35883,7 +35883,11 @@ Released under the MIT License
           Root.updateSelection(params.gid || []);
           Category.updateSelection(params.aid || []);
           Product.updateSelection(params.pid || []);
-          return this.showView.trigger('active', this.showView.photoView, params.pid);
+          if (params.pid === 'products') {
+            return this.showView.trigger('active', this.showView.productsView);
+          } else {
+            return this.showView.trigger('active', this.showView.photoView, params.pid);
+          }
         },
         '/category/:gid/:aid': function(params) {
           Root.updateSelection(params.gid || []);
@@ -36433,7 +36437,6 @@ Released under the MIT License
     };
 
     CategoriesList.prototype.render = function(items, mode) {
-      this.log('render');
       this.html(this.template(items));
       this.exposeSelection();
       $('.dropdown-toggle', this.el).dropdown();
@@ -36789,11 +36792,11 @@ Released under the MIT License
       } else {
         if (!Category.count()) {
           this.content.html($("#noSelectionTemplate").tmpl({
-            type: '<label class="invite"><span class="enlightened">Director has no category yet &nbsp;<button class="opt-CreateCategory dark large">New Category</button></span></label>'
+            type: '<label class="invite"><span class="enlightened">Es gibt keine Kategorien &nbsp;<button class="opt-CreateCategory dark large">Neue Kategorie</button></span></label>'
           }));
         } else {
           this.content.html($("#noSelectionTemplate").tmpl({
-            type: '<label class="invite"><span class="enlightened">Select a category!</span></label>'
+            type: '<label class="invite"><span class="enlightened">Keine Kategorie ausgewählt</span></label>'
           }));
         }
       }
@@ -36921,7 +36924,6 @@ Released under the MIT License
     }
 
     FlickrView.prototype.render = function(items) {
-      this.log('render');
       if (items) {
         this.content.html(this.template(items));
       } else {
@@ -37546,7 +37548,6 @@ Released under the MIT License
     };
 
     MissingView.prototype.render = function(item) {
-      this.log('render');
       return this.html(this.template());
     };
 
@@ -37604,7 +37605,6 @@ Released under the MIT License
     }
 
     Modal2ButtonView.prototype.render = function() {
-      this.log('render');
       this.html(this.template(this.options));
       return this.el;
     };
@@ -37673,7 +37673,6 @@ Released under the MIT License
     }
 
     ModalActionView.prototype.render = function() {
-      this.log('render');
       this.html(this.template(this.options));
       return this.el;
     };
@@ -37751,7 +37750,6 @@ Released under the MIT License
       if (options == null) {
         options = this.options;
       }
-      this.log('render');
       this.html(this.template(options));
       this.refreshElements();
       return this;
@@ -38143,7 +38141,7 @@ Released under the MIT License
         this.content.html(this.template(this.current));
       } else {
         if (!(Product.selectionList().length && !Product.count())) {
-          info = '<label class="invite"><span class="enlightened">Kein Foto ausgewählt.</span></label>';
+          info = '<label class="invite"><span class="enlightened">Kein Foto ausgewählt</span></label>';
         }
         this.content.html($("#noSelectionTemplate").tmpl({
           type: info || ''
@@ -39078,7 +39076,6 @@ Released under the MIT License
 
     PhotosList.prototype.renderAll = function() {
       var items, sorted;
-      this.log('renderAll');
       items = Photo.all();
       if (items.length) {
         this.activateRecord();
@@ -40139,6 +40136,10 @@ Released under the MIT License
     ProductEditView.prototype.events = {
       'click .opt-EditorProduct': 'changeViewProduct',
       'click .opt-EditorDescription': 'changeViewDescription'
+    };
+
+    ProductEditView.prototype.template = function(item) {
+      return $('#editProductTemplate').tmpl(item);
     };
 
     ProductEditView.prototype.template = function(item) {
@@ -41806,7 +41807,7 @@ Released under the MIT License
       Spine.bind('products:copy', this.proxy(this.copyProducts));
       Spine.bind('photos:copy', this.proxy(this.copyPhotos));
       Spine.bind('product:ignore', this.proxy(this.ignoreProduct));
-      this.current = this.controller = this.categoriesView;
+      this.current = this.controller = this.productsView;
       this.sOutValue = 160;
       this.sliderRatio = 50;
       this.thumbSize = 240;
@@ -41860,6 +41861,9 @@ Released under the MIT License
 
     ShowView.prototype.changeCanvas = function(controller, args) {
       var _1, _2, c, i, len, ref, t;
+      if (this.current === this.previous) {
+        return;
+      }
       this.controllers = (function() {
         var i, len, ref, results;
         ref = this.canvasManager.controllers;
@@ -43857,7 +43861,7 @@ Released under the MIT License
           return this.navigate('/category', item.id);
         case 'Product':
           category = $(e.target).closest('li.gal').item();
-          return this.navigate('/category', category.id, item.id);
+          return this.navigate('/category', category.id, item.id, 'products');
       }
     };
 
@@ -44135,7 +44139,6 @@ Released under the MIT License
 
     SlideshowView.prototype.render = function() {
       var items;
-      this.log('render');
       items = this.temp;
       if (!items.length) {
         this.itemsEl.html('<label class="invite"> <span class="enlightened">This slideshow does not have any images &nbsp; <p>Note: Select one or more albums with images.</p> </span> <button class="back dark large"><i class="glyphicon glyphicon-chevron-up"></i><span>&nbsp;Back</span></button> </label>');

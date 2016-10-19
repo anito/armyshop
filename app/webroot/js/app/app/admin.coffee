@@ -195,7 +195,10 @@ class Main extends Spine.Controller
         Root.updateSelection params.gid or []
         Category.updateSelection params.aid or []
         Product.updateSelection params.pid or []
-        @showView.trigger('active', @showView.photoView, params.pid)
+        if params.pid is 'products'
+          @showView.trigger('active', @showView.productsView)
+        else
+          @showView.trigger('active', @showView.photoView, params.pid)
       '/category/:gid/:aid': (params) ->
         Root.updateSelection params.gid or []
         Category.updateSelection params.aid or []

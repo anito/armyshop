@@ -83,11 +83,11 @@
           <div class="view categories opt-SelectNone content vbox flex data parent autoflow" style="">
             <div class="items flex fadein in1">Categories</div>
           </div>
-          <div class="view cat-trigger-edit products opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
+          <div class="view products opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
             <div class="items flex fadein in1">Products</div>
           </div>
-          <div class="view pro-trigger-edit photos opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
+          <div class="view photos opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
             <div class="items flex fadein in1" data-toggle="modal-category" data-target="#modal-category" data-selector="a">Photos</div>
           </div>
@@ -108,9 +108,21 @@
               <div class="footer" style="">
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                   <section class="left">
-                    <button class="btn dark btn-label" disabled="">
+                    <button class="btn dark btn-label active" disabled="">
                         <i class="glyphicon glyphicon-tasks"></i>
                         <span>Kategorie - Editor</span>
+                    </button>
+                  </section>
+                  <section class="left">
+                      <button class="btn dark btn-label pro-trigger-edit">
+                        <i class="glyphicon glyphicon-tasks"></i>
+                        <span>Produkt - Editor</span>
+                      </button>
+                  </section>
+                  <section class="left">
+                    <button class="btn dark btn-label pho-trigger-edit">
+                      <i class="glyphicon glyphicon-tasks"></i>
+                      <span>Foto - Editor</span>
                     </button>
                   </section>
                   <section class="right">
@@ -121,15 +133,29 @@
                   </section>
                 </div>
               </div>
-              <div class="vbox flex autoflow views content" style=""></div>
+              <div class="vbox flex autoflow views" style="">
+                <table role="presentation" class="table content"></table>
+              </div>
             </div>
             <div id="al" class="view views flex vbox content" style="">
               <div class="footer" style="">
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                   <section class="left">
-                      <button class="btn dark btn-label" disabled="">
+                    <button class="btn dark btn-label cat-trigger-edit">
+                        <i class="glyphicon glyphicon-tasks"></i>
+                        <span>Kategorie - Editor</span>
+                    </button>
+                  </section>
+                  <section class="left">
+                      <button class="btn dark btn-label active" disabled="">
                         <i class="glyphicon glyphicon-tasks"></i>
                         <span>Produkt - Editor</span>
+                      </button>
+                  </section>
+                  <section class="left">
+                    <button class="btn dark btn-label pho-trigger-edit">
+                          <i class="glyphicon glyphicon-tasks"></i>
+                          <span>Foto - Editor</span>
                       </button>
                   </section>
                   <section class="right">
@@ -158,7 +184,19 @@
               <div class="footer" style="">
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                   <section class="left">
-                    <button class="btn dark btn-label" disabled="">
+                    <button class="btn dark btn-label cat-trigger-edit">
+                        <i class="glyphicon glyphicon-tasks"></i>
+                        <span>Kategorie - Editor</span>
+                    </button>
+                  </section>
+                  <section class="left">
+                      <button class="btn dark btn-label pro-trigger-edit">
+                        <i class="glyphicon glyphicon-tasks"></i>
+                        <span>Produkt - Editor</span>
+                      </button>
+                  </section>
+                  <section class="left">
+                    <button class="btn dark btn-label active" disabled="">
                           <i class="glyphicon glyphicon-tasks"></i>
                           <span>Foto - Editor</span>
                       </button>
@@ -171,7 +209,9 @@
                   </section>
                 </div>
               </div>
-              <div class="vbox flex autoflow content" style=""></div>
+              <div class="vbox flex autoflow" style="">
+                <table role="presentation" class="table content"></table>
+              </div>
             </div>
             <div id="fu" class="view hbox flex bg-dark" style="margin: 0px">
               <!-- The file upload form used as target for the file upload widget -->
@@ -421,7 +461,7 @@
 </script>
 
 <script id="sidebarTemplate" type="text/x-jquery-tmpl">
-  <li data-id="${id}" class="gal item data parent pro-trigger-edit">
+  <li data-id="${id}" class="gal item data parent">
     <div class="item-header">
       <div class="expander"></div>
       {{tmpl "#sidebarContentTemplate"}}
@@ -433,7 +473,7 @@
 <script id="sidebarContentTemplate" type="text/x-jquery-tmpl">
   <div class="item-content">
     <span class="name">{{if screenname}}${$().name(screenname, 20)}{{else}}${$().name(name, 20)}{{/if}}</span>
-    <span class="gal cta alb-trigger-edit">{{tmpl($item.data.details()) "#categoryDetailsTemplate"}}</span>
+    <span class="gal cta">{{tmpl($item.data.details()) "#categoryDetailsTemplate"}}</span>
   </div>
 </script>
 
@@ -443,7 +483,7 @@
     <span class="author">${flash}</span>
   </li>
   {{else}}
-  <li data-id="${id}" class="sublist-item alb pro-trigger-edit item data {{if ignored}}ignored{{/if}}" title="${title}">
+  <li data-id="${id}" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
     <span class="glyphicon glyphicon-{{if details().iCount}}picture{{else}}camera{{/if}}"></span>
     <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}}"></span>
     <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
@@ -481,7 +521,7 @@
 </script>
 
 <script id="categoriesTemplate" type="text/x-jquery-tmpl">
-  <li id="${id}" data-id="${id}" class="item container data fade in cat-trigger-edit" data-drag-over="thumbnail">
+  <li id="${id}" data-id="${id}" class="item container data fade in" data-drag-over="thumbnail">
     <div class="thumbnail">
       <div class="inner">
         {{tmpl($item.data.details()) "#galDetailsTemplate"}}
@@ -580,7 +620,7 @@
 </script>
 
 <script id="productsTemplate" type="text/x-jquery-tmpl">
-  <li id="${id}" data-id="${id}" data-drag-over="" class="data item fade in pro-trigger-edit {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
+  <li id="${id}" data-id="${id}" data-drag-over="" class="data item fade in {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
     <div class="thumbnail"></div>
     {{if Category.record}}
     <div class="glyphicon-set left" style="">
@@ -732,10 +772,10 @@
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
       </li>
-      <li class="gal cat-trigger-edit">
+      <li class="gal">
         <a href="#">categories</a>
       </li>
-      <li class="alb active pro-trigger-edit">Products</li>
+      <li class="alb active">Products</li>
     </span>
   </section>
 </script>
@@ -792,10 +832,10 @@
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
       </li>
-      <li class="gal cat-trigger-edit">
+      <li class="gal">
         <a href="#">categories</a>
       </li>
-      <li class="alb pro-trigger-edit">
+      <li class="alb">
         <a href="#">Products</a>
       </li>
       <li class="pho active">Photos</li>
@@ -810,13 +850,13 @@
       <li style="padding: 0px 19px;" class="opt-Prev">
         <div style="" class="go-up"></div>
       </li>
-      <li class="gal cat-trigger-edit">
+      <li class="gal">
         <a href="#">categories</a>
       </li>
-      <li class="alb pro-trigger-edit">
+      <li class="alb">
         <a href="#">Products</a>
       </li>
-      <li class="pho pho-trigger-edit">
+      <li class="pho">
         <a href="#">Photos</a>
       </li>
       <li class="active">{{if photo.src}}${photo.src}{{else}}deleted{{/if}}</li>
@@ -899,7 +939,7 @@
 </script>
 
 <script id="photosTemplate" type="text/x-jquery-tmpl">
-  <li  id="${id}" data-id="${id}" class="item data fade in pho-trigger-edit" draggable="true">
+  <li  id="${id}" data-id="${id}" class="item data fade in" draggable="true">
     {{tmpl "#photosThumbnailTemplate"}}
     <div class="center order hide" style="color: aliceblue">{{if order}}${order}{{else}}0{{/if}}</div>
   </li>
@@ -912,13 +952,13 @@
 </script>
 
 <script id="photoTemplate" type="text/x-jquery-tmpl">
-  <li data-id="${id}" class="item pho-trigger-edit noborder">
+  <li data-id="${id}" class="item noborder">
     {{tmpl "#photoThumbnailTemplate"}}
   </li>
 </script>
 
 <script id="photosThumbnailTemplate" type="text/x-jquery-tmpl">
-  <div class="pho-trigger-edit thumbnail image left fadeslow"></div>
+  <div class="thumbnail image left fadeslow"></div>
   <div class="glyphicon-set right fade out" style="">
     <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
     <span class="left">

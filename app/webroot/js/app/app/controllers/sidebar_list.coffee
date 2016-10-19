@@ -205,7 +205,7 @@ class SidebarList extends Spine.Controller
 #        @closeAllOtherSublists item
       when 'Product'
         category = $(e.target).closest('li.gal').item()
-        @navigate '/category', category.id, item.id
+        @navigate '/category', category.id, item.id, 'products'
     
   clickExpander: (e) ->
     el = $(e.target).closest('li.gal')

@@ -26,6 +26,9 @@ class ProductEditView extends Spine.Controller
     
   template: (item) ->
     $('#editProductTemplate').tmpl item
+    
+  template: (item) ->
+    $('#editProductTemplate').tmpl item
 
   constructor: ->
     super

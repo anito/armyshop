@@ -39,7 +39,6 @@ class ModalSimpleView extends Spine.Controller
     @render()
   
   render: (options = @options) ->
-    @log 'render'
     @html @template options
     @refreshElements()
     @

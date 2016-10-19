@@ -26,7 +26,6 @@ class Modal2ButtonView extends Spine.Controller
       footer  : 'Default Footer Text'
     
   render: ->
-    @log 'render'
     @html @template @options
     @el
       

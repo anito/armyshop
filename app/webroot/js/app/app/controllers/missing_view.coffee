@@ -18,7 +18,6 @@ class MissingView extends Spine.Controller
     @render()
 
   render: (item) ->
-    @log 'render'
     @html @template()
     
   relocate: (e) ->

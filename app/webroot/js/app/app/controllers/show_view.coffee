@@ -220,7 +220,7 @@ class ShowView extends Spine.Controller
     Spine.bind('photos:copy', @proxy @copyPhotos)
     Spine.bind('product:ignore', @proxy @ignoreProduct)
     
-    @current = @controller = @categoriesView
+    @current = @controller = @productsView
     
     @sOutValue = 160 # initial thumb size (slider setting)
     @sliderRatio = 50
@@ -265,6 +265,7 @@ class ShowView extends Spine.Controller
       
     
   changeCanvas: (controller, args) ->
+    return if @current is @previous
     @controllers = (c for c in @canvasManager.controllers when c isnt controller)
     $('.items', @el).removeClass('in3') for c in @controllers
     #remove global selection if we've left from Product Library
@@ -302,7 +303,6 @@ class ShowView extends Spine.Controller
     , 500)
     
   resetSelection: (controller) ->
-#    Category.updateSelection(null)
     
   changeHeader: (controller) ->
     

@@ -58,7 +58,6 @@ class FlickrView extends Spine.Controller
     @bind('flickr:inter', @proxy @interestingness)
       
   render: (items) ->
-    @log 'render'
     if items
       @content.html @template items
     else
