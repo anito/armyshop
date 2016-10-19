@@ -183,6 +183,9 @@ Model.Extender =
       trace: !Spine.isProduction
       logPrefix: @className + '::'
       
+      isInvalid: ->
+        !@isValid()
+      
       selectionList: ->
         @constructor.selectionList(@id)
       

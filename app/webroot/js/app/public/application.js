@@ -36683,6 +36683,9 @@ Released under the MIT License
     };
 
     CategoriesView.prototype.beforeDestroy = function(item) {
+      if (!item.isValid()) {
+        return;
+      }
       return this.list.findModelElement(item).detach();
     };
 
@@ -42512,7 +42515,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.showProductMasters = function() {
-      return this.navigate('/category', '');
+      return this.navigate('/categories', '');
     };
 
     ShowView.prototype.showPhotoMasters = function() {
@@ -42552,7 +42555,7 @@ Released under the MIT License
       if (Category.record) {
         this.navigate('/category', Category.record.id);
       } else {
-        this.navigate('/category', '');
+        this.navigate('/categories', '');
       }
       return e.preventDefault();
     };
@@ -43349,7 +43352,7 @@ Released under the MIT License
       return category.save(options);
     };
 
-    Sidebar.prototype.error = function(err) {
+    Sidebar.prototype.error = function(item, err) {
       return alert(err);
     };
 
@@ -43362,7 +43365,9 @@ Released under the MIT License
       if (!(category = Category.find(id))) {
         return;
       }
-      return category.destroy();
+      if (category.isValid()) {
+        return category.destroy();
+      }
     };
 
     Sidebar.prototype.edit = function() {
@@ -47139,6 +47144,9 @@ Released under the MIT License
       Include = {
         trace: !Spine.isProduction,
         logPrefix: this.className + '::',
+        isInvalid: function() {
+          return !this.isValid();
+        },
         selectionList: function() {
           return this.constructor.selectionList(this.id);
         },
@@ -49736,7 +49744,7 @@ Released under the MIT License
         return results;
       }).call(this)).length;
       if (!valid) {
-        return 'Can\'t delete protected Category';
+        return 'Geschützte Kategorie!';
       }
       return false;
     };
@@ -51207,19 +51215,8 @@ Released under the MIT License
             icon: 'trash',
             klass: 'opt-DestroyCategory',
             disabled: function() {
-              var c, ret;
-              return ret = !Category.record || ((function() {
-                var i, len1, ref, results;
-                ref = Category["protected"];
-                results = [];
-                for (i = 0, len1 = ref.length; i < len1; i++) {
-                  c = ref[i];
-                  if (c === Category.record.name) {
-                    results.push(c);
-                  }
-                }
-                return results;
-              })()).length;
+              var base, ret;
+              return ret = !(typeof (base = Category.record).isValid === "function" ? base.isValid() : void 0);
             },
             shortcut: '<-'
           }
@@ -51271,7 +51268,7 @@ Released under the MIT License
           }, {
             name: function() {
               var a, b;
-              a = 'Sichtbarkeit Ein/Aus';
+              a = 'Veröffentlichen Ein/Aus';
               b = ' (' + Category.selectionList().length + ')';
               if (Category.record) {
                 return a + b;

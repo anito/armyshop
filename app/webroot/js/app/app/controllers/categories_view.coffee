@@ -83,6 +83,7 @@ class CategoriesView extends Spine.Controller
     Product.updateSelection(Product.selectionList())
     
   beforeDestroy: (item) ->
+    return unless item.isValid()
     @list.findModelElement(item).detach()
 
   destroy: (item) ->

@@ -528,7 +528,7 @@
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
           <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#"><i class="tooltips glyphicon glyphicon-folder-close"></i>Öffnen</a></li>
           <li class="divider"></li>
-          <li role="presentation" class="delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>Löschen</a></li>
+          <li role="presentation" class="delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#" class="{{if isInvalid()}}disabled{{/if}}"><i class="glyphicon glyphicon glyphicon-trash"></i>Löschen</a></li>
         </ul>
       </span>
     </div>

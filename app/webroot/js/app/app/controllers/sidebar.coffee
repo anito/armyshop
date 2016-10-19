@@ -137,7 +137,7 @@ class Sidebar extends Spine.Controller
     category.one('ajaxSuccess', @proxy cb)
     category.save(options)
     
-  error: (err) ->
+  error: (item, err) ->
     alert err
     
   createProduct: ->
@@ -145,7 +145,7 @@ class Sidebar extends Spine.Controller
     
   destroyCategory: (id) ->
     return unless category = Category.find id
-    category.destroy()
+    category.destroy() if category.isValid()
 
   edit: ->
     App.categoryEditView.render()

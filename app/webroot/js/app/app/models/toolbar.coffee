@@ -76,7 +76,7 @@ class Toolbar extends Spine.Model
           icon: 'trash'
           klass: 'opt-DestroyCategory'
           disabled: ->
-            ret = !Category.record or (c for c in Category.protected when c is Category.record.name ).length
+            ret = !Category.record.isValid?() #or (c for c in Category.protected when c is Category.record.name ).length
           shortcut: '<-'
         ]
     group2:
@@ -116,7 +116,7 @@ class Toolbar extends Spine.Model
           devider: true
         ,
           name: ->
-            a = 'Sichtbarkeit Ein/Aus'
+            a = 'Veröffentlichen Ein/Aus'
             b = ' (' + Category.selectionList().length + ')'
             if Category.record
               return a + b

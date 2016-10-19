@@ -723,7 +723,7 @@ class ShowView extends Spine.Controller
     Product.inactive()
 
   showProductMasters: ->
-    @navigate '/category', ''
+    @navigate '/categories', ''
     
   showPhotoMasters: ->
     @navigate '/category', '/'
@@ -755,7 +755,7 @@ class ShowView extends Spine.Controller
     if Category.record
       @navigate '/category', Category.record.id
     else
-      @navigate '/category', ''
+      @navigate '/categories', ''
       
     e.preventDefault()
       

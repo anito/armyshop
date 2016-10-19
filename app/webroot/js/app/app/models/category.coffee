@@ -118,7 +118,7 @@ class Category extends Spine.Model
     
   validate: ->
     valid = !(c for c in Category.protected when c is @name ).length
-    return 'Can\'t delete protected Category' unless valid
+    return 'Geschützte Kategorie!' unless valid
     false
     
   activePhotos: ->
