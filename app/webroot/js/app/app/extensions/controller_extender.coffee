@@ -12,6 +12,7 @@ Controller.Extender =
         @log 'empty'
         @constructor.apply @, arguments
         
+        
     Include = 
     
       init: ->
@@ -29,6 +30,14 @@ Controller.Extender =
         img.onload = onload if onload
         img.src = url if url
         img
+        
+      eql: (recordOrID) ->
+        id = recordOrID?.id or recordOrID
+        rec = Category.record
+        prev = @current
+        @current = rec
+        same = !!(@current?.eql?(prev) and !!prev)
+        same
   
       activated: ->
   

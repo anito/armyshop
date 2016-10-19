@@ -241,7 +241,7 @@ class ShowView extends Spine.Controller
     Model.Settings.bind('refresh', @proxy @refreshSettings)
     
   active: (controller, params) ->
-    # preactivate controller
+    # activate controller
     if controller
       controller.trigger('active', params)
       controller.header?.trigger('active')
@@ -315,6 +315,7 @@ class ShowView extends Spine.Controller
       model: controller.el.data('current').model
       models: controller.el.data('current').models
     )
+#    return if (@previous is @current) and !@current.isActive()
     # the controller should already be active, however rendering hasn't taken place yet
     controller.trigger 'active'
     controller.header.trigger 'active'
@@ -599,7 +600,7 @@ class ShowView extends Spine.Controller
     @animateView(open: val)
     
   animateView: (options) ->
-    min = 20
+    min = 25
     
     options = $().extend {open: false}, options
     speed = if options.close or options.open then 600 else 400

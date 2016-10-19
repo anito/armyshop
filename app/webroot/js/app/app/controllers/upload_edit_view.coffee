@@ -2,6 +2,7 @@ Spine     = require("spine")
 $         = Spine.$
 Product     = require("models/product")
 Settings  = require("models/settings")
+PhotoEditView = require("controllers/photo_edit_view")
 
 class UploadEditView extends Spine.Controller
 
@@ -9,6 +10,8 @@ class UploadEditView extends Spine.Controller
     '.delete:not(.files .delete)' : 'clearEl'
     '.files'                      : 'filesEl'
     '.uploadinfo'                 : 'uploadinfoEl'
+    '#ph'                         : 'photoEl'
+    '.editor'                     : 'editorEl'
 
   events:
     'fileuploaddone'              : 'done'
@@ -22,6 +25,8 @@ class UploadEditView extends Spine.Controller
     'fileuploadprogress'          : 'progress'
     'fileuploaddestroyed'         : 'destroyed'
     
+    'click .opt-editor'           : 'toggleEditor'
+    
   template: (item) ->
     $('#template-upload').tmpl item
     
@@ -31,6 +36,11 @@ class UploadEditView extends Spine.Controller
     Product.bind('change:current', @proxy @changeDataLink)
     @data = fileslist: [link: false]
     @queue = []
+    
+    @editor = new PhotoEditView
+      el: @photoEl
+      
+    @editor.change()
     
   changeDataLink: (product) ->
     @data.link = product?.id
@@ -114,5 +124,16 @@ class UploadEditView extends Spine.Controller
     product = Product.find(product.id)
     if @data.fileslist.length
       $.extend @data, link: Product.record?.id
+      
+      
+   #  ############ Editor #############
+   
+  toggleEditor: ->
+    @editor.content.toggleClass('up', !@isHidden())
+    
+  isHidden: ->
+    console.log @editor.content
+    console.log @editor.content.hasClass('up')
+    @editor.content.hasClass('up')
         
 module?.exports = UploadEditView

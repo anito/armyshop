@@ -54,11 +54,16 @@ class ProductsView extends Spine.Controller
     super
 #    @trace = false
     @bind('active', @proxy @active)
-    @el.data('current',
-      model: Category
-      models: Product
-    )
+    
     @type = 'Product'
+    @parentType = 'Category'
+    
+    @current = Model[@parentType].record
+    
+    @el.data('current',
+      model: Model[@parentType]
+      models: Model[@type]
+    )
     @info = new Info
       el: @infoEl
       template: @infoTemplate
@@ -137,6 +142,9 @@ class ProductsView extends Spine.Controller
       
   active: ->
     return unless @isActive()
+    return if @eql Category.record
+#    return if @eql Category.record
+    @current.id = Category.record?.id
     App.showView.trigger('change:toolbarOne', ['Default', 'Help'])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
     

@@ -161,7 +161,7 @@ class Sidebar extends Spine.Controller
         max+"px"
       else
         @clb = App.vmanager.goSleep
-        '8px'
+        '15px'
     
     w = width()
     speed = 500

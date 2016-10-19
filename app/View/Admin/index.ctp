@@ -109,20 +109,20 @@
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                   <section class="left">
                     <button class="btn dark btn-label active" disabled="">
-                        <i class="glyphicon glyphicon-tasks"></i>
-                        <span>Kategorie - Editor</span>
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        <span>Kategorie</span>
                     </button>
                   </section>
                   <section class="left">
                       <button class="btn dark btn-label pro-trigger-edit">
-                        <i class="glyphicon glyphicon-tasks"></i>
-                        <span>Produkt - Editor</span>
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        <span>Produkt</span>
                       </button>
                   </section>
                   <section class="left">
                     <button class="btn dark btn-label pho-trigger-edit">
-                      <i class="glyphicon glyphicon-tasks"></i>
-                      <span>Foto - Editor</span>
+                      <i class="glyphicon glyphicon-pencil"></i>
+                      <span>Foto</span>
                     </button>
                   </section>
                   <section class="right">
@@ -142,29 +142,29 @@
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                   <section class="left">
                     <button class="btn dark btn-label cat-trigger-edit">
-                        <i class="glyphicon glyphicon-tasks"></i>
-                        <span>Kategorie - Editor</span>
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        <span>Kategorie</span>
                     </button>
                   </section>
                   <section class="left">
-                      <button class="btn dark btn-label active" disabled="">
-                        <i class="glyphicon glyphicon-tasks"></i>
-                        <span>Produkt - Editor</span>
+                      <button class="btn dark btn-label  active" disabled="">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        <span>Produkt</span>
                       </button>
                   </section>
                   <section class="left">
                     <button class="btn dark btn-label pho-trigger-edit">
-                          <i class="glyphicon glyphicon-tasks"></i>
-                          <span>Foto - Editor</span>
+                          <i class="glyphicon glyphicon-pencil"></i>
+                          <span>Foto</span>
                       </button>
                   </section>
                   <section class="right">
                       <button type="submit" class="dark opt-EditorProduct">
-                          <i class="glyphicon glyphicon-tasks"></i>
+                          <i class="glyphicon glyphicon-pencil"></i>
                           <span>Details</span>
                       </button>
                       <button type="submit" class="dark opt-EditorDescription">
-                          <i class="glyphicon glyphicon-tasks"></i>
+                          <i class="glyphicon glyphicon-pencil"></i>
                           <span>Beschreibungen</span>
                       </button>
                       <button type="submit" class="dark opt-CreateProduct">
@@ -180,39 +180,6 @@
                 <table role="presentation" class="table noproduct view"></table>
               </div>
             </div>
-            <div id="ph" class="view flex autoflow" style="">
-              <div class="footer" style="">
-                <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
-                  <section class="left">
-                    <button class="btn dark btn-label cat-trigger-edit">
-                        <i class="glyphicon glyphicon-tasks"></i>
-                        <span>Kategorie - Editor</span>
-                    </button>
-                  </section>
-                  <section class="left">
-                      <button class="btn dark btn-label pro-trigger-edit">
-                        <i class="glyphicon glyphicon-tasks"></i>
-                        <span>Produkt - Editor</span>
-                      </button>
-                  </section>
-                  <section class="left">
-                    <button class="btn dark btn-label active" disabled="">
-                          <i class="glyphicon glyphicon-tasks"></i>
-                          <span>Foto - Editor</span>
-                      </button>
-                  </section>
-                  <section class="right">
-                    <button class="btn dark opt-UploadDialogue">
-                          <i class="glyphicon glyphicon-plus"></i>
-                          <span>Fotos</span>
-                    </button>
-                  </section>
-                </div>
-              </div>
-              <div class="vbox flex autoflow" style="">
-                <table role="presentation" class="table content"></table>
-              </div>
-            </div>
             <div id="fu" class="view hbox flex bg-dark" style="margin: 0px">
               <!-- The file upload form used as target for the file upload widget -->
               <form id="fileupload" class="vbox flex" action="uploads/image" method="POST" enctype="multipart/form-data">
@@ -223,25 +190,49 @@
                     <!-- The table listing the files available for upload/download -->
                     <div class="footer fileupload-buttonbar" style="">
                       <div class="span6 left" style="margin: 10px; white-space: nowrap; overflow: hidden;">
+                        <section class="left">
+                          <button class="btn dark btn-label cat-trigger-edit">
+                              <i class="glyphicon glyphicon-pencil"></i>
+                              <span>Kategorie</span>
+                          </button>
+                        </section>
+                        <section class="left">
+                            <button class="btn dark btn-label pro-trigger-edit">
+                              <i class="glyphicon glyphicon-pencil"></i>
+                              <span>Produkt</span>
+                            </button>
+                        </section>
+                        <section class="left">
+                          <button class="btn dark btn-label active" disabled="">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                                <span>Foto</span>
+                            </button>
+                        </section>
+                      </div>
+                      <div class="span6 right" style="margin: 10px; white-space: nowrap; overflow: hidden;">
+                            <button type="submit" class="dark start">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <span>Start Upload</span>
+                            </button>
+                            <button type="reset" class="dark cancel">
+                                <i class="glyphicon glyphicon-ban-circle"></i>
+                                <span>abbrechen</span>
+                            </button>
+                            <button type="button" class="dark delete">
+                                <i class="glyphicon glyphicon-remove"></i>
+                                <span>Liste leeren</span>
+                            </button>
+                            <button type="submit" class="dark start opt-editor">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                                <span>Fotottitel</span>
+                            </button>
+                            <!-- The loading indicator is shown during file processing -->
                             <!-- The fileinput-button span is used to style the file input field as button -->
-                            <span class="btn dark fileinput-button">
+                            <span class="right btn dark fileinput-button" style="margin-left: 4px;">
                                 <i class="glyphicon glyphicon-plus"></i>
                                 <span>Fotos</span>
                                 <input type="file" name="files[]" multiple>
                             </span>
-                            <button type="submit" class="dark start">
-                                <i class="glyphicon glyphicon-upload"></i>
-                                <span>Start upload</span>
-                            </button>
-                            <button type="reset" class="dark cancel">
-                                <i class="glyphicon glyphicon-ban-circle"></i>
-                                <span>Cancel upload</span>
-                            </button>
-                            <button type="button" class="dark delete">
-                                <i class="glyphicon glyphicon-remove"></i>
-                                <span>Clear List</span>
-                            </button>
-                            <!-- The loading indicator is shown during file processing -->
                             <span class="fileupload-loading"></span>
                         </div>
                         <!-- The global progress information -->
@@ -251,6 +242,9 @@
                                 <div class="progress-bar" style="width:0%;"></div>
                             </div>
                         </div>
+                    </div>
+                    <div id="ph" class="autoflow" style="">
+                      <table role="presentation" class="editor table content" style=""></table>
                     </div>
                     <div class="vbox flex autoflow" style="">
                       <table role="presentation" class="table"><tbody class="files"></tbody></table>

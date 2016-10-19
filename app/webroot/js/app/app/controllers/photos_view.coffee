@@ -48,11 +48,17 @@ class PhotosView extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
-    @el.data('current',
-      model: Product
-      models: Photo
-    )
+    
     @type = 'Photo'
+    @parentType = 'Product'
+    
+    @current = Model[@parentType].record
+    
+    @el.data('current',
+      model: Model[@parentType]
+      models: Model[@type]
+    )
+    
     @info = new Info
       el: @infoEl
       template: @infoTemplate
@@ -107,6 +113,7 @@ class PhotosView extends Spine.Controller
   
   active: (params) ->
     return unless @isActive()
+    return if @eql Product.record
     if params
       @options = $().unparam(params)
       if @options.slideshow

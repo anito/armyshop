@@ -486,33 +486,34 @@ textarea {
   width: 100%;
 }*/
 .vdivide {
-  width: 8px;
+  width: 15px;
   border: 1px solid #666666;
   border-width: 0 1px 0 1px;
   border-right-color: rgba(0, 0, 0, 0.3);
   background: #494949;
-  background: url(/img/draghandle.png), -webkit-gradient(linear, left top, right top, from($dark-from-gradient), to($dark-to-gradient));
-  background: url(/img/draghandle.png), -webkit-linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
-  background: url(/img/draghandle.png), -moz-linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
-  background: url(/img/draghandle.png), linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
+  background: url(/img/draghandle_v.png), -webkit-gradient(linear, left top, right top, from($dark-from-gradient), to($dark-to-gradient));
+  background: url(/img/draghandle_v.png), -webkit-linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
+  background: url(/img/draghandle_v.png), -moz-linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
+  background: url(/img/draghandle_v.png), linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
   background-repeat: no-repeat;
   background-position: center;
   box-sizing:border-box;
-  cursor: w-resize
+  cursor: w-resize;
 }
 .hdivide {
-  height: 18px;
+  height: 15px;
   border: 1px solid #666666;
   border-width: 1px 0 1px 0;
   border-bottom-color: rgba(0, 0, 0, 0.7);
   background: #494949;
-  background: url(/img/draghandle.png), -webkit-gradient(linear, left top, left bottom, from($dark-from-gradient), to($dark-to-gradient));
-  background: url(/img/draghandle.png), -webkit-linear-gradient(top $dark-from-gradient, $dark-to-gradient);
-  background: url(/img/draghandle.png), -moz-linear-gradient(top, $dark-from-gradient, $dark-to-gradient);
-  background: url(/img/draghandle.png), linear-gradient(top, $dark-from-gradient, $dark-to-gradient);
+  background: url(/img/draghandle_h.png), -webkit-gradient(linear, left top, left bottom, from($dark-from-gradient), to($dark-to-gradient));
+  background: url(/img/draghandle_h.png), -webkit-linear-gradient(top $dark-from-gradient, $dark-to-gradient);
+  background: url(/img/draghandle_h.png), -moz-linear-gradient(top, $dark-from-gradient, $dark-to-gradient);
+  background: url(/img/draghandle_h.png), linear-gradient(top, $dark-from-gradient, $dark-to-gradient);
   background-repeat: no-repeat;
   background-position: center;
   box-sizing:border-box;
+  font-size: 1em;
   cursor: n-resize
 }
 #title {
@@ -1453,8 +1454,8 @@ button.active.dark {
 .dark.btn.btn-label {
   color: #868686;
   opacity: inherit;
-  font-size: 1.5em;
-  padding: 6px 8px;
+  font-size: 1.2em;
+  padding: 8px;
   margin: 0 4px;
 }
 button.chromeless, button.chromeless:hover {
@@ -1652,6 +1653,15 @@ section.addAction {
   border-color: transparent !important;
 /*  color: inherit !important;*/
 /*  text-shadow: inherit !important;*/
+}
+.editor {
+  position: relative;
+  top: 0px;
+  transition: top 0.3s;
+}
+.editor.up {
+  top: -45px;
+  transition: top 0.3s;
 }
 .data.items:not(.nopad), li.data {
   border: 5px solid transparent;

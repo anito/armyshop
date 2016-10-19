@@ -28,7 +28,6 @@ class ModalActionView extends Spine.Controller
     $('.nav-tabs').button()
     
   render: ->
-    
     @html @template @options
     @el
       

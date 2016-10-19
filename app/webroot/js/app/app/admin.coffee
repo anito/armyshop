@@ -20,7 +20,6 @@ ModalActionView         = require("controllers/modal_action_view")
 ToolbarView             = require("controllers/toolbar_view")
 LoginView               = require("controllers/login_view")
 ProductEditView         = require("controllers/product_edit_view")
-PhotoEditView           = require("controllers/photo_edit_view")
 UploadEditView          = require("controllers/upload_edit_view")
 CategoryEditView        = require("controllers/category_edit_view")
 OverviewView            = require('controllers/overview_view')
@@ -53,7 +52,6 @@ class Main extends Spine.Controller
     '#missing'            : 'missingEl'
     '#ga'                 : 'categoryEl'
     '#al'                 : 'productEl'
-    '#ph'                 : 'photoEl'
     '#fu'                 : 'uploadEl'
     '#loader'             : 'loaderEl'
     '#login'              : 'loginEl'
@@ -114,9 +112,6 @@ class Main extends Spine.Controller
     @product = new ProductEditView
       el: @productEl
       externalClass: '.optProduct'
-    @photo = new PhotoEditView
-      el: @photoEl
-      externalClass: '.optPhoto'
     @upload = new UploadEditView
       el: @uploadEl
       externalClass: '.optUpload'
@@ -148,13 +143,13 @@ class Main extends Spine.Controller
       sleep: true
       disabled: false
       axis: 'x'
-      min: -> 8
+      min: -> 20
       tol: -> 50
       max: => @el.width()/2
       goSleep: => @sidebar.inner.hide()
       awake: => @sidebar.inner.show()
 
-    @hmanager = new Spine.Manager(@category, @product, @photo, @upload)
+    @hmanager = new Spine.Manager(@category, @product, @upload)
     @hmanager.external = @showView.toolbarOne
     @hmanager.initDrag @hDrag,
       initSize: => @el.height()*0.4
@@ -192,12 +187,13 @@ class Main extends Spine.Controller
     @routes
       
       '/category/:gid/:aid/:pid': (params) ->
-        Root.updateSelection params.gid or []
-        Category.updateSelection params.aid or []
-        Product.updateSelection params.pid or []
-        if params.pid is 'products'
+        Model.Root.updateSelection params.gid or []
+        if (params.aid is 'product') and (pid = params.pid)
+          Category.updateSelection pid
           @showView.trigger('active', @showView.productsView)
         else
+          Category.updateSelection params.aid or []
+          Product.updateSelection params.pid or []
           @showView.trigger('active', @showView.photoView, params.pid)
       '/category/:gid/:aid': (params) ->
         Root.updateSelection params.gid or []
@@ -353,8 +349,9 @@ class Main extends Spine.Controller
     else if /\bpro-trigger*/.test(test)
       @product.trigger('active')
     else if /\bpho-trigger*/.test(test)
-      @photo.trigger('active')
+      @upload.trigger('active')
     e.stopPropagation()
+    e.preventDefault()
       
   getData: (s, arr=[]) ->
     test = (s, a) -> 

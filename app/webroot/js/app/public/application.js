@@ -35625,7 +35625,7 @@ Released under the MIT License
 
 //# sourceMappingURL=list.js.map
 }, "admin": function(exports, require, module) {(function() {
-  var $, Category, CategoryEditView, Clipboard, Config, Drag, Extender, LoaderView, LoginView, Main, MainView, MissingView, ModalActionView, ModalSimpleView, OverviewView, PhotoEditView, PreviewView, Product, ProductEditView, Root, Settings, ShowView, Sidebar, Spine, SpineDragItem, SpineError, Toolbar, ToolbarView, UploadEditView, User,
+  var $, Category, CategoryEditView, Clipboard, Config, Drag, Extender, LoaderView, LoginView, Main, MainView, MissingView, ModalActionView, ModalSimpleView, OverviewView, PreviewView, Product, ProductEditView, Root, Settings, ShowView, Sidebar, Spine, SpineDragItem, SpineError, Toolbar, ToolbarView, UploadEditView, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -35673,8 +35673,6 @@ Released under the MIT License
 
   ProductEditView = require("controllers/product_edit_view");
 
-  PhotoEditView = require("controllers/photo_edit_view");
-
   UploadEditView = require("controllers/upload_edit_view");
 
   CategoryEditView = require("controllers/category_edit_view");
@@ -35713,7 +35711,6 @@ Released under the MIT License
       '#missing': 'missingEl',
       '#ga': 'categoryEl',
       '#al': 'productEl',
-      '#ph': 'photoEl',
       '#fu': 'uploadEl',
       '#loader': 'loaderEl',
       '#login': 'loginEl',
@@ -35765,10 +35762,6 @@ Released under the MIT License
         el: this.productEl,
         externalClass: '.optProduct'
       });
-      this.photo = new PhotoEditView({
-        el: this.photoEl,
-        externalClass: '.optPhoto'
-      });
       this.upload = new UploadEditView({
         el: this.uploadEl,
         externalClass: '.optUpload'
@@ -35812,7 +35805,7 @@ Released under the MIT License
         disabled: false,
         axis: 'x',
         min: function() {
-          return 8;
+          return 20;
         },
         tol: function() {
           return 50;
@@ -35833,7 +35826,7 @@ Released under the MIT License
           };
         })(this)
       });
-      this.hmanager = new Spine.Manager(this.category, this.product, this.photo, this.upload);
+      this.hmanager = new Spine.Manager(this.category, this.product, this.upload);
       this.hmanager.external = this.showView.toolbarOne;
       this.hmanager.initDrag(this.hDrag, {
         initSize: (function(_this) {
@@ -35880,12 +35873,14 @@ Released under the MIT License
       this.initializeFileupload();
       this.routes({
         '/category/:gid/:aid/:pid': function(params) {
-          Root.updateSelection(params.gid || []);
-          Category.updateSelection(params.aid || []);
-          Product.updateSelection(params.pid || []);
-          if (params.pid === 'products') {
+          var pid;
+          Model.Root.updateSelection(params.gid || []);
+          if ((params.aid === 'product') && (pid = params.pid)) {
+            Category.updateSelection(pid);
             return this.showView.trigger('active', this.showView.productsView);
           } else {
+            Category.updateSelection(params.aid || []);
+            Product.updateSelection(params.pid || []);
             return this.showView.trigger('active', this.showView.photoView, params.pid);
           }
         },
@@ -36114,9 +36109,10 @@ Released under the MIT License
       } else if (/\bpro-trigger*/.test(test)) {
         this.product.trigger('active');
       } else if (/\bpho-trigger*/.test(test)) {
-        this.photo.trigger('active');
+        this.upload.trigger('active');
       }
-      return e.stopPropagation();
+      e.stopPropagation();
+      return e.preventDefault();
     };
 
     Main.prototype.getData = function(s, arr) {
@@ -38122,13 +38118,10 @@ Released under the MIT License
     function PhotoEditView() {
       this.saveOnKeyup = bind(this.saveOnKeyup, this);
       PhotoEditView.__super__.constructor.apply(this, arguments);
+      this.current = false;
       this.bind('active', this.proxy(this.active));
       Photo.bind('current', this.proxy(this.change));
     }
-
-    PhotoEditView.prototype.active = function() {
-      return this.render();
-    };
 
     PhotoEditView.prototype.change = function(item) {
       this.current = item;
@@ -39544,11 +39537,13 @@ Released under the MIT License
       this.stopInfo = bind(this.stopInfo, this);
       PhotosView.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
-      this.el.data('current', {
-        model: Product,
-        models: Photo
-      });
       this.type = 'Photo';
+      this.parentType = 'Product';
+      this.current = Model[this.parentType].record;
+      this.el.data('current', {
+        model: Model[this.parentType],
+        models: Model[this.type]
+      });
       this.info = new Info({
         el: this.infoEl,
         template: this.infoTemplate
@@ -39614,6 +39609,9 @@ Released under the MIT License
 
     PhotosView.prototype.active = function(params) {
       if (!this.isActive()) {
+        return;
+      }
+      if (this.eql(Product.record)) {
         return;
       }
       if (params) {
@@ -41032,11 +41030,13 @@ Released under the MIT License
       this.infoUp = bind(this.infoUp, this);
       ProductsView.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
-      this.el.data('current', {
-        model: Category,
-        models: Product
-      });
       this.type = 'Product';
+      this.parentType = 'Category';
+      this.current = Model[this.parentType].record;
+      this.el.data('current', {
+        model: Model[this.parentType],
+        models: Model[this.type]
+      });
       this.info = new Info({
         el: this.infoEl,
         template: this.infoTemplate
@@ -41120,10 +41120,14 @@ Released under the MIT License
     };
 
     ProductsView.prototype.active = function() {
-      var alb, j, len, products;
+      var alb, j, len, products, ref;
       if (!this.isActive()) {
         return;
       }
+      if (this.eql(Category.record)) {
+        return;
+      }
+      this.current.id = (ref = Category.record) != null ? ref.id : void 0;
       App.showView.trigger('change:toolbarOne', ['Default', 'Help']);
       App.showView.trigger('change:toolbarTwo', ['Speichern']);
       products = CategoriesProduct.products(Category.record.id);
@@ -42336,7 +42340,7 @@ Released under the MIT License
 
     ShowView.prototype.animateView = function(options) {
       var height, isOpen, min, speed;
-      min = 20;
+      min = 25;
       options = $().extend({
         open: false
       }, options);
@@ -43379,7 +43383,7 @@ Released under the MIT License
             return max + "px";
           } else {
             _this.clb = App.vmanager.goSleep;
-            return '8px';
+            return '15px';
           }
         };
       })(this);
@@ -43861,7 +43865,7 @@ Released under the MIT License
           return this.navigate('/category', item.id);
         case 'Product':
           category = $(e.target).closest('li.gal').item();
-          return this.navigate('/category', category.id, item.id, 'products');
+          return this.navigate('/category', category.id, 'product', item.id);
       }
     };
 
@@ -44823,7 +44827,7 @@ Released under the MIT License
 
 }).call(this);
 }, "controllers/upload_edit_view": function(exports, require, module) {(function() {
-  var $, Product, Settings, Spine, UploadEditView,
+  var $, PhotoEditView, Product, Settings, Spine, UploadEditView,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -44835,13 +44839,17 @@ Released under the MIT License
 
   Settings = require("models/settings");
 
+  PhotoEditView = require("controllers/photo_edit_view");
+
   UploadEditView = (function(superClass) {
     extend(UploadEditView, superClass);
 
     UploadEditView.prototype.elements = {
       '.delete:not(.files .delete)': 'clearEl',
       '.files': 'filesEl',
-      '.uploadinfo': 'uploadinfoEl'
+      '.uploadinfo': 'uploadinfoEl',
+      '#ph': 'photoEl',
+      '.editor': 'editorEl'
     };
 
     UploadEditView.prototype.events = {
@@ -44852,7 +44860,8 @@ Released under the MIT License
       'fileuploadsend': 'send',
       'fileuploadprogressall': 'alldone',
       'fileuploadprogress': 'progress',
-      'fileuploaddestroyed': 'destroyed'
+      'fileuploaddestroyed': 'destroyed',
+      'click .opt-editor': 'toggleEditor'
     };
 
     UploadEditView.prototype.template = function(item) {
@@ -44871,6 +44880,10 @@ Released under the MIT License
         ]
       };
       this.queue = [];
+      this.editor = new PhotoEditView({
+        el: this.photoEl
+      });
+      this.editor.change();
     }
 
     UploadEditView.prototype.changeDataLink = function(product) {
@@ -44982,6 +44995,16 @@ Released under the MIT License
           link: (ref = Product.record) != null ? ref.id : void 0
         });
       }
+    };
+
+    UploadEditView.prototype.toggleEditor = function() {
+      return this.editor.content.toggleClass('up', !this.isHidden());
+    };
+
+    UploadEditView.prototype.isHidden = function() {
+      console.log(this.editor.content);
+      console.log(this.editor.content.hasClass('up'));
+      return this.editor.content.hasClass('up');
     };
 
     return UploadEditView;
@@ -45415,6 +45438,15 @@ Released under the MIT License
             img.src = url;
           }
           return img;
+        },
+        eql: function(recordOrID) {
+          var id, prev, rec, ref, same;
+          id = (recordOrID != null ? recordOrID.id : void 0) || recordOrID;
+          rec = Category.record;
+          prev = this.current;
+          this.current = rec;
+          same = !!(((ref = this.current) != null ? typeof ref.eql === "function" ? ref.eql(prev) : void 0 : void 0) && !!prev);
+          return same;
         },
         activated: function() {},
         focusFirstInput: function(el) {
