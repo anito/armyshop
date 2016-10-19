@@ -10,31 +10,31 @@
           </header>
           <div class="dialogue-inner-wrap">
             <div class="drag-handle">
-                <h1>Login </h1>
-                <h4 class="flash">Enter Username and Password</h4>
+              <h4 class="flash">HA-Lehmann Admin</h4>
+              <span class="h2" style="line-height: 4rem;">Login</span>
               <div class="clearfix"></div>
             </div>
             <div class="dialogue-scroll">
               <fieldset>
                 <div class="left">
-                  <label>User</label>
+                  <label>Benutzer</label>
                   <?php echo $this->Form->input('username', array('label' => false, 'div' => false, 'autofocus' => 'autofocus')); ?>
                 </div>
                 <div class="left">
-                  <label>Password</label>
+                  <label>Passwort</label>
                   <?php echo $this->Form->input('password', array('label' => false, 'div' => false)); ?>
                 </div>
               </fieldset>
             </div>
           </div>
           <footer>
-            <span class="info"><label>no messages</label></span
+            <span class="info"><label>keine Statusmeldungen</label></span
             <span>
               <fieldset>
                 <?php echo $this->Form->hidden('redirect', array('value' => $redirect)); ?>
-                <?php echo $this->Form->button('Guest Login', array('type'=>'button', 'class' => array('light', 'hide', 'guest'), 'id' => 'guestLogin')); ?>
-                <?php echo $this->Form->button('Cancel', array('type'=>'submit', 'class' => 'light', 'id' => 'cancel')); ?>
-                <?php echo $this->Form->button('<i class="glyphicon glyphicon-log-in"></i><span>  Submit</span>', array('type'=>'submit', 'class' => 'light', 'label' => array(
+                <?php echo $this->Form->button('Gast Anmeldung', array('type'=>'button', 'class' => array('light', 'hide', 'guest'), 'id' => 'guestLogin')); ?>
+                <?php echo $this->Form->button('Abbrechen', array('type'=>'submit', 'class' => 'light', 'id' => 'cancel')); ?>
+                <?php echo $this->Form->button('<i class="glyphicon glyphicon-log-in"></i><span>  Login</span>', array('type'=>'submit', 'class' => 'light', 'label' => array(
                  TRUE
                 ))); ?>
               </fieldset>
