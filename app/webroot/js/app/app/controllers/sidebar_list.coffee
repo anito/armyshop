@@ -45,6 +45,7 @@ class SidebarList extends Spine.Controller
     Category.bind('current', @proxy @exposeSelection)
 #    Product.bind('current', @proxy @scrollTo)
 #    Category.bind('current', @proxy @scrollTo)
+    Spine.bind('scroll', @proxy @scrollTo)
     
   template: -> arguments[0]
   
@@ -260,26 +261,27 @@ class SidebarList extends Spine.Controller
     e.preventDefault()
     
   scrollTo: (item) ->
-    return unless item and Category.record
+    return unless item # and Category.record
     el = @children().forItem(Category.record)
     clsName = item.constructor.className
     switch clsName
       when 'Category'
-        queued = true
+        return
+        queued = false
         ul = $('ul', el)
         # messuring categoryEl w/o sublist
         ul.hide()
         el_ = el[0]
         ohc = el_.offsetHeight if el_
         ul.show()
-        speed = 300
+        speed = 10
       when 'Product'
         queued = false
         ul = $('ul', el)
         el = $('li', ul).forItem(item)
         el_ = el[0]
         ohc = el_.offsetHeight if el_
-        speed = 700
+        speed = 200
       
     return unless el.length
       

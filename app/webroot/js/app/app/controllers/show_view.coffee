@@ -200,11 +200,6 @@ class ShowView extends Spine.Controller
     @bind('change:toolbarTwo', @proxy @changeToolbarTwo)
     @bind('activate:editview', @proxy @activateEditView)
     
-#    @bind('drag:start', @proxy @dragStart)
-#    @bind('drag:enter', @proxy @dragEnter)
-#    @bind('drag:end', @proxy @dragEnd)
-#    @bind('drag:drop', @proxy @dragDrop)
-    
     @toolbarOne.bind('refresh', @proxy @refreshToolbar)
     
     @bind('awake', @proxy @awake)
@@ -224,7 +219,6 @@ class ShowView extends Spine.Controller
     Spine.bind('products:copy', @proxy @copyProducts)
     Spine.bind('photos:copy', @proxy @copyPhotos)
     Spine.bind('product:ignore', @proxy @ignoreProduct)
-#    Spine.bind('deselect', @proxy @deselect)
     
     @current = @controller = @categoriesView
     
@@ -239,9 +233,9 @@ class ShowView extends Spine.Controller
     @headerManager.bind('change', @proxy @changeHeader)
     @trigger('change:toolbarOne')
     
-    Category.bind('change:current', @proxy @scrollTo)
-    Product.bind('change:current', @proxy @scrollTo)
-    Photo.bind('change:current', @proxy @scrollTo)
+    Category.bind('current', @proxy @scrollTo)
+    Product.bind('current', @proxy @scrollTo)
+    Photo.bind('current', @proxy @scrollTo)
     
     Model.Settings.bind('change', @proxy @changeSettings)
     Model.Settings.bind('refresh', @proxy @refreshSettings)
@@ -1101,7 +1095,7 @@ class ShowView extends Spine.Controller
       list.parent.select e, [id]
         
   scrollTo: (item) ->
-    App.sidebar.list.scrollTo item
+    Spine.trigger('scroll', item)
     return unless @controller.isActive() and item
     return unless item.constructor.className is @controller.el.data('current').models.className
     parentEl = @controller.el

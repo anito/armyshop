@@ -243,14 +243,10 @@ class Main extends Spine.Controller
     valid = user.sessionid is json.sessionid
     valid = user.id is json.id and valid
     unless valid
-      console.log user.sessionid
-      console.log json.sessionid
-      console.log user.id
-      console.log json.id
       User.logout()
     else
       @loadUserSettings(user.id)
-      @delay @setupView, 1000
+      @delay @setupView, 500
   
   changeBackground: (cat) ->
     

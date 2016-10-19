@@ -35953,14 +35953,10 @@ Released under the MIT License
       valid = user.sessionid === json.sessionid;
       valid = user.id === json.id && valid;
       if (!valid) {
-        console.log(user.sessionid);
-        console.log(json.sessionid);
-        console.log(user.id);
-        console.log(json.id);
         return User.logout();
       } else {
         this.loadUserSettings(user.id);
-        return this.delay(this.setupView, 1000);
+        return this.delay(this.setupView, 500);
       }
     };
 
@@ -41819,9 +41815,9 @@ Released under the MIT License
       this.canvasManager.bind('change', this.proxy(this.changeCanvas));
       this.headerManager.bind('change', this.proxy(this.changeHeader));
       this.trigger('change:toolbarOne');
-      Category.bind('change:current', this.proxy(this.scrollTo));
-      Product.bind('change:current', this.proxy(this.scrollTo));
-      Photo.bind('change:current', this.proxy(this.scrollTo));
+      Category.bind('current', this.proxy(this.scrollTo));
+      Product.bind('current', this.proxy(this.scrollTo));
+      Photo.bind('current', this.proxy(this.scrollTo));
       Model.Settings.bind('change', this.proxy(this.changeSettings));
       Model.Settings.bind('refresh', this.proxy(this.refreshSettings));
     }
@@ -42969,7 +42965,7 @@ Released under the MIT License
 
     ShowView.prototype.scrollTo = function(item) {
       var e, el, error, marginBottom, marginTop, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, parentEl, res, resMax, resMin, stp;
-      App.sidebar.list.scrollTo(item);
+      Spine.trigger('scroll', item);
       if (!(this.controller.isActive() && item)) {
         return;
       }
@@ -43607,6 +43603,7 @@ Released under the MIT License
       Product.bind('create destroy update', this.proxy(this.renderSublists));
       Category.bind('change:selection', this.proxy(this.exposeSublistSelection));
       Category.bind('current', this.proxy(this.exposeSelection));
+      Spine.bind('scroll', this.proxy(this.scrollTo));
     }
 
     SidebarList.prototype.template = function() {
@@ -43943,14 +43940,15 @@ Released under the MIT License
 
     SidebarList.prototype.scrollTo = function(item) {
       var clsName, el, el_, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, queued, res, resMax, resMin, speed, stp, ul;
-      if (!(item && Category.record)) {
+      if (!item) {
         return;
       }
       el = this.children().forItem(Category.record);
       clsName = item.constructor.className;
       switch (clsName) {
         case 'Category':
-          queued = true;
+          return;
+          queued = false;
           ul = $('ul', el);
           ul.hide();
           el_ = el[0];
@@ -43958,7 +43956,7 @@ Released under the MIT License
             ohc = el_.offsetHeight;
           }
           ul.show();
-          speed = 300;
+          speed = 10;
           break;
         case 'Product':
           queued = false;
@@ -43968,7 +43966,7 @@ Released under the MIT License
           if (el_) {
             ohc = el_.offsetHeight;
           }
-          speed = 700;
+          speed = 200;
       }
       if (!el.length) {
         return;
