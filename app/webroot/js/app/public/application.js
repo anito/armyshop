@@ -40685,7 +40685,7 @@ Released under the MIT License
           if (Product.count()) {
             this.html('<label class="invite"><span class="enlightened">Keine Produkte in dieser Kategorie. &nbsp;</span><br><br> <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>Neues Produkt erstellen</span></button> <button class="opt-AddProducts dark large"><i class="glyphicon glyphicon-book"></i><span>Katalog</span></button> </label>');
           } else {
-            this.html('<label class="invite"><span class="enlightened">Keine Produkte in dieser Kategorie</span><br><br> <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>Neues Produkt erstellen</span></button> </label>');
+            this.html('<label class="invite"><span class="enlightened bootom">Keine Produkte in dieser Kategorie</span><br><br> <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>Neues Produkt erstellen</span></button> </label>');
           }
         } else {
           this.html('<label class="invite"><span class="enlightened">Keine Produkte im Katalog vorhanden</span><br><br> <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>Neues Produkt erstellen</span></button> </label>');

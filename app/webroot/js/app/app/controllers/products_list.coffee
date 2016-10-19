@@ -88,7 +88,7 @@ class ProductsList extends Spine.Controller
           <button class="opt-AddProducts dark large"><i class="glyphicon glyphicon-book"></i><span>Katalog</span></button>
           </label>'
         else
-          @html '<label class="invite"><span class="enlightened">Keine Produkte in dieser Kategorie</span><br><br>
+          @html '<label class="invite"><span class="enlightened bootom">Keine Produkte in dieser Kategorie</span><br><br>
           <button class="opt-CreateProduct dark large"><i class="glyphicon glyphicon-asterisk"></i><span>Neues Produkt erstellen</span></button>
           </label>'
       else

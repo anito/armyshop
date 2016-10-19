@@ -422,9 +422,27 @@ label input[type="text"] {
   text-shadow: 0 1px 0 rgba(200, 200, 200, 0.8);
   font-weight: normal;
 }
+.views {
+  position: relative;
+}
+.top {
+  top: 0;
+}
+.bottom {
+  bottom: 0;
+}
 .view .enlightened {
-  color: rgba(126, 126, 123, 1);
-  text-shadow: 0 -1px 0 rgba(0,0,0,0.8);
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: #cccccc;
+  text-shadow: none;
+  color: #000;
+  float: left;
+  padding: 3px 16px;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5em;
 }
 .view label span {
   cursor: auto;
@@ -436,7 +454,7 @@ label input[type="text"] {
 .view .viewheader .header-title {
   line-height: 2em;
 }
-button:disabled {
+button:disabled:not(.btn-label) {
   cursor: auto;
   opacity: 0.3;
 }
@@ -1451,12 +1469,9 @@ button.active.dark {
   color: #eeeeee;
   border: 1px solid #888888;
 }
-.dark.btn.btn-label {
-  color: #868686;
-  opacity: inherit;
-  font-size: 1.2em;
-  padding: 8px;
-  margin: 0 4px;
+.dark.btn-label {
+  margin: 02px;
+  font-size: 1.3rem;
 }
 button.chromeless, button.chromeless:hover {
   background: -moz-linear-gradient(center center , #999999, #222222) repeat scroll 2px 0 transparent;

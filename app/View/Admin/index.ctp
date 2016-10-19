@@ -104,23 +104,23 @@
             <div class="hdivide draghandle">
               <span class="opt opt-CloseDraghandle glyphicon glyphicon-resize-vertical glyphicon glyphicon-white right" style="cursor: pointer;"></span>
             </div>
-            <div id="ga" class="view flex" style="">
+            <div id="ga" class="view flex bg-dark" style="">
               <div class="footer" style="">
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                   <section class="left">
-                    <button class="btn dark btn-label active" disabled="">
+                    <button class="dark btn-label active" disabled="">
                         <i class="glyphicon glyphicon-pencil"></i>
                         <span>Kategorie</span>
                     </button>
                   </section>
                   <section class="left">
-                      <button class="btn dark btn-label pro-trigger-edit">
+                      <button class="dark btn-label pro-trigger-edit">
                         <i class="glyphicon glyphicon-pencil"></i>
                         <span>Produkt</span>
                       </button>
                   </section>
                   <section class="left">
-                    <button class="btn dark btn-label pho-trigger-edit">
+                    <button class="dark btn-label pho-trigger-edit">
                       <i class="glyphicon glyphicon-pencil"></i>
                       <span>Foto</span>
                     </button>
@@ -137,23 +137,23 @@
                 <table role="presentation" class="table content"></table>
               </div>
             </div>
-            <div id="al" class="view views flex vbox content" style="">
+            <div id="al" class="view views flex vbox  bg-dark content" style="">
               <div class="footer" style="">
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                   <section class="left">
-                    <button class="btn dark btn-label cat-trigger-edit">
+                    <button class="dark btn-label cat-trigger-edit">
                         <i class="glyphicon glyphicon-pencil"></i>
                         <span>Kategorie</span>
                     </button>
                   </section>
                   <section class="left">
-                      <button class="btn dark btn-label  active" disabled="">
+                      <button class="dark  btn-label active" disabled="">
                         <i class="glyphicon glyphicon-pencil"></i>
                         <span>Produkt</span>
                       </button>
                   </section>
                   <section class="left">
-                    <button class="btn dark btn-label pho-trigger-edit">
+                    <button class="dark btn-label pho-trigger-edit">
                           <i class="glyphicon glyphicon-pencil"></i>
                           <span>Foto</span>
                       </button>
@@ -191,19 +191,19 @@
                     <div class="footer fileupload-buttonbar" style="">
                       <div class="span6 left" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                         <section class="left">
-                          <button class="btn dark btn-label cat-trigger-edit">
+                          <button class="dark btn-label cat-trigger-edit">
                               <i class="glyphicon glyphicon-pencil"></i>
                               <span>Kategorie</span>
                           </button>
                         </section>
                         <section class="left">
-                            <button class="btn dark btn-label pro-trigger-edit">
+                            <button class="dark btn-label pro-trigger-edit">
                               <i class="glyphicon glyphicon-pencil"></i>
                               <span>Produkt</span>
                             </button>
                         </section>
                         <section class="left">
-                          <button class="btn dark btn-label active" disabled="">
+                          <button class="dark btn-label active" disabled="">
                                 <i class="glyphicon glyphicon-pencil"></i>
                                 <span>Foto</span>
                             </button>
