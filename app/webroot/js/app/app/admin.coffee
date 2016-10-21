@@ -86,7 +86,7 @@ class Main extends Spine.Controller
     @IMAGE_SINGLE_MOVE = @createImage('/img/cursor_images_1.png')
     @IMAGE_DOUBLE_MOVE = @createImage('/img/cursor_images_3.png')
     
-    @ignoredHashes = ['slideshow', 'overview', 'preview', 'flickr', 'logout']
+    @ignoredHashes = ['slideshow', 'preview', 'flickr', 'logout']
     @arr = ['false', 'outdoor', 'defense', 'goodies']
     
     User.bind('pinger', @proxy @validate)
@@ -206,25 +206,24 @@ class Main extends Spine.Controller
         Product.updateSelection()
         @showView.trigger('active', @showView.productsView)
       '/categories/*': ->
+        Root.updateSelection []
         @showView.trigger('active', @showView.categoriesView)
       '/overview/*': ->
         @overviewView.trigger('active')
       '/wait/*glob': (params) ->
         @showView.trigger('active', @showView.waitView)
       '/*glob': (params) ->
-        @missingView.trigger('active')
+        @navigate '/overview', ''
 
+    @loadToolbars()
     @defaultSettings =
       welcomeScreen: false,
       test: true
-    
-    @loadToolbars()
-    @initLocation()
-    
+      
   initLocation: ->
-    settings = Settings.loadSettings()
-    if hash = settings?.hash then hash else '/admin'
-    location.hash
+    settings = Model.Settings.loadSettings()
+    if hash = settings.hash then hash else '/admin'
+    @navigate hash
     
   storeHash: ->
     return unless settings = Settings.loadSettings()
@@ -245,6 +244,7 @@ class Main extends Spine.Controller
       User.logout()
     else
       @loadUserSettings(user.id)
+      @initLocation()
       @delay @setupView, 500
   
   changeBackground: (cat) ->
@@ -276,14 +276,10 @@ class Main extends Spine.Controller
         previousHash: '#'
         
   refreshSettings: (records) ->
-    if hash = location.hash
-      @navigate hash
-    else if settings = Settings.loadSettings()
-      @navigate settings.hash
-      
+#    if settings = Settings.loadSettings()
+#      @navigate settings.hash
     
   changeSettings: (rec) ->
-    @navigate rec.hash
     
   setupView: ->
     @log 'setup View'
@@ -294,9 +290,10 @@ class Main extends Spine.Controller
       
   finalizeView: ->
     @loginView.render()
-    @mainView.el.fadeIn(500, @proxy @showIt)
+    @mainView.el.fadeIn(500, @proxy @startPage)
       
-  showIt: ->
+  startPage: ->
+    return
     unless /^#\/category\//.test(location.hash)
       @navigate '/category', Category.first()?.id
       

@@ -21,7 +21,6 @@ ProductsAddView     = require('controllers/products_add_view')
 PhotosAddView       = require('controllers/photos_add_view')
 CategoriesView      = require('controllers/categories_view')
 CategoriesHeader    = require('controllers/categories_header')
-SlideshowView       = require('controllers/slideshow_view')
 ModalSimpleView     = require("controllers/modal_simple_view")
 Extender            = require('extensions/controller_extender')
 Drag                = require('extensions/drag')
@@ -57,7 +56,6 @@ class ShowView extends Spine.Controller
     '.content.photos'         : 'photosEl'
     '.content.photo'          : 'photoEl'
     '.content.wait'           : 'waitEl'
-    '#slideshow'              : 'slideshowEl'
     '#modal-action'           : 'modalActionEl'
     '#modal-addProduct'       : 'modalAddProductEl'
     '#modal-addPhoto'         : 'modalAddPhotoEl'
@@ -100,6 +98,8 @@ class ShowView extends Spine.Controller
     'click .opt-Photo:not(.disabled)'                 : 'togglePhotoShow'
     'click .opt-Upload:not(.disabled)'                : 'toggleUploadShow'
     'click .opt-UploadDialogue:not(.disabled)'        : 'uploadDialogue'
+    'click .opt-ShowOverview:not(.disabled)'          : 'showOverview'
+    'click .opt-ShowCategories:not(.disabled)'        : 'showCategories'
     'click .opt-ShowAllProducts:not(.disabled)'       : 'showProductMasters'
     'click .opt-AddProducts:not(.disabled)'           : 'showProductMastersAdd'
     'click .opt-ShowAllPhotos:not(.disabled)'         : 'showPhotoMasters'
@@ -205,6 +205,8 @@ class ShowView extends Spine.Controller
     @bind('awake', @proxy @awake)
     @bind('sleep', @proxy @sleep)
     
+    Category.bind('change:current', @proxy @toggleClassAll)
+    Product.bind('change:current', @proxy @toggleClassAll)
     Category.bind('change', @proxy @changeToolbarOne)
     Category.bind('change:selection', @proxy @refreshToolbars)
     Product.bind('change:selection', @proxy @refreshToolbars)
@@ -267,39 +269,14 @@ class ShowView extends Spine.Controller
   changeCanvas: (controller, args) ->
     return if @current is @previous
     @controllers = (c for c in @canvasManager.controllers when c isnt controller)
-    $('.items', @el).removeClass('in3') for c in @controllers
-    #remove global selection if we've left from Product Library
-#    if @previous?.type is "Product" and !Category.record
-#      @resetSelection()
-        
-    t = switch controller.type
-      when "Category"
-        true
-      when "Product"
-        unless Category.record
-          true
-        else false
-      when "Photo"
-        unless Product.record
-          true
-        else false
-      else false
-        
-        
-    _1 = =>
-      if t
-        @contents.addClass('all')
-      else
-        @contents.removeClass('all')
-      _2()
-        
-    _2 = =>
+    $('.items', @el).removeClass('in1') for c in @controllers
+    
+    fadein = =>
       viewport = controller.viewport or controller.el
-      viewport.addClass('in3')
-      
+      viewport.addClass('in1')
       
     window.setTimeout( =>
-      _1()
+      fadein()
     , 500)
     
   resetSelection: (controller) ->
@@ -512,7 +489,7 @@ class ShowView extends Spine.Controller
     e.preventDefault()
 
   togglePhotoShow: (e) ->
-    @trigger('activate:editview', 'photo', e.target)
+    @trigger('activate:editview', 'upload', e.target)
     @refreshToolbars()
     e.preventDefault()
 
@@ -710,6 +687,11 @@ class ShowView extends Spine.Controller
     Spine.trigger('slider:change', newVal)
     newVal
     
+  toggleClassAll: (record, classname) ->
+    el = $('[data-model-name='+classname+']',  @el)
+    b = !Model[classname].record
+    el.toggleClass('all', b)
+    
   toggleVisible: (e, list = Category.selectionList()) ->
     for id in list
       ga =  CategoriesProduct.categoryProductExists id, Category.record?.id
@@ -727,6 +709,12 @@ class ShowView extends Spine.Controller
     
   showPhotoMasters: ->
     @navigate '/category', '/'
+    
+  showCategories: ->
+    @navigate '/categories', ''
+    
+  showOverview: ->
+    @navigate '/overview', ''
     
   showProductMastersAdd: (e) ->
     e.preventDefault()
@@ -987,8 +975,6 @@ class ShowView extends Spine.Controller
     
     dialog.render().show()
     
-  noSlideShow: (e) ->
-    @log 'noslideshow'
     dialog = new ModalSimpleView
       options:
         small: false

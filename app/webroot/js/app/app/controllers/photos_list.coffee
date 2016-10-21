@@ -60,7 +60,7 @@ class PhotosList extends Spine.Controller
         @size(App.showView.sOutValue)
         @el.sortable('destroy').sortable('photo')
         $('.dropdown-toggle', @el).dropdown()
-        @callDeferred [item]
+        @callDeferred [item], @uriSettings(300, 300), @callback
 #        @updateTemplate item
         
       when 'destroy'
@@ -80,11 +80,11 @@ class PhotosList extends Spine.Controller
       @wipe()
       sorted = items.sort Product.sortByReverseOrder
       @[mode] @template sorted
+      #resize thumbnails to the correct values
       @size(App.showView.sOutValue)
       @exposeSelection()
       $('.dropdown-toggle', @el).dropdown()
-      
-      @callDeferred sorted
+      @callDeferred sorted, @uriSettings(300,300), @callback
       
     else if mode is 'add'
       @html '<h3 class="invite"><span class="enlightened">Es können keine Fotos hinzugefügt werden.</span></h3>'
@@ -107,11 +107,11 @@ class PhotosList extends Spine.Controller
     items = Photo.all()
     if items.length
       @activateRecord()
-      sorted = Product.sortByReverseOrder items
       @html @template sorted
-      @size(App.showView.sOutValue)
       @el.sortable('destroy').sortable('photo')
-      @callDeferred  sorted
+      @size(App.showView.sOutValue)
+      sorted = Product.sortByReverseOrder items
+      @callDeferred  sorted, @uriSettings(300,300), @proxy @callback
     @el
   
   wipe: ->
@@ -145,33 +145,6 @@ class PhotosList extends Spine.Controller
     @el.sortable('destroy').sortable('photos')
     tmplItem
   
-  thumbSize: (width, height) ->
-    width: width or App.showView.thumbSize
-    height: height or App.showView.thumbSize
-  
-  # the actual final rendering method
-  uri: (items, mode) ->
-    @log 'uri'
-    
-    Photo.uri @thumbSize(),
-      (xhr, record) => @callback(xhr, items),
-      items
-  
-  callDeferred: (items) ->
-    @log 'callDeferred'
-    $.when(@uriDeferred(items)).done (xhr, rec) =>
-      @callback xhr, rec
-  
-  uriDeferred: (items) ->
-    @log 'uriDeferred'
-    deferred = $.Deferred()
-    
-    Photo.uri @thumbSize(),
-      (xhr, record) => deferred.resolve(xhr, items)
-      items
-      
-    deferred.promise()
-  
   callback: (json, items) =>
     result = for jsn in json
       ret = for key, val of jsn
@@ -183,7 +156,6 @@ class PhotosList extends Spine.Controller
       @snap(res)
         
   snap: (res) ->
-    @log 'snap'
     el = $('#'+res.id, @el)
     thumb = $('.thumbnail', el)
     img = @createImage()
@@ -204,8 +176,8 @@ class PhotosList extends Spine.Controller
     @thumb.addClass('in')
     
   onError: (e) ->
-    @me.log 'could not load image, trying again'
-    @onload = @me.snap @res
+    console.log 'could not load image, trying again'
+    @onload = null#@me.snap @res
     @onerror = null
     
   photos: (mode) ->
@@ -216,41 +188,6 @@ class PhotosList extends Spine.Controller
     else if Product.record
       Product.record.photos()
     
-  #  ****** START SLIDESHOW SPECIFICS *****
-  
-  modalParams: ->
-    width: 600
-    height: 451
-    force: false
-    
-  loadModal: (items, mode='html') ->
-    Photo.uri @modalParams(),
-      (xhr, record) => @callbackModal(xhr, items),
-      @photos()
-  
-  callbackModal: (json, items) ->
-    @log 'callbackModal'
-    searchJSON = (id) ->
-      for itm in json
-        return itm[id] if itm[id]
-        
-    for item in items
-      jsn = searchJSON item.id
-      if jsn
-        el = @children().forItem(item)
-        a = $('<a></a>').attr
-          'data-href'             : jsn.src
-          'title'                 : item.title or item.src
-          'data-iso'              : item.iso or ''
-          'data-captured'         : item.captured or ''
-          'data-photo'      : item.photo or ''
-          'data-model'            : item.model or ''
-          'rel'                   : 'category'
-        $('.play', el).append a
-        
-    
-  #  ****** END ***** 
-  
   exposeSelection: (selection = Product.selectionList()) ->
     @deselect()
     for id in selection
@@ -289,15 +226,8 @@ class PhotosList extends Spine.Controller
     e.preventDefault()
     
   zoom: (e) ->
-    if Product.record?.nope# never get here
-      index = @thumbEl.index($(e.target).parents('li').find('.thumbnail'))
-      options =
-        index         : index
-        startSlideshow: false
-      @slideshow.trigger('play', options)
-    else
-      item = $(e.currentTarget).item()
-      @navigate '/category', Category.record?.id or '', Product.record?.id or '', item.id
+    item = $(e.currentTarget).item()
+    @navigate '/category', Category.record?.id or '', Product.record?.id or '', item.id
     
     e.stopPropagation()
     e.preventDefault()
@@ -359,7 +289,7 @@ class PhotosList extends Spine.Controller
         products.add alb.id for alb in albs
         photo
       
-      @callDeferred res
+      @callDeferred res, @uriSettings(300,300), @proxy @callback
       products = Product.toRecords(products)
       Product.trigger('change:collection', products)
       Photo.trigger('develop', items)

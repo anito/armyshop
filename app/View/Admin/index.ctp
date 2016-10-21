@@ -33,10 +33,10 @@
         </div>
         <ul id="preview" class="splitter autoflow noborder">
             <li class="preview parent flex">
-              <div class="item-header">
+              <div class="item-header opt-preview">
                 <div class="expander"></div>
                   <div class="item-content">
-                    <span class="opt-preview">Preview</span>
+                    <span class="">Preview</span>
                   </div>
               </div>
               <ul class="sublist" style="">
@@ -66,17 +66,17 @@
         <div id="modal-action" class="modal fade"></div>
         <div id="modal-addProduct" class="modal fade"></div>
         <div id="modal-addPhoto" class="modal fade"></div>
-        <ul class="options hbox">
+        <ul class="options hbox toolbar">
           <nav class="toolbarOne hbox nav"></nav>
           <li class="splitter disabled flex"></li>
           <nav class="toolbarTwo hbox nav"></nav>
         </ul>
         <div class="contents views vbox flex deselector" style="height: 0;">
           <div class="header views vbox">
-            <div class="categories view vbox"></div>
-            <div class="products view vbox"></div>
-            <div class="photos view vbox"></div>
-            <div class="photo view vbox"></div>
+            <div data-model-name="" class="categories  view vbox all"></div>
+            <div data-model-name="Category" class="products view vbox"></div>
+            <div data-model-name="Product" class="photos view vbox"></div>
+            <div data-model-name="" class="photo view vbox"></div>
             <div class="overview view"></div>
           </div>
           <div class="view wait content vbox flex autoflow" style=""></div>
@@ -255,35 +255,7 @@
           </div>
         </div>
       </div>
-      <div tabindex="1" id="overview" class="view content vbox flex data parent fade" style="position: relative;">
-        <div class="carousel-background flex" style="z-index: 0;">
-<!--          The data-ride="carousel" attribute is used to mark a carousel as animating starting at page load.-->
-<!--          We can't use it here, since it must be triggered via the controller-->
-          <div id="overview-carousel" class="carousel slide" data-ride="" data-interval="2000">
-            
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-              <li data-target="#overview-carousel" data-slide-to="0"></li>
-              <li data-target="#overview-carousel" data-slide-to="1"></li>
-            </ol>
-            <div class="carousel-inner"></div>
-            <!-- Controls -->
-            <a class="left carousel-control" href="#overview-carousel" data-slide="prev">
-              <span class="glyphicon glyphicon-chevron-left"></span>
-            </a>
-            <a class="right carousel-control" href="#overview-carousel" data-slide="next">
-              <span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
-          </div>
-          <div class="xxl" style="color: rgba(156, 156, 156, 0.99); top: 260px;">
-            Übersicht
-            <div style="font-size: 0.3em; color: rgba(156, 156, 156, 0.59); line-height: 30px;">hit space (play/pause) or arrow keys (navigate)</div>
-          </div>
-        </div>
-        
-      </div>
-      
-      
+      <div tabindex="1" id="overview" class="view bg-dark content vbox flex data parent fade" style="position: relative;"></div>
     </div>
   </div>
 </div>
@@ -455,7 +427,7 @@
 </script>
 
 <script id="sidebarTemplate" type="text/x-jquery-tmpl">
-  <li data-id="${id}" class="gal item data parent">
+  <li data-id="${id}" class="gal item data parent {{if protected}}protected{{/if}}">
     <div class="item-header">
       <div class="expander"></div>
       {{tmpl "#sidebarContentTemplate"}}
@@ -473,13 +445,13 @@
 
 <script id="productsSublistTemplate" type="text/x-jquery-tmpl">
   {{if flash}}
-  <li data-id="${id}" class="sublist-item" title="${flash}">
+  <li class="sublist-item disabled" title="${flash}" >
     <span class="author">${flash}</span>
   </li>
   {{else}}
   <li data-id="${id}" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
     <span class="glyphicon glyphicon-{{if details().iCount}}picture{{else}}camera{{/if}}"></span>
-    <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}}"></span>
+    <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}} opt-ignored"></span>
     <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
     <span class="cta">€ {{if price}}${price}{{else}}0{{/if}}</span>
   </li>
@@ -515,7 +487,7 @@
 </script>
 
 <script id="categoriesTemplate" type="text/x-jquery-tmpl">
-  <li id="${id}" data-id="${id}" class="item container data fade in" data-drag-over="thumbnail">
+  <li id="${id}" data-id="${id}" class="item container data fade in" data-drag-over="" draggable="true">
     <div class="thumbnail">
       <div class="inner">
         {{tmpl($item.data.details()) "#galDetailsTemplate"}}
@@ -614,7 +586,7 @@
 </script>
 
 <script id="productsTemplate" type="text/x-jquery-tmpl">
-  <li id="${id}" data-id="${id}" data-drag-over="" class="data item fade in {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
+<li id="${id}" data-id="${id}" data-drag-over="" class="data item fade in {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
     <div class="thumbnail"></div>
     {{if Category.record}}
     <div class="glyphicon-set left" style="">
@@ -747,7 +719,7 @@
       <div class="header-title">
         {{if model.record}}
         <h3>
-        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
+        <span class="label label-default"><a class="opt opt-ShowCategories">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</a></span>
         </h3>
         <h3>
         {{if modelProduct.record}}
@@ -780,7 +752,7 @@
       <div class="header-title">
         {{if product}}
         <h3>
-        <span class="label label-default"><a class="opt-ShowProducts">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</a></span>
+        <span class="label label-default"><a class="opt opt-ShowProducts">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</a></span>
         </h3>
         <h3 style="display: inline-block;">
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
@@ -1108,8 +1080,43 @@
 </script>
 
 <script id="overviewTemplate" type="text/x-jquery-tmpl">
-  <div class="item recents active">
-    <img src="/img/overview-background.png" style="width: 800px; height: 370px;">
+  <button type="button" class="close inverse right" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <div class="pricing--norbu--inverse carousel-background flex" style="z-index: 0;">
+<!--          The data-ride="carousel" attribute is used to mark a carousel as animating starting at page load.-->
+<!--          We can't use it here, since it must be triggered via the controller-->
+    <div id="overview-carousel" class="carousel slide" data-ride="" data-interval="7000">
+
+      <!-- Indicators -->
+      <ol class="carousel-indicators">{{tmpl($item.data) '#overviewIndicatorsTemplate'}}</ol>
+      <div class="carousel-inner">{{tmpl() '#overviewSlidesTemplate'}}</div>
+      <!-- Controls -->
+      <a class="left carousel-control" href="#overview-carousel" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a class="right carousel-control" href="#overview-carousel" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>
+      <div class="x-xl" style="">
+        Übersicht
+        <div class="x-xs hide" style="">hit space (play/pause) or arrow keys (navigate)</div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script id="overviewSlidesTemplate" type="text/x-jquery-tmpl">
+  <div class="item summary active">
+    <img src="/img/overview-background.png" style="">
+    <div class="carousel-item">
+      {{tmpl($item.data.summary) "#overviewSummaryTemplate"}}
+    </div>
+    <div class="carousel-caption">
+      <div class="flower"></div>
+    </div> 
+  </div>
+  {{tmpl($item.data.products) '#overviewPreviewTemplate'}}
+  <div class="item recents">
+    <img src="/img/overview-background.png" style="">
     <div class="carousel-item">
       {{tmpl($item.data.photos) "#overviewPhotosTemplate"}}
     </div>
@@ -1118,13 +1125,20 @@
       <p>zuletzt hochgeladene Fotos</p>
     </div>  
   </div>
-  <div class="item summary">
-    <img src="/img/overview-background.png" style="width: 800px; height: 370px;">
+</script>
+
+<script id="overviewIndicatorsTemplate" type="text/x-jquery-tmpl">
+  {{each counter}}<li data-target="#overview-carousel" data-slide-to="${$index}"></li>{{/each}}
+</script>
+
+<script id="overviewPreviewTemplate" type="text/x-jquery-tmpl">
+  <div class="item product">
+    <img src="/img/overview-background.png" style="">
     <div class="carousel-item">
-      {{tmpl($item.data.summary) "#overviewSummaryTemplate"}}
+      {{tmpl() "#norbuPricingTemplate"}}
     </div>
     <div class="carousel-caption">
-      <h3>Summary</h3>
+      <h3 class="hide">${$().name(product.title, 40)}</h3>
     </div> 
   </div>
 </script>
@@ -1136,17 +1150,31 @@
 </script>
 
 <script id="overviewSummaryTemplate" type="text/x-jquery-tmpl">
-  <table class="carousel table center">
+  <table class="carousel table">
     <tbody>
       <tr>
         <td>Kategorien</td>
-        <td>Produkte</td>
-        <td>Fotos</td>
+        <td>${categories.length}</td>
       </tr>
-      <tr class="h1">
-        <td>${Category.records.length}</td>
-        <td>${Product.records.length}</td>
-        <td>${Photo.records.length}</td>
+      <tr>
+        <td>Produkte (gesamt)</td>
+        <td>${products.length}</td>
+      </tr>
+      <tr class="">
+        <td>Fotos</td>
+        <td>${photos.length}</td>
+      </tr>
+      <tr class="">
+        <td>veröffentlichte Produkte</td>
+        <td>${published.length}</td>
+      </tr>
+      <tr class="">
+        <td>unveröffentlichte Produkte</td>
+        <td>${unpublished.length}</td>
+      </tr>
+      <tr class="">
+        <td>Produkte ohne Kategorie</td>
+        <td>${unused.length}</td>
       </tr>
     </tbody>
   </table>
@@ -1235,7 +1263,7 @@
 {% } %}
 </script>
 
-<script id="sidebarPreviewTemplate" type="text/x-jquery-tmpl">
+<script id="sidebarPreviewTemplate_" type="text/x-jquery-tmpl">
   <li class="" title="">
     <div class="item-header">
       <div class="expander"></div>
@@ -1258,7 +1286,7 @@
       <p class="pricing__sentence">${product.subtitle}</p>
       <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
         <a href="${product.link}" target="_blank" class="" aria-disabled="false">
-          {{tmpl($item.data.photo) "#norbuImageListTemplate" }}
+          {{tmpl($item.data.photo) "#norbuImageTemplate" }}
         </a>
       </div>
       <div class="pricing__feature-list">
@@ -1269,12 +1297,12 @@
   </div>
 </script>
 
-<script id="norbuImageListTemplate" type="text/x-tmpl">
-  <div id="${id}" class="pricing__image"><img class="image" src="/img/products/dummy.png"/></div>
+<script id="norbuImageTemplate" type="text/x-tmpl">
+  <div data-image-id="${id}" class="pricing__image"><img class="image" src="/img/products/dummy.png"/></div>
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">
-  <li class="pricing__feature">{{html description}}</li>
+  <li class="pricing__feature">${description}</li>
 </script>
 
 

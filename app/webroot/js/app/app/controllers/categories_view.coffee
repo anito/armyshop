@@ -20,9 +20,13 @@ class CategoriesView extends Spine.Controller
     'click .item'             : 'click'
     
     'dragend'                         : 'dragend'
+    'dragstart'                       : 'dragstart'
     'drop       '                     : 'drop'
     'dragover   '                     : 'dragover'
     'dragenter  '                     : 'dragenter'
+    
+    
+    'sortupdate'               : 'sortupdate'
     
   headerTemplate: (items) ->
     $("#headerCategoryTemplate").tmpl(items)
@@ -59,7 +63,7 @@ class CategoriesView extends Spine.Controller
   render: (items) ->
     return unless @isActive()
     if Category.count()
-      items = Category.records.sort Category.sortByScreenName
+      items = Category.records.sort Category.sortByOrder
       @list.render items
     else  
       @list.el.html '<label class="invite"><span class="enlightened">This Application has no categories. &nbsp;<button class="opt-CreateCategory dark large">New Category</button>'
@@ -108,5 +112,18 @@ class CategoriesView extends Spine.Controller
       author: User.first().name
     else
       User.ping()
+      
+  sortupdate: (e, o) ->
+    console.log 'sortupdate'
+    cb = =>
+      Category.trigger('change:collection', Category.record)
+      @render()
+      
+    @list.children().each (index) ->
+      item = $(@).item()
+      if item
+        if parseInt(item.order) isnt index
+          item.order = index
+          item.save(done: cb)
   
 module?.exports = CategoriesView

@@ -16,7 +16,7 @@ class User extends Spine.Model
   
   @trace: true
   
-  @login: ->
+  @userConfirm: ->
     @fetch()
     if user = @first()
       user.confirm()

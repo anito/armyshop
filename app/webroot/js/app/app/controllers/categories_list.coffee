@@ -12,17 +12,15 @@ require('extensions/tmpl')
 
 class CategoriesList extends Spine.Controller
 
-  @extend Drag
   @extend Extender
   
   events:
-    'click .opt-SlideshowPlay'      : 'slideshowPlay'
     'click .dropdown-toggle'        : 'dropdownToggle'
     'click .delete'                 : 'deleteCategory'
     'click .zoom'                   : 'zoom'
     
-    'mousemove .item'               : 'infoUp'
-    'mouseleave .item'              : 'infoBye'
+#    'mousemove .item'               : 'infoUp'
+#    'mouseleave .item'              : 'infoBye'
     
   
   constructor: ->
@@ -67,12 +65,15 @@ class CategoriesList extends Spine.Controller
     @html @template items
     @exposeSelection()
     $('.dropdown-toggle', @el).dropdown()
+    @el.sortable('categories')
     @el
   
   updateTemplates: ->
     @log 'updateTemplates'
+    return
     for category in Category.records
       @updateOneTemplate(category)
+    @el.sortable('categories')
 
   updateOneTemplate: (category) ->
     categoryEl = @children().forItem(category)
@@ -84,6 +85,7 @@ class CategoriesList extends Spine.Controller
       tmplItem.update?()
     catch e
     categoryEl = @children().forItem(category).toggleClass('active hot', active)
+    @el.sortable('categories')
     
   reorder: (item) ->
     id = item.id
@@ -146,13 +148,5 @@ class CategoriesList extends Spine.Controller
   infoBye: (e) =>
     el = $('.glyphicon-set' , $(e.currentTarget)).addClass('out').removeClass('in')
     e.preventDefault()
-    
-  slideshowPlay: (e) ->
-    category = $(e.currentTarget).closest('.item').item()
-    if App.activePhotos().length
-      App.slideshowView.trigger('play')
-    else
-      App.showView.noSlideShow()
-    e.stopPropagation()
 
 module?.exports = CategoriesList

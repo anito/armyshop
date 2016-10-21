@@ -29,7 +29,7 @@ Controller.Drag =
           
         parentEl = el.parents('.data')
         parentModel = parentEl.data('tmplItem')?.data.constructor or parentEl.data('current')?.model
-        parentRecord = parentEl.data('tmplItem')?.data or Model[parentModel.className].record# or parentModel
+        parentRecord = parentEl.data('tmplItem')?.data or Model[parentModel.className]?.record# or parentModel
         
         Spine.dragItem.updateAttributes
           el: el

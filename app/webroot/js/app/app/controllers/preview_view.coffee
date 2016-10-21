@@ -50,7 +50,7 @@ class PreviewView extends Spine.Controller
     
   developed: (photos) ->
     photo = photos[0].Photo
-    @callDeferred photo, @callback
+    @callDeferred photo, @uriSettings(300, 300), @callback
     
   change: (item) ->
     if item?.destroyed or !item
@@ -75,11 +75,7 @@ class PreviewView extends Spine.Controller
     photo = item.photo
     @contentEl.html @template item
     return unless Photo.exists(photo?.id)
-    @callDeferred photo, @callback
-    
-  size: (width, height) ->
-    width: 300
-    height: 300
+    @callDeferred photo, @uriSettings(300, 300), @callback
     
   callback: (json, items) =>
     result = for jsn in json
@@ -92,7 +88,7 @@ class PreviewView extends Spine.Controller
       @snap(res)
 
   snap: (res) ->
-    imgEl = $('#'+res.id+' img', @el)
+    imgEl = $('[data-image-id='+res.id+'] img', @el)
     img = @createImage()
     img.imgEl = imgEl
     img.this = @

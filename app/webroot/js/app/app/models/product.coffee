@@ -147,6 +147,9 @@ class Product extends Spine.Model
   @findRelated: (joins = [], joinid = '') ->
     record for join in joins when (record = @find(join[joinid])) and !!(typeof(record.order = join.order) and !!typeof(record.ignored = join.ignored))
       
+  @unusedProducts: ->
+    @filter(true, {func: 'selectUnused'})
+      
   init: (instance) ->
     return unless id = instance.id
     s = new Object()
@@ -192,6 +195,8 @@ class Product extends Spine.Model
       
   selectProduct: (id) ->
     return true if @id is id
+    
+  selectUnused: (id) ->
+    return true unless CategoriesProduct.findByAttribute('product_id', @id)
       
 module?.exports = Model.Product = Product
-

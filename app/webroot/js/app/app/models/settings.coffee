@@ -18,7 +18,8 @@ class Settings extends Spine.Model
     if user = User.first()
       setting = @findByAttribute('user_id', user.id)
     else
-      setting = Settings.first()
+      setting = Model.Settings.first()
+    setting
       
   
   @isAutoUpload: ->

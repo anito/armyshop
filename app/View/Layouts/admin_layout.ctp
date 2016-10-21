@@ -89,7 +89,7 @@
       Spine.Route = require('spine/lib/route');
       
       exports.App = new Main({el: $("body")});
-      User.login();
+      User.userConfirm();
       
       Description.refresh(descriptions, {clear: true});
       Photo.refresh(photos, {clear: true});

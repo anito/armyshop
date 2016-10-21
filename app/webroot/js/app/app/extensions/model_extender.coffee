@@ -36,6 +36,14 @@ Model.Extender =
         s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
 
       
+      protected:
+        'defense':
+          screenname: 'Defense'
+        'outdoor':
+          screenname: 'Outdoor'
+        'goodies':
+          screenname: 'Goodies'
+      
       record: false
 
       selection: [global:[]]
@@ -127,7 +135,7 @@ Model.Extender =
             error       : error
 
           error.save()
-#          User.redirect 'users/login'
+          User.redirect 'users/login'
           
       customErrorHandler: (record, xhr) ->
         status = xhr.status
@@ -274,6 +282,9 @@ Model.Extender =
         result[attr] = @[attr] for attr in @constructor.selectAttributes
         result
         
+      isProtectedModel: (query) ->
+        return true if @constructor.protected[query]
+        false
       #private
       
       addUnique: (list) ->

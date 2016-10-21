@@ -113,11 +113,6 @@ class PhotosView extends Spine.Controller
   
   active: (params) ->
     return unless @isActive()
-    return if @eql Product.record
-    if params
-      @options = $().unparam(params)
-      if @options.slideshow
-        @parent.slideshowView.play()
     
     App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
@@ -264,11 +259,8 @@ class PhotosView extends Spine.Controller
     @list.children().each (index) ->
       idx = f-index
       item = $(@).item()
-      console.log item
-      console.log Product.record
       if item and Product.record
         ap = ProductsPhoto.fromPhotoId(item.id)
-        console.log ap
         if ap and parseInt(ap.order) isnt idx
           ap.order = idx
           ap.save(ajax:false)

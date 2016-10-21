@@ -51,7 +51,7 @@ class Base
     @ajaxQueue =>
       @ajax(
         type: "POST"
-        url: base_url + 'photos/uri/' + @url
+        url: base_url + 'photos/uri/' + @atts
         data: JSON.stringify(@data)
       ).done(@recordResponse)
        .fail(@failResponse)
@@ -64,7 +64,7 @@ class URI extends Base
   constructor: (@model,  params, @callback, @data = []) ->
     super
     options = $.extend({}, @settings, params)
-    @url = @uri options
+    @atts = @uri options
     
     return unless @data.length
     
@@ -79,7 +79,7 @@ class URI extends Base
     return unless Ajax.cache #force ajax call for empty data
     res = []
     for data, idx in @data
-      raw = (@model.cache @url, data.id)
+      raw = (@model.cache @atts, data.id)
       if raw
         res.push raw
       else
@@ -89,7 +89,7 @@ class URI extends Base
     return true
       
   recordResponse: (uris) =>
-    @model.addToCache @url, uris
+    @model.addToCache @atts, uris
     @callback uris
     
   failResponse: (xhr, statusText, error) =>
@@ -111,7 +111,7 @@ class URICollection extends Base
         @photos = [@record]
         
     options = $.extend({}, @settings, params)
-    @url = @uri options
+    @atts = @uri options
     
   settings:
     width: 140
@@ -120,7 +120,7 @@ class URICollection extends Base
     quality: 70
   
   init: ->
-    cache = @record.cache @url
+    cache = @record.cache @atts
     if cache?.length
       @callback cache, @record
     else
@@ -130,13 +130,13 @@ class URICollection extends Base
     @ajaxQueue =>
       @ajax(
         type: "POST"
-        url: base_url + 'photos/uri/' + @url
+        url: base_url + 'photos/uri/' + @atts
         data: JSON.stringify(@photos)
       ).done(@recordResponse)
        .fail(@failResponse)
 
   recordResponse: (uris) =>
-    @record.addToCache @url, uris, @mode
+    @record.addToCache @atts, uris, @mode
     @callback uris, @record
     
   failResponse: (xhr, statusText, error) =>

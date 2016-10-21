@@ -40,10 +40,10 @@ class CategoriesProduct extends Spine.Model
       sort: 'sortByOrder'
     )
       
-  @publishedProducts: (gid=@record?.id) ->
+  @publishedProducts: (gid=Category.record?.id) ->
     @filter(gid, {associationForeignKey: 'category_id', func: 'selectNotIgnored'})
       
-  @unpublishedProducts: (gid) ->
+  @unpublishedProducts: (gid=Category.record?.id) ->
     @filter(gid, {associationForeignKey: 'category_id', func: 'selectIgnored'})
       
   @photos: (id) ->
@@ -85,7 +85,7 @@ class CategoriesProduct extends Spine.Model
     category = Category.record
     return unless category
     products = []
-    gas = CategoriesProduct.filter(category.id, associationForeignKey:'category_id')
+    gas = @constructor.filter(category.id, associationForeignKey:'category_id')
     for ga in gas
       products.push Product.find(ga.product_id) if Product.exists(ga.product_id)
     products
@@ -103,9 +103,9 @@ class CategoriesProduct extends Spine.Model
     return true if @product_id is options.product_id and @category_id is options.category_id
     
   selectNotIgnored: (id) ->
-    return true if @category_id is id and !@ignored
+    return true if !@ignored and @isProtectedModel(Category.find(@category_id).name)
     
   selectIgnored: (id) ->
-    return true if @category_id is id and @ignored is true
+    return true if @ignored and @isProtectedModel(Category.find(@category_id).name)
     
 module.exports = Model.CategoriesProduct = CategoriesProduct

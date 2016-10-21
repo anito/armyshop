@@ -13,7 +13,7 @@ require("spine/lib/ajax")
 
 class Category extends Spine.Model
 
-  @configure 'Category', 'id', 'cid', 'name', 'screenname', 'user_id'
+  @configure 'Category', 'id', 'cid', 'name', 'screenname', 'order', 'user_id', 'protected'
 
   @extend Filter
   @extend Model.Ajax
@@ -21,15 +21,13 @@ class Category extends Spine.Model
   @extend Uri
   @extend Extender
 
-  @selectAttributes: ['screenname']
+  @selectAttributes: ['screenname', 'order']
   
   @parent: 'Root'
   
   @childType: 'Product'
   
   @url: '' + base_url + 'categories'
-  
-  @protected: ['defense', 'outdoor', 'goodies']
 
   @fromJSON: (objects) ->
     super
@@ -88,7 +86,8 @@ class Category extends Spine.Model
       search = 'id'
       
     for ga in gas
-      product = Product.find ga[search]
+      product = Product.find(ga = CategoriesProduct.find(search))
+      break unless product
       photos = product.photos() or []
       ret.push pho for pho in photos
     ret
@@ -112,6 +111,8 @@ class Category extends Spine.Model
    
   init: (instance) ->
     return unless id = instance.id
+    if @isProtectedModel(instance.name)
+      instance.protected = true
     s = new Object()
     s[id] = []
     @constructor.selection.push s

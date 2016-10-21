@@ -26,7 +26,7 @@ class Toolbar extends Spine.Model
       icon: 'question-sign'
       content:
         [
-          name: 'Übersicht'
+          name: 'Tastaturbefehle'
           klass: 'opt-Help '
         ,
           name: 'Über'
@@ -36,6 +36,18 @@ class Toolbar extends Spine.Model
       name: 'Ansicht'
       content:
         [
+          name: -> 'Übersicht'
+          klass: 'opt-ShowOverview'
+          icon: 'book'
+          disabled: -> false
+        ,
+          devider: true
+        ,
+          name: -> 'Kategorien'
+          klass: 'opt-ShowCategories'
+          icon: 'book'
+          disabled: -> false
+        ,
           name: -> 'Produkte-Katalog'
           klass: 'opt-ShowAllProducts'
           icon: 'book'
@@ -160,7 +172,7 @@ class Toolbar extends Spine.Model
         [
           name: 'Upload'
           icon: 'upload'
-          klass: 'opt-Upload'
+          klass: 'opt-UploadDialogue'
         ,
           name: 'Foto aus Katalog hinzufügen'
           icon: 'plus'
@@ -335,7 +347,7 @@ class Toolbar extends Spine.Model
       content:
         [
           name: 'Chromeless'
-          klass: -> 'opt-FullScreen' + if App.showView.slideshowView.fullScreenEnabled() then ' active' else ''
+          klass: -> 'opt-FullScreen'
           icon: ''
           dataToggle: 'button'
           outerstyle: ''

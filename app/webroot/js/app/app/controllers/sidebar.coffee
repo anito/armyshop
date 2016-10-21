@@ -34,6 +34,7 @@ class Sidebar extends Spine.Controller
     'keyup input'               : 'filter'
     'click .opt-CreateProduct'  : 'createProduct'
     'click .opt-CreateCategory' : 'createCategory'
+    
     'dblclick .draghandle'      : 'toggleDraghandle'
 
     'sortupdate .sublist'         : 'sortupdate'
@@ -65,6 +66,7 @@ class Sidebar extends Spine.Controller
       
     Category.one('refresh', @proxy @refresh)
     Category.bind('error', @proxy @error)
+    Category.bind('update', @proxy @render)
     Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     Category.bind("ajaxError", Category.errorHandler)
     Category.bind("ajaxSuccess", Category.successHandler)
@@ -94,9 +96,10 @@ class Sidebar extends Spine.Controller
     Category.one('refresh', @proxy @refresh)
     
   render: () ->
+    @log 'render'
     items = Category.filter(@query, func: 'searchSelect')
-    items = items.sort Category.sortByScreenName
-    Category.trigger('refresh:category') #rerenders CategoryView
+    items = items.sort Category.sortByOrder
+#    Category.trigger('refresh:category') #rerenders CategoryView
     @list.render items
     @refreshView.render()
   

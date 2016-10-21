@@ -2,32 +2,34 @@ Spine = require("spine")
 $     = Spine.$
 Photo = require("models/photo")
 
-
 UriHelper =
 
   extended: ->
 
     include =
     
-      callDeferred: (items=[], cb) ->
+      callDeferred: (items=[], options=@uriSettings, cb=->) ->
         items = [items] unless Array.isArray(items)
           
-        $.when(@uriDeferred(items)).done (xhr, rec) =>
+        $.when(@uriDeferred(items, options)).done (xhr, rec) =>
           cb xhr, rec
 
-      uriDeferred: (items) ->
+      uriDeferred: (items, options) ->
         deferred = $.Deferred()
 
-        Photo.uri @size(),
+        Photo.uri options,
           (xhr, record) => deferred.resolve(xhr, items)
           items
 
         deferred.promise()
         
-      size: (width, height) ->
-        width: 300
-        height: 300
-
+      # defaultSettings
+      uriSettings: (width=30, height=10, square=1, quality=70) ->
+        width: width
+        height: height
+        square: square
+        quality: quality
+        
     @include include
 
 

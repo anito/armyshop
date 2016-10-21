@@ -129,11 +129,9 @@ class UploadEditView extends Spine.Controller
    #  ############ Editor #############
    
   toggleEditor: ->
-    @editor.content.toggleClass('up', !@isHidden())
+    @editor.content.toggleClass('hide', !@isHidden())
     
   isHidden: ->
-    console.log @editor.content
-    console.log @editor.content.hasClass('up')
-    @editor.content.hasClass('up')
+    @editor.content.hasClass('hide')
         
 module?.exports = UploadEditView

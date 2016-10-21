@@ -19,6 +19,7 @@ class SidebarList extends Spine.Controller
     '.gal.item'               : 'item'
 
   events:
+    'click .opt-ignored'          : 'ignoreProduct'
     "click      .item"            : 'click'
     "click      .expander"        : 'clickExpander'
 
@@ -85,6 +86,7 @@ class SidebarList extends Spine.Controller
         @reorder item
       else
         @updateTemplate(item).removeClass('invalid')
+        @reorder item
       @renderOneSublist item
     @children('.invalid').remove()
     
@@ -99,7 +101,7 @@ class SidebarList extends Spine.Controller
     children = @children()
     oldEl = @children().forItem(item)
     idxBeforeSort =  @children().index(oldEl)
-    idxAfterSort = index(id, Category.all().sort(Category.sortByScreenName))
+    idxAfterSort = index(id, Category.all().sort(Category.sortByOrder))
     newEl = $(children[idxAfterSort])
     if idxBeforeSort < idxAfterSort
       newEl.after oldEl
@@ -132,7 +134,7 @@ class SidebarList extends Spine.Controller
     categoryEl = @children().forItem(category)
     categorySublist = $('ul', categoryEl)
     categorySublist.html @sublistTemplate(products)
-    categorySublist.sortable('product')
+    $(categorySublist).sortable(items: ':not(.disabled)')
     @exposeSublistSelection(null, category.id)
     
   updateTemplate: (item) ->
@@ -196,8 +198,6 @@ class SidebarList extends Spine.Controller
     el = $(e.target).closest('li')
     item = el.item()
     
-    return unless item?.constructor
-    
     switch item.constructor.className
       when 'Category'
         @expand(item, (@isOpen(el)) or (!(Category.record?.id is item.id) or !@isOpen(el)))
@@ -206,6 +206,12 @@ class SidebarList extends Spine.Controller
       when 'Product'
         category = $(e.target).closest('li.gal').item()
         @navigate '/category', category.id, 'product', item.id
+    
+  ignoreProduct: (e) ->
+    Spine.trigger('product:ignore', e)
+    
+    e.stopPropagation()
+    e.preventDefault()
     
   clickExpander: (e) ->
     el = $(e.target).closest('li.gal')

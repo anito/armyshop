@@ -275,6 +275,7 @@ button.white {
 button.close.white:hover {
   opacity: 1;
   color: rgb(255, 255, 255);
+  z-index: 999;
 }
 button, .btn {
 /*  border: 1px solid;
@@ -567,7 +568,16 @@ textarea {
   background-color: #606067;
 }
 .bg-dark {
-  background-color: $dark-from-gradient;
+  background-color: rgba(51, 51, 51, 0.75);
+}
+ul.items {
+  font-size: 1em;
+}
+.flower {
+  height: 64px;
+  margin: 0 auto;
+  width: 104px;
+  background: url(/img/flower.png) no-repeat 0 0;
 }
 .header {
   line-height: 24px;
@@ -597,6 +607,9 @@ textarea {
 .header .btn:hover {
   border-radius: 0;
 }
+table.carousel.table {
+  font-size: 1.1rem;
+}
 .sidebar {
   width: 300px;
 }
@@ -604,15 +617,19 @@ textarea {
   text-shadow: none;
 }
 .sidebar li.parent.active, .sidebar li.active li  {
-  color: rgba(40, 40, 40, 0.9);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.33);
+  color: inherit;
+  /* font-size: 1.8em; */
+  /*text-shadow: 0px 1px 1px rgba(24,24,24,0.5);*/
+  /* font-weight: normal; */
+  font-weight: bold;
 }
-.sidebar li.parent, .sidebar li li div {
-  color: #989898;
-  text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.7);
+.sidebar li.parent, .sidebar li li div.item {
+  color: #999;
+  text-shadow: inherit;
+  font-size: 1.6em;
 }
 li.parent:not(.open) {
-  height: 62px;
+  height: 68px;
 }
 .open ul.sublist {
   display: block !important;
@@ -638,15 +655,19 @@ ul {
 .cta {
   padding: 0 5px;
 }
-.xxl {
-  font-size: 3em;
-  height: 5000px;
-  padding: 100px 0 0 100px;
-  position: absolute;
-  width: 100%;
+[class*="-x"] {
+  color: rgba(255,255,255,0.5);
 }
-.xs {
+.x-xl {
+  font-size: 4em;
+  font-weight: bold;
+  margin: 50px auto;
+  width: 400px;
+  text-align: center;
+}
+.x-xs {
   font-size: 0.5em;
+  line-height: 1em;
 }
 #content .header section.breadcrumb {
   padding: 0;
@@ -695,11 +716,25 @@ ul.sublist::before {
 .gal .sublist-item.selected {
     background-color: rgba(51, 153, 255, 0.16);
 }
-.gal.active .sublist-item.selected.active {
+.gal.active .sublist-item.active {
     background-color: $medium-blue-semi;
 }
 .gal.active .sublist-item.selected {
     background-color: $light-blue-semi;
+}
+.sidebar .glyphicon {
+  font-size: 1.1em;
+  padding: 0 5px 0 0px;
+}
+.sidebar .parent.protected {
+  background-color: rgba(64,78,50,0.7) !important;
+  color: rgba(151, 169, 151, 0.81) !important
+  text-shadow: -1px 0px 1px rgb(24, 27, 22);
+}
+.sidebar .parent.protected.active {
+  background-color: rgba(191, 208, 174, 0.7) !important;
+  color: rgb(53, 62, 43) !important;
+  text-shadow: 0px 0 0.5px rgb(130, 146, 129);
 }
 .item span.author {
   font-size: 0.8em;
@@ -760,7 +795,8 @@ ul.sublist::before {
   margin: 1px 0;
   position: relative;
   padding: 13px 18px;
-  font-size: 1rem;
+  font-weight: normal;
+  font-size: 0.9em;
 }
 .expander {
   width: 23px;
@@ -839,18 +875,22 @@ ul.sublist::before {
   background-color: rgba(80, 80, 80, 0.7);
 }
 .sidebar .parent > .item-header {
-  font-size: 1.1rem;
-  font-weight: bold;
+
+}
+.toolbar {
+  font-size:  1.3em;
 }
 .opt-Preview {
-  color: rgba(245, 245, 245, 0.91);
+  color: rgba(245,245,245,0.91);
   font-family: "ChopinScript", serif;
-  font-size: 2rem;
-  vertical-align: initial;
+  font-size: 3.5rem;
+  /* height: 68px; */
+  /* vertical-align: initial; */
   position: relative;
-  top: 9px;
-  line-height: 0.4em;
-  text-shadow: 1px 0px 1px rgba(35, 35, 35, 0.72);
+  top: 8px;
+  height: 35px;
+  line-height: 1rem;
+  text-shadow: 1px 0px 1px rgba(35,35,35,0.72);
 }
 .sidebar .parent.active {
   background-color: rgba(200, 200, 200, 0.77);
@@ -1018,14 +1058,31 @@ section span.price {
 #content .content li.item {
   position: relative;
 }
+#overview .close {
+  position: absolute;
+  right: 14px;
+  font-size: 3em;
+  color: rgb(200,200,200);
+  opacity: 1;
+  z-index: 999;
+}
 #overview {
   margin: 0;
   padding: 0;
 }
-#overview div.recents .carousel-item {
+.carousel-item {
   margin: 0 auto;
   padding: 0;
-  width: 420px;
+  width: 450px;
+}
+.carousel-inner > div {
+  height: 600px;
+}
+.carousel-caption {
+  top: 0;
+}
+.carousel-indicators {
+  bottom: -30px;
 }
 #overview .thumbnail {
   width: 70px;
@@ -1042,7 +1099,7 @@ section span.price {
   position: absolute;
   color: rgba(200, 200, 200, 0.9);
   text-align: center;
-  top: 35px;
+  top: 80px;
 }
 .carousel .jumbotron {
   background-color: $dark-from-gradient;
@@ -1055,8 +1112,11 @@ section span.price {
   color: rgba(130, 130, 130, 0.9);
   text-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
+.carousel table.table tbody > th, .carousel table.table tbody > tr:not(:first-child) {
+  /*border: 1px solid;*/
+}
 .carousel table.table tbody > th, .carousel table.table tbody > tr > td {
-  border: 0 none;
+  /*border: 0 none;*/
   color: rgba(130, 130, 130, 0.99);
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
@@ -1096,6 +1156,7 @@ li .thumbnail.image {
   line-height: 2em;
   text-shadow: 0 1px 0.1px rgba(0, 0, 0, 0.9);
   margin: 0;
+  background: transparent;
 }
 .products .thumbnail {
   background-color: rgba(51, 51, 51, 0.53);
@@ -1148,10 +1209,7 @@ li .thumbnail.image {
   opacity: .3;
 }
 li.active .sublist-item:not(.ignored) {
-  background: rgba(200, 200, 200, 0.9);
-}
-li.active .sublist-item.active:not(.ignored) {
-  background: rgba(200, 200, 200, 0.9);
+  background: rgba(200, 200, 200, 0.4);
 }
 .sublist-item:not(.ignored) {
   background: rgba(80,80,80,0.4);
@@ -1289,6 +1347,12 @@ li.item.active .glyphicon-set {
 .movecursor {
   cursor: url("/img/cursor-move.png"), auto;
 }
+.opt {
+  text-decoration: underline;
+}
+[class*='opt-'] {
+  cursor: pointer;
+}
 .preloader {
   position: absolute;
   right: 0;
@@ -1353,6 +1417,10 @@ li.item.active .glyphicon-set {
 }
 .fadein.in {
   opacity: 1;
+  transition: opacity 0.5s ease 0s;
+}
+.fadein.in1 {
+  opacity: 1;
   transition: opacity 1s ease 0s;
 }
 .fadein.in2 {
@@ -1381,24 +1449,24 @@ li.item.active .glyphicon-set {
 .views .header.views .view.active section:first-child {
   padding: 20px;
 }
-.views .view.active .fadeelement {
+.view.active .fadeelement {
   transition: background 1s linear 0s;
 }
-.views .header.views .view.active .fadeelement {
-  background: -webkit-gradient(linear, left top, left bottom, from($allview), to($allview));
-  background: -moz-linear-gradient(center top , $allview, $allview);
-  background: linear-gradient(center top , $allview, $allview);
+.header .view .fadeelement {
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(220,220,220,.9), to(rgba(220,220,220,.9))));
+  background: -moz-linear-gradient(center top , rgba(220,220,220,.9), rgba(220,220,220,.9));
+  background: linear-gradient(center top , rgba(220,220,220,.9), rgba(220,220,220,.9));
   background: rgba(220,220,220,.9);
   transition: background 1s linear 0s;
 }
-.all.views .header.views .view.active .fadeelement {
+.header .all.view.active .fadeelement {
   background: -webkit-gradient(linear, left top, left bottom, from($allview), to($allview));
   background: -moz-linear-gradient(center top , $allview, $allview);
   background: linear-gradient(center top , $allview, $allview);
   background: $allview;
   transition: background 1s linear 0s;
 }
-.all.views .view.active .fadeelement {
+.all.view.active .fadeelement {
  transition: background 1s linear 0s;
 }
 .all .view .thumbnail {
@@ -1471,7 +1539,7 @@ button.active.dark {
 }
 .dark.btn-label {
   margin: 02px;
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 button.chromeless, button.chromeless:hover {
   background: -moz-linear-gradient(center center , #999999, #222222) repeat scroll 2px 0 transparent;
@@ -1670,13 +1738,9 @@ section.addAction {
 /*  text-shadow: inherit !important;*/
 }
 .editor {
-  position: relative;
-  top: 0px;
-  transition: top 0.3s;
 }
 .editor.up {
-  top: -45px;
-  transition: top 0.3s;
+  display: none;
 }
 .data.items:not(.nopad), li.data {
   border: 5px solid transparent;
