@@ -222,7 +222,7 @@ class Main extends Spine.Controller
       
   initLocation: ->
     settings = Model.Settings.loadSettings()
-    if hash = settings.hash then hash else '/admin#/overview'
+    if hash = settings.hash then hash else '/admin#/overview/'
     @navigate hash
     
   storeHash: ->
