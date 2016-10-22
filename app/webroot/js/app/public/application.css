@@ -1154,9 +1154,10 @@ table.carousel.table {
 }
 .sidebar li.parent:not(.preview),
 .sidebar li li div.item {
-  color: inherit;
-  text-shadow: inherit;
   font-size: 1.6em;
+}
+li.parent {
+  color: #aaa;
 }
 li.parent:not(.open) {
   height: 62px;
