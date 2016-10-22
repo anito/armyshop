@@ -35923,7 +35923,7 @@ Released under the MIT License
       if (hash = settings.hash) {
         hash;
       } else {
-        '/admin';
+        '/admin#/overview';
       }
       return this.navigate(hash);
     };
