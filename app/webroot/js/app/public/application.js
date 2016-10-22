@@ -35925,7 +35925,7 @@ Released under the MIT License
       } else {
         '/admin#/overview/';
       }
-      return this.navigate(hash);
+      return this.navigate(settings.hash);
     };
 
     Main.prototype.storeHash = function() {
@@ -37478,7 +37478,7 @@ Released under the MIT License
       this.render();
       if (confirm('Entwickler Modus: ' + (Spine.isProduction ? 'Aus' : 'An') + '\n\Die Anwendung muss neu gestartet werden.\n\nFortfahren mit OK')) {
         $(window).off();
-        return User.redirect('admin');
+        return User.redirect('admin#');
       }
     };
 
@@ -48821,7 +48821,7 @@ Released under the MIT License
       user.save();
       this.render(this.flashEl, this.flashTemplate, json);
       delayedFunc = function() {
-        return User.redirect('admin' + location.hash);
+        return User.redirect('admin#' + location.hash);
       };
       this.contentEl.addClass('fade500');
       return this.delay(delayedFunc, 500);
