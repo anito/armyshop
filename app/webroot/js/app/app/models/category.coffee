@@ -116,9 +116,10 @@ class Category extends Spine.Model
     s = new Object()
     s[id] = []
     @constructor.selection.push s
+    instance
     
   validate: ->
-    valid = !(c for c in Category.protected when c is @name ).length
+    valid = !(Category.protected[@name])
     return 'Geschützte Kategorie!' unless valid
     false
     

@@ -32,9 +32,9 @@
           </form>
         </div>
         <ul id="preview" class="splitter autoflow noborder">
-            <li class="preview parent flex">
-              <div class="item-header opt-preview">
-                <div class="expander"></div>
+          <li class="preview parent flex" style="">
+            <div class="item-header opt-preview" style="position: relative; top: -7px;">
+                <div class="expander" style="position: relative; top: 20px;"></div>
                   <div class="item-content">
                     <span class="">Preview</span>
                   </div>

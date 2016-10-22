@@ -167,7 +167,7 @@ class OverviewView extends Spine.Controller
     if previousHash isnt location.hash
       @navigate previousHash
     else
-      @navigate '#/category', if first = Category.first().id then first else ''# '#/categories')
+      @navigate '#/category', if first = Category.first()?.id then first else ''# '#/categories')
       
     e.preventDefault()
     e.stopPropagation()

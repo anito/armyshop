@@ -1152,14 +1152,14 @@ table.carousel.table {
 /* font-weight: normal; */
   font-weight: bold;
 }
-.sidebar li.parent,
+.sidebar li.parent:not(.preview),
 .sidebar li li div.item {
   color: #999;
   text-shadow: inherit;
   font-size: 1.6em;
 }
 li.parent:not(.open) {
-  height: 68px;
+  height: 62px;
 }
 .open ul.sublist {
   display: block !important;
@@ -1257,6 +1257,7 @@ ul.sublist::before {
 }
 .item-content {
   cursor: pointer;
+  line-height: 1em;
 }
 .sublist-item span {
   display: inline-block;
@@ -1317,8 +1318,10 @@ ul.sublist::before {
   width: 23px;
   height: 23px;
   float: left;
-  margin: 0 10px;
+  margin: -9px 5px;
   cursor: pointer;
+  top: 9px;
+  position: relative;
 }
 .badge {
   -moz-border-radius: 20px;
@@ -1396,12 +1399,10 @@ ul.sublist::before {
   color: rgba(245,245,245,0.91);
   font-family: "ChopinScript", serif;
   font-size: 3.5rem;
-/* height: 68px; */
-/* vertical-align: initial; */
-  position: relative;
-  top: 8px;
-  height: 35px;
-  line-height: 1rem;
+  vertical-align: initial;
+/* top: 28px; */
+  height: 49px;
+/* line-height: 1rem; */
   text-shadow: 1px 0px 1px rgba(35,35,35,0.72);
 }
 .sidebar .parent.active {

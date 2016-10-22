@@ -36616,6 +36616,7 @@ Released under the MIT License
       this.header.template = this.headerTemplate;
       this.viewport = this.list.el;
       Category.one('refresh', this.proxy(this.render));
+      Category.bind('beforeSave', this.proxy(this.createProtected));
       Category.bind('beforeDestroy', this.proxy(this.beforeDestroy));
       Category.bind('destroy', this.proxy(this.destroy));
       Category.bind('refresh:category', this.proxy(this.render));
@@ -36701,6 +36702,26 @@ Released under the MIT License
       } else {
         return User.ping();
       }
+    };
+
+    CategoriesView.prototype.createProtected = function(item) {
+      var key, ref, results, val;
+      ref = Category["protected"];
+      results = [];
+      for (key in ref) {
+        val = ref[key];
+        console.log(Category["protected"][key]);
+        console.log(val.screenname);
+        if (!Category.findByAttribute('name', key)) {
+          console.log(this);
+          item.name = key;
+          item.screenname = val.screenname;
+          break;
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
     };
 
     CategoriesView.prototype.sortupdate = function(e, o) {
@@ -38105,12 +38126,12 @@ Released under the MIT License
     };
 
     OverviewView.prototype.close = function(e) {
-      var first, previousHash;
+      var first, previousHash, ref;
       previousHash = Model.Settings.loadSettings().previousHash;
       if (previousHash !== location.hash) {
         this.navigate(previousHash);
       } else {
-        this.navigate('#/category', (first = Category.first().id) ? first : '');
+        this.navigate('#/category', (first = (ref = Category.first()) != null ? ref.id : void 0) ? first : '');
       }
       e.preventDefault();
       return e.stopPropagation();
@@ -49066,13 +49087,15 @@ Released under the MIT License
     };
 
     CategoriesProduct.prototype.selectNotIgnored = function(id) {
-      if (!this.ignored && this.isProtectedModel(Category.find(this.category_id).name)) {
+      var ref;
+      if (!this.ignored && this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
         return true;
       }
     };
 
     CategoriesProduct.prototype.selectIgnored = function(id) {
-      if (this.ignored && this.isProtectedModel(Category.find(this.category_id).name)) {
+      var ref;
+      if (this.ignored && this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
         return true;
       }
     };
@@ -49308,23 +49331,13 @@ Released under the MIT License
       }
       s = new Object();
       s[id] = [];
-      return this.constructor.selection.push(s);
+      this.constructor.selection.push(s);
+      return instance;
     };
 
     Category.prototype.validate = function() {
-      var c, valid;
-      valid = !((function() {
-        var j, len, ref, results;
-        ref = Category["protected"];
-        results = [];
-        for (j = 0, len = ref.length; j < len; j++) {
-          c = ref[j];
-          if (c === this.name) {
-            results.push(c);
-          }
-        }
-        return results;
-      }).call(this)).length;
+      var valid;
+      valid = !Category["protected"][this.name];
       if (!valid) {
         return 'Geschützte Kategorie!';
       }
@@ -50834,6 +50847,17 @@ Released under the MIT License
               return ret = !(typeof (base = Category.record).isValid === "function" ? base.isValid() : void 0);
             },
             shortcut: '<-'
+          }, {
+            devider: true
+          }, {
+            name: function() {
+              return 'Kategorien';
+            },
+            klass: 'opt-ShowCategories',
+            icon: 'book',
+            disabled: function() {
+              return false;
+            }
           }
         ]
       },

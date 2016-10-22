@@ -50,6 +50,7 @@ class CategoriesView extends Spine.Controller
     @viewport = @list.el
     Category.one('refresh', @proxy @render)
     
+    Category.bind('beforeSave', @proxy @createProtected)
     Category.bind('beforeDestroy', @proxy @beforeDestroy)
     Category.bind('destroy', @proxy @destroy)
     Category.bind('refresh:category', @proxy @render)
@@ -112,6 +113,16 @@ class CategoriesView extends Spine.Controller
       author: User.first().name
     else
       User.ping()
+      
+  createProtected: (item) ->
+    for key, val of Category.protected
+      console.log Category.protected[key]
+      console.log val.screenname
+      unless Category.findByAttribute('name', key)
+        console.log @
+        item.name = key
+        item.screenname = val.screenname
+        break
       
   sortupdate: (e, o) ->
     console.log 'sortupdate'

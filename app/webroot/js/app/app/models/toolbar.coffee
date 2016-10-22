@@ -90,6 +90,13 @@ class Toolbar extends Spine.Model
           disabled: ->
             ret = !Category.record.isValid?() #or (c for c in Category.protected when c is Category.record.name ).length
           shortcut: '<-'
+        ,
+          devider: true
+        ,
+          name: -> 'Kategorien'
+          klass: 'opt-ShowCategories'
+          icon: 'book'
+          disabled: -> false
         ]
     group2:
       name: 'Produkt'
