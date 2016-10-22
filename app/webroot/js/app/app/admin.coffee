@@ -272,7 +272,7 @@ class Main extends Spine.Controller
       Settings.create
         user_id   : id
         autoupload: @autoupload
-        hash: '#'
+        hash: '#/overview/'
         previousHash: '#'
         
   refreshSettings: (records) ->

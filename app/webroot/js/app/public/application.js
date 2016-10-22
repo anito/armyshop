@@ -35990,7 +35990,7 @@ Released under the MIT License
         return Settings.create({
           user_id: id,
           autoupload: this.autoupload,
-          hash: '#',
+          hash: '#/overview/',
           previousHash: '#'
         });
       }
@@ -37478,7 +37478,7 @@ Released under the MIT License
       this.render();
       if (confirm('Entwickler Modus: ' + (Spine.isProduction ? 'Aus' : 'An') + '\n\Die Anwendung muss neu gestartet werden.\n\nFortfahren mit OK')) {
         $(window).off();
-        return User.redirect('admin');
+        return User.redirect('admin#/overview/');
       }
     };
 
