@@ -37232,7 +37232,7 @@ Released under the MIT License
       results = [];
       for (j = 0, len1 = items.length; j < len1; j++) {
         item = items[j];
-        results.push(this.callDeferred(item.photo, this.size(300, 300), this.proxy(this.callback)));
+        results.push(this.callDeferred(item.photo, this.uriSettings(300, 300), this.proxy(this.callback)));
       }
       return results;
     };
