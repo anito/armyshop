@@ -48040,6 +48040,7 @@ Released under the MIT License
       if (!(settings = Settings.loadSettings())) {
         return;
       }
+      console.log(settings);
       if (hash = location.hash) {
         settings.hash = hash;
         return settings.save();
@@ -50720,7 +50721,7 @@ Released under the MIT License
       if (user = User.first()) {
         setting = this.findByAttribute('user_id', user.id);
       } else {
-        setting = Model.Settings.first().hash;
+        setting = Model.Settings.first();
       }
       return setting;
     };

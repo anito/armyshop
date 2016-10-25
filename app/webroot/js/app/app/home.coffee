@@ -126,6 +126,7 @@ class App extends Spine.Controller
     
   storeHash: ->
     return unless settings = Settings.loadSettings()
+    console.log settings
     if hash = location.hash
       settings.hash = hash
       settings.save()
