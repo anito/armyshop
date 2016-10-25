@@ -85,6 +85,7 @@ class ShowView extends Spine.Controller
     'click .opt-CutProduct'                             : 'cutProduct'
     'click .opt-PasteProduct'                           : 'pasteProduct'
     'click .opt-EmptyProduct'                           : 'emptyProduct'
+    
     'click .opt-CreatePhoto:not(.disabled)'           : 'createPhoto'
     'click .opt-DestroyEmptyProducts:not(.disabled)'    : 'destroyEmptyProducts'
     'click .opt-DestroyCategory:not(.disabled)'        : 'destroyCategory'
@@ -711,7 +712,10 @@ class ShowView extends Spine.Controller
     @navigate '/category', '/'
     
   showCategories: ->
-    @navigate '/categories', ''
+    if Category.record
+      @navigate '/categories', 'cid', Category.record.id
+    else
+      @navigate '/categories', ''
     
   showOverview: ->
     @navigate '/overview', ''
@@ -746,7 +750,7 @@ class ShowView extends Spine.Controller
       @navigate '/categories', ''
       
     e.preventDefault()
-      
+
   copy: (e) ->
     #type of copied objects depends on view
     model = @current.el.data('current').models.className
@@ -864,11 +868,11 @@ class ShowView extends Spine.Controller
       
     Product.trigger('create:join', items, category, callback)
       
-  ignoreProduct: (e) ->
-    e.stopPropagation()
-    item = $(e.currentTarget).item()
-    return unless item?.constructor?.className is 'Product'
-    if ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id)
+  ignoreProduct: (product, category) ->
+    return unless category
+    itemId = product.id
+    categoryId = category.id
+    if ga = CategoriesProduct.categoryProductExists(itemId, categoryId)
       CategoriesProduct.trigger('ignored', ga, !ga.ignored)
       
   help: (e) ->
@@ -1029,9 +1033,11 @@ class ShowView extends Spine.Controller
     models = @controller.el.data('current').models
     parent = @controller.el.data('current').model
     record = models.record
+    console.log record
     
     try
       activeEl = list.findModelElement(record) or $()
+      console.log activeEl
     catch e
       return
       

@@ -90,6 +90,7 @@ class ProductsView extends Spine.Controller
     Product.bind('create:join', @proxy @createJoin)
     Product.bind('destroy:join', @proxy @destroyJoin)
     Product.bind('change:collection', @proxy @renderBackgrounds)
+    Product.bind('show:unpublished', @proxy @showUnpublished)
     
 #    CategoriesProduct.bind('ajaxError', Product.errorHandler)
     
@@ -116,19 +117,20 @@ class ProductsView extends Spine.Controller
   bindRefresh: ->
     Product.one('refresh', @proxy @refresh)
     
-  refresh: ->
-    @updateBuffer()
+  refresh: (items) ->
+    @updateBuffer(items)
     @render @buffer, 'html'
     
-  updateBuffer: (category=Category.record) ->
+  updateBuffer: (items) ->
     filterOptions =
       model: 'Category'
-      sort: 'sortByReverseOrder'
+      sort: 'sortByOrder'
     
-    if category
-      items = Category.products(category.id, filterOptions)
-    else
-      items = Product.filter()
+    unless items
+      if category = Category.record
+        items = Category.products(category.id, filterOptions)
+      else
+        items = Product.filter()
     
     @buffer = items
     
@@ -143,7 +145,6 @@ class ProductsView extends Spine.Controller
   active: ->
     return unless @isActive()
     return if @eql Category.record
-#    return if @eql Category.record
     @current.id = Category.record?.id
     App.showView.trigger('change:toolbarOne', ['Default', 'Help'])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
@@ -170,6 +171,14 @@ class ProductsView extends Spine.Controller
       ids = [ids]
     
     Product.current ids[0]
+  
+  showUnpublished: ->
+    gas = CategoriesProduct.unpublishedProducts(true)
+    items = []
+    items.push item for ga in gas when item = Product.find(ga.product_id)
+      
+    @navigate '/category', ''
+    @refresh items
   
   newAttributes: ->
     if user_id = User.first()?.id
@@ -342,26 +351,25 @@ class ProductsView extends Spine.Controller
   click: (e, excl) ->
     item = $(e.currentTarget).item()
     @select(e, item.id)
-#    e.stopPropagation()
     
-  select: (e, items = []) ->
-    unless Array.isArray items
-      items = [items]
+  select: (e, ids = []) ->
+    unless Array.isArray ids
+      ids = [ids]
       
     type = e.type
     switch type
       when 'keyup'
-        selection = items
+        selection = ids
       when 'click'
         Category.emptySelection() unless @isCtrlClick(e)
         selection = Category.selectionList()[..]
-        items = selection[..] unless items.length
-        for id in items
+        ids = selection[..] unless ids.length
+        for id in ids
           selection.addRemoveSelection(id)
     
     Category.updateSelection(selection, Category.record?.id)
     Product.updateSelection(Product.selectionList(), Product.record?.id)
-#    e.stopPropagation()
+#    @navigate '/category', Category.record?.id or '', 'pid', ids[0]
     
   infoUp: (e) =>
     @info.up(e)

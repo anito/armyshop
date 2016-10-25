@@ -27,7 +27,7 @@ class LoginView extends Spine.Controller
     @render()
     if confirm('Entwickler Modus: ' + (if Spine.isProduction then 'Aus' else 'An') + '\n\Die Anwendung muss neu gestartet werden.\n\nFortfahren mit OK')
       $(window).off()
-      User.redirect('admin#/overview/')
+      User.redirect('logout')
     
   render: ->
     @html @template()

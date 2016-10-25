@@ -8,7 +8,7 @@ UriHelper =
 
     include =
     
-      callDeferred: (items=[], options=@uriSettings, cb=->) ->
+      callDeferred: (items=[], options=@uriSettings, cb) ->
         items = [items] unless Array.isArray(items)
           
         $.when(@uriDeferred(items, options)).done (xhr, rec) =>
@@ -23,6 +23,7 @@ UriHelper =
 
         deferred.promise()
         
+      cb: =>
       # defaultSettings
       uriSettings: (width=30, height=10, square=1, quality=70) ->
         width: width

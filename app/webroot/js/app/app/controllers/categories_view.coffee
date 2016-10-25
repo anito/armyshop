@@ -80,12 +80,12 @@ class CategoriesView extends Spine.Controller
   click: (e) ->
     App.showView.trigger('change:toolbarOne', ['Default'])
     item = $(e.target).closest('li').item()
-    @select(item) #one category selected at a time
+    @select(e, item.id) #one category selected at a time
     
-  select: (item) ->
-    Root.updateSelection(item.id)
-    Category.updateSelection(Category.selectionList())
-    Product.updateSelection(Product.selectionList())
+  select: (e, ids) ->
+    unless Array.isArray ids
+      ids = [ids]
+    @navigate '/categories', 'cid', ids[0]
     
   beforeDestroy: (item) ->
     return unless item.isValid()

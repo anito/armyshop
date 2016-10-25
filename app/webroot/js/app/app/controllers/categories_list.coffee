@@ -34,7 +34,7 @@ class CategoriesList extends Spine.Controller
     
   renderOneRelated: (ga) ->
     category = Category.find ga.category_id
-    @updateOneTemplate(category) if category
+    @updateTemplate(category) if category
     
   renderRelated: ->
     return unless @parent.isActive()
@@ -50,10 +50,8 @@ class CategoriesList extends Spine.Controller
         @append @template item
         @exposeSelection()
       when 'update'
-        try
-          @updateTemplates()
-          $('.dropdown-toggle', @el).dropdown()
-        catch e
+        @updateTemplate(item)
+        $('.dropdown-toggle', @el).dropdown()
         @reorder item
         @exposeSelection()
       when 'destroy'
@@ -70,20 +68,19 @@ class CategoriesList extends Spine.Controller
   
   updateTemplates: ->
     @log 'updateTemplates'
-    return
     for category in Category.records
-      @updateOneTemplate(category)
+      @updateTemplate(category)
     @el.sortable('categories')
 
-  updateOneTemplate: (category) ->
+  updateTemplate: (category) ->
     categoryEl = @children().forItem(category)
     active = categoryEl.hasClass('active')
     contentEl = $('.thumbnail', categoryEl)
+    
     tmplItem = contentEl.tmplItem()
-    alert 'no tmpl item' unless tmplItem
-    try
-      tmplItem.update?()
-    catch e
+    tmplItem.data = category
+    tmplItem.update?()
+    
     categoryEl = @children().forItem(category).toggleClass('active hot', active)
     @el.sortable('categories')
     
@@ -97,7 +94,7 @@ class CategoriesList extends Spine.Controller
     children = @children()
     oldEl = @children().forItem(item)
     idxBeforeSort =  @children().index(oldEl)
-    idxAfterSort = index(id, Category.all().sort(Category.nameSort))
+    idxAfterSort = index(id, Category.all().sort(Category.sortByOrder))
     newEl = $(children[idxAfterSort])
     if idxBeforeSort < idxAfterSort
       newEl.after oldEl

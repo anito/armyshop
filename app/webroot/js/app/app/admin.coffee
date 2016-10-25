@@ -188,7 +188,7 @@ class Main extends Spine.Controller
       
       '/category/:gid/:aid/:pid': (params) ->
         Model.Root.updateSelection params.gid or []
-        if (params.aid is 'product') and (pid = params.pid)
+        if (params.aid is 'pid') and (pid = params.pid)
           Category.updateSelection pid
           @showView.trigger('active', @showView.productsView)
         else
@@ -205,6 +205,13 @@ class Main extends Spine.Controller
         Category.updateSelection()
         Product.updateSelection()
         @showView.trigger('active', @showView.productsView)
+      '/categories/:gid/:pid': (params) ->
+        if (params.gid is 'cid') and (pid = params.pid)
+          Root.updateSelection params.pid
+          @showView.trigger('active', @showView.categoriesView)
+        else
+          Root.updateSelection []
+          @showView.trigger('active', @showView.categoriesView)
       '/categories/*': ->
         Root.updateSelection []
         @showView.trigger('active', @showView.categoriesView)

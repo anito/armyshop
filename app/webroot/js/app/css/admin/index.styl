@@ -820,8 +820,10 @@ ul.sublist::before {
 }
 .cta {
   background-color: rgba(100, 100, 100, 0.4);
+  border-radius: 20px;
+  border: 1px solid;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
   padding: 2px 10px;
-  right: 10px;
 }
 .active .alb .cta {
   border: 1px solid #575757;
@@ -829,30 +831,28 @@ ul.sublist::before {
 .alb .cta {
   -moz-border-radius: 20px;
   -webkit-border-radius: 20px;
-  border-radius: 20px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
-  border: 1px solid #979797;
+  border-color: #979797;
   position: absolute;
+  right: 10px;
   line-height: 1.3;
 }
 .active .gal.cta {
   border: 1px solid rgb(90, 90, 90);
 }
 .gal.cta {
-  border: 1px solid rgb(120, 120, 120);
-  border-radius: 30px 30px 30px 30px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+  border-color: 1px solid rgb(120, 120, 120);
+/*  border-radius: 30px 30px 30px 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;*/
   font-size: 1.1em;
   line-height: 16px;
   padding: 7px 11px;
   position: absolute;
+  right: 10px;
   top: 14px;
 }
 .hoverinfo .cta {
   background-color: rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 30px 30px 30px 30px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) inset;
+  border-color: rgba(255, 255, 255, 0.3);
   margin-left: 10px;
   padding: 3px 15px;
   font-size: 1.1em;
@@ -1082,6 +1082,7 @@ section span.price {
 }
 .carousel-caption {
   top: 0;
+  bottom: inherit;
 }
 .carousel-indicators {
   bottom: -30px;
@@ -1328,7 +1329,7 @@ li.item.active .glyphicon-set {
   font-size: 2.7em;
 }
 #content .header h3:nth-child(2) {
-  margin-left: 20px;
+  /*margin-left: 20px;*/
 }
 [draggable] {
   -moz-user-select: none;

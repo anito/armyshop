@@ -23,9 +23,10 @@ class OverviewView extends Spine.Controller
     '.summary'                      : 'summary'
     
   events:
-    'click button.close'  : 'close'
-    'click .item'         : 'showPhoto'
-    'keyup'               : 'keyup'
+    'click button.close'                  : 'close'
+    'click .item'                         : 'showPhoto'
+    'keyup'                               : 'keyup'
+    'click .opt-ShowUnpublishedProducts'  : 'showUnpublishedProducts'
 
   template: (photos, products) ->
     $("#overviewTemplate").tmpl
@@ -85,12 +86,16 @@ class OverviewView extends Spine.Controller
     products = @getProducts()
     
     @html @template items, products
-    @refreshElements()
     
     @callDeferred items, @uriSettings(70, 70), @proxy @callbackRecents
     
     photos = @getProductPhotos()
     @callDeferred photos, @uriSettings(300, 300), @proxy @callbackPreview
+    
+        
+  showUnpublishedProducts: (e) ->
+    e.preventDefault()
+    Product.trigger('show:unpublished')
     
   callbackRecents: (json, items) ->
     searchJSON = (id) ->

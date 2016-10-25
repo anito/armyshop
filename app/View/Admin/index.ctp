@@ -719,7 +719,16 @@
       <div class="header-title">
         {{if model.record}}
         <h3>
-        <span class="label label-default"><a class="opt opt-ShowCategories">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</a></span>
+        <span class="label label-warning">
+          <a class="opt opt-ShowCategories">
+            <i class="glyphicon glyphicon-arrow-up"></i>
+          </a>
+        </span>
+        </h3>
+        {{/if}}
+        {{if model.record}}
+        <h3>
+        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
         </h3>
         <h3>
         {{if modelProduct.record}}
@@ -750,12 +759,24 @@
   <section class="top viewheader fadeelement">
     <div class="left">  
       <div class="header-title">
+        {{if category}}
+        <h3>
+        <span class="label label-warning">
+          <a class="opt opt-ShowProducts">
+            <i class="glyphicon glyphicon-arrow-up"></i>
+          </a>
+        </span>
+        </h3>
+        {{/if}}
         {{if product}}
         <h3>
-        <span class="label label-default"><a class="opt opt-ShowProducts">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</a></span>
+        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
         </h3>
-        <h3 style="display: inline-block;">
+        <h3>
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
+        </h3>
+        <h3>
+        <span class="label label-info">Fotos</span>
         </h3>
         {{else}}
         <h1>Foto-Katalog</h1>
@@ -775,12 +796,24 @@
   <section class="top viewheader fadeelement">
     <div class="left">  
       <div class="header-title">
+        {{if category}}
+        <h3>
+        <span class="label label-warning">
+          <a class="opt opt-ShowProducts">
+            <i class="glyphicon glyphicon-arrow-up"></i>
+          </a>
+        </span>
+        </h3>
+        {{/if}}
         {{if product}}
         <h3>
-        <span class="label label-default"><a href="" class="opt-ShowProducts" >{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</a></span>
+        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</span>
         </h3>
         <h3>
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}{{/if}}</span>
+        </h3>
+        <h3>
+        <span class="label label-info">Fotos</span>
         </h3>
         {{else}}
         <h1>Foto-Katalog</h1>
@@ -1169,7 +1202,7 @@
         <td>${published.length}</td>
       </tr>
       <tr class="">
-        <td>unveröffentlichte Produkte</td>
+        <td><a href="#" class="opt opt-ShowUnpublishedProducts">unveröffentlichte Produkte</a></td>
         <td>${unpublished.length}</td>
       </tr>
       <tr class="">

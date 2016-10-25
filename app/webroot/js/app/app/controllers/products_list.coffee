@@ -8,11 +8,13 @@ ProductsPhoto     = require('models/products_photo')
 CategoriesProduct  = require('models/categories_product')
 Extender        = require('extensions/controller_extender')
 Drag            = require('extensions/drag')
+UriHelper = require('extensions/uri_helper')
 
 require('extensions/tmpl')
 
 class ProductsList extends Spine.Controller
   
+  @extend UriHelper
   @extend Drag
   @extend Extender
   
@@ -150,33 +152,36 @@ class ProductsList extends Spine.Controller
     @removeWidows @widows
     for product in products
       if product
-        $.when(@processProductDeferred(product)).done (xhr, rec) =>
-          @callback xhr, rec
+        $.when(@processProduct(product)).done (xhr, rec) =>
+          @callback xhr, product
         
   removeWidows: (widows=[]) ->
     Model.Uri.Ajax.cache = false
     for widow in widows
-      $.when(@processProductDeferred(widow)).done (xhr, rec) =>
+      $.when(@processProduct(widow)).done (xhr, rec) =>
         @callback xhr, rec
     @widows = []
     Model.Uri.Ajax.cache = true
   
-  processProductDeferred: (product) ->
-    @log 'processProductDeferred'
-    deferred = $.Deferred()
+  processProduct: (product) ->
+    @log 'processProduct'
+#    deferred = $.Deferred()
+    return unless product
     all = product.photos()
     sorted = all.sort Photo.sortByReverseOrder
     data = sorted.slice(0, 4)
-    
-    Photo.uri
-      width: 60
-      height: 60,
-      (xhr, rec) -> deferred.resolve(xhr, product)
-      data
+
+    @callDeferred data, @uriSettings(60, 60), @callback
+
+#    Photo.uri
+#      width: 60
+#      height: 60,
+#      (xhr, rec) -> deferred.resolve(xhr, product)
+#      data
+#      
+#    deferred.promise()
       
-    deferred.promise()
-      
-  callback: (json, product) ->
+  callback: (json, product) =>
     el = $('#'+product.id, @el)
     thumb = $('.thumbnail', el)
     
@@ -207,6 +212,7 @@ class ProductsList extends Spine.Controller
     
   onLoad: ->
     @me.log 'image loaded'
+    @me.log @el
     @el.removeClass('load')
     @el.css('backgroundImage', @css)
     
@@ -233,7 +239,10 @@ class ProductsList extends Spine.Controller
     e.stopPropagation()
     
   back: (e) ->
-    @navigate '/categories', ''
+    if Category.record
+      @navigate '/categories', 'cid', Category.record.id
+    else
+      @navigate '/categories', ''
     
     e.preventDefault()
     e.stopPropagation()
@@ -244,7 +253,12 @@ class ProductsList extends Spine.Controller
     e.preventDefault()
 
   ignoreProduct: (e) ->
-    Spine.trigger('product:ignore', e)
+    product = $(e.currentTarget).item()
+    category = @parent.el.data('current').model.record
+    Spine.trigger('product:ignore', product, category)
+    
+    e.stopPropagation()
+    e.preventDefault()
     
   deleteProduct: (e) ->
     @log 'deleteProduct'
