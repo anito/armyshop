@@ -22,7 +22,7 @@ class CategoriesView extends Spine.Controller
     'dragend'                         : 'dragend'
     'dragstart'                       : 'dragstart'
     'drop       '                     : 'drop'
-    'dragover   '                     : 'dragover'
+#    'dragover   '                     : 'dragover'
     'dragenter  '                     : 'dragenter'
     
     

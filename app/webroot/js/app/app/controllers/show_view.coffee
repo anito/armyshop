@@ -1033,11 +1033,9 @@ class ShowView extends Spine.Controller
     models = @controller.el.data('current').models
     parent = @controller.el.data('current').model
     record = models.record
-    console.log record
     
     try
       activeEl = list.findModelElement(record) or $()
-      console.log activeEl
     catch e
       return
       

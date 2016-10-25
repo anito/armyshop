@@ -36585,7 +36585,6 @@ Released under the MIT License
       'dragend': 'dragend',
       'dragstart': 'dragstart',
       'drop       ': 'drop',
-      'dragover   ': 'dragover',
       'dragenter  ': 'dragenter',
       'sortupdate': 'sortupdate'
     };
@@ -42892,10 +42891,8 @@ Released under the MIT License
       models = this.controller.el.data('current').models;
       parent = this.controller.el.data('current').model;
       record = models.record;
-      console.log(record);
       try {
         activeEl = list.findModelElement(record) || $();
-        console.log(activeEl);
       } catch (error) {
         e = error;
         return;
