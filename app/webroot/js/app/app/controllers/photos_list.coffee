@@ -145,7 +145,7 @@ class PhotosList extends Spine.Controller
     @el.sortable('destroy').sortable('photos')
     tmplItem
   
-  callback: (json, items) =>
+  callback: (json) =>
     result = for jsn in json
       ret = for key, val of jsn
         src: val.src

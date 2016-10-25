@@ -11,14 +11,14 @@ UriHelper =
       callDeferred: (items=[], options=@uriSettings, cb) ->
         items = [items] unless Array.isArray(items)
           
-        $.when(@uriDeferred(items, options)).done (xhr, rec) =>
-          cb xhr, rec
+        $.when(@uriDeferred(items, options)).done (xhr) =>
+          cb xhr
 
       uriDeferred: (items, options) ->
         deferred = $.Deferred()
 
         Photo.uri options,
-          (xhr, rec) => deferred.resolve(xhr, rec)
+          (xhr) => deferred.resolve(xhr)
           items
 
         deferred.promise()

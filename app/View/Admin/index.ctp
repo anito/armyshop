@@ -998,7 +998,7 @@
 </script>
 
 <script id="photoThumbnailSimpleTemplate" type="text/x-jquery-tmpl">
-  <div class="opt- thumbnail image left"></div>
+  <div class="opt- thumbnail image left" data-id="${id}"></div>
 </script>
 
 <script id="preloaderTemplate" type="text/x-jquery-tmpl">

@@ -38000,33 +38000,23 @@ Released under the MIT License
       return Product.trigger('show:unpublished');
     };
 
-    OverviewView.prototype.callbackRecents = function(json, items) {
-      var img, j, jsn, len, photo, photoEl, searchJSON;
-      searchJSON = function(id) {
-        var itm, j, len;
-        for (j = 0, len = json.length; j < len; j++) {
-          itm = json[j];
-          if (itm[id]) {
-            return itm[id];
-          }
+    OverviewView.prototype.callbackRecents = function(json) {
+      var id, img, j, jsn, len, photoEl, results, src;
+      results = [];
+      for (j = 0, len = json.length; j < len; j++) {
+        jsn = json[j];
+        for (id in jsn) {
+          id;
         }
-      };
-      for (j = 0, len = items.length; j < len; j++) {
-        photo = items[j];
-        jsn = searchJSON(photo.id);
-        photoEl = this.recentsItems.children().forItem(photo);
-        if (!photoEl.length) {
-          return;
-        }
+        src = jsn[id].src;
+        photoEl = $('[data-id=' + id + ']', this.recentsItems);
         img = new Image;
+        img.me = this;
         img.element = photoEl;
-        if (jsn) {
-          img.src = jsn.src;
-        } else {
-          img.src = '/img/nophoto.png';
-        }
-        img.onload = this.imageLoad;
+        img.src = src;
+        results.push(img.onload = this.imageLoad);
       }
+      return results;
     };
 
     OverviewView.prototype.callbackPreview = function(json, items) {
@@ -38109,9 +38099,11 @@ Released under the MIT License
     };
 
     OverviewView.prototype.imageLoad = function() {
-      var css, e;
+      var css;
+      this.me.log('loaded');
+      this.me.log(this.src);
       css = 'url(' + this.src + ')';
-      return e = $('.thumbnail', this.element).css({
+      return this.element.css({
         'backgroundImage': css,
         'backgroundPosition': 'center, center'
       });
@@ -39211,7 +39203,7 @@ Released under the MIT License
       return tmplItem;
     };
 
-    PhotosList.prototype.callback = function(json, items) {
+    PhotosList.prototype.callback = function(json) {
       var i, jsn, key, len, res, result, results, ret, val;
       result = (function() {
         var i, len, results;
@@ -47750,8 +47742,8 @@ Released under the MIT License
             items = [items];
           }
           return $.when(this.uriDeferred(items, options)).done((function(_this) {
-            return function(xhr, rec) {
-              return cb(xhr, rec);
+            return function(xhr) {
+              return cb(xhr);
             };
           })(this));
         },
@@ -47759,8 +47751,8 @@ Released under the MIT License
           var deferred;
           deferred = $.Deferred();
           Photo.uri(options, (function(_this) {
-            return function(xhr, rec) {
-              return deferred.resolve(xhr, rec);
+            return function(xhr) {
+              return deferred.resolve(xhr);
             };
           })(this), items);
           return deferred.promise();

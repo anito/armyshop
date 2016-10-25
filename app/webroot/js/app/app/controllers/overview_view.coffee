@@ -97,21 +97,15 @@ class OverviewView extends Spine.Controller
     e.preventDefault()
     Product.trigger('show:unpublished')
     
-  callbackRecents: (json, items) ->
-    searchJSON = (id) ->
-      for itm in json
-        return itm[id] if itm[id]
-        
-    for photo in items
-      jsn = searchJSON photo.id
-      photoEl = @recentsItems.children().forItem(photo)
-      return unless photoEl.length
+  callbackRecents: (json) ->
+    for jsn in json
+      id for id of jsn 
+      src = jsn[id].src
+      photoEl = $('[data-id='+ id+']', @recentsItems)
       img = new Image
+      img.me = @
       img.element = photoEl
-      if jsn
-        img.src = jsn.src
-      else
-        img.src = '/img/nophoto.png'
+      img.src = src
       img.onload = @imageLoad
   
   callbackPreview: (json, items) ->
@@ -154,8 +148,10 @@ class OverviewView extends Spine.Controller
     photos
       
   imageLoad: ->
+    @me.log 'loaded'
+    @me.log @src
     css = 'url(' + @src + ')'
-    e = $('.thumbnail', @element).css
+    @element.css
       'backgroundImage': css
       'backgroundPosition': 'center, center'
     
