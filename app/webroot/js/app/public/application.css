@@ -1229,7 +1229,7 @@ ul.sublist::before {
 .gal .sublist-item.selected {
   background-color: rgba(51,153,255,0.16);
 }
-.gal.active .sublist-item.active {
+.gal.active .sublist-item.selected.active {
   background-color: rgba(51,153,255,0.5);
 }
 .gal.active .sublist-item.selected {
