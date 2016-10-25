@@ -1174,7 +1174,7 @@ ul {
 /* text-overflow: ellipsis; */
 /* overflow: hidden; */
   margin-bottom: 2px;
-  padding: 17px 0 15px;
+  padding: 15px 0 0;
   box-shadow: 0 1px 4px rgba(0,0,0,0.5);
 }
 .contents.views {
@@ -1255,7 +1255,6 @@ ul.sublist::before {
 }
 .item-content {
   cursor: pointer;
-  line-height: 1em;
 }
 .sublist-item span {
   display: inline-block;
@@ -1300,7 +1299,7 @@ ul.sublist::before {
   font-style: italic;
 }
 .sidebar ul.sublist {
-  margin: 20px 0 0;
+  margin: 0;
 }
 .center {
   margin: 0 auto;
@@ -1396,7 +1395,7 @@ ul.sublist::before {
 .opt-Preview {
   color: rgba(245,245,245,0.91);
   font-family: "ChopinScript", serif;
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   vertical-align: initial;
 /* top: 28px; */
   height: 49px;
