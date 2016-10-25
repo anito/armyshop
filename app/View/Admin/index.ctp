@@ -616,10 +616,12 @@
     <div class="titles">
       <div class="title">{{if title}}${$().name(title, 25)}{{/if}}</div>
       <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 120)}}{{/if}}</div>
+        {{if link}}<a href="${link}" target="_blank">{{/if}}
         <section class="info-badges">
           <span class="cc link glyphicon glyphicon-link {{if link}}{{else}}warning-badge{{/if}}"></span>
           <span class="dd price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</span>
         </section>
+        {{if link}}</a>{{/if}}
     </div>
   </li>
 </script>

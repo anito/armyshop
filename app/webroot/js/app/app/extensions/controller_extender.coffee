@@ -25,6 +25,13 @@ Controller.Extender =
           models: null
         )
         
+      
+      followLink: (e) ->
+        strWindowFeatures = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no"
+        window.open($(e.target).closest('a').attr('href'), 'new')
+        e.preventDefault()
+        e.stopPropagation()
+        
       createImage: (url, onload) ->
         img = new Image()
         img.onload = onload if onload

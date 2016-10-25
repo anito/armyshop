@@ -67,6 +67,7 @@ class ShowView extends Spine.Controller
     '.opt-Upload'             : 'btnUpload'
     
   events:
+    'click a[href]'                                   : 'followLink'
     'click .opt-ShowProducts'                         : 'showProducts'
     'click .opt-AutoUpload:not(.disabled)'            : 'toggleAutoUpload'
     'click .opt-Previous:not(.disabled)'              : 'back'

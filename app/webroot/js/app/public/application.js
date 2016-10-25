@@ -39889,8 +39889,8 @@ Released under the MIT License
 
     PreviewView.prototype.events = {
       'click a[href]': 'followLink',
-      'click      .expander': 'expand',
-      'click      .item-content': 'expand'
+      'click .expander': 'expand',
+      'click .item-content': 'expand'
     };
 
     PreviewView.prototype.template = function(item) {
@@ -40029,14 +40029,6 @@ Released under the MIT License
         return;
       }
       return this.exapand(e);
-    };
-
-    PreviewView.prototype.followLink = function(e) {
-      var strWindowFeatures;
-      this.log('followLink');
-      this.log($(e.target).closest('a').attr('href'));
-      strWindowFeatures = "menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no";
-      return window.open($(e.target).closest('a').attr('href'), 'new');
     };
 
     PreviewView.prototype.togglePreview = function() {
@@ -41652,6 +41644,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.events = {
+      'click a[href]': 'followLink',
       'click .opt-ShowProducts': 'showProducts',
       'click .opt-AutoUpload:not(.disabled)': 'toggleAutoUpload',
       'click .opt-Previous:not(.disabled)': 'back',
@@ -45010,6 +45003,13 @@ Released under the MIT License
             model: null,
             models: null
           });
+        },
+        followLink: function(e) {
+          var strWindowFeatures;
+          strWindowFeatures = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no";
+          window.open($(e.target).closest('a').attr('href'), 'new');
+          e.preventDefault();
+          return e.stopPropagation();
         },
         createImage: function(url, onload) {
           var img;

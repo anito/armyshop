@@ -34,6 +34,7 @@ class Sidebar extends Spine.Controller
     'keyup input'               : 'filter'
     'click .opt-CreateProduct'  : 'createProduct'
     'click .opt-CreateCategory' : 'createCategory'
+#    'click a[href]'             : 'followLink'
     
     'dblclick .draghandle'      : 'toggleDraghandle'
 

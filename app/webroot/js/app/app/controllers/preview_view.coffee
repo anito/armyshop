@@ -21,8 +21,8 @@ class PreviewView extends Spine.Controller
 
   events:
     'click a[href]'          : 'followLink'
-    'click      .expander'        : 'expand'
-    'click      .item-content'    : 'expand'
+    'click .expander'        : 'expand'
+    'click .item-content'    : 'expand'
 
   template:  (item) ->
     $('#norbuPricingTemplate').tmpl item if item
@@ -107,12 +107,6 @@ class PreviewView extends Spine.Controller
   click: (e) ->
     return if parent.hasClass('open')
     @exapand(e)
-    
-  followLink: (e) ->
-    @log 'followLink'
-    @log $(e.target).closest('a').attr('href')
-    strWindowFeatures = "menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no"
-    window.open($(e.target).closest('a').attr('href'), 'new')
     
   togglePreview: ->
     @expander.click()
