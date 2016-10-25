@@ -245,8 +245,6 @@ class ShowView extends Spine.Controller
     Model.Settings.bind('refresh', @proxy @refreshSettings)
     
   active: (controller, params) ->
-    console.log 'showView::active'
-    console.log controller
     # activate controller
     if controller
       controller.trigger('active', params)

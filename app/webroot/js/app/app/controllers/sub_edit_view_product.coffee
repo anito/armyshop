@@ -11,7 +11,7 @@ class SubEditViewProduct extends Spine.Controller
   
   events:
     'keyup'                         : 'saveOnKeyup'
-    'click .opt-ignore'             : 'ignoreProduct'
+    'click .opt-ignored'            : 'ignoreProduct'
   
   template: (item) ->
     @templ.tmpl item
@@ -40,7 +40,10 @@ class SubEditViewProduct extends Spine.Controller
       @parent.current.updateChangedAttributes(atts)
 
   ignoreProduct: (e) ->
-    Spine.trigger('product:ignore', e)
+    product = $(e.currentTarget).item()
+    category = Category.record
+    return unless category
+    Spine.trigger('product:ignore', product, category)
 
   saveOnKeyup: (e) =>
     code = e.charCode or e.keyCode

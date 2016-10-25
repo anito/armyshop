@@ -633,7 +633,7 @@
         <span class="input-group-addon" id="basic-addon1">Titel</span>
         <input type="text" class="form-control" placeholder="Produkttitel" aria-describedby="basic-addon1" name="title" value="{{html title}}">
         <div class="input-group-btn">
-          <button type="button" class="btn btn-default opt-ignore" aria-label="Help">
+          <button type="button" class="btn btn-default opt-ignored" aria-label="Help">
             <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}}"></span>
           </button>
         </div>

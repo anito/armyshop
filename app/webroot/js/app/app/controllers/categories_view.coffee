@@ -116,10 +116,7 @@ class CategoriesView extends Spine.Controller
       
   createProtected: (item) ->
     for key, val of Category.protected
-      console.log Category.protected[key]
-      console.log val.screenname
       unless Category.findByAttribute('name', key)
-        console.log @
         item.name = key
         item.screenname = val.screenname
         break

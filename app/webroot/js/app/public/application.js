@@ -36704,10 +36704,7 @@ Released under the MIT License
       results = [];
       for (key in ref) {
         val = ref[key];
-        console.log(Category["protected"][key]);
-        console.log(val.screenname);
         if (!Category.findByAttribute('name', key)) {
-          console.log(this);
           item.name = key;
           item.screenname = val.screenname;
           break;
@@ -41852,8 +41849,6 @@ Released under the MIT License
 
     ShowView.prototype.active = function(controller, params) {
       var ref;
-      console.log('showView::active');
-      console.log(controller);
       if (controller) {
         controller.trigger('active', params);
         if ((ref = controller.header) != null) {
@@ -44247,7 +44242,7 @@ Released under the MIT License
 
     SubEditViewProduct.prototype.events = {
       'keyup': 'saveOnKeyup',
-      'click .opt-ignore': 'ignoreProduct'
+      'click .opt-ignored': 'ignoreProduct'
     };
 
     SubEditViewProduct.prototype.template = function(item) {
@@ -44287,7 +44282,13 @@ Released under the MIT License
     };
 
     SubEditViewProduct.prototype.ignoreProduct = function(e) {
-      return Spine.trigger('product:ignore', e);
+      var category, product;
+      product = $(e.currentTarget).item();
+      category = Category.record;
+      if (!category) {
+        return;
+      }
+      return Spine.trigger('product:ignore', product, category);
     };
 
     SubEditViewProduct.prototype.saveOnKeyup = function(e) {
