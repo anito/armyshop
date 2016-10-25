@@ -40845,7 +40845,6 @@ Released under the MIT License
 
     ProductsList.prototype.onLoad = function() {
       this.me.log('image loaded');
-      this.me.log(this.el);
       this.el.removeClass('load');
       return this.el.css('backgroundImage', this.css);
     };

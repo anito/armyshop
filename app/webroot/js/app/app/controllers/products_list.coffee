@@ -212,7 +212,6 @@ class ProductsList extends Spine.Controller
     
   onLoad: ->
     @me.log 'image loaded'
-    @me.log @el
     @el.removeClass('load')
     @el.css('backgroundImage', @css)
     
