@@ -37906,7 +37906,8 @@ Released under the MIT License
       'click button.close': 'close',
       'click .item': 'showPhoto',
       'keyup': 'keyup',
-      'click .opt-ShowUnpublishedProducts': 'showUnpublishedProducts'
+      'click .opt-ShowUnpublishedProducts': 'showUnpublishedProducts',
+      'click .opt-ShowUnusedProducts': 'showUnusedProducts'
     };
 
     OverviewView.prototype.template = function(photos, products) {
@@ -38001,6 +38002,11 @@ Released under the MIT License
     OverviewView.prototype.showUnpublishedProducts = function(e) {
       e.preventDefault();
       return Product.trigger('show:unpublished');
+    };
+
+    OverviewView.prototype.showUnusedProducts = function(e) {
+      e.preventDefault();
+      return Product.trigger('show:unused');
     };
 
     OverviewView.prototype.callbackRecents = function(json) {
@@ -41026,6 +41032,7 @@ Released under the MIT License
       Product.bind('destroy:join', this.proxy(this.destroyJoin));
       Product.bind('change:collection', this.proxy(this.renderBackgrounds));
       Product.bind('show:unpublished', this.proxy(this.showUnpublished));
+      Product.bind('show:unused', this.proxy(this.showUnused));
       Spine.bind('reorder', this.proxy(this.reorder));
       Spine.bind('create:product', this.proxy(this.createProduct));
       Spine.bind('loading:start', this.proxy(this.loadingStart));
@@ -41137,6 +41144,13 @@ Released under the MIT License
           items.push(item);
         }
       }
+      this.navigate('/category', '');
+      return this.refresh(items);
+    };
+
+    ProductsView.prototype.showUnused = function() {
+      var items;
+      items = Product.unusedProducts(true);
       this.navigate('/category', '');
       return this.refresh(items);
     };

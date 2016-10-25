@@ -1220,7 +1220,7 @@
         <td>${others.length}</td>
       </tr>
       <tr class="">
-        <td>Produkte ohne Kategorie</td>
+        <td><a href="#" class="opt opt-ShowUnusedProducts">Produkte ohne Kategorie</a></td>
         <td>${unused.length}</td>
       </tr>
     </tbody>

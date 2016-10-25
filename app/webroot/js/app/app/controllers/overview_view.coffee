@@ -27,6 +27,7 @@ class OverviewView extends Spine.Controller
     'click .item'                         : 'showPhoto'
     'keyup'                               : 'keyup'
     'click .opt-ShowUnpublishedProducts'  : 'showUnpublishedProducts'
+    'click .opt-ShowUnusedProducts'       : 'showUnusedProducts'
 
   template: (photos, products) ->
     $("#overviewTemplate").tmpl
@@ -102,6 +103,10 @@ class OverviewView extends Spine.Controller
   showUnpublishedProducts: (e) ->
     e.preventDefault()
     Product.trigger('show:unpublished')
+    
+  showUnusedProducts: (e) ->
+    e.preventDefault()
+    Product.trigger('show:unused')
     
   callbackRecents: (json) ->
     for jsn in json

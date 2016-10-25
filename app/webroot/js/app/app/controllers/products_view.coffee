@@ -91,6 +91,7 @@ class ProductsView extends Spine.Controller
     Product.bind('destroy:join', @proxy @destroyJoin)
     Product.bind('change:collection', @proxy @renderBackgrounds)
     Product.bind('show:unpublished', @proxy @showUnpublished)
+    Product.bind('show:unused', @proxy @showUnused)
     
 #    CategoriesProduct.bind('ajaxError', Product.errorHandler)
     
@@ -176,6 +177,12 @@ class ProductsView extends Spine.Controller
     gas = CategoriesProduct.unpublishedProducts(true)
     items = []
     items.push item for ga in gas when item = Product.find(ga.product_id)
+      
+    @navigate '/category', ''
+    @refresh items
+  
+  showUnused: ->
+    items = Product.unusedProducts(true)
       
     @navigate '/category', ''
     @refresh items
