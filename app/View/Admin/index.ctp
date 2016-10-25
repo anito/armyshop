@@ -1216,6 +1216,10 @@
         <td>${unpublished.length}</td>
       </tr>
       <tr class="">
+        <td>Produkte in  anderen Kategorien</td>
+        <td>${others.length}</td>
+      </tr>
+      <tr class="">
         <td>Produkte ohne Kategorie</td>
         <td>${unused.length}</td>
       </tr>

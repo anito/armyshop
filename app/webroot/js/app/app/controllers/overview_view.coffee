@@ -35,8 +35,9 @@ class OverviewView extends Spine.Controller
         categories  : Category.all()
         products    : Product.all()
         photos      : Photo.all()
-        published   : CategoriesProduct.publishedProducts(true)
+        published   : CategoriesProduct.publishedProductsAll(true)
         unpublished : CategoriesProduct.unpublishedProducts(true)
+        others      : CategoriesProduct.otherProducts(true)
         unused      : Product.unusedProducts(true)
       products      : products
       counter: ->
@@ -63,6 +64,8 @@ class OverviewView extends Spine.Controller
     @carousel.data('bs.carousel')
     @carousel.carousel(@carouselOptions)
     
+    Category.bind('change:collection', @proxy @renderAux)
+    Spine.bind('product:ignore', @proxy @renderAux)
     Recent.bind('refresh', @proxy @render)
     
   active: ->
@@ -76,6 +79,9 @@ class OverviewView extends Spine.Controller
     for item in json
       recents.push item['Photo']
     Recent.refresh(recents, {clear:true})
+    
+  renderAux: ->
+    @loadRecent()
     
   render: (tests) ->
     #validate fresh records against existing model collection

@@ -43,8 +43,14 @@ class CategoriesProduct extends Spine.Model
   @publishedProducts: (gid=Category.record?.id) ->
     @filter(gid, {associationForeignKey: 'category_id', func: 'selectNotIgnored'})
       
+  @publishedProductsAll: (gid=Category.record?.id) ->
+    @filter(gid, {associationForeignKey: 'category_id', func: 'selectNotIgnoredAll'})
+      
   @unpublishedProducts: (gid=Category.record?.id) ->
     @filter(gid, {associationForeignKey: 'category_id', func: 'selectIgnored'})
+      
+  @otherProducts: (gid=Category.record?.id) ->
+    @filter(gid, {associationForeignKey: 'category_id', func: 'selectOthers'})
       
   @photos: (id) ->
     ret = []
@@ -102,10 +108,16 @@ class CategoriesProduct extends Spine.Model
   selectUnique: (empty, options) ->
     return true if @product_id is options.product_id and @category_id is options.category_id
     
-  selectNotIgnored: (id) ->
-    return true if !@ignored and id is @category_id and @isProtectedModel(Category.find(@category_id)?.name)
+  selectNotIgnored: (id, opts) ->
+    return true if !@ignored and @category_id is id and @isProtectedModel(Category.find(@category_id)?.name)
+    
+  selectNotIgnoredAll: (id) ->
+    return true if (!@ignored) and (@isProtectedModel(Category.find(@category_id)?.name))
     
   selectIgnored: (id) ->
     return true if @ignored and @isProtectedModel(Category.find(@category_id)?.name)
+    
+  selectOthers: (id) ->
+    return true if !@isProtectedModel(Category.find(@category_id)?.name)
     
 module.exports = Model.CategoriesProduct = CategoriesProduct

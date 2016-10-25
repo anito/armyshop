@@ -37916,8 +37916,9 @@ Released under the MIT License
           categories: Category.all(),
           products: Product.all(),
           photos: Photo.all(),
-          published: CategoriesProduct.publishedProducts(true),
+          published: CategoriesProduct.publishedProductsAll(true),
           unpublished: CategoriesProduct.unpublishedProducts(true),
+          others: CategoriesProduct.otherProducts(true),
           unused: Product.unusedProducts(true)
         },
         products: products,
@@ -37952,6 +37953,8 @@ Released under the MIT License
       };
       this.carousel.data('bs.carousel');
       this.carousel.carousel(this.carouselOptions);
+      Category.bind('change:collection', this.proxy(this.renderAux));
+      Spine.bind('product:ignore', this.proxy(this.renderAux));
       Recent.bind('refresh', this.proxy(this.render));
     }
 
@@ -37973,6 +37976,10 @@ Released under the MIT License
       return Recent.refresh(recents, {
         clear: true
       });
+    };
+
+    OverviewView.prototype.renderAux = function() {
+      return this.loadRecent();
     };
 
     OverviewView.prototype.render = function(tests) {
@@ -48989,6 +48996,17 @@ Released under the MIT License
       });
     };
 
+    CategoriesProduct.publishedProductsAll = function(gid) {
+      var ref;
+      if (gid == null) {
+        gid = (ref = Category.record) != null ? ref.id : void 0;
+      }
+      return this.filter(gid, {
+        associationForeignKey: 'category_id',
+        func: 'selectNotIgnoredAll'
+      });
+    };
+
     CategoriesProduct.unpublishedProducts = function(gid) {
       var ref;
       if (gid == null) {
@@ -48997,6 +49015,17 @@ Released under the MIT License
       return this.filter(gid, {
         associationForeignKey: 'category_id',
         func: 'selectIgnored'
+      });
+    };
+
+    CategoriesProduct.otherProducts = function(gid) {
+      var ref;
+      if (gid == null) {
+        gid = (ref = Category.record) != null ? ref.id : void 0;
+      }
+      return this.filter(gid, {
+        associationForeignKey: 'category_id',
+        func: 'selectOthers'
       });
     };
 
@@ -49112,9 +49141,16 @@ Released under the MIT License
       }
     };
 
-    CategoriesProduct.prototype.selectNotIgnored = function(id) {
+    CategoriesProduct.prototype.selectNotIgnored = function(id, opts) {
       var ref;
-      if (!this.ignored && id === this.category_id && this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
+      if (!this.ignored && this.category_id === id && this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
+        return true;
+      }
+    };
+
+    CategoriesProduct.prototype.selectNotIgnoredAll = function(id) {
+      var ref;
+      if ((!this.ignored) && (this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0))) {
         return true;
       }
     };
@@ -49122,6 +49158,13 @@ Released under the MIT License
     CategoriesProduct.prototype.selectIgnored = function(id) {
       var ref;
       if (this.ignored && this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
+        return true;
+      }
+    };
+
+    CategoriesProduct.prototype.selectOthers = function(id) {
+      var ref;
+      if (!this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
         return true;
       }
     };
