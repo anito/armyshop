@@ -145,16 +145,6 @@ class ProductsList extends Spine.Controller
     @widows.push item for item in list
     @widows
   
-  renderBackgrounds: (products) ->
-    @log 'renderBackgrounds'
-    return unless @parent.isActive()
-    products = [products] unless Product.isArray(products)
-    @removeWidows @widows
-    for product in products
-      if product
-        $.when(@processProduct(product)).done (xhr, rec) =>
-          @callback xhr, product
-        
   removeWidows: (widows=[]) ->
     Model.Uri.Ajax.cache = false
     for widow in widows
@@ -163,26 +153,28 @@ class ProductsList extends Spine.Controller
     @widows = []
     Model.Uri.Ajax.cache = true
   
+  renderBackgrounds: (products) ->
+    @log 'renderBackgrounds'
+    return unless @parent.isActive()
+    products = [products] unless Array.isArray(products)
+    @removeWidows @widows
+    for product in products
+      $.when(@processProduct(product)).done (xhr, rec) =>
+        @callback xhr, rec
+        
   processProduct: (product) ->
     @log 'processProduct'
-#    deferred = $.Deferred()
-    return unless product
+    deferred = $.Deferred()
     all = product.photos()
     sorted = all.sort Photo.sortByReverseOrder
     data = sorted.slice(0, 4)
 
-    @callDeferred data, @uriSettings(60, 60), @callback
-
-#    Photo.uri
-#      width: 60
-#      height: 60,
-#      (xhr, rec) -> deferred.resolve(xhr, product)
-#      data
-#      
-#    deferred.promise()
+    @callDeferred data, @uriSettings(60, 60), (xhr) -> deferred.resolve(xhr, product)
+    
+    deferred.promise()
       
-  callback: (json, product) =>
-    el = $('#'+product.id, @el)
+  callback: (json, product) ->
+    el = $('[data-id='+product?.id+']', @el)
     thumb = $('.thumbnail', el)
     
     sources = []

@@ -14,7 +14,7 @@ Model.Cache =
         id = recordID or 'global'
         return unless id
         for item in @caches
-          return item[id] if item[id]
+          return itm if itm = item[id]
         throw 'record ' + id + ' is not configured '
         
       # returns object Object{234234-23423424-234234-234234={src='/sdmwes..'}}
@@ -91,7 +91,7 @@ Model.Cache =
     Include =
       
       cache: (url) ->
-        @constructor.cache @, url
+        @constructor.cache url, @id
 
       addToCache: (url, uri, mode) ->
         @constructor.addToCache(@, url, uri, mode)

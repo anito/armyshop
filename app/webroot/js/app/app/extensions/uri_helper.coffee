@@ -18,7 +18,7 @@ UriHelper =
         deferred = $.Deferred()
 
         Photo.uri options,
-          (xhr, record) => deferred.resolve(xhr, items)
+          (xhr, rec) => deferred.resolve(xhr, rec)
           items
 
         deferred.promise()

@@ -40538,7 +40538,6 @@ Released under the MIT License
 }).call(this);
 }, "controllers/products_list": function(exports, require, module) {(function() {
   var $, CategoriesProduct, Category, Drag, Extender, Model, Photo, Product, ProductsList, ProductsPhoto, Spine, UriHelper,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -40585,7 +40584,6 @@ Released under the MIT License
     };
 
     function ProductsList() {
-      this.callback = bind(this.callback, this);
       ProductsList.__super__.constructor.apply(this, arguments);
       this.widows = [];
       this.add = this.html;
@@ -40736,32 +40734,6 @@ Released under the MIT License
       return this.widows;
     };
 
-    ProductsList.prototype.renderBackgrounds = function(products) {
-      var i, len, product, results;
-      this.log('renderBackgrounds');
-      if (!this.parent.isActive()) {
-        return;
-      }
-      if (!Product.isArray(products)) {
-        products = [products];
-      }
-      this.removeWidows(this.widows);
-      results = [];
-      for (i = 0, len = products.length; i < len; i++) {
-        product = products[i];
-        if (product) {
-          results.push($.when(this.processProduct(product)).done((function(_this) {
-            return function(xhr, rec) {
-              return _this.callback(xhr, product);
-            };
-          })(this)));
-        } else {
-          results.push(void 0);
-        }
-      }
-      return results;
-    };
-
     ProductsList.prototype.removeWidows = function(widows) {
       var i, len, widow;
       if (widows == null) {
@@ -40780,21 +40752,44 @@ Released under the MIT License
       return Model.Uri.Ajax.cache = true;
     };
 
-    ProductsList.prototype.processProduct = function(product) {
-      var all, data, sorted;
-      this.log('processProduct');
-      if (!product) {
+    ProductsList.prototype.renderBackgrounds = function(products) {
+      var i, len, product, results;
+      this.log('renderBackgrounds');
+      if (!this.parent.isActive()) {
         return;
       }
+      if (!Array.isArray(products)) {
+        products = [products];
+      }
+      this.removeWidows(this.widows);
+      results = [];
+      for (i = 0, len = products.length; i < len; i++) {
+        product = products[i];
+        results.push($.when(this.processProduct(product)).done((function(_this) {
+          return function(xhr, rec) {
+            return _this.callback(xhr, rec);
+          };
+        })(this)));
+      }
+      return results;
+    };
+
+    ProductsList.prototype.processProduct = function(product) {
+      var all, data, deferred, sorted;
+      this.log('processProduct');
+      deferred = $.Deferred();
       all = product.photos();
       sorted = all.sort(Photo.sortByReverseOrder);
       data = sorted.slice(0, 4);
-      return this.callDeferred(data, this.uriSettings(60, 60), this.callback);
+      this.callDeferred(data, this.uriSettings(60, 60), function(xhr) {
+        return deferred.resolve(xhr, product);
+      });
+      return deferred.promise();
     };
 
     ProductsList.prototype.callback = function(json, product) {
       var c, css, cssdefault, el, i, j, jsn, key, len, len1, results, sources, src, thumb, val;
-      el = $('#' + product.id, this.el);
+      el = $('[data-id=' + (product != null ? product.id : void 0) + ']', this.el);
       thumb = $('.thumbnail', el);
       sources = [];
       css = [];
@@ -44829,7 +44824,7 @@ Released under the MIT License
         ],
         cacheList: (function(_this) {
           return function(recordID) {
-            var i, id, item, len, ref;
+            var i, id, item, itm, len, ref;
             id = recordID || 'global';
             if (!id) {
               return;
@@ -44837,8 +44832,8 @@ Released under the MIT License
             ref = _this.caches;
             for (i = 0, len = ref.length; i < len; i++) {
               item = ref[i];
-              if (item[id]) {
-                return item[id];
+              if (itm = item[id]) {
+                return itm;
               }
             }
             throw 'record ' + id + ' is not configured ';
@@ -44977,7 +44972,7 @@ Released under the MIT License
       };
       Include = {
         cache: function(url) {
-          return this.constructor.cache(this, url);
+          return this.constructor.cache(url, this.id);
         },
         addToCache: function(url, uri, mode) {
           return this.constructor.addToCache(this, url, uri, mode);
@@ -47767,8 +47762,8 @@ Released under the MIT License
           var deferred;
           deferred = $.Deferred();
           Photo.uri(options, (function(_this) {
-            return function(xhr, record) {
-              return deferred.resolve(xhr, items);
+            return function(xhr, rec) {
+              return deferred.resolve(xhr, rec);
             };
           })(this), items);
           return deferred.promise();
