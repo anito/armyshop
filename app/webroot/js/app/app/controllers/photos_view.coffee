@@ -162,9 +162,9 @@ class PhotosView extends Spine.Controller
         items = selection[..] unless items.length
         for id in items
           selection.addRemoveSelection(id)
-    
-    Product.updateSelection(selection, Product.record?.id)
 
+    Product.updateSelection(selection, Product.record?.id)
+      
   clearPhotoCache: ->
     Photo.clearCache()
   

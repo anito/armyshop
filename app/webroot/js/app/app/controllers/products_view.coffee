@@ -357,19 +357,26 @@ class ProductsView extends Spine.Controller
       ids = [ids]
       
     type = e.type
-    switch type
-      when 'keyup'
-        selection = ids
-      when 'click'
-        Category.emptySelection() unless @isCtrlClick(e)
-        selection = Category.selectionList()[..]
-        ids = selection[..] unless ids.length
-        for id in ids
-          selection.addRemoveSelection(id)
+    if @isCtrlClick(e)
+      switch type
+        when 'keyup'
+          selection = ids
+        when 'click'
+          Category.emptySelection() 
+          selection = Category.selectionList()[..]
+          ids = selection[..] unless ids.length
+          for id in ids
+            selection.addRemoveSelection(id)
     
-    Category.updateSelection(selection, Category.record?.id)
-    Product.updateSelection(Product.selectionList(), Product.record?.id)
-#    @navigate '/category', Category.record?.id or '', 'pid', ids[0]
+      Category.updateSelection(selection, Category.record?.id)
+      Product.updateSelection(Product.selectionList(), Product.record?.id)
+    else
+      selection = ids
+      Category.updateSelection(selection, Category.record?.id)
+      if ids.length
+        @navigate '/category', Category.record?.id or '', 'pid', ids[0]
+      else
+        @navigate '/category', Category.record?.id or ''
     
   infoUp: (e) =>
     @info.up(e)

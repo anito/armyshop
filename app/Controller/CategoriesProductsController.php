@@ -63,8 +63,8 @@ class CategoriesProductsController extends AppController {
 
   public function delete($id = null) {
     $this->CategoriesProduct->recursive = 0;
-    $this->log('CategoriesProductsController::delete', LOG_DEBUG);
-    $this->log($id, LOG_DEBUG);
+//    $this->log('CategoriesProductsController::delete', LOG_DEBUG);
+//    $this->log($id, LOG_DEBUG);
     if (!$id) {
       $this->Session->setFlash(__('Invalid id for Categories Product', true));
       $this->redirect(array('action' => 'index'));

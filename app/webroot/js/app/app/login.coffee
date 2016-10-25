@@ -60,7 +60,7 @@ class Login extends Spine.Controller
     user.save()
     @render(@flashEl, @flashTemplate, json)
     delayedFunc = ->
-      User.redirect 'admin#/overview/'
+      User.redirect 'admin'+location.hash
     @contentEl.addClass('fade500')
     @delay delayedFunc, 500
 
@@ -77,6 +77,7 @@ class Login extends Spine.Controller
     name: json.name
     groupname: json.groupname
     sessionid: json.sessionid
+    redirect: location.hash
     
   cancel: (e) ->
     User.redirect()

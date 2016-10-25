@@ -9,7 +9,7 @@ require('spine/lib/local')
 
 class User extends Spine.Model
 
-  @configure 'User', 'id', 'username', 'name', 'groupname', 'sessionid', 'hash'
+  @configure 'User', 'id', 'username', 'name', 'groupname', 'sessionid', 'hash', 'redirect'
 
   @extend Model.Local
   @include Log

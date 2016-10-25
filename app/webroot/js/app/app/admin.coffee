@@ -89,8 +89,8 @@ class Main extends Spine.Controller
     @ignoredHashes = ['slideshow', 'preview', 'flickr', 'logout']
     @arr = ['false', 'outdoor', 'defense', 'goodies']
     
-    User.bind('pinger', @proxy @validate)
     $(window).bind('hashchange', @proxy @storeHash)
+    User.bind('pinger', @proxy @validate)
     
     #reset clipboard
     Clipboard.fetch()
@@ -227,10 +227,31 @@ class Main extends Spine.Controller
       welcomeScreen: false,
       test: true
       
-  initLocation: ->
-    settings = Model.Settings.loadSettings()
-    if hash = settings.hash then hash else '/admin#/overview/'
-    @navigate settings.hash
+  validate: (user, json) ->
+    valid = user.sessionid is json.sessionid
+    valid = user.id is json.id and valid
+    unless valid
+      User.logout()
+    else
+      settings = @loadUserSettings(user.id)
+      @initLocation(settings)
+      @delay @setupView, 500
+  
+  loadUserSettings: (id) ->
+    Settings.fetch()
+    
+    unless settings = Settings.findByAttribute('user_id', id)
+      @notify '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>'
+      
+      settings = Settings.create
+        user_id   : id
+        autoupload: @autoupload
+    settings
+        
+  initLocation: (settings) ->
+    return if location.hash
+    hash = if h = settings.hash then h else '#/overview/'
+    @navigate hash
     
   storeHash: ->
     return unless settings = Settings.loadSettings()
@@ -243,17 +264,6 @@ class Main extends Spine.Controller
   fullscreen: ->
     Spine.trigger('chromeless', true)
     
-  validate: (user, json) ->
-    @log 'Pinger done'
-    valid = user.sessionid is json.sessionid
-    valid = user.id is json.id and valid
-    unless valid
-      User.logout()
-    else
-      @loadUserSettings(user.id)
-      @initLocation()
-      @delay @setupView, 500
-  
   changeBackground: (cat) ->
     
     arr = @arr
@@ -270,18 +280,6 @@ class Main extends Spine.Controller
         text: text
     .show()
       
-  loadUserSettings: (id) ->
-    Settings.fetch()
-    
-    unless settings = Settings.findByAttribute('user_id', id)
-      @notify '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>'
-      
-      Settings.create
-        user_id   : id
-        autoupload: @autoupload
-        hash: '#/overview/'
-        previousHash: '#'
-        
   refreshSettings: (records) ->
 #    if settings = Settings.loadSettings()
 #      @navigate settings.hash
@@ -297,7 +295,7 @@ class Main extends Spine.Controller
       
   finalizeView: ->
     @loginView.render()
-    @mainView.el.fadeIn(500, @proxy @startPage)
+    @mainView.el.fadeIn(500)
       
   startPage: ->
     return

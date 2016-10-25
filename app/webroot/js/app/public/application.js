@@ -35743,8 +35743,8 @@ Released under the MIT License
       this.IMAGE_DOUBLE_MOVE = this.createImage('/img/cursor_images_3.png');
       this.ignoredHashes = ['slideshow', 'preview', 'flickr', 'logout'];
       this.arr = ['false', 'outdoor', 'defense', 'goodies'];
-      User.bind('pinger', this.proxy(this.validate));
       $(window).bind('hashchange', this.proxy(this.storeHash));
+      User.bind('pinger', this.proxy(this.validate));
       Clipboard.fetch();
       Clipboard.destroyAll();
       Settings.one('refresh', this.proxy(this.refreshSettings));
@@ -35927,15 +35927,39 @@ Released under the MIT License
       };
     }
 
-    Main.prototype.initLocation = function() {
-      var hash, settings;
-      settings = Model.Settings.loadSettings();
-      if (hash = settings.hash) {
-        hash;
+    Main.prototype.validate = function(user, json) {
+      var settings, valid;
+      valid = user.sessionid === json.sessionid;
+      valid = user.id === json.id && valid;
+      if (!valid) {
+        return User.logout();
       } else {
-        '/admin#/overview/';
+        settings = this.loadUserSettings(user.id);
+        this.initLocation(settings);
+        return this.delay(this.setupView, 500);
       }
-      return this.navigate(settings.hash);
+    };
+
+    Main.prototype.loadUserSettings = function(id) {
+      var settings;
+      Settings.fetch();
+      if (!(settings = Settings.findByAttribute('user_id', id))) {
+        this.notify('<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>');
+        settings = Settings.create({
+          user_id: id,
+          autoupload: this.autoupload
+        });
+      }
+      return settings;
+    };
+
+    Main.prototype.initLocation = function(settings) {
+      var h, hash;
+      if (location.hash) {
+        return;
+      }
+      hash = (h = settings.hash) ? h : '#/overview/';
+      return this.navigate(hash);
     };
 
     Main.prototype.storeHash = function() {
@@ -35954,20 +35978,6 @@ Released under the MIT License
 
     Main.prototype.fullscreen = function() {
       return Spine.trigger('chromeless', true);
-    };
-
-    Main.prototype.validate = function(user, json) {
-      var valid;
-      this.log('Pinger done');
-      valid = user.sessionid === json.sessionid;
-      valid = user.id === json.id && valid;
-      if (!valid) {
-        return User.logout();
-      } else {
-        this.loadUserSettings(user.id);
-        this.initLocation();
-        return this.delay(this.setupView, 500);
-      }
     };
 
     Main.prototype.changeBackground = function(cat) {
@@ -35992,20 +36002,6 @@ Released under the MIT License
       }).show();
     };
 
-    Main.prototype.loadUserSettings = function(id) {
-      var settings;
-      Settings.fetch();
-      if (!(settings = Settings.findByAttribute('user_id', id))) {
-        this.notify('<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>');
-        return Settings.create({
-          user_id: id,
-          autoupload: this.autoupload,
-          hash: '#/overview/',
-          previousHash: '#'
-        });
-      }
-    };
-
     Main.prototype.refreshSettings = function(records) {};
 
     Main.prototype.changeSettings = function(rec) {};
@@ -36020,7 +36016,7 @@ Released under the MIT License
 
     Main.prototype.finalizeView = function() {
       this.loginView.render();
-      return this.mainView.el.fadeIn(500, this.proxy(this.startPage));
+      return this.mainView.el.fadeIn(500);
     };
 
     Main.prototype.startPage = function() {
@@ -41401,7 +41397,7 @@ Released under the MIT License
     };
 
     ProductsView.prototype.select = function(e, ids) {
-      var id, j, len, ref, ref1, selection, type;
+      var id, j, len, ref, ref1, ref2, ref3, ref4, selection, type;
       if (ids == null) {
         ids = [];
       }
@@ -41409,25 +41405,33 @@ Released under the MIT License
         ids = [ids];
       }
       type = e.type;
-      switch (type) {
-        case 'keyup':
-          selection = ids;
-          break;
-        case 'click':
-          if (!this.isCtrlClick(e)) {
+      if (this.isCtrlClick(e)) {
+        switch (type) {
+          case 'keyup':
+            selection = ids;
+            break;
+          case 'click':
             Category.emptySelection();
-          }
-          selection = Category.selectionList().slice(0);
-          if (!ids.length) {
-            ids = selection.slice(0);
-          }
-          for (j = 0, len = ids.length; j < len; j++) {
-            id = ids[j];
-            selection.addRemoveSelection(id);
-          }
+            selection = Category.selectionList().slice(0);
+            if (!ids.length) {
+              ids = selection.slice(0);
+            }
+            for (j = 0, len = ids.length; j < len; j++) {
+              id = ids[j];
+              selection.addRemoveSelection(id);
+            }
+        }
+        Category.updateSelection(selection, (ref = Category.record) != null ? ref.id : void 0);
+        return Product.updateSelection(Product.selectionList(), (ref1 = Product.record) != null ? ref1.id : void 0);
+      } else {
+        selection = ids;
+        Category.updateSelection(selection, (ref2 = Category.record) != null ? ref2.id : void 0);
+        if (ids.length) {
+          return this.navigate('/category', ((ref3 = Category.record) != null ? ref3.id : void 0) || '', 'pid', ids[0]);
+        } else {
+          return this.navigate('/category', ((ref4 = Category.record) != null ? ref4.id : void 0) || '');
+        }
       }
-      Category.updateSelection(selection, (ref = Category.record) != null ? ref.id : void 0);
-      return Product.updateSelection(Product.selectionList(), (ref1 = Product.record) != null ? ref1.id : void 0);
     };
 
     ProductsView.prototype.infoUp = function(e) {
@@ -48842,7 +48846,7 @@ Released under the MIT License
       user.save();
       this.render(this.flashEl, this.flashTemplate, json);
       delayedFunc = function() {
-        return User.redirect('admin#/overview/');
+        return User.redirect('admin' + location.hash);
       };
       this.contentEl.addClass('fade500');
       return this.delay(delayedFunc, 500);
@@ -48867,7 +48871,8 @@ Released under the MIT License
         username: json.username,
         name: json.name,
         groupname: json.groupname,
-        sessionid: json.sessionid
+        sessionid: json.sessionid,
+        redirect: location.hash
       };
     };
 
@@ -50672,7 +50677,7 @@ Released under the MIT License
       if (user = User.first()) {
         setting = this.findByAttribute('user_id', user.id);
       } else {
-        setting = Model.Settings.first();
+        setting = Model.Settings.first().hash;
       }
       return setting;
     };
@@ -51402,7 +51407,7 @@ Released under the MIT License
       return User.__super__.constructor.apply(this, arguments);
     }
 
-    User.configure('User', 'id', 'username', 'name', 'groupname', 'sessionid', 'hash');
+    User.configure('User', 'id', 'username', 'name', 'groupname', 'sessionid', 'hash', 'redirect');
 
     User.extend(Model.Local);
 

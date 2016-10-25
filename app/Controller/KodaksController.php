@@ -43,8 +43,8 @@ class KodaksController extends AppController {
     $this->layout = false;
       
     $val = $this->request->params['named']['a'];
-    CakeLog::write('debug', 'Something did not work at all');
-    $this->log("Something did not work!", LOG_DEBUG);
+//    CakeLog::write('debug', 'Something did not work at all');
+//    $this->log("Something did not work!", LOG_DEBUG);
 //    debug("Kodaks::develop", LOG_DEBUG);
 
     if (strpos($val, 'http://') !== false || substr($val, 0, 1) == '/') {
