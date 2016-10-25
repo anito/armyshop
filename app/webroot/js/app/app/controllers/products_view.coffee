@@ -380,7 +380,6 @@ class ProductsView extends Spine.Controller
     @info.bye(e)
     el = $(e.currentTarget)
     set = $('.glyphicon-set.fade' , el).addClass('out').removeClass('in')
-#    set.children('.open').removeClass('open')
     
   stopInfo: (e) =>
     @info.bye(e)

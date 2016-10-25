@@ -67,10 +67,10 @@ class Sidebar extends Spine.Controller
     Category.one('refresh', @proxy @refresh)
     Category.bind('error', @proxy @error)
     Category.bind('update', @proxy @render)
-    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     Category.bind("ajaxError", Category.errorHandler)
     Category.bind("ajaxSuccess", Category.successHandler)
     
+    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
     Spine.bind('create:category', @proxy @createCategory)
     Spine.bind('edit:category', @proxy @edit)
     Spine.bind('destroy:category', @proxy @destroyCategory)

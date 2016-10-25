@@ -37,13 +37,15 @@ class SidebarList extends Spine.Controller
   constructor: ->
     super
     
+    CategoriesProduct.bind('update', @proxy @renderItemFromCategoriesProduct)
+    
     Category.bind('change:collection', @proxy @renderCategory)
-    CategoriesProduct.bind('update', @proxy @renderFromCategoriesProduct)
-    Product.bind('change:collection', @proxy @renderProduct)
     Category.bind('change', @proxy @change)
-    Product.bind('create destroy update', @proxy @renderSublists)
     Category.bind('change:selection', @proxy @exposeSublistSelection)
     Category.bind('current', @proxy @exposeSelection)
+    
+    Product.bind('change:collection', @proxy @renderProduct)
+    Product.bind('create destroy update', @proxy @renderSublists)
 #    Product.bind('current', @proxy @scrollTo)
 #    Category.bind('current', @proxy @scrollTo)
     Spine.bind('scroll', @proxy @scrollTo)
@@ -125,7 +127,7 @@ class SidebarList extends Spine.Controller
       
   renderFromCategoriesProduct: (ga) ->
     @log 'renderFromCategoriesProduct'
-    @renderOneSublist category if category = Category.find ga['category_id']
+    @updateTemplate category if category = Category.find ga['category_id']
       
   renderOneSublist: (category = Category.record) ->
     @log 'renderOneSublist'

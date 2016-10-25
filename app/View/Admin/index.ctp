@@ -483,7 +483,7 @@
 </script>
 
 <script id="categoryDetailsTemplate" type="text/x-jquery-tmpl">
-    <span>${aCount} </span>
+    <span title="${pCount} von ${aCount} Produkten veröffentlicht">${pCount}/${aCount} </span>
 </script>
 
 <script id="categoriesTemplate" type="text/x-jquery-tmpl">
@@ -719,7 +719,7 @@
       <div class="header-title">
         {{if model.record}}
         <h3>
-        <span class="label label-warning">
+        <span class="">
           <a class="opt opt-ShowCategories">
             <i class="glyphicon glyphicon-arrow-up"></i>
           </a>
@@ -728,7 +728,7 @@
         {{/if}}
         {{if model.record}}
         <h3>
-        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
+        <span class="label label-warning">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
         </h3>
         <h3>
         {{if modelProduct.record}}
@@ -761,7 +761,7 @@
       <div class="header-title">
         {{if category}}
         <h3>
-        <span class="label label-warning">
+        <span class="">
           <a class="opt opt-ShowProducts">
             <i class="glyphicon glyphicon-arrow-up"></i>
           </a>
@@ -770,7 +770,7 @@
         {{/if}}
         {{if product}}
         <h3>
-        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
+        <span class="label label-warning">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
         </h3>
         <h3>
         <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
@@ -798,7 +798,7 @@
       <div class="header-title">
         {{if category}}
         <h3>
-        <span class="label label-warning">
+        <span class="">
           <a class="opt opt-ShowProducts">
             <i class="glyphicon glyphicon-arrow-up"></i>
           </a>
@@ -898,6 +898,10 @@
 
 <script id="productCountTemplate" type="text/x-jquery-tmpl">
   <span class="cta">€ ${price}</span>
+</script>
+
+<script id="productInfoTemplate_" type="text/x-jquery-tmpl">
+  <html><head><!--[if IE]><style>iframe{zoom:0.2;}</style><![endif]--><style>iframe{width:300px;height:200px;border:none;-moz-transform:scale(1);-moz-transform-origin:0 0;-o-transform:scale(1);-o-transform-origin:0 0;-webkit-transform:scale(1);-webkit-transform-origin:0 0;}</style></head><body><iframe src="${link}+"/output=/A6XUVjK9W4o"></iframe></body></html>
 </script>
 
 <script id="productInfoTemplate" type="text/x-jquery-tmpl">
@@ -1202,7 +1206,7 @@
         <td>${published.length}</td>
       </tr>
       <tr class="">
-        <td><a href="#" class="opt opt-ShowUnpublishedProducts">unveröffentlichte Produkte</a></td>
+        <td>unveröffentlichte Produkte</td>
         <td>${unpublished.length}</td>
       </tr>
       <tr class="">

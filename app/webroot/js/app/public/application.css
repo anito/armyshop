@@ -1005,6 +1005,9 @@ label input[type="checkbox"] + span {
 .view .viewheader .header-title {
   line-height: 2em;
 }
+.header-title h3:first-child {
+  margin-right: 10px;
+}
 button:disabled:not(.btn-label) {
   cursor: auto;
   opacity: 0.3;
@@ -1572,7 +1575,7 @@ section span.price {
   width: 450px;
 }
 .carousel-inner > div {
-  height: 600px;
+  height: 650px;
 }
 .carousel-caption {
   top: 0;

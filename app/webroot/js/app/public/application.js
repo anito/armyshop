@@ -38101,7 +38101,6 @@ Released under the MIT License
     OverviewView.prototype.imageLoad = function() {
       var css;
       this.me.log('loaded');
-      this.me.log(this.src);
       css = 'url(' + this.src + ')';
       return this.element.css({
         'backgroundImage': css,
@@ -43222,9 +43221,9 @@ Released under the MIT License
       Category.one('refresh', this.proxy(this.refresh));
       Category.bind('error', this.proxy(this.error));
       Category.bind('update', this.proxy(this.render));
-      Spine.bind('bindRefresh:one', this.proxy(this.bindRefresh));
       Category.bind("ajaxError", Category.errorHandler);
       Category.bind("ajaxSuccess", Category.successHandler);
+      Spine.bind('bindRefresh:one', this.proxy(this.bindRefresh));
       Spine.bind('create:category', this.proxy(this.createCategory));
       Spine.bind('edit:category', this.proxy(this.edit));
       Spine.bind('destroy:category', this.proxy(this.destroyCategory));
@@ -43577,13 +43576,13 @@ Released under the MIT License
     function SidebarList() {
       this.change = bind(this.change, this);
       SidebarList.__super__.constructor.apply(this, arguments);
+      CategoriesProduct.bind('update', this.proxy(this.renderItemFromCategoriesProduct));
       Category.bind('change:collection', this.proxy(this.renderCategory));
-      CategoriesProduct.bind('update', this.proxy(this.renderFromCategoriesProduct));
-      Product.bind('change:collection', this.proxy(this.renderProduct));
       Category.bind('change', this.proxy(this.change));
-      Product.bind('create destroy update', this.proxy(this.renderSublists));
       Category.bind('change:selection', this.proxy(this.exposeSublistSelection));
       Category.bind('current', this.proxy(this.exposeSelection));
+      Product.bind('change:collection', this.proxy(this.renderProduct));
+      Product.bind('create destroy update', this.proxy(this.renderSublists));
       Spine.bind('scroll', this.proxy(this.scrollTo));
     }
 
@@ -43705,7 +43704,7 @@ Released under the MIT License
       var category;
       this.log('renderFromCategoriesProduct');
       if (category = Category.find(ga['category_id'])) {
-        return this.renderOneSublist(category);
+        return this.updateTemplate(category);
       }
     };
 
@@ -49110,7 +49109,7 @@ Released under the MIT License
 
     CategoriesProduct.prototype.selectNotIgnored = function(id) {
       var ref;
-      if (!this.ignored && this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
+      if (!this.ignored && id === this.category_id && this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
         return true;
       }
     };
@@ -49371,8 +49370,9 @@ Released under the MIT License
     };
 
     Category.prototype.details = function() {
-      var imagesCount, j, len, product, products;
+      var imagesCount, j, len, product, products, published;
       products = Category.products(this.id);
+      published = CategoriesProduct.publishedProducts(this.id);
       imagesCount = 0;
       for (j = 0, len = products.length; j < len; j++) {
         product = products[j];
@@ -49385,7 +49385,7 @@ Released under the MIT License
         screenname: this.screenname,
         iCount: imagesCount,
         aCount: products.length,
-        pCount: this.activePhotos().length,
+        pCount: published.length,
         sCount: Category.selectionList().length,
         author: User.first().name
       });

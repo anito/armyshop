@@ -128,6 +128,7 @@ class Category extends Spine.Model
     
   details: =>
     products = Category.products(@id)
+    published = CategoriesProduct.publishedProducts(@id)
     imagesCount = 0
     for product in products
       imagesCount += product.count = ProductsPhoto.filter(product.id, associationForeignKey: 'product_id').length
@@ -136,7 +137,7 @@ class Category extends Spine.Model
       screenname: @screenname
       iCount: imagesCount
       aCount: products.length
-      pCount: @activePhotos().length
+      pCount: published.length
       sCount: Category.selectionList().length
       author: User.first().name
     

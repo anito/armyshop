@@ -149,7 +149,6 @@ class OverviewView extends Spine.Controller
       
   imageLoad: ->
     @me.log 'loaded'
-    @me.log @src
     css = 'url(' + @src + ')'
     @element.css
       'backgroundImage': css
