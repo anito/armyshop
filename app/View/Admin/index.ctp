@@ -705,7 +705,14 @@
   <section class="top viewheader fadeelement">
     <div class="left">
       <div class="header-title">
-        <h1>Kategorien</h1>
+        <h3>
+        <span class="">
+          <a class="opt opt-ShowOverview">
+            <i class="glyphicon glyphicon-chevron-up"></i>
+          </a>
+        </span>
+        </h3>
+        <h3><span class="">Kategorien</span></h3>
       </div>
     </div>
     {{tmpl() "#categorySpecsTemplate"}}
@@ -727,7 +734,7 @@
         <h3>
         <span class="">
           <a class="opt opt-ShowAllCategories">
-            <i class="glyphicon glyphicon-arrow-up"></i>
+            <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
         </span>
         </h3>
@@ -742,7 +749,14 @@
         {{/if}}
         </h3>
         {{else}}
-        <h1>Produkte-Katalog</h1>
+        <h3>
+        <span class="">
+          <a class="opt opt-ShowOverview">
+            <i class="glyphicon glyphicon-chevron-up"></i>
+          </a>
+        </span>
+        </h3>
+        <h3><span class="">Produkte-Katalog</span></h3>
         {{/if}}
       </div>
     </div>
@@ -769,7 +783,7 @@
         <h3>
         <span class="">
           <a class="opt opt-ShowProducts">
-            <i class="glyphicon glyphicon-arrow-up"></i>
+            <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
         </span>
         </h3>
@@ -785,7 +799,14 @@
         <span class="label label-info">Fotos</span>
         </h3>
         {{else}}
-        <h1>Foto-Katalog</h1>
+        <h3>
+        <span class="">
+          <a class="opt opt-ShowOverview">
+            <i class="glyphicon glyphicon-chevron-up"></i>
+          </a>
+        </span>
+        </h3>
+        <h3><span class="">Foto-Katalog</span></h3>
         {{/if}}
       </div>
     </div>
@@ -806,7 +827,7 @@
         <h3>
         <span class="">
           <a class="opt opt-ShowProducts">
-            <i class="glyphicon glyphicon-arrow-up"></i>
+            <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
         </span>
         </h3>

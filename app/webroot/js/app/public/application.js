@@ -41852,6 +41852,8 @@ Released under the MIT License
 
     ShowView.prototype.active = function(controller, params) {
       var ref;
+      console.log('showView::active');
+      console.log(controller);
       if (controller) {
         controller.trigger('active', params);
         if ((ref = controller.header) != null) {
@@ -41886,9 +41888,17 @@ Released under the MIT License
       return Product.record.save();
     };
 
-    ShowView.prototype.changeCanvas = function(controller, args) {
-      var c, fadein, i, len, ref;
-      if (this.current === this.previous) {
+    ShowView.prototype.changeCanvas = function(controller, args) {};
+
+    ShowView.prototype.transform = function(controller, pContr, cContr) {
+      var c, cm, e, error, fadein, i, len, pm, ref;
+      try {
+        cm = cContr.el.data('current').model.className;
+        pm = pContr.el.data('current').model.className;
+      } catch (error) {
+        e = error;
+      }
+      if (cm === pm) {
         return;
       }
       this.controllers = (function() {
@@ -41906,20 +41916,20 @@ Released under the MIT License
       ref = this.controllers;
       for (i = 0, len = ref.length; i < len; i++) {
         c = ref[i];
-        $('.items', this.el).removeClass('in1');
+        $('.items', this.el).removeClass('in3');
       }
       fadein = (function(_this) {
         return function() {
           var viewport;
           viewport = controller.viewport || controller.el;
-          return viewport.addClass('in1');
+          return viewport.addClass('in3');
         };
       })(this);
       return window.setTimeout((function(_this) {
         return function() {
           return fadein();
         };
-      })(this), 500);
+      })(this), 1500);
     };
 
     ShowView.prototype.resetSelection = function(controller) {};
@@ -41927,16 +41937,18 @@ Released under the MIT License
     ShowView.prototype.changeHeader = function(controller) {};
 
     ShowView.prototype.activated = function(controller) {
+      var c, p;
       if (!this.current.subview) {
-        this.previous = this.current;
+        p = this.previous = this.current;
       }
-      this.current = this.controller = controller;
+      c = this.current = this.controller = controller;
       this.currentHeader = controller.header;
       this.prevLocation = location.hash;
       this.el.data('current', {
         model: controller.el.data('current').model,
         models: controller.el.data('current').models
       });
+      this.transform(controller, p, c);
       controller.trigger('active');
       controller.header.trigger('active');
       return controller;

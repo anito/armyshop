@@ -245,6 +245,8 @@ class ShowView extends Spine.Controller
     Model.Settings.bind('refresh', @proxy @refreshSettings)
     
   active: (controller, params) ->
+    console.log 'showView::active'
+    console.log controller
     # activate controller
     if controller
       controller.trigger('active', params)
@@ -269,25 +271,31 @@ class ShowView extends Spine.Controller
       
     
   changeCanvas: (controller, args) ->
-    return if @current is @previous
+  
+  transform: (controller, pContr, cContr) ->
+    try
+      cm = cContr.el.data('current').model.className
+      pm = pContr.el.data('current').model.className
+    catch e
+    return if cm is pm
     @controllers = (c for c in @canvasManager.controllers when c isnt controller)
-    $('.items', @el).removeClass('in1') for c in @controllers
-    
+    $('.items', @el).removeClass('in3') for c in @controllers
     fadein = =>
       viewport = controller.viewport or controller.el
-      viewport.addClass('in1')
+      viewport.addClass('in3')
       
     window.setTimeout( =>
       fadein()
-    , 500)
+    , 1500)
     
   resetSelection: (controller) ->
     
   changeHeader: (controller) ->
     
+    
   activated: (controller) ->
-    @previous = @current unless @current.subview
-    @current = @controller = controller
+    p = @previous = @current unless @current.subview
+    c = @current = @controller = controller
     @currentHeader = controller.header
     @prevLocation = location.hash
     @el.data('current',
@@ -296,6 +304,9 @@ class ShowView extends Spine.Controller
     )
 #    return if (@previous is @current) and !@current.isActive()
     # the controller should already be active, however rendering hasn't taken place yet
+    
+    @transform(controller, p, c)
+    
     controller.trigger 'active'
     controller.header.trigger 'active'
     controller
