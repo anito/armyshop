@@ -101,7 +101,7 @@ class ShowView extends Spine.Controller
     'click .opt-Upload:not(.disabled)'                : 'toggleUploadShow'
     'click .opt-UploadDialogue:not(.disabled)'        : 'uploadDialogue'
     'click .opt-ShowOverview:not(.disabled)'          : 'showOverview'
-    'click .opt-ShowCategories:not(.disabled)'        : 'showCategories'
+    'click .opt-ShowAllCategories:not(.disabled)'        : 'showAllCategories'
     'click .opt-ShowAllProducts:not(.disabled)'       : 'showProductMasters'
     'click .opt-AddProducts:not(.disabled)'           : 'showProductMastersAdd'
     'click .opt-ShowAllPhotos:not(.disabled)'         : 'showPhotoMasters'
@@ -712,7 +712,7 @@ class ShowView extends Spine.Controller
   showPhotoMasters: ->
     @navigate '/category', '/'
     
-  showCategories: ->
+  showAllCategories: ->
     if Category.record
       @navigate '/categories', 'cid', Category.record.id
     else

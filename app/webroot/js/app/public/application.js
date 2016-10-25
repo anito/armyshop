@@ -37907,7 +37907,10 @@ Released under the MIT License
       'click .item': 'showPhoto',
       'keyup': 'keyup',
       'click .opt-ShowUnpublishedProducts': 'showUnpublishedProducts',
-      'click .opt-ShowUnusedProducts': 'showUnusedProducts'
+      'click .opt-ShowUnusedProducts': 'showUnusedProducts',
+      'click .opt-ShowAllCategories:not(.disabled)': 'showCategories',
+      'click .opt-ShowAllProducts:not(.disabled)': 'showProductMasters',
+      'click .opt-ShowAllPhotos:not(.disabled)': 'showPhotoMasters'
     };
 
     OverviewView.prototype.template = function(photos, products) {
@@ -38121,6 +38124,22 @@ Released under the MIT License
       var index;
       return;
       return index = this.recentsItem.index($(e.currentTarget));
+    };
+
+    OverviewView.prototype.showProductMasters = function() {
+      return this.navigate('/category', '');
+    };
+
+    OverviewView.prototype.showPhotoMasters = function() {
+      return this.navigate('/category', '/');
+    };
+
+    OverviewView.prototype.showCategories = function() {
+      if (Category.record) {
+        return this.navigate('/categories', 'cid', Category.record.id);
+      } else {
+        return this.navigate('/categories', '');
+      }
     };
 
     OverviewView.prototype.error = function(xhr, statusText, error) {
@@ -41702,7 +41721,7 @@ Released under the MIT License
       'click .opt-Upload:not(.disabled)': 'toggleUploadShow',
       'click .opt-UploadDialogue:not(.disabled)': 'uploadDialogue',
       'click .opt-ShowOverview:not(.disabled)': 'showOverview',
-      'click .opt-ShowCategories:not(.disabled)': 'showCategories',
+      'click .opt-ShowAllCategories:not(.disabled)': 'showAllCategories',
       'click .opt-ShowAllProducts:not(.disabled)': 'showProductMasters',
       'click .opt-AddProducts:not(.disabled)': 'showProductMastersAdd',
       'click .opt-ShowAllPhotos:not(.disabled)': 'showPhotoMasters',
@@ -42498,7 +42517,7 @@ Released under the MIT License
       return this.navigate('/category', '/');
     };
 
-    ShowView.prototype.showCategories = function() {
+    ShowView.prototype.showAllCategories = function() {
       if (Category.record) {
         return this.navigate('/categories', 'cid', Category.record.id);
       } else {
@@ -50872,7 +50891,7 @@ Released under the MIT License
             name: function() {
               return 'Kategorien';
             },
-            klass: 'opt-ShowCategories',
+            klass: 'opt-ShowAllCategories',
             icon: 'book',
             disabled: function() {
               return false;
@@ -50938,7 +50957,7 @@ Released under the MIT License
             name: function() {
               return 'Kategorien';
             },
-            klass: 'opt-ShowCategories',
+            klass: 'opt-ShowAllCategories',
             icon: 'book',
             disabled: function() {
               return false;

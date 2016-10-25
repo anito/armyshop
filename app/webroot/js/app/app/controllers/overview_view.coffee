@@ -28,7 +28,10 @@ class OverviewView extends Spine.Controller
     'keyup'                               : 'keyup'
     'click .opt-ShowUnpublishedProducts'  : 'showUnpublishedProducts'
     'click .opt-ShowUnusedProducts'       : 'showUnusedProducts'
-
+    'click .opt-ShowAllCategories:not(.disabled)'     : 'showCategories'
+    'click .opt-ShowAllProducts:not(.disabled)'       : 'showProductMasters'
+    'click .opt-ShowAllPhotos:not(.disabled)'         : 'showPhotoMasters'
+    
   template: (photos, products) ->
     $("#overviewTemplate").tmpl
       photos: photos
@@ -168,6 +171,18 @@ class OverviewView extends Spine.Controller
   showPhoto: (e) ->
     return
     index = @recentsItem.index($(e.currentTarget))
+  
+  showProductMasters: ->
+    @navigate '/category', ''
+    
+  showPhotoMasters: ->
+    @navigate '/category', '/'
+    
+  showCategories: ->
+    if Category.record
+      @navigate '/categories', 'cid', Category.record.id
+    else
+      @navigate '/categories', ''
   
   error: (xhr, statusText, error) ->
     @log xhr

@@ -726,7 +726,7 @@
         {{if model.record}}
         <h3>
         <span class="">
-          <a class="opt opt-ShowCategories">
+          <a class="opt opt-ShowAllCategories">
             <i class="glyphicon glyphicon-arrow-up"></i>
           </a>
         </span>
@@ -1196,15 +1196,15 @@
   <table class="carousel table">
     <tbody>
       <tr>
-        <td>Kategorien</td>
+        <td><a href="#" class="opt opt-ShowAllCategories">Kategorien</a></td>
         <td>${categories.length}</td>
       </tr>
       <tr>
-        <td>Produkte (gesamt)</td>
+        <td><a href="#" class="opt opt-ShowAllProducts">Produkte (gesamt)</a></td>
         <td>${products.length}</td>
       </tr>
       <tr class="">
-        <td>Fotos</td>
+        <td><a href="#" class="opt opt-ShowAllPhotos">Fotos</a></td>
         <td>${photos.length}</td>
       </tr>
       <tr class="">

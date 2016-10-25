@@ -44,7 +44,7 @@ class Toolbar extends Spine.Model
           devider: true
         ,
           name: -> 'Kategorien'
-          klass: 'opt-ShowCategories'
+          klass: 'opt-ShowAllCategories'
           icon: 'book'
           disabled: -> false
         ,
@@ -94,7 +94,7 @@ class Toolbar extends Spine.Model
           devider: true
         ,
           name: -> 'Kategorien'
-          klass: 'opt-ShowCategories'
+          klass: 'opt-ShowAllCategories'
           icon: 'book'
           disabled: -> false
         ]
