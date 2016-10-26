@@ -21,7 +21,7 @@ class Category extends Spine.Model
   @extend Uri
   @extend Extender
 
-  @selectAttributes: ['screenname', 'order']
+  @selectAttributes: ['screenname']
   
   @parent: 'Root'
   
@@ -160,11 +160,6 @@ class Category extends Spine.Model
   updateAttribute: (name, value, options={}) ->
     @[name] = value
     @save()
-    
-  selectAttributes: ->
-    result = {}
-    result[attr] = @[attr] for attr in @constructor.selectAttributes
-    result
 
   select: (joinTableItems) ->
     

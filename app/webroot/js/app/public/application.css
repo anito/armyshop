@@ -178,6 +178,9 @@ label {
   color: #222;
   font-size: 1.3em;
 }
+.label-primary {
+  background-color: #39f;
+}
 .the-icons i {
   display: block;
 }
@@ -1254,6 +1257,9 @@ ul.sublist::before {
 .gal.active .sublist-item.selected {
   background-color: rgba(159,222,255,0.5);
 }
+.gal.active {
+  border-color: #ff8c00;
+}
 .sidebar .glyphicon {
   font-size: 1.1em;
   padding: 0 5px 0 0px;
@@ -1360,7 +1366,7 @@ ul.sublist::before {
   border-color: 1px solid #787878;
 /*  border-radius: 30px 30px 30px 30px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;*/
-  font-size: 1.1em;
+  font-size: 0.9em;
   line-height: 16px;
   padding: 7px 11px;
   position: absolute;

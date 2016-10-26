@@ -34,6 +34,7 @@ class ShowView extends Spine.Controller
   @extend MysqlAjax
 
   elements:
+    '#fileupload'             : 'uploader'
     '#views .views'           : 'views'
     '.contents'               : 'contents'
     '.items'                  : 'lists'
@@ -557,10 +558,11 @@ class ShowView extends Spine.Controller
   toggleDraghandle: ->
     @animateView()
     
-  toggleAutoUpload: ->
+  toggleAutoUpload: (args...) ->
     settings = Model.Settings.loadSettings()
-    active = settings.autoupload = !settings.autoupload
-    $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active
+    b = if args.length then args[0] else !settings.autoupload
+    active = settings.autoupload = !!b
+    @uploader.fileupload('option', 'autoUpload', active)
     settings.save()
     @refreshToolbars()
   
@@ -570,11 +572,11 @@ class ShowView extends Spine.Controller
   
   changeSettings: (rec) ->
     active = rec.autoupload
-    $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active
+    $('#fileupload').fileupload('option', 'autoUpload', active)
     @refreshToolbars()
   
   isAutoUpload: ->
-    $('#fileupload').data('blueimpFileupload').options['autoUpload']
+    $('#fileupload').fileupload('option', 'autoUpload')
   
   activateEditView: (controller) ->
     App[controller].trigger('active')

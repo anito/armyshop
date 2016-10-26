@@ -24,7 +24,7 @@ Controller.Extender =
           model: null
           models: null
         )
-        
+      p: -> App.sidebar.products  
       
       followLink: (e) ->
         strWindowFeatures = "menubar=no,location=no,resizable=no,scrollbars=yes,status=no"

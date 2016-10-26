@@ -131,7 +131,7 @@ class SidebarList extends Spine.Controller
       
   renderOneSublist: (category = Category.record) ->
     @log 'renderOneSublist'
-    products = Category.products(category.id)
+    products = Category.products(category.id).filter @p()
     products.push {flash: 'keine Produkte'} unless products.length
     categoryEl = @children().forItem(category)
     categorySublist = $('ul', categoryEl)

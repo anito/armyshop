@@ -24,8 +24,6 @@ class Sidebar extends Spine.Controller
     '.items'                : 'items'
     '.inner'                : 'inner'
     '.droppable'            : 'droppable'
-    '.opt-AllProducts'      : 'products'
-    '.opt-AllPhotos'        : 'photos'
     '.expander'             : 'expander'
     '#refresh'              : 'refreshEl'
 
@@ -98,9 +96,15 @@ class Sidebar extends Spine.Controller
     
   render: () ->
     @log 'render'
-    items = Category.filter(@query, func: 'searchSelect')
-    items = items.sort Category.sortByOrder
-#    Category.trigger('refresh:category') #rerenders CategoryView
+#    items = items.sort Category.sortByOrder
+    @products = Product.filter(@query, func: 'searchSelect')
+    if @query
+      items = []
+      for pro in @products
+        items.push cat for cat in CategoriesProduct.categories(pro.id)
+    else
+      items = Category.filter(@query, func: 'searchSelect')
+    @log items
     @list.render items
     @refreshView.render()
   

@@ -255,7 +255,7 @@ class Toolbar extends Spine.Model
           name: 'Auto Upload'
           icon: -> if Model.Settings.isAutoUpload() then 'ok' else ''
           klass: 'opt-AutoUpload'
-          disabled: -> false
+          disabled: -> true
         ]
     group31:
       name: -> 

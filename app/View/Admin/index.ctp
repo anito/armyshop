@@ -28,7 +28,7 @@
       <div class="vbox sidebar canvas bg-dark flex inner" style="display: none">
         <div class="search">
           <form class="form-search">
-            <input class="search-query" type="search" placeholder="Search">
+            <input class="search-query" type="search" placeholder="Produktsuche">
           </form>
         </div>
         <ul id="preview" class="splitter autoflow noborder">
@@ -847,7 +847,14 @@
         <span class="label label-info">Fotos</span>
         </h3>
         {{else}}
-        <h1>Foto-Katalog</h1>
+        <h3>
+        <span class="">
+          <a class="opt opt-ShowOverview">
+            <i class="glyphicon glyphicon-chevron-up"></i>
+          </a>
+        </span>
+        </h3>
+        <h3><span class="">Foto-Katalog</span></h3>
         {{/if}}
       </div>
     </div>

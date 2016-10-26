@@ -22066,6 +22066,19 @@ window.locale = {
     return this[0] || null;
   };
 
+  Array.prototype.filter = function(list) {
+    var item, res, _i, _len, _ref;
+    list = list.toId();
+    res = [];
+    for (_i = 0, _len = this.length; _i < _len; _i++) {
+      item = this[_i];
+      if (_ref = item.id, __indexOf.call(list, _ref) >= 0) {
+        res.push(item);
+      }
+    }
+    return res;
+  };
+
   Array.prototype.update = function(value) {
     if (Object.prototype.toString.call(value) !== '[object Array]') {
       throw new Error('passed value requires an array');
@@ -35751,21 +35764,6 @@ Released under the MIT License
       Settings.one('change', this.proxy(this.changeSettings));
       $('#modal-category').bind('hidden', this.proxy(this.hideSlideshow));
       this.modalView = new ModalSimpleView;
-      this.missingView = new MissingView({
-        el: this.missingEl
-      });
-      this.category = new CategoryEditView({
-        el: this.categoryEl,
-        externalClass: '.optCategory'
-      });
-      this.product = new ProductEditView({
-        el: this.productEl,
-        externalClass: '.optProduct'
-      });
-      this.upload = new UploadEditView({
-        el: this.uploadEl,
-        externalClass: '.optUpload'
-      });
       this.sidebar = new Sidebar({
         el: this.sidebarEl,
         externalClass: '.optSidebar'
@@ -35782,7 +35780,6 @@ Released under the MIT License
       this.showView = new ShowView({
         el: this.showEl,
         activeControl: 'btnCategory',
-        uploader: this.upload,
         sidebar: this.sidebar,
         parent: this
       });
@@ -35791,6 +35788,22 @@ Released under the MIT License
       });
       this.previewView = new PreviewView({
         el: this.previewEl
+      });
+      this.missingView = new MissingView({
+        el: this.missingEl
+      });
+      this.category = new CategoryEditView({
+        el: this.categoryEl,
+        externalClass: '.optCategory'
+      });
+      this.product = new ProductEditView({
+        el: this.productEl,
+        externalClass: '.optProduct'
+      });
+      this.upload = new UploadEditView({
+        el: this.uploadEl,
+        parent: this.showView,
+        externalClass: '.optUpload'
       });
       this.slideshowView = this.showView.slideshowView;
       this.vmanager = new Spine.Manager(this.sidebar);
@@ -37360,16 +37373,17 @@ Released under the MIT License
     };
 
     Info.prototype.position = function(e) {
-      var h, info_h, info_w, maxx, maxy, minx, posx, posy, t, w, x_offset, y_offset;
+      var h, info_h, info_w, maxx, maxy, minx, posx, posy, s, t, w, x_offset, y_offset;
       info_h = this.el.innerHeight();
       info_w = this.el.innerWidth();
       w = $(window).width();
       h = $(window).height();
       t = $(window).scrollTop();
+      s = this.parent.scrollTop();
       x_offset = 10;
       y_offset = 10;
       posx = e.pageX + x_offset - this.parent.offset().left;
-      posy = e.pageY + y_offset - this.parent.offset().top;
+      posy = e.pageY + y_offset - this.parent.offset().top + s;
       maxx = posx + info_w;
       minx = posx - info_w;
       maxy = posy + info_h;
@@ -41100,7 +41114,8 @@ Released under the MIT License
       if (!this.isActive()) {
         return;
       }
-      this.list.render(items || this.updateBuffer(), mode);
+      items = (items || this.updateBuffer()).filter(this.p());
+      this.list.render(items, mode);
       if (Category.record) {
         this.list.sortable('product');
       }
@@ -41654,6 +41669,7 @@ Released under the MIT License
     ShowView.extend(MysqlAjax);
 
     ShowView.prototype.elements = {
+      '#fileupload': 'uploader',
       '#views .views': 'views',
       '.contents': 'contents',
       '.items': 'lists',
@@ -42283,10 +42299,12 @@ Released under the MIT License
     };
 
     ShowView.prototype.toggleAutoUpload = function() {
-      var active, settings;
+      var active, args, b, settings;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
       settings = Model.Settings.loadSettings();
-      active = settings.autoupload = !settings.autoupload;
-      $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active;
+      b = args.length ? args[0] : !settings.autoupload;
+      active = settings.autoupload = !!b;
+      this.uploader.fileupload('option', 'autoUpload', active);
       settings.save();
       return this.refreshToolbars();
     };
@@ -42302,12 +42320,12 @@ Released under the MIT License
     ShowView.prototype.changeSettings = function(rec) {
       var active;
       active = rec.autoupload;
-      $('#fileupload').data('blueimpFileupload').options['autoUpload'] = active;
+      $('#fileupload').fileupload('option', 'autoUpload', active);
       return this.refreshToolbars();
     };
 
     ShowView.prototype.isAutoUpload = function() {
-      return $('#fileupload').data('blueimpFileupload').options['autoUpload'];
+      return $('#fileupload').fileupload('option', 'autoUpload');
     };
 
     ShowView.prototype.activateEditView = function(controller) {
@@ -43222,8 +43240,6 @@ Released under the MIT License
       '.items': 'items',
       '.inner': 'inner',
       '.droppable': 'droppable',
-      '.opt-AllProducts': 'products',
-      '.opt-AllPhotos': 'photos',
       '.expander': 'expander',
       '#refresh': 'refreshEl'
     };
@@ -43295,12 +43311,28 @@ Released under the MIT License
     };
 
     Sidebar.prototype.render = function() {
-      var items;
+      var cat, items, j, k, len, len1, pro, ref, ref1;
       this.log('render');
-      items = Category.filter(this.query, {
+      this.products = Product.filter(this.query, {
         func: 'searchSelect'
       });
-      items = items.sort(Category.sortByOrder);
+      if (this.query) {
+        items = [];
+        ref = this.products;
+        for (j = 0, len = ref.length; j < len; j++) {
+          pro = ref[j];
+          ref1 = CategoriesProduct.categories(pro.id);
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            cat = ref1[k];
+            items.push(cat);
+          }
+        }
+      } else {
+        items = Category.filter(this.query, {
+          func: 'searchSelect'
+        });
+      }
+      this.log(items);
       this.list.render(items);
       return this.refreshView.render();
     };
@@ -43758,7 +43790,7 @@ Released under the MIT License
         category = Category.record;
       }
       this.log('renderOneSublist');
-      products = Category.products(category.id);
+      products = Category.products(category.id).filter(this.p());
       if (!products.length) {
         products.push({
           flash: 'keine Produkte'
@@ -44481,16 +44513,19 @@ Released under the MIT License
 
     UploadEditView.prototype.elements = {
       '.delete:not(.files .delete)': 'clearEl',
+      '#fileupload button.cancel': 'cancelEl',
       '.files': 'filesEl',
       '.uploadinfo': 'uploadinfoEl',
       '#ph': 'photoEl',
-      '.editor': 'editorEl'
+      '.editor': 'editorEl',
+      '#fileupload': 'uploader'
     };
 
     UploadEditView.prototype.events = {
       'fileuploaddone': 'done',
       'fileuploadsubmit': 'submit',
       'fileuploadfail': 'fail',
+      'fileuploaddrop': 'drop',
       'fileuploadadd': 'add',
       'fileuploadsend': 'send',
       'fileuploadprogressall': 'alldone',
@@ -44544,6 +44579,14 @@ Released under the MIT License
       return this.el;
     };
 
+    UploadEditView.prototype.setAutoupload = function(b) {
+      return this.uploader.fileupload('option', 'autoUpload', b);
+    };
+
+    UploadEditView.prototype.getAutoupload = function() {
+      return this.uploader.fileupload('option', 'autoUpload');
+    };
+
     UploadEditView.prototype.destroyed = function() {};
 
     UploadEditView.prototype.fail = function(e, data) {
@@ -44558,25 +44601,57 @@ Released under the MIT License
 
     UploadEditView.prototype.add = function(e, data) {
       var file, i, len, ref;
+      this.parent.toggleAutoUpload(true);
+      if (!this.checkSelected(data)) {
+        this.cancelUpload(e, data);
+        return;
+      }
       ref = data.files;
       for (i = 0, len = ref.length; i < len; i++) {
         file = ref[i];
         this.data.fileslist.push(file);
       }
       this.trigger('active');
-      if (!Settings.isAutoUpload()) {
-        App.showView.openView();
-      }
       return this.clearEl.click();
     };
 
-    UploadEditView.prototype.notify = function() {
-      return App.modal2ButtonView.show({
-        header: 'No Product selected',
-        body: 'Please select an product .',
-        info: '',
-        button_1_text: 'Hallo',
-        button_2_text: 'Bye'
+    UploadEditView.prototype.checkSelected = function(data) {
+      var auto, multiple, str, valid;
+      valid = function() {
+        return !!Category.selectionList().length;
+      };
+      auto = this.getAutoupload() ? '' : 'nicht';
+      if (!valid()) {
+        multiple = data.files.length > 1;
+        str = multiple ? 'Sollen die Fotos ' : 'Soll das Foto ';
+        alert('Es ist kein Produkt ausgewählt!\nDer Upload kann manuell fortgesetzt werden.');
+        return false;
+      }
+      return true;
+    };
+
+    UploadEditView.prototype.cancelUpload = function(e, data) {
+      var jqXHR;
+      this.autoupload = this.getAutoupload();
+      if (this.autoupload) {
+        this.parent.toggleAutoUpload(false);
+      }
+      jqXHR = this.uploader.fileupload('send', data).error((function(_this) {
+        return function(jqXHR, textStatus, errorThrown) {
+          if (errorThrown === 'abort') {
+            return _this.log('Foto Upload abgebrochen');
+          }
+        };
+      })(this));
+      jqXHR.abort();
+      return $('button.cancel', '#fileupload').click(function() {
+        return jqXHR.abort();
+      });
+    };
+
+    UploadEditView.prototype.submit = function(e, data) {
+      return $('button.cancel', this.uploader).click(function() {
+        return jqXHR.abort();
       });
     };
 
@@ -44608,6 +44683,10 @@ Released under the MIT License
       Spine.trigger('loading:done', product);
       selection = photos.toId();
       Product.updateSelection(selection);
+      if (this.autoupload) {
+        this.parent.toggleAutoUpload(this.autoupload);
+      }
+      delete this.autoupload;
       return e.preventDefault();
     };
 
@@ -44620,7 +44699,15 @@ Released under the MIT License
       }
     };
 
-    UploadEditView.prototype.submit = function(e, data) {};
+    UploadEditView.prototype.notify = function() {
+      return App.modal2ButtonView.show({
+        header: 'No Product selected',
+        body: 'Please select an product .',
+        info: '',
+        button_1_text: 'Hallo',
+        button_2_text: 'Bye'
+      });
+    };
 
     UploadEditView.prototype.changedSelected = function(product) {
       var ref;
@@ -45060,6 +45147,9 @@ Released under the MIT License
             model: null,
             models: null
           });
+        },
+        p: function() {
+          return App.sidebar.products;
         },
         followLink: function(e) {
           var strWindowFeatures;
@@ -46195,16 +46285,6 @@ Released under the MIT License
             return this.save();
           }
         },
-        selectAttributes: function() {
-          var attr, i, len, ref, result;
-          result = {};
-          ref = this.constructor.selectAttributes;
-          for (i = 0, len = ref.length; i < len; i++) {
-            attr = ref[i];
-            result[attr] = this[attr];
-          }
-          return result;
-        },
         addUnique: function(list) {
           var ref;
           [].splice.apply(list, [0, list.length - 0].concat(ref = [this.id])), ref;
@@ -46974,7 +47054,7 @@ Released under the MIT License
           atts = this.selectAttributes.apply(this);
           for (key in atts) {
             value = atts[key];
-            value = value.toLowerCase();
+            value = String(value).toLowerCase();
             if (!((value != null ? value.indexOf(query) : void 0) === -1)) {
               return true;
             }
@@ -46983,7 +47063,7 @@ Released under the MIT License
         },
         idSelect: function(query) {
           var value;
-          query = query.toLowerCase();
+          query = String(query).toLowerCase();
           value = this.id.toLowerCase();
           if (!((value != null ? value.indexOf(query) : void 0) === -1)) {
             return true;
@@ -49273,7 +49353,7 @@ Released under the MIT License
 
     Category.extend(Extender);
 
-    Category.selectAttributes = ['screenname', 'order'];
+    Category.selectAttributes = ['screenname'];
 
     Category.parent = 'Root';
 
@@ -49522,17 +49602,6 @@ Released under the MIT License
       }
       this[name] = value;
       return this.save();
-    };
-
-    Category.prototype.selectAttributes = function() {
-      var attr, j, len, ref, result;
-      result = {};
-      ref = this.constructor.selectAttributes;
-      for (j = 0, len = ref.length; j < len; j++) {
-        attr = ref[j];
-        result[attr] = this[attr];
-      }
-      return result;
     };
 
     Category.prototype.select = function(joinTableItems) {};
@@ -50086,7 +50155,7 @@ Released under the MIT License
 
     Product.extend(Extender);
 
-    Product.selectAttributes = ['title', 'subtitle', 'link', 'notes', 'price'];
+    Product.selectAttributes = ['title', 'subtitle', 'notes', 'price'];
 
     Product.parent = 'Category';
 
@@ -50767,7 +50836,7 @@ Released under the MIT License
       if (user = User.first()) {
         setting = this.findByAttribute('user_id', user.id);
       } else {
-        setting = Model.Settings.first();
+        setting = this.first();
       }
       return setting;
     };
@@ -51189,7 +51258,7 @@ Released under the MIT License
             },
             klass: 'opt-AutoUpload',
             disabled: function() {
-              return false;
+              return true;
             }
           }
         ]

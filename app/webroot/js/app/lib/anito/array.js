@@ -44,6 +44,19 @@
     return this[0] || null;
   };
 
+  Array.prototype.filter = function(list) {
+    var item, res, _i, _len, _ref;
+    list = list.toId();
+    res = [];
+    for (_i = 0, _len = this.length; _i < _len; _i++) {
+      item = this[_i];
+      if (_ref = item.id, __indexOf.call(list, _ref) >= 0) {
+        res.push(item);
+      }
+    }
+    return res;
+  };
+
   Array.prototype.update = function(value) {
     if (Object.prototype.toString.call(value) !== '[object Array]') {
       throw new Error('passed value requires an array');

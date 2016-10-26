@@ -24,7 +24,7 @@ class Product extends Spine.Model
   @extend Filter
   @extend Extender
 
-  @selectAttributes: ['title', 'subtitle', 'link', 'notes', 'price']
+  @selectAttributes: ['title', 'subtitle', 'notes', 'price']
   
   @parent: 'Category'
   

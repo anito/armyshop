@@ -42,10 +42,21 @@ class Info extends Spine.Controller
     w=$(window).width()
     h=$(window).height()
     t=$(window).scrollTop()
+    s=@parent.scrollTop()
     x_offset = 10
     y_offset = 10
     posx=e.pageX+x_offset-@parent.offset().left
-    posy=e.pageY+y_offset-@parent.offset().top
+    posy=e.pageY+y_offset-@parent.offset().top+s
+#    a=s-@parent.offset().top
+#    b=posy-e.pageY
+#    console.log '___________'
+#    console.log 'parent.offset    : '+@parent.offset().top+'  '+String(a)
+#    console.log 'wondow.scrollTop : '+t
+#    console.log 'parent.scrollTop : '+s
+#    console.log 'windos.height    : '+h
+#    console.log 'mouseY           : '+e.pageY+' '+b
+#    console.log 'y                : '+posy
+#    console.log '___________'
     maxx=posx+info_w
     minx=posx-info_w
     maxy=posy+info_h

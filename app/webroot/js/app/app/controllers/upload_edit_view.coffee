@@ -8,16 +8,18 @@ class UploadEditView extends Spine.Controller
 
   elements:
     '.delete:not(.files .delete)' : 'clearEl'
+    '#fileupload button.cancel'   : 'cancelEl'
     '.files'                      : 'filesEl'
     '.uploadinfo'                 : 'uploadinfoEl'
     '#ph'                         : 'photoEl'
     '.editor'                     : 'editorEl'
+    '#fileupload'                 : 'uploader'
 
   events:
     'fileuploaddone'              : 'done'
     'fileuploadsubmit'            : 'submit'
     'fileuploadfail'              : 'fail'
-#    'fileuploaddrop'              : 'drop'
+    'fileuploaddrop'              : 'drop'
     'fileuploadadd'               : 'add'
 #    'fileuploadpaste'             : 'paste'
     'fileuploadsend'              : 'send'
@@ -60,7 +62,14 @@ class UploadEditView extends Spine.Controller
     @refreshElements()
     @el
     
+  setAutoupload: (b) ->
+    @uploader.fileupload('option', 'autoUpload', b)
+    
+  getAutoupload: ->
+    @uploader.fileupload('option', 'autoUpload')
+    
   destroyed: ->
+    
     
   fail: (e, data) ->
     @log data.textStatus
@@ -71,22 +80,46 @@ class UploadEditView extends Spine.Controller
   drop: (e, data) ->
 
   add: (e, data) ->
+    @parent.toggleAutoUpload(true)
+    unless @checkSelected(data)
+      @cancelUpload(e, data)
+      return
+      
     @data.fileslist.push file for file in data.files
     
     @trigger('active')
-    if !Settings.isAutoUpload()
-      App.showView.openView()
-      
     @clearEl.click()
         
-  notify: ->
-    App.modal2ButtonView.show
-      header: 'No Product selected'
-      body: 'Please select an product .'
-      info: ''
-      button_1_text: 'Hallo'
-      button_2_text: 'Bye'
+  checkSelected: (data) ->
+    valid = -> !!Category.selectionList().length
+    auto = if @getAutoupload() then '' else 'nicht'
+    
+    unless valid()
+      multiple = (data.files.length > 1)
+      str = if multiple then 'Sollen die Fotos ' else 'Soll das Foto '
+#      b = confirm('Es ist kein Produkt ausgewählt!\n'+str+'im Foto-Katalog abgelegt werden?')
+      alert ('Es ist kein Produkt ausgewählt!\nDer Upload kann manuell fortgesetzt werden.')
+      return false
+      
+    return true
         
+  cancelUpload: (e, data) ->
+    @autoupload = @getAutoupload()
+    if @autoupload then @parent.toggleAutoUpload(false)
+    
+    jqXHR = @uploader.fileupload('send', data)
+    .error (jqXHR, textStatus, errorThrown) =>
+      if (errorThrown is 'abort')
+#        if @autoupload then @setAutoupload(@autoupload)
+        @log 'Foto Upload abgebrochen'
+        
+    jqXHR.abort()
+    
+    $('button.cancel', '#fileupload').click( -> jqXHR.abort() )
+    
+  submit: (e, data) ->
+    $('button.cancel', @uploader).click( -> jqXHR.abort() )
+    
   send: (e, data) ->
     product = Product.find(@data.link)
     Spine.trigger('loading:start', product)
@@ -110,6 +143,9 @@ class UploadEditView extends Spine.Controller
     selection = photos.toId()
     Product.updateSelection(selection)
     
+    if @autoupload then @parent.toggleAutoUpload(@autoupload)
+    delete @autoupload
+    
     e.preventDefault()
     
   progress: (e, data) ->
@@ -118,7 +154,14 @@ class UploadEditView extends Spine.Controller
     @log 'paste'
     @drop(e, data) if data.files.length
     
-  submit: (e, data) ->
+  notify: ->
+    App.modal2ButtonView.show
+      header: 'No Product selected'
+      body: 'Please select an product .'
+      info: ''
+      button_1_text: 'Hallo'
+      button_2_text: 'Bye'
+        
     
   changedSelected: (product) ->
     product = Product.find(product.id)

@@ -104,17 +104,6 @@ class Main extends Spine.Controller
     @modalView = new ModalSimpleView
 #    @modal2ButtonView = new Modal2ButtonView
 #      el: @modalEl
-    @missingView = new MissingView
-      el: @missingEl
-    @category = new CategoryEditView
-      el: @categoryEl
-      externalClass: '.optCategory'
-    @product = new ProductEditView
-      el: @productEl
-      externalClass: '.optProduct'
-    @upload = new UploadEditView
-      el: @uploadEl
-      externalClass: '.optUpload'
     @sidebar = new Sidebar
       el: @sidebarEl
       externalClass: '.optSidebar'
@@ -127,13 +116,24 @@ class Main extends Spine.Controller
     @showView = new ShowView
       el: @showEl
       activeControl: 'btnCategory'
-      uploader: @upload
       sidebar: @sidebar
       parent: @
     @overviewView = new OverviewView
       el: @overviewEl
     @previewView = new PreviewView
       el: @previewEl
+    @missingView = new MissingView
+      el: @missingEl
+    @category = new CategoryEditView
+      el: @categoryEl
+      externalClass: '.optCategory'
+    @product = new ProductEditView
+      el: @productEl
+      externalClass: '.optProduct'
+    @upload = new UploadEditView
+      el: @uploadEl
+      parent: @showView
+      externalClass: '.optUpload'
     @slideshowView = @showView.slideshowView
 
     @vmanager = new Spine.Manager(@sidebar)

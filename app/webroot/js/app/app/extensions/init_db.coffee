@@ -266,11 +266,6 @@ Model.Extender =
 
         @save() if invalid
         
-      selectAttributes: ->
-        result = {}
-        result[attr] = @[attr] for attr in @constructor.selectAttributes
-        result
-        
       #private
       
       addUnique: (list) ->

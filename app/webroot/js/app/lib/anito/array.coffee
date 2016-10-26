@@ -21,7 +21,11 @@ Array.prototype.last = ->
 Array.prototype.first = ->
   @[0] or null
   
-
+Array.prototype.filter = (list) ->
+  list = list.toId()
+  res = []
+  res.push item for item in @ when item.id in list
+  res
 
 Array.prototype.update = (value) ->
   throw new Error('passed value requires an array') unless Object::toString.call(value) is '[object Array]'

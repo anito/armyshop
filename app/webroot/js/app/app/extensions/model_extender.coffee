@@ -303,13 +303,13 @@ Model.Extender =
         query = query.toLowerCase()
         atts = @selectAttributes.apply @
         for key, value of atts
-          value = value.toLowerCase()
+          value = String(value).toLowerCase()
           unless (value?.indexOf(query) is -1)
             return true
         false
         
       idSelect: (query) ->
-        query = query.toLowerCase()
+        query = String(query).toLowerCase()
         value = @id.toLowerCase()
         unless (value?.indexOf(query) is -1)
           return true
