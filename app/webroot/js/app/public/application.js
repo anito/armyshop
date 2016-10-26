@@ -41114,7 +41114,7 @@ Released under the MIT License
       if (!this.isActive()) {
         return;
       }
-      items = (items || this.updateBuffer()).filter(this.p());
+      items = items || this.updateBuffer();
       this.list.render(items, mode);
       if (Category.record) {
         this.list.sortable('product');
