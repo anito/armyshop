@@ -257,6 +257,21 @@ class Toolbar extends Spine.Model
           klass: 'opt-AutoUpload'
           disabled: -> false
         ]
+    group31:
+      name: -> 
+        'Extras'
+      content:
+        [
+          name: -> 'Daten sichern'
+          klass: 'opt-MysqlDump'
+          icon: 'floppy-save'
+          disabled: -> false
+        ,
+          name: 'Gesicherte Daten wiederherstellen'
+          klass: 'opt-MysqlRestore'
+          icon: 'floppy-open'
+          disabled: -> false
+        ]
     group4:
       name: -> 
         len = App.activePhotos().length
@@ -316,6 +331,9 @@ class Toolbar extends Spine.Model
         ,
           dropdown: true
           itemGroup: @dropdownGroups.group3
+        ,
+          dropdown: true
+          itemGroup: @dropdownGroups.group31
         ]
     package_02:
       name: 'Close'

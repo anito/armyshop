@@ -269,13 +269,14 @@ class ShowView extends Spine.Controller
       
     
   changeCanvas: (controller, args) ->
+    @transform(controller, @previous, @current)
   
   transform: (controller, pContr, cContr) ->
     try
       cm = cContr.el.data('current').model.className
       pm = pContr.el.data('current').model.className
     catch e
-    return if cm is pm
+#    return if cm is pm
     @controllers = (c for c in @canvasManager.controllers when c isnt controller)
     $('.items', @el).removeClass('in3') for c in @controllers
     fadein = =>
@@ -284,7 +285,7 @@ class ShowView extends Spine.Controller
       
     window.setTimeout( =>
       fadein()
-    , 1500)
+    , 500)
     
   resetSelection: (controller) ->
     
@@ -303,7 +304,7 @@ class ShowView extends Spine.Controller
 #    return if (@previous is @current) and !@current.isActive()
     # the controller should already be active, however rendering hasn't taken place yet
     
-    @transform(controller, p, c)
+    
     
     controller.trigger 'active'
     controller.header.trigger 'active'

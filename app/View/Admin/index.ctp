@@ -450,14 +450,18 @@
   </li>
   {{else}}
   <li data-id="${id}" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
-    <span class="glyphicon glyphicon-{{if details().iCount}}picture{{else}}camera{{/if}}">
-    {{if details().iCount}}<i class="ok glyphicon glyphicon-ok"></i>{{/if}}
+    <span class="infogramm">
+      <span class="glyphicon glyphicon-{{if details().iCount}}picture{{else}}camera{{/if}}">
+      {{if details().iCount}}<i class="ok glyphicon glyphicon-ok"></i>{{/if}}
+      </span>
+      <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}} opt-ignored">
+      {{if !ignored}}<i class="ok glyphicon glyphicon-ok"></i>{{/if}}
+      </span>
     </span>
-    <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}} opt-ignored">
-    {{if !ignored}}<i class="ok glyphicon glyphicon-ok"></i>{{/if}}
+    <span class="inner-sub">
+      <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
+      <span class="cta">€ {{if price}}${price}{{else}}0{{/if}}</span>
     </span>
-    <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
-    <span class="cta">€ {{if price}}${price}{{else}}0{{/if}}</span>
   </li>
   {{/if}}
 </script>

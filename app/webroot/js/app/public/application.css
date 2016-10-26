@@ -1265,9 +1265,6 @@ ul.sublist::before {
 .item-content {
   cursor: pointer;
 }
-.sublist-item span {
-  display: inline-block;
-}
 .sublist-item span.title {
   padding-left: 10px;
 }

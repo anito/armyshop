@@ -380,10 +380,11 @@ class ProductsView extends Spine.Controller
     else
       selection = ids
       Category.updateSelection(selection, Category.record?.id)
-      if ids.length
-        @navigate '/category', Category.record?.id or '', 'pid', ids[0]
-      else
-        @navigate '/category', Category.record?.id or ''
+      if type is 'keyup'
+        if ids.length
+          @navigate '/category', Category.record?.id or '', 'pid', ids[0]
+        else
+          @navigate '/category', Category.record?.id or ''
     
   infoUp: (e) =>
     @info.up(e)

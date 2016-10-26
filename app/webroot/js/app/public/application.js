@@ -41463,10 +41463,12 @@ Released under the MIT License
       } else {
         selection = ids;
         Category.updateSelection(selection, (ref2 = Category.record) != null ? ref2.id : void 0);
-        if (ids.length) {
-          return this.navigate('/category', ((ref3 = Category.record) != null ? ref3.id : void 0) || '', 'pid', ids[0]);
-        } else {
-          return this.navigate('/category', ((ref4 = Category.record) != null ? ref4.id : void 0) || '');
+        if (type === 'keyup') {
+          if (ids.length) {
+            return this.navigate('/category', ((ref3 = Category.record) != null ? ref3.id : void 0) || '', 'pid', ids[0]);
+          } else {
+            return this.navigate('/category', ((ref4 = Category.record) != null ? ref4.id : void 0) || '');
+          }
         }
       }
     };
@@ -41883,7 +41885,9 @@ Released under the MIT License
       return Product.record.save();
     };
 
-    ShowView.prototype.changeCanvas = function(controller, args) {};
+    ShowView.prototype.changeCanvas = function(controller, args) {
+      return this.transform(controller, this.previous, this.current);
+    };
 
     ShowView.prototype.transform = function(controller, pContr, cContr) {
       var c, cm, e, error, fadein, i, len, pm, ref;
@@ -41892,9 +41896,6 @@ Released under the MIT License
         pm = pContr.el.data('current').model.className;
       } catch (error) {
         e = error;
-      }
-      if (cm === pm) {
-        return;
       }
       this.controllers = (function() {
         var i, len, ref, results;
@@ -41924,7 +41925,7 @@ Released under the MIT License
         return function() {
           return fadein();
         };
-      })(this), 1500);
+      })(this), 500);
     };
 
     ShowView.prototype.resetSelection = function(controller) {};
@@ -41943,7 +41944,6 @@ Released under the MIT License
         model: controller.el.data('current').model,
         models: controller.el.data('current').models
       });
-      this.transform(controller, p, c);
       controller.trigger('active');
       controller.header.trigger('active');
       return controller;
@@ -51194,6 +51194,30 @@ Released under the MIT License
           }
         ]
       },
+      group31: {
+        name: function() {
+          return 'Extras';
+        },
+        content: [
+          {
+            name: function() {
+              return 'Daten sichern';
+            },
+            klass: 'opt-MysqlDump',
+            icon: 'floppy-save',
+            disabled: function() {
+              return false;
+            }
+          }, {
+            name: 'Gesicherte Daten wiederherstellen',
+            klass: 'opt-MysqlRestore',
+            icon: 'floppy-open',
+            disabled: function() {
+              return false;
+            }
+          }
+        ]
+      },
       group4: {
         name: function() {
           var len;
@@ -51275,6 +51299,9 @@ Released under the MIT License
           }, {
             dropdown: true,
             itemGroup: Toolbar.dropdownGroups.group3
+          }, {
+            dropdown: true,
+            itemGroup: Toolbar.dropdownGroups.group31
           }
         ]
       },
