@@ -137,7 +137,7 @@ class ProductsView extends Spine.Controller
     
   render: (items, mode='html') ->
     return unless @isActive()
-    items = (items || @updateBuffer()).filter(@p())
+    items = (items || @updateBuffer())
     @list.render(items, mode)
     @list.sortable('product') if Category.record
 #    $('.tooltips', @el).tooltip(title:'default title')
