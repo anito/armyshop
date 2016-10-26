@@ -51275,14 +51275,14 @@ Released under the MIT License
             klass: 'opt-MysqlDump',
             icon: 'floppy-save',
             disabled: function() {
-              return false;
+              return true;
             }
           }, {
             name: 'Gesicherte Daten wiederherstellen',
             klass: 'opt-MysqlRestore',
             icon: 'floppy-open',
             disabled: function() {
-              return false;
+              return true;
             }
           }
         ]
