@@ -465,8 +465,8 @@ label input[type="text"] {
 }
 i.ok {
   position: absolute;
-  top: -3px;
-  left: 10px;
+  top: -35%;
+  left: 55%;
   font-size: .7em !important;
 }
 i.ok[class*="-ok"] {
@@ -686,6 +686,10 @@ ul {
 .cta {
   padding: 0 5px;
 }
+.outer-cta {
+  position: absolute;
+  right: 0px;
+}
 [class*="-x"] {
   color: rgba(255,255,255,0.5);
 }
@@ -854,7 +858,7 @@ ul.sublist::before {
   -moz-border-radius: 20px;
   -webkit-border-radius: 20px;
   border-color: #979797;
-  position: absolute;
+  position: relative;
   right: 10px;
   line-height: 1.3;
 }
@@ -983,6 +987,7 @@ section.info-badges {
 section.info-badges>span {
   background-color: #fff;
   color: #535354;
+  text-shadow: none;
 }
 section span.link {
   font-size: 1rem;
