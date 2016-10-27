@@ -456,7 +456,7 @@
       <i class="ok glyphicon glyphicon-{{if details().iCount}}ok{{else}}exclamation-sign{{/if}}"></i>
       </span>
       <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}} opt-ignored">
-      <i class="ok glyphicon glyphicon-{{if !ignored}}ok{{else}}exclamation-sign{{/if}}"></i>
+      <i class="ok glyphicon glyphicon-{{if ignored}}exclamation-sign{{else}}ok{{/if}}"></i>
       </span>
     </span>
     <span class="inner-sub">
