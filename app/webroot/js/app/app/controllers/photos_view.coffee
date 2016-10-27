@@ -146,7 +146,6 @@ class PhotosView extends Spine.Controller
     
     item = $(e.currentTarget).item()
     @select e, item.id
-    e.stopPropagation()
     
   select: (e, items = []) ->
     unless Array.isArray items

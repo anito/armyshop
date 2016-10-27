@@ -39680,8 +39680,7 @@ Released under the MIT License
       var item;
       App.showView.trigger('change:toolbarOne');
       item = $(e.currentTarget).item();
-      this.select(e, item.id);
-      return e.stopPropagation();
+      return this.select(e, item.id);
     };
 
     PhotosView.prototype.select = function(e, items) {

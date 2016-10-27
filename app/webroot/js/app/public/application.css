@@ -620,7 +620,7 @@ html {
   font-size: 16px;
 }
 body {
-  color: #333;
+  color: #444141;
   background-image: url("/img/pattern.png");
   background-color: #666;
   font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;
@@ -1264,7 +1264,7 @@ ul.sublist::before {
   background-color: rgba(159,222,255,0.5);
 }
 .gal.active {
-  border-color: #ff8c00;
+  border-color: rgba(51,153,255,0.5);
 }
 .sidebar .glyphicon {
   font-size: 1.1em;

@@ -788,11 +788,6 @@
         <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
         </div>
         {{else}}
-        <div class="h4">
-          <a class="opt opt-ShowAllProducts">
-            <i class="glyphicon glyphicon-chevron-up"></i>
-          </a>
-        </div>
         <div class="h4"><span class="">Foto-Katalog</span></div>
         {{/if}}
       </div>
