@@ -427,6 +427,7 @@ label input[type="text"] {
   position: relative;
 }
 .top {
+  position: relative;
   top: 0;
 }
 .bottom {
@@ -457,6 +458,10 @@ label input[type="text"] {
 }
 .header-title h3:first-child {
   margin-right: 10px;
+}
+.header .h4, .header .h3, .header .h2, .header .h1 {
+  display: inline-block;
+  padding: 0 6px;
 }
 i.ok {
   position: absolute;
@@ -590,25 +595,26 @@ ul.items {
   background: url(/img/flower.png) no-repeat 0 0;
 }
 .header {
-  line-height: 24px;
+  color: #868686;
+  text-transform: uppercase;
+/*  line-height: 24px;
   height: 69px;
   font-size: 11px;
   background: #000;
   opacity: 1;
-  text-transform: uppercase;
   z-index: 999;
   -moz-box-shadow: 1px 0px 2px #000;
   -webkit-box-shadow: 1px 0px 2px #000;
-  box-shadow: 1px 0px 2px #000;
+  box-shadow: 1px 0px 2px #000;*/
 }
 .header .view .top {
-  padding-top: 15px;
+  padding: 22px 5px;
 }
 .header .h2.chopin {
   line-height: 0;
 }
 .header .view section:first-child {
-  box-shadow: 0 4px 4px rgba(0,0,0,0.5);
+  /*box-shadow: 0 4px 4px rgba(0,0,0,0.5);*/
   z-index: 1;
 }
 .header .view section:nth-child(2) {
@@ -708,7 +714,7 @@ ul {
 
 }
 .header section.top {
-  position: relative;
+  /*position: relative;*/
 }
 
 .header section div:nth-child(2) {
@@ -766,8 +772,8 @@ ul.sublist::before {
   font-size: 3em;
   line-height: 1em;
 }
-.footer {
-  padding: 6px;
+.footer, .header {
+  padding: 6px 15px;
   border-top: 1px solid #666;
   border-bottom: 1px solid #222;
   background: $dark-from-gradient;
@@ -784,6 +790,7 @@ ul.sublist::before {
   border: 1px solid #555555;
   border-width: 1px 0 1px 0;
   background: -moz-linear-gradient(center top , #494949, #333333);
+  position: relative;
 }
 .search input {
   font-size: 30px;
@@ -892,7 +899,7 @@ ul.sublist::before {
 
 }
 .toolbar {
-  font-size:  1.3em;
+  font-size:  1em;
 }
 .opt-Preview {
   color: rgba(245,245,245,0.91);
@@ -1461,19 +1468,19 @@ li.item.active .glyphicon-set {
   padding: 4px 10px;
 }
 .views .header.views .view.active section:first-child {
-  padding: 20px;
+  /*padding: 20px;*/
 }
 .view.active .fadeelement {
   transition: background 1s linear 0s;
 }
 .header .view .fadeelement {
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(220,220,220,.9), to(rgba(220,220,220,.9))));
+/*  background: -webkit-gradient(linear, left top, left bottom, from(rgba(220,220,220,.9), to(rgba(220,220,220,.9))));
   background: -moz-linear-gradient(center top , rgba(220,220,220,.9), rgba(220,220,220,.9));
   background: linear-gradient(center top , rgba(220,220,220,.9), rgba(220,220,220,.9));
-  background: rgba(220,220,220,.9);
+  background: rgba(220,220,220,.9);*/
   transition: background 1s linear 0s;
 }
-.header .all.view.active .fadeelement {
+.header .alll.view.active .fadeelement {
   background: -webkit-gradient(linear, left top, left bottom, from($allview), to($allview));
   background: -moz-linear-gradient(center top , $allview, $allview);
   background: linear-gradient(center top , $allview, $allview);
@@ -1580,6 +1587,9 @@ button.chromeless, button.chromeless:hover {
 .glyphicon-set a {
   
 }
+.downloading {
+  padding: 0 10px 0 0;
+}
 .ignored .glyphicon-eye:before {
   content: "\e106";
 }
@@ -1601,7 +1611,7 @@ button.chromeless, button.chromeless:hover {
 [class^="opt-Select"] {
   min-width: 140px;
 }
-.select:hover, .deselect:hover {
+fieldset .btn:hover {
   border-color: inherit;
   color: inherit;
 }
@@ -1703,11 +1713,12 @@ section.addAction {
 .viewheader .btn:active, .btn.active {
     background-image: none;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.125) inset;
-    outline: 1px inset rgba(0, 0, 0, 0.5);
+    outline: 1px inset rgb(134, 134, 134);
 }
 .viewheader .btn {
     border: 0 none;
-    outline: 1px outset rgba(0, 0, 0, 0.5);
+    outline: rgb(134, 134, 134);
+    display: block;
 }
 .viewheader h3, .viewheader h4, .viewheader h5 {
   display: inline-block;
@@ -1831,6 +1842,47 @@ section.addAction {
   color: #ddd;
   background-color: #212122;
   border-color: #223528;
+}
+fieldset.scheduler-border {
+  border: 1px solid !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  -webkit-box-shadow:  0px 0px 0px 0px #000;
+  box-shadow:  0px 0px 0px 0px #000;
+  }
+
+legend.scheduler-border {
+  font-size: 0.8em !important;
+  font-weight: bold !important;
+  text-align: left !important;
+  width:auto;
+  padding:0 10px;
+  border-bottom:none;
+  color: inherit;
+}
+.header fieldset.scheduler-border {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  min-width: 255px;
+}
+fieldset .selection-title {
+  color: #39f;
+  position: absolute;
+  top: 12px;
+  padding: 0;
+  left: 10px;
+}
+.header .glyphicon+span {
+  padding-left: 7px;
+}
+.sidebar i.clear-search {
+  position: absolute;
+  right: 10px;
+  top: 24%;
+  font-size: 2em;
+  color: grey;
+  opacity: .6;
 }
 body.cat li.parent.preview {
   background: url(/img/home_creative.jpg) -700px -300px;

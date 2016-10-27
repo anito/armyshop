@@ -80,6 +80,9 @@ class UploadEditView extends Spine.Controller
   drop: (e, data) ->
 
   add: (e, data) ->
+    @trigger('active')
+    @clearEl.click()
+    
     @parent.toggleAutoUpload(true)
     unless @checkSelected(data)
       @cancelUpload(e, data)
@@ -87,8 +90,6 @@ class UploadEditView extends Spine.Controller
       
     @data.fileslist.push file for file in data.files
     
-    @trigger('active')
-    @clearEl.click()
         
   checkSelected: (data) ->
     valid = -> !!Category.selectionList().length
@@ -98,7 +99,7 @@ class UploadEditView extends Spine.Controller
       multiple = (data.files.length > 1)
       str = if multiple then 'Sollen die Fotos ' else 'Soll das Foto '
 #      b = confirm('Es ist kein Produkt ausgewählt!\n'+str+'im Foto-Katalog abgelegt werden?')
-      alert ('Es ist kein Produkt ausgewählt!\nDer Upload kann manuell fortgesetzt werden.')
+      alert ('Es ist momentan kein Produkt ausgewählt!\n\nUm das Foto einem Artikel zuzuordnen,markiere ein Produkt und klicke anschliessend unten auf "Start".')
       return false
       
     return true

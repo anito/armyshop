@@ -28,6 +28,7 @@
       <div class="vbox sidebar canvas bg-dark flex inner" style="display: none">
         <div class="search">
           <form class="form-search">
+            <i class="clear-search glyphicon glyphicon-remove-circle"></i>
             <input class="search-query" type="search" placeholder="Produktsuche">
           </form>
         </div>
@@ -73,10 +74,10 @@
         </ul>
         <div class="contents views vbox flex deselector" style="height: 0;">
           <div class="header views vbox">
-            <div data-model-name="" class="categories  view vbox all"></div>
+            <div data-model-name="" class="categories  view vbox"></div>
             <div data-model-name="Category" class="products view vbox"></div>
             <div data-model-name="Product" class="photos view vbox"></div>
-            <div data-model-name="" class="photo view vbox"></div>
+            <div data-model-name="Photo" class="photo view vbox"></div>
             <div class="overview view"></div>
           </div>
           <div class="view wait content vbox flex autoflow" style=""></div>
@@ -604,7 +605,9 @@
     </div>
     {{/if}}
     <div class="glyphicon-set right fade out" style="">
-      <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
+      <span class="left">
+        <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
+      </span>
       <span class="left">
         <a href="#" class="dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -646,7 +649,7 @@
     <div class="col-lg-3" style="">
       <div class="input-group" style="">
         <span class="input-group-addon" id="basic-addon2">Preis (€)</span>
-        <input type="text" class="form-control" placeholder="Preis" aria-describedby="price" name="price" value="${price}">
+        <input type="text" class="form-control" placeholder="Preis" aria-describedby="price" name="price" value="${price}" style="max-width: 170px;">
       </div>
     </div>
   </div>
@@ -684,7 +687,7 @@
 </script>
 
 <script id="editDescriptionTemplate" type="text/x-jquery-tmpl">
-  <div id="${id}" class="input-group data" draggable="true">
+  <div data-description-id="${id}" class="input-group data" draggable="true">
     <span class="input-group-addon" id="basic-addon1">${order}</span>
     <input class="form-control" placeholder="Beschreibung #${order}" aria-label="Text input with segmented button dropdown" name="description" value="{{html description}}">
     <div class="input-group-btn">
@@ -709,14 +712,14 @@
   <section class="top viewheader fadeelement">
     <div class="left">
       <div class="header-title">
-        <h3>
+        <div class="h4">
         <span class="">
           <a class="opt opt-ShowOverview">
             <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
         </span>
-        </h3>
-        <h3><span class="">Kategorien</span></h3>
+        </div>
+        <div class="h4"><span class="">Kategorien</span></div>
       </div>
     </div>
     {{tmpl() "#categorySpecsTemplate"}}
@@ -734,33 +737,20 @@
   <section class="top viewheader fadeelement">
     <div class="left">  
       <div class="header-title">
-        {{if model.record}}
-        <h3>
+        <div class="h4">
         <span class="">
           <a class="opt opt-ShowAllCategories">
             <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
         </span>
-        </h3>
-        {{/if}}
+        </div>
         {{if model.record}}
-        <h3>
-        <span class="label label-warning">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
-        </h3>
-        <h3>
-        {{if modelProduct.record}}
-        <span class="label label-primary">${$().name(modelProduct.record.title, 15)}</span>
-        {{/if}}
-        </h3>
+        <div class="h4">
+        <i class="glyphicon glyphicon-hand-right"></i>
+        <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
+        </div>
         {{else}}
-        <h3>
-        <span class="">
-          <a class="opt opt-ShowOverview">
-            <i class="glyphicon glyphicon-chevron-up"></i>
-          </a>
-        </span>
-        </h3>
-        <h3><span class="">Produkte-Katalog</span></h3>
+        <div class="h4"><span class="">Produkte-Katalog</span></div>
         {{/if}}
       </div>
     </div>
@@ -783,34 +773,27 @@
   <section class="top viewheader fadeelement">
     <div class="left">  
       <div class="header-title">
-        {{if category}}
-        <h3>
-        <span class="">
-          <a class="opt opt-ShowProducts">
+        <div class="h4">
+          <a class="opt opt-{{if product}}ShowProducts{{else}}ShowAllProducts{{/if}}">
             <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
-        </span>
-        </h3>
-        {{/if}}
+        </div>
         {{if product}}
-        <h3>
-        <span class="label label-warning">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
-        </h3>
-        <h3>
-        <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
-        </h3>
-        <h3>
-        <span class="label label-info">Fotos</span>
-        </h3>
+        <div class="h4">
+        <i class="glyphicon glyphicon-hand-right"></i>
+        <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
+        </div>
+        <div class="h4">
+        <i class="glyphicon glyphicon-hand-right"></i>
+        <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
+        </div>
         {{else}}
-        <h3>
-        <span class="">
-          <a class="opt opt-ShowOverview">
+        <div class="h4">
+          <a class="opt opt-ShowAllProducts">
             <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
-        </span>
-        </h3>
-        <h3><span class="">Foto-Katalog</span></h3>
+        </div>
+        <div class="h4"><span class="">Foto-Katalog</span></div>
         {{/if}}
       </div>
     </div>
@@ -828,39 +811,75 @@
     <div class="left">  
       <div class="header-title">
         {{if category}}
-        <h3>
-        <span class="">
+        <div class="h4">
           <a class="opt opt-ShowProducts">
             <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
-        </span>
-        </h3>
+        </div>
         {{/if}}
         {{if product}}
-        <h3>
-        <span class="label label-default">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</span>
-        </h3>
-        <h3>
-        <span class="label label-{{if model.record}}primary{{else}}warning{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}{{/if}}</span>
-        </h3>
-        <h3>
-        <span class="label label-info">Fotos</span>
-        </h3>
+        <div class="h4">
+        <i class="glyphicon glyphicon-hand-right"></i>
+        <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{/if}}</span>
+        </div>
+        <div class="h4">
+        <i class="glyphicon glyphicon-hand-right"></i>
+        <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}{{/if}}</span>
+        </div>
         {{else}}
-        <h3>
-        <span class="">
-          <a class="opt opt-ShowOverview">
+        <div class="h4">
+          <a class="opt opt-ShowAllPhotos">
             <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
-        </span>
-        </h3>
-        <h3><span class="">Foto-Katalog</span></h3>
+        </div>
+        <div class="h4"><span class="">Foto-Katalog</span></div>
         {{/if}}
       </div>
     </div>
     {{tmpl() "#photoSpecsTemplate"}}
   </section>
   {{tmpl() "#photoBreadcrumbTemplate"}}
+</script>
+
+<script id="categorySpecsTemplate" type="text/x-jquery-tmpl">
+  <div class="right">
+    <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Auswahl</legend>
+    <div class="btn btn-sm">Kategorien<b><div>${model.count()}</div></b></div>
+    </span> 
+    <span class="selection-title">
+    <i class="">${$().name(model.record.name, 25)}</i>
+    </span>
+    </fieldset>
+  </div>
+</script>
+
+<script id="productSpecsTemplate" type="text/x-jquery-tmpl">
+  <div class="right">
+    <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Auswahl</legend>
+    <span class="">
+      <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
+    </span>
+    <span class="selection-title">
+    <i class="">${$().name(product.title, 25)}</i>
+    </span>
+    </fieldset>
+  </div>
+</script>
+
+<script id="photoSpecsTemplate" type="text/x-jquery-tmpl">
+  <div class="right">
+    <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Auswahl</legend>
+    <span class="">
+    <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
+    </span>
+    <span class="selection-title">
+    <i class="">{{if Photo.record.title}}${$().name(modelPhoto.record.title, 25)}{{else}}${$().name(Photo.record.src, 25)}{{/if}}</i>
+    </span>
+    </fieldset>
+  </div>
 </script>
 
 <script id="photosBreadcrumbTemplate" type="text/x-jquery-tmpl">
@@ -880,7 +899,6 @@
   </section>
 </script>
 
-
 <script id="photoBreadcrumbTemplate" type="text/x-jquery-tmpl">
   <section class="hide">
     <span class="fadeelement breadcrumb">
@@ -899,39 +917,6 @@
       <li class="active">{{if photo.src}}${photo.src}{{else}}deleted{{/if}}</li>
     </span>
   </section>
-</script>
-
-
-<script id="categorySpecsTemplate" type="text/x-jquery-tmpl">
-  <div class="right">
-    <span class="">
-    <div class="btn btn-sm">Kategorien<b><div>${model.count()}</div></b></div>
-    </span> 
-    <span class="">
-    <div class="btn btn-sm">Produkte<b><div>${modelGas.count()} von ${Product.count()}</div></b></div>
-    </span> 
-  </div>
-</script>
-
-<script id="productSpecsTemplate" type="text/x-jquery-tmpl">
-  <div class="right">
-    <span class="">
-      <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
-    </span>
-    {{if category}}
-    <span class="">
-      <div class="btn btn-sm"><div>${model.publishedProducts(category.id).length} von ${model.details().aCount}</div>Veröffentl.</div>
-    </span>
-    {{/if}}
-  </div>
-</script>
-
-<script id="photoSpecsTemplate" type="text/x-jquery-tmpl">
-  <div class="right">
-    <span class="">
-    <div class="opt-Select{{if model.details().sCount>0}}None deselect{{else}}All select{{/if}} btn btn-sm {{if model.details().sCount>0}}{{/if}}"><b class=""><div>${model.details().sCount}</div></b></div>
-    </span> 
-  </div>
 </script>
 
 <script id="productCountTemplate" type="text/x-jquery-tmpl">
@@ -1381,7 +1366,7 @@
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">
-  <li class="pricing__feature">${description}1</li>
+  <li data-description-id="${id}" class="pricing__feature">${description}</li>
 </script>
 
 

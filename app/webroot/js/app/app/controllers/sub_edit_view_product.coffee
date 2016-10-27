@@ -14,7 +14,7 @@ class SubEditViewProduct extends Spine.Controller
     'click .opt-ignored'            : 'ignoreProduct'
   
   template: (item) ->
-    @templ.tmpl item
+    $('#editProductTemplate').tmpl item
     
   constructor: ->
     super
@@ -32,6 +32,7 @@ class SubEditViewProduct extends Spine.Controller
     
   render: ->
     @html @template @parent.current
+#    $('input',@el)[0].focus -> $(@).select()
     
   save: (el) ->
     @log 'save product'

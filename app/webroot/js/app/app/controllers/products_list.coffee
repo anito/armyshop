@@ -39,10 +39,12 @@ class ProductsList extends Spine.Controller
   changedProducts: (category) ->
     
   changeRelated: (item, mode) ->
-    return unless @parent and @parent.isActive()
-    return unless Category.record
-    return unless Category.record.id is item['category_id']
-    return unless product = Product.find(item['product_id'])
+    if mode isnt 'create'
+      return unless @parent and @parent.isActive() and (mode isnt 'create')
+      return unless Category.record
+      return unless Category.record.id is item['category_id']
+      
+    product = Product.find(item['product_id'])
     
     switch mode
       when 'create'

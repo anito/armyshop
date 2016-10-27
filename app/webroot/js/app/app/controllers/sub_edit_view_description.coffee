@@ -20,7 +20,7 @@ class SubEditViewDescription extends Spine.Controller
     'drop'                          : 'drop'
   
   template: (item) ->
-    @templ.tmpl item
+    $('#editDescriptionTemplate').tmpl item
     
   constructor: ->
     super
@@ -65,6 +65,8 @@ class SubEditViewDescription extends Spine.Controller
     newItem = @create order:parseInt(item.order)+1
     el.after @template newItem
     @sortupdate()
+    console.log $('[data-description-id='+newItem.id+'] input', @el)
+    $('[data-description-id='+newItem.id+'] input', @el).focus()
     
   remove: (e) ->
     item = $(e.target).item()

@@ -645,6 +645,7 @@ class ShowView extends Spine.Controller
     @current.select(e, [])
     
   selectAll: (e) ->
+    e.type = 'my'
     try
       list = @select()
       @current.select(e, list)

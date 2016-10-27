@@ -19,7 +19,8 @@ class Sidebar extends Spine.Controller
   @extend Extender
 
   elements:
-    'input'                 : 'input'
+    'form'                  : 'form'
+    'input.search-query'    : 'input'
     '.flickr'               : 'flickr'
     '.items'                : 'items'
     '.inner'                : 'inner'
@@ -29,6 +30,7 @@ class Sidebar extends Spine.Controller
 
 
   events:
+    'click .clear-search'       : 'clearSearch'
     'keyup input'               : 'filter'
     'click .opt-CreateProduct'  : 'createProduct'
     'click .opt-CreateCategory' : 'createCategory'
@@ -104,7 +106,6 @@ class Sidebar extends Spine.Controller
         items.push cat for cat in CategoriesProduct.categories(pro.id)
     else
       items = Category.filter(@query, func: 'searchSelect')
-    @log items
     @list.render items
     @refreshView.render()
   
@@ -154,6 +155,10 @@ class Sidebar extends Spine.Controller
   destroyCategory: (id) ->
     return unless category = Category.find id
     category.destroy() if category.isValid()
+
+  clearSearch: ->
+    $(@input).val('')
+    @filter()
 
   edit: ->
     App.categoryEditView.render()

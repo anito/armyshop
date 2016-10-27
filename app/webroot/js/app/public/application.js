@@ -40132,27 +40132,17 @@ Released under the MIT License
       'click .opt-EditorDescription': 'changeViewDescription'
     };
 
-    ProductEditView.prototype.template = function(item) {
-      return $('#editProductTemplate').tmpl(item);
-    };
-
-    ProductEditView.prototype.template = function(item) {
-      return $('#editProductTemplate').tmpl(item);
-    };
-
     function ProductEditView() {
       ProductEditView.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
       this.productView = new SubEditViewProduct({
         el: this.productEl,
         parent: this,
-        templ: $('#editProductTemplate'),
         btn: this.btnProduct
       });
       this.descriptionView = new SubEditViewDescription({
         el: this.descriptionEl,
         parent: this,
-        templ: $('#editDescriptionTemplate'),
         btn: this.btnDescription
       });
       this.noProductView = new SubNoProduct({
@@ -40619,18 +40609,18 @@ Released under the MIT License
 
     ProductsList.prototype.changeRelated = function(item, mode) {
       var el, product;
-      if (!(this.parent && this.parent.isActive())) {
-        return;
+      if (mode !== 'create') {
+        if (!(this.parent && this.parent.isActive() && (mode !== 'create'))) {
+          return;
+        }
+        if (!Category.record) {
+          return;
+        }
+        if (Category.record.id !== item['category_id']) {
+          return;
+        }
       }
-      if (!Category.record) {
-        return;
-      }
-      if (Category.record.id !== item['category_id']) {
-        return;
-      }
-      if (!(product = Product.find(item['product_id']))) {
-        return;
-      }
+      product = Product.find(item['product_id']);
       switch (mode) {
         case 'create':
           this.wipe();
@@ -41478,7 +41468,7 @@ Released under the MIT License
       } else {
         selection = ids;
         Category.updateSelection(selection, (ref2 = Category.record) != null ? ref2.id : void 0);
-        if (type === 'keyup') {
+        if (type === 'keyup' || type === 'click') {
           if (ids.length) {
             return this.navigate('/category', ((ref3 = Category.record) != null ? ref3.id : void 0) || '', 'pid', ids[0]);
           } else {
@@ -42422,6 +42412,7 @@ Released under the MIT License
 
     ShowView.prototype.selectAll = function(e) {
       var error, list;
+      e.type = 'my';
       try {
         list = this.select();
         return this.current.select(e, list);
@@ -43235,7 +43226,8 @@ Released under the MIT License
     Sidebar.extend(Extender);
 
     Sidebar.prototype.elements = {
-      'input': 'input',
+      'form': 'form',
+      'input.search-query': 'input',
       '.flickr': 'flickr',
       '.items': 'items',
       '.inner': 'inner',
@@ -43245,6 +43237,7 @@ Released under the MIT License
     };
 
     Sidebar.prototype.events = {
+      'click .clear-search': 'clearSearch',
       'keyup input': 'filter',
       'click .opt-CreateProduct': 'createProduct',
       'click .opt-CreateCategory': 'createCategory',
@@ -43332,7 +43325,6 @@ Released under the MIT License
           func: 'searchSelect'
         });
       }
-      this.log(items);
       this.list.render(items);
       return this.refreshView.render();
     };
@@ -43410,6 +43402,11 @@ Released under the MIT License
       if (category.isValid()) {
         return category.destroy();
       }
+    };
+
+    Sidebar.prototype.clearSearch = function() {
+      $(this.input).val('');
+      return this.filter();
     };
 
     Sidebar.prototype.edit = function() {
@@ -44110,7 +44107,7 @@ Released under the MIT License
     };
 
     SubEditViewDescription.prototype.template = function(item) {
-      return this.templ.tmpl(item);
+      return $('#editDescriptionTemplate').tmpl(item);
     };
 
     function SubEditViewDescription() {
@@ -44173,7 +44170,9 @@ Released under the MIT License
         order: parseInt(item.order) + 1
       });
       el.after(this.template(newItem));
-      return this.sortupdate();
+      this.sortupdate();
+      console.log($('[data-description-id=' + newItem.id + '] input', this.el));
+      return $('[data-description-id=' + newItem.id + '] input', this.el).focus();
     };
 
     SubEditViewDescription.prototype.remove = function(e) {
@@ -44278,7 +44277,7 @@ Released under the MIT License
     };
 
     SubEditViewProduct.prototype.template = function(item) {
-      return this.templ.tmpl(item);
+      return $('#editProductTemplate').tmpl(item);
     };
 
     function SubEditViewProduct() {
@@ -44600,19 +44599,21 @@ Released under the MIT License
     UploadEditView.prototype.drop = function(e, data) {};
 
     UploadEditView.prototype.add = function(e, data) {
-      var file, i, len, ref;
+      var file, i, len, ref, results;
+      this.trigger('active');
+      this.clearEl.click();
       this.parent.toggleAutoUpload(true);
       if (!this.checkSelected(data)) {
         this.cancelUpload(e, data);
         return;
       }
       ref = data.files;
+      results = [];
       for (i = 0, len = ref.length; i < len; i++) {
         file = ref[i];
-        this.data.fileslist.push(file);
+        results.push(this.data.fileslist.push(file));
       }
-      this.trigger('active');
-      return this.clearEl.click();
+      return results;
     };
 
     UploadEditView.prototype.checkSelected = function(data) {
@@ -44624,7 +44625,7 @@ Released under the MIT License
       if (!valid()) {
         multiple = data.files.length > 1;
         str = multiple ? 'Sollen die Fotos ' : 'Soll das Foto ';
-        alert('Es ist kein Produkt ausgewählt!\nDer Upload kann manuell fortgesetzt werden.');
+        alert('Es ist momentan kein Produkt ausgewählt!\n\nUm das Foto einem Artikel zuzuordnen,markiere ein Produkt und klicke anschliessend unten auf "Start".');
         return false;
       }
       return true;

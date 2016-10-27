@@ -23,12 +23,6 @@ class ProductEditView extends Spine.Controller
   events:
     'click .opt-EditorProduct'      : 'changeViewProduct'
     'click .opt-EditorDescription'  : 'changeViewDescription'
-    
-  template: (item) ->
-    $('#editProductTemplate').tmpl item
-    
-  template: (item) ->
-    $('#editProductTemplate').tmpl item
 
   constructor: ->
     super
@@ -37,12 +31,10 @@ class ProductEditView extends Spine.Controller
     @productView = new SubEditViewProduct
       el: @productEl
       parent: @
-      templ: $('#editProductTemplate')
       btn: @btnProduct
     @descriptionView = new SubEditViewDescription
       el: @descriptionEl
       parent: @
-      templ: $('#editDescriptionTemplate')
       btn: @btnDescription
     @noProductView = new SubNoProduct
       el: @noProductEl

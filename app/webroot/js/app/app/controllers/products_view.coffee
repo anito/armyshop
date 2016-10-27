@@ -381,7 +381,7 @@ class ProductsView extends Spine.Controller
     else
       selection = ids
       Category.updateSelection(selection, Category.record?.id)
-      if type is 'keyup'
+      if type is 'keyup' or type is 'click'
         if ids.length
           @navigate '/category', Category.record?.id or '', 'pid', ids[0]
         else
