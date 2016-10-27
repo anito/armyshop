@@ -467,8 +467,13 @@ i.ok {
   position: absolute;
   top: -3px;
   left: 10px;
-  color: #3ada3a;
   font-size: .7em !important;
+}
+i.ok[class*="-ok"] {
+  color: #3ada3a;
+}
+i.ok[class*="-exclamation-sign"] {
+  color: #f92727;
 }
 button:disabled:not(.btn-label) {
   cursor: auto;
@@ -1258,6 +1263,9 @@ nav .glyphicon {
   position: absolute;
   top: 0;
   padding: 5px 13px 9px 13px;
+}
+.sidebar .infogramm .glyphicon {
+  font-size: 0.7rem;
 }
 .glyphicon-set.blue {
   background-color: $medium-blue;

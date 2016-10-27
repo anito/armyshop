@@ -453,10 +453,10 @@
   <li data-id="${id}" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
     <span class="infogramm">
       <span class="glyphicon glyphicon-{{if details().iCount}}picture{{else}}camera{{/if}}">
-      {{if details().iCount}}<i class="ok glyphicon glyphicon-ok"></i>{{/if}}
+      <i class="ok glyphicon glyphicon-{{if details().iCount}}ok{{else}}exclamation-sign{{/if}}"></i>
       </span>
       <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}} opt-ignored">
-      {{if !ignored}}<i class="ok glyphicon glyphicon-ok"></i>{{/if}}
+      <i class="ok glyphicon glyphicon-{{if !ignored}}ok{{else}}exclamation-sign{{/if}}"></i>
       </span>
     </span>
     <span class="inner-sub">
