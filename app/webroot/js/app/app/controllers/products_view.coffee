@@ -118,15 +118,15 @@ class ProductsView extends Spine.Controller
   bindRefresh: ->
     Product.one('refresh', @proxy @refresh)
     
-  refresh: (items) ->
-    @updateBuffer(items)
+  refresh: () ->
+    @updateBuffer()
     @render @buffer, 'html'
     
   updateBuffer: (items) ->
     filterOptions =
       model: 'Category'
       sort: 'sortByOrder'
-    
+      
     unless items
       if category = Category.record
         items = Category.products(category.id, filterOptions)

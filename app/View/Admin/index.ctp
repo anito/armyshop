@@ -37,7 +37,7 @@
             <div class="item-header opt-preview" style="position: relative; top: -7px;">
                 <div class="expander" style="position: relative; top: 20px;"></div>
                   <div class="item-content">
-                    <span class="">Preview</span>
+                    <span class="">Vorschau</span>
                   </div>
               </div>
               <ul class="sublist" style="">
@@ -49,11 +49,11 @@
         <footer class="footer">
           <div style="white-space: nowrap; overflow: hidden;">
             <div id="refresh"></div>
-            <button class="opt-CreateCategory dark hide">
+            <button class="opt-CreateCategory blue hide">
               <i class="glyphicon glyphicon-plus"></i>
               <span>Kategorie</span>
             </button>
-            <button class="opt-CreateProduct dark">
+            <button class="opt-CreateProduct blue">
               <i class="glyphicon glyphicon-plus"></i>
               <span>Produkt</span>
             </button>
@@ -127,7 +127,7 @@
                       </button>
                     </section>
                   <section class="right">
-                      <button type="submit" class="dark opt-CreateCategory">
+                      <button type="submit" class="blue opt-CreateCategory">
                           <i class="glyphicon glyphicon-plus"></i>
                           <span>Kategorie</span>
                       </button>
@@ -166,9 +166,9 @@
                       </button>
                       <button type="submit" class="dark opt-EditorDescription">
                           <i class="glyphicon glyphicon-pencil"></i>
-                          <span>Beschreibungen</span>
+                          <span>Eigenschaften</span>
                       </button>
-                      <button type="submit" class="dark opt-CreateProduct">
+                      <button type="submit" class="blue opt-CreateProduct">
                           <i class="glyphicon glyphicon-plus"></i>
                           <span>Produkt</span>
                       </button>
@@ -229,7 +229,7 @@
                             </button>
                             <!-- The loading indicator is shown during file processing -->
                             <!-- The fileinput-button span is used to style the file input field as button -->
-                            <span class="right btn dark fileinput-button" style="margin-left: 4px;">
+                            <span class="right btn blue fileinput-button" style="margin-left: 4px;">
                                 <i class="glyphicon glyphicon-plus"></i>
                                 <span>Fotos</span>
                                 <input type="file" name="files[]" multiple>

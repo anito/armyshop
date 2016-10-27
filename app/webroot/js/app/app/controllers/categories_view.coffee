@@ -67,7 +67,7 @@ class CategoriesView extends Spine.Controller
       items = Category.records.sort Category.sortByOrder
       @list.render items
     else  
-      @list.el.html '<label class="invite"><span class="enlightened">This Application has no categories. &nbsp;<button class="opt-CreateCategory dark large">New Category</button>'
+      @list.el.html '<label class="invite"><span class="enlightened">This Application has no categories. &nbsp;<button class="opt-CreateCategory blue large">Kategorie</button>'
           
   active: ->
     return unless @isActive()

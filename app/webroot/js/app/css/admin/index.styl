@@ -20,6 +20,8 @@ $btn-default = rgb(255, 255, 255)
 $btn-primary = rgb(134, 134, 134)
 $dark-from-gradient = rgb(51, 51, 51)
 $dark-to-gradient = rgb(35, 35, 35)
+$blue-from-gradient = rgb(22, 84, 125)
+$blue-to-gradient = rgb(20, 47, 64)
 $allview = rgba(241, 105, 0, 0.9)
 
 * {
@@ -358,6 +360,20 @@ button.jumbo, .btn.jumbo {
   line-height: 1.5em;
   border: 1px solid rgba(70, 70, 70, .8);
 }
+button.blue, span.blue {
+  background: linear-gradient(center top , $blue-from-gradient, $blue-to-gradient);
+  background: -moz-linear-gradient(center top , $blue-from-gradient, $blue-to-gradient);
+  background: -webkit-gradient(linear, center top,center bottom, from($blue-from-gradient), to($blue-to-gradient))
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  color: rgb(134, 134, 134);
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  line-height: 1.5em;
+  border: 1px solid rgba(70, 70, 70, .8);
+}
 .options button, .options li.opt, [class^="opt-"] {
   cursor: pointer;
 }
@@ -394,7 +410,6 @@ button.large {
   -webkit-border-radius: 10px;
   border-radius: 10px;
   margin: 5px;
-  font-family: serif;
   font-style: inherit;
   text-shadow: 0 -1px 0 #000000;
   position: relative;

@@ -107,19 +107,20 @@ class UploadEditView extends Spine.Controller
   cancelUpload: (e, data) ->
     @autoupload = @getAutoupload()
     if @autoupload then @parent.toggleAutoUpload(false)
-    
-    jqXHR = @uploader.fileupload('send', data)
-    .error (jqXHR, textStatus, errorThrown) =>
-      if (errorThrown is 'abort')
-#        if @autoupload then @setAutoupload(@autoupload)
-        @log 'Foto Upload abgebrochen'
         
-    jqXHR.abort()
+    @jqXHR(data).abort()
     
-    $('button.cancel', '#fileupload').click( -> jqXHR.abort() )
-    
+    $('button.cancel', '#fileupload').click( => @jqXHR(data).abort() )
+  
+  jqXHR: (data) ->
+    @uploader.fileupload('send', data)
+      .error (jqXHR, textStatus, errorThrown) =>
+        if (errorThrown is 'abort')
+  #        if @autoupload then @setAutoupload(@autoupload)
+          @log 'Foto Upload abgebrochen'
+  
   submit: (e, data) ->
-    $('button.cancel', @uploader).click( -> jqXHR.abort() )
+    $('button.cancel', @uploader).click( => @jqXHR(data).abort() )
     
   send: (e, data) ->
     product = Product.find(@data.link)
