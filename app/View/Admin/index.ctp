@@ -463,7 +463,7 @@
       <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
       <span class="outer-cta">
         <span class="cta">€ {{if price}}${price}{{else}}0{{/if}}</span>
-        <i class="ok glyphicon glyphicon-{{if price}}ok{{else}}exclamation-sign{{/if}}"></i>
+        <i class="ok glyphicon glyphicon-{{if price}}{{else}}exclamation-sign{{/if}}"></i>
       </span>
     </span>
   </li>
