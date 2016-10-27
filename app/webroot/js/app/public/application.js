@@ -35926,6 +35926,10 @@ Released under the MIT License
         '/overview/*': function() {
           return this.overviewView.trigger('active');
         },
+        '/search/:sid': function(params) {
+          this.sidebar.filter({}, params.sid);
+          return this.showView.trigger('active', this.showView.productsView);
+        },
         '/wait/*glob': function(params) {
           return this.showView.trigger('active', this.showView.waitView);
         },
@@ -43300,8 +43304,11 @@ Released under the MIT License
       this.model = this.defaultModel = 'Category';
     }
 
-    Sidebar.prototype.filter = function() {
-      this.query = this.input.val();
+    Sidebar.prototype.filter = function(e, qry) {
+      if (qry) {
+        this.input.val(qry);
+      }
+      this.query = this.input.val() || qry;
       return this.render();
     };
 

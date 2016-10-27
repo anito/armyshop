@@ -86,8 +86,9 @@ class Sidebar extends Spine.Controller
     
     @model = @defaultModel = 'Category'
     
-  filter: ->
-    @query = @input.val()
+  filter: (e, qry) ->
+    if qry then @input.val(qry)
+    @query = @input.val() || qry
     @render()
   
   refresh: (items) ->

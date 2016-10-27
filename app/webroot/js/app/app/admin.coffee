@@ -217,6 +217,9 @@ class Main extends Spine.Controller
         @showView.trigger('active', @showView.categoriesView)
       '/overview/*': ->
         @overviewView.trigger('active')
+      '/search/:sid': (params) ->
+        @sidebar.filter {}, params.sid
+        @showView.trigger('active', @showView.productsView)
       '/wait/*glob': (params) ->
         @showView.trigger('active', @showView.waitView)
       '/*glob': (params) ->

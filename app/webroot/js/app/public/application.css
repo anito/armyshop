@@ -1252,10 +1252,18 @@ ul {
 ul.sublist::before {
   content: "";
   display: block;
+  height: 2px;
+  width: 100%;
+  margin: 0;
+  background: rgba(0,0,0,0.6);
+}
+ul.sublist>li:not(:last-child)::after {
+  content: "";
+  display: block;
   height: 1px;
   width: 100%;
-  margin: 10px 0;
-  background: rgba(0,0,0,0.29);
+  margin: 12px 0 -9px 0;
+  background: rgba(0,0,0,0.5);
 }
 .sublist span {
   vertical-align: baseline;
@@ -1417,6 +1425,9 @@ ul.sublist::before {
 }
 .sidebar .parent {
   background-color: rgba(80,80,80,0.7);
+}
+.sidebar .parent > .item-header {
+  padding-bottom: 13px;
 }
 .toolbar {
   font-size: 1em;
