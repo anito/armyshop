@@ -108,24 +108,24 @@
             <div id="ga" class="view flex bg-dark" style="">
               <div class="footer" style="">
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
-                  <section class="left">
-                    <button class="dark btn-label active" disabled="">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                        <span>Kategorie</span>
-                    </button>
-                  </section>
-                  <section class="left">
-                      <button class="dark btn-label pro-trigger-edit">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                        <span>Produkt</span>
+                    <section class="left">
+                      <button class="dark btn-label active" disabled="">
+                          <i class="glyphicon glyphicon-pencil"></i>
+                          <span>Kategorie</span>
                       </button>
-                  </section>
-                  <section class="left">
-                    <button class="dark btn-label pho-trigger-edit">
-                      <i class="glyphicon glyphicon-pencil"></i>
-                      <span>Foto</span>
-                    </button>
-                  </section>
+                    </section>
+                    <section class="left">
+                        <button class="dark btn-label pro-trigger-edit">
+                          <i class="glyphicon glyphicon-pencil"></i>
+                          <span>Produkt</span>
+                        </button>
+                    </section>
+                    <section class="left">
+                      <button class="dark btn-label pho-trigger-edit">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        <span>Foto</span>
+                      </button>
+                    </section>
                   <section class="right">
                       <button type="submit" class="dark opt-CreateCategory">
                           <i class="glyphicon glyphicon-plus"></i>
