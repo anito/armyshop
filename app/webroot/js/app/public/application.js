@@ -41694,6 +41694,7 @@ Released under the MIT License
     ShowView.prototype.events = {
       'click a[href]': 'followLink',
       'click .opt-ShowProducts': 'showProducts',
+      'click .opt-ShowPhotos': 'showPhotos',
       'click .opt-AutoUpload:not(.disabled)': 'toggleAutoUpload',
       'click .opt-Previous:not(.disabled)': 'back',
       'click .opt-Sidebar:not(.disabled)': 'toggleSidebar',
@@ -42578,6 +42579,16 @@ Released under the MIT License
         this.navigate('/category', Category.record.id);
       } else {
         this.navigate('/categories', '');
+      }
+      return e.preventDefault();
+    };
+
+    ShowView.prototype.showPhotos = function(e) {
+      var ref, ref1;
+      if (Product.record) {
+        this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', 'pid', Product.record.id);
+      } else {
+        this.navigate('/category', ((ref1 = Category.record) != null ? ref1.id : void 0) || '', '');
       }
       return e.preventDefault();
     };

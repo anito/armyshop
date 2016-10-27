@@ -70,6 +70,7 @@ class ShowView extends Spine.Controller
   events:
     'click a[href]'                                   : 'followLink'
     'click .opt-ShowProducts'                         : 'showProducts'
+    'click .opt-ShowPhotos'                           : 'showPhotos'
     'click .opt-AutoUpload:not(.disabled)'            : 'toggleAutoUpload'
     'click .opt-Previous:not(.disabled)'              : 'back'
     'click .opt-Sidebar:not(.disabled)'               : 'toggleSidebar'
@@ -762,6 +763,14 @@ class ShowView extends Spine.Controller
       @navigate '/category', Category.record.id
     else
       @navigate '/categories', ''
+      
+    e.preventDefault()
+    
+  showPhotos: (e) ->
+    if Product.record
+      @navigate '/category', Category.record?.id || '', 'pid', Product.record.id
+    else
+      @navigate '/category', Category.record?.id || '', ''
       
     e.preventDefault()
 

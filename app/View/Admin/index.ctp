@@ -810,7 +810,7 @@
       <div class="header-title">
         {{if category}}
         <div class="h4">
-          <a class="opt opt-ShowProducts">
+          <a class="opt opt-ShowPhotos">
             <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
         </div>
