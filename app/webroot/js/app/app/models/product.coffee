@@ -184,11 +184,12 @@ class Product extends Spine.Model
       sCount : Product.selectionList().length
       product: Product.record
       category: Category.record
+      ignored: CategoriesProduct.isActiveProduct(Category.record?.id, Product.record?.id)
   
   # loops over each record and make sure to set the copy property
   select: (joinTableItems) ->
     for record in joinTableItems
-      return true if record.product_id is @id and (@['order'] = parseInt(record.order))? and (@['ignored'] = !!record.ignored )?
+      return true if record.product_id is @id and (@prototype['order'] = parseInt(record.order))? and (@prototype['ignored'] = !!record.ignored )?
       
   select_: (joinTableItems) ->
     return true if @id in joinTableItems
