@@ -154,6 +154,7 @@ class Product extends Spine.Model
         res.push record.silentUpdate('order': join.order, 'ignored': join.ignored)
     res
         
+      
   @unusedProducts: ->
     @filter(true, {func: 'selectUnused'})
       

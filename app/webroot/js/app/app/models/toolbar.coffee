@@ -173,11 +173,6 @@ class Toolbar extends Spine.Model
           klass: 'opt-ShowAllProducts'
           icon: 'book'
           disabled: -> false
-        ,
-          name: -> 'Papierkorb'
-          klass: 'opt-ShowProductsTrash'
-          icon: 'trash'
-          disabled: -> false
         ]
     group3:
       name: 'Foto'
@@ -254,11 +249,6 @@ class Toolbar extends Spine.Model
           name: -> 'Foto-Katalog'
           klass: 'opt-ShowAllPhotos'
           icon: 'book'
-          disabled: -> false
-        ,
-          name: -> 'Papierkorb'
-          klass: 'opt-ShowPhotosTrash'
-          icon: 'trash'
           disabled: -> false
         ,
           devider: true

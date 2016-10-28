@@ -78,8 +78,6 @@
             <div data-model-name="Category" class="products view vbox"></div>
             <div data-model-name="Product" class="photos view vbox"></div>
             <div data-model-name="Photo" class="photo view vbox"></div>
-            <div data-model-name="" class="photos-trash view vbox"></div>
-            <div data-model-name="" class="products-trash view vbox"></div>
             <div class="overview view"></div>
           </div>
           <div class="view wait content vbox flex autoflow" style=""></div>
@@ -97,14 +95,6 @@
           <div tabindex="1" class="view photo content vbox flex data parent autoflow fadeelement nopad" style="">
             <div class="hoverinfo fadeslow"></div>
             <div class="items flex fade nopad">Photo</div>
-          </div>
-          <div tabindex="1" class="view products-trash content vbox flex data parent autoflow fadeelement nopad" style="">
-            <div class="hoverinfo fadeslow"></div>
-            <div class="items flex fade nopad">Product Trash</div>
-          </div>
-          <div tabindex="1" class="view photos-trash content vbox flex data parent autoflow fadeelement nopad" style="">
-            <div class="hoverinfo fadeslow"></div>
-            <div class="items flex fade nopad">Photo Trash</div>
           </div>
           <div id="slideshow" class="view content vbox flex data parent autoflow">
             <div class="items flex" data-toggle="blueimp-category" data-target="#blueimp-category" data-selector="a.thumbnail"></div>

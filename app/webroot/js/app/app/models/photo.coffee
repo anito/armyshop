@@ -2,10 +2,10 @@ Spine         = require("spine")
 $             = Spine.$
 Model         = Spine.Model
 Filter        = require("extensions/filter")
-Category      = require('models/category')
-Product       = require('models/product')
+Category       = require('models/category')
+Product         = require('models/product')
 Clipboard     = require('models/clipboard')
-ProductsPhoto = require('models/products_photo')
+ProductsPhoto   = require('models/products_photo')
 Extender      = require("extensions/model_extender")
 AjaxRelations = require("extensions/ajax_relations")
 Uri           = require("extensions/uri")
@@ -136,9 +136,6 @@ class Photo extends Spine.Model
         res.push record.silentUpdate('order': join.order)
     res
   
-  @unusedPhotos: ->
-    @filter(true, {func: 'selectUnused'})
-  
   init: (instance) ->
     return unless instance?.id
     @constructor.initCache instance.id
@@ -159,9 +156,6 @@ class Photo extends Spine.Model
       
   selectPhoto: (id) ->
     return true if @id is id
-      
-  selectUnused: (id) ->
-    return true unless ProductsPhoto.findByAttribute('photo_id', @id)
       
   details: =>
     category : Model.Category.record

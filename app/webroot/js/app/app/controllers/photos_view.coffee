@@ -111,15 +111,12 @@ class PhotosView extends Spine.Controller
     delete @buffer
     @el
   
-  active: (items) ->
-    unless items
-      return unless @isActive()
+  active: (params) ->
+    return unless @isActive()
     
     App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
-    
-    if items then @render items else @refresh()
-    
+    @refresh()
     @parent.scrollTo(@el.data('current').models.record)
     
   update: (items) ->

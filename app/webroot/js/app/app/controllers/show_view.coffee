@@ -42,8 +42,6 @@ class ShowView extends Spine.Controller
     '.header .products'       : 'productsHeaderEl'
     '.header .photos'         : 'photosHeaderEl'
     '.header .photo'          : 'photoHeaderEl'
-    '.header .photosTrash'    : 'photosTrashHeaderEl'
-    '.header .productsTrash'  : 'productsTrashHeaderEl'
     '.opt-EditCategory'       : 'btnEditCategory'
     '.opt-Category .ui-icon'  : 'btnCategory'
     '.opt-AutoUpload'         : 'btnAutoUpload'
@@ -54,8 +52,6 @@ class ShowView extends Spine.Controller
     '.toolbarOne'             : 'toolbarOneEl'
     '.toolbarTwo'             : 'toolbarTwoEl'
     '.props'                  : 'propsEl'
-    '.content .photos-trash'  : 'photosTrashEl'
-    '.content .products-trash': 'productsTrashEl'
     '.content.categories'     : 'categoriesEl'
     '.content.products'       : 'productsEl'
     '.content.photos'         : 'photosEl'
@@ -126,8 +122,6 @@ class ShowView extends Spine.Controller
     'click .opt-Help'                                 : 'help'
     'click .opt-Version'                              : 'version'
     'click .opt-Prev'                                 : 'prev'
-    'click .opt-ShowProductsTrash:not(.disabled)'     : 'showProductsTrash'
-    'click .opt-ShowPhotosTrash:not(.disabled)'       : 'showPhotosTrash'
     
     'dblclick .draghandle'                            : 'toggleDraghandle'
     
@@ -188,19 +182,6 @@ class ShowView extends Spine.Controller
       photosView: @photosView
       parent: @
       parentModel: Photo
-    @productsTrashHeader = new ProductsTrashView
-      el: @productsTrashEL
-    @photosTrashHeader = new PhotosTrashView
-      el: @photosTrashEL
-    @productsTrashView = new ProductsTrashView
-      el: @productsTrashEl
-      className: 'items'
-      header: @productsTrashHeader
-      parent: @
-    @photosTrashView = new PhotosTrashView
-      el: @photosTrashEl
-      header: @photosTrashHeader
-      parent: @
     @productsAddView = new ProductsAddView
       el: @modalAddProductEl
       parent: @productsView
@@ -253,8 +234,8 @@ class ShowView extends Spine.Controller
     @sliderRatio = 50
     @thumbSize = 240 # size thumbs are created serverside (should be as large as slider max for best quality)
     
-    @canvasManager = new Spine.Manager(@categoriesView, @productsView, @photosView, @photoView, @photosTrashView, @productsTrashView)
-    @headerManager = new Spine.Manager(@categoriesHeader, @productsHeader, @photosHeader, @photoHeader, @photoTrashHeader, @productsTrashHeader)
+    @canvasManager = new Spine.Manager(@categoriesView, @productsView, @photosView, @photoView)
+    @headerManager = new Spine.Manager(@categoriesHeader, @productsHeader, @photosHeader, @photoHeader)
     
     @canvasManager.bind('change', @proxy @changeCanvas)
     @headerManager.bind('change', @proxy @changeHeader)
@@ -268,12 +249,11 @@ class ShowView extends Spine.Controller
     Model.Settings.bind('refresh', @proxy @refreshSettings)
     
   active: (controller, params) ->
-    # activate subcontroller
-    console.log params
+    # activate controller
     if controller
       controller.trigger('active', params)
-      controller.header?.trigger('active', params)
-#      @activated(controller)
+      controller.header?.trigger('active')
+      @activated(controller)
     @focus()
     
   saveToDb: ->
@@ -736,12 +716,12 @@ class ShowView extends Spine.Controller
       ga.ignored = !ga.ignored
       ga.save()
 
-  showProductsTrash: ->
-    @navigate '/trash/products', ''
-    
   showPhotosTrash: ->
-    @navigate '/trash/photos', ''
+    Photo.inactive()
     
+  showProductsTrash: ->
+    Product.inactive()
+
   showProductMasters: ->
     @navigate '/category', ''
     
