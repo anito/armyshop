@@ -28,6 +28,7 @@ class Toolbar extends Spine.Model
         [
           name: 'Tastaturbefehle'
           klass: 'opt-Help '
+          disabled: -> true
         ,
           name: 'Über'
           klass: 'opt-Version '

@@ -901,66 +901,67 @@ class ShowView extends Spine.Controller
       CategoriesProduct.trigger('ignored', ga, !ga.ignored)
       
   help: (e) ->
-    carousel_id = 'help-carousel'
-    options = interval: 1000
-    slides =
-      [
-        img: "/img/keyboard.png"
-        width: '700px'
-      ,
-        items: [
-            'Abschnitt 1'
-            items: [
-              'Abschnitt 1.1'
+    carouselOptions =
+      id: 'help-carousel'
+      interval: 1000
+      slides:
+        [
+          img: "/img/keyboard.png"
+          width: '700px'
+        ,
+          items: [
+              'Abschnitt 1'
+              items: [
+                'Abschnitt 1.1'
+              ]
             ]
-          ]
-      ,
-        items: [
-            'Abschnitt 2'
-            items: [
-              'Abschnitt 2.1'
+        ,
+          items: [
+              'Abschnitt 2'
+              items: [
+                'Abschnitt 2.1'
+              ]
             ]
-          ]
-      ,
-        items: [
-            'Abschnitt 3'
-            items: [
-              'Abschnitt 3.1'
+        ,
+          items: [
+              'Abschnitt 3'
+              items: [
+                'Abschnitt 3.1'
+              ]
             ]
-          ]
-      ,
-        items: [
-            'Abschnitt 4'
-            items: [
-              'Abschnitt 4.1'
+        ,
+          items: [
+              'Abschnitt 4'
+              items: [
+                'Abschnitt 4.1'
+              ]
             ]
-          ]
-      ,
-        items: [
-            'Abschnitt 5'
-            items: [
-              'Abschnitt 5.1'
+        ,
+          items: [
+              'Abschnitt 5'
+              items: [
+                'Abschnitt 5.1'
+              ]
             ]
-          ]
-      ,
-        items: [
-            'Abschnitt 6'
-            items: [
-              'Abschnitt 6.1'
+        ,
+          items: [
+              'Abschnitt 6'
+              items: [
+                'Abschnitt 6.1'
+              ]
             ]
-          ]
-      ,
-        items: [
-            'Abschnitt 7'
-            items: [
-              'Abschnitt 7.1'
+        ,
+          items: [
+              'Abschnitt 7'
+              items: [
+                'Abschnitt 7.1'
+              ]
             ]
-          ]
-      ,
-        items: [
-            'Abschnitt 1'
-          ]
-      ]
+        ,
+          items: [
+              'Abschnitt 1'
+            ]
+        ]
     
     dialog = new ModalSimpleView
       modalOptions:
@@ -968,10 +969,8 @@ class ShowView extends Spine.Controller
         show: false
     options =
       small: false
-      header: 'Quick Help'
-      body: -> require("views/carousel")
-        slides: slides
-        id: carousel_id
+      header: 'TastaturBefehle'
+      body: -> require("views/carousel") carouselOptions
       footerButtonText: 'Close'
         
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
@@ -979,8 +978,8 @@ class ShowView extends Spine.Controller
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    @carousel = $('.carousel', @el)
-    @carousel.carousel options
+#    @carousel = $('.carousel', @el)
+#    @carousel.carousel carouselOptions
         
     dialog.show(options)
     
@@ -998,32 +997,6 @@ class ShowView extends Spine.Controller
         app_version   : App.version
         bs_version    : $.fn.tooltip.Constructor.VERSION
       
-    dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
-    dialog.el.one('hide.bs.modal', @proxy @hidemodal)
-    dialog.el.one('show.bs.modal', @proxy @showmodal)
-    dialog.el.one('shown.bs.modal', @proxy @shownmodal)
-    
-    dialog.show(options)
-    
-    dialog = new ModalSimpleView
-      modalOptions:
-        keyboard: true
-        show: false
-    options =
-      small: false
-      body: => require("views/no_slideshow")
-        copyright           : 'Axel Nitzschner'
-        spine_version       : Spine.version
-        app_version         : App.version
-        noCategory           : !!!Category.record
-        selectedProducts      : Category.selectionList(null).length
-        noProductsView        : !(!Category.record and @productsView.isActive())
-        productsCount         : CategoriesProduct.products(Category.record?.id).length
-        photosCount         : CategoriesProduct.photos(Category.record?.id).length
-        activeProductsCount   : CategoriesProduct.publishedProducts(Category.record?.id).length
-        activePhotosCount   : App.activePhotos().length
-        bs_version          : $.fn.tooltip.Constructor.VERSION
-
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)

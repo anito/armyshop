@@ -99,7 +99,6 @@ class ProductsList extends Spine.Controller
         @html '<label class="invite"><span class="enlightened">Keine Produkte im Katalog vorhanden</span><br><br>
         <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Neues Produkt</span></button>
         </label>'
-    
     @el
     
   updateIgnored: (item) ->
