@@ -119,8 +119,7 @@ class ProductsView extends Spine.Controller
     Product.one('refresh', @proxy @refresh)
     
   refresh: () ->
-    @updateBuffer()
-    @render @buffer, 'html'
+    @render @updateBuffer()
     
   updateBuffer: (items) ->
     filterOptions =
@@ -137,6 +136,8 @@ class ProductsView extends Spine.Controller
     
   render: (items, mode='html') ->
     return unless @isActive()
+#    else @list.wipe()
+    
     items = (items || @updateBuffer())
     @list.render(items, mode)
     @list.sortable('product') if Category.record
@@ -144,9 +145,11 @@ class ProductsView extends Spine.Controller
     delete @buffer
     @el
       
-  active: ->
-    return unless @isActive()
-    return if @eql Category.record
+  active: (items) ->
+    unless items
+      return unless @isActive()
+      return if @eql Category.record
+      
     @current.id = Category.record?.id
     App.showView.trigger('change:toolbarOne', ['Default', 'Help'])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
@@ -158,7 +161,8 @@ class ProductsView extends Spine.Controller
         alb.invalid = false
         alb.save(ajax:false)
         
-    @refresh()
+    if items then @render(items) else @refresh()
+    
     @parent.scrollTo(@el.data('current').models.record)
     
   collectionChanged: ->
@@ -180,13 +184,13 @@ class ProductsView extends Spine.Controller
     items.push item for ga in gas when item = Product.find(ga.product_id)
       
     @navigate '/category', ''
-    @refresh items
+    @render items
   
   showUnused: ->
     items = Product.unusedProducts(true)
       
     @navigate '/category', ''
-    @refresh items
+    @render items
   
   newAttributes: ->
     if user_id = User.first()?.id

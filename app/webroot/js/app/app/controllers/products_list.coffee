@@ -39,6 +39,7 @@ class ProductsList extends Spine.Controller
   changedProducts: (category) ->
     
   changeRelated: (item, mode) ->
+    @log 'changeRelated'
     if mode isnt 'create'
       return unless @parent and @parent.isActive() and (mode isnt 'create')
       return unless Category.record
@@ -71,10 +72,11 @@ class ProductsList extends Spine.Controller
         item[att] = ga[att]
     items
     
-  render: (items=[], mode) ->
+  render: (items, mode="html") ->
     @log 'render', mode
         
     if items.length
+      alert items.length
       @wipe()
 #      items = @mixinAttributes(items, ['ignored']) unless @modal
       @[mode] @template items
@@ -269,7 +271,9 @@ class ProductsList extends Spine.Controller
     
     Spine.trigger('products:add')
     
-  wipe: ->
+  wipe: (force) ->
+    if force then @el.empty(); return @el
+    
     if Category.record
       first = Category.record.count() is 1
     else

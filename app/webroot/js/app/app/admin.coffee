@@ -220,6 +220,18 @@ class Main extends Spine.Controller
       '/search/:sid': (params) ->
         @sidebar.filter {}, params.sid
         @showView.trigger('active', @showView.productsView)
+      '/trash/products/:id': (params) ->
+        Root.updateSelection []
+        Category.updateSelection []
+        items = Product.unusedProducts(true)
+        console.log items
+        @showView.trigger('active', @showView.productsTrashView, items)
+      '/trash/photos/:id': (params) ->
+        Root.updateSelection []
+        Category.updateSelection []
+        Product.updateSelection()
+        items = Photo.unusedPhotos(true)
+        @showView.trigger('active', @showView.photosTrashView, items)
       '/wait/*glob': (params) ->
         @showView.trigger('active', @showView.waitView)
       '/*glob': (params) ->
