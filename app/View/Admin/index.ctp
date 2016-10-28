@@ -1360,7 +1360,7 @@
 </script>
 
 <script id="norbuImageTemplate" type="text/x-tmpl">
-  <div data-image-id="${id}" class="pricing__image"><img class="image" src="/img/products/dummy.png"/></div>
+  <div data-image-id="${id}" class="pricing__image"><img class="image" src="/img/products/dummy.jpg"/></div>
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">

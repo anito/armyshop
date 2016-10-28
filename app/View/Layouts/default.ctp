@@ -74,7 +74,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         setTimeout(function() {}, 2000)
       };
       
-      Spine = require('spine');
+      require("lib/setup")
       Model = Spine.Model
       Spine.isProduction = (localStorage.isProduction != null) ? !(localStorage.isProduction === 'false') : isProduction
       

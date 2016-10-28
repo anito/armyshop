@@ -14,6 +14,7 @@ class PreviewView extends Spine.Controller
   @extend UriHelper
   
   elements:
+    '.preview'              : 'preview'
     '.items'                : 'items'
     '.inner'                : 'inner'
     '.expander'             : 'expander'
@@ -31,18 +32,24 @@ class PreviewView extends Spine.Controller
     super
     Product.bind('create update destroy', @proxy @change)
     Product.bind('current', @proxy @change)
+    
     Photo.bind('develop',  @proxy @developed)
+    
     Description.bind('change', @proxy @render)
+    
     ProductsPhoto.bind('update destroy', @proxy @changedRelatedPhoto)
+    
+    Category.bind('change:selection', @proxy @dimmPreview)
     CategoriesProduct.bind('destroy', @proxy @change)
+    
     @createDummy()
     @render()
     
   newAttributes: ->
-    title: 'Dummy'
+    title: 'Semper Fi'
     id: '12345'
-    price: '123,45'
-    subtitle: 'Subtitle Dummy'
+    price: '1.000.000,00'
+    subtitle: 'Keep smiling & semper fi'
     
   createDummy: ->
     @dummy = new Product @newAttributes()
@@ -110,6 +117,10 @@ class PreviewView extends Spine.Controller
     
   togglePreview: ->
     @expander.click()
+    
+  dimmPreview: (sel) ->
+    dimm =  !!sel.length
+    @preview.toggleClass('over', dimm)
     
   expand: (e) ->
     parent = $(e.target).closest('li')

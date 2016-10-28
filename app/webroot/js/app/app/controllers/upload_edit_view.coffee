@@ -99,7 +99,7 @@ class UploadEditView extends Spine.Controller
       multiple = (data.files.length > 1)
       str = if multiple then 'Sollen die Fotos ' else 'Soll das Foto '
 #      b = confirm('Es ist kein Produkt ausgewählt!\n'+str+'im Foto-Katalog abgelegt werden?')
-      alert ('Es ist momentan kein Produkt ausgewählt!\n\nUm das Foto einem Artikel zuzuordnen,markiere ein Produkt und klicke anschliessend unten auf "Start".')
+      alert ('Es ist momentan kein Produkt ausgewählt!\n\nUm den Upload abzuschliessen, markiere ein Produkt und klicke anschliessend unten auf "Start".')
       return false
       
     return true

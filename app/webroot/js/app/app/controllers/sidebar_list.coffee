@@ -202,6 +202,8 @@ class SidebarList extends Spine.Controller
     el = $(e.target).closest('li')
     item = el.item()
     
+    return unless item
+    
     switch item.constructor.className
       when 'Category'
         @expand(item, (@isOpen(el)) or (!(Category.record?.id is item.id) or !@isOpen(el)))

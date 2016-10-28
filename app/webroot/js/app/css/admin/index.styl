@@ -271,13 +271,13 @@ div.content label.label span {
   visibility: hidden;
 }
 button.white {
-    color: rgb(255, 255, 255);
-    opacity: 0.5;
+color: rgb(255, 255, 255);
+opacity: 0.5;
 }
 button.close.white:hover {
-  opacity: 1;
-  color: rgb(255, 255, 255);
-  z-index: 999;
+opacity: 1;
+color: rgb(255, 255, 255);
+z-index: 999;
 }
 button, .btn {
 /*  border: 1px solid;
@@ -406,9 +406,9 @@ ul:last-child li:last-child button {
 }
 button.large {
   font-size: 1.3em;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
   margin: 5px;
   font-style: inherit;
   text-shadow: 0 -1px 0 #000000;
@@ -677,6 +677,14 @@ li.parent {
 li.parent:not(.open) {
   height: 62px;
 }
+li.parent:hover:not(.active) {
+  opacity: 1;
+  transition: all .2s;
+}
+li.parent:not(.active) {
+  opacity: .5;
+  transition: all .2s;
+}
 .open ul.sublist {
   display: block !important;
 }
@@ -781,11 +789,10 @@ ul.sublist>li:not(:last-child)::after {
     background-color: $light-blue-semi;
 }
 .gal.active {
-    border-color: $medium-blue-semi;
+    /*border-color: $medium-blue-semi;*/
 }
 .sidebar .glyphicon {
   font-size: 1.1em;
-  padding: 0 5px 0 0px;
 }
 .item span.author {
   font-size: 0.8em;
@@ -908,6 +915,9 @@ ul.sublist>li:not(:last-child)::after {
 }
 .sidebar .expander {
   background: url('/img/arrow.png') no-repeat -22px 0;
+}
+#preview .preview {
+  border: 0 none !important;
 }
 .sidebar .preview .expander {
   background: url(/img/arrow.png) no-repeat -43px 0px;
@@ -1276,6 +1286,7 @@ li.active .sublist-item:not(.ignored) {
 }
 .glyphicon {
   line-height: inherit;
+  padding-right: 5px;
 }
 nav .glyphicon {
   line-height: 1;
@@ -1786,15 +1797,19 @@ section.addAction {
 /*  background-color: rgba(50, 250, 50, 0.7) !important;*/
 /*  color: rgba(40, 40, 40, 0.9) !important;*/
 /*  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.33) !important;*/
-  border: 5px solid gold !important;
+  border: 2px solid gold !important;
+  opacity: 1;
+  transition: opacity .2s;
 }
 .over.nodrop, li.over.nodrop:not(.view) {
-  border: 5px solid rgb(255, 88, 77) !important;
+  border: 2px solid rgb(255, 88, 77) !important;
   transition: color 0.3s;
 }
 .over li {
 /*  background-color: inherit !important;*/
   border-color: transparent !important;
+  opacity: 1;
+  transition: opacity .2s;
 /*  color: inherit !important;*/
 /*  text-shadow: inherit !important;*/
 }
@@ -1804,7 +1819,7 @@ section.addAction {
   display: none;
 }
 .data.items:not(.nopad), li.data {
-  border: 5px solid transparent;
+  border: 2px solid transparent;
 }
 .noborder {
   border: 0 none !important;

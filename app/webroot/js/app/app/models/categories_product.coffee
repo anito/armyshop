@@ -66,11 +66,11 @@ class CategoriesProduct extends Spine.Model
     ret
       
   @isActiveProduct: (gid, aid) ->
+    ret = []
     gas = @filter(gid, {associationForeignKey: 'category_id', func: 'selectNotIgnored'})
-    for ga in gas
-      return !ga.ignored if ga.product_id is aid
-    return false
-      
+    ret.push ga for ga in gas when (ga.product_id is aid) and (!ga.ignored)
+    !!ret.length
+    
   @c: 0
   
   validate: ->

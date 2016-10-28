@@ -74,10 +74,9 @@
         }, 3000)
       };
       
-      Spine = require('spine');
+      require("lib/setup")
       Model = Spine.Model
       Spine.isProduction = (localStorage.isProduction != null) ? !(localStorage.isProduction === 'false') : isProduction
-      
       Category = require('models/category')
       Product = require('models/product')
       Photo = require('models/photo')
@@ -90,7 +89,7 @@
       
       exports.App = new Main({el: $("body")});
       
-      User.userConfirm();
+      User.ping();
       
       Description.refresh(descriptions, {clear: true});
       Photo.refresh(photos, {clear: true});

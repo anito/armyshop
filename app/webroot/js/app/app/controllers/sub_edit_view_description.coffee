@@ -38,7 +38,7 @@ class SubEditViewDescription extends Spine.Controller
         order       : count+1
       object = $.extend({}, obj, object)
     else
-      User.userConfirm()
+      User.ping()
     
   bindRefresh: ->
     Description.one('refresh', @proxy @refresh)

@@ -38,8 +38,7 @@
         "lib/blueimp/jquery.fileupload-audio.js",
         "lib/blueimp/jquery.fileupload-video.js",
         "lib/blueimp/jquery.fileupload-validate.js",
-        "lib/blueimp/jquery.fileupload-ui.js",
-        "lib/anito/array.js"
+        "lib/blueimp/jquery.fileupload-ui.js"
       ],
       "paths"  : ["./app"],
       "target" : "./public/application.js",

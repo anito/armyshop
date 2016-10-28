@@ -69,6 +69,8 @@ class ShowView extends Spine.Controller
     
   events:
     'click a[href]'                                   : 'followLink'
+    'click .opt-MysqlDump'                            : 'mysqlDump'
+    'click .opt-MysqlRestore'                         : 'mysqlRestore'
     'click .opt-ShowProducts'                         : 'showProducts'
     'click .opt-ShowPhotos'                           : 'showPhotos'
     'click .opt-AutoUpload:not(.disabled)'            : 'toggleAutoUpload'
@@ -1164,6 +1166,32 @@ class ShowView extends Spine.Controller
   prev: (e) ->
     history.back()
     e.preventDefault()
+  
+  mysqlDump: ->
+    options =
+      done: (xhr) => setTimeout ->
+        Spine.trigger('done:wait')
+      , 5000, xhr
+      fail: (e) ->
+    
+#    @waitView.trigger('active',
+    Spine.trigger('show:wait',
+      body: 'Datensicherung läuft...'
+    )
+    @mysql 'dump', options
+    
+  mysqlRestore: ->
+    options =
+      done: (xhr) => setTimeout ->
+        Spine.trigger('done:wait')
+        Spine.trigger('refresh:all')
+      , 5000, xhr
+      fail: (e) ->
+      
+    Spine.trigger('show:wait',
+      body: 'Wiederherstellung läuft...'
+    )
+    @mysql 'restore', options
   
   keydown: (e) ->
     code = e.charCode or e.keyCode

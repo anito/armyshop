@@ -119,6 +119,7 @@ Controller.Drag =
       dragEnter: (e) ->
         @log 'dragEnter'
         el = indicator = $(e.target).closest('.data')
+        
         selector = el.attr('data-drag-over')
         if selector then indicator = el.children('.'+selector)
         

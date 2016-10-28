@@ -144,8 +144,16 @@ class Product extends Spine.Model
       ret.push item unless item.photos().length
     ret
   
-  @findRelated: (joins = [], joinid = '') ->
+  @findRelated_: (joins = [], joinid = '') ->
     record for join in joins when (record = @find(join[joinid])) and !!(typeof(record.order = join.order) and !!typeof(record.ignored = join.ignored))
+    
+  @findRelated: (joins = [], joinid = '') ->
+    res = []
+    for join in joins #when (record = @find(join[joinid])) and !!(typeof(record.order = join.order) and !!typeof(record.ignored = join.ignored))
+      if record = @find(join[joinid])
+        res.push record.silentUpdate('order': join.order, 'ignored': join.ignored)
+    res
+        
       
   @unusedProducts: ->
     @filter(true, {func: 'selectUnused'})
@@ -157,6 +165,8 @@ class Product extends Spine.Model
     @constructor.selection.push s
     
   parent: -> @constructor.parent
+    
+  isIgnored: (cid='') -> CategoriesProduct.isActiveProduct(cid, @id)
     
   selChange: (list) ->
   
@@ -184,7 +194,6 @@ class Product extends Spine.Model
       sCount : Product.selectionList().length
       product: Product.record
       category: Category.record
-      ignored: CategoriesProduct.isActiveProduct(Category.record?.id, Product.record?.id)
   
   # loops over each record and make sure to set the copy property
   select: (joinTableItems) ->

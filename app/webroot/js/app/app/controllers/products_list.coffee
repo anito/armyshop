@@ -88,16 +88,16 @@ class ProductsList extends Spine.Controller
       if Category.record
         if Product.count()
           @html '<label class="invite"><span class="enlightened">Keine Produkte in dieser Kategorie. &nbsp;</span><br><br>
-          <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Produkt</span></button>
-          <button class="opt-AddProducts dark large"><i class="glyphicon glyphicon-book"></i><span>Katalog</span></button>
+          <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Neues Produkt</span></button>
+          <button class="opt-AddProducts dark large"><i class="glyphicon glyphicon-book"></i><span>Aus Katalog wählen</span></button>
           </label>'
         else
           @html '<label class="invite"><span class="enlightened bootom">Keine Produkte in dieser Kategorie</span><br><br>
-          <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Produkt</span></button>
+          <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Neues Produkt</span></button>
           </label>'
       else
         @html '<label class="invite"><span class="enlightened">Keine Produkte im Katalog vorhanden</span><br><br>
-        <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Produkt</span></button>
+        <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Neues Produkt</span></button>
         </label>'
     
     @el

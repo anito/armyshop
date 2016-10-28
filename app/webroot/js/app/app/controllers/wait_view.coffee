@@ -18,27 +18,30 @@ class WaitView extends Spine.Controller
     
     @header = new Spine.Controller
     
-#    Spine.bind('show:wait', @proxy @show)
+    Spine.bind('show:wait', @proxy @show)
     Spine.bind('done:wait', @proxy @close)
     
   render: (items) ->
       
   show: (params) ->
     App.showView.trigger('canvas', @)
+    @active params
     
-  active: ->
-    @notify()
+  active: (options) ->
+    @notify(options)
     
-  notify: ->
+  notify: (options={}) ->
+    defaults =
+      body: 'Body'
+      small: true
+    options = $.extend defaults, options
+    
     @modalSimpleView.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     @modalSimpleView.el.one('hide.bs.modal', @proxy @hidemodal)
     @modalSimpleView.el.one('show.bs.modal', @proxy @showmodal)
     
-    @modalSimpleView.show
-      header: 'Wait'
-      body: 'Body'
-      small: true
-  
+    @modalSimpleView.show(options)
+      
   close: (cb) ->
     @modalSimpleView.close()
     if typeof cb is 'function'

@@ -262,15 +262,15 @@ class Toolbar extends Spine.Model
         'Extras'
       content:
         [
-          name: -> 'Daten sichern'
+          name: -> 'Datensicherung anlegen'
           klass: 'opt-MysqlDump'
-          icon: 'floppy-save'
-          disabled: -> true
+          icon: 'floppy-open'
+          disabled: -> false
         ,
           name: 'Gesicherte Daten wiederherstellen'
           klass: 'opt-MysqlRestore'
-          icon: 'floppy-open'
-          disabled: -> true
+          icon: 'floppy-save'
+          disabled: -> false
         ]
     group4:
       name: -> 

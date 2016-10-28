@@ -41,14 +41,12 @@ class ModalSimpleView extends Spine.Controller
   render: (options = @options) ->
     @html @template options
     @refreshElements()
-    @
+    @el
       
-  show: ->
-    @log 'show'
-    @el.modal('show')
+  show: (options) ->
+    @render(options).modal('show')
     
   close: (e) ->
-    @log 'close'
     @el.modal('hide')
     
   allProducts: ->

@@ -162,7 +162,7 @@ Model.Extender =
       activePhotos: -> Category.activePhotos()
         
       # private
-      
+
       joinTables: ->
         fModels = @foreignModels()
         joinTables = for key, value of fModels
@@ -193,6 +193,13 @@ Model.Extender =
       
       isInvalid: ->
         !@isValid()
+      
+      silentUpdate: (atts) ->
+        for key, value of atts
+          @[key] = value
+        records = @constructor.irecords
+        records[@id].load @attributes()
+        clone = records[@id].clone()
       
       selectionList: ->
         @constructor.selectionList(@id)
