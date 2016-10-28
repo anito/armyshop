@@ -126,8 +126,15 @@ class Photo extends Spine.Model
       
     Product.filterRelated(id, filterOptions)
 
-  @findRelated: (joins = [], joinid = '') ->
+  @findRelated_: (joins = [], joinid = '') ->
     record for join in joins when (record = @find(join[joinid])) and !!typeof(record.order = join.order)
+  
+  @findRelated: (joins = [], joinid = '') ->
+    res = []
+    for join in joins #when (record = @find(join[joinid])) and !!(typeof(record.order = join.order) and !!typeof(record.ignored = join.ignored))
+      if record = @find(join[joinid])
+        res.push record.silentUpdate('order': join.order)
+    res
   
   init: (instance) ->
     return unless instance?.id
