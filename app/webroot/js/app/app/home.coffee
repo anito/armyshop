@@ -166,119 +166,124 @@ class App extends Spine.Controller
     
   showAgb: (e) -> 
     dialog = new ModalSimpleView
-      options:
-        small: false
-        css: 'alert alert-warning'
-        header: 'AGBs'
-        body: -> require("views/agb")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
+      
+    options =
+      small: false
+      css: 'alert alert-warning'
+      header: 'AGBs'
+      body: -> require("views/agb")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     e.preventDefault()
     
   showImp: (e) -> 
     dialog = new ModalSimpleView
-      options:
-        small: true
-        css: 'alert alert-warning'
-        header: 'Impressum'
-        body: -> require("views/imp")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
+      
+    options =
+      small: true
+      css: 'alert alert-warning'
+      header: 'Impressum'
+      body: -> require("views/imp")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     e.preventDefault()
     
   showPay: (e) -> 
     dialog = new ModalSimpleView
-      options:
-        small: false
-        css: 'alert alert-warning'
-        header: 'Zahlungsmöglichkeiten'
-        body: -> require("views/pay")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
+    
+    options =
+      small: false
+      css: 'alert alert-warning'
+      header: 'Zahlungsmöglichkeiten'
+      body: -> require("views/pay")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     e.preventDefault()
     
   showWarning: (e) -> 
     agreed = @isAgreed()
     dialog = new ModalSimpleView
-      options:
-        small: false
-        css: 'alert alert-danger'
-        header: 'Hinweis zum Versand von Pfeffer- und CS Gas-Sprays'
-        body: -> require("views/warning")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
-        footer:
-          footerButtonText: -> if !agreed then "Verstanden"
       modalOptions:
         keyboard: true
         show: false
+      
+    options =
+      small: false
+      css: 'alert alert-danger'
+      header: 'Hinweis zum Versand von Pfeffer- und CS Gas-Sprays'
+      body: -> require("views/warning")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
+      footer:
+        footerButtonText: -> if !agreed then "Verstanden"
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     
   showDelivery: ->
     dialog = new ModalSimpleView
-      options:
-        small: false
-        css: 'alert alert-warning'
-        header: 'Versand'
-        body: -> require("views/delivery")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
+      
+    options =
+      small: false
+      css: 'alert alert-warning'
+      header: 'Versand'
+      body: -> require("views/delivery")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     
   hidemodal: (e) ->
     @log 'hidemodal'
