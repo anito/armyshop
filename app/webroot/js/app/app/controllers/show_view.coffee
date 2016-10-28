@@ -963,16 +963,16 @@ class ShowView extends Spine.Controller
       ]
     
     dialog = new ModalSimpleView
-      options:
-        small: false
-        header: 'Quick Help'
-        body: -> require("views/carousel")
-          slides: slides
-          id: carousel_id
-        footerButtonText: 'Close'
       modalOptions:
         keyboard: true
         show: false
+    options =
+      small: false
+      header: 'Quick Help'
+      body: -> require("views/carousel")
+        slides: slides
+        id: carousel_id
+      footerButtonText: 'Close'
         
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
@@ -982,53 +982,54 @@ class ShowView extends Spine.Controller
     @carousel = $('.carousel', @el)
     @carousel.carousel options
         
-    dialog.render().show()
+    dialog.show(options)
     
   version: (e) ->
     dialog = new ModalSimpleView
-      options:
-        small: true
-        body: -> require("views/version")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : $.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
+        
+    options =
+      small: true
+      body: -> require("views/version")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : $.fn.tooltip.Constructor.VERSION
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     
     dialog = new ModalSimpleView
-      options:
-        small: false
-        body: => require("views/no_slideshow")
-          copyright           : 'Axel Nitzschner'
-          spine_version       : Spine.version
-          app_version         : App.version
-          noCategory           : !!!Category.record
-          selectedProducts      : Category.selectionList(null).length
-          noProductsView        : !(!Category.record and @productsView.isActive())
-          productsCount         : CategoriesProduct.products(Category.record?.id).length
-          photosCount         : CategoriesProduct.photos(Category.record?.id).length
-          activeProductsCount   : CategoriesProduct.publishedProducts(Category.record?.id).length
-          activePhotosCount   : App.activePhotos().length
-          bs_version          : $.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
-        
+    options =
+      small: false
+      body: => require("views/no_slideshow")
+        copyright           : 'Axel Nitzschner'
+        spine_version       : Spine.version
+        app_version         : App.version
+        noCategory           : !!!Category.record
+        selectedProducts      : Category.selectionList(null).length
+        noProductsView        : !(!Category.record and @productsView.isActive())
+        productsCount         : CategoriesProduct.products(Category.record?.id).length
+        photosCount         : CategoriesProduct.photos(Category.record?.id).length
+        activeProductsCount   : CategoriesProduct.publishedProducts(Category.record?.id).length
+        activePhotosCount   : App.activePhotos().length
+        bs_version          : $.fn.tooltip.Constructor.VERSION
+
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     
   hidemodal: (e) ->
     @log 'hidemodal'
