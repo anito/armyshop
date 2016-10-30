@@ -26,7 +26,7 @@ class ProductsHeader extends Spine.Controller
     Product.bind('change:collection', @proxy @render)
 
   render: ->
-    return unless @isActive()
+#    return unless @isActive()
     @html @template
       model             : Category
       modelProduct      : Product
