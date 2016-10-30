@@ -24,7 +24,7 @@ class CategoriesHeader extends Spine.Controller
     Photo.bind('refresh', @proxy @render)
 
   render: ->
-    return unless @isActive()
+#    return unless @isActive()
     @html @template
       model             : Category
       modelProduct      : Product

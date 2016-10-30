@@ -40,6 +40,7 @@ class PreviewView extends Spine.Controller
     ProductsPhoto.bind('update destroy', @proxy @changedRelatedPhoto)
     
     Category.bind('change:selection', @proxy @dimmPreview)
+    CategoriesProduct.bind('update', @proxy @changeRelatedProduct)
     CategoriesProduct.bind('destroy', @proxy @change)
     
     @createDummy()
@@ -69,6 +70,10 @@ class PreviewView extends Spine.Controller
   changedRelatedPhoto: (item) ->
     item = Product.find(item.product_id)
     if item isnt @current then @change item
+    
+  changeRelatedProduct: (item) ->
+    item = Product.find(item.product_id)
+    @change item
     
   item: (item) ->
     product: item

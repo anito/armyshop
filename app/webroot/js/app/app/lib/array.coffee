@@ -32,8 +32,10 @@ Array.prototype.update = (value) ->
   @[0...@length] = value
   @
 
-Array.prototype.addRemoveSelection = (id) ->
-  @toggleSelected(id)
+Array.prototype.addRemove = (ids) ->
+  ids = [ids] unless Array.isArray ids
+  for id in ids
+    @toggleSelected(id)
   @
   
 Array.prototype.add = (id) ->

@@ -27,7 +27,7 @@ class PhotoHeader extends Spine.Controller
     Photo.bind('change', @proxy @render)
 
   render: ->
-    return unless @isActive()
+#    return unless @isActive()
     @html @template
       model       : Product
       category     : Category.record

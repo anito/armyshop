@@ -22,6 +22,18 @@ header::before {
   right: 10px;
   top: -10px;
 }
+header::after {
+  content: url(/img/trustami.png);
+  position: absolute;
+  z-index: 1;
+  right: 200px;
+  top: -5px;
+}
+.navbar .nav-item a {
+  max-width: 200px;
+  text-align: center;
+  line-height: 1.7;
+}
 .btn.btn-lg {
   font-size: 1.2rem;
 }
@@ -138,7 +150,7 @@ header {
 }
 .header {
 	line-height: 24px;
-  height: 69px;
+  height: 90px;
 	font-size: 11px;
 	background: #000;
 	opacity: 1;
@@ -210,10 +222,10 @@ header {
 }
 .navbar {
   border-radius: 0rem;
-  font-size: 1.5em;
+  font-size: 1.3em;
   line-height: 55px;
   position: relative;
-  padding: 0rem 1rem;
+  padding: 1rem 1rem 1.1rem;
 }
 .footer {
   position: absolute;

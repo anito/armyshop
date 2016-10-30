@@ -35828,9 +35828,11 @@ Released under the MIT License
           var items;
           Root.updateSelection([]);
           Category.updateSelection([]);
-          items = Product.unusedProducts(true);
+          items = Product.filter(true, {
+            func: 'selectDeleted'
+          });
           console.log(items);
-          return this.showView.trigger('active', this.showView.productsView, items);
+          return this.showView.trigger('active', this.showView.productsTrashView, items);
         },
         '/trash/photos/:id': function(params) {
           var items;
@@ -35838,7 +35840,7 @@ Released under the MIT License
           Category.updateSelection([]);
           Product.updateSelection();
           items = Photo.unusedPhotos(true);
-          return this.showView.trigger('active', this.showView.photosView, items);
+          return this.showView.trigger('active', this.showView.photosTrashView, items);
         },
         '/wait/*glob': function(params) {
           return this.showView.trigger('active', this.showView.waitView);
@@ -36225,9 +36227,6 @@ Released under the MIT License
     }
 
     CategoriesHeader.prototype.render = function() {
-      if (!this.isActive()) {
-        return;
-      }
       return this.html(this.template({
         model: Category,
         modelProduct: Product,
@@ -36263,7 +36262,6 @@ Released under the MIT License
 }).call(this);
 }, "controllers/categories_list": function(exports, require, module) {(function() {
   var $, CategoriesList, CategoriesProduct, Category, Drag, Extender, Photo, ProductsPhoto, Root, Spine,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -36299,8 +36297,6 @@ Released under the MIT License
     };
 
     function CategoriesList() {
-      this.infoBye = bind(this.infoBye, this);
-      this.infoUp = bind(this.infoUp, this);
       CategoriesList.__super__.constructor.apply(this, arguments);
       Category.bind('change:current', this.proxy(this.exposeSelection));
       Product.bind('change:collection', this.proxy(this.renderRelated));
@@ -36357,14 +36353,15 @@ Released under the MIT License
     };
 
     CategoriesList.prototype.updateTemplates = function() {
-      var category, j, len, ref;
+      var category, j, len, ref, results;
       this.log('updateTemplates');
       ref = Category.records;
+      results = [];
       for (j = 0, len = ref.length; j < len; j++) {
         category = ref[j];
-        this.updateTemplate(category);
+        results.push(this.updateTemplate(category));
       }
-      return this.el.sortable('categories');
+      return results;
     };
 
     CategoriesList.prototype.updateTemplate = function(category) {
@@ -36408,7 +36405,6 @@ Released under the MIT License
 
     CategoriesList.prototype.exposeSelection = function() {
       this.log('exposeSelection');
-      this.deselect();
       $('#' + Category.record.id, this.el).addClass("active hot");
       App.showView.trigger('change:toolbarOne');
       return this.parent.focus();
@@ -36446,18 +36442,6 @@ Released under the MIT License
       if (item) {
         return Spine.trigger('destroy:category', item.id);
       }
-    };
-
-    CategoriesList.prototype.infoUp = function(e) {
-      var el;
-      el = $('.glyphicon-set', $(e.currentTarget)).addClass('in').removeClass('out');
-      return e.preventDefault();
-    };
-
-    CategoriesList.prototype.infoBye = function(e) {
-      var el;
-      el = $('.glyphicon-set', $(e.currentTarget)).addClass('out').removeClass('in');
-      return e.preventDefault();
     };
 
     return CategoriesList;
@@ -36548,9 +36532,6 @@ Released under the MIT License
     }
 
     CategoriesView.prototype.render = function(items) {
-      if (!this.isActive()) {
-        return;
-      }
       if (Category.count()) {
         items = Category.records.sort(Category.sortByOrder);
         return this.list.render(items);
@@ -36573,16 +36554,19 @@ Released under the MIT License
 
     CategoriesView.prototype.click = function(e) {
       var item;
-      App.showView.trigger('change:toolbarOne', ['Default']);
-      item = $(e.target).closest('li').item();
+      item = $(e.currentTarget).item();
       return this.select(e, item.id);
     };
 
     CategoriesView.prototype.select = function(e, ids) {
+      if (ids == null) {
+        ids = [];
+      }
       if (!Array.isArray(ids)) {
         ids = [ids];
       }
-      return this.navigate('/categories', 'cid', ids[0]);
+      this.navigate('/categories', 'cid', ids[0]);
+      return e.stopPropagation();
     };
 
     CategoriesView.prototype.beforeDestroy = function(item) {
@@ -36644,7 +36628,6 @@ Released under the MIT License
 
     CategoriesView.prototype.sortupdate = function(e, o) {
       var cb;
-      console.log('sortupdate');
       cb = (function(_this) {
         return function() {
           Category.trigger('change:collection', Category.record);
@@ -37830,6 +37813,7 @@ Released under the MIT License
       'click button.close': 'close',
       'click .item': 'showPhoto',
       'keyup': 'keyup',
+      'click .opt-ShowProductsTrash': 'showProductsTrash',
       'click .opt-ShowUnpublishedProducts': 'showUnpublishedProducts',
       'click .opt-ShowUnusedProducts': 'showUnusedProducts',
       'click .opt-ShowAllCategories:not(.disabled)': 'showCategories',
@@ -37842,12 +37826,14 @@ Released under the MIT License
         photos: photos,
         summary: {
           categories: Category.all(),
-          products: Product.all(),
           photos: Photo.all(),
+          products: Product.filter(true),
           published: CategoriesProduct.publishedProductsAll(true),
           unpublished: CategoriesProduct.unpublishedProducts(true),
           others: CategoriesProduct.otherProducts(true),
-          unused: Product.unusedProducts(true)
+          trashed: Product.filter(true, {
+            func: 'selectDeleted'
+          })
         },
         products: products,
         counter: function() {
@@ -37924,6 +37910,10 @@ Released under the MIT License
       this.callDeferred(items, this.uriSettings(70, 70), this.proxy(this.callbackRecents));
       photos = this.getProductPhotos();
       return this.callDeferred(photos, this.uriSettings(300, 300), this.proxy(this.callbackPreview));
+    };
+
+    OverviewView.prototype.showProductsTrash = function() {
+      return this.navigate('/trash/products', '');
     };
 
     OverviewView.prototype.showUnpublishedProducts = function(e) {
@@ -38256,9 +38246,6 @@ Released under the MIT License
     }
 
     PhotoHeader.prototype.render = function() {
-      if (!this.isActive()) {
-        return;
-      }
       return this.html(this.template({
         model: Product,
         category: Category.record,
@@ -38496,9 +38483,6 @@ Released under the MIT License
       if (item == null) {
         item = Photo.record;
       }
-      if (!this.isActive()) {
-        return;
-      }
       if (!App.showView.photosView.list.el.children().length) {
         App.showView.photosView.refresh();
       }
@@ -38509,9 +38493,6 @@ Released under the MIT License
     };
 
     PhotoView.prototype.active = function() {
-      if (!this.isActive()) {
-        return;
-      }
       App.showView.trigger('change:toolbarOne', ['Default']);
       App.showView.trigger('change:toolbarTwo', ['Speichern']);
       return this.render();
@@ -38793,7 +38774,7 @@ Released under the MIT License
       }
       for (i = 0, len = items.length; i < len; i++) {
         item = items[i];
-        this.selectionList.addRemoveSelection(item);
+        this.selectionList.addRemove(item);
       }
       this.renderFooter(this.selectionList);
       return this.list.exposeSelection(this.selectionList);
@@ -38938,9 +38919,6 @@ Released under the MIT License
     };
 
     PhotosHeader.prototype.render = function() {
-      if (!this.isActive()) {
-        return;
-      }
       return this.html(this.template({
         model: Product,
         category: Category.record,
@@ -38975,6 +38953,77 @@ Released under the MIT License
 
   if (typeof module !== "undefined" && module !== null) {
     module.exports = PhotosHeader;
+  }
+
+}).call(this);
+}, "controllers/photos_header_trash": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Extender, Photo, PhotosHeaderTrash, Product, ProductsPhoto, Spine, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  User = require('models/user');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Extender = require('extensions/controller_extender');
+
+  PhotosHeaderTrash = (function(superClass) {
+    extend(PhotosHeaderTrash, superClass);
+
+    PhotosHeaderTrash.extend(Extender);
+
+    PhotosHeaderTrash.prototype.events = {
+      'click .gal': 'backToCategories',
+      'click .alb': 'backToProducts'
+    };
+
+    PhotosHeaderTrash.prototype.template = function(item) {
+      return $("#headerPhotosTemplate").tmpl(item);
+    };
+
+    function PhotosHeaderTrash() {
+      PhotosHeaderTrash.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Category.bind('create update destroy', this.proxy(this.render));
+      Product.bind('change', this.proxy(this.render));
+      Product.bind('change:selection', this.proxy(this.render));
+      Photo.bind('change', this.proxy(this.render));
+      Photo.bind('refresh', this.proxy(this.render));
+      Category.bind('change:current', this.proxy(this.render));
+      Product.bind('change:current', this.proxy(this.render));
+      Product.bind('change:collection', this.proxy(this.render));
+    }
+
+    PhotosHeaderTrash.prototype.active = function() {
+      return this.render();
+    };
+
+    PhotosHeaderTrash.prototype.change = function() {
+      return this.render();
+    };
+
+    PhotosHeaderTrash.prototype.render = function(item) {
+      return this.html(this.template(item));
+    };
+
+    return PhotosHeaderTrash;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotosHeaderTrash;
   }
 
 }).call(this);
@@ -39096,7 +39145,7 @@ Released under the MIT License
         this.append('<h3><label class="invite label label-default"><span class="enlightened">Es können keine Fotos hinzugefügt werden. Eventuell muss erst ein Produkt ausgewählt werden.</span></label></h3>');
       } else {
         if (Photo.count()) {
-          this.html('<label class="invite"> <div class="enlightened">Es sind keine Fotos vorhanden</div><br> <button class="opt-UploadDialogue dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button> <button class="opt-AddPhotos dark"><i class="glyphicon glyphicon-book"></i><span>&nbsp;Aus Katalog wählen</span></button> </label>');
+          this.html('<label class="invite"> <div class="enlightened">Es sind keine Fotos vorhanden</div><br> <button class="opt-UploadDialogue dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button> <button class="opt-AddPhotos dark large"><i class="glyphicon glyphicon-book"></i><span>&nbsp;Aus Katalog wählen</span></button> </label>');
         } else {
           this.html('<label class="invite"> <div class="enlightened">Es sind keine Fotos vorhanden &nbsp;</div><br> <button class="opt-UploadDialogue dark large"><i class="glyphicon glyphicon-upload"></i><span>&nbsp;Upload</span></button> </label>');
         }
@@ -39132,7 +39181,7 @@ Released under the MIT License
     };
 
     PhotosList.prototype.updateTemplate = function(item) {
-      var active, css, e, el, error, hot, tb, tmplItem;
+      var active, css, el, hot, tb, tmplItem;
       el = this.children().forItem(item);
       tb = $('.thumbnail', el);
       css = tb.attr('style');
@@ -39140,11 +39189,7 @@ Released under the MIT License
       hot = el.hasClass('hot');
       tmplItem = el.tmplItem();
       tmplItem.data = item;
-      try {
-        tmplItem.update();
-      } catch (error) {
-        e = error;
-      }
+      tmplItem.update();
       el = this.children().forItem(item);
       tb = $('.thumbnail', el);
       tb.attr('style', css).addClass('in');
@@ -39398,6 +39443,140 @@ Released under the MIT License
   }
 
 }).call(this);
+}, "controllers/photos_trash_header": function(exports, require, module) {(function() {
+  var $, Category, Extender, PhotosTrashHeader, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Extender = require('extensions/controller_extender');
+
+  PhotosTrashHeader = (function(superClass) {
+    extend(PhotosTrashHeader, superClass);
+
+    PhotosTrashHeader.extend(Extender);
+
+    PhotosTrashHeader.prototype.template = function(items) {
+      return $("#headerPhotosTrashTemplate").tmpl(items);
+    };
+
+    function PhotosTrashHeader() {
+      PhotosTrashHeader.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+    }
+
+    PhotosTrashHeader.prototype.render = function(item) {
+      return this.html(this.template(item));
+    };
+
+    PhotosTrashHeader.prototype.active = function() {
+      return this.render();
+    };
+
+    return PhotosTrashHeader;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotosTrashHeader;
+  }
+
+}).call(this);
+}, "controllers/photos_trash_view": function(exports, require, module) {(function() {
+  var $, Controller, Drag, Extender, PhotosTrashView, Spine, UriHelper, User,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Controller = Spine.Controller;
+
+  Drag = require('extensions/drag');
+
+  User = require("models/user");
+
+  Extender = require('extensions/controller_extender');
+
+  UriHelper = require('extensions/uri_helper');
+
+  PhotosTrashView = (function(superClass) {
+    extend(PhotosTrashView, superClass);
+
+    PhotosTrashView.extend(UriHelper);
+
+    PhotosTrashView.extend(Drag);
+
+    PhotosTrashView.extend(Extender);
+
+    PhotosTrashView.prototype.elements = {
+      '.items': 'items'
+    };
+
+    PhotosTrashView.prototype.events = {
+      'mousemove .item': 'in',
+      'mouseleave .item': 'out'
+    };
+
+    PhotosTrashView.prototype.template = function(items) {
+      return $("#photosTemplate").tmpl(items);
+    };
+
+    function PhotosTrashView() {
+      this.out = bind(this.out, this);
+      this["in"] = bind(this["in"], this);
+      PhotosTrashView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.type = 'Photo';
+      this.parentType = 'Product';
+      this.el.data('current', {
+        model: Model[this.parentType],
+        models: Model[this.type]
+      });
+      Photo.bind('destroy:fromTrash', this.proxy(this.destroy));
+    }
+
+    PhotosTrashView.prototype.render = function(items) {
+      this.items.html(this.template(items));
+      return this.el;
+    };
+
+    PhotosTrashView.prototype.active = function() {
+      this.render();
+      App.showView.trigger('change:toolbarOne', ['Default', 'Help']);
+      return App.showView.trigger('change:toolbarTwo', ['Speichern']);
+    };
+
+    PhotosTrashView.prototype.destroy = function() {};
+
+    PhotosTrashView.prototype["in"] = function(e) {
+      var el;
+      el = $(e.currentTarget);
+      return $('.glyphicon-set.fade', el).addClass('in').removeClass('out');
+    };
+
+    PhotosTrashView.prototype.out = function(e) {
+      var el, set;
+      el = $(e.currentTarget);
+      return set = $('.glyphicon-set.fade', el).addClass('out').removeClass('in');
+    };
+
+    return PhotosTrashView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotosTrashView;
+  }
+
+}).call(this);
 }, "controllers/photos_view": function(exports, require, module) {(function() {
   var $, CategoriesProduct, Category, Controller, Drag, Extender, Info, Photo, PhotosList, PhotosView, Product, ProductsPhoto, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -39544,11 +39723,6 @@ Released under the MIT License
     };
 
     PhotosView.prototype.active = function(items) {
-      if (!items) {
-        if (!this.isActive()) {
-          return;
-        }
-      }
       App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider]);
       App.showView.trigger('change:toolbarTwo', ['Speichern']);
       if (items) {
@@ -39625,7 +39799,7 @@ Released under the MIT License
           }
           for (i = 0, len = items.length; i < len; i++) {
             id = items[i];
-            selection.addRemoveSelection(id);
+            selection.addRemove(id);
           }
       }
       return Product.updateSelection(selection, (ref = Product.record) != null ? ref.id : void 0);
@@ -39866,6 +40040,7 @@ Released under the MIT License
       Description.bind('change', this.proxy(this.render));
       ProductsPhoto.bind('update destroy', this.proxy(this.changedRelatedPhoto));
       Category.bind('change:selection', this.proxy(this.dimmPreview));
+      CategoriesProduct.bind('update', this.proxy(this.changeRelatedProduct));
       CategoriesProduct.bind('destroy', this.proxy(this.change));
       this.createDummy();
       this.render();
@@ -39907,6 +40082,11 @@ Released under the MIT License
       if (item !== this.current) {
         return this.change(item);
       }
+    };
+
+    PreviewView.prototype.changeRelatedProduct = function(item) {
+      item = Product.find(item.product_id);
+      return this.change(item);
     };
 
     PreviewView.prototype.item = function(item) {
@@ -40308,7 +40488,7 @@ Released under the MIT License
       }
       for (i = 0, len = items.length; i < len; i++) {
         item = items[i];
-        this.selectionList.addRemoveSelection(item);
+        this.selectionList.addRemove(item);
       }
       this.renderFooter(this.selectionList);
       return this.list.exposeSelection(this.selectionList);
@@ -40470,6 +40650,77 @@ Released under the MIT License
   }
 
 }).call(this);
+}, "controllers/products_header_trash": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Category, Extender, Photo, PhotosHeaderTrash, Product, ProductsPhoto, Spine, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  User = require('models/user');
+
+  CategoriesProduct = require('models/categories_product');
+
+  ProductsPhoto = require('models/products_photo');
+
+  Extender = require('extensions/controller_extender');
+
+  PhotosHeaderTrash = (function(superClass) {
+    extend(PhotosHeaderTrash, superClass);
+
+    PhotosHeaderTrash.extend(Extender);
+
+    PhotosHeaderTrash.prototype.events = {
+      'click .gal': 'backToCategories',
+      'click .alb': 'backToProducts'
+    };
+
+    PhotosHeaderTrash.prototype.template = function(item) {
+      return $("#headerProductTemplate").tmpl(item);
+    };
+
+    function PhotosHeaderTrash() {
+      PhotosHeaderTrash.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      Category.bind('create update destroy', this.proxy(this.render));
+      Product.bind('change', this.proxy(this.render));
+      Product.bind('change:selection', this.proxy(this.render));
+      Photo.bind('change', this.proxy(this.render));
+      Photo.bind('refresh', this.proxy(this.render));
+      Category.bind('change:current', this.proxy(this.render));
+      Product.bind('change:current', this.proxy(this.render));
+      Product.bind('change:collection', this.proxy(this.render));
+    }
+
+    PhotosHeaderTrash.prototype.active = function() {
+      return this.render();
+    };
+
+    PhotosHeaderTrash.prototype.change = function() {
+      return this.render();
+    };
+
+    PhotosHeaderTrash.prototype.render = function(item) {
+      return this.html(this.template(item));
+    };
+
+    return PhotosHeaderTrash;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = PhotosHeaderTrash;
+  }
+
+}).call(this);
 }, "controllers/products_list": function(exports, require, module) {(function() {
   var $, CategoriesProduct, Category, Drag, Extender, Model, Photo, Product, ProductsList, ProductsPhoto, Spine, UriHelper,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -40531,50 +40782,53 @@ Released under the MIT License
     ProductsList.prototype.changedProducts = function(category) {};
 
     ProductsList.prototype.changeRelated = function(item, mode) {
-      var el, product;
-      this.log('changeRelated');
-      if (mode !== 'create') {
-        if (!(this.parent && this.parent.isActive() && (mode !== 'create'))) {
-          return;
-        }
-        if (!Category.record) {
-          return;
-        }
-        if (Category.record.id !== item['category_id']) {
-          return;
-        }
+      var product;
+      if (!(this.parent && this.parent.isActive())) {
+        return;
+      }
+      if (!Category.record) {
+        return;
+      }
+      if (Category.record.id !== item['category_id']) {
+        return;
       }
       product = Product.find(item['product_id']);
+      product = this.mixinOne(product);
       switch (mode) {
         case 'create':
+          this.log('changeRelated');
           this.wipe();
-          this.append(this.template(this.mixinAttributes([product], ['ignored'])));
+          this.append(this.template(product));
           this.renderBackgrounds([product]);
           this.el.sortable('destroy').sortable();
           $('.dropdown-toggle', this.el).dropdown();
           break;
-        case 'destroy':
-          el = this.findModelElement(product);
-          el.detach();
-          break;
         case 'update':
-          this.updateIgnored(item);
+          this.updateTemplate(product);
       }
       this.refreshElements();
       return this.el;
     };
 
-    ProductsList.prototype.mixinAttributes = function(items, atts) {
-      var att, ga, i, item, j, len, len1;
+    ProductsList.prototype.mixin = function(items) {
+      var i, item, len, results;
+      results = [];
       for (i = 0, len = items.length; i < len; i++) {
         item = items[i];
-        ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id);
-        for (j = 0, len1 = atts.length; j < len1; j++) {
-          att = atts[j];
-          item[att] = ga[att];
-        }
+        results.push(this.mixinOne(item));
       }
-      return items;
+      return results;
+    };
+
+    ProductsList.prototype.mixinOne = function(item) {
+      var atts, ga;
+      if (!Category.record) {
+        return item;
+      }
+      ga = CategoriesProduct.productExists(item.id, Category.record.id);
+      atts = ga != null ? ga.mixinAttributes(item) : void 0;
+      item.silentUpdate(atts);
+      return item;
     };
 
     ProductsList.prototype.render = function(items, mode) {
@@ -40583,8 +40837,8 @@ Released under the MIT License
       }
       this.log('render', mode);
       if (items.length) {
-        alert(items.length);
         this.wipe();
+        items = this.mixin(items);
         this[mode](this.template(items));
         this.renderBackgrounds(items);
         this.exposeSelection();
@@ -40606,15 +40860,33 @@ Released under the MIT License
       return this.el;
     };
 
-    ProductsList.prototype.updateIgnored = function(item) {
-      var ignored, productEl;
-      ignored = item.ignored;
-      productEl = this.children().forItem(Product.find(item.product_id));
-      return productEl.toggleClass('ignored', ignored);
+    ProductsList.prototype.exposeSelection = function(selection, id) {
+      var el, first, i, len, ref;
+      if (selection == null) {
+        selection = Category.selectionList();
+      }
+      if (id == null) {
+        id = (ref = Category.record) != null ? ref.id : void 0;
+      }
+      if (Category.record) {
+        if (Category.record.id !== id) {
+          return;
+        }
+      }
+      this.deselect();
+      for (i = 0, len = selection.length; i < len; i++) {
+        id = selection[i];
+        el = $('#' + id, this.el);
+        el.addClass("active");
+      }
+      if (first = selection.first()) {
+        return $('#' + first, this.el).addClass("hot");
+      }
     };
 
     ProductsList.prototype.updateTemplate = function(item) {
-      var active, contentEl, hot, productEl, ref, style, tmplItem;
+      var active, contentEl, hot, productEl, style, tmplItem;
+      item = this.mixinOne(item);
       productEl = this.children().forItem(item);
       contentEl = $('.thumbnail', productEl);
       active = productEl.hasClass('active');
@@ -40630,160 +40902,8 @@ Released under the MIT License
       productEl.toggleClass('active', active);
       productEl.toggleClass('hot', hot);
       contentEl.attr('style', style);
-      if (item = CategoriesProduct.categoryProductExists(item.id, (ref = Category.record) != null ? ref.id : void 0)) {
-        this.updateIgnored(item);
-      }
+      productEl.toggleClass('ignored', item.ignored);
       return this.el.sortable();
-    };
-
-    ProductsList.prototype.exposeSelection = function(selection, id) {
-      var first, i, len, ref;
-      if (selection == null) {
-        selection = Category.selectionList();
-      }
-      if (id == null) {
-        id = (ref = Category.record) != null ? ref.id : void 0;
-      }
-      if (Category.record) {
-        if (Category.record.id !== id) {
-          return;
-        }
-      }
-      this.deselect();
-      for (i = 0, len = selection.length; i < len; i++) {
-        id = selection[i];
-        $('#' + id, this.el).addClass("active");
-      }
-      if (first = selection.first()) {
-        return $('#' + first, this.el).addClass("hot");
-      }
-    };
-
-    ProductsList.prototype.widowedProductsPhoto = function(ap) {
-      var i, item, len, list;
-      this.log('widowedProductsPhoto');
-      list = ap.products();
-      for (i = 0, len = list.length; i < len; i++) {
-        item = list[i];
-        this.widows.push(item);
-      }
-      return this.widows;
-    };
-
-    ProductsList.prototype.removeWidows = function(widows) {
-      var i, len, widow;
-      if (widows == null) {
-        widows = [];
-      }
-      Model.Uri.Ajax.cache = false;
-      for (i = 0, len = widows.length; i < len; i++) {
-        widow = widows[i];
-        $.when(this.processProduct(widow)).done((function(_this) {
-          return function(xhr, rec) {
-            return _this.callback(xhr, rec);
-          };
-        })(this));
-      }
-      this.widows = [];
-      return Model.Uri.Ajax.cache = true;
-    };
-
-    ProductsList.prototype.renderBackgrounds = function(products) {
-      var i, len, product, results;
-      this.log('renderBackgrounds');
-      if (!this.parent.isActive()) {
-        return;
-      }
-      if (!Array.isArray(products)) {
-        products = [products];
-      }
-      this.removeWidows(this.widows);
-      results = [];
-      for (i = 0, len = products.length; i < len; i++) {
-        product = products[i];
-        results.push($.when(this.processProduct(product)).done((function(_this) {
-          return function(xhr, rec) {
-            return _this.callback(xhr, rec);
-          };
-        })(this)));
-      }
-      return results;
-    };
-
-    ProductsList.prototype.processProduct = function(product) {
-      var all, data, deferred, sorted;
-      this.log('processProduct');
-      deferred = $.Deferred();
-      all = product.photos();
-      sorted = all.sort(Photo.sortByReverseOrder);
-      data = sorted.slice(0, 4);
-      this.callDeferred(data, this.uriSettings(60, 60), function(xhr) {
-        return deferred.resolve(xhr, product);
-      });
-      return deferred.promise();
-    };
-
-    ProductsList.prototype.callback = function(json, product) {
-      var c, css, cssdefault, el, i, j, jsn, key, len, len1, results, sources, src, thumb, val;
-      el = $('[data-id=' + (product != null ? product.id : void 0) + ']', this.el);
-      thumb = $('.thumbnail', el);
-      sources = [];
-      css = [];
-      cssdefault = [];
-      for (i = 0, len = json.length; i < len; i++) {
-        jsn = json[i];
-        for (key in jsn) {
-          val = jsn[key];
-          if (src = val.src) {
-            sources.push(src);
-          }
-          css.push('url(' + src + ')');
-          cssdefault.push('url(/img/ajax-loader-product-thumbs.gif)');
-        }
-      }
-      if (sources.length) {
-        thumb.addClass('load');
-        thumb.css('backgroundImage', (function() {
-          var j, len1, results;
-          results = [];
-          for (j = 0, len1 = cssdefault.length; j < len1; j++) {
-            c = cssdefault[j];
-            results.push(c);
-          }
-          return results;
-        })());
-        results = [];
-        for (j = 0, len1 = sources.length; j < len1; j++) {
-          src = sources[j];
-          results.push(this.snap(thumb, src, css));
-        }
-        return results;
-      } else {
-        return thumb.css('backgroundImage', ['url(/img/drag_info.png)']);
-      }
-    };
-
-    ProductsList.prototype.snap = function(el, src, css) {
-      var img;
-      img = this.createImage();
-      img.el = el;
-      img.me = this;
-      img.css = css;
-      img.src = src;
-      img.onload = this.onLoad;
-      return img.onerror = this.onError;
-    };
-
-    ProductsList.prototype.onLoad = function() {
-      this.me.log('image loaded');
-      this.el.removeClass('load');
-      return this.el.css('backgroundImage', this.css);
-    };
-
-    ProductsList.prototype.onError = function(e) {
-      this.me.log('could not load image, trying again');
-      this.onload = this.me.renderBackgrounds([Product.record]);
-      return this.onerror = null;
     };
 
     ProductsList.prototype.original = function(e) {
@@ -40870,6 +40990,226 @@ Released under the MIT License
 
   if (typeof module !== "undefined" && module !== null) {
     module.exports = ProductsList;
+  }
+
+}).call(this);
+}, "controllers/products_trash_header": function(exports, require, module) {(function() {
+  var $, Category, Extender, ProductsTrashHeader, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Extender = require('extensions/controller_extender');
+
+  ProductsTrashHeader = (function(superClass) {
+    extend(ProductsTrashHeader, superClass);
+
+    ProductsTrashHeader.extend(Extender);
+
+    ProductsTrashHeader.prototype.template = function(items) {
+      return $("#headerProductTrashTemplate").tmpl(items);
+    };
+
+    function ProductsTrashHeader() {
+      ProductsTrashHeader.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+    }
+
+    ProductsTrashHeader.prototype.render = function(item) {
+      return this.html(this.template(item));
+    };
+
+    ProductsTrashHeader.prototype.active = function() {
+      return this.render();
+    };
+
+    return ProductsTrashHeader;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ProductsTrashHeader;
+  }
+
+}).call(this);
+}, "controllers/products_trash_view": function(exports, require, module) {(function() {
+  var $, CategoriesProduct, Controller, Drag, Extender, ProductsTrashView, Spine, UriHelper, User,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Controller = Spine.Controller;
+
+  Drag = require('extensions/drag');
+
+  User = require("models/user");
+
+  CategoriesProduct = require("models/categories_product");
+
+  Extender = require('extensions/controller_extender');
+
+  UriHelper = require('extensions/uri_helper');
+
+  ProductsTrashView = (function(superClass) {
+    extend(ProductsTrashView, superClass);
+
+    ProductsTrashView.extend(UriHelper);
+
+    ProductsTrashView.extend(Drag);
+
+    ProductsTrashView.extend(Extender);
+
+    ProductsTrashView.prototype.elements = {
+      '.items': 'items'
+    };
+
+    ProductsTrashView.prototype.events = {
+      'click .item': 'click',
+      'click .items': 'deselect',
+      'click .dropdown-toggle': 'dropdownToggle',
+      'click .opt-delete': 'destroyProduct',
+      'mousemove .item': 'in',
+      'mouseleave .item': 'out',
+      'dragstart ': 'dragstart',
+      'dragend': 'dragend',
+      'drop': 'drop',
+      'dragover   ': 'dragover',
+      'dragenter  ': 'dragenter'
+    };
+
+    ProductsTrashView.prototype.template = function(items, options) {
+      return $("#productsTrashTemplate").tmpl(items, options);
+    };
+
+    function ProductsTrashView() {
+      this.out = bind(this.out, this);
+      this["in"] = bind(this["in"], this);
+      ProductsTrashView.__super__.constructor.apply(this, arguments);
+      this.bind('active', this.proxy(this.active));
+      this.type = 'Product';
+      this.parentType = 'Category';
+      this.el.data('current', {
+        model: Model[this.parentType],
+        models: Model[this.type]
+      });
+      Product.bind('beforeDestroy', this.proxy(this.beforeDestroy));
+      Product.bind('destroy:fromTrash', this.proxy(this.destroy));
+      this.bind('drag:start', this.proxy(this.dragStart));
+      this.bind('drag:enter', this.proxy(this.dragEnter));
+      this.bind('drag:over', this.proxy(this.dragOver));
+      this.bind('drag:leave', this.proxy(this.dragLeave));
+      this.bind('drag:drop', this.proxy(this.dragDrop));
+    }
+
+    ProductsTrashView.prototype.change = function() {
+      var items;
+      items = Product.filter(true, {
+        func: 'selectDeleted'
+      });
+      return this.render(items);
+    };
+
+    ProductsTrashView.prototype.render = function(items) {
+      this.log(this.items);
+      this.items.html(this.template(items));
+      this.renderBackgrounds(items);
+      return this.el;
+    };
+
+    ProductsTrashView.prototype.active = function(items) {
+      this.render(items);
+      App.showView.trigger('change:toolbarOne', ['Default', 'Help']);
+      return App.showView.trigger('change:toolbarTwo', ['Speichern']);
+    };
+
+    ProductsTrashView.prototype.dropdownToggle = function(e) {
+      var el;
+      el = $(e.currentTarget);
+      el.dropdown();
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    ProductsTrashView.prototype.destroyProduct = function(e) {
+      var item;
+      item = $(e.currentTarget).item();
+      Category.updateSelection(item.id);
+      return Spine.trigger('destroy:product');
+    };
+
+    ProductsTrashView.prototype.beforeDestroy = function(product) {
+      var categories, category, i, len, photos;
+      this.log('beforeDestroy');
+      product.removeSelectionID();
+      categories = CategoriesProduct.categories(product.id);
+      for (i = 0, len = categories.length; i < len; i++) {
+        category = categories[i];
+        category.removeFromSelection(product.id);
+        photos = ProductsPhoto.photos(product.id).toId();
+        Photo.trigger('destroy:join', photos, product);
+      }
+      return this.remove(product);
+    };
+
+    ProductsTrashView.prototype.destroy = function(item) {
+      this.log('destroy');
+      return item.destroy();
+    };
+
+    ProductsTrashView.prototype.click = function(e) {
+      var item;
+      this.items.deselect();
+      item = $(e.currentTarget).item();
+      this.select(e, item.id);
+      return e.stopPropagation();
+    };
+
+    ProductsTrashView.prototype.select = function(e, ids) {
+      var list;
+      list = Category.selectionList().slice(0);
+      if (!Array.isArray(ids)) {
+        ids = [ids];
+      }
+      list.addRemove(ids);
+      Category.updateSelection(ids);
+      return e.stopPropagation();
+    };
+
+    ProductsTrashView.prototype.back = function(e) {
+      if (Category.record) {
+        return this.navigate('/categories', 'cid', Category.record.id);
+      } else {
+        return this.navigate('/categories', '');
+      }
+    };
+
+    ProductsTrashView.prototype["in"] = function(e) {
+      var el;
+      el = $(e.currentTarget);
+      return $('.glyphicon-set.fade', el).addClass('in').removeClass('out');
+    };
+
+    ProductsTrashView.prototype.out = function(e) {
+      var el, set;
+      el = $(e.currentTarget);
+      return set = $('.glyphicon-set.fade', el).addClass('out').removeClass('in');
+    };
+
+    return ProductsTrashView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ProductsTrashView;
   }
 
 }).call(this);
@@ -40975,13 +41315,12 @@ Released under the MIT License
       Spine.bind('bindRefresh:one', this.proxy(this.bindRefresh));
       Product.bind('create', this.proxy(this.create));
       Product.bind('ajaxError', Product.errorHandler);
-      Product.bind('beforeDestroy', this.proxy(this.beforeDestroyProduct));
-      Product.bind('destroy', this.proxy(this.destroy));
       Product.bind('create:join', this.proxy(this.createJoin));
       Product.bind('destroy:join', this.proxy(this.destroyJoin));
       Product.bind('change:collection', this.proxy(this.renderBackgrounds));
       Product.bind('show:unpublished', this.proxy(this.showUnpublished));
       Product.bind('show:unused', this.proxy(this.showUnused));
+      Product.bind('move:toTrash', this.proxy(this.moveToTrash));
       Spine.bind('reorder', this.proxy(this.reorder));
       Spine.bind('create:product', this.proxy(this.createProduct));
       Spine.bind('loading:start', this.proxy(this.loadingStart));
@@ -41006,20 +41345,20 @@ Released under the MIT License
     };
 
     ProductsView.prototype.refresh = function() {
-      return this.render(this.updateBuffer());
+      return this.render(this.updateBuffer(true));
     };
 
-    ProductsView.prototype.updateBuffer = function(items) {
-      var category, filterOptions;
+    ProductsView.prototype.updateBuffer = function(buffer) {
+      var category, filterOptions, items;
       filterOptions = {
         model: 'Category',
         sort: 'sortByOrder'
       };
-      if (!items) {
+      if (buffer) {
         if (category = Category.record) {
           items = Category.products(category.id, filterOptions);
         } else {
-          items = Product.filter();
+          items = Product.filter(true);
         }
       }
       return this.buffer = items;
@@ -41029,10 +41368,12 @@ Released under the MIT License
       if (mode == null) {
         mode = 'html';
       }
-      if (!this.isActive()) {
-        return;
+      if (!items) {
+        if (!this.isActive()) {
+          return;
+        }
       }
-      items = items || this.updateBuffer();
+      items = items || this.updateBuffer(true);
       this.list.render(items, mode);
       if (Category.record) {
         this.list.sortable('product');
@@ -41042,28 +41383,13 @@ Released under the MIT License
     };
 
     ProductsView.prototype.active = function(items) {
-      var alb, j, len, products, ref;
-      if (!items) {
-        if (!this.isActive()) {
-          return;
-        }
-        if (this.eql(Category.record)) {
-          return;
-        }
+      var ref;
+      if (this.eql(Category.record)) {
+        return;
       }
       this.current.id = (ref = Category.record) != null ? ref.id : void 0;
       App.showView.trigger('change:toolbarOne', ['Default', 'Help']);
       App.showView.trigger('change:toolbarTwo', ['Speichern']);
-      products = CategoriesProduct.products(Category.record.id);
-      for (j = 0, len = products.length; j < len; j++) {
-        alb = products[j];
-        if (alb.invalid) {
-          alb.invalid = false;
-          alb.save({
-            ajax: false
-          });
-        }
-      }
       if (items) {
         this.render(items);
       } else {
@@ -41072,11 +41398,21 @@ Released under the MIT License
       return this.parent.scrollTo(this.el.data('current').models.record);
     };
 
-    ProductsView.prototype.collectionChanged = function() {
-      var ref;
-      if (!this.isActive()) {
-        return this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '');
+    ProductsView.prototype.resetInvalid = function(products) {
+      var alb, j, len, results;
+      results = [];
+      for (j = 0, len = products.length; j < len; j++) {
+        alb = products[j];
+        if (alb.invalid) {
+          alb.invalid = false;
+          results.push(alb.save({
+            ajax: false
+          }));
+        } else {
+          results.push(void 0);
+        }
       }
+      return results;
     };
 
     ProductsView.prototype.activateRecord = function(ids) {
@@ -41161,14 +41497,20 @@ Released under the MIT License
         options = {};
       }
       cb = function(record, ido) {
-        var ref;
+        var func;
         if (target) {
           record.createJoin(target);
-          target.updateSelection(record.id);
+          func = function() {
+            return target.updateSelection(record.id);
+          };
         } else {
-          this.render([record], 'append');
-          Category.updateSelection([record.id], (ref = Category.record) != null ? ref.id : void 0);
+          func = function() {
+            var ref;
+            return Category.updateSelection([record.id], (ref = Category.record) != null ? ref.id : void 0);
+          };
         }
+        this.navigate('/category', (target != null ? target.id : void 0) || '', 'pid', product.id);
+        setTimeout(func, 100);
         $().extend(options, {
           product: record
         });
@@ -41187,10 +41529,8 @@ Released under the MIT License
           options.deferred.notify(record);
         }
         if (options.cb) {
-          options.cb.apply(this, [record, options.deferred]);
+          return options.cb.apply(this, [record, options.deferred]);
         }
-        Product.trigger('activate', product.id);
-        return this.navigate('/category', (target != null ? target.id : void 0) || '');
       };
       product = new Product(this.newAttributes());
       product.one('ajaxSuccess', this.proxy(cb));
@@ -41207,10 +41547,14 @@ Released under the MIT License
     };
 
     ProductsView.prototype.destroyCategoriesProduct = function(ga) {
-      var products;
+      var func, products;
       products = CategoriesProduct.products(ga.category_id);
-      if (!products.length) {
+      this.remove([products][0]);
+      func = function() {
         return this.render(null, 'html');
+      };
+      if (!products.length) {
+        return this.delay(func, 500);
       }
     };
 
@@ -41221,54 +41565,42 @@ Released under the MIT License
     };
 
     ProductsView.prototype.destroyProduct = function(ids) {
-      var el, func, j, len, product, products, results;
+      var cat, category, cats, j, k, len, len1, product, products, results;
       this.log('destroyProduct');
       this.stopInfo();
-      func = (function(_this) {
-        return function(el) {
-          return $(el).detach();
-        };
-      })(this);
       ids = ids || Category.selectionList().slice(0);
       products = Product.toRecords(ids);
       results = [];
       for (j = 0, len = products.length; j < len; j++) {
         product = products[j];
-        el = this.list.findModelElement(product);
-        el.removeClass('in');
-        if (Category.record) {
-          results.push(this.destroyJoin(product, Category.record));
+        cats = CategoriesProduct.categories(product.id);
+        if (!(category = Category.record)) {
+          if (cats.length) {
+            for (k = 0, len1 = cats.length; k < len1; k++) {
+              cat = cats[k];
+              this.destroyJoin(product, cat);
+            }
+          }
+          if (!product.deleted) {
+            Product.trigger('move:toTrash', product);
+          } else {
+            Product.trigger('destroy:fromTrash', product);
+          }
         } else {
-          results.push(product.destroy());
+          this.destroyJoin(product, category);
+          cats = CategoriesProduct.categories(product.id);
+          if (!cats.length) {
+            Product.trigger('move:toTrash', product);
+          }
         }
+        results.push(this.remove(product));
       }
       return results;
     };
 
-    ProductsView.prototype.beforeDestroyProduct = function(product) {
-      var categories, category, j, len, photos, results;
-      Category.removeFromSelection(null, product.id);
-      categories = CategoriesProduct.categories(product.id);
-      results = [];
-      for (j = 0, len = categories.length; j < len; j++) {
-        category = categories[j];
-        category.removeFromSelection(product.id);
-        product.removeSelectionID();
-        photos = ProductsPhoto.photos(product.id).toId();
-        Photo.trigger('destroy:join', photos, product);
-        results.push(this.destroyJoin(product, category));
-      }
-      return results;
-    };
-
-    ProductsView.prototype.destroy = function(item) {
-      var el;
-      item.removeSelectionID();
-      el = this.list.findModelElement(item);
-      el.detach();
-      if (!Product.count()) {
-        return this.render();
-      }
+    ProductsView.prototype.moveToTrash = function(product) {
+      product.deleted = true;
+      return product.save();
     };
 
     ProductsView.prototype.createJoin = function(products, category, callback) {
@@ -41279,9 +41611,6 @@ Released under the MIT License
     ProductsView.prototype.destroyJoin = function(products, category) {
       var callback;
       this.log('destroyJoin');
-      if (!(category && category.constructor.className === 'Category')) {
-        return;
-      }
       callback = function() {};
       if (!Product.isArray(products)) {
         products = [products];
@@ -41373,43 +41702,22 @@ Released under the MIT License
     };
 
     ProductsView.prototype.select = function(e, ids) {
-      var id, j, len, ref, ref1, ref2, ref3, ref4, selection, type;
+      var list, ref, ref1;
       if (ids == null) {
         ids = [];
       }
+      list = Category.selectionList().slice(0);
       if (!Array.isArray(ids)) {
         ids = [ids];
       }
-      type = e.type;
-      if (this.isCtrlClick(e)) {
-        switch (type) {
-          case 'keyup':
-            selection = ids;
-            break;
-          case 'click':
-            Category.emptySelection();
-            selection = Category.selectionList().slice(0);
-            if (!ids.length) {
-              ids = selection.slice(0);
-            }
-            for (j = 0, len = ids.length; j < len; j++) {
-              id = ids[j];
-              selection.addRemoveSelection(id);
-            }
-        }
-        Category.updateSelection(selection, (ref = Category.record) != null ? ref.id : void 0);
-        return Product.updateSelection(Product.selectionList(), (ref1 = Product.record) != null ? ref1.id : void 0);
+      list.addRemove(ids);
+      Category.updateSelection(ids);
+      if (ids.length) {
+        this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', 'pid', ids[0]);
       } else {
-        selection = ids;
-        Category.updateSelection(selection, (ref2 = Category.record) != null ? ref2.id : void 0);
-        if (type === 'keyup' || type === 'click') {
-          if (ids.length) {
-            return this.navigate('/category', ((ref3 = Category.record) != null ? ref3.id : void 0) || '', 'pid', ids[0]);
-          } else {
-            return this.navigate('/category', ((ref4 = Category.record) != null ? ref4.id : void 0) || '');
-          }
-        }
+        this.navigate('/category', ((ref1 = Category.record) != null ? ref1.id : void 0) || '');
       }
+      return e.stopPropagation();
     };
 
     ProductsView.prototype.infoUp = function(e) {
@@ -41520,7 +41828,7 @@ Released under the MIT License
 
 }).call(this);
 }, "controllers/show_view": function(exports, require, module) {(function() {
-  var $, CategoriesHeader, CategoriesProduct, CategoriesView, Category, Clipboard, Controller, Drag, Extender, ModalSimpleView, Model, MysqlAjax, Photo, PhotoHeader, PhotoView, PhotosAddView, PhotosHeader, PhotosView, Product, ProductsAddView, ProductsHeader, ProductsPhoto, ProductsView, Root, ShowView, Spine, ToolbarView, WaitView,
+  var $, CategoriesHeader, CategoriesProduct, CategoriesView, Category, Clipboard, Controller, Drag, Extender, ModalSimpleView, Model, MysqlAjax, Photo, PhotoHeader, PhotoView, PhotosAddView, PhotosHeader, PhotosTrashHeader, PhotosTrashView, PhotosView, Product, ProductsAddView, ProductsHeader, ProductsPhoto, ProductsTrashHeader, ProductsTrashView, ProductsView, Root, ShowView, Spine, ToolbarView, WaitView,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty,
@@ -41565,6 +41873,14 @@ Released under the MIT License
 
   ProductsHeader = require('controllers/products_header');
 
+  ProductsTrashView = require('controllers/products_trash_view');
+
+  ProductsTrashHeader = require('controllers/products_trash_header');
+
+  PhotosTrashView = require('controllers/photos_trash_view');
+
+  PhotosTrashHeader = require('controllers/photos_trash_header');
+
   ProductsAddView = require('controllers/products_add_view');
 
   PhotosAddView = require('controllers/photos_add_view');
@@ -41601,6 +41917,8 @@ Released under the MIT License
       '.header .products': 'productsHeaderEl',
       '.header .photos': 'photosHeaderEl',
       '.header .photo': 'photoHeaderEl',
+      '.header .photos-trash': 'photosTrashHeaderEl',
+      '.header .products-trash': 'productsTrashHeaderEl',
       '.opt-EditCategory': 'btnEditCategory',
       '.opt-Category .ui-icon': 'btnCategory',
       '.opt-AutoUpload': 'btnAutoUpload',
@@ -41611,6 +41929,8 @@ Released under the MIT License
       '.toolbarOne': 'toolbarOneEl',
       '.toolbarTwo': 'toolbarTwoEl',
       '.props': 'propsEl',
+      '.content.photos-trash': 'photosTrashEl',
+      '.content.products-trash': 'productsTrashEl',
       '.content.categories': 'categoriesEl',
       '.content.products': 'productsEl',
       '.content.photos': 'photosEl',
@@ -41649,12 +41969,13 @@ Released under the MIT License
       'click .opt-CutProduct': 'cutProduct',
       'click .opt-PasteProduct': 'pasteProduct',
       'click .opt-EmptyProduct': 'emptyProduct',
+      'click .opt-EmptyPhotosTrash': 'emptyPhotosTrash',
+      'click .opt-EmptyProductsTrash': 'emptyProductsTrash',
       'click .opt-CreatePhoto:not(.disabled)': 'createPhoto',
       'click .opt-DestroyEmptyProducts:not(.disabled)': 'destroyEmptyProducts',
       'click .opt-DestroyCategory:not(.disabled)': 'destroyCategory',
       'click .opt-DestroyProduct:not(.disabled)': 'destroyProduct',
       'click .opt-DestroyPhoto:not(.disabled)': 'destroyPhoto',
-      'click .opt-EditCategory:not(.disabled)': 'editCategory',
       'click .opt-Category:not(.disabled)': 'toggleCategoryShow',
       'click .opt-Rotate-cw:not(.disabled)': 'rotatePhotoCW',
       'click .opt-Rotate-ccw:not(.disabled)': 'rotatePhotoCCW',
@@ -41744,6 +42065,22 @@ Released under the MIT License
         parent: this,
         parentModel: Photo
       });
+      this.productsTrashHeader = new ProductsTrashHeader({
+        el: this.productsTrashHeaderEl
+      });
+      this.photosTrashHeader = new PhotosTrashHeader({
+        el: this.photosTrashHeaderEl
+      });
+      this.productsTrashView = new ProductsTrashView({
+        el: this.productsTrashEl,
+        header: this.productsTrashHeader,
+        parent: this
+      });
+      this.photosTrashView = new PhotosTrashView({
+        el: this.photosTrashEl,
+        header: this.photosTrashHeader,
+        parent: this
+      });
       this.productsAddView = new ProductsAddView({
         el: this.modalAddProductEl,
         parent: this.productsView
@@ -41782,8 +42119,8 @@ Released under the MIT License
       this.sOutValue = 160;
       this.sliderRatio = 50;
       this.thumbSize = 240;
-      this.canvasManager = new Spine.Manager(this.categoriesView, this.productsView, this.photosView, this.photoView);
-      this.headerManager = new Spine.Manager(this.categoriesHeader, this.productsHeader, this.photosHeader, this.photoHeader);
+      this.canvasManager = new Spine.Manager(this.categoriesView, this.productsView, this.photosView, this.photoView, this.photosTrashView, this.productsTrashView);
+      this.headerManager = new Spine.Manager(this.categoriesHeader, this.productsHeader, this.photosHeader, this.photoHeader, this.photosTrashHeader, this.productsTrashHeader);
       this.canvasManager.bind('change', this.proxy(this.changeCanvas));
       this.headerManager.bind('change', this.proxy(this.changeHeader));
       this.trigger('change:toolbarOne');
@@ -41796,14 +42133,13 @@ Released under the MIT License
 
     ShowView.prototype.active = function(controller, params) {
       var ref;
-      console.log(params);
+      this.log('active');
       if (controller) {
-        if (!controller.isActive()) {
-          controller.trigger('active', params);
-        }
+        controller.trigger('active', params);
         if ((ref = controller.header) != null) {
-          ref.trigger('active', params);
+          ref.trigger('active');
         }
+        this.activated(controller);
       }
       return this.focus();
     };
@@ -41891,6 +42227,7 @@ Released under the MIT License
         model: controller.el.data('current').model,
         models: controller.el.data('current').models
       });
+      return;
       controller.trigger('active');
       controller.header.trigger('active');
       return controller;
@@ -41930,12 +42267,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.createProduct = function() {
-      Spine.trigger('create:product');
-      if (Category.record) {
-        return this.navigate('/category', Category.record.id, Product.last());
-      } else {
-        return this.showProductMasters();
-      }
+      return Spine.trigger('create:product');
     };
 
     ShowView.prototype.copyProducts = function(products, category) {
@@ -42109,6 +42441,32 @@ Released under the MIT License
         Product.trigger('change:collection', product);
       }
       return e.preventDefault();
+    };
+
+    ShowView.prototype.emptyProductsTrash = function() {
+      var i, item, items, len, results;
+      items = Product.filter(true, {
+        func: 'selectDeleted'
+      });
+      results = [];
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        results.push(Product.trigger('destroy:fromTrash', item));
+      }
+      return results;
+    };
+
+    ShowView.prototype.emptyPhotosTrash = function() {
+      var i, item, items, len, results;
+      items = Photo.filter(true, {
+        func: 'selectDeleted'
+      });
+      results = [];
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        results.push(Photo.trigger('destroy:fromTrash', item));
+      }
+      return results;
     };
 
     ShowView.prototype.editCategory = function(e) {
@@ -42353,21 +42711,11 @@ Released under the MIT License
 
     ShowView.prototype.selectAll = function(e) {
       var error, list;
-      e.type = 'my';
+      this.log('selectAll');
       try {
         list = this.select();
+        this.log(list);
         return this.current.select(e, list);
-      } catch (error) {
-        e = error;
-      }
-    };
-
-    ShowView.prototype.selectNone_ = function() {
-      var e, error, ref;
-      try {
-        if ((ref = $(e.target).parents().data('current')) != null ? ref.model : void 0) {
-          return this.current.el.data('current').model.updateSelection([]);
-        }
       } catch (error) {
         e = error;
       }
@@ -42378,7 +42726,7 @@ Released under the MIT License
       try {
         list = this.select();
         selList = this.current.el.data('current').model.selectionList();
-        list.removeFromList(selList);
+        list.addRemove(selList);
         return this.current.select(e, list);
       } catch (error) {
         e = error;
@@ -42388,11 +42736,8 @@ Released under the MIT License
     ShowView.prototype.select = function() {
       var items, list, root;
       list = [];
-      root = this.current.itemsEl;
+      root = $('.items', this.current.el);
       items = $('.item', root);
-      if (!(root && items.length)) {
-        return list;
-      }
       items.each(function() {
         return list.unshift(this.id);
       });
@@ -42451,7 +42796,7 @@ Released under the MIT License
       results = [];
       for (i = 0, len = list.length; i < len; i++) {
         id = list[i];
-        ga = CategoriesProduct.categoryProductExists(id, (ref = Category.record) != null ? ref.id : void 0);
+        ga = CategoriesProduct.productExists(id, (ref = Category.record) != null ? ref.id : void 0);
         ga.ignored = !ga.ignored;
         results.push(ga.save());
       }
@@ -42527,9 +42872,9 @@ Released under the MIT License
     ShowView.prototype.showPhotos = function(e) {
       var ref, ref1;
       if (Product.record) {
-        this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', 'pid', Product.record.id);
+        this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', Product.record.id);
       } else {
-        this.navigate('/category', ((ref1 = Category.record) != null ? ref1.id : void 0) || '', '');
+        this.navigate('/category', ((ref1 = Category.record) != null ? ref1.id : void 0) || '', 'pid', Product.record.id);
       }
       return e.preventDefault();
     };
@@ -42707,7 +43052,7 @@ Released under the MIT License
       }
       itemId = product.id;
       categoryId = category.id;
-      if (ga = CategoriesProduct.categoryProductExists(itemId, categoryId)) {
+      if (ga = CategoriesProduct.productExists(itemId, categoryId)) {
         return CategoriesProduct.trigger('ignored', ga, !ga.ignored);
       }
     };
@@ -42893,12 +43238,12 @@ Released under the MIT License
       if (isMeta) {
         selection = parent.selectionList().slice(0);
         if (indexOf.call(selection, id) < 0) {
-          selection.addRemoveSelection(id);
+          selection.addRemove(id);
         } else {
           first = selection.first();
-          selection.addRemoveSelection(id);
-          selection.addRemoveSelection(first);
-          selection.addRemoveSelection(id);
+          selection.addRemove(id);
+          selection.addRemove(first);
+          selection.addRemove(id);
         }
         return list.parent.select(e, selection);
       } else {
@@ -44236,6 +44581,10 @@ Released under the MIT License
       'click .opt-ignored': 'ignoreProduct'
     };
 
+    SubEditViewProduct.prototype.linkTemplate = function(item) {
+      return $('validLinkTemplate').tmpl(item);
+    };
+
     SubEditViewProduct.prototype.template = function(item) {
       return $('#editProductTemplate').tmpl(item);
     };
@@ -44260,15 +44609,22 @@ Released under the MIT License
     };
 
     SubEditViewProduct.prototype.render = function() {
-      return this.html(this.template(this.parent.current));
+      var item;
+      return this.html(this.template(item = this.parent.current));
+    };
+
+    SubEditViewProduct.prototype.checkLink = function() {
+      var item;
+      item = this.parent.current;
+      return $('#validLink', this.el).toggleClass('valid', item.validUrl());
     };
 
     SubEditViewProduct.prototype.save = function(el) {
-      var atts;
+      var atts, record;
       this.log('save product');
-      if (this.parent.current) {
+      if (record = this.parent.current) {
         atts = (typeof el.serializeForm === "function" ? el.serializeForm() : void 0) || this.el.serializeForm();
-        return this.parent.current.updateChangedAttributes(atts);
+        return record.updateChangedAttributes(atts);
       }
     };
 
@@ -44292,7 +44648,8 @@ Released under the MIT License
         case 9:
           e.stopPropagation();
       }
-      return this.save(this.el);
+      this.save(this.el);
+      return this.checkLink();
     };
 
     return SubEditViewProduct;
@@ -45132,6 +45489,119 @@ Released under the MIT License
           e.preventDefault();
           return e.stopPropagation();
         },
+        exposeSelection: function(selection, id) {
+          var el, first, i, len, ref;
+          if (selection == null) {
+            selection = Category.selectionList();
+          }
+          if (id == null) {
+            id = (ref = Category.record) != null ? ref.id : void 0;
+          }
+          if (Category.record) {
+            if (Category.record.id !== id) {
+              return;
+            }
+          }
+          this.deselect();
+          for (i = 0, len = selection.length; i < len; i++) {
+            id = selection[i];
+            el = $('#' + id, this.el);
+            el.addClass("active");
+          }
+          if (first = selection.first()) {
+            return $('#' + first, this.el).addClass("hot");
+          }
+        },
+        renderBackgrounds: function(products) {
+          var i, len, processProduct, product, results;
+          this.log('renderBackgrounds');
+          processProduct = (function(_this) {
+            return function(product) {
+              var all, data, deferred, sorted;
+              _this.log('processProduct');
+              deferred = $.Deferred();
+              all = product.photos();
+              sorted = all.sort(Photo.sortByReverseOrder);
+              data = sorted.slice(0, 4);
+              _this.callDeferred(data, _this.uriSettings(60, 60), function(xhr) {
+                return deferred.resolve(xhr, product);
+              });
+              return deferred.promise();
+            };
+          })(this);
+          if (!Array.isArray(products)) {
+            products = [products];
+          }
+          results = [];
+          for (i = 0, len = products.length; i < len; i++) {
+            product = products[i];
+            results.push($.when(processProduct(product)).done((function(_this) {
+              return function(xhr, rec) {
+                return _this.callback(xhr, rec);
+              };
+            })(this)));
+          }
+          return results;
+        },
+        callback: function(json, product) {
+          var c, css, cssdefault, el, i, j, jsn, key, len, len1, results, sources, src, thumb, val;
+          el = $('[data-id=' + (product != null ? product.id : void 0) + ']', this.el);
+          thumb = $('.thumbnail', el);
+          sources = [];
+          css = [];
+          cssdefault = [];
+          for (i = 0, len = json.length; i < len; i++) {
+            jsn = json[i];
+            for (key in jsn) {
+              val = jsn[key];
+              if (src = val.src) {
+                sources.push(src);
+              }
+              css.push('url(' + src + ')');
+              cssdefault.push('url(/img/ajax-loader-product-thumbs.gif)');
+            }
+          }
+          if (sources.length) {
+            thumb.addClass('load');
+            thumb.css('backgroundImage', (function() {
+              var j, len1, results;
+              results = [];
+              for (j = 0, len1 = cssdefault.length; j < len1; j++) {
+                c = cssdefault[j];
+                results.push(c);
+              }
+              return results;
+            })());
+            results = [];
+            for (j = 0, len1 = sources.length; j < len1; j++) {
+              src = sources[j];
+              results.push(this.snap(thumb, src, css));
+            }
+            return results;
+          } else {
+            return thumb.css('backgroundImage', ['url(/img/drag_info.png)']);
+          }
+        },
+        snap: function(el, src, css) {
+          var img;
+          img = this.createImage();
+          img.el = el;
+          img.me = this;
+          img.css = css;
+          img.src = src;
+          img.onload = this.onLoad;
+          return img.onerror = this.onError;
+        },
+        onLoad: function() {
+          this.me.log('image loaded');
+          this.el.removeClass('load');
+          return this.el.css('backgroundImage', this.css);
+        },
+        onError: function(e) {
+          this.me.log('could not load image, trying again');
+          this.onload = this.me.renderBackgrounds([Product.record]);
+          return this.onerror = null;
+        },
         createImage: function(url, onload) {
           var img;
           img = new Image();
@@ -45190,6 +45660,19 @@ Released under the MIT License
         },
         find: function(sel) {
           return this.el.find(sel);
+        },
+        remove: function(item) {
+          var el, els, f;
+          els = this.el.find('.items');
+          el = els.children().forItem(item);
+          if (!el.length) {
+            return;
+          }
+          el.addClass('out').removeClass('in');
+          f = function() {
+            return el.detach();
+          };
+          return this.delay(f, 400);
         },
         deselect: function() {
           var args, ref;
@@ -47888,6 +48371,9 @@ Released under the MIT License
   $ = typeof jQuery !== "undefined" && jQuery !== null ? jQuery : require("jqueryify");
 
   $.fn.deselect = function(sel) {
+    if (sel == null) {
+      sel = '';
+    }
     return $(this).children(sel).removeClass('active hot');
   };
 
@@ -48899,8 +49385,15 @@ Released under the MIT License
     return this;
   };
 
-  Array.prototype.addRemoveSelection = function(id) {
-    this.toggleSelected(id);
+  Array.prototype.addRemove = function(ids) {
+    var i, id, len;
+    if (!Array.isArray(ids)) {
+      ids = [ids];
+    }
+    for (i = 0, len = ids.length; i < len; i++) {
+      id = ids[i];
+      this.toggleSelected(id);
+    }
     return this;
   };
 
@@ -49148,7 +49641,9 @@ Released under the MIT License
 
     CategoriesProduct.url = 'categories_products';
 
-    CategoriesProduct.categoryProductExists = function(aid, gid) {
+    CategoriesProduct.mixinAttributes = ['ignored', 'order'];
+
+    CategoriesProduct.productExists = function(aid, gid) {
       var gas;
       gas = this.filter('placeholder', {
         product_id: aid,
@@ -49267,7 +49762,7 @@ Released under the MIT License
     CategoriesProduct.prototype.validate = function() {
       var ret2, valid_1, valid_2;
       valid_1 = (Product.find(this.product_id)) && (Category.find(this.category_id));
-      valid_2 = !(this.constructor.categoryProductExists(this.product_id, this.category_id) && this.isNew());
+      valid_2 = !(this.constructor.productExists(this.product_id, this.category_id) && this.isNew());
       if (!valid_1) {
         return 'Ungültige Aktion!';
       }
@@ -49278,6 +49773,17 @@ Released under the MIT License
         return ret2(Product.find(this.product_id));
       }
       return false;
+    };
+
+    CategoriesProduct.prototype.mixinAttributes = function() {
+      var attr, i, len, ref, result;
+      result = {};
+      ref = this.constructor.mixinAttributes;
+      for (i = 0, len = ref.length; i < len; i++) {
+        attr = ref[i];
+        result[attr] = this[attr];
+      }
+      return result;
     };
 
     CategoriesProduct.prototype.categories = function() {
@@ -50162,6 +50668,18 @@ Released under the MIT License
       }
     };
 
+    Photo.prototype.select_ = function() {
+      if (!this.deleted) {
+        return true;
+      }
+    };
+
+    Photo.prototype.selectDeleted = function() {
+      if (this.deleted) {
+        return true;
+      }
+    };
+
     Photo.prototype.selectPhoto = function(id) {
       if (this.id === id) {
         return true;
@@ -50196,8 +50714,7 @@ Released under the MIT License
   var $, AjaxRelations, CategoriesProduct, Clipboard, Extender, Filter, Model, Product, Spine, Uri, Utils,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    hasProp = {}.hasOwnProperty;
 
   Spine = require("spine");
 
@@ -50232,7 +50749,7 @@ Released under the MIT License
       return Product.__super__.constructor.apply(this, arguments);
     }
 
-    Product.configure("Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'ignored', 'order', 'invalid', 'active', 'selected');
+    Product.configure("Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'ignored', 'order', 'invalid', 'deleted', 'active', 'selected');
 
     Product.extend(Model.Cache);
 
@@ -50358,6 +50875,10 @@ Released under the MIT License
         results = [];
         for (i = 0, len = items.length; i < len; i++) {
           item = items[i];
+          if (item.deleted) {
+            item.deleted = false;
+            item.save();
+          }
           ga = new CategoriesProduct({
             category_id: target.id,
             product_id: item.id,
@@ -50402,7 +50923,7 @@ Released under the MIT License
         gas = CategoriesProduct.filter(item.id, {
           associationForeignKey: 'product_id'
         });
-        ga = CategoriesProduct.categoryProductExists(item.id, target.id);
+        ga = CategoriesProduct.productExists(item.id, target.id);
         if (ga != null) {
           ga.destroy({
             done: cb
@@ -50490,6 +51011,19 @@ Released under the MIT License
       });
     };
 
+    Product.isUsedProduct = function(id) {
+      var cp, ret;
+      ret = (cp = CategoriesProduct.findByAttribute('product_id', id));
+      return !!ret;
+    };
+
+    Product.validUrl = function(me) {
+      if (/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/.test(me.link)) {
+        return true;
+      }
+      return false;
+    };
+
     Product.prototype.init = function(instance) {
       var id, s;
       if (!(id = instance.id)) {
@@ -50540,6 +51074,10 @@ Released under the MIT License
       return this.constructor.descriptions(this.id);
     };
 
+    Product.prototype.validUrl = function() {
+      return this.constructor.validUrl(this);
+    };
+
     Product.prototype.details = function() {
       return $().extend(this.defaultDetails, {
         iCount: this.photos().length,
@@ -50549,19 +51087,29 @@ Released under the MIT License
       });
     };
 
-    Product.prototype.select = function(joinTableItems) {
-      var i, len, record;
+    Product.prototype.select_ = function(joinTableItems) {
+      var i, len, record, ret;
+      if (this.deleted) {
+        return false;
+      }
+      ret = [];
       for (i = 0, len = joinTableItems.length; i < len; i++) {
         record = joinTableItems[i];
-        if (record.product_id === this.id && ((this.prototype['order'] = parseInt(record.order)) != null) && ((this.prototype['ignored'] = !!record.ignored) != null)) {
-          return true;
+        if (record.product_id === this.id) {
+          ret.push(record);
         }
+      }
+      return !!ret.length;
+    };
+
+    Product.prototype.select = function() {
+      if (!this.deleted) {
+        return true;
       }
     };
 
-    Product.prototype.select_ = function(joinTableItems) {
-      var ref;
-      if (ref = this.id, indexOf.call(joinTableItems, ref) >= 0) {
+    Product.prototype.selectDeleted = function() {
+      if (this.deleted) {
         return true;
       }
     };
@@ -51228,6 +51776,8 @@ Released under the MIT License
               return false;
             }
           }, {
+            devider: true
+          }, {
             name: function() {
               return 'Papierkorb';
             },
@@ -51337,6 +51887,8 @@ Released under the MIT License
             disabled: function() {
               return false;
             }
+          }, {
+            devider: true
           }, {
             name: function() {
               return 'Papierkorb';

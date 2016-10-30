@@ -70,7 +70,7 @@ class CategoriesList extends Spine.Controller
     @log 'updateTemplates'
     for category in Category.records
       @updateTemplate(category)
-    @el.sortable('categories')
+#    @el.sortable('categories')
 
   updateTemplate: (category) ->
     categoryEl = @children().forItem(category)
@@ -103,7 +103,7 @@ class CategoriesList extends Spine.Controller
 
   exposeSelection: ->
     @log 'exposeSelection'
-    @deselect()
+#    @deselect()
     $('#'+Category.record.id, @el).addClass("active hot")
       
     App.showView.trigger('change:toolbarOne')
@@ -138,12 +138,4 @@ class CategoriesList extends Spine.Controller
     el = $(e.currentTarget).parents('.item')
     Spine.trigger('destroy:category', item.id) if item
     
-  infoUp: (e) =>
-    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('in').removeClass('out')
-    e.preventDefault()
-    
-  infoBye: (e) =>
-    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('out').removeClass('in')
-    e.preventDefault()
-
 module?.exports = CategoriesList

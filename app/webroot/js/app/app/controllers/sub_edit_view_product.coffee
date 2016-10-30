@@ -13,6 +13,9 @@ class SubEditViewProduct extends Spine.Controller
     'keyup'                         : 'saveOnKeyup'
     'click .opt-ignored'            : 'ignoreProduct'
   
+  linkTemplate: (item) ->
+    $('validLinkTemplate').tmpl item
+  
   template: (item) ->
     $('#editProductTemplate').tmpl item
     
@@ -31,14 +34,17 @@ class SubEditViewProduct extends Spine.Controller
     @render()
     
   render: ->
-    @html @template @parent.current
-#    $('input',@el)[0].focus -> $(@).select()
+    @html @template item = @parent.current
+    
+  checkLink: ->
+    item = @parent.current
+    $('#validLink', @el).toggleClass('valid', item.validUrl())
     
   save: (el) ->
     @log 'save product'
-    if @parent.current
+    if record = @parent.current
       atts = el.serializeForm?() or @el.serializeForm()
-      @parent.current.updateChangedAttributes(atts)
+      record.updateChangedAttributes(atts)
 
   ignoreProduct: (e) ->
     product = $(e.currentTarget).item()
@@ -48,7 +54,7 @@ class SubEditViewProduct extends Spine.Controller
 
   saveOnKeyup: (e) =>
     code = e.charCode or e.keyCode
-        
+    
     switch code
       when 32 # SPACE
         e.stopPropagation() 
@@ -56,5 +62,6 @@ class SubEditViewProduct extends Spine.Controller
         e.stopPropagation()
 
     @save @el
+    @checkLink()
     
  module?.exports = SubEditViewProduct

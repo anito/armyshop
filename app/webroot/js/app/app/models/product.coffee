@@ -14,7 +14,7 @@ require("spine/lib/ajax")
 
 class Product extends Spine.Model
 
-  @configure "Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'ignored', 'order', 'invalid', 'active', 'selected'
+  @configure "Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'ignored', 'order', 'invalid', 'deleted', 'active', 'selected'
 
   @extend Model.Cache
   @extend Model.Ajax
@@ -94,6 +94,9 @@ class Product extends Spine.Model
         callback.call(@)
     
     ret = for item in items
+      if item.deleted
+        item.deleted = false
+        item.save()
       ga = new CategoriesProduct
         category_id  : target.id
         product_id   : item.id
@@ -118,8 +121,9 @@ class Product extends Spine.Model
     
     for item in items
       gas = CategoriesProduct.filter(item.id, associationForeignKey: 'product_id')
-      ga = CategoriesProduct.categoryProductExists(item.id, target.id)
+      ga = CategoriesProduct.productExists(item.id, target.id)
       ga?.destroy(done: cb)
+      
       
     Category.trigger('change:collection', target)
       
@@ -157,6 +161,15 @@ class Product extends Spine.Model
   @unusedProducts: ->
     @filter(true, {func: 'selectUnused'})
       
+  @isUsedProduct: (id) ->
+    ret = (cp = CategoriesProduct.findByAttribute('product_id', id))# and !cp.destroyed
+    !!ret
+      
+  @validUrl: (me) ->
+    if /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/.test(me.link)
+      return true
+    return false
+      
   init: (instance) ->
     return unless id = instance.id
     s = new Object()
@@ -187,6 +200,8 @@ class Product extends Spine.Model
   descriptions: ->
     @constructor.descriptions @id
   
+  validUrl: -> @constructor.validUrl @
+  
   details: =>
     $().extend @defaultDetails,
       iCount : @photos().length
@@ -195,12 +210,17 @@ class Product extends Spine.Model
       category: Category.record
   
   # loops over each record and make sure to set the copy property
-  select: (joinTableItems) ->
-    for record in joinTableItems
-      return true if record.product_id is @id and (@prototype['order'] = parseInt(record.order))? and (@prototype['ignored'] = !!record.ignored )?
-      
   select_: (joinTableItems) ->
-    return true if @id in joinTableItems
+    return false if @deleted
+    ret = []
+    ret.push record for record in joinTableItems when record.product_id is @id
+    !!ret.length
+    
+  select: ->
+    return true if !@deleted
+
+  selectDeleted: ->
+    return true if @deleted
       
   selectProduct: (id) ->
     return true if @id is id

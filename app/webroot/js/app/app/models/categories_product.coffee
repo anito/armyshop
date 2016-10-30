@@ -21,7 +21,9 @@ class CategoriesProduct extends Spine.Model
 
   @url: 'categories_products'
   
-  @categoryProductExists: (aid, gid) ->
+  @mixinAttributes: ['ignored', 'order']
+  
+  @productExists: (aid, gid) ->
     gas = @filter 'placeholder',
       product_id: aid
       category_id: gid
@@ -75,11 +77,16 @@ class CategoriesProduct extends Spine.Model
   
   validate: ->
     valid_1 = (Product.find @product_id) and (Category.find @category_id)
-    valid_2 = !(@constructor.categoryProductExists(@product_id, @category_id) and @isNew())
+    valid_2 = !(@constructor.productExists(@product_id, @category_id) and @isNew())
     return 'Ungültige Aktion!' unless valid_1
     ret2 = (p) -> 'Produkt ' + p.title + ' existiert bereits in dieser Kategorie'
     return ret2(Product.find(@product_id)) unless valid_2
     false
+    
+  mixinAttributes: ->
+    result = {}
+    result[attr] = @[attr] for attr in @constructor.mixinAttributes
+    result
     
   categories: ->
     @constructor.categories @product_id

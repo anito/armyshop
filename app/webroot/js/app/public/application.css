@@ -620,7 +620,7 @@ html {
   font-size: 16px;
 }
 body {
-  color: #444141;
+  color: #333;
   background-image: url("/img/pattern.png");
   background-color: #666;
   font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;
@@ -711,6 +711,9 @@ footer.footer {
 }
 .center {
   text-align: center;
+}
+.inline {
+  display: inline !important;
 }
 .autoflow {
   overflow: auto;
@@ -1168,7 +1171,8 @@ ul.items {
   z-index: 1;
 }
 .header .view section:nth-child(2) {
-  position: absolute;
+  position: relative;
+  top: 20px;
 }
 .header .btn:hover {
   border-radius: 0;
@@ -1207,7 +1211,7 @@ li.parent {
   color: #aaa;
 }
 li.parent:not(.open) {
-  height: 62px;
+  height: 73px;
 }
 li.parent:hover:not(.active) {
   opacity: 1;
@@ -1360,11 +1364,11 @@ ul.sublist>li:not(:last-child)::after {
   margin: 0 auto;
 }
 .sidebar ul.sublist li.sublist-item {
-  margin: 2px 0;
   position: relative;
-  padding: 5px 5px;
+  padding: 17px 5px 7px;
   font-weight: normal;
-  font-size: 0.8em;
+  line-height: 2.2;
+  font-size: 0.9em;
 }
 .expander {
   width: 23px;
@@ -1372,7 +1376,7 @@ ul.sublist>li:not(:last-child)::after {
   float: left;
   margin: -9px 5px;
   cursor: pointer;
-  top: 9px;
+  top: 17px;
   position: relative;
 }
 .badge {
@@ -1400,7 +1404,7 @@ ul.sublist>li:not(:last-child)::after {
   border-color: #979797;
   position: relative;
   right: 10px;
-  line-height: 1.3;
+  top: -2px;
 }
 .active .gal.cta {
   border: 1px solid #5a5a5a;
@@ -1414,7 +1418,7 @@ ul.sublist>li:not(:last-child)::after {
   padding: 7px 11px;
   position: absolute;
   right: 10px;
-  top: 14px;
+  top: 21px;
 }
 .hoverinfo .cta {
   background-color: rgba(0,0,0,0.1);
@@ -1428,6 +1432,14 @@ ul.sublist>li:not(:last-child)::after {
 }
 #preview .preview {
   border: 0 none !important;
+}
+#preview .pricing [class*="eye"] {
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  font-size: 2em;
+  background-color: #fff;
+  z-index: 100;
 }
 .sidebar .preview .expander {
   background: url("/img/arrow.png") no-repeat -43px 0px;
@@ -1449,6 +1461,7 @@ ul.sublist>li:not(:last-child)::after {
 }
 .sidebar .parent > .item-header {
   padding-bottom: 13px;
+  line-height: 2.2em;
 }
 .toolbar {
   font-size: 1em;
@@ -1481,7 +1494,7 @@ ul.sublist>li:not(:last-child)::after {
   cursor: move;
   width: auto;
 }
-#content .products .items .item {
+[class*='products'] .items .item {
   margin: -10px 6px 24px;
 }
 #content .items .item .titles div:not(.rule) {
@@ -1584,13 +1597,13 @@ section span.price {
   -webkit-background-position: 34px 34px, 95px 34px, 34px 95px, 95px 95px;
   background-position: 34px 34px, 95px 34px, 34px 95px, 95px 95px;
 }
-#content .products .item .thumbnail {
+[class*='products'] .item .thumbnail {
   background-repeat: no-repeat;
   -moz-background-position: 13px 17px, 83px 17px, 13px 83px, 83px 83px;
   -webkit-background-position: 13px 17px, 83px 17px, 13px 83px, 83px 83px;
   background-position: 13px 17px, 83px 17px, 13px 83px, 83px 83px;
 }
-#content .products .item .thumbnail.load {
+[class*='products'] .item .thumbnail.load {
   background-repeat: no-repeat;
   -moz-background-position: 25px 32px, 92px 32px, 25px 100px, 92px 100px;
   -webkit-background-position: 25px 32px, 92px 32px, 25px 100px, 92px 100px;
@@ -1716,7 +1729,7 @@ li .thumbnail.image {
   margin: 0;
   background: transparent;
 }
-.products .thumbnail {
+[class*='products'] .thumbnail {
   background-color: rgba(51,51,51,0.53);
   background-image: none;
   width: 390px;
@@ -1728,7 +1741,7 @@ li .thumbnail.image {
   border: 0 none;
 }
 .content li.item {
-  border: 5px solid;
+  border: 9px solid;
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
@@ -1755,16 +1768,20 @@ li .thumbnail.image {
   right: -14px;
 }
 .content .item.active {
-  border-color: #9fdeff !important;
+  border-color: #9fdeff;
 }
 .content .item.ignored .thumbnail {
   opacity: 0.3;
 }
-.content .item:not(.ignored) {
-  border-color: rgba(200,200,200,0.9);
+#content .ignored .glyphicon[class*='-eye'] {
+  color: #f00 !important;
 }
-.content .item:not(.ignored) .glyphicon-set {
-  background-color: rgba(200,200,200,0.9);
+#content [class*='-camera'] {
+  color: #f00;
+}
+#content .glyphicon[class*='-eye'] :not([class*="-menu"]),
+.thumbnail+.glyphicon-set [class*='-eye'] {
+  color: #40d840 !important;
 }
 .glyphicon {
   line-height: inherit;
@@ -1782,8 +1799,17 @@ nav .glyphicon {
 .glyphicon-set {
   background-color: #333;
   position: absolute;
+  padding: 0px 0px 5px 13px;
   top: 0;
-  padding: 5px 13px 9px 13px;
+}
+.glyphicon-set:nth-child(2) {
+  padding: 0px 7px 5px 4px;
+}
+.glyphicon-set:nth-child(3) {
+  padding: 0px 0px 5px 13px;
+}
+a.glyphicon {
+  font-size: 1.2rem;
 }
 .sidebar .infogramm .glyphicon {
   font-size: 0.7rem;
@@ -1803,14 +1829,17 @@ li.item.active .glyphicon-set {
 .glyphicon-set .glyphicon {
   text-shadow: 1px 0px 0px #000;
 }
+.valid {
+  color: #44b944;
+}
 li.item.active.hot .glyphicon-set {
-  background-color: #39f !important;
+  background-color: #39f;
 }
 li.item.active .glyphicon-set {
-  background-color: #9fdeff !important;
+  background-color: #9fdeff;
 }
 .content:not(.modal-content) .item.hot {
-  border-color: #39f !important;
+  border-color: #39f;
 }
 #content .content .item ul {
   float: left;

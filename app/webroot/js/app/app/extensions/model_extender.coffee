@@ -281,7 +281,7 @@ Model.Extender =
           unless origAtts[key] is value
             invalid = yes
             @[key] = value
-
+        
         @save(options) if invalid
         
       selectAttributes: ->

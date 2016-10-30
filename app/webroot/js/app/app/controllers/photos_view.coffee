@@ -112,8 +112,7 @@ class PhotosView extends Spine.Controller
     @el
   
   active: (items) ->
-    unless items
-      return unless @isActive()
+#    return unless @isActive()
     
     App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
@@ -163,7 +162,7 @@ class PhotosView extends Spine.Controller
         selection = Product.selectionList()[..]
         items = selection[..] unless items.length
         for id in items
-          selection.addRemoveSelection(id)
+          selection.addRemove(id)
 
     Product.updateSelection(selection, Product.record?.id)
       

@@ -1,16 +1,16 @@
-Spine           = require("spine")
-$               = Spine.$
-Controller      = Spine.Controller
-Drag            = require('extensions/drag')
-User            = require("models/user")
+Spine             = require("spine")
+$                 = Spine.$
+Controller        = Spine.Controller
+Drag              = require('extensions/drag')
+User              = require("models/user")
 Product           = require('models/product')
-Category         = require('models/category')
-CategoriesProduct  = require('models/categories_product')
+Category          = require('models/category')
+CategoriesProduct = require('models/categories_product')
 ProductsPhoto     = require('models/products_photo')
-Info            = require('controllers/info')
+Info              = require('controllers/info')
 ProductsList      = require('controllers/products_list')
-Extender        = require('extensions/controller_extender')
-User            = require('models/user')
+Extender          = require('extensions/controller_extender')
+User              = require('models/user')
 
 require('extensions/tmpl')
 
@@ -85,13 +85,13 @@ class ProductsView extends Spine.Controller
     
     Product.bind('create', @proxy @create)
     Product.bind('ajaxError', Product.errorHandler)
-    Product.bind('beforeDestroy', @proxy @beforeDestroyProduct)
-    Product.bind('destroy', @proxy @destroy)
+#    Product.bind('destroy', @proxy @destroy)
     Product.bind('create:join', @proxy @createJoin)
     Product.bind('destroy:join', @proxy @destroyJoin)
     Product.bind('change:collection', @proxy @renderBackgrounds)
     Product.bind('show:unpublished', @proxy @showUnpublished)
     Product.bind('show:unused', @proxy @showUnused)
+    Product.bind('move:toTrash', @proxy @moveToTrash)
     
 #    CategoriesProduct.bind('ajaxError', Product.errorHandler)
     
@@ -118,27 +118,31 @@ class ProductsView extends Spine.Controller
   bindRefresh: ->
     Product.one('refresh', @proxy @refresh)
     
+  # calls render for joins only
   refresh: () ->
-    @render @updateBuffer()
+    @render @updateBuffer(true)
     
-  updateBuffer: (items) ->
+  updateBuffer: (buffer) ->
     filterOptions =
       model: 'Category'
       sort: 'sortByOrder'
       
-    unless items
+    if buffer
       if category = Category.record
+        # for the Category
         items = Category.products(category.id, filterOptions)
       else
-        items = Product.filter()
+        # for the Catalouge
+        items = Product.filter(true)
     
     @buffer = items
     
   render: (items, mode='html') ->
-    return unless @isActive()
-#    else @list.wipe()
+    unless items
+      return unless @isActive()
+#    @list.wipe(true)
     
-    items = (items || @updateBuffer())
+    items = (items || @updateBuffer(true))
     @list.render(items, mode)
     @list.sortable('product') if Category.record
 #    $('.tooltips', @el).tooltip(title:'default title')
@@ -146,29 +150,26 @@ class ProductsView extends Spine.Controller
     @el
       
   active: (items) ->
-    unless items
-      return unless @isActive()
-      return if @eql Category.record
+    return if @eql Category.record
       
     @current.id = Category.record?.id
     App.showView.trigger('change:toolbarOne', ['Default', 'Help'])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
     
-    products = CategoriesProduct.products(Category.record.id)
-    for alb in products
-      if alb.invalid
-        # reset flag for regenerating photo thumbnails in product
-        alb.invalid = false
-        alb.save(ajax:false)
-        
+#    products = CategoriesProduct.products(Category.record.id)
+#    @resetInvalid(products)
+    
     if items then @render(items) else @refresh()
     
     @parent.scrollTo(@el.data('current').models.record)
     
-  collectionChanged: ->
-    unless @isActive()
-      @navigate '/category', Category.record?.id or ''
-      
+  # reset flag for regenerating photo thumbnails in product
+  resetInvalid: (products) ->
+    for alb in products
+      if alb.invalid
+        alb.invalid = false
+        alb.save(ajax:false)
+    
   activateRecord: (ids) ->
     unless (ids)
       ids = []
@@ -221,12 +222,16 @@ class ProductsView extends Spine.Controller
     cb = (record, ido) ->
       if target
         record.createJoin(target)
-        target.updateSelection(record.id)
+        func = -> target.updateSelection(record.id)
+#        target.updateSelection(record.id)
       else
-        @render([record], 'append')
-        Category.updateSelection([record.id], Category.record?.id)
+#        @render([record], 'append')
+        func = -> Category.updateSelection([record.id], Category.record?.id)
+#      
+      @navigate('/category', target?.id or '', 'pid', product.id)
+      setTimeout(func, 100)
       
-      # fill in / remove photos
+#      # fill in / remove photos
       $().extend options, product: record
       
       if options.photos
@@ -239,9 +244,6 @@ class ProductsView extends Spine.Controller
         options.deferred.notify(record)
       if options.cb
         options.cb.apply(@, [record, options.deferred])
-        
-      Product.trigger('activate', product.id)
-      @navigate '/category', target?.id or ''
     
     product = new Product @newAttributes()
     product.one('ajaxSuccess', @proxy cb)
@@ -254,7 +256,9 @@ class ProductsView extends Spine.Controller
        
   destroyCategoriesProduct: (ga) ->
     products = CategoriesProduct.products ga.category_id
-    @render(null, 'html') unless products.length
+    @remove [products][0]
+    func = -> @render(null, 'html')
+    @delay(func, 500) unless products.length
        
   ignoreProduct: (ga, ignored) ->
     @log 'ignoreProduct'
@@ -263,47 +267,41 @@ class ProductsView extends Spine.Controller
   
   destroyProduct: (ids) ->
     @log 'destroyProduct'
-  
+    # only joins should be here when no Category is selected
+    # otherwise (no Category is selected) we should mark the product as deleted
+    
     @stopInfo()
-  
-    func = (el) =>
-      $(el).detach()
   
     ids = ids || Category.selectionList().slice(0)
     products = Product.toRecords(ids)
-    
     for product in products
-      el = @list.findModelElement(product)
-      el.removeClass('in')
-      if Category.record
-        @destroyJoin product, Category.record
+      cats = CategoriesProduct.categories(product.id)
+      unless category = Category.record
+        # for the Catalogue View
+        if cats.length
+          #remove from all Categories
+          for cat in cats
+            @destroyJoin product, cat
+        unless product.deleted
+          # send to the trash
+          Product.trigger('move:toTrash', product)
+        else
+          # delete from the trash
+          Product.trigger('destroy:fromTrash', product)
+          
       else
-        product.destroy()
+        # for the Joins View
+        @destroyJoin product, category
+        cats = CategoriesProduct.categories(product.id)
+        # send the last joined product to trash
+        unless cats.length
+          Product.trigger('move:toTrash', product)
+    # remove from view
+      @remove product
     
-  beforeDestroyProduct: (product) ->
-    # remove selection from root
-    Category.removeFromSelection null, product.id
-    
-    # all involved categories
-    categories = CategoriesProduct.categories(product.id)
-
-    for category in categories
-      category.removeFromSelection product.id
-      product.removeSelectionID()
-      
-#      @list.findModelElement(product).detach()
-      
-      # remove all associated products
-      photos = ProductsPhoto.photos(product.id).toId()
-      Photo.trigger('destroy:join', photos, product)
-      # remove all associated products
-      @destroyJoin product, category
-   
-  destroy: (item) ->
-    item.removeSelectionID()
-    el = @list.findModelElement(item)
-    el.detach()
-    @render() unless Product.count()
+  moveToTrash: (product) ->
+    product.deleted = true
+    product.save()
       
   createJoin: (products, category, callback) ->
     Product.createJoin products, category, callback
@@ -311,8 +309,6 @@ class ProductsView extends Spine.Controller
     
   destroyJoin: (products, category) ->
     @log 'destroyJoin'
-    return unless category and category.constructor.className is 'Category'
-    
     callback = ->
       
     products = [products] unless Product.isArray(products)
@@ -365,31 +361,18 @@ class ProductsView extends Spine.Controller
     @select(e, item.id)
     
   select: (e, ids = []) ->
-    unless Array.isArray ids
-      ids = [ids]
-      
-    type = e.type
-    if @isCtrlClick(e)
-      switch type
-        when 'keyup'
-          selection = ids
-        when 'click'
-          Category.emptySelection() 
-          selection = Category.selectionList()[..]
-          ids = selection[..] unless ids.length
-          for id in ids
-            selection.addRemoveSelection(id)
+    list = Category.selectionList()[..]
+    ids = [ids] unless Array.isArray ids
+    list.addRemove ids
     
-      Category.updateSelection(selection, Category.record?.id)
-      Product.updateSelection(Product.selectionList(), Product.record?.id)
+    Category.updateSelection ids
+    
+    if ids.length
+      @navigate '/category', Category.record?.id or '', 'pid', ids[0]
     else
-      selection = ids
-      Category.updateSelection(selection, Category.record?.id)
-      if type is 'keyup' or type is 'click'
-        if ids.length
-          @navigate '/category', Category.record?.id or '', 'pid', ids[0]
-        else
-          @navigate '/category', Category.record?.id or ''
+      @navigate '/category', Category.record?.id or ''
+      
+    e.stopPropagation()
     
   infoUp: (e) =>
     @info.up(e)

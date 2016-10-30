@@ -5,8 +5,8 @@ Controller          = Spine.Controller
 Root                = require('models/root')
 Category            = require('models/category')
 Product             = require('models/product')
-Photo         = require('models/photo')
-ProductsPhoto = require('models/products_photo')
+Photo               = require('models/photo')
+ProductsPhoto       = require('models/products_photo')
 CategoriesProduct   = require('models/categories_product')
 Clipboard           = require("models/clipboard")
 ToolbarView         = require("controllers/toolbar_view")
@@ -17,6 +17,10 @@ PhotosView          = require('controllers/photos_view')
 PhotoHeader         = require('controllers/photo_header')
 PhotoView           = require('controllers/photo_view')
 ProductsHeader      = require('controllers/products_header')
+ProductsTrashView   = require('controllers/products_trash_view')
+ProductsTrashHeader = require('controllers/products_trash_header')
+PhotosTrashView     = require('controllers/photos_trash_view')
+PhotosTrashHeader   = require('controllers/photos_trash_header')
 ProductsAddView     = require('controllers/products_add_view')
 PhotosAddView       = require('controllers/photos_add_view')
 CategoriesView      = require('controllers/categories_view')
@@ -42,8 +46,8 @@ class ShowView extends Spine.Controller
     '.header .products'       : 'productsHeaderEl'
     '.header .photos'         : 'photosHeaderEl'
     '.header .photo'          : 'photoHeaderEl'
-    '.header .photosTrash'    : 'photosTrashHeaderEl'
-    '.header .productsTrash'  : 'productsTrashHeaderEl'
+    '.header .photos-trash'   : 'photosTrashHeaderEl'
+    '.header .products-trash' : 'productsTrashHeaderEl'
     '.opt-EditCategory'       : 'btnEditCategory'
     '.opt-Category .ui-icon'  : 'btnCategory'
     '.opt-AutoUpload'         : 'btnAutoUpload'
@@ -54,8 +58,8 @@ class ShowView extends Spine.Controller
     '.toolbarOne'             : 'toolbarOneEl'
     '.toolbarTwo'             : 'toolbarTwoEl'
     '.props'                  : 'propsEl'
-    '.content .photos-trash'  : 'photosTrashEl'
-    '.content .products-trash': 'productsTrashEl'
+    '.content.photos-trash'           : 'photosTrashEl'
+    '.content.products-trash'         : 'productsTrashEl'
     '.content.categories'     : 'categoriesEl'
     '.content.products'       : 'productsEl'
     '.content.photos'         : 'photosEl'
@@ -94,13 +98,14 @@ class ShowView extends Spine.Controller
     'click .opt-CutProduct'                             : 'cutProduct'
     'click .opt-PasteProduct'                           : 'pasteProduct'
     'click .opt-EmptyProduct'                           : 'emptyProduct'
+    'click .opt-EmptyPhotosTrash'                       : 'emptyPhotosTrash'
+    'click .opt-EmptyProductsTrash'                     : 'emptyProductsTrash'
     
     'click .opt-CreatePhoto:not(.disabled)'           : 'createPhoto'
-    'click .opt-DestroyEmptyProducts:not(.disabled)'    : 'destroyEmptyProducts'
-    'click .opt-DestroyCategory:not(.disabled)'        : 'destroyCategory'
-    'click .opt-DestroyProduct:not(.disabled)'          : 'destroyProduct'
+    'click .opt-DestroyEmptyProducts:not(.disabled)'  : 'destroyEmptyProducts'
+    'click .opt-DestroyCategory:not(.disabled)'       : 'destroyCategory'
+    'click .opt-DestroyProduct:not(.disabled)'        : 'destroyProduct'
     'click .opt-DestroyPhoto:not(.disabled)'          : 'destroyPhoto'
-    'click .opt-EditCategory:not(.disabled)'           : 'editCategory' # for the large edit view
     'click .opt-Category:not(.disabled)'              : 'toggleCategoryShow'
     'click .opt-Rotate-cw:not(.disabled)'             : 'rotatePhotoCW'
     'click .opt-Rotate-ccw:not(.disabled)'            : 'rotatePhotoCCW'
@@ -109,7 +114,7 @@ class ShowView extends Spine.Controller
     'click .opt-Upload:not(.disabled)'                : 'toggleUploadShow'
     'click .opt-UploadDialogue:not(.disabled)'        : 'uploadDialogue'
     'click .opt-ShowOverview:not(.disabled)'          : 'showOverview'
-    'click .opt-ShowAllCategories:not(.disabled)'        : 'showAllCategories'
+    'click .opt-ShowAllCategories:not(.disabled)'     : 'showAllCategories'
     'click .opt-ShowAllProducts:not(.disabled)'       : 'showProductMasters'
     'click .opt-AddProducts:not(.disabled)'           : 'showProductMastersAdd'
     'click .opt-ShowAllPhotos:not(.disabled)'         : 'showPhotoMasters'
@@ -188,13 +193,12 @@ class ShowView extends Spine.Controller
       photosView: @photosView
       parent: @
       parentModel: Photo
-    @productsTrashHeader = new ProductsTrashView
-      el: @productsTrashEL
-    @photosTrashHeader = new PhotosTrashView
-      el: @photosTrashEL
+    @productsTrashHeader = new ProductsTrashHeader
+      el: @productsTrashHeaderEl
+    @photosTrashHeader = new PhotosTrashHeader
+      el: @photosTrashHeaderEl
     @productsTrashView = new ProductsTrashView
       el: @productsTrashEl
-      className: 'items'
       header: @productsTrashHeader
       parent: @
     @photosTrashView = new PhotosTrashView
@@ -254,7 +258,7 @@ class ShowView extends Spine.Controller
     @thumbSize = 240 # size thumbs are created serverside (should be as large as slider max for best quality)
     
     @canvasManager = new Spine.Manager(@categoriesView, @productsView, @photosView, @photoView, @photosTrashView, @productsTrashView)
-    @headerManager = new Spine.Manager(@categoriesHeader, @productsHeader, @photosHeader, @photoHeader, @photoTrashHeader, @productsTrashHeader)
+    @headerManager = new Spine.Manager(@categoriesHeader, @productsHeader, @photosHeader, @photoHeader, @photosTrashHeader, @productsTrashHeader)
     
     @canvasManager.bind('change', @proxy @changeCanvas)
     @headerManager.bind('change', @proxy @changeHeader)
@@ -268,12 +272,12 @@ class ShowView extends Spine.Controller
     Model.Settings.bind('refresh', @proxy @refreshSettings)
     
   active: (controller, params) ->
+    @log 'active'
     # activate subcontroller
-    console.log params
     if controller
       controller.trigger('active', params)
-      controller.header?.trigger('active', params)
-#      @activated(controller)
+      controller.header?.trigger('active')
+      @activated(controller)
     @focus()
     
   saveToDb: ->
@@ -329,7 +333,7 @@ class ShowView extends Spine.Controller
     # the controller should already be active, however rendering hasn't taken place yet
     
     
-    
+    return
     controller.trigger 'active'
     controller.header.trigger 'active'
     controller
@@ -364,11 +368,6 @@ class ShowView extends Spine.Controller
   
   createProduct: ->
     Spine.trigger('create:product')
-    
-    if Category.record
-      @navigate '/category', Category.record.id, Product.last()
-    else
-      @showProductMasters()
   
   copyProducts: (products, category) ->
     Product.trigger('create:join', products, category)
@@ -489,6 +488,16 @@ class ShowView extends Spine.Controller
       Product.trigger('change:collection', product)
     
     e.preventDefault()
+    
+  emptyProductsTrash: ->
+    items = Product.filter(true, func: 'selectDeleted')
+    for item in items
+      Product.trigger('destroy:fromTrash', item)
+    
+  emptyPhotosTrash: ->
+    items = Photo.filter(true, func: 'selectDeleted')
+    for item in items
+      Photo.trigger('destroy:fromTrash', item)
     
   editCategory: (e) ->
     Spine.trigger('edit:category')
@@ -668,34 +677,27 @@ class ShowView extends Spine.Controller
     @current.select(e, [])
     
   selectAll: (e) ->
-    e.type = 'my'
+    @log 'selectAll'
     try
       list = @select()
+      @log list
       @current.select(e, list)
-    catch e
-    
-  selectNone_: ->
-    try
-      if $(e.target).parents().data('current')?.model
-        @current.el.data('current').model.updateSelection([])
     catch e
     
   selectInv: (e)->
     try
       list = @select()
       selList = @current.el.data('current').model.selectionList()
-      list.removeFromList(selList)
+      list.addRemove(selList)
       @current.select(e, list)
     catch e
     
   select: ->
     list = []
-    root = @current.itemsEl
+    root = $('.items', @current.el)
     items = $('.item', root)
-    unless root and items.length
-      return list
     items.each () ->
-      list.unshift @.id
+      list.unshift @id
     list
     
   uploadProgress: (e, coll) ->
@@ -732,7 +734,7 @@ class ShowView extends Spine.Controller
     
   toggleVisible: (e, list = Category.selectionList()) ->
     for id in list
-      ga =  CategoriesProduct.categoryProductExists id, Category.record?.id
+      ga =  CategoriesProduct.productExists id, Category.record?.id
       ga.ignored = !ga.ignored
       ga.save()
 
@@ -790,9 +792,9 @@ class ShowView extends Spine.Controller
     
   showPhotos: (e) ->
     if Product.record
-      @navigate '/category', Category.record?.id || '', 'pid', Product.record.id
+      @navigate '/category', Category.record?.id || '', Product.record.id
     else
-      @navigate '/category', Category.record?.id || '', ''
+      @navigate '/category', Category.record?.id || '', 'pid', Product.record.id
       
     e.preventDefault()
 
@@ -917,7 +919,7 @@ class ShowView extends Spine.Controller
     return unless category
     itemId = product.id
     categoryId = category.id
-    if ga = CategoriesProduct.categoryProductExists(itemId, categoryId)
+    if ga = CategoriesProduct.productExists(itemId, categoryId)
       CategoriesProduct.trigger('ignored', ga, !ga.ignored)
       
   help: (e) ->
@@ -1093,12 +1095,12 @@ class ShowView extends Spine.Controller
       #support for multiple selection
       selection = parent.selectionList()[..]
       unless id in selection
-        selection.addRemoveSelection(id)
+        selection.addRemove(id)
       else
         first = selection.first()
-        selection.addRemoveSelection(id)
-        selection.addRemoveSelection(first)
-        selection.addRemoveSelection(id)
+        selection.addRemove(id)
+        selection.addRemove(first)
+        selection.addRemove(id)
         
       list.parent.select e, selection
     else

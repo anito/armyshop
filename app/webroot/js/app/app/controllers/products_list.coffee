@@ -35,50 +35,49 @@ class ProductsList extends Spine.Controller
     CategoriesProduct.bind('change', @proxy @changeRelated)
     Product.bind('change:collection', @proxy @renderBackgrounds)
     Category.bind('change:selection', @proxy @exposeSelection)
+
     
   changedProducts: (category) ->
     
   changeRelated: (item, mode) ->
-    @log 'changeRelated'
-    if mode isnt 'create'
-      return unless @parent and @parent.isActive() and (mode isnt 'create')
-      return unless Category.record
-      return unless Category.record.id is item['category_id']
+    return unless @parent and @parent.isActive()
+    return unless Category.record
+    return unless Category.record.id is item['category_id']
       
     product = Product.find(item['product_id'])
-    
+    product = @mixinOne product
     switch mode
       when 'create'
+        @log 'changeRelated'
         @wipe()
-        @append @template @mixinAttributes([product], ['ignored'])
+        @append @template(product)
         @renderBackgrounds [product]
         @el.sortable('destroy').sortable()
 #        $('.tooltips', @el).tooltip()
         $('.dropdown-toggle', @el).dropdown()
-      when 'destroy'
-        el = @findModelElement(product)
-        el.detach()
       when 'update'
-        #for the ignore attribute
-        @updateIgnored(item)
+        @updateTemplate(product)
     
     @refreshElements()
     @el
   
-  mixinAttributes: (items, atts) ->
-    for item in items
-      ga = CategoriesProduct.categoryProductExists(item.id, Category.record.id)
-      for att in atts 
-        item[att] = ga[att]
-    items
+  mixin: (items) ->
+    @mixinOne item for item in items
     
+  mixinOne: (item) ->
+    return item unless Category.record
+    ga = CategoriesProduct.productExists(item.id, Category.record.id)
+    atts = ga?.mixinAttributes(item)
+    item.silentUpdate(atts)
+    item
+  
   render: (items, mode="html") ->
     @log 'render', mode
         
     if items.length
-      alert items.length
       @wipe()
 #      items = @mixinAttributes(items, ['ignored']) unless @modal
+      items = @mixin items
       @[mode] @template items
       @renderBackgrounds items
       @exposeSelection()
@@ -103,118 +102,39 @@ class ProductsList extends Spine.Controller
         </label>'
     @el
     
-  updateIgnored: (item) ->
-    ignored = item.ignored
-    productEl = @children().forItem(Product.find(item.product_id))
-    productEl.toggleClass('ignored', ignored)
+  exposeSelection: (selection=Category.selectionList(), id=Category.record?.id) ->
+    if Category.record
+      return unless Category.record.id is id
+    @deselect()
+
+    for id in selection
+      el = $('#'+id, @el)
+      el.addClass("active")
+
+    if first = selection.first()
+      $('#'+first, @el).addClass("hot")
     
   updateTemplate: (item) ->
+    item = @mixinOne item
     productEl = @children().forItem(item)
     contentEl = $('.thumbnail', productEl)
     active = productEl.hasClass('active')
     hot = productEl.hasClass('hot')
     style = contentEl.attr('style')
-    
+
     tmplItem = productEl.tmplItem()
     tmplItem.data = item
     tmplItem.update?()
-    
+
     productEl = @children().forItem(item)
     contentEl = $('.thumbnail', productEl)
     productEl.toggleClass('active', active)
     productEl.toggleClass('hot', hot)
     contentEl.attr('style', style)
-    @updateIgnored item if item = CategoriesProduct.categoryProductExists(item.id, Category.record?.id)
-    
-    @el.sortable()
-  
-  exposeSelection: (selection=Category.selectionList(), id=Category.record?.id) ->
-    if Category.record
-      return unless Category.record.id is id
-    @deselect()
-    
-    for id in selection
-      $('#'+id, @el).addClass("active")
-      
-    if first = selection.first()
-      $('#'+first, @el).addClass("hot")
-      
-  # workaround:
-  # remember the Product since
-  # after last ProductPhoto is destroyed the Product container cannot be retrieved anymore
-  widowedProductsPhoto: (ap) ->
-    @log 'widowedProductsPhoto'
-    list = ap.products()
-    @widows.push item for item in list
-    @widows
-  
-  removeWidows: (widows=[]) ->
-    Model.Uri.Ajax.cache = false
-    for widow in widows
-      $.when(@processProduct(widow)).done (xhr, rec) =>
-        @callback xhr, rec
-    @widows = []
-    Model.Uri.Ajax.cache = true
-  
-  renderBackgrounds: (products) ->
-    @log 'renderBackgrounds'
-    return unless @parent.isActive()
-    products = [products] unless Array.isArray(products)
-    @removeWidows @widows
-    for product in products
-      $.when(@processProduct(product)).done (xhr, rec) =>
-        @callback xhr, rec
-        
-  processProduct: (product) ->
-    @log 'processProduct'
-    deferred = $.Deferred()
-    all = product.photos()
-    sorted = all.sort Photo.sortByReverseOrder
-    data = sorted.slice(0, 4)
+    productEl.toggleClass('ignored', item.ignored)
 
-    @callDeferred data, @uriSettings(60, 60), (xhr) -> deferred.resolve(xhr, product)
+    @el.sortable()
     
-    deferred.promise()
-      
-  callback: (json, product) ->
-    el = $('[data-id='+product?.id+']', @el)
-    thumb = $('.thumbnail', el)
-    
-    sources = []
-    css = []
-    cssdefault = []
-    for jsn in json
-      for key, val of jsn
-        sources.push src if src = val.src
-        css.push 'url('+src+')'
-        cssdefault.push 'url(/img/ajax-loader-product-thumbs.gif)'
-    
-    if sources.length
-      thumb.addClass('load')
-      thumb.css('backgroundImage', c for c in cssdefault)
-      @snap thumb, src, css for src in sources
-    else
-      thumb.css('backgroundImage', ['url(/img/drag_info.png)'])
-      
-  snap: (el, src, css) ->
-    img = @createImage()
-    img.el = el
-    img.me = @
-    img.css = css
-    img.src = src
-    img.onload = @onLoad
-    img.onerror = @onError
-    
-  onLoad: ->
-    @me.log 'image loaded'
-    @el.removeClass('load')
-    @el.css('backgroundImage', @css)
-    
-  onError: (e) ->
-    @me.log 'could not load image, trying again'
-    @onload = @me.renderBackgrounds([Product.record])
-    @onerror = null
-      
   original: (e) ->
     id = $(e.currentTarget).item().id
     Category.selection[0].global.update [id]

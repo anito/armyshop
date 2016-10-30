@@ -94,7 +94,7 @@ class ProductsAddView extends Spine.Controller
     @selectionList = [] if exclusive
     
     for item in items
-      @selectionList.addRemoveSelection(item)
+      @selectionList.addRemove(item)
       
     @renderFooter @selectionList
     @list.exposeSelection(@selectionList)

@@ -223,7 +223,7 @@ class Main extends Spine.Controller
       '/trash/products/:id': (params) ->
         Root.updateSelection []
         Category.updateSelection []
-        items = Product.unusedProducts(true)
+        items = Product.filter(true, func: 'selectDeleted')
         console.log items
         @showView.trigger('active', @showView.productsTrashView, items)
       '/trash/photos/:id': (params) ->

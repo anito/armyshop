@@ -174,6 +174,8 @@ class Toolbar extends Spine.Model
           icon: 'book'
           disabled: -> false
         ,
+          devider: true
+        ,
           name: -> 'Papierkorb'
           klass: 'opt-ShowProductsTrash'
           icon: 'trash'
@@ -255,6 +257,8 @@ class Toolbar extends Spine.Model
           klass: 'opt-ShowAllPhotos'
           icon: 'book'
           disabled: -> false
+        ,
+          devider: true
         ,
           name: -> 'Papierkorb'
           klass: 'opt-ShowPhotosTrash'

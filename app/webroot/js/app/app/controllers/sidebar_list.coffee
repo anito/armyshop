@@ -46,8 +46,6 @@ class SidebarList extends Spine.Controller
     
     Product.bind('change:collection', @proxy @renderProduct)
     Product.bind('create destroy update', @proxy @renderSublists)
-#    Product.bind('current', @proxy @scrollTo)
-#    Category.bind('current', @proxy @scrollTo)
     Spine.bind('scroll', @proxy @scrollTo)
     
   template: -> arguments[0]

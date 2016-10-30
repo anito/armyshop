@@ -157,6 +157,12 @@ class Photo extends Spine.Model
   select: (joinTableItems) ->
     return true for record in joinTableItems when record.photo_id is @id and (@['order'] = parseInt(record.order))?
       
+  select_: ->
+    return true if !@deleted
+      
+  selectDeleted: ->
+    return true if @deleted
+      
   selectPhoto: (id) ->
     return true if @id is id
       

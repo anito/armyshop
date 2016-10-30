@@ -26,6 +26,7 @@ class OverviewView extends Spine.Controller
     'click button.close'                  : 'close'
     'click .item'                         : 'showPhoto'
     'keyup'                               : 'keyup'
+    'click .opt-ShowProductsTrash'        : 'showProductsTrash'
     'click .opt-ShowUnpublishedProducts'  : 'showUnpublishedProducts'
     'click .opt-ShowUnusedProducts'       : 'showUnusedProducts'
     'click .opt-ShowAllCategories:not(.disabled)'     : 'showCategories'
@@ -37,12 +38,12 @@ class OverviewView extends Spine.Controller
       photos: photos
       summary:
         categories  : Category.all()
-        products    : Product.all()
         photos      : Photo.all()
+        products    : Product.filter(true)
         published   : CategoriesProduct.publishedProductsAll(true)
         unpublished : CategoriesProduct.unpublishedProducts(true)
         others      : CategoriesProduct.otherProducts(true)
-        unused      : Product.unusedProducts(true)
+        trashed       : Product.filter(true, func: 'selectDeleted')
       products      : products
       counter: ->
         li = []
@@ -102,6 +103,8 @@ class OverviewView extends Spine.Controller
     photos = @getProductPhotos()
     @callDeferred photos, @uriSettings(300, 300), @proxy @callbackPreview
     
+  showProductsTrash: ->
+    @navigate '/trash/products', ''
         
   showUnpublishedProducts: (e) ->
     e.preventDefault()

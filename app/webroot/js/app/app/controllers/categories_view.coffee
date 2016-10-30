@@ -14,17 +14,16 @@ class CategoriesView extends Spine.Controller
   @extend Extender
   
   elements:
-    '.items'                  : 'items'
+    '.items'                          : 'items'
     
   events:
-    'click .item'             : 'click'
+    'click .item'                     : 'click'
     
     'dragend'                         : 'dragend'
     'dragstart'                       : 'dragstart'
     'drop       '                     : 'drop'
 #    'dragover   '                     : 'dragover'
     'dragenter  '                     : 'dragenter'
-    
     
     'sortupdate'               : 'sortupdate'
     
@@ -37,11 +36,14 @@ class CategoriesView extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
+    
     @el.data('current',
       model: Root
       models: Category
     )
+    
     @type = 'Category'
+    
     @list = new CategoriesList
       el: @items
       template: @template
@@ -62,7 +64,7 @@ class CategoriesView extends Spine.Controller
     @bind('drag:drop', @proxy @dragDrop)
 
   render: (items) ->
-    return unless @isActive()
+#    return unless @isActive()
     if Category.count()
       items = Category.records.sort Category.sortByOrder
       @list.render items
@@ -78,14 +80,19 @@ class CategoriesView extends Spine.Controller
     @render()
     
   click: (e) ->
-    App.showView.trigger('change:toolbarOne', ['Default'])
-    item = $(e.target).closest('li').item()
+    item = $(e.currentTarget).item()
     @select(e, item.id) #one category selected at a time
     
-  select: (e, ids) ->
-    unless Array.isArray ids
-      ids = [ids]
+  select: (e, ids=[]) ->
+    ids = [ids] unless Array.isArray ids
+#    list = Root.selectionList()[..]
+#    list.addRemove ids
+    
+#    Root.updateSelection ids
+    
     @navigate '/categories', 'cid', ids[0]
+    
+    e.stopPropagation()
     
   beforeDestroy: (item) ->
     return unless item.isValid()
@@ -122,7 +129,6 @@ class CategoriesView extends Spine.Controller
         break
       
   sortupdate: (e, o) ->
-    console.log 'sortupdate'
     cb = =>
       Category.trigger('change:collection', Category.record)
       @render()

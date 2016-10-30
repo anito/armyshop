@@ -51,7 +51,7 @@ class PhotosHeader extends Spine.Controller
     @render()
     
   render: ->
-    return unless @isActive()
+#    return unless @isActive()
     @html @template
       model             : Product
       category          : Category.record

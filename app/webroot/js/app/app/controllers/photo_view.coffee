@@ -75,7 +75,7 @@ class PhotoView extends Spine.Controller
     @navigate '/category', Category.record?.id or '', Product.record?.id or '', rec.id if changed
     
   render: (item=Photo.record) ->
-    return unless @isActive()
+#    return unless @isActive()
     App.showView.photosView.refresh() unless App.showView.photosView.list.el.children().length
     @itemsEl.html @template item
     $('.dropdown-toggle', @el).dropdown()
@@ -83,7 +83,7 @@ class PhotoView extends Spine.Controller
     @el
   
   active: ->
-    return unless @isActive()
+#    return unless @isActive()
     App.showView.trigger('change:toolbarOne', ['Default'])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
     @render()
