@@ -169,7 +169,7 @@ class ProductsView extends Spine.Controller
       if alb.invalid
         alb.invalid = false
         alb.save(ajax:false)
-    
+        
   activateRecord: (ids) ->
     unless (ids)
       ids = []
