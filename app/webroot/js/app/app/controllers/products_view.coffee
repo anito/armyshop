@@ -295,7 +295,7 @@ class ProductsView extends Spine.Controller
 #        @destroyJoin product, category
         cats = CategoriesProduct.categories(product.id)
         # send the last joined product to trash
-        unless cats.length
+        unless cats.length is 1
           if res = App.confirm('DELETE')
             Product.trigger('move:toTrash', product)
           else break
