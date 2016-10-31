@@ -280,24 +280,38 @@ class ProductsView extends Spine.Controller
         # for the Catalogue View
         if cats.length
           #remove from all Categories
-          for cat in cats
-            @destroyJoin product, cat
+          if res = App.confirm('DELETE')
+            for cat in cats
+              @destroyJoin product, cat
+          else break
         unless product.deleted
           # send to the trash
-          Product.trigger('move:toTrash', product)
+          if res = App.confirm('DELETE')
+            Product.trigger('move:toTrash', product)
+          else break
         else
           # delete from the trash
-          Product.trigger('destroy:fromTrash', product)
-          
+          if res = App.confirm('DESTROY')
+            Product.trigger('destroy:fromTrash', product)
+          else break
       else
         # for the Joins View
-        @destroyJoin product, category
+#        @destroyJoin product, category
         cats = CategoriesProduct.categories(product.id)
         # send the last joined product to trash
         unless cats.length
-          Product.trigger('move:toTrash', product)
+          if res = App.confirm('DELETE')
+            Product.trigger('move:toTrash', product)
+          else break
+        else
+          # there are identical Product
+          if res = App.confirm('REMOVE')
+            for cat in cats
+              @destroyJoin product, cat
+          else break
+          
     # remove from view
-      @remove product
+      @remove product if res
     
   moveToTrash: (product) ->
     product.deleted = true

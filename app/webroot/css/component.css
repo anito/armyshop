@@ -745,6 +745,7 @@
 .pricing--norbu .pricing__sentence {
   font-size: 0em 1em;
   margin: 0em auto 1em;
+  padding: 0 2em;
 }
 
 .pricing--norbu .pricing__feature-list {

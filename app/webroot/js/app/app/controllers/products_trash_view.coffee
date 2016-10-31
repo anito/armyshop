@@ -48,6 +48,8 @@ class ProductsTrashView extends Spine.Controller
     Product.bind('beforeDestroy', @proxy @beforeDestroy)
     Product.bind('destroy:fromTrash', @proxy @destroy)
     
+    Category.bind('change:selection', @proxy @exposeSelection)
+    
     @bind('drag:start', @proxy @dragStart)
     @bind('drag:enter', @proxy @dragEnter)
     @bind('drag:over', @proxy @dragOver)

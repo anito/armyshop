@@ -81,6 +81,14 @@ class Main extends Spine.Controller
     
     Spine.dragItem = SpineDragItem.create()
     
+    @CONFIRM =  
+      'REMOVE':
+        'Soll der Artikel wirklich entfernt werden?'
+      'DELETE':
+        'Soll der Artikel in den Papierkorb verschoben werden?'
+      'DESTROY':
+        'Soll der Artikel endgültig gelöscht werden?'
+    
     @ALBUM_SINGLE_MOVE = @createImage('/img/cursor_folder_1.png')
     @ALBUM_DOUBLE_MOVE = @createImage('/img/cursor_folder_3.png')
     @IMAGE_SINGLE_MOVE = @createImage('/img/cursor_images_1.png')
@@ -377,6 +385,11 @@ class Main extends Spine.Controller
     for a, i in arr
       return arr[i] if test s, a
     
+  confirm: (type) ->
+    if confirm @CONFIRM[type]
+      return true
+    return
+  
   key: (e) ->
     code = e.charCode or e.keyCode
     type = e.type

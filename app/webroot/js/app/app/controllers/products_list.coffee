@@ -67,9 +67,10 @@ class ProductsList extends Spine.Controller
   mixinOne: (item) ->
     return item unless Category.record
     ga = CategoriesProduct.productExists(item.id, Category.record.id)
-    atts = ga?.mixinAttributes(item)
-    item.silentUpdate(atts)
-    item
+    if ga
+      atts = ga?.mixinAttributes(item)
+      item.silentUpdate(atts)
+      item
   
   render: (items, mode="html") ->
     @log 'render', mode

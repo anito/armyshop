@@ -35,6 +35,7 @@ class SubEditViewProduct extends Spine.Controller
     
   render: ->
     @html @template item = @parent.current
+    @checkLink()
     
   checkLink: ->
     item = @parent.current

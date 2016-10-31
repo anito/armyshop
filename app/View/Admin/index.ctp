@@ -1289,31 +1289,31 @@
   <table class="carousel table">
     <tbody>
       <tr>
-        <td><a href="#" class="opt opt-ShowAllCategories">Kategorien</a></td>
+        <td><a href="#" class=" opt-ShowAllCategories feature-list">Kategorien</a></td>
         <td>${categories.length}</td>
       </tr>
       <tr>
-        <td><a href="#" class="opt opt-ShowAllProducts">Produkte (gesamt)</a></td>
+        <td><a href="#" class=" opt-ShowAllProducts feature-list">Produkte (gesamt)</a></td>
         <td>${products.length}</td>
       </tr>
       <tr class="">
-        <td><a href="#" class="opt opt-ShowAllPhotos">Fotos</a></td>
+        <td><a href="#" class=" opt-ShowAllPhotos feature-list">Fotos</a></td>
         <td>${photos.length}</td>
       </tr>
       <tr class="">
-        <td>veröffentlichte Produkte</td>
+        <td class="feature-list">veröffentlichte Produkte</td>
         <td>${published.length}</td>
       </tr>
       <tr class="">
-        <td>unveröffentlichte Produkte</td>
+        <td class="feature-list">unveröffentlichte Produkte</td>
         <td>${unpublished.length}</td>
       </tr>
       <tr class="">
-        <td>Produkte in  anderen Kategorien</td>
+        <td class="feature-list">Produkte in  anderen Kategorien</td>
         <td>${others.length}</td>
       </tr>
       <tr class="">
-        <td><a href="#" class="opt opt-ShowProductsTrash">Papierkorb</a></td>
+        <td><a href="#" class=" opt-ShowProductsTrash feature-list">Papierkorb</a></td>
         <td>${trashed.length}</td>
       </tr>
     </tbody>
