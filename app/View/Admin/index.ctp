@@ -84,19 +84,19 @@
           </div>
           <div class="view wait content vbox flex autoflow" style=""></div>
           <div data-model-name="Root" data-models-name="Product" class="view categories opt-SelectNone content vbox flex data parent autoflow" style="">
-            <div class="items flex fadein in1">Categories</div>
+            <div class="items flex autoflow fadein in1">Categories</div>
           </div>
           <div data-model-name="Category" data-models-name="Product" class="view products opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
-            <div class="items flex fadein in1">Products</div>
+            <div class="items flex autoflow fadein in1">Products</div>
           </div>
           <div data-model-name="Product" data-models-name="Photo" class="view photos opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
-            <div class="items flex fadein in1" data-toggle="modal-category" data-target="#modal-category" data-selector="a">Photos</div>
+            <div class="items flex autoflow fadein in1" data-toggle="modal-category" data-target="#modal-category" data-selector="a">Photos</div>
           </div>
           <div data-model-name="Product" data-models-name="Photo" tabindex="1" class="view photo content vbox flex data parent autoflow fadeelement nopad" style="">
             <div class="hoverinfo fadeslow"></div>
-            <div class="items flex fadein in1 nopad">Photo</div>
+            <div class="items flex autoflow fadein in1 nopad">Photo</div>
           </div>
           <div data-model-name="Category" data-models-name="Product" tabindex="1" class="view products-trash content vbox flex data parent autoflow fadeelement" style="">
             <div class="items flex autoflow fadein in1">Product Trash</div>
