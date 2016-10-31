@@ -292,15 +292,15 @@ class ProductsView extends Spine.Controller
           else break
       else
         # for the Joins View
-#        @destroyJoin product, category
-        cats = CategoriesProduct.categories(product.id)
         # send the last joined product to trash
         if cats.length is 1
           if res = App.confirm('DELETE')
+            @destroyJoin product, category
             Product.trigger('move:toTrash', product)
           else break
         else
-          # there are identical Product
+          # there are still other identical Products
+          # just remove it from the Cat
           if res = App.confirm('REMOVE')
             for cat in cats
               @destroyJoin product, cat
