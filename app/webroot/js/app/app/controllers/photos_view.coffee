@@ -49,15 +49,7 @@ class PhotosView extends Spine.Controller
     super
     @bind('active', @proxy @active)
     
-    @type = 'Photo'
-    @parentType = 'Product'
-    
-    @current = Model[@parentType].record
-    
-    @el.data('current',
-      model: Model[@parentType]
-      models: Model[@type]
-    )
+    @current = @el.data('modelName').record
     
     @info = new Info
       el: @infoEl
@@ -119,7 +111,7 @@ class PhotosView extends Spine.Controller
     
     if items then @render items else @refresh()
     
-    @parent.scrollTo(@el.data('current').models.record)
+    @parent.scrollTo(@model.record)
     
   update: (items) ->
     return unless Product.record

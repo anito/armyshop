@@ -55,15 +55,6 @@ class ProductsView extends Spine.Controller
 #    @trace = false
     @bind('active', @proxy @active)
     
-    @type = 'Product'
-    @parentType = 'Category'
-    
-    @current = Model[@parentType].record
-    
-    @el.data('current',
-      model: Model[@parentType]
-      models: Model[@type]
-    )
     @info = new Info
       el: @infoEl
       template: @infoTemplate
@@ -161,7 +152,7 @@ class ProductsView extends Spine.Controller
     
     if items then @render(items) else @refresh()
     
-    @parent.scrollTo(@el.data('current').models.record)
+    @parent.scrollTo(@el.data('modelsName').record)
     
   # reset flag for regenerating photo thumbnails in product
   resetInvalid: (products) ->
@@ -244,7 +235,12 @@ class ProductsView extends Spine.Controller
         options.deferred.notify(record)
       if options.cb
         options.cb.apply(@, [record, options.deferred])
-    
+        
+      
+    unless Category.record
+      unless App.confirm('NOCAT')
+        return
+      
     product = new Product @newAttributes()
     product.one('ajaxSuccess', @proxy cb)
     product.save()

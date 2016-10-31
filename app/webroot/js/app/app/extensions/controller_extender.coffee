@@ -20,10 +20,9 @@ Controller.Extender =
         @trace = !Spine.isProduction
         @logPrefix = '(' + @constructor.name + ')'
         
-        @el.data('current',
-          model: null
-          models: null
-        )
+        @model   = Model[@el.data('modelName')]
+        @models  = Model[@el.data('modelsName')]
+
       p: -> App.sidebar.products  
       
       followLink: (e) ->

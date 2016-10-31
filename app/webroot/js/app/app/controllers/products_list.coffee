@@ -169,7 +169,7 @@ class ProductsList extends Spine.Controller
 
   ignoreProduct: (e) ->
     product = $(e.currentTarget).item()
-    category = @parent.el.data('current').model.record
+    category = @parent.model.record
     Spine.trigger('product:ignore', product, category)
     
     e.stopPropagation()

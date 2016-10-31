@@ -63,7 +63,7 @@
       <div class="vdivide draghandle"></div>
     </div>
     <div id="content" class="views vbox flex">
-      <div tabindex="1" id="show" class="view canvas vbox flex fade">
+      <div tabindex="1" id="show" class="view canvas vbox flex fade deselector">
         <div id="modal-action" class="modal fade"></div>
         <div id="modal-addProduct" class="modal fade"></div>
         <div id="modal-addPhoto" class="modal fade"></div>
@@ -72,36 +72,36 @@
           <li class="splitter disabled flex"></li>
           <nav class="toolbarTwo hbox nav"></nav>
         </ul>
-        <div class="contents views vbox flex deselector fadeelement content" style="height: 0;">
+        <div class="contents views vbox flex fadeelement content" style="height: 0;">
           <div class="header views vbox">
-            <div data-model-name="" class="categories  view vbox"></div>
-            <div data-model-name="Category" class="products view vbox"></div>
-            <div data-model-name="Product" class="photos view vbox"></div>
-            <div data-model-name="Photo" class="photo view vbox"></div>
-            <div data-model-name="" class="photos-trash view vbox inline"></div>
-            <div data-model-name="" class="products-trash view vbox inline"></div>
+            <div data-model-name="Root" data-models-name="Product" data-models-name="Photo" class="categories  view vbox"></div>
+            <div data-model-name="Category" data-models-name="Product" class="products view vbox"></div>
+            <div data-model-name="Product" data-models-name="Photo" class="photos view vbox"></div>
+            <div data-model-name="Product" data-models-name="Photo" class="photo view vbox"></div>
+            <div data-model-name="Product" data-models-name="Photo" class="photos-trash view vbox inline"></div>
+            <div data-model-name="Category" data-models-name="Product" class="products-trash view vbox inline"></div>
             <div class="overview view"></div>
           </div>
           <div class="view wait content vbox flex autoflow" style=""></div>
-          <div class="view categories opt-SelectNone content vbox flex data parent autoflow" style="">
+          <div data-model-name="Root" data-models-name="Product" class="view categories opt-SelectNone content vbox flex data parent autoflow" style="">
             <div class="items flex fadein in1">Categories</div>
           </div>
-          <div class="view products opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
+          <div data-model-name="Category" data-models-name="Product" class="view products opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
             <div class="items flex fadein in1">Products</div>
           </div>
-          <div class="view photos opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
+          <div data-model-name="Product" data-models-name="Photo" class="view photos opt-SelectNone content vbox flex data parent autoflow fadeelement" style="">
             <div class="hoverinfo fadeslow"></div>
             <div class="items flex fadein in1" data-toggle="modal-category" data-target="#modal-category" data-selector="a">Photos</div>
           </div>
-          <div tabindex="1" class="view photo content vbox flex data parent autoflow fadeelement nopad" style="">
+          <div data-model-name="Product" data-models-name="Photo" tabindex="1" class="view photo content vbox flex data parent autoflow fadeelement nopad" style="">
             <div class="hoverinfo fadeslow"></div>
             <div class="items flex fadein in1 nopad">Photo</div>
           </div>
-          <div tabindex="1" class="view products-trash content vbox flex data parent autoflow fadeelement" style="">
+          <div data-model-name="Category" data-models-name="Product" tabindex="1" class="view products-trash content vbox flex data parent autoflow fadeelement" style="">
             <div class="items flex autoflow fadein in1">Product Trash</div>
           </div>
-          <div tabindex="1" class="view photos-trash content vbox flex data parent autoflow fade" style="">
+          <div data-model-name="Product" data-models-name="Photo" tabindex="1" class="view photos-trash content vbox flex data parent autoflow fade" style="">
             <div class="items flex autoflow fadein in1">Photo Trash</div>
           </div>
         </div>
@@ -433,7 +433,7 @@
 </script>
 
 <script id="sidebarTemplate" type="text/x-jquery-tmpl">
-  <li data-id="${id}" class="gal item data parent">
+  <li data-id="${id}" data-model-name="Category" data-models-name="Product" class="gal item data parent">
     <div class="item-header">
       <div class="expander"></div>
       {{tmpl "#sidebarContentTemplate"}}
@@ -455,7 +455,7 @@
     <span class="author">${flash}</span>
   </li>
   {{else}}
-  <li data-id="${id}" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
+  <li data-id="${id}" data-model-name="Product" data-models-name="Photo" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
     <span class="infogramm">
       <span class="glyphicon glyphicon-{{if details().iCount}}picture{{else}}camera{{/if}}">
       <i class="ok glyphicon glyphicon-{{if details().iCount}}ok{{else}}exclamation-sign{{/if}}"></i>
@@ -603,7 +603,7 @@
 </script>
 
 <script id="productsTemplate" type="text/x-jquery-tmpl">
-<li id="${id}" data-id="${id}" data-drag-over="" class="data item fade in {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
+<li id="${id}" data-id="${id}" data-model-name="Product" data-models-name="Photo" data-drag-over="" class="data item fade in {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
     <div class="thumbnail"></div>
     {{if Category.record}}
     <div class="glyphicon-set left" style="">
@@ -642,7 +642,7 @@
 </script>
 
 <script id="productsTrashTemplate" type="text/x-jquery-tmpl">
-<li id="${id}" data-id="${id}" data-drag-over="" class="data item fade in {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
+<li id="${id}" data-id="${id}" data-drag-over="" data-model-name="Product" data-models-name="Photo" class="data item fade in {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
     <div class="thumbnail"></div>
     <div class="glyphicon-set right fade out" style="">
       <span class="left">
@@ -708,7 +708,7 @@
       <div class="input-group" style="">
         <div class="input-group-btn">
           <button type="button" class="btn btn-default" aria-label="Help">
-            <span id="validLink" class="glyphicon glyphicon-link"></span>
+            <span id="validLink" class="invalid glyphicon glyphicon-link"></span>
           </button>
         </div>
         <input type="text" class="form-control" aria-describedby="link"  placeholder="Link to Hood.de" name="link" value="${link}">
@@ -818,7 +818,7 @@
       <div class="header-title">
         <div class="h4">
         <span class="">
-          <a class="opt opt-ShowPrevious">
+          <a class="opt opt-ShowProducts">
             <i class="glyphicon glyphicon-chevron-up"></i>
           </a>
         </span>
@@ -1034,14 +1034,14 @@
 </script>
 
 <script id="photosTemplate" type="text/x-jquery-tmpl">
-  <li  id="${id}" data-id="${id}" class="item data fade in" draggable="true">
+  <li  id="${id}" data-id="${id}" data-model-name="" data-models-name="Photo" class="item data fade in" draggable="true">
     {{tmpl "#photosThumbnailTemplate"}}
     <div class="center order hide" style="color: aliceblue">{{if order}}${order}{{else}}0{{/if}}</div>
   </li>
 </script>
 
 <script id="photosTrashTemplate" type="text/x-jquery-tmpl">
-  <li  id="${id}" data-id="${id}" class="item data fade in" draggable="true">
+  <li  id="${id}" data-id="${id}" data-model-name="" data-models-name="Photo" class="item data fade in" draggable="true">
     {{tmpl "#photosThumbnailTemplate"}}
     <div class="center order hide" style="color: aliceblue">{{if order}}${order}{{else}}0{{/if}}</div>
   </li>
@@ -1054,7 +1054,7 @@
 </script>
 
 <script id="photoTemplate" type="text/x-jquery-tmpl">
-  <li data-id="${id}" class="item noborder">
+  <li data-id="${id}" class="item noborder" data-model-name="" data-models-name="Photo">
     {{tmpl "#photoThumbnailTemplate"}}
   </li>
 </script>

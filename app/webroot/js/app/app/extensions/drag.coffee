@@ -28,8 +28,8 @@ Controller.Drag =
           return
           
         parentEl = el.parents('.data')
-        parentModel = parentEl.data('tmplItem')?.data.constructor or parentEl.data('current')?.model
-        parentRecord = parentEl.data('tmplItem')?.data or Model[parentModel.className]?.record# or parentModel
+        parentModel = parentEl.data('tmplItem')?.data.constructor or parentEl.data('modelName')
+        parentRecord = parentEl.data('tmplItem')?.data or Model[parentModel].record# or parentModel
         
         Spine.dragItem.updateAttributes
           el: el
@@ -37,8 +37,8 @@ Controller.Drag =
           source: record
           sourceModelName: record.constructor.className
           sourceModelId: record.id
-          originModel: parentModel
-          originModelName: parentModel.className
+          originModel: Model[parentModel]
+          originModelName: parentModel
           originRecord: parentRecord
           originRecordName: parentRecord.constructor.className
           originRecordId: parentRecord.id
@@ -50,9 +50,12 @@ Controller.Drag =
         model = Spine.dragItem.originRecord or Spine.dragItem.originModel
         source = Spine.dragItem.source
         
-        selection = [].concat model.selectionList()
-
-        if selection.indexOf(id = source.id) is -1 then selection.unshift id
+        selection = model.selectionList()[..]
+        
+        
+        if selection.indexOf(id = source.id) is -1
+          selection = [source.id]
+          model.updateSelection selection
         
         Spine.dragItem.selection = selection
         Spine.dragItem.save()
@@ -87,9 +90,8 @@ Controller.Drag =
         
       dragover: (e, data) ->
         @log 'over'
-        event = e.originalEvent
-        event.stopPropagation()
-        event.preventDefault()
+        e.stopPropagation()
+        e.preventDefault()
         @trigger('drag:over', e, @)
         false
 
@@ -123,7 +125,7 @@ Controller.Drag =
         selector = el.attr('data-drag-over')
         if selector then indicator = el.children('.'+selector)
         
-        target = Spine.dragItem.target = el.data('current')?.model.record or el.data('tmplItem')?.data
+        target = Spine.dragItem.target = el.data('tmplItem')?.data or Model[el.data('modelName')].record
         source = Spine.dragItem.source
         origin = Spine.dragItem.originRecord
         
@@ -193,12 +195,16 @@ Controller.Drag =
 #        catch e
         
       validateDrop: (target, source, origin, alrt) =>
-        return false unless (target and source) or (target?.eql source)
+#        console.log target
+#        console.log source
+#        console.log origin
+        return false unless (tid = target and sid = source) or (tid is sid)
+        oid = origin.id
         switch source.constructor.className
           when 'Product'
             unless target.constructor.className is 'Category'
               return false
-            if ((o = origin.id) is (t = target.id))
+            if (oid is tid)
               return false
 
             items = CategoriesProduct.filter(target.id, associationForeignKey: 'category_id')
@@ -210,7 +216,7 @@ Controller.Drag =
           when 'Photo'
             unless target.constructor.className is 'Product'
               return false
-            unless (origin.id != target.id)
+            unless (oid isnt tid)
               return false
 
             items = ProductsPhoto.filter(target.id, associationForeignKey: 'product_id')

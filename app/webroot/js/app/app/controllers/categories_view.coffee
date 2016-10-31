@@ -37,13 +37,6 @@ class CategoriesView extends Spine.Controller
     super
     @bind('active', @proxy @active)
     
-    @el.data('current',
-      model: Root
-      models: Category
-    )
-    
-    @type = 'Category'
-    
     @list = new CategoriesList
       el: @items
       template: @template

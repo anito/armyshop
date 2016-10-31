@@ -26,16 +26,7 @@ class PhotosTrashView extends Spine.Controller
     super
     @bind('active', @proxy @active)
     
-    @type = 'Photo'
-    @parentType = 'Product'
-    
-    @el.data('current',
-      model: Model[@parentType]
-      models: Model[@type]
-    )
-    
     Photo.bind('destroy:fromTrash', @proxy @destroy)
-    
     
   render: (items) ->
     @items.html @template items

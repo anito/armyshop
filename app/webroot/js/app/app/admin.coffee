@@ -88,6 +88,8 @@ class Main extends Spine.Controller
         'Soll der Artikel in den Papierkorb verschoben werden?'
       'DESTROY':
         'Soll der Artikel endgültig gelöscht werden?'
+      'NOCAT':
+        'Es ist keine Kategorie ausgwählt.\n\n'
     
     @ALBUM_SINGLE_MOVE = @createImage('/img/cursor_folder_1.png')
     @ALBUM_DOUBLE_MOVE = @createImage('/img/cursor_folder_3.png')
@@ -361,7 +363,7 @@ class Main extends Spine.Controller
     Toolbar.load()
 
   activePhotos: ->
-    model = @showView.current.el.data('current').model
+    model = @showView.current.model
     
     photos = model.activePhotos()
     photos

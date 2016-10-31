@@ -10,10 +10,6 @@ class MainView extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
-    @el.data('current',
-      model: Model.Root
-      models: Model.Category
-    )
     
   active: ->
     

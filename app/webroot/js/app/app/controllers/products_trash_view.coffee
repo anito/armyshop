@@ -37,14 +37,6 @@ class ProductsTrashView extends Spine.Controller
     super
     @bind('active', @proxy @active)
     
-    @type = 'Product'
-    @parentType = 'Category'
-    
-    @el.data('current',
-      model: Model[@parentType]
-      models: Model[@type]
-    )
-    
     Product.bind('beforeDestroy', @proxy @beforeDestroy)
     Product.bind('destroy:fromTrash', @proxy @destroy)
     

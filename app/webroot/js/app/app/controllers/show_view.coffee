@@ -76,6 +76,7 @@ class ShowView extends Spine.Controller
     '.opt-Upload'             : 'btnUpload'
     
   events:
+    'click'                                           : 'deselect'
     'click a[href]'                                   : 'followLink'
     'click .opt-MysqlDump'                            : 'mysqlDump'
     'click .opt-MysqlRestore'                         : 'mysqlRestore'
@@ -301,8 +302,8 @@ class ShowView extends Spine.Controller
   
   transform: (controller, pContr, cContr) ->
     try
-      cm = cContr.el.data('current').model.className
-      pm = pContr.el.data('current').model.className
+      cm = cContr.model.className
+      pm = pContr.model.className
     catch e
 #    return if cm is pm
     @controllers = (c for c in @canvasManager.controllers when c isnt controller)
@@ -326,8 +327,8 @@ class ShowView extends Spine.Controller
     @currentHeader = controller.header
     @prevLocation = location.hash
     @el.data('current',
-      model: controller.el.data('current').model
-      models: controller.el.data('current').models
+      model: controller.model
+      models: controller.models
     )
 #    return if (@previous is @current) and !@current.isActive()
     # the controller should already be active, however rendering hasn't taken place yet
@@ -511,7 +512,7 @@ class ShowView extends Spine.Controller
       product.destroy()
 
   destroySelected: (e) ->
-    models = @controller.el.data('current').models
+    models = @controller.models
     @['destroy'+models.className]()
 
   destroyCategory: (e) ->
@@ -669,12 +670,13 @@ class ShowView extends Spine.Controller
     target.click()
     
   deselect: (e) ->
-    # only if not for .thumbnail
-    return unless $('.thumbnail', e.target).length 
-    @selectNone(e)
+    modelName = $(e.target).parents().data('modelName')
+    if model = Model[modelName]
+      model.updateSelection([])
     
   selectNone: (e) ->
-    @current.select(e, [])
+    @current.deselect()
+#    @current.select(e, [])
     
   selectAll: (e) ->
     @log 'selectAll'
@@ -687,7 +689,7 @@ class ShowView extends Spine.Controller
   selectInv: (e)->
     try
       list = @select()
-      selList = @current.el.data('current').model.selectionList()
+      selList = @current.model.selectionList()
       list.addRemove(selList)
       @current.select(e, list)
     catch e
@@ -756,6 +758,22 @@ class ShowView extends Spine.Controller
     else
       @navigate '/categories', ''
     
+  showProducts: (e) ->
+    if Category.record
+      @navigate '/category', Category.record.id
+    else
+      @navigate '/category', ''
+      
+    e.preventDefault()
+    
+  showPhotos: (e) ->
+    if Product.record
+      @navigate '/category', Category.record?.id || '', Product.record.id
+    else
+      @navigate '/category', Category.record?.id || '', 'pid', Product.record.id
+      
+    e.preventDefault()
+    
   showOverview: ->
     @navigate '/overview', ''
     
@@ -767,40 +785,24 @@ class ShowView extends Spine.Controller
     e.preventDefault()
     Spine.trigger('photos:add')
     
-  cancelAdd: (e) ->
-    @back()
-    App.sidebar.filter()
-    @el.removeClass('add')
-    e.preventDefault()
-    
+  showProductSelection: ->
+    @navigate '/category', Category.record.id or ''
+  
   showPhotoSelection: ->
     if Category.record
       @navigate '/category', Category.record.id, Category.selectionList()[0] or ''
     else
       @navigate '/category','', Category.selectionList()[0] or ''
     
-  showProductSelection: ->
-    @navigate '/category', Category.record.id or ''
-      
-  showProducts: (e) ->
-    if Category.record
-      @navigate '/category', Category.record.id
-    else
-      @navigate '/categories', ''
-      
+  cancelAdd: (e) ->
+    @back()
+    App.sidebar.filter()
+    @el.removeClass('add')
     e.preventDefault()
-    
-  showPhotos: (e) ->
-    if Product.record
-      @navigate '/category', Category.record?.id || '', Product.record.id
-    else
-      @navigate '/category', Category.record?.id || '', 'pid', Product.record.id
-      
-    e.preventDefault()
-
+  
   copy: (e) ->
     #type of copied objects depends on view
-    model = @current.el.data('current').models.className
+    model = @current.models.className
     switch model
       when 'Photo'
         @copyPhoto()
@@ -809,7 +811,7 @@ class ShowView extends Spine.Controller
   
   cut: (e) ->
     #type of copied objects depends on view
-    model = @current.el.data('current').models.className
+    model = @current.models.className
     switch model
       when 'Photo'
         @cutPhoto()
@@ -1051,8 +1053,8 @@ class ShowView extends Spine.Controller
     lastIndex = null
     list = @controller.list?.listener or @controller.list
     elements = if list then $('.item', list.el) else $()
-    models = @controller.el.data('current').models
-    parent = @controller.el.data('current').model
+    models = @controller.models
+    parent = @controller.model
     record = models.record
     
     try
@@ -1109,7 +1111,7 @@ class ShowView extends Spine.Controller
   scrollTo: (item) ->
     Spine.trigger('scroll', item)
     return unless @controller.isActive() and item
-    return unless item.constructor.className is @controller.el.data('current').models.className
+    return unless item.constructor.className is @controller.models.className
     parentEl = @controller.el
     
     try
@@ -1147,7 +1149,7 @@ class ShowView extends Spine.Controller
         
   zoom: (e) ->
     controller = @controller
-    models = controller.el.data('current').models
+    models = controller.models
     record = models.record
     
     return unless controller.list
