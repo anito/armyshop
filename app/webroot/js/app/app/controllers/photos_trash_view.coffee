@@ -3,6 +3,7 @@ $               = Spine.$
 Controller      = Spine.Controller
 Drag            = require('extensions/drag')
 User            = require("models/user")
+PhotosTrash     = require("models/photos_trash")
 Extender        = require('extensions/controller_extender')
 UriHelper       = require('extensions/uri_helper')
 
@@ -27,6 +28,9 @@ class PhotosTrashView extends Spine.Controller
     @bind('active', @proxy @active)
     
     Photo.bind('destroy:fromTrash', @proxy @destroy)
+    PhotosTrash.bind('change:selection', @proxy @exposeSelection)
+    
+    Photo.bind('destroy:photos', @proxy @destroyPhotos)
     
   render: (items) ->
     @items.html @template items
@@ -37,6 +41,29 @@ class PhotosTrashView extends Spine.Controller
     
     App.showView.trigger('change:toolbarOne', ['Default', 'Help'])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
+    
+  destroyPhotos: (ids, callback) ->
+    @log 'destroyPhoto'
+    ids = [ids] unless Array.isArray(ids)
+    
+    @stopInfo()
+    
+    ids = ids || Product.selectionList().slice(0)
+    photos = Photo.toRecords(ids)
+    
+    for photo in photos
+      el = @list.findModelElement(photo)
+      el.removeClass('in')
+      if product = Product.record
+        @destroyJoin
+          photos: [photo]
+          product: product
+      else
+        photo.destroy()
+      
+        
+    if typeof callback is 'function'
+      callback.call()
     
   destroy: ->
     

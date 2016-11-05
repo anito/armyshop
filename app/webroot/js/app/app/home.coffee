@@ -24,22 +24,22 @@ class App extends Spine.Controller
     '#refresh'          : 'refreshEl'
 
   events:
-    'mouseenter .item-menu'         :           'background'
-    'mouseenter .opt-sidebar'       :           'showSidebar'
-    'mouseleave .opt-sidebar'       :           'hideSidebar'
+    'mouseenter .item-menu'                     :           'background'
+    'mouseenter .opt-sidebar'                   :           'showSidebar'
+    'mouseleave .opt-sidebar'                   :           'hideSidebar'
     
-    'click .opt-hint'               :           'showWarning'
-    'click .opt-agreed'             :           'agreed'
-    'click .opt-close'              :           'closeSidebar'
-    'click .opt-sidebar'            :           'toggleSidebar'
-    'click .sidebar .td:first-child':           'toggleSidebar'
-    'click .paypal'                 :           'toggleView'
-    'click .opt-del'                :           'showDelivery'
-    'click .opt-agb'                :           'showAgb'
-    'click .opt-imp'                :           'showImp'
-    'click .opt-pay'                :           'showPay'
-    'click .opt-reset'              :           'reset'
-    'click [class^="logo-"], [class*=" logo-"]':'redirectHome'
+    'click .opt-hint'                           :           'showWarning'
+    'click .opt-agreed'                         :           'agreed'
+    'click .opt-close'                          :           'closeSidebar'
+    'click .opt-sidebar'                        :           'toggleSidebar'
+    'click .sidebar .td:first-child'            :           'toggleSidebar'
+    'click .paypal'                             :           'toggleView'
+    'click .opt-del'                            :           'showDelivery'
+    'click .opt-agb'                            :           'showAgb'
+    'click .opt-imp'                            :           'showImp'
+    'click .opt-pay'                            :           'showPay'
+    'click .opt-reset'                          :           'reset'
+    'click [class^="logo-"], [class*=" logo-"]' :'redirectHome'
   
   
   constructor: ->

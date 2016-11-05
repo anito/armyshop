@@ -50,11 +50,11 @@ class ProductsHeader extends Spine.Controller
       Product.filter()
       
   backToCategories: (e) ->
-    @navigate '/categories', ''
+    @navigate '/category', ''
     e.preventDefault()
     
   goUp: (e) ->
-    @navigate '/categories', ''
+    @navigate '/category', ''
     e.preventDefault()
     e.stopPropagation()
     

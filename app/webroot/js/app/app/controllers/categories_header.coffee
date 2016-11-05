@@ -28,7 +28,7 @@ class CategoriesHeader extends Spine.Controller
     @html @template
       model             : Category
       modelProduct      : Product
-      modelPhoto  : Photo
+      modelPhoto        : Photo
       modelGas          : CategoriesProduct
       modelAps          : ProductsPhoto
       author            : User.first().name

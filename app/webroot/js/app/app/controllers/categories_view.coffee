@@ -17,12 +17,16 @@ class CategoriesView extends Spine.Controller
     '.items'                          : 'items'
     
   events:
+    'click'                           : 'clearSelection'
     'click .item'                     : 'click'
+    
+    'mousemove .item'                 : 'infoUp'
+    'mouseleave .item'                : 'infoBye'
     
     'dragend'                         : 'dragend'
     'dragstart'                       : 'dragstart'
     'drop       '                     : 'drop'
-#    'dragover   '                     : 'dragover'
+    'dragover   '                     : 'dragover'
     'dragenter  '                     : 'dragenter'
     
     'sortupdate'               : 'sortupdate'
@@ -43,6 +47,7 @@ class CategoriesView extends Spine.Controller
       parent: @
     @header.template = @headerTemplate
     @viewport = @list.el
+    
     Category.one('refresh', @proxy @render)
     
     Category.bind('beforeSave', @proxy @createProtected)
@@ -58,19 +63,16 @@ class CategoriesView extends Spine.Controller
 
   render: (items) ->
 #    return unless @isActive()
-    if Category.count()
-      items = Category.records.sort Category.sortByOrder
-      @list.render items
-    else  
-      @list.el.html '<label class="invite"><span class="enlightened">This Application has no categories. &nbsp;<button class="opt-CreateCategory blue large">Kategorie</button>'
+    items = Category.records.sort Category.sortByOrder
+    @list.render items
           
-  active: ->
-    return unless @isActive()
-    unless Category.record
-      Category.updateSelection()
+  active: (items) ->
+#    return if @eql Root.record
+    
     App.showView.trigger('change:toolbarOne', ['Default'])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
-    @render()
+    
+    @render(items)
     
   click: (e) ->
     item = $(e.currentTarget).item()
@@ -81,9 +83,9 @@ class CategoriesView extends Spine.Controller
 #    list = Root.selectionList()[..]
 #    list.addRemove ids
     
-#    Root.updateSelection ids
+    @navigate '/category', 'cid', ids[0]
     
-    @navigate '/categories', 'cid', ids[0]
+    @model.updateSelection ids
     
     e.stopPropagation()
     
@@ -97,13 +99,9 @@ class CategoriesView extends Spine.Controller
       item.removeSelectionID()
       Root.removeFromSelection item.id
       
-    unless Category.count()
+    if Category.count()
       #force to rerender
-      if /^#\/categories\//.test(location.hash)
-        @navigate '/categories'
-      @navigate '/categories', ''
-    else
-      unless /^#\/categories\//.test(location.hash)
+      unless /^#\/category\//.test(location.hash)
         @navigate '/category', Category.first().id
   
   newAttributes: ->
@@ -132,5 +130,13 @@ class CategoriesView extends Spine.Controller
         if parseInt(item.order) isnt index
           item.order = index
           item.save(done: cb)
+  
+  infoUp: (e) =>
+    el = $(e.currentTarget)
+    $('.glyphicon-set.fade' , el).addClass('in').removeClass('out')
+    
+  infoBye: (e) =>
+    el = $(e.currentTarget)
+    set = $('.glyphicon-set.fade' , el).addClass('out').removeClass('in')
   
 module?.exports = CategoriesView

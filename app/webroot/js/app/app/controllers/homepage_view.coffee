@@ -20,7 +20,7 @@ class HomepageView extends Spine.Controller
       el: @items
       parent: @
     
-    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
+    Spine.bind('refresh:one', @proxy @refreshOne)
     
   active: (e) ->
     @change()
@@ -29,7 +29,7 @@ class HomepageView extends Spine.Controller
     @current = Category.current(Category.findByAttribute('name', @categoryName))
     @render()
     
-  bindRefresh: ->
+  refreshOne: ->
     @tracker = [1,2,3,4]
     Photo.one('refresh', @proxy @untrackBinds)
     Description.one('refresh', @proxy @untrackBinds)

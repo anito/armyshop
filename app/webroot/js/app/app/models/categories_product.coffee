@@ -24,7 +24,7 @@ class CategoriesProduct extends Spine.Model
   @mixinAttributes: ['ignored', 'order']
   
   @productExists: (aid, gid) ->
-    gas = @filter 'placeholder',
+    gas = @filter true,
       product_id: aid
       category_id: gid
       func: 'selectUnique'
@@ -112,11 +112,11 @@ class CategoriesProduct extends Spine.Model
   selectProduct: (id, gid) ->
     return true if @product_id is id and @category_id is Category.record.id
     
-  selectUnique: (empty, options) ->
-    return true if @product_id is options.product_id and @category_id is options.category_id
+  selectUnique: (query, options) ->
+    return true if (@product_id is options.product_id) and (@category_id is options.category_id)
     
   selectNotIgnored: (id, opts) ->
-    return true if !@ignored and @category_id is id and @isProtectedModel(Category.find(@category_id)?.name)
+    return true if !@ignored and (@category_id is id) and @isProtectedModel(Category.find(@category_id)?.name)
     
   selectNotIgnoredAll: (id) ->
     return true if (!@ignored) and (@isProtectedModel(Category.find(@category_id)?.name))

@@ -1,22 +1,24 @@
 Spine           = require("spine")
-$               = Spine.$
-Model           = Spine.Model
-Category         = require('models/category')
-Product           = require('models/product')
-Photo           = require('models/photo')
+$                 = Spine.$
+Model             = Spine.Model
 ProductsPhoto     = require('models/products_photo')
-CategoriesProduct  = require('models/categories_product')
-Extender        = require('extensions/controller_extender')
-Drag            = require('extensions/drag')
-UriHelper = require('extensions/uri_helper')
+Category          = require('models/category')
+Product           = require('models/product')
+Photo             = require('models/photo')
+Extender          = require('extensions/controller_extender')
+ProductExtender   = require('extensions/product_extender')
+CategoriesProduct = require('models/categories_product')
+UriHelper         = require('extensions/uri_helper')
+Drag              = require('extensions/drag')
 
 require('extensions/tmpl')
 
 class ProductsList extends Spine.Controller
   
-  @extend UriHelper
   @extend Drag
   @extend Extender
+  @extend ProductExtender
+  @extend UriHelper
   
   events:
     'click .dropdown-toggle'       : 'dropdownToggle'
@@ -32,7 +34,9 @@ class ProductsList extends Spine.Controller
     @add = @html
     Product.bind('update', @proxy @updateTemplate)
     Product.bind("ajaxError", Product.errorHandler)
+    Product.bind('ajaxSuccess', @proxy @updateTemplate)
     CategoriesProduct.bind('change', @proxy @changeRelated)
+    CategoriesProduct.bind('destroy', @proxy @testEmpty)
     Product.bind('change:collection', @proxy @renderBackgrounds)
     Category.bind('change:selection', @proxy @exposeSelection)
 
@@ -48,10 +52,8 @@ class ProductsList extends Spine.Controller
     product = @mixinOne product
     switch mode
       when 'create'
-        @log 'changeRelated'
-        @wipe()
-        @append @template(product)
-        @renderBackgrounds [product]
+        @wipe().append @template(product)
+        @renderBackgrounds product
         @el.sortable('destroy').sortable()
 #        $('.tooltips', @el).tooltip()
         $('.dropdown-toggle', @el).dropdown()
@@ -70,72 +72,26 @@ class ProductsList extends Spine.Controller
     if ga
       atts = ga?.mixinAttributes(item)
       item.silentUpdate(atts)
-      item
+      return item
+    item
   
-  render: (items, mode="html") ->
+  render: (items=[], mode="html") ->
     @log 'render', mode
-        
-    if items.length
-      @wipe()
-#      items = @mixinAttributes(items, ['ignored']) unless @modal
-      items = @mixin items
-      @[mode] @template items
-      @renderBackgrounds items
-      @exposeSelection()
-      $('.dropdown-toggle', @el).dropdown()
-    else if mode is 'add'
-      @html '<label class="invite"><span class="enlightened">Nothing to add.  &nbsp;</span></label>'
-      @append '<h3><label class="invite label label-default"><span class="enlightened">Es können keine Produkte hinzugefügt werden. Eventuell muss erst eine Kategorie ausgewählt werden.</span></label></h3>'
-    else
-      if Category.record
-        if Product.count()
-          @html '<label class="invite"><span class="enlightened">Keine Produkte in dieser Kategorie. &nbsp;</span><br><br>
-          <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Neues Produkt</span></button>
-          <button class="opt-AddProducts dark large"><i class="glyphicon glyphicon-book"></i><span>Aus Katalog wählen</span></button>
-          </label>'
-        else
-          @html '<label class="invite"><span class="enlightened bootom">Keine Produkte in dieser Kategorie</span><br><br>
-          <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Neues Produkt</span></button>
-          </label>'
-      else
-        @html '<label class="invite"><span class="enlightened">Keine Produkte im Katalog vorhanden</span><br><br>
-        <button class="opt-CreateProduct blue large"><i class="glyphicon glyphicon-plus"></i><span>Neues Produkt</span></button>
-        </label>'
+    
+    unless items.length
+      s = if (s = @model.record?.screenname or s = @model.record?.name or s = @model.record?.title)? then 'in ' + s + ' nichts los - kein Moos' else 'nichts los hier. Brutal...'
+      @renderEmpty(s)
+      return @el
+    
+    items = @mixin items
+    @[mode] @template items
+    @log items
+    @renderBackgrounds items
+    @exposeSelection()
+    $('.dropdown-toggle', @el).dropdown()
+      
     @el
-    
-  exposeSelection: (selection=Category.selectionList(), id=Category.record?.id) ->
-    if Category.record
-      return unless Category.record.id is id
-    @deselect()
-
-    for id in selection
-      el = $('#'+id, @el)
-      el.addClass("active")
-
-    if first = selection.first()
-      $('#'+first, @el).addClass("hot")
-    
-  updateTemplate: (item) ->
-    item = @mixinOne item
-    productEl = @children().forItem(item)
-    contentEl = $('.thumbnail', productEl)
-    active = productEl.hasClass('active')
-    hot = productEl.hasClass('hot')
-    style = contentEl.attr('style')
-
-    tmplItem = productEl.tmplItem()
-    tmplItem.data = item
-    tmplItem.update?()
-
-    productEl = @children().forItem(item)
-    contentEl = $('.thumbnail', productEl)
-    productEl.toggleClass('active', active)
-    productEl.toggleClass('hot', hot)
-    contentEl.attr('style', style)
-    productEl.toggleClass('ignored', item.ignored)
-
-    @el.sortable()
-    
+  
   original: (e) ->
     id = $(e.currentTarget).item().id
     Category.selection[0].global.update [id]
@@ -145,19 +101,17 @@ class ProductsList extends Spine.Controller
     e.stopPropagation()
       
   zoom: (e) ->
-    item = $(e.currentTarget).item()
-
+    item = $(e.currentTarget).item() or @models.record
+    
     @parent.stopInfo()
-    @navigate '/category', (Category.record?.id or ''), item.id
+    
+    @navigate '/category', Category.record?.id or '', item?.id or '', iid = if (iid = item?.selectionList().first()) then 'iid/' + iid else null
     
     e.preventDefault()
     e.stopPropagation()
     
   back: (e) ->
-    if Category.record
-      @navigate '/categories', 'cid', Category.record.id
-    else
-      @navigate '/categories', ''
+    @navigate '/category', cid = if (cid = Category.record?.id) then 'cid/' + cid else null
     
     e.preventDefault()
     e.stopPropagation()
@@ -180,7 +134,7 @@ class ProductsList extends Spine.Controller
     item = $(e.currentTarget).item()
     return unless item?.constructor?.className is 'Product'
     
-    Spine.trigger('destroy:product', [item.id])
+    Spine.trigger('delete:product', [item.id])
     
     e.stopPropagation()
     e.preventDefault()
@@ -191,15 +145,5 @@ class ProductsList extends Spine.Controller
 #    e.preventDefault()
     
     Spine.trigger('products:add')
-    
-  wipe: (force) ->
-    if force then @el.empty(); return @el
-    
-    if Category.record
-      first = Category.record.count() is 1
-    else
-      first = Product.count() is 1
-    @el.empty() if first
-    @el
     
 module?.exports = ProductsList

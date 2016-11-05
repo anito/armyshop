@@ -29,8 +29,6 @@ class PhotoView extends Spine.Controller
     
     'click .dropdown-toggle'          : 'dropdownToggle'
     'click .delete'                   : 'deletePhoto'
-    'click .zoom'                     : 'zoom'
-    'click .rotate'                   : 'rotate'
     
   template: (item) ->
     $('#photoTemplate').tmpl(item)
@@ -54,7 +52,6 @@ class PhotoView extends Spine.Controller
       template: @infoTemplate
     @viewport = @itemsEl
     
-    ProductsPhoto.bind('beforeDestroy', @proxy @back)
     Photo.bind('beforeDestroy', @proxy @back)
     Photo.one('refresh', @proxy @refresh)
     Product.bind('change:collection', @proxy @refresh)
@@ -69,11 +66,9 @@ class PhotoView extends Spine.Controller
     
   changeNavigation: (rec, changed) ->
     return unless @isActive()
-    @navigate '/category', Category.record?.id or '', Product.record?.id or '', rec.id if changed
+    @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', rec.id if changed
     
   render: (item=Photo.record) ->
-#    return unless @isActive()
-    App.showView.photosView.refresh() unless App.showView.photosView.list.el.children().length
     @itemsEl.html @template item
     $('.dropdown-toggle', @el).dropdown()
     @uri item
@@ -133,6 +128,7 @@ class PhotoView extends Spine.Controller
   dropdownToggle: (e) ->
     el = $(e.currentTarget)
     el.dropdown()
+    
     e.preventDefault()
     e.stopPropagation()
   
@@ -140,24 +136,13 @@ class PhotoView extends Spine.Controller
     item = $(e.currentTarget).item()
     return unless item?.constructor?.className is 'Photo' 
     
-    Spine.trigger('destroy:photo', [item.id], @proxy @back)
+    Spine.trigger('delete:photo', [item.id], @proxy @list.back)
     
     @stopInfo(e)
     
     e.stopPropagation()
     e.preventDefault()
   
-  rotate: (e) ->
-    @photosView.list.rotate(e)
-  
-  back: ->
-    return unless @isActive()
-    @navigate '/category', Category.record.id, Product.record.id
-  
-  zoom: (e) ->
-    return
-    @parent.slideshowView.trigger('play', {}, [Photo.record])
-    
   infoUp: (e) =>
     @info.up(e)
     el = $('.glyphicon-set' , $(e.currentTarget)).addClass('in').removeClass('out')

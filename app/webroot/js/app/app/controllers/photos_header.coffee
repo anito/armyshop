@@ -22,19 +22,19 @@ class PhotosHeader extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
-    Category.bind('create update destroy', @proxy @render)
-    Product.bind('change', @proxy @render)
-    Product.bind('change:selection', @proxy @render)
-    Photo.bind('change', @proxy @render)
-    Photo.bind('refresh', @proxy @render)
-    Category.bind('change:current', @proxy @render)
-    Product.bind('change:current', @proxy @render)
-    Product.bind('change:collection', @proxy @render)
+#    Category.bind('create update destroy', @proxy @render)
+#    Product.bind('change', @proxy @render)
+    Photo.bind('current', @proxy @render)
+#    Photo.bind('change', @proxy @render)
+#    Photo.bind('refresh', @proxy @render)
+#    Category.bind('change:current', @proxy @render)
+#    Product.bind('change:current', @proxy @render)
+#    Product.bind('change:collection', @proxy @render)
     
     
   backToCategories: (e) ->
     @log 'backToCategories'
-    @navigate '/categories/'
+    @navigate '/category', ''
     e.preventDefault()
     
   backToProducts: (e) ->
@@ -56,9 +56,9 @@ class PhotosHeader extends Spine.Controller
       model             : Product
       category          : Category.record
       product           : Product.record
-      photo       : Photo.record
+      photo             : Photo.record
       modelProduct      : Product
-      modelPhoto  : Photo
+      modelPhoto        : Photo
       modelGas          : CategoriesProduct
       modelAps          : ProductsPhoto
       count             : @count()

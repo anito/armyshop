@@ -99,7 +99,7 @@ class UploadEditView extends Spine.Controller
       multiple = (data.files.length > 1)
       str = if multiple then 'Sollen die Fotos ' else 'Soll das Foto '
 #      b = confirm('Es ist kein Produkt ausgewählt!\n'+str+'im Foto-Katalog abgelegt werden?')
-      alert ('Es ist momentan kein Produkt ausgewählt!\n\nUm den Upload abzuschliessen, markiere ein Produkt und klicke anschliessend unten auf "Start".')
+      App.confirm('NO_CAT_FOR_UPLOAD', mode: 'alert')
       return false
       
     return true
@@ -140,7 +140,8 @@ class UploadEditView extends Spine.Controller
     else
       Photo.trigger('created', photos)
       @navigate '/category', Category.record?.id or '', ''
-      
+    
+    console.log product
     Spine.trigger('loading:done', product)
     selection = photos.toId()
     Product.updateSelection(selection)

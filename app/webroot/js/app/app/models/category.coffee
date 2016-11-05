@@ -44,17 +44,15 @@ class Category extends Spine.Model
       associationForeignKey : 'product_id'
     
   @contains: (id=@record.id) ->
-    return Product.all() unless id
+    return Model[@childType].all() unless id
     @products id
     
   @products: (id) ->
     filterOptions =
       model: 'Category'
       sort: 'sortByOrder'
-    printOrder = (arr) ->
-      i.order for i in arr
       
-    Product.filterRelated(id, filterOptions)
+    Model[@childType].filterRelated(id, filterOptions)
     
   @product: (id, pid) ->
     filterOptions =
@@ -72,7 +70,7 @@ class Category extends Spine.Model
   @selectedProductsHasPhotos: ->
     products = Product.toRecords @selectionList()
     for alb in products
-      return true if alb.contains().length
+      return true if alb.contains()
     false
   
   @activePhotos: (id = @record?.id) ->
@@ -109,6 +107,10 @@ class Category extends Spine.Model
   @findRelated: (joins = [], joinid = '') ->
     record for join in joins when (record = @find(join[joinid]))
    
+  @renderBuffer: (buffer) ->
+    items = Category.filter()
+    @buffer = items
+   
   init: (instance) ->
     return unless id = instance.id
     if @isProtectedModel(instance.name)
@@ -121,7 +123,7 @@ class Category extends Spine.Model
   validate: ->
     valid = !(Category.protected[@name])
     return 'Geschützte Kategorie!' unless valid
-    false
+    return false
     
   activePhotos: ->
     @constructor.activePhotos(@id)
@@ -147,7 +149,7 @@ class Category extends Spine.Model
       
     Product.filterRelated(@id, filterOptions).length + inc
     
-  count: (inc = 0) ->
+  contains: (inc = 0) ->
     @constructor.contains(@id).length + inc
     
   products: ->
@@ -161,6 +163,6 @@ class Category extends Spine.Model
     @[name] = value
     @save()
 
-  select: (joinTableItems) ->
+  select: () ->
     
 module?.exports = Model.Category = Category

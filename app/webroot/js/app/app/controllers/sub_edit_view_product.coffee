@@ -22,9 +22,9 @@ class SubEditViewProduct extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
-    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
+    Spine.bind('refresh:one', @proxy @refreshOne)
     
-  bindRefresh: ->
+  refreshOne: ->
     Product.one('refresh', @proxy @refresh)
     
   refresh: ->
@@ -39,7 +39,8 @@ class SubEditViewProduct extends Spine.Controller
     
   checkLink: ->
     item = @parent.current
-    $('#validLink', @el).toggleClass('valid', item.validUrl())
+    if item
+      $('#validLink', @el).toggleClass('valid', item.validUrl())
     
   save: (el) ->
     @log 'save product'

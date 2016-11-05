@@ -76,12 +76,12 @@ class ShowView extends Spine.Controller
     '.opt-Upload'             : 'btnUpload'
     
   events:
-    'click'                                           : 'deselect'
     'click a[href]'                                   : 'followLink'
     'click .opt-MysqlDump'                            : 'mysqlDump'
     'click .opt-MysqlRestore'                         : 'mysqlRestore'
     'click .opt-ShowProducts'                         : 'showProducts'
     'click .opt-ShowPhotos'                           : 'showPhotos'
+    'click .opt-ShowPhoto'                            : 'showPhoto'
     'click .opt-AutoUpload:not(.disabled)'            : 'toggleAutoUpload'
     'click .opt-Previous:not(.disabled)'              : 'back'
     'click .opt-Sidebar:not(.disabled)'               : 'toggleSidebar'
@@ -104,9 +104,9 @@ class ShowView extends Spine.Controller
     
     'click .opt-CreatePhoto:not(.disabled)'           : 'createPhoto'
     'click .opt-DestroyEmptyProducts:not(.disabled)'  : 'destroyEmptyProducts'
-    'click .opt-DestroyCategory:not(.disabled)'       : 'destroyCategory'
-    'click .opt-DestroyProduct:not(.disabled)'        : 'destroyProduct'
-    'click .opt-DestroyPhoto:not(.disabled)'          : 'destroyPhoto'
+    'click .opt-DeleteCategory:not(.disabled)'        : 'deleteCategory'
+    'click .opt-DeleteProduct:not(.disabled)'         : 'deleteProduct'
+    'click .opt-DeletePhoto:not(.disabled)'           : 'deletePhoto'
     'click .opt-Category:not(.disabled)'              : 'toggleCategoryShow'
     'click .opt-Rotate-cw:not(.disabled)'             : 'rotatePhotoCW'
     'click .opt-Rotate-ccw:not(.disabled)'            : 'rotatePhotoCCW'
@@ -115,7 +115,7 @@ class ShowView extends Spine.Controller
     'click .opt-Upload:not(.disabled)'                : 'toggleUploadShow'
     'click .opt-UploadDialogue:not(.disabled)'        : 'uploadDialogue'
     'click .opt-ShowOverview:not(.disabled)'          : 'showOverview'
-    'click .opt-ShowAllCategories:not(.disabled)'     : 'showAllCategories'
+    'click .opt-ShowCategories:not(.disabled)'        : 'showCategories'
     'click .opt-ShowAllProducts:not(.disabled)'       : 'showProductMasters'
     'click .opt-AddProducts:not(.disabled)'           : 'showProductMastersAdd'
     'click .opt-ShowAllPhotos:not(.disabled)'         : 'showPhotoMasters'
@@ -128,7 +128,6 @@ class ShowView extends Spine.Controller
     'click .opt-SelectNone:not(.btn)'                 : 'deselect'
     'click .opt-SelectInv:not(.disabled)'             : 'selectInv'
     'click .opt-CloseDraghandle'                      : 'toggleDraghandle'
-    'click .opt-Save'                                 : 'saveToDb'
     'click .opt-Help'                                 : 'help'
     'click .opt-Version'                              : 'version'
     'click .opt-Prev'                                 : 'prev'
@@ -171,25 +170,21 @@ class ShowView extends Spine.Controller
       parent: @
     @categoriesView = new CategoriesView
       el: @categoriesEl
-      className: 'items'
       assocControl: 'opt-Category'
       header: @categoriesHeader
       parent: @
     @productsView = new ProductsView
       el: @productsEl
-      className: 'items'
       header: @productsHeader
       parentModel: Category
       parent: @
     @photosView = new PhotosView
       el: @photosEl
-      className: 'items'
       header: @photosHeader
       parentModel: Product
       parent: @
     @photoView = new PhotoView
       el: @photoEl
-      className: 'items'
       header: @photoHeader
       photosView: @photosView
       parent: @
@@ -242,6 +237,8 @@ class ShowView extends Spine.Controller
     Product.bind('change:selection', @proxy @refreshToolbars)
     CategoriesProduct.bind('change', @proxy @refreshToolbars)
     CategoriesProduct.bind('error', @proxy @error)
+    CategoriesProduct.bind('destroy', @proxy @removeJoinedProductElement)
+    ProductsPhoto.bind('destroy', @proxy @removeJoinedPhotoElement)
     ProductsPhoto.bind('error', @proxy @error)
     ProductsPhoto.bind('create destroy', @proxy @refreshToolbars)
     Product.bind('change', @proxy @changeToolbarOne)
@@ -278,24 +275,22 @@ class ShowView extends Spine.Controller
     if controller
       controller.trigger('active', params)
       controller.header?.trigger('active')
-      @activated(controller)
-    @focus()
+      @activated(controller).focus()
+#    else
+#      @focus()
     
-  saveToDb: ->
-    @ajax 'dump'
-  
-  updatePhotoTemplates: ->
-    c = @photosView.list
-    els = c.children().each (index) ->
-      item = $(@).item()
-      ap = ProductsPhoto.fromPhotoId(item.id)
-      @log ap
-      return unless ap
-      ap.order = index
-      ap.save(ajax:false)
-      t = c.update item
-    Product.record.save()
-      
+  activated: (controller) ->
+    p = @previous = @current unless @current.subview
+    c = @current = @controller = controller
+    @currentHeader = controller.header
+    @prevLocation = location.hash
+    @el.data('current',
+      model: controller.model
+      models: controller.models
+    )
+    @controller
+#    return if (@previous is @current) and !@current.isActive()
+    # the controller should already be active, however rendering hasn't taken place yet
     
   changeCanvas: (controller, args) ->
     @transform(controller, @previous, @current)
@@ -320,24 +315,6 @@ class ShowView extends Spine.Controller
     
   changeHeader: (controller) ->
     
-    
-  activated: (controller) ->
-    p = @previous = @current unless @current.subview
-    c = @current = @controller = controller
-    @currentHeader = controller.header
-    @prevLocation = location.hash
-    @el.data('current',
-      model: controller.model
-      models: controller.models
-    )
-#    return if (@previous is @current) and !@current.isActive()
-    # the controller should already be active, however rendering hasn't taken place yet
-    
-    
-    return
-    controller.trigger 'active'
-    controller.header.trigger 'active'
-    controller
     
   changeToolbarOne: (list) ->
     @toolbarOne.change list
@@ -394,7 +371,6 @@ class ShowView extends Spine.Controller
     @deferred = $.Deferred()
     $.when(@duplicateProductsDeferred()).then(@donecallback,@failcallback,@progresscallback)
     
-      
   duplicateProductsDeferred: ->
     deferred = @deferred or @deferred = $.Deferred()
     list = Category.selectionList()
@@ -478,6 +454,13 @@ class ShowView extends Spine.Controller
     else
       @showProductMasters()
   
+  removeJoinedProductElement: (cp) ->
+    @controller.remove item if (item = Product.find(cp.product_id)) and cp.category_id is Category.record.id
+    
+  removeJoinedPhotoElement: (cp) ->
+    @remove item if item = Photo.find(cp.photo_id)
+    
+  
   emptyProduct: (e) ->
     products = Category.selectionList()
     for aid in products
@@ -492,13 +475,11 @@ class ShowView extends Spine.Controller
     
   emptyProductsTrash: ->
     items = Product.filter(true, func: 'selectDeleted')
-    for item in items
-      Product.trigger('destroy:fromTrash', item)
+    Product.trigger('empty:trash', items)
     
   emptyPhotosTrash: ->
     items = Photo.filter(true, func: 'selectDeleted')
-    for item in items
-      Photo.trigger('destroy:fromTrash', item)
+    Photo.trigger('destroy:trash', items)
     
   editCategory: (e) ->
     Spine.trigger('edit:category')
@@ -511,19 +492,22 @@ class ShowView extends Spine.Controller
     for product in products
       product.destroy()
 
-  destroySelected: (e) ->
+  deleteSelected: (e) ->
+    @log 'deleteSelected'
     models = @controller.models
-    @['destroy'+models.className]()
+    @['delete'+models.className]()
 
-  destroyCategory: (e) ->
-    return unless Category.record
-    Spine.trigger('destroy:category', Category.record.id)
+  deleteCategory: (e) ->
+    return unless id = Category.record?.id
+    Spine.trigger('delete:category', id)
   
-  destroyProduct: (e) ->
-    Spine.trigger('destroy:product')
+  deleteProduct: (e) ->
+    return unless id = Product.record?.id
+    Spine.trigger('delete:product', id)
 
-  destroyPhoto: (e) ->
-    Spine.trigger('destroy:photo')
+  deletePhoto: (e) ->
+    return unless id = Photo.record?.id
+    Spine.trigger('delete:photo', id)
 
   toggleCategoryShow: (e) ->
     @trigger('activate:editview', 'category', e.target)
@@ -670,31 +654,28 @@ class ShowView extends Spine.Controller
     target.click()
     
   deselect: (e) ->
-    modelName = $(e.target).parents().data('modelName')
-    if model = Model[modelName]
-      model.updateSelection([])
+    model = @current.model
+    
+    if model then model.updateSelection([])
     
   selectNone: (e) ->
-    @current.deselect()
-#    @current.select(e, [])
+    @deselect(e)
     
-  selectAll: (e) ->
-    @log 'selectAll'
+  selectInv: (e) ->
     try
-      list = @select()
-      @log list
+      list = @all()
       @current.select(e, list)
     catch e
     
-  selectInv: (e)->
+  selectAll: (e)->
     try
-      list = @select()
+      list = @all()
       selList = @current.model.selectionList()
       list.addRemove(selList)
       @current.select(e, list)
     catch e
     
-  select: ->
+  all: ->
     list = []
     root = $('.items', @current.el)
     items = $('.item', root)
@@ -746,32 +727,27 @@ class ShowView extends Spine.Controller
   showPhotosTrash: ->
     @navigate '/trash/photos', ''
     
-  showProductMasters: ->
-    @navigate '/category', ''
     
   showPhotoMasters: ->
     @navigate '/category', '/'
     
-  showAllCategories: ->
-    if Category.record
-      @navigate '/categories', 'cid', Category.record.id
-    else
-      @navigate '/categories', ''
+  showProductMasters: ->
+    @navigate '/category', ''
+    
+  showCategories: ->
+    @navigate '/category', cid = if (cid = Category.record?.id) then 'cid/' + cid else null
     
   showProducts: (e) ->
-    if Category.record
-      @navigate '/category', Category.record.id
-    else
-      @navigate '/category', ''
+    @navigate '/category', cid = Category.record?.id or '', pid = if (pid = Category.record?.selectionList?().first()) then 'pid/' + pid else null
       
     e.preventDefault()
     
   showPhotos: (e) ->
-    if Product.record
-      @navigate '/category', Category.record?.id || '', Product.record.id
-    else
-      @navigate '/category', Category.record?.id || '', 'pid', Product.record.id
-      
+    @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', iid = if (iid = Product.record?.selectionList?().first()) then 'iid/' + iid else null
+    e.preventDefault()
+    
+  showPhoto: (e) ->
+    @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', Product.record?.selectionList?().first() or ''
     e.preventDefault()
     
   showOverview: ->
@@ -1047,20 +1023,18 @@ class ShowView extends Spine.Controller
     $('input','#fu').click()
       
   selectByKey: (e, direction) ->
-    @log 'selectByKey'
-    isMeta = e.metaKey or e.ctrlKey
+    isMeta = e.metaKey or e.ctrlKey or e.shiftKey
     index = null
     lastIndex = null
     list = @controller.list?.listener or @controller.list
     elements = if list then $('.item', list.el) else $()
+    return unless elements.length
+    
     models = @controller.models
     parent = @controller.model
     record = models.record
     
-    try
-      activeEl = list.findModelElement(record) or $()
-    catch e
-      return
+    activeEl = list.findModelElement(record) or $()
       
     elements.each (idx, el) =>
       lastIndex = idx
@@ -1103,7 +1077,6 @@ class ShowView extends Spine.Controller
         selection.addRemove(id)
         selection.addRemove(first)
         selection.addRemove(id)
-        
       list.parent.select e, selection
     else
       list.parent.select e, [id]
@@ -1112,13 +1085,13 @@ class ShowView extends Spine.Controller
     Spine.trigger('scroll', item)
     return unless @controller.isActive() and item
     return unless item.constructor.className is @controller.models.className
-    parentEl = @controller.el
     
     try
+      # some controller don't have a list
       el = @controller.list.findModelElement(item) or $()
       return unless el.length
+      parentEl = el.parent()
     catch e
-      # some controller don't have a list
       return
       
     marginTop = 55
@@ -1128,7 +1101,8 @@ class ShowView extends Spine.Controller
     otc = el.offset().top
     stp = parentEl[0].scrollTop
     otp = parentEl.offset().top
-    ohp = parentEl[0].offsetHeight  
+    ohp = parentEl[0].offsetHeight
+    dht = parentEl[0].scrollHeight
     
     resMin = stp+otc-(otp+marginTop)
     resMax = stp+otc-(otp+ohp-ohc-marginBottom)
@@ -1148,13 +1122,7 @@ class ShowView extends Spine.Controller
       complete: =>
         
   zoom: (e) ->
-    controller = @controller
-    models = controller.models
-    record = models.record
-    
-    return unless controller.list
-    activeEl = controller.list.findModelElement(record)
-    $('.zoom', activeEl).click()
+    @controller.list?.zoom?(e) or @controller.zoom?(e)
     
     e.preventDefault()
         
@@ -1206,7 +1174,7 @@ class ShowView extends Spine.Controller
     switch code
       when 8 #Backspace
         unless isFormfield
-          @destroySelected(e)
+          @deleteSelected(e)
           e.preventDefault()
       when 13 #Return
         unless isFormfield

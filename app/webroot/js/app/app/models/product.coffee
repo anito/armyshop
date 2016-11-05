@@ -59,7 +59,7 @@ class Product extends Spine.Model
       associationForeignKey : 'photo_id'
     
   @contains: (id=@record.id) ->
-    return Photo.all() unless id
+    return Model[@childType].all() unless id
     @photos id
     
   @photos: (id, max) ->
@@ -89,6 +89,7 @@ class Product extends Spine.Model
     return unless items.length and target
     isValid = true
     cb = ->
+      # scope of record
       Category.trigger('change:collection', target)
       if typeof callback is 'function'
         callback.call(@)
@@ -108,22 +109,29 @@ class Product extends Spine.Model
       isValid = valid unless valid
       
     if isValid
+      # save on the target includes the join
       target.save(done: cb)
     else
       Spine.trigger('refresh:all')
     ret
     
-  @destroyJoin: (items=[], target, cb) ->
+  @destroyJoin: (items=[], target, callback) ->
     unless Array.isArray items
       items = [items]
+    
+    cb = ->
+#      if typeof callback is 'function'
+#        callback.call(@)
     
     return unless target
     
     for item in items
       gas = CategoriesProduct.filter(item.id, associationForeignKey: 'product_id')
       ga = CategoriesProduct.productExists(item.id, target.id)
-      ga?.destroy(done: cb)
-      
+      try
+        ga?.destroy(done: cb)
+      catch e
+        alert e
       
     Category.trigger('change:collection', target)
       
@@ -171,6 +179,20 @@ class Product extends Spine.Model
       return true
     return false
       
+  @renderBuffer: (buffer) ->
+    filterOptions =
+      model: 'Category'
+      sort: 'sortByOrder'
+      
+    if (category = Category.record) or buffer
+      # for the Category
+      items = Category.products(category.id, filterOptions)
+    else
+      # for the Catalogue
+      items = Product.filter(true)
+    
+    @buffer = items
+      
   init: (instance) ->
     return unless id = instance.id
     s = new Object()
@@ -189,11 +211,8 @@ class Product extends Spine.Model
   destroyJoin: (target) ->
     @constructor.destroyJoin [@], target
         
-  count: (inc = 0) =>
+  contains: (inc = 0) =>
     @constructor.contains(@id).length + inc
-  
-  contains: ->
-    @constructor.contains @id
   
   photos: (max) ->
     @constructor.photos @id, max

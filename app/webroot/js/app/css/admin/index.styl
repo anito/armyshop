@@ -483,7 +483,7 @@ label input[type="text"] {
 }
 i.ok {
   position: absolute;
-  top: -35%;
+  top: -22%;
   left: 55%;
   font-size: .7em !important;
 }
@@ -702,7 +702,7 @@ ul {
   margin: 0;
   padding: 0;
 }
-.parent:not(.sublist-item) {
+.sidebar .parent:not(.sublist-item) {
   position: relative;
   /* text-overflow: ellipsis; */
   /* overflow: hidden; */
@@ -777,8 +777,11 @@ ul.sublist>li:not(:last-child)::after {
   display: block;
   height: 1px;
   width: 100%;
-  margin: 12px 0 -9px 0;
+  margin: -2px 0 0 0;
   background: rgba(0,0,0,0.5);
+}
+span.inner-sub {
+  height: 106px;
 }
 .sublist span {
   vertical-align: baseline;
@@ -829,7 +832,6 @@ ul.sublist>li:not(:last-child)::after {
   box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
-  text-align: right;
 }
 .search {
   padding: 7px 5px;
@@ -858,10 +860,11 @@ ul.sublist>li:not(:last-child)::after {
 }
 .sidebar ul.sublist li.sublist-item {
   position: relative;
-  padding: 17px 5px 7px;
+  padding: 0px 5px 0px;
   font-weight: normal;
-  line-height: 2.2;
-  font-size: 0.9em;
+  line-height: 3rem;
+  font-size: 0.8em;
+  height: 48px;
 }
 .expander {
   width: 23px;
@@ -987,9 +990,6 @@ ul.sublist>li:not(:last-child)::after {
   cursor: move;
   width: auto;
 }
-[class*='products'] .items .item {
-    margin: -10px 6px 24px;
-}
 #content .items .item .titles div:not(.rule) {
   position: absolute;
   margin-right: 17px;
@@ -1006,7 +1006,7 @@ ul.sublist>li:not(:last-child)::after {
 }
 .titles .title {
   top: 26px;
-  font-size: 1.2em;
+  font-size: 1em;
   height: 50px;
 }
 #content .title::after {
@@ -1100,13 +1100,37 @@ section span.price {
 	 -webkit-background-position: 34px 34px, 95px 34px, 34px 95px, 95px 95px;
 	 background-position: 34px 34px, 95px 34px, 34px 95px, 95px 95px;
 }
-[class*='products'] .item .thumbnail {
-  background-repeat: no-repeat;
-  -moz-background-position: 13px 17px, 83px 17px, 13px 83px, 83px 83px;
-	 -webkit-background-position: 13px 17px, 83px 17px, 13px 83px, 83px 83px;
-	 background-position: 13px 17px, 83px 17px, 13px 83px, 83px 83px;
+[class*='categories'] .items {
+  font-size: 1.3rem;
 }
-[class*='products'] .item .thumbnail.load {
+[class*='categories'] .thumbnail {
+  background-color: rgba(51, 51, 51, 0.53);
+  background-image: none;
+  width: 250px;
+  height: 150px;
+}
+[class*='products'] .thumbnail {
+  background-color: rgba(51, 51, 51, 0.53);
+  background-image: none;
+  width: 380px;
+  height: 160px;
+}
+[class*='products'] .items .item {
+    margin: 0 10px 10px 0;
+}
+[class*='products'] .thumbnail.single {
+  background-repeat: no-repeat;
+  -moz-background-position: 13px 17px;
+	 -webkit-background-position: 13px 17px;
+	 background-position: 10px 10px;
+}
+[class*='products'] .thumbnail {
+  background-repeat: no-repeat;
+  -moz-background-position: 10px 10px, 85px 10px, 10px 85px, 85px 85px;
+	 -webkit-background-position: 10px 10px, 85px 10px, 10px 85px, 85px 85px;
+	 background-position: 10px 10px, 85px 10px, 10px 85px, 85px 85px;
+}
+[class*='products'] .thumbnail.load {
   background-repeat: no-repeat;
   -moz-background-position: 25px 32px, 92px 32px, 25px 100px, 92px 100px;
 	 -webkit-background-position: 25px 32px, 92px 32px, 25px 100px, 92px 100px;
@@ -1118,7 +1142,7 @@ section span.price {
   /*outline-style: solid;*/
 }
 #content .content .items:not(.nopad) {
-  padding: 20px 10px 0;
+  padding: 10px 10px
 }
 #content .content .item:hover {
 }
@@ -1243,12 +1267,6 @@ li .thumbnail.image {
   margin: 0;
   background: transparent;
 }
-[class*='products'] .thumbnail {
-  background-color: rgba(51, 51, 51, 0.53);
-  background-image: none;
-  width: 380px;
-  height: 160px;
-}
 #overview .thumbnail {
   width: 70px;
   height: 70px;
@@ -1262,6 +1280,12 @@ li .thumbnail.image {
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.photos {
+  background-image: url(/img/drag_info_lg.png);
+  background-size: 70%;
+  background-position: 165px 62px;
+  background-repeat: no-repeat;
 }
 .photos .thumbnail {
   background-image: url("/img/photo-loader.gif");
@@ -1316,7 +1340,7 @@ li.active .sublist-item:not(.ignored) {
 }
 .glyphicon {
   line-height: inherit;
-  padding-right: 5px;
+  paddingt: 0 5px 0 0;
 }
 nav .glyphicon {
   line-height: 1;
@@ -1337,6 +1361,9 @@ nav .glyphicon {
   padding: 0px 7px 5px 4px;
 }
 .glyphicon-set:nth-child(3) {
+  padding: 0px 0px 5px 13px;
+}
+.glyphicon-set:nth-last-child(2) {
   padding: 0px 0px 5px 13px;
 }
 a.glyphicon {
@@ -1375,7 +1402,7 @@ li.item.active.hot .glyphicon-set {
 li.item.active .glyphicon-set {
   background-color: $light-blue;
 }
-.content:not(.modal-content) .item.hot {
+.content .item.hot {
   border-color: $medium-blue ;
 }
 #content .content .item ul {
@@ -1866,6 +1893,9 @@ section.addAction {
 .editor.up {
   display: none;
 }
+.nopad {
+  padding: 0 !important;
+}
 .data.items:not(.nopad), li.data {
   border: 2px solid transparent;
 }
@@ -1887,27 +1917,27 @@ section.addAction {
   background: -moz-linear-gradient(center top , #00e3e3, #09f9f9);
 }
 .puls {
-    -webkit-animation: pulsate 2s ease-out;
-    -webkit-animation-iteration-count: infinite;
-    -ms-animation: pulsate 2s ease-out;
-    -ms-animation-iteration-count: infinite;
-    -moz-animation: pulsate 2s ease-out;
-    -moz-animation-iteration-count: infinite;
-    -o-animation: pulsate 2s ease-out;
-    -o-animation-iteration-count: infinite;
-    animation: pulsate 2s ease-out;
-    animation-iteration-count: infinite;
-    z-index: 999;
+  -webkit-animation: pulsate 2s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  -ms-animation: pulsate 2s ease-out;
+  -ms-animation-iteration-count: infinite;
+  -moz-animation: pulsate 2s ease-out;
+  -moz-animation-iteration-count: infinite;
+  -o-animation: pulsate 2s ease-out;
+  -o-animation-iteration-count: infinite;
+  animation: pulsate 2s ease-out;
+  animation-iteration-count: infinite;
+  z-index: 999;
 }
 .puls.azur {
-    color: $dark-grey !important;
-    background: $azur-blue !important;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+  color: $dark-grey !important;
+  background: $azur-blue !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) !important;
 }
 .puls.fire {
-    color: $white-grey !important;
-    background: $fire !important;
-    text-shadow: 0px 1px 0 rgba(255, 249, 247, 1) !important;
+  color: $white-grey !important;
+  background: $fire !important;
+  text-shadow: 0px 1px 0 rgba(255, 249, 247, 1) !important;
 }
 .lehmann {
   font-size: 4em;
@@ -1944,7 +1974,7 @@ section.addAction {
 }
 fieldset.scheduler-border {
   border: 1px solid !important;
-  padding: 0 !important;
+  padding: 10px !important;
   margin: 0 !important;
   -webkit-box-shadow:  0px 0px 0px 0px #000;
   box-shadow:  0px 0px 0px 0px #000;
@@ -1956,6 +1986,7 @@ legend.scheduler-border {
   text-align: left !important;
   width:auto;
   padding:0 10px;
+  margin:0;
   border-bottom:none;
   color: inherit;
 }
@@ -1964,13 +1995,26 @@ legend.scheduler-border {
   right: 10px;
   top: 0;
   min-width: 255px;
+  height: 80px;
+}
+fieldset .selection-title.active {
+  color: #39f;
 }
 fieldset .selection-title {
-  color: #39f;
-  position: absolute;
-  top: 12px;
-  padding: 0;
-  left: 10px;
+  padding: 10px;
+  font-size: 1rem;
+}
+.selection-title .glyphicon {
+  font-size: 2.5rem;
+  padding: 0px;
+  line-height: 1em;
+}
+.selection-title span {
+  line-height: 1em;
+  height: 100%;
+  padding-left: 17px;
+  width: 200px;
+  float: right;
 }
 .header .glyphicon+span {
   padding-left: 7px;

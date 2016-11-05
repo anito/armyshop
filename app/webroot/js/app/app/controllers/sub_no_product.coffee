@@ -1,8 +1,11 @@
 Spine     = require("spine")
 $         = Spine.$
+Extender  = require('extensions/controller_extender')
 
 class SubNoProduct extends Spine.Controller
 
+  @extend Extender
+  
   constructor: ->
     super
     @bind('active', @proxy @active)
@@ -11,6 +14,6 @@ class SubNoProduct extends Spine.Controller
     @render()
     
   render: ->
-    @html $("#noSelectionTemplate").tmpl({type: '<label class="invite"><span class="enlightened">Kein Produkt ausgewählt</span></label>'})
+    @renderEmpty('Kein Produkt ausgewählt')
     
  module?.exports = SubNoProduct

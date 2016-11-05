@@ -124,7 +124,7 @@
     <div class="pricing__feature-list">
       <ul class="">{{tmpl($item.data.descriptions) "#norbuFeatureListTemplate" }}</ul>
     </div>
-    <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">Zum Shop</a>
+    <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="pricing__action btn-dark" role="button" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">Zum Shop</a>
   </div>
   {{/if}}
 </script>

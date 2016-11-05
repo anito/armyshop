@@ -8,7 +8,8 @@ UriHelper =
 
     include =
     
-      callDeferred: (items=[], options=@uriSettings, cb) ->
+      callDeferred: (items=[], options, cb) ->
+        options = $().extend @uriSettings(), options
         items = [items] unless Array.isArray(items)
           
         $.when(@uriDeferred(items, options)).done (xhr) =>

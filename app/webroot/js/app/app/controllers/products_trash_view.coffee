@@ -3,8 +3,12 @@ $                 = Spine.$
 Controller        = Spine.Controller
 Drag              = require('extensions/drag')
 User              = require("models/user")
+ProductsTrash     = require("models/products_trash")
 CategoriesProduct = require("models/categories_product")
+Products          = require("models/product")
+ProductsPhoto     = require("models/products_photo")
 Extender          = require('extensions/controller_extender')
+ProductExtender   = require('extensions/product_extender')
 UriHelper         = require('extensions/uri_helper')
 
 class ProductsTrashView extends Spine.Controller
@@ -12,23 +16,27 @@ class ProductsTrashView extends Spine.Controller
   @extend UriHelper
   @extend Drag
   @extend Extender
+  @extend ProductExtender
   
   elements:
-    '.items'                           : 'items'
+    '.items'                       : 'items'
     
   events:
+    'click'                        : 'clearSelection'
     'click .item'                  : 'click'
-    'click .items'                 : 'deselect'
     'click .dropdown-toggle'       : 'dropdownToggle'
     'click .opt-delete'            : 'destroyProduct'
+    
     'mousemove .item'              : 'in'
     'mouseleave .item'             : 'out'
     
-    'dragstart '                      : 'dragstart'
-    'dragend'                         : 'dragend'
-    'drop'                            : 'drop'
-    'dragover   '                     : 'dragover'
-    'dragenter  '                     : 'dragenter'
+    'dragstart '                   : 'dragstart'
+    'dragend'                      : 'dragend'
+    'drop'                         : 'drop'
+    'dragover   '                  : 'dragover'
+    'dragenter  '                  : 'dragenter'
+    
+    'keyup'                        : 'keyup'
     
   template: (items, options) ->
     $("#productsTrashTemplate").tmpl items, options
@@ -38,9 +46,18 @@ class ProductsTrashView extends Spine.Controller
     @bind('active', @proxy @active)
     
     Product.bind('beforeDestroy', @proxy @beforeDestroy)
-    Product.bind('destroy:fromTrash', @proxy @destroy)
     
-    Category.bind('change:selection', @proxy @exposeSelection)
+    Product.bind('destroy:trash', @proxy @destroy)
+    Product.bind('inbound:trash', @proxy @inbound)
+    Product.bind('outbound:trash', @proxy @outbound)
+    
+    Product.bind('destroy:products', @proxy @destroyProducts)
+    Product.bind('empty:trash', @proxy @emptyTrash)
+    Product.bind('refresh', @proxy @initTrash)
+    
+    ProductsTrash.bind('change:selection', @proxy @exposeSelection)
+    
+    Spine.bind('refresh:one', @proxy @refreshOne)
     
     @bind('drag:start', @proxy @dragStart)
     @bind('drag:enter', @proxy @dragEnter)
@@ -48,13 +65,23 @@ class ProductsTrashView extends Spine.Controller
     @bind('drag:leave', @proxy @dragLeave)
     @bind('drag:drop', @proxy @dragDrop)
     
-  change: ->
+  initTrash: (items) ->
+    for item in items when item.deleted
+      trash = new ProductsTrash(id: item.id)
+      trash.save()
+      item.bind('update destroy', @proxy @watch)
+    
+  refreshOne: ->
+    Product.one('refresh', @proxy @refresh)
+    
+  # calls render for joins only
+  refresh: () ->
     items = Product.filter(true, func: 'selectDeleted')
     @render items
     
   render: (items) ->
-    @log @items
     @items.html @template items
+    @log items
     @renderBackgrounds items
     @el
     
@@ -63,6 +90,25 @@ class ProductsTrashView extends Spine.Controller
     
     App.showView.trigger('change:toolbarOne', ['Default', 'Help'])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
+    
+  inbound: (products) ->
+#    alert 'inbound'
+    products = [products] unless Array.isArray products
+    for product in products
+      product.deleted = true
+      product.save()
+      Product.trigger('trashed', product)
+    @initTrash products
+    
+  outbound: (item) ->
+#    alert 'outbound'
+    
+  watch: (item) ->
+    if !item.deleted or item.destroyed
+      trash = ProductsTrash.find(item.id)
+      trash.destroy()
+      Product.trigger('outbound:trash')
+      @remove(item)
     
   dropdownToggle: (e) ->
     el = $(e.currentTarget)
@@ -73,15 +119,29 @@ class ProductsTrashView extends Spine.Controller
     
   destroyProduct: (e) ->
     item = $(e.currentTarget).item()
-    Category.updateSelection(item.id)
     
-    Spine.trigger('destroy:product')
+    @destroyProducts(e, id) if item?.id
     
-#    e.preventDefault()
+    e.stopPropagation()
+    
+  destroyProducts: (e, ids=@model.selectionList(), callback) ->
+    @log 'destroyProducts'
+    ids = [ids] unless Array.isArray(ids)
+    
+    @log ids
+    
+    products = Product.toRecords(ids)
+    for product in products
+      if product.deleted
+        # delete from the trash
+        if res or (res = App.confirm('DESTROY', plural: products.length > 1))
+          Product.trigger('destroy:trash', product)
+          continue
+        else break
     
   beforeDestroy: (product) ->
     @log 'beforeDestroy'
-    
+    product.unbind('released:fromTrash')
     product.removeSelectionID()
     
     categories = CategoriesProduct.categories(product.id)
@@ -91,33 +151,39 @@ class ProductsTrashView extends Spine.Controller
       photos = ProductsPhoto.photos(product.id).toId()
       Photo.trigger('destroy:join', photos, product)
     
-    @remove product
-    
-  destroy: (item) ->
+  destroy: (items) ->
     @log 'destroy'
-  
-    item.destroy()
+    items = [items] unless Array.isArray items
+    item.destroy() for item in items
+    
+  emptyTrash: (items) ->
+    if App.confirm('EMPTYTRASH')
+      for item in items
+        item.destroy()
     
   click: (e) ->
-    @items.deselect()
     item = $(e.currentTarget).item()
     @select e, item.id
     
     e.stopPropagation()
     
-  select: (e, ids) ->
-    list = Category.selectionList()[..]
+  select: (e, ids=[]) ->
+    list = @model.selectionList()[..]
     ids = [ids] unless Array.isArray ids
-    list.addRemove ids
-    Category.updateSelection ids
+    if e.metaKey or e.ctrlKey
+      list.addRemove(ids)
+    else
+      list = ids[..]
+    
+    @model.updateSelection list
     
     e.stopPropagation()
     
   back: (e) ->
-    if Category.record
-      @navigate '/categories', 'cid', Category.record.id
+    if cid = Category.record?.id
+      @navigate '/category', cid, pid = if (Category.record?.selectionList().first()) then 'pid/' + pid else ''
     else
-      @navigate '/categories', ''
+      @navigate '/category', ''
     
   in: (e) =>
     el = $(e.currentTarget)
@@ -126,5 +192,15 @@ class ProductsTrashView extends Spine.Controller
   out: (e) =>
     el = $(e.currentTarget)
     set = $('.glyphicon-set.fade' , el).addClass('out').removeClass('in')
+    
+  keyup: (e) ->
+    code = e.charCode or e.keyCode
+    
+    switch code
+      when 8 #Backspace
+        @destroyProducts(e)
+        e.preventDefault()
+        e.stopPropagation()
+    
     
 module?.exports = ProductsTrashView

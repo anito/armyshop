@@ -21,7 +21,7 @@ class PhotoHeader extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
-    Photo.bind('change:current', @proxy @render)
+    Photo.bind('current', @proxy @render)
     Category.bind('change', @proxy @render)
     Product.bind('change', @proxy @render)
     Photo.bind('change', @proxy @render)
@@ -51,7 +51,7 @@ class PhotoHeader extends Spine.Controller
     @render()
     
   backToCategories: (e) ->
-    @navigate '/categories/'
+    @navigate '/category', ''
     e.preventDefault()
     
   backToProducts: (e) ->
@@ -59,11 +59,11 @@ class PhotoHeader extends Spine.Controller
     e.preventDefault()
     
   backToPhotos: (e) ->
-    @navigate '/category', Category.record?.id or '', Product.record?.id or ''
+    @navigate '/category', Category.record?.id or '', Category.record?.selectionList().first() or ''
     e.preventDefault()
     
   goUp: (e) ->
-    @navigate '/category', Category.record.id or '', Product.record?.id or ''
+    @navigate '/category', Category.record.id or '', Category.record?.selectionList().first() or ''
     e.preventDefault()
     
   drop: (e) ->

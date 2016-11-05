@@ -26,7 +26,7 @@ class SubEditViewDescription extends Spine.Controller
     super
     @bind('active', @proxy @active)
     Description.bind('destroy', @proxy @destroy)
-    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
+    Spine.bind('refresh:one', @proxy @refreshOne)
     
   newAttributes: (object={}) ->
     if (user_id = User.first()?.id) and (product_id = @parent.current?.id)
@@ -40,7 +40,7 @@ class SubEditViewDescription extends Spine.Controller
     else
       User.ping()
     
-  bindRefresh: ->
+  refreshOne: ->
     Description.one('refresh', @proxy @refresh)
     
   refresh: ->
@@ -65,7 +65,6 @@ class SubEditViewDescription extends Spine.Controller
     newItem = @create order:parseInt(item.order)+1
     el.after @template newItem
     @sortupdate()
-    console.log $('[data-description-id='+newItem.id+'] input', @el)
     $('[data-description-id='+newItem.id+'] input', @el).focus()
     
   remove: (e) ->

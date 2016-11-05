@@ -50,6 +50,14 @@ class Photo extends Spine.Model
     bb = (b or '').name?.toLowerCase()
     return if aa == bb then 0 else if aa < bb then -1 else 1
   
+  @renderBuffer: (buffer) ->
+    if product = Product.record
+      items = Product.photos(product.id)
+    else
+      items = Photo.filter(true)
+      
+    @buffer = items
+  
   @defaults:
     width: 140
     height: 140
@@ -154,10 +162,10 @@ class Photo extends Spine.Model
   products: ->
     @constructor.products @id
 
-  select: (joinTableItems) ->
+  select_: (joinTableItems) ->
     return true for record in joinTableItems when record.photo_id is @id and (@['order'] = parseInt(record.order))?
       
-  select_: ->
+  select: ->
     return true if !@deleted
       
   selectDeleted: ->

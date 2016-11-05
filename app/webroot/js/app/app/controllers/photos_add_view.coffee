@@ -1,6 +1,5 @@
 Spine = require('spine')
 $               = Spine.$
-Controller      = Spine.Controller
 Drag            = require('extensions/drag')
 User            = require("models/user")
 Product           = require('models/product')
@@ -8,7 +7,7 @@ Category         = require('models/category')
 CategoriesProduct  = require('models/categories_product')
 ProductsPhoto     = require('models/products_photo')
 Info            = require('controllers/info')
-PhotosList      = require('controllers/photos_list')
+PhotosAddList      = require('controllers/photos_add_list')
 User            = require('models/user')
 Extender        = require('extensions/controller_extender')
 
@@ -55,7 +54,7 @@ class PhotosAddView extends Spine.Controller
     @modal.bind('shown.bs.modal', @proxy @modalShown)
     @modal.bind('hide.bs.modal', @proxy @modalHide)
     
-    @list = new PhotosList
+    @list = new PhotosAddList
       template: @subTemplate
       parent: @parent
       
@@ -65,7 +64,7 @@ class PhotosAddView extends Spine.Controller
     @html @template @items = items
     @itemsEl = $('.items', @el)
     @list.el = @itemsEl
-    @list.render items, 'add'
+    @list.render items
   
   renderFooter: (list) ->
     @footer = $('.modal-footer', @el)
@@ -112,16 +111,16 @@ class PhotosAddView extends Spine.Controller
     @list.exposeSelection(@selectionList)
     
   selectAll: (e) ->
-    list = @select_()
+    list = @all()
     @select(list, true)
     e.stopPropagation()
     
   selectInv: (e) ->
-    list = @select_()
+    list = @all()
     @select(list)
     e.stopPropagation()
     
-  select_: ->
+  all: ->
     root = @itemsEl
     items = root.children('.item')
     return unless root and items.length

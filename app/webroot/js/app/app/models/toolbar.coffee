@@ -45,7 +45,7 @@ class Toolbar extends Spine.Model
           devider: true
         ,
           name: -> 'Kategorien'
-          klass: 'opt-ShowAllCategories'
+          klass: 'opt-ShowCategories'
           icon: 'book'
           disabled: -> false
         ,
@@ -87,7 +87,7 @@ class Toolbar extends Spine.Model
         ,
           name: 'Löschen'
           icon: 'trash'
-          klass: 'opt-DestroyCategory'
+          klass: 'opt-DeleteCategory'
           disabled: ->
             ret = !Category.record.isValid?() #or (c for c in Category.protected when c is Category.record.name ).length
           shortcut: '<-'
@@ -95,7 +95,7 @@ class Toolbar extends Spine.Model
           devider: true
         ,
           name: -> 'Kategorien'
-          klass: 'opt-ShowAllCategories'
+          klass: 'opt-ShowCategories'
           icon: 'book'
           disabled: -> false
         ]
@@ -129,7 +129,7 @@ class Toolbar extends Spine.Model
             type = if Category.record then 'Entfernen' else 'Löschen'
             return type+' '+len
           icon: 'trash'
-          klass: 'opt-DestroyProduct'
+          klass: 'opt-DeleteProduct'
           disabled: -> !Category.selectionList().length
           shortcut: '<-'
         ,
@@ -228,7 +228,7 @@ class Toolbar extends Spine.Model
             return type+' ('+len+')'
           shortcut: '<-'
           icon: 'trash'
-          klass: 'opt-DestroyPhoto '
+          klass: 'opt-DeletePhoto '
           disabled: -> !Product.selectionList().length
         ,
           devider: true
@@ -358,17 +358,6 @@ class Toolbar extends Spine.Model
           klass: 'opt opt-Previous'
           innerklass: 'close white'
           type: 'button'
-        ]
-    package_09:
-      name: 'Speichern'
-      content:
-        [
-          name: -> 'Synchronisieren'
-          icon: 'floppy-disk'
-          klass: 'opt-Save hide'
-          innerklass: -> if App.activePhotos().length then 'azur puls' else ''
-          dataToggle: 'modal-category'
-          disabled: -> !App.activePhotos().length
         ]
     package_10:
       name: 'Back_'

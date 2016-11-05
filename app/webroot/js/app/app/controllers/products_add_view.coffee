@@ -8,7 +8,7 @@ Category         = require('models/category')
 CategoriesProduct  = require('models/categories_product')
 ProductsPhoto     = require('models/products_photo')
 Info            = require('controllers/info')
-ProductsList      = require('controllers/products_list')
+ProductsAddList = require('controllers/products_add_list')
 User            = require('models/user')
 Extender        = require('extensions/controller_extender')
 
@@ -43,23 +43,27 @@ class ProductsAddView extends Spine.Controller
     
   constructor: ->
     super
+    
     @visible = false
+    
     @modal = @el.modal
       show: @visible
       backdrop: true
-    @list = new ProductsList
+    @list = new ProductsAddList
       template: @subTemplate
       parent: @parent
       modal: true
+      
     @modal.bind('show.bs.modal', @proxy @modalShow)
     @modal.bind('hide.bs.modal', @proxy @modalHide)
+    
     Spine.bind('products:add', @proxy @show)
       
   render: (items) ->
     @html @template @items = items
     @itemsEl = $('.items', @el)
     @list.el = @itemsEl
-    @list.render items, 'add'
+    @list.render items
   
   renderFooter: (selection) ->
     @footer = $('.modal-footer', @el)
@@ -82,16 +86,15 @@ class ProductsAddView extends Spine.Controller
     
   click: (e) ->
     e.stopPropagation()
-    e.preventDefault()
     
     item = $(e.currentTarget).item()
-    @select(item.id, @isCtrlClick(e))
+    @select(item.id)
     
-  select: (items = [], exclusive) ->
+  select: (items = [], all) ->
     unless Array.isArray items
       items = [items]
     
-    @selectionList = [] if exclusive
+    @selectionList = [] if all
     
     for item in items
       @selectionList.addRemove(item)
@@ -100,21 +103,22 @@ class ProductsAddView extends Spine.Controller
     @list.exposeSelection(@selectionList)
     
   selectAll: (e) ->
-    list = @select_()
+    list = @all()
     @select(list, true)
     e.preventDefault()
-    
-  selectInv: (e) ->
-    list = @select_()
-    @select(list)
     e.stopPropagation()
     
-  select_: ->
+  selectInv: (e) ->
+    list = @all()
+    @select(list)
+    e.preventDefault()
+    e.stopPropagation()
+    
+  all: ->
     list = []
     root = @itemsEl
     items = $('.item', root)
-    unless root and items.length
-      return list
+    
     items.each (index, el) ->
       item = $(@).item()
       list.unshift item.id

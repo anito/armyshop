@@ -23,6 +23,7 @@ class PhotosView extends Spine.Controller
     '.items'          : 'itemsEl'
   
   events:
+    'click'                        : 'clearSelection'
     'click .item'                  : 'click'
     'sortupdate .items'            : 'sortupdate'
     
@@ -67,7 +68,7 @@ class PhotosView extends Spine.Controller
     ProductsPhoto.bind('beforeDestroy', @proxy @beforeDestroyProductsPhoto)
     CategoriesProduct.bind('destroy', @proxy @backToProductView)
     
-    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
+    Spine.bind('refresh:one', @proxy @refreshOne)
     
     Photo.bind('create', @proxy @add)
     Photo.bind('destroy', @proxy @destroy)
@@ -76,42 +77,34 @@ class PhotosView extends Spine.Controller
     Photo.bind('destroy:join', @proxy @destroyJoin)
     Photo.bind('ajaxError', Photo.errorHandler)
     
-    Spine.bind('destroy:photo', @proxy @destroyPhoto)
-    Spine.bind('loading:done', @proxy @updateBuffer)
+    Spine.bind('delete:photo', @proxy @deletePhoto)
+    Spine.bind('loading:done', @proxy @refresh)
     
-  bindRefresh: ->
+  refreshOne: ->
     Product.one('refresh', @proxy @refresh)
-    
-  updateBuffer: (product=Product.record) ->
-    if product
-      items = Product.photos(product.id)
-    else
-      items = Photo.filter()
-      
-    @buffer = items
   
   refresh: () ->
-    @updateBuffer()
-    @render @buffer, 'html', true
+    @render Photo.renderBuffer(true)
   
-  render: (items, mode='html', force) ->
+  render: (items, mode='html') ->
     # render only if necessary
-    return unless @isActive() or force
+#    return unless @isActive() or force
     # if view is dirty but inactive we'll use the buffer next time
-    @list.render(items || @updateBuffer(), mode)
+    @list.render(items)
     @list.sortable('photo') if Product.record
-    delete @buffer
     @el
   
-  active: (items) ->
-#    return unless @isActive()
+  active: (items, options) ->
+    b1 = @eql.call(@parent)
+    b2 = @eql_()
+    return if b1 and b2
     
     App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider])
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
     
-    if items then @render items else @refresh()
+    @parent.scrollTo(@models.record)
     
-    @parent.scrollTo(@model.record)
+    @render(items)
     
   update: (items) ->
     return unless Product.record
@@ -141,22 +134,47 @@ class PhotosView extends Spine.Controller
     item = $(e.currentTarget).item()
     @select e, item.id
     
-  select: (e, items = []) ->
-    unless Array.isArray items
-      items = [items]
-      
-    type = e.type
-    switch type
-      when 'keyup'
-        selection = items
-      when 'click'
-        Product.emptySelection() unless @isCtrlClick(e)
-        selection = Product.selectionList()[..]
-        items = selection[..] unless items.length
-        for id in items
-          selection.addRemove(id)
+  select: (e, ids = []) ->
+    list = @model.selectionList()[..]
+    ids = [ids] unless Array.isArray ids
+    if e.metaKey or e.ctrlKey
+      list.addRemove(ids)
+    else
+      list = ids[..]
+    
+    if @isActive()
+      if list.length
+        @navigate '/category', Category.record?.id or '', Product.record.id or '', 'iid', list[0]
+      else
+        @navigate '/category', Category.record?.id or '', Product.record.id or ''
 
-    Product.updateSelection(selection, Product.record?.id)
+    @model.updateSelection list
+      
+    e.stopPropagation()
+  
+  
+  select_: (e, ids = []) ->
+    isMeta = e.metaKey or e.ctrlKey or e.shiftKey
+    ids = [ids] unless Array.isArray ids
+    if (isMeta) and e.type is 'click'
+      list = @model.selectionList()
+      list.addRemove(ids)
+    else
+      list = ids[..]
+#        @model.emptySelection() unless @isCtrlClick(e)
+#        list = @model.selectionList()[..]
+#        ids = list[..] unless ids.length
+#        for id in ids
+#          list.addRemove(id)
+
+#    if list.length
+#      @navigate '/category', Category.record?.id or '', Product.record.id or '', 'fid', list[0]
+#    else
+#      @navigate '/category', Category.record?.id or '', Product.record.id or ''
+      
+    @model.updateSelection(list)
+    
+    e.stopPropagation()
       
   clearPhotoCache: ->
     Photo.clearCache()
@@ -190,27 +208,8 @@ class PhotosView extends Spine.Controller
     photos = ProductsPhoto.photos ap.product_id
     @render(null, 'html') unless photos.length
   
-  destroyPhoto: (ids, callback) ->
-    @log 'destroyPhoto'
-    
-    @stopInfo()
-    
-    ids = ids || Product.selectionList().slice(0)
-    photos = Photo.toRecords(ids)
-    
-    for photo in photos
-      el = @list.findModelElement(photo)
-      el.removeClass('in')
-      if product = Product.record
-        @destroyJoin
-          photos: [photo]
-          product: product
-      else
-        photo.destroy()
-      
-        
-    if typeof callback is 'function'
-      callback.call()
+  deletePhoto: (ids, callback) ->
+    App.confirm('METHOD_NOT_SUPPORTED', mode: 'alert')
   
   save: (item) ->
 

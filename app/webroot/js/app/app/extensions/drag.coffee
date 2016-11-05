@@ -80,6 +80,13 @@ Controller.Drag =
 
       dragenter: (e, data) ->
         @log 'enter'
+        
+        #cancel all drag events for no-data-elements
+        unless Spine.dragItem.source
+          e.stopPropagation()
+          e.preventDefault()
+          return
+        
         event = e.originalEvent
 #        event.stopPropagation()
         func =  => @trigger('drag:timeout', e, Spine.timer)
@@ -89,7 +96,6 @@ Controller.Drag =
         false
         
       dragover: (e, data) ->
-        @log 'over'
         e.stopPropagation()
         e.preventDefault()
         @trigger('drag:over', e, @)
@@ -125,13 +131,14 @@ Controller.Drag =
         selector = el.attr('data-drag-over')
         if selector then indicator = el.children('.'+selector)
         
-        target = Spine.dragItem.target = el.data('tmplItem')?.data or Model[el.data('modelName')].record
-        source = Spine.dragItem.source
-        origin = Spine.dragItem.originRecord
-        
+        target = t = Spine.dragItem.target = el.data('tmplItem')?.data or @model.record
+        source = s = Spine.dragItem.source
+        origin = o = Spine.dragItem.originRecord
+        console.log t.screenname
+#        console.log s
+#        console.log o
         Spine.dragItem.closest?.removeClass('over nodrop')
         Spine.dragItem.closest = indicator
-        
         if @validateDrop target, source, origin
           Spine.dragItem.closest.addClass('over')
         else
@@ -166,10 +173,10 @@ Controller.Drag =
         return unless source or target or source
         
         Spine.dragItem.closest?.removeClass('over nodrop')
-#        try
+        
         unless @validateDrop target, source, origin, true
           return false
-
+          
         hash = location.hash
         selection = Spine.dragItem.selection
         switch source.constructor.className
@@ -195,34 +202,44 @@ Controller.Drag =
 #        catch e
         
       validateDrop: (target, source, origin, alrt) =>
-#        console.log target
-#        console.log source
-#        console.log origin
-        return false unless (tid = target and sid = source) or (tid is sid)
-        oid = origin.id
+        tid = target?.id
+        sid = source?.id
+        oid = origin?.id
+        console.log tid if !(tid is oid)
+#        console.log sid
+#        console.log oid
+        return false unless (tid? and sid?) or (tid is sid)
         switch source.constructor.className
           when 'Product'
-            unless target.constructor.className is 'Category'
+            if ['Category', 'ProductsTrash'].indexOf(target.constructor.className) is -1
+              console.log 'failed 1'
               return false
-            if (oid is tid)
+            res2 = (oid is tid)
+            console.log res2
+            if res2
+              console.log 'failed 2'
               return false
-
+            console.log 'passed 1'
             items = CategoriesProduct.filter(target.id, associationForeignKey: 'category_id')
             for item in items
               if item.product_id is source.id
+                console.log 'failed 2'
                 return false
+            console.log 'passed 2'
             return true
             
           when 'Photo'
-            unless target.constructor.className is 'Product'
+            unless target?.constructor.className is 'Product'
               return false
-            unless (oid isnt tid)
+            if (oid is tid)
               return false
+            console.log 'Pho2'
 
             items = ProductsPhoto.filter(target.id, associationForeignKey: 'product_id')
             for item in items
-              if item.photo_id is source.id
+              if item.photo_id is sid
                 return false
+            console.log 'Pho3'
             return true
           
           else return false

@@ -25,12 +25,17 @@ class CategoriesList extends Spine.Controller
   
   constructor: ->
     super
-    Category.bind('change:current', @proxy @exposeSelection)
     Product.bind('change:collection', @proxy @renderRelated)
     Category.bind('change', @proxy @renderOne)
+    Category.bind('ajaxSuccess', @proxy @updateTemplate)
+    Category.bind('destroy', @proxy @testEmpty)
     CategoriesProduct.bind('change', @proxy @renderOneRelated)
     Photo.bind('destroy', @proxy @renderRelated)
     Product.bind('destroy', @proxy @renderRelated)
+    Root.bind('change:selection', @proxy @exposeSelection)
+    
+  test: (args...) ->
+    console.log args
     
   renderOneRelated: (ga) ->
     category = Category.find ga.category_id
@@ -45,10 +50,9 @@ class CategoriesList extends Spine.Controller
     @log 'renderOne'
     switch mode
       when 'create'
-        if Category.count() is 1
-          @el.empty()
+        @wipe()
         @append @template item
-        @exposeSelection()
+        @delay(@proxy(@exposeSelection), 2000)
       when 'update'
         @updateTemplate(item)
         $('.dropdown-toggle', @el).dropdown()
@@ -56,10 +60,14 @@ class CategoriesList extends Spine.Controller
         @exposeSelection()
       when 'destroy'
         @exposeSelection()
-          
     @el
 
   render: (items, mode) ->
+    unless items.length
+      s = if (s = @model.record?.screenname or s = @model.record?.name or s = @model.record?.title)? then 'in ' + s + ' nichts los - kein Moos' else 'nichts los hier. Brutal...'
+      @renderEmpty(s)
+      return @el
+    
     @html @template items
     @exposeSelection()
     $('.dropdown-toggle', @el).dropdown()
@@ -72,17 +80,24 @@ class CategoriesList extends Spine.Controller
       @updateTemplate(category)
 #    @el.sortable('categories')
 
-  updateTemplate: (category) ->
-    categoryEl = @children().forItem(category)
-    active = categoryEl.hasClass('active')
-    contentEl = $('.thumbnail', categoryEl)
+  updateTemplate: (item) ->
+    itemEl = @children().forItem(item)
+    active = itemEl.hasClass('active')
+    hot = itemEl.hasClass('hot')
+    innerEl = $('.thumbnail', itemEl)
+    style = innerEl.attr('style')
     
-    tmplItem = contentEl.tmplItem()
-    tmplItem.data = category
+    
+    tmplItem = innerEl.tmplItem()
+    tmplItem.data = item
     tmplItem.update?()
     
-    categoryEl = @children().forItem(category).toggleClass('active hot', active)
-    @el.sortable('categories')
+    itemEl.attr('id', item.id)
+    itemEl.toggleClass('active', active)
+    itemEl.toggleClass('hot', hot)
+    innerEl.attr('style', style)
+    
+    @el.sortable()
     
   reorder: (item) ->
     id = item.id
@@ -100,14 +115,6 @@ class CategoriesList extends Spine.Controller
       newEl.after oldEl
     else if idxBeforeSort > idxAfterSort
       newEl.before oldEl
-
-  exposeSelection: ->
-    @log 'exposeSelection'
-#    @deselect()
-    $('#'+Category.record.id, @el).addClass("active hot")
-      
-    App.showView.trigger('change:toolbarOne')
-    @parent.focus()
         
   dropdownToggle: (e) ->
     e.preventDefault()
@@ -117,12 +124,15 @@ class CategoriesList extends Spine.Controller
     el.dropdown()
     
   zoom: (e) ->
-    @log 'zoom'
+    item = $(e.currentTarget).item() or @models.record
+    
+    if cid = item?.id
+      @navigate '/category', cid, pid = if (pid = Category.record?.selectionList().first()) then 'pid/' + pid else null
+    else
+      @navigate '/category', ''
+    
     e.stopPropagation()
     e.preventDefault()
-    
-    item = $(e.currentTarget).item()
-    @navigate '/category', item.id
     
   back: (e) ->
     e.stopPropagation()
@@ -136,6 +146,6 @@ class CategoriesList extends Spine.Controller
     
     item = $(e.currentTarget).item()
     el = $(e.currentTarget).parents('.item')
-    Spine.trigger('destroy:category', item.id) if item
+    Spine.trigger('delete:category', item.id) if item
     
 module?.exports = CategoriesList

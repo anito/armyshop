@@ -5,11 +5,14 @@ Config                  = require('models/config')
 Drag                    = require('extensions/drag')
 Product                 = require('models/product')
 Root                    = require('models/root')
+PhotosTrash             = require('models/photos_trash')
+ProductsTrash           = require('models/products_trash')
 Category                = require('models/category')
 Toolbar                 = require("models/toolbar")
 Settings                = require('models/settings')
 SpineError              = require("models/spine_error")
 Clipboard               = require("models/clipboard")
+ProductsTrash           = require("models/products_trash")
 MainView                = require("controllers/main_view")
 LoginView               = require("controllers/login_view")
 LoaderView              = require("controllers/loader_view")
@@ -67,7 +70,7 @@ class Main extends Spine.Controller
     'click [class*="-trigger-edit"]' : 'activateEditor'
     'click'               : 'delegateFocus'
     
-    'drop'                : 'drop'
+#    'drop'                : 'drop'
     
     'keyup'               : 'key'
     'keydown'             : 'key'
@@ -82,14 +85,26 @@ class Main extends Spine.Controller
     Spine.dragItem = SpineDragItem.create()
     
     @CONFIRM =  
-      'REMOVE':
-        'Soll der Artikel wirklich entfernt werden?'
-      'DELETE':
-        'Soll der Artikel in den Papierkorb verschoben werden?'
-      'DESTROY':
-        'Soll der Artikel endgültig gelöscht werden?'
-      'NOCAT':
-        'Es ist keine Kategorie ausgwählt.\n\n'
+      'REMOVE': (plural) ->
+        if plural then '\nSollen die Artikel wirklich entfernt werden?\n\n' else '\nSoll der Artikel wirklich entfernt werden?\n\n'
+      'DELETE': (plural) ->
+        if plural then '\nSollen die Artikel in den Papierkorb verschoben werden?\n\n' else '\nSoll der Artikel in den Papierkorb verschoben werden?\n\n'
+      'DESTROY': (plural) ->
+        if plural then '\nSollen die Artikel endgültig gelöscht werden?\n\n' else '\nSoll der Artikel endgültig gelöscht werden?\n\n'
+      'REMOVE_AND_DELETE': (plural) ->
+        if plural then '\nSollen die Artikel aus den Kategorien entfernt und in den Papierkorb verschoben werden?\n\n' else '\nSoll derArtikel aus den Kategorien entfernt und in den Papierkorb verschoben werden?\n\n'
+      'NOCAT': () ->
+        '\nKeine Kategorie ausgwählt.\n\n'
+      'EMPTYTRASH': () ->
+        '\nSoll der Papierkorb geleert werden?\n\n'
+      'DESTROY_CATEGORY': () ->
+        '\nSoll die Kategorie entfernt werden?\n\n'
+      'DESTROY_CATEGORY_NOT_ALLOWED': () ->
+        '\nGeschützte Kategorien sollten nicht gelöscht werden!\n\n'
+      'METHOD_NOT_SUPPORTED': () ->
+        '\nFunktion momentan nicht verfügbar!\n\n'
+      'NO_CAT_FOR_UPLOAD': () ->
+        '\nEs ist momentan kein Produkt ausgewählt!\n\nUm den Upload abzuschliessen, markiere ein Produkt und klicke anschliessend unten auf "Start".\n\n'
     
     @ALBUM_SINGLE_MOVE = @createImage('/img/cursor_folder_1.png')
     @ALBUM_DOUBLE_MOVE = @createImage('/img/cursor_folder_3.png')
@@ -194,35 +209,51 @@ class Main extends Spine.Controller
     
     @initializeFileupload()
     
+    @initRoot()
+    
     @routes
       
-      '/category/:gid/:aid/:pid': (params) ->
-        Model.Root.updateSelection params.gid or []
-        if (params.aid is 'pid') and (pid = params.pid)
-          Category.updateSelection pid
-          @showView.trigger('active', @showView.productsView)
+      '/category/:cid/:pid/iid/:iid': (params) ->
+        Model.Root.updateSelection params.cid or []
+        Category.updateSelection params.pid or []
+        Product.updateSelection params.iid or []
+#        alert '1'
+        buffer = Photo.renderBuffer()
+        @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
+      '/category/:cid/:pid/:iid': (params) ->
+        Model.Root.updateSelection params.cid or []
+        if (params.pid is 'pid')
+#          alert '3'
+          Category.updateSelection params.iid or []
+          buffer = Product.renderBuffer()
+          @showView.trigger('active', @showView.productsView, buffer || Product.buffer)
         else
-          Category.updateSelection params.aid or []
-          Product.updateSelection params.pid or []
-          @showView.trigger('active', @showView.photoView, params.pid)
-      '/category/:gid/:aid': (params) ->
-        Root.updateSelection params.gid or []
-        Category.updateSelection params.aid or []
-        Product.updateSelection()
-        @showView.trigger('active', @showView.photosView)
-      '/category/:gid': (params) ->
-        Root.updateSelection params.gid or []
+#          alert '4'
+          Category.updateSelection params.pid or []
+          Product.updateSelection params.iid or []
+          buffer = Photo.renderBuffer()
+          @showView.trigger('active', @showView.photoView, buffer || Photo.buffer)
+      '/category/:cid/:pid': (params) ->
+        if (params.cid is 'cid')
+#          alert '5'
+          buffer = Category.renderBuffer()
+          @showView.trigger('active', @showView.categoriesView, buffer || Category.buffer)
+          
+          Model.Root.updateSelection params.pid or []
+        else
+#          alert '6'
+          Model.Root.updateSelection params.cid or []
+          Category.updateSelection params.pid or []
+          Product.updateSelection []
+          buffer = Photo.renderBuffer()
+          @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
+      '/category/:cid': (params) ->
+#        alert '7'
+        Model.Root.updateSelection params.cid or []
         Category.updateSelection()
-        Product.updateSelection()
-        @showView.trigger('active', @showView.productsView)
-      '/categories/:gid/:pid': (params) ->
-        if (params.gid is 'cid') and (pid = params.pid)
-          Root.updateSelection params.pid
-          @showView.trigger('active', @showView.categoriesView)
-        else
-          Root.updateSelection []
-          @showView.trigger('active', @showView.categoriesView)
-      '/categories/*': ->
+        buffer = Product.renderBuffer()
+        @showView.trigger('active', @showView.productsView, buffer || Product.buffer)
+      '/category/*': ->
         Root.updateSelection []
         @showView.trigger('active', @showView.categoriesView)
       '/overview/*': ->
@@ -231,26 +262,59 @@ class Main extends Spine.Controller
         @sidebar.filter {}, params.sid
         @showView.trigger('active', @showView.productsView)
       '/trash/products/:id': (params) ->
-        Root.updateSelection []
-        Category.updateSelection []
+#        Root.updateSelection []
+#        Category.updateSelection []
         items = Product.filter(true, func: 'selectDeleted')
         console.log items
         @showView.trigger('active', @showView.productsTrashView, items)
       '/trash/photos/:id': (params) ->
-        Root.updateSelection []
-        Category.updateSelection []
-        Product.updateSelection()
+#        Root.updateSelection []
+#        Category.updateSelection []
+#        Product.updateSelection()
         items = Photo.unusedPhotos(true)
         @showView.trigger('active', @showView.photosTrashView, items)
       '/wait/*glob': (params) ->
         @showView.trigger('active', @showView.waitView)
       '/*glob': (params) ->
         @navigate '/overview', ''
+          
+#      '/category/:gid/:aid/:pid': (params) ->
+#        Model.Root.updateSelection params.gid or []
+#        if (params.aid is 'pid') and (pid = params.pid)
+#          alert '3'
+#          Category.updateSelection pid
+#          buffer = Product.renderBuffer()
+#          @showView.trigger('active', @showView.productsView, buffer || Product.buffer)
+#        else
+#          alert '4'
+#          Category.updateSelection params.aid or []
+#          Product.updateSelection params.pid or []
+#          @showView.trigger('active', @showView.photoView, params.pid)
+#      '/category/:gid/:aid': (params) ->
+#        Model.Root.updateSelection params.gid or []
+#        if (params.gid is 'cid') and (aid = params.aid)
+#          alert '5'
+#          Category.updateSelection aid
+#          @showView.trigger('active', @showView.categoriesView)
+#        else
+#          alert '6'
+#          Category.updateSelection params.aid or []
+#          buffer = Photo.renderBuffer()
+#          @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
+#      '/category/*': ->
+#        alert '7'
+#        Root.updateSelection []
+#        @showView.trigger('active', @showView.categoriesView)
 
     @loadToolbars()
     @defaultSettings =
       welcomeScreen: false,
       test: true
+      
+  initRoot: ->
+    root = new Model.Root()
+    root.save()
+    Model.Root.current root
       
   validate: (user, json) ->
     valid = user.sessionid is json.sessionid
@@ -280,11 +344,11 @@ class Main extends Spine.Controller
     
   storeHash: ->
     return unless settings = Settings.loadSettings()
-    if hash = location.hash
-      if !@ignoredHashes.contains(hash)
-        settings.previousHash = hash
-      settings.hash = hash
-      settings.save()
+    hash = location.hash
+    if !@ignoredHashes.contains(hash)
+      settings.previousHash = settings.hash
+    settings.hash = hash
+    settings.save()
     
   fullscreen: ->
     Spine.trigger('chromeless', true)
@@ -362,12 +426,6 @@ class Main extends Spine.Controller
   loadToolbars: ->
     Toolbar.load()
 
-  activePhotos: ->
-    model = @showView.current.model
-    
-    photos = model.activePhotos()
-    photos
-
   activateEditor: (e) ->
     el = $(e.currentTarget)
     test = el.prop('class')
@@ -387,8 +445,11 @@ class Main extends Spine.Controller
     for a, i in arr
       return arr[i] if test s, a
     
-  confirm: (type) ->
-    if confirm @CONFIRM[type]
+  confirm: (phrase, options) ->
+    defaults = {mode: 'confirm', plural: false}
+    options = $().extend defaults, options
+    
+    if window[options.mode].call(null, @CONFIRM[phrase](options.plural))
       return true
     return
   
@@ -406,7 +467,7 @@ class Main extends Spine.Controller
     switch code
       when 8 #Backspace
         unless isFormfield
-          @delegateFocus(e, @showView)
+#          @delegateFocus(e, @showView)
           e.preventDefault()
       when 9 #Tab
         unless isFormfield
@@ -435,30 +496,30 @@ class Main extends Spine.Controller
           if @overviewView.isActive()
             @delegateFocus(e, @overviewView)
           else
-            @delegateFocus(e, @showView)
+            @delegateFocus(e, @showView.current)
           e.preventDefault()
       when 38 #Up
         unless isFormfield
-          @delegateFocus(e, @showView)
+          @delegateFocus(e, @showView.current)
           e.preventDefault()
       when 39 #Right
         unless isFormfield
           if @overviewView.isActive()
             @delegateFocus(e, @overviewView)
           else
-            @delegateFocus(e, @showView)
+            @delegateFocus(e, @showView.current)
           e.preventDefault()
       when 40 #Down
         unless isFormfield
-          @delegateFocus(e, @showView)
+          @delegateFocus(e, @showView.current)
           e.preventDefault()
       when 65 #ctrl A
         unless isFormfield
-          @delegateFocus(e, @showView)
+          @delegateFocus(e, @showView.current)
           e.preventDefault()
       when 73 #ctrl I
         unless isFormfield
-          @delegateFocus(e, @showView)
+          @delegateFocus(e, @showView.current)
           e.preventDefault()
       when 77 #ctrl M
         unless isFormfield

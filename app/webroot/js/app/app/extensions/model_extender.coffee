@@ -48,8 +48,8 @@ Model.Extender =
 
       selection: [global:[]]
 
-      current: (recordOrID) ->
-        id = recordOrID?.id or recordOrID
+      current: (recordOrId) ->
+        id = recordOrId?.id or recordOrId
         rec = @find(id) or false
         prev = @record
         @record = rec
@@ -76,7 +76,7 @@ Model.Extender =
         ret
 
       emptySelection: (id, idOrList = []) ->
-        unless @isArray idOrList
+        unless Array.isArray idOrList
           idOrList = [idOrList]
         originalList = @selectionList(id)
         originalList[0...originalList.length] = idOrList
@@ -84,14 +84,14 @@ Model.Extender =
 
       removeFromSelection: (id, idOrList=[], options) ->
         originalList = @selectionList(id)
-        unless @isArray idOrList
+        unless Array.isArray idOrList
           idOrList = [idOrList]
           
         for id in idOrList
           unless (index = originalList.indexOf(id)) is -1
             originalList.splice(index, 1)
           
-        list = @updateSelection id, originalList.slice(0), options
+        list = @updateSelection originalList[..], id, options
         list
 
       isArray: (value) ->
@@ -233,7 +233,8 @@ Model.Extender =
       
       # removes items from the selectionList
       removeFromSelection: (list, options) ->
-        @constructor.removeFromSelection(@id, list, options)
+        list = @constructor.removeFromSelection(@id, list, options)
+        list
       
       updateSelection: (list=[], options) ->
         list = [list] unless @constructor.isArray list

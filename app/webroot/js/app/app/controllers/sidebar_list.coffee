@@ -43,6 +43,7 @@ class SidebarList extends Spine.Controller
     Category.bind('change', @proxy @change)
     Category.bind('change:selection', @proxy @exposeSublistSelection)
     Category.bind('current', @proxy @exposeSelection)
+    Category.bind('ajaxSuccess', @proxy @updateTemplate)
     
     Product.bind('change:collection', @proxy @renderProduct)
     Product.bind('create destroy update', @proxy @renderSublists)
@@ -140,14 +141,15 @@ class SidebarList extends Spine.Controller
     @exposeSublistSelection(null, category.id)
     
   updateTemplate: (item) ->
-    categoryEl = @children().forItem(item)
-    categoryContentEl = $('.item-content', categoryEl)
-    tmplItem = categoryContentEl.tmplItem()
+    itemEl = @children().forItem(item)
+    innerEl = $('.item-content', itemEl)
+    
+    tmplItem = innerEl.tmplItem()
     tmplItem.data = item
-    try
-      tmplItem.update()
-    catch e
-    categoryEl
+    tmplItem.update?()
+    
+    itemEl.attr('id', item.id)
+    itemEl
     
   renderItemFromCategoriesProduct: (ga, mode) ->
     category = Category.find(ga.category_id)
@@ -201,11 +203,12 @@ class SidebarList extends Spine.Controller
     item = el.item()
     
     return unless item
+    cid = item.id
     
     switch item.constructor.className
       when 'Category'
         @expand(item, (@isOpen(el)) or (!(Category.record?.id is item.id) or !@isOpen(el)))
-        @navigate '/category', item.id
+        @navigate '/category', cid, pid = if (pid = item.selectionList().first()) then 'pid/' + pid else null
 #        @closeAllOtherSublists item
       when 'Product'
         category = $(e.target).closest('li.gal').item()

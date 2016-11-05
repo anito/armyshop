@@ -71,10 +71,10 @@ class Sidebar extends Spine.Controller
     Category.bind("ajaxError", Category.errorHandler)
     Category.bind("ajaxSuccess", Category.successHandler)
     
-    Spine.bind('bindRefresh:one', @proxy @bindRefresh)
+    Spine.bind('refresh:one', @proxy @refreshOne)
     Spine.bind('create:category', @proxy @createCategory)
     Spine.bind('edit:category', @proxy @edit)
-    Spine.bind('destroy:category', @proxy @destroyCategory)
+    Spine.bind('delete:category', @proxy @deleteCategory)
     
     @bind('drag:timeout', @proxy @expandAfterTimeout)
     @bind('drag:help', @proxy @dragHelp)
@@ -94,7 +94,7 @@ class Sidebar extends Spine.Controller
   refresh: (items) ->
     @render()
     
-  bindRefresh: ->
+  refreshOne: ->
     Category.one('refresh', @proxy @refresh)
     
   render: () ->
@@ -138,10 +138,10 @@ class Sidebar extends Spine.Controller
         Product.trigger('create:join', options.products, category)
         Product.trigger('destroy:join', options.products, options.deleteFromOrigin) if options.deleteFromOrigin
         
-      unless /^#\/categories\//.test(location.hash)
-        @navigate '/category', category.id
-      else
-        Category.trigger('activate', category.id)
+#      unless /^#\/categories\//.test(location.hash)
+  #      @navigate '/category', category.id
+#      else
+#        Category.trigger('activate', category.id)
         
     category = new Category @newAttributes()
     category.one('ajaxSuccess', @proxy cb)
@@ -153,9 +153,13 @@ class Sidebar extends Spine.Controller
   createProduct: ->
     Spine.trigger('create:product')
     
-  destroyCategory: (id) ->
+  deleteCategory: (id) ->
     return unless category = Category.find id
-    category.destroy() if category.isValid()
+    if category.isValid()
+      if App.confirm('DESTROY_CATEGORY')
+        category.destroy() 
+    else
+      App.confirm('DESTROY_CATEGORY_NOT_ALLOWED', mode: 'alert')
 
   clearSearch: ->
     $(@input).val('')
@@ -188,7 +192,7 @@ class Sidebar extends Spine.Controller
     clearTimeout timer
     categoryEl = $(e.target).closest('.gal.item')
     item = categoryEl.item()
-    return unless item and item.id isnt Model[Spine.dragItem.originModelName].record?.id
+    return unless item and item.id isnt Spine.dragItem.originModelName.record?.id
     @list.expand(item, true)
     
   sortupdate: (e, o) ->

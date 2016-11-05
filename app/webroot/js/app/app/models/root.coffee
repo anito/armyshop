@@ -13,8 +13,13 @@ class Root extends Spine.Model
   
   @childType: 'Category'
   
+  @contains: (id=@record.id) ->
+    Model[@childType].all()
+    
   init: (instance) ->
-    return unless id = instance.id
+    
+  contains: (inc = 0) ->
+    @constructor.contains(@id).length + inc
     
     
 module?.exports = Model.Root = Root

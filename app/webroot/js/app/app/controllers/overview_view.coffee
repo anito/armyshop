@@ -182,10 +182,7 @@ class OverviewView extends Spine.Controller
     @navigate '/category', '/'
     
   showCategories: ->
-    if Category.record
-      @navigate '/categories', 'cid', Category.record.id
-    else
-      @navigate '/categories', ''
+    @navigate '/category', cid = if (cid = Category.record?.id) then 'cid/' + cid else ''
   
   error: (xhr, statusText, error) ->
     @log xhr

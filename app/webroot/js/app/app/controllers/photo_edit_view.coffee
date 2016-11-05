@@ -31,7 +31,7 @@ class PhotoEditView extends Spine.Controller
     @render()
   
   render: () ->
-    if @current #and !item.destroyed 
+    if @current
       @content.html @template @current
     else
       info = '<label class="invite"><span class="enlightened">Kein Foto ausgewählt</span></label>' unless Product.selectionList().length and !Product.count()

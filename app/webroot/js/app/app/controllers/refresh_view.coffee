@@ -22,7 +22,7 @@ class RefreshView extends Spine.Controller
     
   refresh: ->
     @render 'cloud-download'
-    Spine.trigger('bindRefresh:one')
+    Spine.trigger('refresh:one')
     @fetchAll()
     
   fetchAll: ->

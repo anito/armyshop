@@ -13,7 +13,7 @@ class CategoryEditView extends Spine.Controller
     '.content'      : 'content'
   
   events:
-    'keyup'                         : 'saveOnKeyup'
+    'keyup'         : 'saveOnKeyup'
     
   template: (item) ->
     $('#editCategoryTemplate').tmpl item
@@ -38,10 +38,7 @@ class CategoryEditView extends Spine.Controller
     if @current 
       @content.html @template @current
     else
-      unless Category.count()
-        @content.html $("#noSelectionTemplate").tmpl({type: '<label class="invite"><span class="enlightened">Es gibt keine Kategorien &nbsp;<button class="opt-CreateCategory dark large">Neue Kategorie</button></span></label>'})
-      else
-        @content.html $("#noSelectionTemplate").tmpl({type: '<label class="invite"><span class="enlightened">Keine Kategorie ausgewählt</span></label>'})
+      @renderEmpty('Keine Kategorie ausgewählt', 'content')
     @el
 
   save: (el) ->
