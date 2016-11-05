@@ -110,7 +110,9 @@
   font-weight: 400;
   position: relative;
   height: 175px;
+  top: 0;
   z-index: 100;
+  transition: top 0.3s;
 }
 
 .pricing--norbu .pricing__currency {
@@ -131,6 +133,12 @@
 
 .pricing--norbu .pricing__price:hover + div + a {
   opacity: 0;
+  transition: all 0.3s;
+}
+
+.pricing--norbu .pricing__price:hover {
+  font-size: 0em;
+  line-height: 0;
   transition: all 0.3s;
 }
 

@@ -150,7 +150,7 @@ class OverviewView extends Spine.Controller
     @imgEl.addClass('in')
 
   onError: (e) ->
-    me.log 'image could not be loaded'
+    @me.log 'image could not be loaded'
   
   getProducts: ->
     for item in Product.records

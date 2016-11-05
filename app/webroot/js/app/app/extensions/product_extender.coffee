@@ -16,6 +16,7 @@ Controller.ProductExtender =
     
       renderBackgrounds: (products=[]) ->
         @log 'renderBackgrounds'
+        console.log products
 #        return unless @parent.isActive()
         deferredProcess = (product) =>
           @log 'deferredProcess'
@@ -35,6 +36,7 @@ Controller.ProductExtender =
           
         products = [products] unless Array.isArray(products)
         for product in products
+          console.log product
           $.when(deferredProcess(product)).done (xhr, rec) =>
             @callback xhr, rec
 
@@ -76,9 +78,7 @@ Controller.ProductExtender =
         @el.css('backgroundImage', @css)
 
       onError: (e) ->
-        @me.log 'could not load image, trying again'
-        @onload = @me.renderBackgrounds([Product.record])
-        @onerror = null
+        @me.snap @res
         
       updateTemplate: (item) ->
         @log 'updateTemplate'
