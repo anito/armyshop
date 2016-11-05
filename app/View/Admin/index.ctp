@@ -1451,8 +1451,8 @@
   <div id="${product.id}" class="pricing pricing--norbu {{if product.ignored}}ignored{{/if}}" style="margin:0;"> 
   <div class="pricing__item">
   <i class="glyphicon glyphicon-eye-{{if product.ignored}}close{{else}}open{{/if}}"></i>
-  <h3 class="pricing__title">${$().name(product.title, 20)}</h3>
-  <p class="pricing__sentence">${$().name(product.subtitle, 50)}</p>
+  <h3 class="pricing__title">${$().name(product.title, 28)}</h3>
+  <p class="pricing__sentence">${$().name(product.subtitle, 45)}</p>
   <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
   <a href="${product.link}" target="_blank" class="" aria-disabled="false">
   {{tmpl($item.data.photo) "#norbuImageTemplate" }}

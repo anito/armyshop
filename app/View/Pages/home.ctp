@@ -114,8 +114,8 @@
 <script id="norbuPricingTemplate" type="text/x-tmpl">
   {{if !product.ignored}}
   <div class="pricing__item">
-    <h3 class="pricing__title">${product.title}</h3>
-    <p class="pricing__sentence">${product.subtitle}</p>
+    <h3 class="pricing__title">${$().name(product.title, 25)}</h3>
+    <p class="pricing__sentence">${$().name(product.subtitle, 48)}</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
       <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">
         {{tmpl($item.data.photo) "#norbuImageListTemplate" }}
@@ -140,4 +140,3 @@
 <script id="refreshTemplate" type="text/x-tmpl">
   <a href="${location.hash}" class="opt-Refresh"><i class="glyphicon glyphicon-${icon}"></i></a>
 </script>
-
