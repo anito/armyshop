@@ -100,7 +100,7 @@ class PhotosView extends Spine.Controller
     return if b1 and b2
     
     App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider])
-    App.showView.trigger('change:toolbarTwo', ['Speichern'])
+    App.showView.trigger('change:toolbarTwo', ['Trustami'])
     
     @parent.scrollTo(@models.record)
     

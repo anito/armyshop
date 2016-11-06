@@ -46,6 +46,7 @@ class SubEditViewProduct extends Spine.Controller
     @log 'save product'
     if record = @parent.current
       atts = el.serializeForm?() or @el.serializeForm()
+      console.log atts
       record.updateChangedAttributes(atts)
 
   ignoreProduct: (e) ->

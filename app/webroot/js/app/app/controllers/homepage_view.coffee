@@ -8,7 +8,7 @@ HomepageList  = require('controllers/homepage_list')
 class HomepageView extends Spine.Controller
 
   elements:
-    '.items'      : 'items'
+    '.items'            : 'items'
     
   @extend Extender
   @extend UriHelper

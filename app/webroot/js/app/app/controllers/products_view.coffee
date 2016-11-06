@@ -128,8 +128,8 @@ class ProductsView extends Spine.Controller
     b2 = @eql_()
     return if b1 and b2
     
-    App.showView.trigger('change:toolbarOne', ['Default', 'Help'])
-    App.showView.trigger('change:toolbarTwo', ['Speichern'])
+    App.showView.trigger('change:toolbarOne', ['Default'])
+    App.showView.trigger('change:toolbarTwo', ['Trustami'])
     
     @render(items)
     

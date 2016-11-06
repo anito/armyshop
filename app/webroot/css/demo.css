@@ -23,11 +23,35 @@ header::before {
   top: -10px;
 }
 header::after {
-  content: url(/img/trustami.png);
+/*  content: url(/img/trustami.png);
   position: absolute;
   z-index: 1;
   right: 200px;
-  top: -5px;
+  top: -5px;*/
+}
+.trustami-badge {
+  position: relative;
+  left: -63px;
+}
+.trustami-count {
+  position: relative;
+  top: -73px;
+  color: #01375e;
+  font-size: 0.8em;
+  font-weight: 800;
+  text-align: center;
+}
+.trustami-badge .trustami-image:before {
+  content: " ";
+  display: block;
+  background-image: url(/img/trustami.png);
+  background-size: 100px 100px;
+  width: 100px;
+  height: 100px;
+}
+.trustami-inner {
+  width: 100px;
+  text-align: center;
 }
 .navbar .nav-item a {
   max-width: 200px;

@@ -14,6 +14,7 @@ SpineError              = require("models/spine_error")
 Clipboard               = require("models/clipboard")
 ProductsTrash           = require("models/products_trash")
 MainView                = require("controllers/main_view")
+TrustamiView            = require("controllers/trustami_view")
 LoginView               = require("controllers/login_view")
 LoaderView              = require("controllers/loader_view")
 Sidebar                 = require("controllers/sidebar")
@@ -65,6 +66,7 @@ class Main extends Spine.Controller
     '.status-symbol img'  : 'statusIcon'
     '.status-text'        : 'statusText'
     '.status-symbol'      : 'statusSymbol'
+    '.toolbar-three'       : 'trustamiEl'
     
   events:
     'click [class*="-trigger-edit"]' : 'activateEditor'
@@ -129,6 +131,8 @@ class Main extends Spine.Controller
     @modalView = new ModalSimpleView
 #    @modal2ButtonView = new Modal2ButtonView
 #      el: @modalEl
+    @trustamiView = new TrustamiView
+      el: @trustamiEl
     @sidebar = new Sidebar
       el: @sidebarEl
       externalClass: '.optSidebar'
@@ -322,6 +326,8 @@ class Main extends Spine.Controller
     unless valid
       User.logout()
     else
+      user.tmi = json.tmi
+      user.save()
       settings = @loadUserSettings(user.id)
       @initLocation(settings)
       @delay @setupView, 500

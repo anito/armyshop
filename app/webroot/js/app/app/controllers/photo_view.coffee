@@ -77,7 +77,7 @@ class PhotoView extends Spine.Controller
   active: ->
 #    return unless @isActive()
     App.showView.trigger('change:toolbarOne', ['Default'])
-    App.showView.trigger('change:toolbarTwo', ['Speichern'])
+    App.showView.trigger('change:toolbarTwo', ['Trustami'])
     @render()
     
   refresh: ->

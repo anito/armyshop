@@ -9,7 +9,7 @@ require('spine/lib/local')
 
 class User extends Spine.Model
 
-  @configure 'User', 'id', 'username', 'name', 'groupname', 'sessionid', 'hash', 'redirect'
+  @configure 'User', 'id', 'username', 'name', 'tmi', 'groupname', 'sessionid', 'hash', 'redirect'
 
   @extend Model.Local
   @include Log
@@ -45,7 +45,25 @@ class User extends Spine.Model
       success: @success
       error: @error
   
+  getTmi: (callback)->
+    $.ajax
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
+      url: base_url + 'users/getTmi'
+      type: 'GET'
+      processData: false
+      success: (json) -> callback.call @, json
+      error: @proxy @error
+    
+  setTmi: (callback)->
+    $.ajax
+      url: base_url + 'users/setTmi'
+      data: JSON.stringify(@)
+      type: 'POST'
+      success: callback
+      error: @error
+    
   success: (json) =>
+#    @log $.parseJSON(json)
     @constructor.trigger('pinger', @, $.parseJSON(json))
 
   error: (xhr, e) =>
@@ -54,5 +72,6 @@ class User extends Spine.Model
     
     @constructor.logout()
     @constructor.redirect 'users/login'
+    
       
 module?.exports = User

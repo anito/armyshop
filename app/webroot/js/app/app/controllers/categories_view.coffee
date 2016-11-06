@@ -70,7 +70,7 @@ class CategoriesView extends Spine.Controller
 #    return if @eql Root.record
     
     App.showView.trigger('change:toolbarOne', ['Default'])
-    App.showView.trigger('change:toolbarTwo', ['Speichern'])
+    App.showView.trigger('change:toolbarTwo', ['Trustami'])
     
     @render(items)
     

@@ -4,6 +4,7 @@ ModalSimpleView = require("controllers/modal_simple_view")
 HomepageView    = require("controllers/homepage_view")
 RefreshView     = require('controllers/refresh_view')
 Settings        = require("models/settings")
+User            = require("models/user")
 
 
 class App extends Spine.Controller
@@ -22,6 +23,7 @@ class App extends Spine.Controller
     '.logo-2'           : 'logo2'
     '.sidebar'          : 'sidebar'
     '#refresh'          : 'refreshEl'
+    '.trustami-badge'   : 'trustami'
 
   events:
     'mouseenter .item-menu'                     :           'background'
@@ -41,6 +43,8 @@ class App extends Spine.Controller
     'click .opt-reset'                          :           'reset'
     'click [class^="logo-"], [class*=" logo-"]' :'redirectHome'
   
+  trustamiTemplate:  (item) ->
+    $('#trustamiTemplate').tmpl item
   
   constructor: ->
     super
@@ -117,6 +121,16 @@ class App extends Spine.Controller
     flag = Settings.records[0].hidden
     @logo1.toggleClass('hide', !!flag)
     @logo2.toggleClass('hide', !!!flag)
+    
+  
+  getTrustami: ->
+    callback = (json) =>
+      tmi = $.parseJSON(json).tmi
+      @renderTrustami(tmi)
+      
+    @user = if !(user = @user) then user = new User else user
+    @user.save()
+    @user.getTmi(callback)
   
   initSidebar: ->
     isOpen = Settings.records[0].sidebaropened
@@ -135,8 +149,11 @@ class App extends Spine.Controller
     @changeNavbar c.categoryName
     @changeBackground c.categoryName
     if c.categoryName == 'defense' then @checkWarning()
-    
     @refreshView.render()
+    @getTrustami()
+    
+  renderTrustami: (tmi) ->
+    @trustami.html @trustamiTemplate tmi: tmi
     
   background: (e) ->
     e.preventDefault()

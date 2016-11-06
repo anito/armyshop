@@ -58,7 +58,7 @@ html {
 }
 body {
   color: #333;
-  background-image: url(/img/pattern.png);
+  background-image: url("/img/pattern.png");
   background-color: #666;
 	font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;
 	font-size: 0.8rem;
@@ -355,9 +355,6 @@ button.jumbo, .btn.jumbo {
   background: -webkit-gradient(linear, center top,center bottom, from($dark-from-gradient), to($dark-to-gradient))
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   color: rgb(134, 134, 134);
-  font-family: inherit;
-  font-size: inherit;
-  font-style: inherit;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.8);
   padding: 10px;
   line-height: 1.5em;
@@ -387,7 +384,7 @@ button.blue, span.blue {
   margin: 0;
 }
 .opt > span {
-  line-height: 3em;
+  line-height: 1em;
 }
 .opt > button {
   font-size: 21px;
@@ -473,10 +470,22 @@ label input[type="text"] {
 }
 .view .viewheader .header-title {
   line-height: 2em;
+  font-size: 0.5rem;
 }
 .header-title h3:first-child {
   margin-right: 10px;
 }
+.header-title .btn-group {
+  font-size: 2em;
+  margin-right: 10px;
+}
+.header-title .title-field {
+  font-size: 3em;
+  display: inline;
+  position: relative;
+  top: 6px;
+}
+
 .header .h4, .header .h3, .header .h2, .header .h1 {
   display: inline-block;
   padding: 0 6px;
@@ -548,10 +557,10 @@ textarea {
   border-width: 0 1px 0 1px;
   border-right-color: rgba(0, 0, 0, 0.3);
   background: #494949;
-  background: url(/img/draghandle_v.png), -webkit-gradient(linear, left top, right top, from($dark-from-gradient), to($dark-to-gradient));
-  background: url(/img/draghandle_v.png), -webkit-linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
-  background: url(/img/draghandle_v.png), -moz-linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
-  background: url(/img/draghandle_v.png), linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
+  background: url("/img/draghandle_v.png"), -webkit-gradient(linear, left top, right top, from($dark-from-gradient), to($dark-to-gradient));
+  background: url("/img/draghandle_v.png"), -webkit-linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
+  background: url("/img/draghandle_v.png"), -moz-linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
+  background: url("/img/draghandle_v.png"), linear-gradient(left, $dark-from-gradient, $dark-to-gradient);
   background-repeat: no-repeat;
   background-position: center;
   box-sizing:border-box;
@@ -563,10 +572,10 @@ textarea {
   border-width: 1px 0 1px 0;
   border-bottom-color: rgba(0, 0, 0, 0.7);
   background: #494949;
-  background: url(/img/draghandle_h.png), -webkit-gradient(linear, left top, left bottom, from($dark-from-gradient), to($dark-to-gradient));
-  background: url(/img/draghandle_h.png), -webkit-linear-gradient(top $dark-from-gradient, $dark-to-gradient);
-  background: url(/img/draghandle_h.png), -moz-linear-gradient(top, $dark-from-gradient, $dark-to-gradient);
-  background: url(/img/draghandle_h.png), linear-gradient(top, $dark-from-gradient, $dark-to-gradient);
+  background: url("/img/draghandle_h.png"), -webkit-gradient(linear, left top, left bottom, from($dark-from-gradient), to($dark-to-gradient));
+  background: url("/img/draghandle_h.png"), -webkit-linear-gradient(top $dark-from-gradient, $dark-to-gradient);
+  background: url("/img/draghandle_h.png"), -moz-linear-gradient(top, $dark-from-gradient, $dark-to-gradient);
+  background: url("/img/draghandle_h.png"), linear-gradient(top, $dark-from-gradient, $dark-to-gradient);
   background-repeat: no-repeat;
   background-position: center;
   box-sizing:border-box;
@@ -597,7 +606,7 @@ textarea {
   text-align: center;
 }
 .canvas {
-  background: url(/img/pattern.png) repeat  0 0;
+  background: url("/img/pattern.png") repeat  0 0;
 }
 .bg-light {
   background-color: #EFEFEF;
@@ -615,7 +624,7 @@ ul.items {
   height: 64px;
   margin: 0 auto;
   width: 104px;
-  background: url(/img/flower.png) no-repeat 0 0;
+  background: url("/img/flower.png") no-repeat 0 0;
 }
 .header {
   color: #868686;
@@ -924,7 +933,7 @@ span.inner-sub {
   font-size: 1.1em;
 }
 .sidebar .expander {
-  background: url('/img/arrow.png') no-repeat -22px 0;
+  background: url("/img/arrow.png") no-repeat -22px 0;
 }
 #preview .preview {
   border: 0 none !important;
@@ -938,19 +947,19 @@ span.inner-sub {
   z-index: 100;
 }
 .sidebar .preview .expander {
-  background: url(/img/arrow.png) no-repeat -43px 0px;
+  background: url("/img/arrow.png") no-repeat -43px 0px;
 }
 .sidebar .preview.open .expander {
-  background: url(/img/arrow.png) no-repeat -43px -23px;
+  background: url("/img/arrow.png") no-repeat -43px -23px;
 }
 .sidebar .open .expander {
-  background: url('/img/arrow.png') no-repeat -22px -23px;
+  background: url("/img/arrow.png") no-repeat -22px -23px;
 }
 .sidebar .active .expander {
-  background: url('/img/arrow.png') no-repeat 0 0;
+  background: url("/img/arrow.png") no-repeat 0 0;
 }
 .sidebar .active.open .expander {
-  background: url('/img/arrow.png') no-repeat 0 -23px;
+  background: url("/img/arrow.png") no-repeat 0 -23px;
 }
 .sidebar .parent {
   background-color: rgba(80, 80, 80, 0.7);
@@ -959,8 +968,29 @@ span.inner-sub {
   padding-bottom: 13px;
   line-height: 2.2em;
 }
-.toolbar {
-  font-size:  1em;
+[class*="toolbar-"] {
+  font-size:  1.2em;
+}
+.toolbar input {
+  margin: 0;
+  padding: 0;
+}
+input.tmi {
+  width: 90px;
+  margin: 0 4px;
+  padding: 3px;
+  text-align: right;
+}
+.trustami-badge:before {
+  content: " ";
+  display: block;
+  background-image: url(/img/trustami-logo-128.png);
+  background-size: 30px 30px;
+  position: absolute;
+  left: -20px;
+  top: 7px;
+  width: 30px;
+  height: 30px;
 }
 .opt-Preview {
   color: rgba(245,245,245,0.91);
@@ -1343,7 +1373,7 @@ li.active .sublist-item:not(.ignored) {
   paddingt: 0 5px 0 0;
 }
 nav .glyphicon {
-  line-height: 1;
+  line-height: 0.5em;
 }
 .glyphicon-set.left {
   left: 0;
@@ -1903,7 +1933,7 @@ section.addAction {
   border: 0 none !important;
 }
 .go-up {
-  background: url(/img/sprite_black2.png) 0 -42px;
+  background: url("/img/sprite_black2.png") 0 -42px;
   height: 15px;
   width: 22px;
 }
@@ -2038,13 +2068,13 @@ a.feature-list {
   text-decoration: underline;
 }
 body.cat li.parent.preview {
-  background: url(/img/home_creative.jpg) -700px -300px;
+  background: url("/img/home_creative.jpg") -700px -300px;
 }
 body.cat.defense li.parent.preview {
-  background: url(/img/defense_creative.jpg) -497px -265px;
+  background: url("/img/defense_creative.jpg") -497px -265px;
 }
 body.cat.goodies li.parent.preview {
-  background: url(/img/goodies_creative.jpg) -700px -100px;
+  background: url("/img/goodies_creative.jpg") -700px -100px;
 }
 body.cat.outdoor li.parent.preview {
   background: url("/img/outdoor_creative.jpg") -497px -365px;

@@ -16,7 +16,6 @@ Controller.ProductExtender =
     
       renderBackgrounds: (products=[]) ->
         @log 'renderBackgrounds'
-        console.log products
 #        return unless @parent.isActive()
         deferredProcess = (product) =>
           @log 'deferredProcess'
@@ -36,7 +35,6 @@ Controller.ProductExtender =
           
         products = [products] unless Array.isArray(products)
         for product in products
-          console.log product
           $.when(deferredProcess(product)).done (xhr, rec) =>
             @callback xhr, rec
 
@@ -92,16 +90,17 @@ Controller.ProductExtender =
         style = innerEl.attr('style')
 
 
-        tmplItem = innerEl.tmplItem()
+        tmplItem = itemEl.tmplItem()
         tmplItem.data = item
         tmplItem.update?()
-
+        
+        itemEl = @children().forItem(item)
         itemEl.attr('id', item.id)
         itemEl.toggleClass('active', active)
         itemEl.toggleClass('hot', hot)
-        innerEl.attr('style', style)
-        
         itemEl.toggleClass('ignored', item.ignored)
+        innerEl = $('.thumbnail', itemEl)
+        innerEl.attr('style', style)
 
         @el.sortable()
         

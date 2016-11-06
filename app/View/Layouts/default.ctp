@@ -186,6 +186,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <div class="td line"></div>
           <div class="td"></div>
         </div>
+        <div class="trustami-badge"></div>
       </div>
     </div>
   </div>

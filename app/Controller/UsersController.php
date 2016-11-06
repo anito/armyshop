@@ -9,7 +9,7 @@ class UsersController extends AppController {
   public $helpers = array('Form');
 
   function beforeFilter() {
-    $this->Auth->allowedActions = array('login', 'logout', 'ping');//, 'add', 'index', 'edit', 'view');
+    $this->Auth->allowedActions = array('login', 'logout', 'ping', 'getTmi');//, 'add', 'index', 'edit', 'view');
     $this->allowedGroups = array('Administrators', 'Managers');
     $this->layout = 'cake';
     parent::beforeFilter();
@@ -209,10 +209,43 @@ class UsersController extends AppController {
     $this->log($this->data, LOG_DEBUG);
     if($this->request->is('ajax')) {
       if(!empty($this->data) && !empty($user)) {
-        $this->set('_serialize', array_merge($this->data, array('id' => $this->Auth->user('id'), 'sessionid' => $this->Session->id(), 'success' => true)));
+        $tmi = $this->User->read('tmi', $this->Auth->user('id'));
+        $this->set('_serialize', array_merge($this->data, array('id' => $this->Auth->user('id'), 'sessionid' => $this->Session->id(), 'success' => true, 'tmi' => $tmi['User']['tmi'])));
       } else {
         $this->set('_serialize', array('success' => false));
       }
+      $this->render(SIMPLE_JSON);
+    }
+  }
+  
+  function getTmi() {
+    if($this->request->is('ajax')) {
+      
+      if ($this->Auth->user()) {
+        $user_id = $this->Auth->user('id');
+      } else {
+        $user = $this->User->find('first', array('conditions' => array('User.username' => DEFAULT_USER)));
+        $user_id = $user['User']['id'];
+      }
+      
+      $tmi = $this->User->read('tmi', $user_id);
+      $this->set('_serialize', array('tmi' => $tmi['User']['tmi']));
+      $this->render(SIMPLE_JSON);
+    }
+  }
+  
+  function setTmi() {
+    if($this->request->is('ajax')) {
+      if ($user = $this->Auth->user()) {
+        $this->User->id = $this->data['id'];
+//        $this->log($this->data['tmi'], LOG_DEBUG);
+//        $this->log($this->data['id'], LOG_DEBUG);
+//        $this->log($user, LOG_DEBUG);
+        $res = $this->User->saveField('tmi', $this->data['tmi']);
+//        $this->log($res, LOG_DEBUG);
+      }
+      
+      $this->set('_serialize', array('success' => TRUE, 'tmi' => $res));
       $this->render(SIMPLE_JSON);
     }
   }

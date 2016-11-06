@@ -14,13 +14,15 @@
 </div>
 <div id="main" class="view vbox flex">
   <header id="title" class="">
+    <a href="/" target="_blank">
     <div class="left" style="position: relative;">
       <h2 class="lehmann">
-        <span class="chopin">Admin</span>
-        <span class="lehmann-01"></span>
-        <span class="lehmann-02"></span>
+          <span class="chopin">Admin</span>
+          <span class="lehmann-01"></span>
+          <span class="lehmann-02"></span>
       </h2>
     </div>
+    </a>
     <div id="login" class="right" style="margin: 15px 5px;"></div>
   </header>
   <div id="wrapper" class="hbox flex">
@@ -49,7 +51,7 @@
         <footer class="footer">
           <div style="white-space: nowrap; overflow: hidden;">
             <div id="refresh"></div>
-            <button class="opt-CreateCategory blue hide">
+            <button class="opt-CreateCategory blue">
               <i class="glyphicon glyphicon-plus"></i>
               <span>Kategorie</span>
             </button>
@@ -68,9 +70,11 @@
         <div id="modal-addProduct" class="modal fade"></div>
         <div id="modal-addPhoto" class="modal fade"></div>
         <ul class="options hbox toolbar">
-          <nav class="toolbarOne hbox nav"></nav>
+          <nav class="toolbar toolbar-one hbox nav"></nav>
           <li class="splitter disabled flex"></li>
-          <nav class="toolbarTwo hbox nav"></nav>
+          <nav class="toolbar toolbar-two hbox nav hide"></nav>
+          <li class="splitter disabled flex"></li>
+          <nav class="toolbar toolbar-three hbox nav"></nav>
         </ul>
         <div class="contents views vbox flex fadeelement content" style="height: 0;">
           <div class="header views vbox">
@@ -747,7 +751,7 @@
           <i class="glyphicon glyphicon-chevron-down nopad"></i>
         </button>
       </div>
-      <div class="h4">
+      <div class="title-field">
         <i class="glyphicon glyphicon-th-large"></i>
         <span class="">Kategorien</span>
       </div>
@@ -783,12 +787,12 @@
         </button>
       </div>
       {{if model.record}}
-      <div class="h4">
+      <div class="title-field">
         <i class="glyphicon glyphicon-th-large"></i>
         <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
       </div>
       {{else}}
-      <div class="h4">
+      <div class="title-field">
         <i class="glyphicon glyphicon-th"></i>
         <span class="">Produkt-Katalog</span>
       </div>
@@ -843,7 +847,7 @@
             <i class="glyphicon glyphicon-chevron-down nopad"></i>
           </button>
         </div>
-        <div class="h4">
+        <div class="title-field">
           <i class="glyphicon glyphicon-trash"></i>
           <span class="">Produkt Papierkorb</span>
         </div>
@@ -871,16 +875,16 @@
           </button>
         </div>
         {{if product}}
-        <div class="h4">
+        <div class="title-field">
           <i class="glyphicon glyphicon-th-large"></i>
           <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
         </div>
-        <div class="h4">
+        <div class="title-field">
           <i class="glyphicon glyphicon-th"></i>
           <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
         </div>
         {{else}}
-        <div class="h4">
+        <div class="title-field">
           <i class="glyphicon glyphicon-picture"></i>
           <span class="">Foto-Katalog</span>
         </div>
@@ -908,7 +912,7 @@
           <i class="glyphicon glyphicon-chevron-down nopad"></i>
         </button>
       </div>
-      <div class="h4">
+      <div class="title-field">
         <i class="glyphicon glyphicon-trash"></i>
         <span class="">Foto Papierkorb</span>
       </div>
@@ -937,16 +941,16 @@
         </button>
       </div>
       {{if product}}
-      <div class="h4">
+      <div class="title-field">
         <i class="glyphicon glyphicon-th-large"></i>
         <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
       </div>
-      <div class="h4">
+      <div class="title-field">
         <i class="glyphicon glyphicon-th"></i>
         <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
       </div>
       {{else}}
-      <div class="h4">
+      <div class="title-field">
         <i class="glyphicon glyphicon-picture"></i>
         <span class="">Foto-Ansicht</span>
       </div>
@@ -1473,6 +1477,19 @@
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">
   <li data-description-id="${id}" class="pricing__feature">${description}</li>
 </script>
+
+<script id="trustamiTemplate" type="text/x-jquery-tmpl">
+  <li data-id="${id}" class="opt opt-SaveTrustami trustami-badge" style="">
+    <span class="">
+      <span>
+        <button type="submit" class="btn left opt-Count-Up dark glyphicon glyphicon-chevron-up"></button>
+        <button type="submit" class="btn right opt-Count-Down dark glyphicon glyphicon-chevron-down"></button>
+      </span>
+      <input class="tmi" type="text" placeholder="Trustami" name="tmi" value="${tmi}">
+    </span>
+  </li>
+</script>
+
 
 
 

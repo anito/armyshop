@@ -462,11 +462,19 @@ class Toolbar extends Spine.Model
           disabled: -> 
         ]
     package_16:
-      name: 'Close_'
+      name: 'Speichern'
       content:
         [
           icon: 'arrow-left'
           klass: 'opt opt-Previous'
+          type: 'span'
+        ]
+    package_17:
+      name: 'Trustami'
+      content:
+        [
+          name: '<span><button type="submit" class="btn left dark glyphicon glyphicon-chevron-up"></button><button type="submit" class="btn right dark glyphicon glyphicon-chevron-down"></button></span><input class="tmi" type="text" value=""></input>'
+          klass: 'opt opt-SaveTrustami trustami-badge'
           type: 'span'
         ]
         

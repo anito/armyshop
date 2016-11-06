@@ -39,8 +39,8 @@ class PhotosTrashView extends Spine.Controller
   active: ->
     @render()
     
-    App.showView.trigger('change:toolbarOne', ['Default', 'Help'])
-    App.showView.trigger('change:toolbarTwo', ['Speichern'])
+    App.showView.trigger('change:toolbarOne', ['Default'])
+    App.showView.trigger('change:toolbarTwo', ['Trustami'])
     
   destroyPhotos: (ids, callback) ->
     @log 'destroyPhoto'

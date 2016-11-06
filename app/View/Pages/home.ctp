@@ -4,7 +4,7 @@
   <div class="jumbotron">
     <div class="container">
       <h1 class="h1 display-3">Handelsagentur<br>Lehmann</h1>
-      <h5 class="h5 display-3">Der Versandhändler Ihres Vertrauens</h5>
+      <h5 class="h5 display-3">Der Versandhändler Ihres Veeertrauens</h5>
     </div>
   </div>
   <div class="container">
@@ -140,3 +140,13 @@
 <script id="refreshTemplate" type="text/x-tmpl">
   <a href="${location.hash}" class="opt-Refresh"><i class="glyphicon glyphicon-${icon}"></i></a>
 </script>
+
+<script id="trustamiTemplate" type="text/x-tmpl">
+  <a href="https://app.trustami.com/trustami-card/57e573efcc96c5511c8b480e" target="_blank" title="Trustami Bewertungen und Erfahrungen von Handelsagentur Lehmann">
+    <div class="trustami-inner">
+      <i class="trustami-image"></i>
+      <span class="trustami-count">${tmi}</span>
+    </div>
+  </a>
+</script>
+

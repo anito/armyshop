@@ -85,7 +85,6 @@ class ProductsList extends Spine.Controller
     
     items = @mixin items
     @[mode] @template items
-    @log items
     @renderBackgrounds items
     @exposeSelection()
     $('.dropdown-toggle', @el).dropdown()
