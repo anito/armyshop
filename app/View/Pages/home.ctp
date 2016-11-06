@@ -4,7 +4,7 @@
   <div class="jumbotron">
     <div class="container">
       <h1 class="h1 display-3">Handelsagentur<br>Lehmann</h1>
-      <h5 class="h5 display-3">Der Versandhändler Ihres Veeertrauens</h5>
+      <h5 class="h5 display-3">Der Versandhändler Ihres Vertrauens</h5>
     </div>
   </div>
   <div class="container">
