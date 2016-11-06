@@ -29,9 +29,16 @@ header::after {
   right: 200px;
   top: -5px;*/
 }
-.trustami-badge {
+.glinch .trustami-badge {
+  position: relative;
+  left: 137px;
+  top: 43px;
+  transition: all 0.3s;
+}
+.glinch.off .trustami-badge {
   position: relative;
   left: -63px;
+  transition: all 0.3s;
 }
 .trustami-count {
   position: relative;
