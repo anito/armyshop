@@ -661,13 +661,13 @@ class ShowView extends Spine.Controller
   selectNone: (e) ->
     @deselect(e)
     
-  selectInv: (e) ->
+  selectAll: (e) ->
     try
       list = @all()
       @current.select(e, list)
     catch e
     
-  selectAll: (e)->
+  selectInv: (e)->
     try
       list = @all()
       selList = @current.model.selectionList()

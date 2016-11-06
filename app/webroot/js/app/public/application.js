@@ -42687,7 +42687,7 @@ Released under the MIT License
       return this.deselect(e);
     };
 
-    ShowView.prototype.selectInv = function(e) {
+    ShowView.prototype.selectAll = function(e) {
       var error, list;
       try {
         list = this.all();
@@ -42697,7 +42697,7 @@ Released under the MIT License
       }
     };
 
-    ShowView.prototype.selectAll = function(e) {
+    ShowView.prototype.selectInv = function(e) {
       var error, list, selList;
       try {
         list = this.all();
