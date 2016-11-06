@@ -37,7 +37,7 @@ header::after {
 }
 .glinch.off .trustami-badge {
   position: relative;
-  left: -63px;
+  left: -48px;
   transition: all 0.3s;
 }
 .trustami-count {
