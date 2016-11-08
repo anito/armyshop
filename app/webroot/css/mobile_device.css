@@ -1,4 +1,4 @@
-@media only screen and (max-device-width: 800px) {
+@media only screen and (max-device-width: 576px) {
   .lehmann {
     display: none;
   }
@@ -59,6 +59,17 @@
   #container {
     margin: 133px 0px;
     z-index: 0;
+  }
+  .modal-body {
+    font-size: 1.2em;
+  }
+  .modal .modal-dialog {
+    max-width: 830px !important;
+    font-size: 2em !important; 
+  }
+  .modal .modal-dialog .modal-content{
+    background-color: #f1eee3;
+    color: #292626;
   }
   li.nav-item:first-child {
     margin-left: 20px;
@@ -297,13 +308,6 @@
     max-width: 200px;
     text-align: center;
     line-height: 1.7;
-  }
-  .modal-body {
-    font-size: 1.2em;
-  }
-  .modal .modal-dialog .modal-content{
-    background-color: #f1eee3;
-    color: #292626;
   }
   .right {
     float: right;
