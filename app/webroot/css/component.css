@@ -1,4 +1,15 @@
-/* Common styles */
+@media screen and (min-width:800px) {
+  .pricing__item {
+    -webkit-flex: 0 1 300px;
+    flex: 0 1 300px;
+  }
+}
+@media screen and (max-width:800px) {
+  .pricing__item {
+    -webkit-flex: 1 1 300px;
+    flex: 1 1 300px;
+  }
+}
 
 .pricing {
   display: -webkit-flex;
@@ -14,6 +25,7 @@
 
 .pricing__item {
   position: relative;
+  margin: 0.5em;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
@@ -21,8 +33,6 @@
   -webkit-align-items: stretch;
   align-items: stretch;
   text-align: center;
-  -webkit-flex: 0 1 300px;
-  flex: 0 1 300px;
   height: 420px;
 }
 
@@ -40,7 +50,6 @@
 /* Individual styles */
 /* norbu */
 .pricing--norbu .pricing__item {
-  margin: .5em;
   color: #fff;
   cursor: default;
   border: 1px solid rgba(255,255,255,0.4);

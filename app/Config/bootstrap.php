@@ -149,6 +149,9 @@ if (!defined('TOPLEVEL')) {
 if (!defined('SIMPLE_JSON')) {
 	define('SIMPLE_JSON', '/Elements/simple_json');
 }
+if (!defined('FLASH_JSON')) {
+	define('FLASH_JSON', '/Elements/flash_json');
+}
 if (!defined('SALT')) {
     define('SALT', 'urrasjksdjkbsdakbjvgikjbgfiabrg');
 }

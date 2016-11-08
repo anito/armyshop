@@ -28,17 +28,15 @@
             </div>
           </div>
           <footer>
-            <span class="info"><label>keine Statusmeldungen</label></span
-            <span>
-              <fieldset>
-                <?php echo $this->Form->hidden('redirect', array('value' => $redirect)); ?>
-                <?php echo $this->Form->button('Gast', array('type'=>'button', 'class' => array('light', 'hide', 'guest'), 'id' => 'guestLogin')); ?>
-                <?php echo $this->Form->button('Abbrechen', array('type'=>'submit', 'class' => 'light', 'id' => 'cancel')); ?>
-                <?php echo $this->Form->button('<i class="glyphicon glyphicon-log-in"></i><span>  Login</span>', array('type'=>'submit', 'class' => 'light', 'label' => array(
-                 TRUE
-                ))); ?>
-              </fieldset>
-            </span>
+            <label class="left"><span class="status"></span></label>
+            <fieldset>
+              <?php echo $this->Form->hidden('redirect', array('value' => $redirect)); ?>
+              <?php echo $this->Form->button('Gast', array('type'=>'button', 'class' => array('light', 'hide', 'guest'), 'id' => 'guestLogin')); ?>
+              <?php echo $this->Form->button('Abbrechen', array('type'=>'submit', 'class' => 'light', 'id' => 'cancel')); ?>
+              <?php echo $this->Form->button('<i class="glyphicon glyphicon-log-in"></i><span>  Login</span>', array('type'=>'submit', 'class' => 'light', 'label' => array(
+               TRUE
+              ))); ?>
+            </fieldset>
           </footer>
         </div>
       </div>
@@ -67,14 +65,15 @@
   <img src="/img/ajax-loader-light.gif">
   {{/if}}
   {{/if}}
-  {{if error}}
-  <h3>Sorry... {{if xhr.status==403}}Your session seems to be over{{else}}Something went wrong{{/if}}</h3>
-  {{/if}}
 </script>
 
-<script type="text/x-jquery-tmpl" id="infoTemplate">
-  {{if record}}
-  <span style="display: block;">Server action failed!</span>
-  {{/if}}
+<script type="text/x-jquery-tmpl" id="statusTemplate">
+  <label>
+    {{if statusText}}
+    <span style="display: block;">${statusText}</span>
+    {{else}}
+    keine Statusmeldungen  
+    {{/if}}
+  </label>
 </script>
 <!--{json: {flash: ...}} {error: {record: {}, xhr: {}, statusText: {}, error:{}}}-->

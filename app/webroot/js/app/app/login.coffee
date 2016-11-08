@@ -1,6 +1,6 @@
 Spine             = require("spine")
 $                 = Spine.$
-SpineError        = require("models/spine_error")
+Flash             = require("models/flash")
 User              = require("models/user")
 
 class Login extends Spine.Controller
@@ -8,11 +8,9 @@ class Login extends Spine.Controller
   elements:
     'form'                      : 'form'
     '.flash'                    : 'flashEl'
-    '.info'                     : 'infoEl'
+    '.status'                   : 'statusEl'
     '#UserPassword'             : 'passwordEl'
     '#UserUsername'             : 'usernameEl'
-    '#flashTemplate'            : 'flashTemplate'
-    '#infoTemplate'             : 'infoTemplate'
     '#login .dialogue-content'  : 'contentEl'
     '#loader'                   : 'loader'
     '.guest'                    : 'btnGuest'
@@ -22,22 +20,23 @@ class Login extends Spine.Controller
     'click #guestLogin' : 'guestLogin'
     'click #cancel'     : 'cancel'
 
-  template: (el, item) ->
-    el.tmpl(item)
+  flashTemplate: (item) ->
+    $('#flashTemplate').tmpl item
+    
+  statusTemplate: (item) ->
+    $('#statusTemplate').tmpl item
     
   constructor: (form) ->
     super
-    SpineError.fetch()
-    lastError = SpineError.first() if SpineError.count()
-    if lastError
-      @render @flashEl, @flashTemplate, lastError 
-      @render @infoEl, @infoTemplate, lastError if lastError.record
-    SpineError.destroyAll()
+    Flash.fetch()
+    flash = Flash.first() if Flash.count()
+    @flash flash if flash
+    Flash.destroyAll()
     
     @renderGuestLogin()
     
-  render: (el, tmpl, item) ->  
-    el.html @template tmpl, item
+  render: (el, stuff) ->  
+    el.html stuff
     @el
     
   submit: =>
@@ -54,21 +53,30 @@ class Login extends Spine.Controller
     @usernameEl.val('').focus()
     
   success: (json) =>
+    json = $.parseJSON json
     User.fetch()
     User.destroyAll()
-    user = new User @newAttributes($.parseJSON json)
+    user = new User @newAttributes(json)
     user.save()
-    @render(@flashEl, @flashTemplate, json)
-    delayedFunc = ->
+    @flash json
+    fadeFunc = ->
+      @contentEl.addClass('fade')
+    redirectFunc = ->
       User.redirect 'admin'+location.hash
-    @contentEl.addClass('fade500')
-    @delay delayedFunc, 500
+    @delay fadeFunc, 2000
+    @delay redirectFunc, 2000
 
-  error: (xhr) =>
-    json = $.parseJSON(xhr.responseText)
+  error: (xhr, err) =>
+    flash = $.parseJSON(xhr.responseText)
+    flash.status = xhr.status
+    flash.statusText = xhr.statusText
+    @flash flash
+    
+  flash: (flash) ->
     @oldMessage = @flashEl.html() unless @oldMessage
     delayedFunc = -> @flashEl.html @oldMessage
-    @render @flashEl, @flashTemplate, json
+    @render @flashEl, @flashTemplate flash
+    @render @statusEl, @statusTemplate flash
     @delay delayedFunc, 2000
     
   newAttributes: (json) ->

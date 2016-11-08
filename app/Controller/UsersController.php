@@ -49,6 +49,7 @@ class UsersController extends AppController {
         if($this->Auth->login()) {
 //          $this->log($this->Session->id());
 //          $this->log($this->data, LOG_DEBUG);
+          $this->Flash->success(__('Erfolgreich angemeldet als ' . $this->Auth->user('name') ));
           $this->set('_serialize', array_merge($this->data['User'], array(
               'id' => $this->Auth->user('id'),
               'username' => $this->Auth->user('username'),
@@ -56,24 +57,21 @@ class UsersController extends AppController {
               'password' => '',
               'sessionid' => $this->Session->id(),
               'groupname' => $this->_groupname(),
-              'flash' => '<strong style="color:#49AFCD">You\'re successfully logged in as ' . $this->Auth->user('name') . '</strong>',
               'success' => 'true',
               'redirect' => $this->data['User']['redirect']
           )));
-          $this->log($this->Session->read('Auth.redirect'), LOG_DEBUG);
-          
         } else {
+          $this->Flash->error(__('Login fehlgeschlagen'));
           $this->response->header("WWW-Authenticate: Negotiate");
-          $this->set('_serialize', array_merge($this->data, array(
+          $this->set('_serialize', array_merge($this->data['User'], array(
               'id' => '',
               'username' => '',
               'name' => '',
               'password' => '',
               'sessionid' => '',
-              'flash' => '<strong style="color:red">Login failed</strong>'
               )));
         }
-        $this->render(SIMPLE_JSON);
+        $this->render(FLASH_JSON);
       } else {
         if($this->isAuthGroup()) {
           $this->Auth->login();
@@ -82,20 +80,21 @@ class UsersController extends AppController {
     } else {
       $this->set('redirect', $this->Auth->redirect(array('controller' => 'users', 'action' => 'index')));
       $this->layout = 'login_layout';
-//      $this->redirect(array('controller' => 'users', 'action' => 'login'));
     }
   }
   
   function logout() {
     $this->Auth->logout();
-//    $this->log($this->Session->id());
-//    $this->log($this->Session);
     if (!$this->request->is('ajax')) {
+//    $this->log($this->Session->id());
+      $this->Flash->error(__('Anmeldung erforderlich'));
       $this->redirect(array('controller' => 'users', 'action' => 'login'));
     } else {
-      $json = array_merge($this->data['User'], array('id' => '', 'username' => '', 'name' => '', 'password' => '', 'sessionid' => '', 'flash' => '<strong>You\'re logged out successfully</strong>'));
+      $this->Flash->success(__('Sie wurden ausgelogged'));
+//      $this->redirect(array('controller' => 'users', 'action' => 'login'));
+      $json = array_merge($this->data, array('id' => '', 'username' => '', 'name' => '', 'password' => '', 'sessionid' => ''));
       $this->set('_serialize', $json);
-      $this->render(SIMPLE_JSON);
+      $this->render(FLASH_JSON);
     }
   }
 
@@ -113,7 +112,6 @@ class UsersController extends AppController {
   function index() {
     if (!$this->isAuthGroup()) {
       $this->redirect(array('action' => 'login'));
-      $this->log('no Authgroup: index');
     }
     $this->User->recursive = 0;
     $this->set('users', $this->paginate());
@@ -206,10 +204,11 @@ class UsersController extends AppController {
   
   function ping() {
     $user = $this->Auth->user();
-    $this->log($this->data, LOG_DEBUG);
+//    $this->log($this->Session->read(), LOG_DEBUG);
     if($this->request->is('ajax')) {
       if(!empty($this->data) && !empty($user)) {
         $tmi = $this->User->read('tmi', $this->Auth->user('id'));
+        $this->Flash->success('That\'s a pain');
         $this->set('_serialize', array_merge($this->data, array('id' => $this->Auth->user('id'), 'sessionid' => $this->Session->id(), 'success' => true, 'tmi' => $tmi['User']['tmi'])));
       } else {
         $this->set('_serialize', array('success' => false));
@@ -238,11 +237,7 @@ class UsersController extends AppController {
     if($this->request->is('ajax')) {
       if ($user = $this->Auth->user()) {
         $this->User->id = $this->data['id'];
-//        $this->log($this->data['tmi'], LOG_DEBUG);
-//        $this->log($this->data['id'], LOG_DEBUG);
-//        $this->log($user, LOG_DEBUG);
         $res = $this->User->saveField('tmi', $this->data['tmi']);
-//        $this->log($res, LOG_DEBUG);
       }
       
       $this->set('_serialize', array('success' => TRUE, 'tmi' => $res));

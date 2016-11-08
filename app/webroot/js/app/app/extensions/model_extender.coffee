@@ -2,7 +2,7 @@ Spine                     = require("spine")
 $                         = Spine.$
 Model                     = Spine.Model
 Log                       = Spine.Log
-SpineError                = require("models/spine_error")
+Flash                     = require("models/flash")
 
 Model.Extender =
 
@@ -124,27 +124,28 @@ Model.Extender =
         ret
       
       successHandler: (data, status, xhr) ->
+#        flash = flash = Flash.first()? or flash.updateAttributes()
         
       errorHandler: (record, xhr, statusText, error) ->
         status = xhr.status
         unless status is 200
-          error = new SpineError
+          flash = new Flash
             record      : record
             xhr         : xhr
             statusText  : statusText
             error       : error
 
-          error.save()
+          flash.save()
           User.redirect 'users/login'
           
       customErrorHandler: (record, xhr) ->
         status = xhr.status
         unless status is 200
-          error = new Error
+          flash = new Flash
             flash       : '<strong style="color:red">Login failed</strong>'
             xhr         : xhr
 
-          error.save()
+          flash.save()
           User.redirect 'users/login'
           
       contains: -> []

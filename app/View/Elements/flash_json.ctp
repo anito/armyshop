@@ -7,5 +7,5 @@ header('Content-Type: text/x-json; charset=utf-8');
 header("X-JSON: ");
 
 $flash = array('flash' => $this->Session->flash());
-//$_serialize = array_merge($flash, $_serialize);
+$_serialize = array_merge($flash, $_serialize);
 echo $json = json_encode($_serialize);

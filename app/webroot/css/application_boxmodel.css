@@ -629,19 +629,17 @@ div.dialogue div.dialogue-scroll {
   float: left;
   padding: 8px 0 0 40px;
 }
-.fade500 {
-  -webkit-transition: opacity 0.5s linear;
-  -moz-transition: opacity 0.5s linear;
-  -ms-transition: opacity 0.5s linear;
-  -o-transition: opacity 0.5s linear;
-  transition: opacity 0.5s linear;
-  opacity: 0;
+.message {
+  
 }
-.fadein500 {
-  -webkit-transition: opacity 0.5s linear;
-  -moz-transition: opacity 0.5s linear;
-  -ms-transition: opacity 0.5s linear;
-  -o-transition: opacity 0.5s linear;
-  transition: opacity 0.5s linear;
-  opacity: 1;
+.error {
+  color: red;
+}
+.success {
+  color: #2c993e;
+}
+.status label {
+  padding: 7px 0 0 61px;
+  font-weight: lighter;
+  font-style: normal;
 }

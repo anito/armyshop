@@ -7,7 +7,7 @@
       <h5 class="h5 display-3">Der Versandhändler Ihres Vertrauens</h5>
     </div>
   </div>
-  <div class="container">
+  <div class="">
     <!-- Example row of columns -->
     <ul class="row ca-menu pricing">
       <li id="defense-item-menu" class="item-menu  pricing__item">
@@ -113,12 +113,12 @@
 
 <script id="norbuPricingTemplate" type="text/x-tmpl">
   {{if !product.ignored}}
-  <div class="pricing__item">
+  <div id="${product.id}" class="pricing__item">
     <h3 class="pricing__title">${$().name(product.title, 60)}</h3>
     <p class="pricing__sentence">${$().name(product.subtitle, 80)}</p>
     <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
-      <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">
-        {{tmpl($item.data.photo) "#norbuImageListTemplate" }}
+      <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="slides" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">
+        {{tmpl($item.data.photos) "#norbuImageListTemplate" }}
       </a>
     </div>
     <div class="pricing__feature-list">
@@ -150,3 +150,6 @@
   </a>
 </script>
 
+<!--@media screen and (min-width:320px) and (max-width:480px){
+-->
+}

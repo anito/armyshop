@@ -134,7 +134,6 @@ Controller.Drag =
         target = t = Spine.dragItem.target = el.data('tmplItem')?.data or @model.record
         source = s = Spine.dragItem.source
         origin = o = Spine.dragItem.originRecord
-        console.log t.screenname
 #        console.log s
 #        console.log o
         Spine.dragItem.closest?.removeClass('over nodrop')
@@ -205,27 +204,18 @@ Controller.Drag =
         tid = target?.id
         sid = source?.id
         oid = origin?.id
-        console.log tid if !(tid is oid)
-#        console.log sid
-#        console.log oid
         return false unless (tid? and sid?) or (tid is sid)
         switch source.constructor.className
           when 'Product'
             if ['Category', 'ProductsTrash'].indexOf(target.constructor.className) is -1
-              console.log 'failed 1'
               return false
             res2 = (oid is tid)
-            console.log res2
             if res2
-              console.log 'failed 2'
               return false
-            console.log 'passed 1'
             items = CategoriesProduct.filter(target.id, associationForeignKey: 'category_id')
             for item in items
               if item.product_id is source.id
-                console.log 'failed 2'
                 return false
-            console.log 'passed 2'
             return true
             
           when 'Photo'
@@ -233,13 +223,11 @@ Controller.Drag =
               return false
             if (oid is tid)
               return false
-            console.log 'Pho2'
 
             items = ProductsPhoto.filter(target.id, associationForeignKey: 'product_id')
             for item in items
               if item.photo_id is sid
                 return false
-            console.log 'Pho3'
             return true
           
           else return false

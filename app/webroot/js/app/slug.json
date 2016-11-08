@@ -22,7 +22,7 @@
       ],
       "libs"    : [
         "lib/jade_runtime.js",
-        "lib/jquery-1.9.1.js",
+        "lib/jquery-latest.min.js",
         "lib/jquery.tmpl.js",
         "lib/jquery-ui-1.10.3.custom.js",
         "lib/bootstrap.js",

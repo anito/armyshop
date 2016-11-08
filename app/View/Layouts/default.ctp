@@ -30,8 +30,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->meta('http-equiv', "x-ua-compatible");
 		echo $this->Html->meta('icon');
 
-    echo $this->Html->css('jquery-ui-1.8.16.custom');
-    echo $this->Html->css('bootstrap.min');
+//    echo $this->Html->css('jquery-ui-1.8.16.custom');
+    echo $this->Html->css('bootstrap');
     echo $this->Html->css('bootstrap_glyphicons');
     echo $this->Html->css("websymbols");
     echo $this->Html->css("component");
@@ -42,11 +42,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("lehmann");
     echo $this->Html->css("demo");
     echo $this->Html->css("style7");
-    echo $this->Html->css("jumbotron");
     echo $this->Html->css("spine");
     
 //    jQuery first, then Tether, then Bootstrap JS.
     echo $this->Html->script('app/public/application');
+    echo $this->Html->script("app/lib/jquery.slides");
 
     echo $this->Html->scriptStart();
     ?>
@@ -117,7 +117,23 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <div class="logo logo-2 hide"></div>
   </div>
   <header id="header" class="header">
-    <nav class="navbar navbar-static-top navbar-dark bg-inverse">
+    <nav class=" navbar navbar-sm navbar-static-top navbar-dark bg-inverse">
+      <ul class="nav navbar-nav items">
+        <li id="" class="nav-item home">
+          <a class="nav-link" href="/#/home/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li id="" class="nav-item defense">
+          <a class="nav-link" href="/#/defense/">Selbstschutz</a>
+        </li>
+        <li id="" class="nav-item outdoor">
+          <a class="nav-link" href="/#/outdoor/">Outdoor</a>
+        </li>
+        <li id="" class="nav-item goodies">
+          <a class="nav-link" href="/#/goodies/">Restposten</a>
+        </li>
+      </ul>
+    </nav>
+    <nav class="navbar navbar-lg navbar-static-top navbar-dark bg-inverse">
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
           <a class="nav-link" href="/#/home/">Home <span class="sr-only">(current)</span></a>
@@ -130,11 +146,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         </li>
         <li id="" class="nav-item goodies">
           <a class="nav-link" href="/#/goodies/">Restposten & Specials</a>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav items">
-        <li id="" class="nav-item opt-sidebar">
-          <a class="nav-link hide" href="#">Lieferung</a>
         </li>
       </ul>
     </nav>
@@ -151,7 +162,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <div class="td"></div>
         </div>
         <div class="tr">
-          <div class="td"><img src="/img/dolar.png"></div>
+          <div class="td"><img src="/img/dollar.png"></div>
           <div class="td">
             Bezahlen Sie bequem per PayPal in unserem Online-Partnershop. Informieren Sie sich auch über unsere anderen <a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a>
           </div>
@@ -162,7 +173,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         </div>
         <div class="tr">
           <div class="td"><img src="/img/truck.png"></div>
-          <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs frei Haus. <a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
+          <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs <span style="color: white;">frei Haus.</span><br><a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
         </div>
         <div class="tr">
           <div class="td"></div>

@@ -2,8 +2,10 @@ Spine     = require("spine")
 $         = Spine.$
 Log       = Spine.Log
 Model     = Spine.Model
+Flash     = require("models/flash")
 Settings  = require("models/settings")
 Clipboard = require("models/clipboard")
+Extender  = require("extensions/model_extender")
 
 require('spine/lib/local')
 
@@ -11,6 +13,7 @@ class User extends Spine.Model
 
   @configure 'User', 'id', 'username', 'name', 'tmi', 'groupname', 'sessionid', 'hash', 'redirect'
 
+  @extend Extender
   @extend Model.Local
   @include Log
   
@@ -21,14 +24,14 @@ class User extends Spine.Model
     if user = @first()
       user.confirm()
     else
-      alert 'Ungültige Authorisierung.'
+      alert 'Authorisierung fehlgeschlagen.\nBitte melden Sie sich erneut an.'
       @redirect 'users/login'
     
   @logout: ->
+    @user.logout() if @user?
     @destroyAll()
     Clipboard.destroyAll()
     $(window).off()
-    @redirect 'logout'
   
   @test: -> alert 'test'
   
@@ -37,13 +40,29 @@ class User extends Spine.Model
 
   init: (instance) ->
     
+  logout: ->
+    $.ajax
+      url: base_url + 'users/logout'
+      data: JSON.stringify(@)
+      type: 'POST'
+      success: @logoutRedirect
+      error: @errorHandler
+  
+  logoutRedirect: (json) ->
+    json = $.parseJSON json
+    console.log json
+    Flash.fetch()
+    flash = Flash.first() or new Flash
+    flash.updateAttributes json
+    User.redirect 'logout'
+  
   confirm: ->
     $.ajax
       url: base_url + 'users/ping'
       data: JSON.stringify(@)
       type: 'POST'
       success: @success
-      error: @error
+      error: @proxy @errorHandler
   
   getTmi: (callback)->
     $.ajax
@@ -52,7 +71,7 @@ class User extends Spine.Model
       type: 'GET'
       processData: false
       success: (json) -> callback.call @, json
-      error: @proxy @error
+      error: @proxy @errorHandler
     
   setTmi: (callback)->
     $.ajax
@@ -60,18 +79,9 @@ class User extends Spine.Model
       data: JSON.stringify(@)
       type: 'POST'
       success: callback
-      error: @error
+      error: @proxy @errorHandler
     
   success: (json) =>
-#    @log $.parseJSON(json)
     @constructor.trigger('pinger', @, $.parseJSON(json))
 
-  error: (xhr, e) =>
-    console.log xhr
-    console.log e
-    
-    @constructor.logout()
-    @constructor.redirect 'users/login'
-    
-      
-module?.exports = User
+module?.exports = Model.User = User

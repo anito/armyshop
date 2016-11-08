@@ -2,7 +2,7 @@ Spine                     = require("spine")
 $                         = Spine.$
 Model                     = Spine.Model
 Log                       = Spine.Log
-SpineError                = require("models/spine_error")
+Flash                     = require("models/flash")
 
 Model.Extender =
 
@@ -120,7 +120,7 @@ Model.Extender =
       errorHandler: (record, xhr, statusText, error) ->
         status = xhr.status
         unless status is 200
-          error = new SpineError
+          error = new Flash
             record      : record
             xhr         : xhr
             statusText  : statusText

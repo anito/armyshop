@@ -1,5 +1,6 @@
 Spine                   = require("spine")
 $                       = Spine.$
+Model                   = Spine.Model
 User                    = require('models/user')
 Config                  = require('models/config')
 Drag                    = require('extensions/drag')
@@ -10,7 +11,7 @@ ProductsTrash           = require('models/products_trash')
 Category                = require('models/category')
 Toolbar                 = require("models/toolbar")
 Settings                = require('models/settings')
-SpineError              = require("models/spine_error")
+Flash                   = require("models/flash")
 Clipboard               = require("models/clipboard")
 ProductsTrash           = require("models/products_trash")
 MainView                = require("controllers/main_view")
@@ -102,7 +103,7 @@ class Main extends Spine.Controller
       'DESTROY_CATEGORY': () ->
         '\nSoll die Kategorie entfernt werden?\n\n'
       'DESTROY_CATEGORY_NOT_ALLOWED': () ->
-        '\nGeschützte Kategorien sollten nicht gelöscht werden!\n\n'
+        '\nGeschützte Kategorie!\n\n'
       'METHOD_NOT_SUPPORTED': () ->
         '\nFunktion momentan nicht verfügbar!\n\n'
       'NO_CAT_FOR_UPLOAD': () ->
@@ -221,38 +222,32 @@ class Main extends Spine.Controller
         Model.Root.updateSelection params.cid or []
         Category.updateSelection params.pid or []
         Product.updateSelection params.iid or []
-#        alert '1'
         buffer = Photo.renderBuffer()
         @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
       '/category/:cid/:pid/:iid': (params) ->
         Model.Root.updateSelection params.cid or []
         if (params.pid is 'pid')
-#          alert '3'
           Category.updateSelection params.iid or []
           buffer = Product.renderBuffer()
           @showView.trigger('active', @showView.productsView, buffer || Product.buffer)
         else
-#          alert '4'
           Category.updateSelection params.pid or []
           Product.updateSelection params.iid or []
           buffer = Photo.renderBuffer()
           @showView.trigger('active', @showView.photoView, buffer || Photo.buffer)
       '/category/:cid/:pid': (params) ->
         if (params.cid is 'cid')
-#          alert '5'
           buffer = Category.renderBuffer()
           @showView.trigger('active', @showView.categoriesView, buffer || Category.buffer)
           
           Model.Root.updateSelection params.pid or []
         else
-#          alert '6'
           Model.Root.updateSelection params.cid or []
           Category.updateSelection params.pid or []
           Product.updateSelection []
           buffer = Photo.renderBuffer()
           @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
       '/category/:cid': (params) ->
-#        alert '7'
         Model.Root.updateSelection params.cid or []
         Category.updateSelection()
         buffer = Product.renderBuffer()
@@ -266,15 +261,9 @@ class Main extends Spine.Controller
         @sidebar.filter {}, params.sid
         @showView.trigger('active', @showView.productsView)
       '/trash/products/:id': (params) ->
-#        Root.updateSelection []
-#        Category.updateSelection []
         items = Product.filter(true, func: 'selectDeleted')
-        console.log items
         @showView.trigger('active', @showView.productsTrashView, items)
       '/trash/photos/:id': (params) ->
-#        Root.updateSelection []
-#        Category.updateSelection []
-#        Product.updateSelection()
         items = Photo.unusedPhotos(true)
         @showView.trigger('active', @showView.photosTrashView, items)
       '/wait/*glob': (params) ->
@@ -321,15 +310,16 @@ class Main extends Spine.Controller
     Model.Root.current root
       
   validate: (user, json) ->
-    valid = user.sessionid is json.sessionid
-    valid = user.id is json.id and valid
+    valid = (usid = user.sessionid) and (jsid = json.sessionid) and !!(usid) and !!(jsid)
     unless valid
       User.logout()
     else
+      @user = User.user = user
       user.tmi = json.tmi
       user.save()
       settings = @loadUserSettings(user.id)
       @initLocation(settings)
+#      @setInterval()
       @delay @setupView, 500
   
   loadUserSettings: (id) ->
@@ -347,6 +337,17 @@ class Main extends Spine.Controller
     return if location.hash
     hash = if h = settings.hash then h else '#/overview/'
     @navigate hash
+    
+  setInterval: ->
+    @clearInterval()
+    @uuid = User.uuid()
+    @uuid = setInterval User.proxy(User.ping), 5000
+    
+  test: -> console.log 'Test'
+    
+  clearInterval: ->
+    console.log @uuid if @uuid
+    clearInterval(@uuid) if @uuid
     
   storeHash: ->
     return unless settings = Settings.loadSettings()
@@ -462,6 +463,8 @@ class Main extends Spine.Controller
   key: (e) ->
     code = e.charCode or e.keyCode
     type = e.type
+    
+    @clearInterval()
     
     el=$(document.activeElement)
     isFormfield = $().isFormElement(el)

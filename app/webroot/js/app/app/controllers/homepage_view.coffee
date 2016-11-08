@@ -48,12 +48,12 @@ class HomepageView extends Spine.Controller
     products = Category.products @current.id
     items.push @item(product) for product in products
     @list.render(items)
-    (@callDeferred item.photo, @uriSettings(300, 300), @proxy @callback) for item in items
+    (@callDeferred item.photos, @uriSettings(300, 300), @proxy @callback) for item in items
     
   item: (item) ->
     product: item
     descriptions: Description.filterSortByOrder(item.id)
-    photo: Product.photos(item.id).first()
+    photos: Product.photos(item.id)[0..0]
     
   callback: (json, items) ->
     result = for jsn in json

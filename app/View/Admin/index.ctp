@@ -51,7 +51,7 @@
         <footer class="footer">
           <div style="white-space: nowrap; overflow: hidden;">
             <div id="refresh"></div>
-            <button class="opt-CreateCategory blue">
+            <button class="opt-CreateCategory blue hide">
               <i class="glyphicon glyphicon-plus"></i>
               <span>Kategorie</span>
             </button>
