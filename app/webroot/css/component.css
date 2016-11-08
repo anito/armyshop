@@ -24,7 +24,8 @@
 }
 
 .pricing__item {
-  position: relative;
+  /* position: relative; */
+  ve; */
   margin: 0.5em;
   display: -webkit-flex;
   display: flex;
@@ -34,6 +35,9 @@
   align-items: stretch;
   text-align: center;
   height: 420px;
+  /* flex: 1 300; */
+  margin: 1em;
+  width: 44em;
 }
 
 .pricing__feature-list {

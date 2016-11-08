@@ -34,7 +34,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css('bootstrap');
     echo $this->Html->css('bootstrap_glyphicons');
     echo $this->Html->css("websymbols");
-    echo $this->Html->css("component");
     echo $this->Html->css("font");
     echo $this->Html->css("flaticon");
     echo $this->Html->css("muli");
@@ -42,6 +41,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("lehmann");
     echo $this->Html->css("demo");
     echo $this->Html->css("style7");
+    echo $this->Html->css("component");
+    echo $this->Html->css("mobile_device", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 667px) '));
     echo $this->Html->css("spine");
     
 //    jQuery first, then Tether, then Bootstrap JS.
