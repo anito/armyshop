@@ -67,7 +67,7 @@
           App.showView.toggleDraghandle('');
         }, 2000)
         setTimeout(function(){
-          App.sidebar.toggleDraghandle('');
+          //App.sidebar.toggleDraghandle('');
         }, 2500)
         setTimeout(function(){
           //App.previewView.togglePreview();
