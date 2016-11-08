@@ -15,6 +15,41 @@
     margin: 65px 0;
     position: relative;
   }
+  header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+  .header {
+    line-height: 24px;
+    height: 70px;
+    font-size: 11px;
+    background: #000;
+    opacity: 1;
+    text-transform: uppercase;
+    z-index: 999;
+    -moz-box-shadow: 1px 0px 2px #000;
+    -webkit-box-shadow: 1px 0px 2px #000;
+    box-shadow: 1px 0px 2px #000;
+  }
+  .header a{
+    padding: 0px 10px;
+    letter-spacing: 1px;
+    color: #ddd;
+    display: block;
+    float: left;
+  }
+  .header a:hover {
+    color: #fff;
+  }
+  .header span.right {
+    float: right;
+  }
+  .header span.right a {
+    float: none;
+    display: inline;
+  }
   h1.display-3 {
     font-size: 2em;
   }
@@ -22,8 +57,11 @@
     font-size: 0.7em;
   }
   #container {
-    margin: 151px 0px;
+    margin: 133px 0px;
     z-index: 0;
+  }
+  li.nav-item:first-child {
+    margin-left: 20px;
   }
   .ca-sub {
     /*display: none;*/
@@ -139,11 +177,6 @@
     width: 100px;
     text-align: center;
   }
-  .navbar .nav-item a {
-    max-width: 200px;
-    text-align: center;
-    line-height: 1.7;
-  }
   .btn.btn-lg {
     font-size: 1.2rem;
   }
@@ -190,9 +223,6 @@
   .sidebar {
     background-image: url(/img/background.png);
   }
-  li.nav-item:first-child {
-    margin-left: 260px;
-  }
   .clr{
     clear: both;
   }
@@ -212,42 +242,6 @@
     font-style:italic;
     font-family:Georgia, serif;
     padding-top:5px;
-  }
-  /* Header Style */
-  header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-  }
-  .header {
-    line-height: 24px;
-    height: 70px;
-    font-size: 11px;
-    background: #000;
-    opacity: 1;
-    text-transform: uppercase;
-    z-index: 999;
-    -moz-box-shadow: 1px 0px 2px #000;
-    -webkit-box-shadow: 1px 0px 2px #000;
-    box-shadow: 1px 0px 2px #000;
-  }
-  .header a{
-    padding: 0px 10px;
-    letter-spacing: 1px;
-    color: #ddd;
-    display: block;
-    float: left;
-  }
-  .header a:hover {
-    color: #fff;
-  }
-  .header span.right {
-    float: right;
-  }
-  .header span.right a {
-    float: none;
-    display: inline;
   }
   .hide {
     display: none !important;
@@ -298,6 +292,11 @@
     line-height: 55px;
     position: relative;
     padding: 1rem 1rem 1.1rem;
+  }
+  .navbar .nav-item a { 
+    max-width: 200px;
+    text-align: center;
+    line-height: 1.7;
   }
   .modal-body {
     font-size: 1.2em;
@@ -573,15 +572,15 @@ h5.display-3 {
 }
 .navbar {
   border-radius: 0 !important;
-  font-size: 3.2em;
+  font-size: 2.3em;
   position: fixed;
   top: 0;
   z-index: 100;
   width: 100%;
-  height: 3.7em;
+  height: 5.3em;
 }
 #header ul li {
-  padding: 30px 17px;
+  padding: 30px 23px 0;
 }
 .pricing {
   display: -webkit-flex;
@@ -607,7 +606,7 @@ h5.display-3 {
   align-items: stretch;
   text-align: center;
   height: 44em;
-  width: 96%;
+  width: 103%;
 }
 
 .pricing__feature-list {
@@ -730,13 +729,10 @@ h5.display-3 {
 .pricing--norbu .pricing__feature-list {
   font-size: .8em;
   margin: 14em 0em 2em 0;
-  padding: 1em 10px 1em;
+  padding: 5px 45px 5px;
   list-style: none;
   background: rgba(250,250,250,1);
   height: 13em;
-  px; */
-  position: absolute;
-  roll;
   box-shadow: inset 0px 0px 1px rgba(0,0,0,.5);
   overflow: auto;
 }
@@ -759,7 +755,6 @@ h5.display-3 {
   margin: 0em 1em;
   padding: 0.4em 3.1em;
   border-radius: 0.2em;
-   0 */
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
   font-size: 2em;
