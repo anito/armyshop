@@ -749,11 +749,12 @@ h5.display-3 {
 .pricing--norbu .pricing__action {
   flex: none;
   margin: 0 0.4em 0.5em;
-  padding: 0.4em 3.75em;
+  padding: 0.4em 0;
   border-radius: 0.2em;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
   font-size: 2em;
+  width: 94%;
   position: absolute;
   bottom: 0em;
 }
