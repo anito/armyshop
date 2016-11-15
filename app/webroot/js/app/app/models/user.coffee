@@ -64,7 +64,7 @@ class User extends Spine.Model
       success: @success
       error: @proxy @errorHandler
   
-  getTmi: (callback)->
+  getTmi: (callback) ->
     $.ajax
       headers: {'X-Requested-With': 'XMLHttpRequest'}
       url: base_url + 'users/getTmi'
@@ -73,7 +73,7 @@ class User extends Spine.Model
       success: (json) -> callback.call @, json
       error: @proxy @errorHandler
     
-  setTmi: (callback)->
+  setTmi: (callback) ->
     $.ajax
       url: base_url + 'users/setTmi'
       data: JSON.stringify(@)

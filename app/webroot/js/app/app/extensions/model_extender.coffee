@@ -126,14 +126,12 @@ Model.Extender =
       successHandler: (data, status, xhr) ->
 #        flash = flash = Flash.first()? or flash.updateAttributes()
         
-      errorHandler: (record, xhr, statusText, error) ->
+      errorHandler: (record, xhr, statusText, error) =>
         status = xhr.status
         unless status is 200
-          flash = new Flash
-            record      : record
-            xhr         : xhr
-            statusText  : statusText
-            error       : error
+          flash = if flash = Flash.first() then flash else new Flash
+          flash.status = xhr.status
+          flash.statusText = xhr.statusText
 
           flash.save()
           User.redirect 'users/login'
@@ -285,6 +283,9 @@ Model.Extender =
             @[key] = value
         
         @save(options) if invalid
+        
+      errorHandler: (args...) ->
+        @constructor.errorHandler @, args...
         
       selectAttributes: ->
         result = {}

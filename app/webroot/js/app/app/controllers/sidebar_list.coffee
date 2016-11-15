@@ -203,6 +203,7 @@ class SidebarList extends Spine.Controller
     item = el.item()
     
     return unless item
+    list = item.selectionList()[..]
     cid = item.id
     
     switch item.constructor.className
@@ -213,6 +214,8 @@ class SidebarList extends Spine.Controller
       when 'Product'
         category = $(e.target).closest('li.gal').item()
         @navigate '/category', category.id, 'pid', item.id
+    
+    item.updateSelection list
     
   ignoreProduct: (e) ->
     product = $(e.currentTarget).item()

@@ -5,7 +5,7 @@ require('spine/lib/local');
 
 class Flash extends Spine.Model
 
-  @configure 'Flash', 'flash', 'record'
+  @configure 'Flash', 'flash', 'record', 'status', 'statusText'
   
   @extend Model.Local
 

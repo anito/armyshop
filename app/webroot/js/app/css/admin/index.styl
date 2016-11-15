@@ -691,7 +691,6 @@ li.parent {
   color: #aaa;
 }
 li.parent:not(.open) {
-  height: 73px;
 }
 li.parent:hover:not(.active) {
   opacity: 1;
@@ -940,11 +939,15 @@ span.inner-sub {
 }
 #preview .pricing [class*="eye"] {
   position: absolute;
-  right: 0;
+  right: -5px;
+  top: -11px;
   padding: 10px;
   font-size: 2em;
-  background-color: white;
+  background-color: transparent;
   z-index: 100;
+}
+.preview .pricing--norbu .pricing__item {
+  position: relative;
 }
 .sidebar .preview .expander {
   background: url("/img/arrow.png") no-repeat -43px 0px;
@@ -963,6 +966,10 @@ span.inner-sub {
 }
 .sidebar .parent {
   background-color: rgba(80, 80, 80, 0.7);
+}
+.sidebar .preview.parent > .item-header {
+  padding-bottom: 13px;
+  line-height: 1.2em;
 }
 .sidebar .parent > .item-header {
   padding-bottom: 13px;
