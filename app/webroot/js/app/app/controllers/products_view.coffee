@@ -341,10 +341,9 @@ class ProductsView extends Spine.Controller
     @select(e, item.id)
     
   select: (e, ids = []) ->
-    isMeta = e.metaKey or e.ctrlKey or e.shiftKey
     ids = [ids] unless Array.isArray ids
-    if (isMeta) and e.type is 'click'
-      list = @model.selectionList()
+    if (@isMeta(e)) and e.type is 'click'
+      list = @model.selectionList()[..]
       list.addRemove(ids)
     else
       list = ids[..]
@@ -355,7 +354,7 @@ class ProductsView extends Spine.Controller
       @navigate '/category', Category.record?.id or ''
     
     @model.updateSelection list
-      
+    
     e.stopPropagation()
     
   infoUp: (e) =>

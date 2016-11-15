@@ -99,7 +99,7 @@ Controller.Extender =
         ui = App.vmanager.externalUI(App[controller])
         ui.click()
 
-      isCtrlClick: (e) ->
+      isMeta: (e) ->
         e?.metaKey or e?.ctrlKey or e?.altKey
 
       children: (sel) ->

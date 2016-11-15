@@ -170,7 +170,7 @@ class ProductsTrashView extends Spine.Controller
   select: (e, ids=[]) ->
     list = @model.selectionList()[..]
     ids = [ids] unless Array.isArray ids
-    if e.metaKey or e.ctrlKey
+    if @isMeta(e)
       list.addRemove(ids)
     else
       list = ids[..]

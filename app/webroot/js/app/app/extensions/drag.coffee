@@ -181,7 +181,7 @@ Controller.Drag =
         switch source.constructor.className
           when 'Product'
             cb = =>
-              unless @isCtrlClick(e)
+              unless @isMeta(e)
                 Product.trigger('destroy:join', Product.toRecords(selection), origin)
             Product.trigger('create:join', Product.toRecords(selection), target, cb)
 
@@ -189,7 +189,7 @@ Controller.Drag =
             photos = Photo.toRecords(selection)
 
             cb = => 
-              unless @isCtrlClick(e)
+              unless @isMeta(e)
                 Photo.trigger('destroy:join',
                   photos: photos
                   product: origin

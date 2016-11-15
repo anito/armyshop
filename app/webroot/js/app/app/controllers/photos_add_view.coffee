@@ -96,7 +96,7 @@ class PhotosAddView extends Spine.Controller
     e.preventDefault()
     
     item = $(e.currentTarget).item()
-    @select(item.id, @isCtrlClick(e))
+    @select(item.id, @isMeta(e))
     
   select: (items = [], exclusive) ->
     unless Array.isArray items

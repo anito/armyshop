@@ -137,7 +137,7 @@ class PhotosView extends Spine.Controller
   select: (e, ids = []) ->
     list = @model.selectionList()[..]
     ids = [ids] unless Array.isArray ids
-    if e.metaKey or e.ctrlKey
+    if @isMeta(e)
       list.addRemove(ids)
     else
       list = ids[..]
@@ -161,7 +161,7 @@ class PhotosView extends Spine.Controller
       list.addRemove(ids)
     else
       list = ids[..]
-#        @model.emptySelection() unless @isCtrlClick(e)
+#        @model.emptySelection() unless @isMeta(e)
 #        list = @model.selectionList()[..]
 #        ids = list[..] unless ids.length
 #        for id in ids
