@@ -301,6 +301,7 @@ class App extends Spine.Controller
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
     dialog.show(options)
+    e.preventDefault()
     
   hidemodal: (e) ->
     @log 'hidemodal'
