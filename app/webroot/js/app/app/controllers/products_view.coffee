@@ -278,8 +278,7 @@ class ProductsView extends Spine.Controller
           # there are still other identical Products
           # just remove it from the Cat
           if res4 or (res4 = App.confirm('REMOVE', plural: products.length > 1))
-            for cat in cats
-              @destroyJoin product, cat
+            @destroyJoin(product, category)
             continue
           else break
       
