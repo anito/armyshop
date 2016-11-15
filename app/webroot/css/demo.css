@@ -54,10 +54,16 @@
     z-index: 1000;
     transition: font-size 0.3s;
   }
+  li.nav-item:first-child {
+    margin-left: 260px;
+  }
 }
 @media screen and (max-width:1050px) and (min-width:800px) {
   .lehmann {
     font-size: 5em;
+  }
+  li.nav-item:first-child {
+    margin-left: 160px;
   }
 }
 @media screen and (min-width:800px) and (max-width:1200px) {
@@ -83,7 +89,7 @@
     top: -10px;
   }
   #container {
-    margin: 95px 0;
+    margin: 72px 0;
     position: relative;
   }
   .navbar-sm {
@@ -161,7 +167,6 @@
   }
   .navbar .nav-item a {
     cursor: pointer;
-    max-width: 200px;
     text-align: center;
     line-height: 1.7;
   }
@@ -210,9 +215,6 @@
   }
   .sidebar {
     background-image: url(/img/background.png);
-  }
-  li.nav-item:first-child {
-    margin-left: 260px;
   }
   .clr{
     clear: both;

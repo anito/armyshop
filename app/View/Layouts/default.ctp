@@ -140,7 +140,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <a class="nav-link flaticon-home-3" href="/#/home/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item defense">
-          <a class="nav-link" href="/#/defense/">Selbstschutz & Security</a>
+          <a class="nav-link flaticon-pepper-spray" href="/#/defense/">Selbstschutz & Security</a>
         </li>
         <li id="" class="nav-item outdoor">
           <a class="nav-link flaticon-hiking-up-2" href="/#/outdoor/">Outdoor & Fitness</a>
