@@ -279,7 +279,7 @@ class App extends Spine.Controller
     
     dialog.show(options)
     
-  showDelivery: ->
+  showDelivery: (e) ->
     dialog = new ModalSimpleView
       modalOptions:
         keyboard: true
