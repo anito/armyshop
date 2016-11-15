@@ -160,6 +160,7 @@
     text-align: center;
   }
   .navbar .nav-item a {
+    cursor: pointer;
     max-width: 200px;
     text-align: center;
     line-height: 1.7;
@@ -241,6 +242,7 @@
     left: 0;
   }
   .header {
+    color: white;
     line-height: 24px;
     font-size: 11px;
     background: #000;

@@ -121,32 +121,32 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <nav class=" navbar navbar-sm navbar-static-top navbar-dark bg-inverse">
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
-          <a class="nav-link" href="/#/home/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link flaticon-home-3" href="/#/home/">Home<span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item defense">
-          <a class="nav-link" href="/#/defense/">Selbstschutz</a>
+          <a class="nav-link flaticon-pepper-spray" href="/#/defense/">Selbstschutz</a>
         </li>
         <li id="" class="nav-item outdoor">
-          <a class="nav-link" href="/#/outdoor/">Outdoor</a>
+          <a class="nav-link flaticon-hiking-up-2" href="/#/outdoor/">Outdoor</a>
         </li>
         <li id="" class="nav-item goodies">
-          <a class="nav-link" href="/#/goodies/">Restposten</a>
+          <a class="nav-link flaticon-sales-label" href="/#/goodies/">Restposten</a>
         </li>
       </ul>
     </nav>
     <nav class="navbar navbar-lg navbar-static-top navbar-dark bg-inverse">
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
-          <a class="nav-link" href="/#/home/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link flaticon-home-3" href="/#/home/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item defense">
           <a class="nav-link" href="/#/defense/">Selbstschutz & Security</a>
         </li>
         <li id="" class="nav-item outdoor">
-          <a class="nav-link" href="/#/outdoor/">Outdoor & Fitness</a>
+          <a class="nav-link flaticon-hiking-up-2" href="/#/outdoor/">Outdoor & Fitness</a>
         </li>
         <li id="" class="nav-item goodies">
-          <a class="nav-link" href="/#/goodies/">Restposten & Specials</a>
+          <a class="nav-link flaticon-sales-label" href="/#/goodies/">Restposten & Specials</a>
         </li>
       </ul>
     </nav>
