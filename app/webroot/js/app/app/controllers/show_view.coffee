@@ -727,15 +727,14 @@ class ShowView extends Spine.Controller
   showPhotosTrash: ->
     @navigate '/trash/photos', ''
     
-    
-  showPhotoMasters: ->
-    @navigate '/category', '/'
+  showCategories: ->
+    @navigate '/category', cid = if (cid = Category.record?.id) then 'cid/' + cid else null
     
   showProductMasters: ->
     @navigate '/category', ''
     
-  showCategories: ->
-    @navigate '/category', cid = if (cid = Category.record?.id) then 'cid/' + cid else null
+  showPhotoMasters: ->
+    @navigate '/category', '/'
     
   showProducts: (e) ->
     @navigate '/category', cid = Category.record?.id or '', pid = if (pid = Category.record?.selectionList?().first()) then 'pid/' + pid else null

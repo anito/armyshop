@@ -34,7 +34,6 @@ class ProductsList extends Spine.Controller
     @add = @html
     Product.bind('update', @proxy @updateTemplate)
     Product.bind("ajaxError", Product.errorHandler)
-    Product.bind('ajaxSuccess', @proxy @updateTemplate)
     CategoriesProduct.bind('change', @proxy @changeRelated)
     CategoriesProduct.bind('destroy', @proxy @testEmpty)
     Product.bind('change:collection', @proxy @renderBackgrounds)

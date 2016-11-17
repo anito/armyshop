@@ -43,7 +43,6 @@ class SidebarList extends Spine.Controller
     Category.bind('change', @proxy @change)
     Category.bind('change:selection', @proxy @exposeSublistSelection)
     Category.bind('current', @proxy @exposeSelection)
-    Category.bind('ajaxSuccess', @proxy @updateTemplate)
     
     Product.bind('change:collection', @proxy @renderProduct)
     Product.bind('create destroy update', @proxy @renderSublists)
@@ -58,7 +57,7 @@ class SidebarList extends Spine.Controller
       when 'create'
         @current = item
         @create item
-        @exposeSelection item
+        @navigate '/category', item.id
       when 'update'
         @current = item
         @update item
@@ -68,7 +67,7 @@ class SidebarList extends Spine.Controller
           
   create: (item) ->
     @append @template item
-#    @closeAllOtherSublists item
+    @renderOneSublist item
     @reorder item
   
   update: (item) ->

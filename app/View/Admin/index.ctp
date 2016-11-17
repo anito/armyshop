@@ -1321,15 +1321,15 @@
   <table class="carousel table">
     <tbody>
       <tr>
-        <td><a href="#" class=" opt-ShowAllCategories feature-list">Kategorien</a></td>
+        <td><a href="#/category" class=" opt-ShowAllCategories feature-list">Kategorien</a></td>
         <td>${categories.length}</td>
       </tr>
       <tr>
-        <td><a href="#" class=" opt-ShowAllProducts feature-list">Produkte (gesamt)</a></td>
+        <td><a href="#/category/" class=" opt-ShowAllProducts feature-list">Produkte (gesamt)</a></td>
         <td>${products.length}</td>
       </tr>
       <tr class="">
-        <td><a href="#" class=" opt-ShowAllPhotos feature-list">Fotos</a></td>
+        <td><a href="#/category//" class=" opt-ShowAllPhotos feature-list">Fotos</a></td>
         <td>${photos.length}</td>
       </tr>
       <tr class="">
@@ -1345,7 +1345,7 @@
         <td>${others.length}</td>
       </tr>
       <tr class="">
-        <td><a href="#" class=" opt-ShowProductsTrash feature-list">Papierkorb</a></td>
+        <td><a href="#/trash/products/" class=" opt-ShowProductsTrash feature-list">Papierkorb</a></td>
         <td>${trashed.length}</td>
       </tr>
     </tbody>

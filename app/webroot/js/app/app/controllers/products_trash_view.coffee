@@ -92,7 +92,6 @@ class ProductsTrashView extends Spine.Controller
     App.showView.trigger('change:toolbarTwo', ['Speichern'])
     
   inbound: (products) ->
-#    alert 'inbound'
     products = [products] unless Array.isArray products
     for product in products
       product.deleted = true
@@ -118,17 +117,15 @@ class ProductsTrashView extends Spine.Controller
     e.preventDefault()
     
   destroyProduct: (e) ->
+    e.stopPropagation()
     item = $(e.currentTarget).item()
     
-    @destroyProducts(e, id) if item?.id
+    @destroyProducts(e, id) if id = item?.id
     
-    e.stopPropagation()
     
   destroyProducts: (e, ids=@model.selectionList(), callback) ->
     @log 'destroyProducts'
     ids = [ids] unless Array.isArray(ids)
-    
-    @log ids
     
     products = Product.toRecords(ids)
     for product in products

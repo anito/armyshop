@@ -27,7 +27,6 @@ class CategoriesList extends Spine.Controller
     super
     Product.bind('change:collection', @proxy @renderRelated)
     Category.bind('change', @proxy @renderOne)
-    Category.bind('ajaxSuccess', @proxy @updateTemplate)
     Category.bind('destroy', @proxy @testEmpty)
     CategoriesProduct.bind('change', @proxy @renderOneRelated)
     Photo.bind('destroy', @proxy @renderRelated)
@@ -52,6 +51,7 @@ class CategoriesList extends Spine.Controller
       when 'create'
         @wipe()
         @append @template item
+        @reorder item
         @delay(@proxy(@exposeSelection), 2000)
       when 'update'
         @updateTemplate(item)
@@ -86,7 +86,6 @@ class CategoriesList extends Spine.Controller
     hot = itemEl.hasClass('hot')
     innerEl = $('.thumbnail', itemEl)
     style = innerEl.attr('style')
-    
     
     tmplItem = innerEl.tmplItem()
     tmplItem.data = item

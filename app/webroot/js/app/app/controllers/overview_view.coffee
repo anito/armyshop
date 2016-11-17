@@ -175,18 +175,18 @@ class OverviewView extends Spine.Controller
     return
     index = @recentsItem.index($(e.currentTarget))
   
+  error: (xhr, statusText, error) ->
+    @log xhr
+    @record.trigger('ajaxError', xhr, statusText, error)
+    
+  showCategories: ->
+    @navigate '/category', cid = if (cid = Category.record?.id) then 'cid/' + cid else null
+  
   showProductMasters: ->
     @navigate '/category', ''
     
   showPhotoMasters: ->
     @navigate '/category', '/'
-    
-  showCategories: ->
-    @navigate '/category', cid = if (cid = Category.record?.id) then 'cid/' + cid else ''
-  
-  error: (xhr, statusText, error) ->
-    @log xhr
-    @record.trigger('ajaxError', xhr, statusText, error)
     
   close: (e) ->
     previousHash = Model.Settings.loadSettings().previousHash

@@ -5,7 +5,7 @@ Extender          = require("extensions/model_extender")
 
 class ProductsTrash extends Spine.Model
 
-  @configure "ProductsTrash", 'id'
+  @configure "ProductsTrash", 'id', 'location'
 
   @extend Extender
   

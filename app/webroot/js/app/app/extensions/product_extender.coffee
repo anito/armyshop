@@ -80,7 +80,10 @@ Controller.ProductExtender =
         
       updateTemplate: (item) ->
         @log 'updateTemplate'
-        return if item.destroyed or item.deleted
+        @log item
+        
+        
+        return unless item or item.destroyed or item.deleted
         item = @mixinOne item
         
         itemEl = @children().forItem(item)
