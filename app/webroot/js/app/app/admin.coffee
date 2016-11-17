@@ -326,7 +326,7 @@ class Main extends Spine.Controller
     Settings.fetch()
     
     unless settings = Settings.findByAttribute('user_id', id)
-      @notify '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>'
+#      @notify '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>'
       
       settings = Settings.create
         user_id   : id

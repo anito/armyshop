@@ -260,7 +260,7 @@
   </div>
 </div>
 <!-- modal-dialogue -->
-<div tabindex="3" id="modal-view" class="modal fade"></div>
+<div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="top: 65px;"></div>
 <!-- /.modal -->
 
 <!-- Templates -->
