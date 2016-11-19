@@ -18,7 +18,7 @@ class TrustamiView extends Spine.Controller
     
   constructor: ->
     super
-    User.bind('update', @proxy @render)
+    User.one('update', @proxy @render)
     @init()
     
   init: ->
@@ -53,13 +53,16 @@ class TrustamiView extends Spine.Controller
   saveOnKeyup: (e) =>
     code = e.charCode or e.keyCode
     
+    el=$(document.activeElement)
+    isFormfield = $().isFormElement(el)
+    
     switch code
       when 32 # SPACE
-        e.stopPropagation() 
+        unless isFormfield
+          e.stopPropagation() 
       when 9 # TAB
-        e.stopPropagation()
-    
-    console.log el = $(e.target)
+        unless isFormfield
+          e.stopPropagation()
     
     @save()
     
