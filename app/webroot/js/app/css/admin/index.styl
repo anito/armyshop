@@ -991,7 +991,7 @@ input.tmi {
 .trustami-badge:before {
   content: " ";
   display: block;
-  background-image: url(/img/trustami-logo-grey-128.png);
+  background-image: url(/img/trustami-logo-128.png);
   background-size: 30px 30px;
   position: absolute;
   left: -20px;
@@ -1025,6 +1025,7 @@ input.tmi {
 #content .items .item {
   float: left;
   cursor: move;
+  width: auto;
 }
 #content .items .item .titles div:not(.rule) {
   position: absolute;
@@ -1032,6 +1033,8 @@ input.tmi {
 }
 #content .items .item .titles {
   width: 62%;
+  color: #fff;
+  text-shadow: 0 1px 0px #000;
   cursor: auto;
   top: 0;
   overflow: auto;
@@ -1045,7 +1048,9 @@ input.tmi {
 }
 #content .title::after {
   content: '___________________________';
-  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0;
 }
 #content .titles .subtitle {
   top: 82px;
@@ -1129,10 +1134,8 @@ section span.price {
 #content .content .items .item:not(.thumbnail) {
   background-repeat: no-repeat;
   -moz-background-position: 34px 34px, 95px 34px, 34px 95px, 95px 95px;
-  -webkit-background-position: 34px 34px, 95px 34px, 34px 95px, 95px 95px;
-  background-position: 34px 34px, 95px 34px, 34px 95px, 95px 95px;
-  flex: 1 300;
-  color: #868686;
+	 -webkit-background-position: 34px 34px, 95px 34px, 34px 95px, 95px 95px;
+	 background-position: 34px 34px, 95px 34px, 34px 95px, 95px 95px;
 }
 [class*='categories'] .items {
   font-size: 1.3rem;
@@ -1386,7 +1389,7 @@ nav .glyphicon {
   right: 0;
 }
 .glyphicon-set {
-  background-color: #868686;
+  background-color: rgb(51, 51, 51);
   position: absolute;
   padding: 0px 0px 5px 13px;
   top: 0;

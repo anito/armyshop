@@ -114,7 +114,7 @@
             <div class="hdivide draghandle">
               <span class="opt opt-CloseDraghandle glyphicon glyphicon-resize-vertical glyphicon glyphicon-white right" style="cursor: pointer;"></span>
             </div>
-            <div id="ga" class="view flex vbox bg-dark" style="">
+            <div id="ga" class="view flex bg-dark" style="">
               <div class="footer" style="">
                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                   <div class="btn-group left">
@@ -623,8 +623,8 @@
       </span>
     </div>
     <div class="titles">
-      <div class="title">{{if title}}${$().name(title, 250)}{{/if}}</div>
-      <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 1200)}}{{/if}}</div>
+      <div class="title">{{if title}}${$().name(title, 25)}{{/if}}</div>
+      <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 120)}}{{/if}}</div>
         {{if validUrl()}}<a href="${link}" target="_blank">{{/if}}
         <section class="info-badges">
           <span class="cc {{if validUrl()}}valid{{else}}warning-badge{{/if}} link glyphicon glyphicon-link"></span>
@@ -1479,12 +1479,11 @@
 </script>
 
 <script id="trustamiTemplate" type="text/x-jquery-tmpl">
-  <li data-id="${id}" class="opt opt-SaveTrustami" style="">
+  <li data-id="${id}" class="opt opt-SaveTrustami trustami-badge" style="">
     <span class="">
       <span>
-        <a href="https://app.trustami.com/trustami-card/57e573efcc96c5511c8b480e" target="_blank" title="Trustami Bewertungen und Erfahrungen von Handelsagentur Lehmann" class="trustami-badge"></a>
-        <button type="submit" class="btn left opt-Count-Up dark glyphicon glyphicon-plus"></button>
-        <button type="submit" class="btn right opt-Count-Down dark glyphicon glyphicon-minus"></button>
+        <button type="submit" class="btn left opt-Count-Up dark glyphicon glyphicon-chevron-up"></button>
+        <button type="submit" class="btn right opt-Count-Down dark glyphicon glyphicon-chevron-down"></button>
       </span>
       <input class="tmi" type="text" placeholder="Trustami" name="tmi" value="${tmi}">
     </span>

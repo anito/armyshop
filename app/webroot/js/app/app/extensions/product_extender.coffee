@@ -83,7 +83,7 @@ Controller.ProductExtender =
         @log item
         
         
-        return if !item or item.destroyed or item.deleted
+        return unless item or item.destroyed or item.deleted
         item = @mixinOne item
         
         itemEl = @children().forItem(item)
