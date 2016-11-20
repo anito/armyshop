@@ -31,3 +31,4 @@ Thumbs.db
 nbproject
 mysql/*
 /app/webroot/stat/log/*
+/app/webroot/stat/config/config.php
