@@ -138,8 +138,8 @@ function display_overview ( $title , &$text1 , &$module1 , &$text2 , &$module2 ,
   if ( $counter_display_show_average == 1         ) { echo "<tr><td class=\"module\">".$text7."</td><td class=\"hits\">".number_format ( $module7 , 0 , "," , "." )."</td></tr>\n"; }
   if ( $counter_display_show_total == 1           ) { echo "<tr><td class=\"module\">".$text8."</td><td class=\"hits\">".number_format ( ($module8+$counter_add_visitors) , 0 , "," , "." )."</td></tr>\n"; }
 //                                                      echo "<tr><td colspan=\"2\">&nbsp;</td></tr>\n";
-                                                      echo "<tr><td class=\"module\">".$text9."</td><td class=\"hits\">".number_format ( $module9 , 0 , "," , "." )."</td></tr>\n";
-                                                      echo "<tr><td class=\"module\">".$text10."</td><td class=\"hits\">".$module10."</td></tr>\n";
+//                                                      echo "<tr><td class=\"module\">".$text9."</td><td class=\"hits\">".number_format ( $module9 , 0 , "," , "." )."</td></tr>\n";
+//                                                      echo "<tr><td class=\"module\">".$text10."</td><td class=\"hits\">".$module10."</td></tr>\n";
   echo "</table>\n";
   //-------------------------------
   if ( $counter_display_show_footer == 1 )

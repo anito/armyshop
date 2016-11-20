@@ -21,7 +21,7 @@
  $frames                      = 0;
  $ip_recount_time             = 1440;
  $auto_update_check           = 1;
- $starting_date               = "15.11.2016";
+ $starting_date               = "15.11.2015";
  $stat_add_visitors           = 0;
  $get_ip_address              = 1;
  $hash_ip_address             = 0;
@@ -121,7 +121,7 @@
  $counter_display_show_average          = 1;
  $counter_display_show_total            = 1;
  $counter_display_show_footer           = 1;
- $counter_display_show_footer_ticker    = 0;
+ $counter_display_show_footer_ticker    = 1;
  $counter_display_show_footer_info1     = 1;
  $counter_display_show_footer_info2     = 1;
  $counter_display_show_footer_info3     = 1;
