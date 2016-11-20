@@ -29,6 +29,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->meta('viewport', array('width'=>'device-width', 'initial-scale'=>1, 'shrink-to-fit'=>'no'));
 		echo $this->Html->meta('http-equiv', "x-ua-compatible");
 		echo $this->Html->meta('icon');
+		echo $this->Html->meta('keywords', array('Restposten', 'Ausverkauf', 'Selbstschutz', 'Pfefferspray', 'Schnäppchen', 'Aktion'));
 
 //    echo $this->Html->css('jquery-ui-1.8.16.custom');
     echo $this->Html->css('bootstrap');
@@ -84,7 +85,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       Description = require('models/description')
       
       User    = require("models/user");
-      Main    = require("home");
+      Main    = require("index");
       
       Spine.Route = require('spine/lib/route');
       
@@ -120,32 +121,32 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <nav class=" navbar navbar-sm navbar-static-top navbar-dark bg-inverse">
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
-          <a class="nav-link flaticon-home-3" href="/#/home/">Home<span class="sr-only">(current)</span></a>
+          <a class="nav-link flaticon-home-3" href="/pages/home/">Home<span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item defense">
-          <a class="nav-link flaticon-pepper-spray" href="/#/defense/">Selbstschutz</a>
+          <a class="nav-link flaticon-pepper-spray" href="/pages/defense/">Selbstschutz</a>
         </li>
         <li id="" class="nav-item outdoor">
-          <a class="nav-link flaticon-hiking-up-2" href="/#/outdoor/">Outdoor</a>
+          <a class="nav-link flaticon-hiking-up-2" href="/pages/outdoor/">Outdoor</a>
         </li>
         <li id="" class="nav-item goodies">
-          <a class="nav-link flaticon-sales-label" href="/#/goodies/">Restposten</a>
+          <a class="nav-link flaticon-sales-label" href="/pages/goodies/">Restposten</a>
         </li>
       </ul>
     </nav>
     <nav class="navbar navbar-lg navbar-static-top navbar-dark bg-inverse">
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
-          <a class="nav-link flaticon-home-3" href="/#/home/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link flaticon-home-3" href="/pages/home/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item defense">
-          <a class="nav-link flaticon-pepper-spray" href="/#/defense/">Selbstschutz & Security</a>
+          <a class="nav-link flaticon-pepper-spray" href="/pages/defense/">Selbstschutz & Security</a>
         </li>
         <li id="" class="nav-item outdoor">
-          <a class="nav-link flaticon-hiking-up-2" href="/#/outdoor/">Outdoor & Fitness</a>
+          <a class="nav-link flaticon-hiking-up-2" href="/pages/outdoor/">Outdoor & Fitness</a>
         </li>
         <li id="" class="nav-item goodies">
-          <a class="nav-link flaticon-sales-label" href="/#/goodies/">Restposten & Specials</a>
+          <a class="nav-link flaticon-sales-label" href="/pages/goodies/">Restposten & Specials</a>
         </li>
       </ul>
     </nav>
@@ -204,19 +205,18 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   <div id="container" style="">
     <div id="content" class="views">
 
-
       <?php echo $this->fetch('content'); ?>
       <?php echo $this->element('sql_dump'); ?>
-      <?php echo $this->element('tracking_code'); ?>
+      
     </div>
   </div>
   <footer class="footer bg-inverse">
     <span id='refresh'></span>
     <span class="opt-reset" title="FSK 18 Hinweis zurücksetzen">© HA Lehman</span>
     <span><a href="#" class="opt-imp">Impressum</a></span>
-    <span><a href="#" class=" opt-agb">AGB</a></span>
-    <span><a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a></span>
-    <span><a href="#" class=" opt-del">Versand</a></span>
+    <span><a href="#" class="opt-agb">AGB</a></span>
+    <span><a href="#" class="opt-pay">Zahlungsmöglichkeiten</a></span>
+    <span><a href="#" class="opt-del">Versand</a></span>
     <span><a href="#" class="opt-stats">Statistik</a></span>
   </footer>
   <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away"></iframe>
@@ -225,3 +225,71 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   <!-- /.modal -->
 </body>
 </html>
+
+<script id="modalSimpleTemplate" type="text/x-jquery-tmpl">
+  <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}">
+    <div class="modal-content">
+      {{if header}}
+      <div class="modal-header {{if css}}{{html css}}{{/if}}">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="h3" style="padding-left: 26px;">${header}</h3>
+      </div>
+      {{/if}}
+      {{if body}}
+      <div class="modal-body">
+        {{html body}}
+      </div>
+      {{if info}}
+      <div class="modal-header label-info">
+        <div class="label label-info">${info}</div>
+      </div>
+      {{/if}}
+      {{/if}}
+      {{if (typeof footer != 'undefined' && footer.footerButtonText)}}
+      <div class="modal-footer" style="position: relative">
+        <div class="" style="text-align: left; max-width: 90%">{{if footer.footerBody}}{{html footer.footerBody}}{{/if}} </div>
+        <button class="btn btn-dark opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</script>
+
+<script id="norbuPricingTemplate" type="text/x-tmpl">
+  {{if !product.ignored}}
+  <div id="${product.id}" class="pricing__item">
+    <h3 class="pricing__title">${$().name(product.title, 60)}</h3>
+    <p class="pricing__sentence">${$().name(product.subtitle, 80)}</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
+      <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="slides" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">
+        {{tmpl($item.data.photos) "#norbuImageListTemplate" }}
+      </a>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">{{tmpl($item.data.descriptions) "#norbuFeatureListTemplate" }}</ul>
+    </div>
+    <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="pricing__action btn-dark" role="button" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">Zum Shop</a>
+  </div>
+  {{/if}}
+</script>
+
+<script id="norbuImageListTemplate" type="text/x-tmpl">
+  <div id="${id}" class="pricing__image"><img class="image" src=""/></div>
+</script>
+
+<script id="norbuFeatureListTemplate" type="text/x-tmpl">
+  <li class="pricing__feature">{{html description}}</li>
+</script>
+
+<script id="refreshTemplate" type="text/x-tmpl">
+  <a href="${location.hash}" class="opt-Refresh"><i class="glyphicon glyphicon-${icon}"></i></a>
+</script>
+
+<script id="trustamiTemplate" type="text/x-tmpl">
+  <a href="https://app.trustami.com/trustami-card/57e573efcc96c5511c8b480e" target="_blank" title="Trustami Bewertungen und Erfahrungen von Handelsagentur Lehmann">
+    <div class="trustami-inner">
+      <i class="trustami-image"></i>
+      <span class="trustami-count">${tmi}</span>
+    </div>
+  </a>
+</script>

@@ -460,6 +460,11 @@ body {
   font-size: 0.8rem;
   font-weight: 300;
 }
+.nav-item.active a {
+  border-bottom: 1px solid;
+  padding-bottom: 3px;
+  border-width: 3px; 
+}
 .away {
   top: -100000px !important;
   left: -100000px !important;

@@ -11,7 +11,7 @@ class RefreshView extends Spine.Controller
     'button'              : 'logoutEl'
 
   events:
-    'click .opt-Refresh'        : 'refresh'
+    'click .opt-Refresh'  : 'refresh'
     
   template:  (icon = 'repeat') ->
     $('#refreshTemplate').tmpl icon: icon
@@ -20,10 +20,13 @@ class RefreshView extends Spine.Controller
     super
     Spine.bind('refresh:all', @proxy @refresh)
     
-  refresh: ->
+  refresh: (e) ->
     @render 'cloud-download'
     Spine.trigger('refresh:one')
     @fetchAll()
+    
+    e.stopPropagation()
+    e.preventDefault()
     
   fetchAll: ->
     Photo.fetch(null, clear:true)

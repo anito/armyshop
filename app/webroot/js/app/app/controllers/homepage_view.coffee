@@ -19,14 +19,18 @@ class HomepageView extends Spine.Controller
     @list = new HomepageList
       el: @items
       parent: @
-    
+      
+    Category.one('refresh', @proxy @active)
     Spine.bind('refresh:one', @proxy @refreshOne)
+    Spine.bind('refresh:complete', @proxy @render)
     
-  active: (e) ->
-    @change()
+  active: ->
+    cat = Category.current(Category.findByAttribute('name', @categoryName))
+    @change(cat)
     
-  change: ->
-    @current = Category.current(Category.findByAttribute('name', @categoryName))
+  change: (cat) ->
+    Spine.trigger('active:category', cat)
+    @current = cat
     @render()
     
   refreshOne: ->
@@ -38,12 +42,10 @@ class HomepageView extends Spine.Controller
     
   untrackBinds: (arr) ->
     @tracker.pop()
-    @change() unless @tracker.length
+    Spine.trigger('refresh:complete') unless @tracker.length
     
   render: ->
-    @refreshView.render('repeat')
     return unless @current
-    
     items = []
     products = Category.products @current.id
     items.push @item(product) for product in products

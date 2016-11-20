@@ -3,7 +3,9 @@ require('lib/setup')
 Spine = require('spine')
 $      = Spine.$
 ModalSimpleView = require("controllers/modal_simple_view")
+RefreshView     = require('controllers/refresh_view')
 Settings = require("models/settings")
+User            = require("models/user")
 
 
 class App extends Spine.Controller
@@ -14,11 +16,14 @@ class App extends Spine.Controller
     '#header .nav-item' : 'item',
     '#content'          : 'content',
     '#nav'              : 'nav'
+    '#stats'            : 'stats'
     '#menu-trigger'     : 'menutrigger'
     '#stats'            : 'stats'
     '.logo-1'           : 'logo1'
     '.logo-2'           : 'logo2'
     '.sidebar'          : 'sidebar'
+    '#refresh'          : 'refreshEl'
+    '.trustami-badge'   : 'trustami'
 
   events:
     'mouseenter #outdoor-item-menu' :           'changeBackground'
@@ -26,6 +31,9 @@ class App extends Spine.Controller
     'mouseenter #goodies-item-menu' :           'changeBackground'
     'mouseenter .opt-sidebar'       :           'showSidebar'
     'mouseleave .opt-sidebar'       :           'hideSidebar'
+    'mouseenter .opt-stats'         :           'showStats' 
+    'mousemove  .opt-stats'         :           'moveStats' 
+    'mouseleave .opt-stats'         :           'hideStats' 
     
     'click .opt-hint'               :           'showWarning'
     'click .opt-agreed'             :           'agreed'
@@ -40,31 +48,61 @@ class App extends Spine.Controller
     'click .opt-reset'              :           'reset'
     'click [class^="logo-"], [class*=" logo-"]':'redirectHome'
   
+  trustamiTemplate:  (item) ->
+    $('#trustamiTemplate').tmpl item
   
   constructor: ->
     super
     # Getting started - should be removed
     @modal = exists: false
+    
     @arr = ['home', 'outdoor', 'defense', 'goodies', 'out']
+    
     setting =
       hidden        : false
       agreed        : false
       sidebaropened : false
     
-    #@content.append require("views/sample")({version:Spine.version})
-    $('.nav-item', @items).removeClass('active')
-    $('.'+@getData(base_url, @arr), @items).addClass('active')
+    @refreshView = new RefreshView
+      el: @refreshEl
+    
+    Spine.bind('active:category', @proxy @initCategory)
+    Spine.bind('refresh:complete', @proxy @renderRefreshView)
     
     @initSettings(setting)
     @initSidebar()
-    @initBackground()
     @initLogos()
-    
-    if @getData(base_url, @arr) == 'defense' then @checkWarning()
-    
+    @exposeNav()
+    @renderRefreshView()
+    @getTrustami()
     
     @routes
-      '/home/' : (params) ->
+      '/*glob' : (params) ->
+    
+  initCategory: (cat) ->
+    if cat.name is 'defense' then @checkWarning()
+    @initBackground(cat.name)
+    @exposeNav(cat.name)
+    
+  exposeNav: (name='home') ->
+    name = @getData(name, @arr)
+    $('.nav-item', @items).removeClass('active')
+    $('.nav-item.'+name, @items).addClass('active')
+    
+  renderRefreshView: ->
+    @refreshView.render()
+    
+  renderTrustami: (tmi) ->
+    @trustami.html @trustamiTemplate tmi: tmi
+    
+  getTrustami: ->
+    callback = (json) =>
+      tmi = $.parseJSON(json).tmi
+      @renderTrustami(tmi)
+      
+    @user = if !(user = @user) then user = new User else user
+    @user.save()
+    @user.getTmi(callback)
     
   checkWarning: ->
     if !@isAgreed() then @showWarning()
@@ -76,8 +114,8 @@ class App extends Spine.Controller
     s.save()
     s.id
     
-  initBackground: ->
-    @el.addClass(@getData base_url, @arr)
+  initBackground: (name) ->
+    @el.addClass(name)
     
   initLogos: ->
     flag = Settings.records[0].hidden
@@ -88,9 +126,6 @@ class App extends Spine.Controller
     isOpen = Settings.records[0].sidebaropened
     @setSidebar(!isOpen, true)
     
-  isAgreed: ->
-    Settings.first()?.agreed
-  
   changeBackground: (e) ->
     e.preventDefault()
     e.stopPropagation()
@@ -115,120 +150,125 @@ class App extends Spine.Controller
     
   showAgb: (e) -> 
     dialog = new ModalSimpleView
-      options:
-        small: false
-        css: 'alert alert-warning'
-        header: 'AGBs'
-        body: -> require("views/agb")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
+      
+    options =
+      small: false
+      css: 'alert alert-warning'
+      header: 'AGBs'
+      body: -> require("views/agb")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     e.preventDefault()
     
   showImp: (e) -> 
     dialog = new ModalSimpleView
-      options:
-        small: true
-        css: 'alert alert-warning'
-        header: 'Impressum'
-        body: -> require("views/imp")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
+      
+    options =
+      small: true
+      css: 'alert alert-warning'
+      header: 'Impressum'
+      body: -> require("views/imp")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     e.preventDefault()
     
-  showPay: (e) -> 
+  showPay: (e) ->
     dialog = new ModalSimpleView
-      options:
-        small: false
-        css: 'alert alert-warning'
-        header: 'Zahlungsmöglichkeiten'
-        body: -> require("views/pay")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
+    
+    options =
+      small: false
+      css: 'alert alert-warning'
+      header: 'Zahlungsmöglichkeiten'
+      body: -> require("views/pay")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     e.preventDefault()
     
   showWarning: (e) -> 
     agreed = @isAgreed()
     dialog = new ModalSimpleView
-      options:
-        small: false
-        css: 'alert alert-danger'
-        header: 'Hinweis zum Versand von Pfeffer- und CS Gas-Sprays'
-        body: -> require("views/warning")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
-        footer:
-          footerButtonText: -> if !agreed then "Verstanden"
       modalOptions:
         keyboard: true
         show: false
-    @log dialog
+      
+    options =
+      small: false
+      css: 'alert alert-danger'
+      header: 'Hinweis zum Versand von Pfeffer- und CS Gas-Sprays'
+      body: -> require("views/warning")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
+      footer:
+        footerButtonText: -> if !agreed then "Verstanden"
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
     
-  showDelivery: ->
+  showDelivery: (e) ->
     dialog = new ModalSimpleView
-      options:
-        small: false
-        css: 'alert alert-warning'
-        header: 'Versand'
-        body: -> require("views/delivery")
-          copyright     : 'Axel Nitzschner'
-          spine_version : Spine.version
-          app_version   : App.version
-          bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       modalOptions:
         keyboard: true
         show: false
+      
+    options =
+      small: false
+      css: 'alert alert-warning'
+      header: 'Versand'
+      body: -> require("views/delivery")
+        copyright     : 'Axel Nitzschner'
+        spine_version : Spine.version
+        app_version   : App.version
+        bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.render().show()
+    dialog.show(options)
+    e.preventDefault()
     
   hidemodal: (e) ->
     @log 'hidemodal'
@@ -273,6 +313,18 @@ class App extends Spine.Controller
     e.preventDefault()
     @sidebar.addClass('off')
     
+  showStats: (e) ->
+    @stats.attr('src', '/stat/counter.php').addClass('in').removeClass('away')
+    e.preventDefault()
+    
+  moveStats: (e) ->
+    @stats.position(e)
+    e.preventDefault()
+    
+  hideStats: (e) ->
+    @stats.attr('src', '').removeClass('in').addClass('away')
+    e.preventDefault()
+    
   reset: ->
 #    @logo1.toggleClass('hide')
 #    bol = @logo1.hasClass('hide')
@@ -281,6 +333,9 @@ class App extends Spine.Controller
     
   agreed: ->
     Settings.update(Settings.first().id, {agreed: true})
+
+  isAgreed: ->
+    Settings.first()?.agreed
     
   getData: (s, arr=[]) ->
     test = (s, a) -> 
