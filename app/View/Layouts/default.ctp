@@ -29,7 +29,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->meta('viewport', array('width'=>'device-width', 'initial-scale'=>1, 'shrink-to-fit'=>'no'));
 		echo $this->Html->meta('http-equiv', "x-ua-compatible");
 		echo $this->Html->meta('icon');
-		echo $this->Html->meta('keywords', array('Restposten', 'Ausverkauf', 'Selbstschutz', 'Pfefferspray', 'Schnäppchen', 'Aktion'));
+		echo $this->Html->meta('keywords', array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Outdoor'));
+		echo $this->Html->meta('description', 'Der Versandhandel Ihres Vertrauens, HA-Lehmann, bietet Ihnen Artikel aus verschiedenen Branchen, wie Selbstschutz & Selbstverteidigung, Outdoor & Fitness sowie Alltagsrtikel & Restposten verschiedenster Art zu besonders günstigen Preisen an.');
 
 //    echo $this->Html->css('jquery-ui-1.8.16.custom');
     echo $this->Html->css('bootstrap');
@@ -106,7 +107,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     
     echo $this->Html->scriptEnd();
     
-    
+    $this->log($this->fetch('meta'), LOG_DEBUG);
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');

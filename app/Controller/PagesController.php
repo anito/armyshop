@@ -52,6 +52,14 @@ class PagesController extends AppController {
  */
 	public function display() {
 		$path = func_get_args();
+    
+    $titles   = array('home' => 'Startseite', 'defense' => 'Selbstschutz & Security', 'outdoor' => 'Outdoor & Fitness', 'goodies' => 'Restposten & Specials');
+    $keywords = array(
+        'home'     => array('second Set of keywords'),
+        'defense'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Outdoor'),
+        'outdoor'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Outdoor'),
+        'goodies'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Outdoor'),
+    );
 
 		$count = count($path);
 		if (!$count) {
@@ -66,8 +74,10 @@ class PagesController extends AppController {
 			$subpage = $path[1];
 		}
 		if (!empty($path[$count - 1])) {
-			$title_for_layout = Inflector::humanize($path[$count - 1]);
+			$title_for_layout = Inflector::humanize($path[$count - 1]) . ' | ' . $titles[$path[$count - 1]];
 		}
+    
+    $scripts_for_layout = $keywords[$path[$count - 1]]; #???? 
     
     $this->Product->recursive = 1;
     
