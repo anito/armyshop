@@ -80,5 +80,4 @@
     var base_url = '<?php echo $this->Html->url('/'); ?>';
     <?php
   echo $this->Html->scriptEnd();
-
-?>
+  echo $this->element(STATCONFIG . 'tracking_code');

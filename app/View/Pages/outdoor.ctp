@@ -20,4 +20,4 @@
     
     <?php
   echo $this->Html->scriptEnd();
-  echo $this->element('tracking_code');
+  echo $this->element(STATCONFIG . 'tracking_code');
