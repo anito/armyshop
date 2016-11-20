@@ -34,8 +34,8 @@ mysql/*
 /app/webroot/stat/log/*.php
 /app/webroot/stat/config/config.php
 /app/webroot/stat/config/tracking_code.php
+/app/webroot/stat/config/tracking_code.ctp
 /app/webroot/stat/counter_default.php
 /app/webroot/stat/config/config_db.php
 /app/webroot/stat/config/*.inc
 /app/webroot/stat_
-/app/webroot/stat/config/tracking_code.ctp
