@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_de.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">Deutsch</option>
+      <option value="../english/index.html">English</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a href="index.html">Einf&uuml;hrung</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a class="current" href="step_1.html">Schritt 1 - Uploaden</a></li></ul>
+    <ul><li><a href="step_2.html">Schritt 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Schritt 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Schritt 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a href="handling.html">Bedienung</a></li></ul>
+    <ul><li><a href="counter.html">Counter</a></li></ul>
+    <ul><li><a href="onclick.html">Klick-Z&auml;hler</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Sonstiges</h3>
+    <ul><li><a href="license.html">Lizenz</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Schritt 1 - Hochladen (Uploaden)</h3>
+      <p>F&uuml;r detailierte Angaben benutzen Sie das Handbuch Ihres FTP Clients.</p>
+      <p>Laden Sie s&auml;mtliche Dateien auf den Server in den von uns empfohlenen Ordner "stat" hoch. Normalerweise sollte Ihr FTP-Programm es erm&ouml;glichen, zu erkennen mit welcher Methode sie auf den Server gespielt werden m&uuml;ssen. Dies ist in der Regel die "automatische Erkennung"-Einstellung. Sollte es allerdings Probleme geben bei dem Betrieb der Statistik, so achten Sie bitte darauf, die Datein wie folgt hochzuladen:</p>
+      <p>Die Dateien im Hauptverzeichnis der ZIP-Datei m&uuml;ssen im ASCII-Modus hochgeladen werden.</p>
+      <ul class="st3">
+        <li><span class="ascii">(in ASCII)</span>archive.php</li>
+        <li><span class="ascii">(in ASCII)</span>cache_creator.php</li>
+        <li><span class="ascii">(in ASCII)</span>cache_panel.php</li>
+        <li><span class="ascii">(in ASCII)</span>cookie.php</li>
+        <li><span class="ascii">(in ASCII)</span>counter.php</li>
+        <li><span class="ascii">(in ASCII)</span>db_connect.php</li>
+        <li><span class="ascii">(in ASCII)</span>detail_view.php</li>
+        <li><span class="ascii">(in ASCII)</span>index.php</li>
+        <li><span class="ascii">(in ASCII)</span>last_hits.php</li>
+        <li><span class="ascii">(in ASCII)</span>plugin_choose.php</li>
+        <li><span class="ascii">(in ASCII)</span>plugin_loader.php</li>
+        <li><span class="ascii">(in ASCII)</span>syscheck.php</li>
+        <li><span class="ascii">(in ASCII)</span>sysinfo.php</li>
+        <li><span class="ascii">(in ASCII)</span>track.php</li>
+        <li><span class="ascii">(in ASCII)</span>track_files.php</li>
+      </ul>
+      <p>Gleiches gilt f&uuml;r die Ordner BACKUP, CONFIG, FUNC, LANGUAGE LOG und PLUGINS.</p>
+      <ul class="st3">
+        <li><span class="ascii">(in ASCII)</span>backup/</li>
+        <li><span class="ascii">(in ASCII)</span>config/ all files</li>
+        <li><span class="ascii">(in ASCII)</span>func/ all files</li>
+        <li><span class="ascii">(in ASCII)</span>language/ all files</li>
+        <li><span class="ascii">(in ASCII)</span>log/ all files</li>
+        <li><span class="ascii">(in ASCII)</span>plugins/ all files</li>
+      </ul>
+      <p>Die Dateien in dem Ordner THEMES m&uuml;ssen jeweils getrennt voneinander hochgeladen werden. Bilder werden im BIN&Auml;R-Modus hochgeladen, alle anderen im ASCII-Modus.</p>
+      <ul class="st3">
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/menu/ all files</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/bg_body.gif</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/bg_content.png</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/bg_counter-data.gif</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/bg_counter.png</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/bg_header-lh.png</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/bg_header-lh_c.png</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/bg_header-pl.png</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/bg_header-st.png</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/percentimage.gif</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/percentimage_front.gif</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/percentimage_print1.gif</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/percentimage_print2.gif</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/tableft.gif</li>
+        <li><span class="ascii">(in BIN&Auml;R)</span>themes/standard/tabright.gif</li>
+        <li><span class="ascii">(in ASCII)</span>themes/standard/counter.css</li>
+        <li><span class="ascii">(in ASCII)</span>themes/standard/style.css</li>
+        <li><span class="ascii">(in ASCII)</span>themes/admin.css</li>
+        <li><span class="ascii">(in ASCII)</span>themes/layout.css</li>
+        <li><span class="ascii">(in ASCII)</span>themes/print.css</li>
+        <li><span class="ascii">(in ASCII)</span>themes/setup.css</li>
+      </ul>
+      <p>Zuletzt m&uuml;ssen Sie noch das Verzeichnis IMAGES im BIN&Auml;R-Modus hochladen.</p>
+      <ul class="st3">
+        <li><span class="ascii">(in BIN&Auml;R)</span>images/ all files</li>
+      </ul>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

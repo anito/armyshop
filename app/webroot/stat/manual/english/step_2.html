@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_en.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">English</option>
+      <option value="../german/index.html">German</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a href="index.html">Introduction</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a href="step_1.html">Step 1 - Uploading</a></li></ul>
+    <ul><li><a class="current" href="step_2.html">Step 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Step 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Step 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a href="handling.html">Handling</a></li></ul>
+    <ul><li><a href="counter.html">Counter</a></li></ul>
+    <ul><li><a href="onclick.html">Click Counter</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Other</h3>
+    <ul><li><a href="license.html">License</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Step 2 - Set the file rights (chmod)</h3>
+      <p>For detailed information on how to set the rights of your files, please take a look at the manual of your prefered ftp client.</p>
+      <p><br><img class="imga" src="../images/chmod_en.gif" alt="" style="float:right; margin-left:8px; border:1px solid black;">After doing the Step 1, you got to set the rights of all uploaded files to the following:</p>
+      <p>If you host the stat on a Microsoft Windows server, you do not need to change any rights. So you can go to the next step directly.</p>
+      <p><br><br><br></p>
+      <p>The folder BACKUP, LOG and the subfolder ARCHIVE &amp; GEOIP has to have the right to write into.</p>
+      <ul class="st3">
+        <li><span class="chmod">drwxrwxrwx (chmod 777)</span>/backup</li>
+        <li><span class="chmod">drwxrwxrwx (chmod 777)</span>/log</li>
+        <li><span class="chmod">drwxrwxrwx (chmod 777)</span>/log/archive</li>
+        <li><span class="chmod">drwxrwxrwx (chmod 777)</span>/func/geoip</li>
+      </ul>
+      <p>All files in the log folder need the 666 rights</p>
+      <ul class="st3">
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/cache_memory_address.php</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/cache_time_stamp.php</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/cache_time_stamp_archive.php</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/cache_visitors.php</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/cache_visitors_archive.php</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/cache_visitors_counter.php</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/index_days.php</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/last_logins.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/last_timestamp.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/htaccess</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/logdb.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/logdb_backup.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/logdb_temp.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/logdb_track_file.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/pattern_browser.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/pattern_operating_system.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/pattern_referer.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/pattern_resolution.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/pattern_site_name.dta</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>log/timestamp_cache_update.dta</li>
+      </ul>
+      <p>The files "config.php", "config_db.php", "pattern_site_name.inc" and "pattern_string_replace.inc" in folder CONFIG need the 666 rights.</p>
+      <ul class="st3">
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>config/config.php</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>config/config_db.php</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>config/pattern_site_name.inc</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>config/pattern_string_replace.inc</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>config/tracking_code.php</li>
+      </ul>
+      <p>Within the folder THEMES the files "admin.css", "print.css", and your choosen "counter.css" and "style.css" need the rights 666.</p>
+      <ul class="st3">
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>themes/admin.css</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>themes/print.css</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>themes/ * /counter.css</li>
+        <li><span class="chmod">-rw-rw-rw- (chmod 666)</span>themes/ * /style.css</li>
+      </ul>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

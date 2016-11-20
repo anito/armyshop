@@ -1,0 +1,76 @@
+<p align="right"></p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_de.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">Deutsch</option>
+      <option value="../english/index.html">English</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a class="current" href="index.html">Einf&uuml;hrung</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a href="step_1.html">Schritt 1 - Uploaden</a></li></ul>
+    <ul><li><a href="step_2.html">Schritt 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Schritt 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Schritt 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a href="handling.html">Bedienung</a></li></ul>
+    <ul><li><a href="counter.html">Counter</a></li></ul>
+    <ul><li><a href="onclick.html">Klick-Z&auml;hler</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Sonstiges</h3>
+    <ul><li><a href="license.html">Lizenz</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Willkommen zur PHP Web Stat!</h3>
+      <p>Danke das Sie sich f&uuml;r die PHP-Web-Statistik entschieden haben!</p>
+      <p><img class="imga" src="../images/demo_de.gif" alt="">Diese Quick Start Anleitung soll Ihnen helfen sowohl die Statistik zum Laufen zu bringen als auch die technischen Aspekte zu beleuchten, so dass Sie verstehen werden, wie diese &uuml;berhaupt funktioniert.</p>
+      <p>Die Statistik ist komplett in PHP realisiert worden und funktioniert vom technischen Ablauf her wie folgt:</p>
+      <p>Zun&auml;chst muss in jede Seite, die aufgezeichnet werden soll, ein Javascript/NoScriptTag eingebunden werden. Sobald die Seite, die aufgezeichnet werden soll, von einem Besucher geladen wird, wird das Javascript/der NoScriptTag ausgef&uuml;hrt und leitet s&auml;mtliche Informationen &uuml;ber den Besucher an ein PHP-Script weiter, welches diese Daten als komplettes Javascript/PHP-Script mit allen Besucherinformationen innerhalb der aufzuzeichnenden Webseite darstellt. Nach Ausf&uuml;hrung dieses Javascriptes bzw. PHP-Scriptes werden alle Besucherinformationen einschliesslich der Farbtiefe und der Aufl&ouml;sung an das PHP-Script &uuml;bergeben.</p>
+      <p>Das PHP-Script analysiert diese Daten nun wie folgt: um den Logfile(*), der alle Informationen &uuml;ber einen Besucher aufzeichnet, zu verk&uuml;rzen, ist ein System erstellt worden, dass nicht nur aus einem Logfile(*) besteht, sonderm zudem noch f&uuml;r jedes Merkmal des Besuchers eine eigene Musterdatei(**) erstellt. Somit schaut das PHP-Script zun&auml;chst nach, ob die verwendete Farbtiefe beispielsweise schon einmal aufgetaucht ist in der Musterdatei(**) und wenn ja, wird in dem Logfile(*) nur ein Link in Form einer Zahl in diesen geschrieben. Somit erh&auml;lt der Logfile(*) jeweils nur ein K&uuml;rzel f&uuml;r jedes der aufgezeichneten Elemente. Sollte ein Wert noch nicht in einer der Musterdateien(**) vorhanden sein, so wird ein neuer Wert automatisch erstellt und mit einem K&uuml;rzel in Form einer Zahl benannt.</p>
+      <p><b>Aufzeichnung in Textdatei</b></p>
+      <p>S&auml;mtliche Informationen &uuml;ber einen Besucher werden in der logdb_backup.dta im Verzeichnis LOG abgespeichert. Die Musterdateien erkennen Sie an dem Namen "pattern_MUSTER.dta". Lediglich die Muster f&uuml;r die Benennung der jeweils aufgezeichneteten Seite k&ouml;nnen per Hand im <u>Admin-Center</u> h&auml;ndisch eingetragen werden.</p>
+      <p><b>Aufzeichnung in Datenbank</b></p>
+      <p>S&auml;mtliche Informationen &uuml;ber einen Besucher werden in der Datenbank-Tabelle PREFIX_main abgespeichert. Alle weiteren Datenbank-Tabellen werden für die Muster benutzt.  Lediglich die Muster f&uuml;r die Benennung der jeweils aufgezeichneteten Seite k&ouml;nnen per Hand im <u>Admin-Center</u> h&auml;ndisch eingetragen werden.<br><br></p>
+      <p>Weiterhin verwendet die Statistik einen Dateicache, der es erm&ouml;glicht, dass nicht immer der komplette Logfile gelesen werden muss, sondern nur die jeweils hinzugekommenen Eintr&auml;ge. Somit kann die Statistik auch bei vielen Eintr&auml;gen immer noch schnell geladen werden und belastet nicht die Resourcen des Servers.</p>
+      <p>* &nbsp;Unter der Bezeichnung Logfile kann sowohl eine Textdatei als auch eine Datenbank-Tabelle verstanden werden.<br>** Unter eine Musterdatei kann sowohl eine Textdatei als auch eine Datenbank-Tabelle verstanden werden.</p>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

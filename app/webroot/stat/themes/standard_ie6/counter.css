@@ -1,0 +1,97 @@
+/*
+################################################################################
+#        P H P - W E B - S T A T      S T Y L E - T H E M E     Counter        #
+################################################################################
+# Made by: Holger Naves                                                        #
+# Contact: http://www.php-web-statistik.de                                     #
+################################################################################
+*/
+
+/* --------------------------------------------- */
+/* --------------- general style --------------- */
+/* --------------------------------------------- */
+body {
+  background: transparent;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 11px;
+  letter-spacing: 0.1mm;
+  margin: 0px 0px 0px 0px;
+}
+
+/* --------------------------------------------- */
+/* --------------- counter style --------------- */
+/* --------------------------------------------- */
+.counter_table {
+  width: 136px;
+  color: #000000;
+  font-size: 11px;
+}
+.header_l {
+  width: 7px;
+  background: url('bg_counter.png') top left no-repeat;
+  background-position: 0% 0px;
+  line-height: 22px;
+  margin: 0px;
+  padding: 0px;
+}
+.header_r {
+  background: url('bg_counter.png') top right no-repeat;
+  background-position: 100% 0px;
+  font-weight: bold;
+  text-align: left;
+  line-height: 22px;
+  margin: 0px;
+  padding: 0px;
+}
+.data {
+  border-left: 1px solid #537392;
+  border-right: 1px solid #537392;
+  border-bottom: 1px solid #537392;
+  background: url('bg_counter-data.gif') center center no-repeat;
+}
+.module {
+  text-align: left;
+  padding: 0px 5px 0px 3px;
+}
+.hits {
+  text-align: right;
+  padding: 0px 3px 0px 5px;
+}
+.user {
+  font-weight: bold;
+}
+.footer_l {
+  width: 7px;
+  height: 20px;
+  background: url('bg_counter.png') top left no-repeat;
+  background-position: 0% -22px;
+  margin: 0px;
+  padding: 0px;
+}
+.footer_r {
+  height: 20px;
+  background: url('bg_counter.png') top right no-repeat;
+  background-position: 100% -22px;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: top;
+  margin: 0px;
+  padding: 1px 7px 0px 0px;
+}
+
+/* ------------------------------------------ */
+/* --------------- link style --------------- */
+/* ------------------------------------------ */
+a:link, a:visited, a:active {
+  background: transparent;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+a:hover, a:focus {
+  background: transparent;
+  color: #A7A7A7;
+  text-decoration: underline;
+}

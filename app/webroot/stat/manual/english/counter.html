@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_en.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">English</option>
+      <option value="../german/index.html">German</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a href="index.html">Introduction</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a href="step_1.html">Step 1 - Uploading</a></li></ul>
+    <ul><li><a href="step_2.html">Step 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Step 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Step 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a href="handling.html">Handling</a></li></ul>
+    <ul><li><a class="current" href="counter.html">Counter</a></li></ul>
+    <ul><li><a href="onclick.html">Click Counter</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Other</h3>
+    <ul><li><a href="license.html">License</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Counter</h3>
+      <p><br><img class="imga" src="../images/counter_en.png" title="PHP Web Stat Counter" alt="PHP Web Stat Counter">We also provide a seperate counter you can include in your homepage to show your visitors the actual statistic values.</p>
+      <p>Please use the following code to include the counter in your homepage.</p>
+      <p style="text-align: left;"><b>&#60;iframe allowtransparency="true" name="stat_counter" src="http://www.example.com/stat/counter.php" style="width: 136px; height: 147px;" frameborder="0" scrolling="no"&#62;Sorry but your browser does not support iframes&#60;/iframe&#62;</b></p>
+      <p>Please be aware that you change the domain path to your own server. You got to put the full external path to your counter.php in that.<br>The fact that the path to your counter script is an external one, gives you the possibility to display the counter on sites laying in subfolders of your server.</p>
+      <p>The values of width and height depend on the settings in the admincenter or in the css theme. So you have to edit these settings.</p>
+      <p><b>Change the language</b><br>If you want to display the counter in another language on your site, please use the following code right after the word counter.php:</p>
+      <ul class="st1">
+        <li><span class="lang2">for Englisch</span><b>?language=en</b></li>
+        <li><span class="lang2">for Dutch</span><b>?language=nl</b></li>
+        <li><span class="lang2">for Italian</span><b>?language=it</b></li>
+      </ul>
+      <p><b>Example: &nbsp; ...stat/counter.php?language=en</b></p>
+      <p>The PHP Web Stat will be shipped with german and english language support only.<br>Support for <a href="http://www.php-web-statistik.de/download-english.html" target="_blank">other languages</a> are available on our website. Please unzip the downloaded language module and copy it into the language folder on your server.</p>
+      <p>Which language modules are available you can see in the language folder.</p>
+      <p><b>Editing the appearance with CSS</b><br>If you want to change the color, positions, or the font of the counter, please change all settings in the <u>Admin-Center</u>.</p>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

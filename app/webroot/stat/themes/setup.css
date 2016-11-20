@@ -1,0 +1,132 @@
+/*
+################################################################################
+#        P H P - W E B - S T A T      S T Y L E - T H E M E     Setup          #
+################################################################################
+# This file is part of php web stat.                                           #
+# Open-Source Statistic Software for Webmasters                                #
+# Official web site and latest version:    http://www.php-web-statistik.de     #
+#==============================================================================#
+# Authors: Reimar Hoven, Holger Naves                                          #
+# Copyright � 2009 by PHP Web Stat - All Rights Reserved.                      #
+################################################################################
+*/
+
+/* --------------------------------------------- */
+/* --------------- general style --------------- */
+/* --------------------------------------------- */
+
+img {
+  border:none;
+}
+
+/* --------------------------------------------- */
+/* --------------- content style --------------- */
+/* --------------------------------------------- */
+#groundtable {
+  border: 1px solid #000000;
+  background: #C7C8CB;
+  color: #090909;
+  font-size: 11px;
+  padding: 5px 10px 5px 10px;
+  -moz-border-radius: 12px 14px 14px 12px;    /* with mozilla prefix */
+  -webkit-border-radius: 12px 14px 14px 12px; /* with safari prefix */
+  border-radius: 12px 14px 14px 12px;         /* with explorer prefix */
+}
+#header {
+  border: 1px solid black;
+  background: #FFFFFF;
+  height: 65px;
+  color: #003A59;
+  font-size: 11px;
+}
+#content {
+  height: 500px;
+  border-top: 1px solid #3B3E40;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-left: 1px solid #000000;
+  background: #FEFEFE url('standard/bg_content.png') repeat-x;
+  padding: 8px 50px 10px 50px;
+}
+#footer {
+  height: 26px;
+}
+
+/* ------------------------------------------- */
+/* --------------- table style --------------- */
+/* ------------------------------------------- */
+table {
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+}
+th {
+  border: 1px solid #FFFFFF;
+  background: #0D638A;
+  color: #FFFFFF;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+}
+td {
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+}
+.standard {
+  background: #0D638A;
+}
+.th2 {
+  background: #DCE0E4;
+  font-size: 12px;
+  padding: 2px;
+}
+.bg1 {
+  background: #FEFEFE;
+  font-size: 12px;
+  padding: 0px;
+}
+.bg2 {
+  width: 50%;
+  border-bottom: 1px solid #A4A4A4;
+  background: #FEFEFE;
+  vertical-align: top;
+  padding: 5px 3px 3px 3px;
+}
+.bg3 {
+  width: 50%;
+  border-bottom: 1px solid #A4A4A4;
+  background: #D7E2EA;
+  vertical-align: top;
+  padding: 3px 3px 3px 3px;
+}
+.warning {
+  border:2px solid #CC0000;
+  background:#F9FBE0;
+  color:#CC0000;
+  vertical-align:top;
+}
+
+/* ------------------------------------------ */
+/* --------------- font style --------------- */
+/* ------------------------------------------ */
+.left   { text-align: left; }
+.center { text-align: center; }
+.top    { vertical-align: top; }
+.middle { vertical-align: middle; }
+.bold   { font-weight: bold; }
+.small  { color: #5C5C5C; font-family: Verdana, Arial, Sans-Serif; font-size: 10px; padding-top: 2px; }
+
+/* ------------------------------------------ */
+/* --------------- link style --------------- */
+/* ------------------------------------------ */
+a:link, a:visited { color: #000000; text-decoration: underline; }
+a:hover, a:focus  { color: #002E45; text-decoration: underline; }
+
+/* ------------------------------------------ */
+/* --------------- form style --------------- */
+/* ------------------------------------------ */
+form {
+  display: inline;
+  margin: 0px;
+}
+input:focus, select:focus, textarea:focus {
+  background: #F9FBE0;
+}

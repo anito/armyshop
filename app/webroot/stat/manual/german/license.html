@@ -1,0 +1,470 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_de.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">Deutsch</option>
+      <option value="../english/index.html">English</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a href="index.html">Einf&uuml;hrung</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a href="step_1.html">Schritt 1 - Uploaden</a></li></ul>
+    <ul><li><a href="step_2.html">Schritt 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Schritt 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Schritt 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a href="handling.html">Bedienung</a></li></ul>
+    <ul><li><a href="counter.html">Counter</a></li></ul>
+    <ul><li><a href="onclick.html">Klick-Z&auml;hler</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Sonstiges</h3>
+    <ul><li><a class="current" href="license.html">Lizenz</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Deutsche &Uuml;bersetzung der<br>GNU General Public License</h3>
+  <p><font size="-1">
+   Urspr&uuml;nglich erstellt im Auftrag der
+   S.u.S.E.&nbsp;GmbH &ndash; <tt>http://www.suse.de</tt><br>
+   von Katja Lachmann &Uuml;bersetzungen,<br>
+   &uuml;berarbeitet von
+   <a href="http://www.peter.gerwinski.de">Peter Gerwinski</a>,
+   G-N-U GmbH &ndash; <tt>http://www.g-n-u.de</tt><br>
+   (31.&nbsp;Oktober 1996, 4.&nbsp;Juni 2000)
+  </font></p>
+  <pre><br></pre>
+  <p><font size="-1">
+   Diese &Uuml;bersetzung wird mit der Absicht angeboten, das Verst&auml;ndnis der
+   <em>GNU General Public License</em> (GNU GPL) zu erleichtern. Es handelt
+   sich jedoch nicht um eine offizielle oder im rechtlichen Sinne anerkannte
+   &Uuml;bersetzung.
+  </font></p>
+  <p><font size="-1">
+   Die <em>Free Software Foundation</em> (FSF) ist nicht der Herausgeber dieser
+   &Uuml;bersetzung, und sie hat diese &Uuml;bersetzung auch nicht als rechtskr&auml;ftigen
+   Ersatz f&uuml;r die Original-GNU-GPL anerkannt. Da die &Uuml;bersetzung nicht
+   sorgf&auml;ltig von Anw&auml;lten &uuml;berpr&uuml;ft wurde, k&ouml;nnen die &Uuml;bersetzer nicht
+   garantieren, daß die &Uuml;bersetzung die rechtlichen Aussagen der GNU GPL exakt
+   wiedergibt. Wenn Sie sichergehen wollen, daß von Ihnen geplante Aktivit&auml;ten
+   im Sinne der GNU GPL gestattet sind, halten Sie sich bitte an die
+   <a href="http://www.gnu.org/licenses/gpl.html">englischsprachige
+   Originalversion</a>.
+  </font></p>
+  <p><font size="-1">
+   Die &Uuml;bersetzer und die <em>Free Software Foundation</em> m&ouml;chten Sie darum
+   bitten, diese &Uuml;bersetzung nicht als offizielle Lizenzbedingungen f&uuml;r von
+   Ihnen geschriebene Programme zu verwenden. Bitte benutzen Sie hierf&uuml;r
+   stattdessen die von der <em>Free Software Foundation</em> herausgegebene
+   <a href="http://www.gnu.org/licenses/gpl.html">englischsprachige
+   Originalversion</a>.
+  </font></p>
+  <pre><br><br><br></pre>
+  <h3 align="center">GNU General Public License</h3>
+  <p><strong>
+   Deutsche &Uuml;bersetzung der Version 2, Juni 1991
+  </strong></p>
+  <p><strong>
+   Copyright &copy; 1989, 1991 Free Software Foundation, Inc.<br>
+   51 Franklin St, Fifth Floor, Boston, MA 02110, USA
+  </strong></p>
+  <p>
+   Es ist jedermann gestattet, diese Lizenzurkunde zu vervielf&auml;ltigen und
+   unver&auml;nderte Kopien zu verbreiten; &Auml;nderungen sind jedoch nicht erlaubt.
+  </p>
+  <p><strong>
+   Diese &Uuml;bersetzung ist kein rechtskr&auml;ftiger Ersatz f&uuml;r die
+   <a href="http://www.gnu.org/licenses/gpl.html">englischsprachige
+   Originalversion</a>!
+  </strong></p>
+  <h3>Vorwort</h3>
+  <p>
+   Die meisten Softwarelizenzen sind daraufhin entworfen worden, Ihnen die
+   Freiheit zu nehmen, die Software weiterzugeben und zu ver&auml;ndern. Im
+   Gegensatz dazu soll Ihnen die <em>GNU General Public License</em>, die
+   Allgemeine &Ouml;ffentliche GNU-Lizenz, ebendiese Freiheit garantieren. Sie soll
+   sicherstellen, daß die Software f&uuml;r alle Benutzer frei ist. Diese Lizenz
+   gilt f&uuml;r den Großteil der von der <em>Free Software Foundation</em>
+   herausgegebenen Software und f&uuml;r alle anderen Programme, deren Autoren ihr
+   Datenwerk dieser Lizenz unterstellt haben. Auch Sie k&ouml;nnen diese M&ouml;glichkeit
+   der Lizenzierung f&uuml;r Ihre Programme anwenden. (Ein anderer Teil der Software
+   der <em>Free Software Foundation</em> unterliegt stattdessen der <em>GNU
+   Library General Public License</em>, der Allgemeinen &Ouml;ffentlichen GNU-Lizenz
+   f&uuml;r Bibliotheken.) [Mittlerweile wurde die GNU Library Public License von
+   der GNU Lesser Public License abgel&ouml;st &ndash; Anmerkung des &Uuml;bersetzers.]
+  </p>
+  <p>
+   Die Bezeichnung <em>&bdquo;freie&ldquo; Software</em>  bezieht sich auf
+   Freiheit, nicht auf den Preis. Unsere Lizenzen sollen Ihnen die Freiheit
+   garantieren, Kopien freier Software zu verbreiten (und etwas f&uuml;r diesen
+   Service zu berechnen, wenn Sie m&ouml;chten), die M&ouml;glichkeit, die Software im
+   Quelltext zu erhalten oder den Quelltext auf Wunsch zu bekommen. Die
+   Lizenzen sollen garantieren, daß Sie die Software &auml;ndern oder Teile davon in
+   neuen freien Programmen verwenden d&uuml;rfen &ndash; und daß Sie wissen, daß Sie
+   dies alles tun d&uuml;rfen.
+  </p>
+  <p>
+   Um Ihre Rechte zu sch&uuml;tzen, m&uuml;ssen wir Einschr&auml;nkungen machen, die es jedem
+   verbieten, Ihnen diese Rechte zu verweigern oder Sie aufzufordern, auf diese
+   Rechte zu verzichten. Aus diesen Einschr&auml;nkungen folgen bestimmte
+   Verantwortlichkeiten f&uuml;r Sie, wenn Sie Kopien der Software verbreiten oder
+   sie ver&auml;ndern.
+  </p>
+  <p>
+   Beispielsweise m&uuml;ssen Sie den Empf&auml;ngern alle Rechte gew&auml;hren, die Sie
+   selbst haben, wenn Sie &ndash; kostenlos oder gegen Bezahlung &ndash; Kopien
+   eines solchen Programms verbreiten. Sie m&uuml;ssen sicherstellen, daß auch die
+   Empf&auml;nger den Quelltext erhalten bzw.&nbsp;erhalten k&ouml;nnen. Und Sie m&uuml;ssen
+   ihnen diese Bedingungen zeigen, damit sie ihre Rechte kennen.
+  </p>
+  <p>
+   Wir sch&uuml;tzen Ihre Rechte in zwei Schritten: (1) Wir stellen die Software
+   unter ein Urheberrecht (Copyright), und (2) wir bieten Ihnen diese Lizenz
+   an, die Ihnen das Recht gibt, die Software zu vervielf&auml;ltigen, zu verbreiten
+   und/oder zu ver&auml;ndern.
+  </p>
+  <p>
+   Um die Autoren und uns zu sch&uuml;tzen, wollen wir dar&uuml;berhinaus sicherstellen,
+   daß jeder erf&auml;hrt, daß f&uuml;r diese freie Software keinerlei Garantie besteht.
+   Wenn die Software von jemand anderem modifiziert und weitergegeben wird,
+   m&ouml;chten wir, daß die Empf&auml;nger wissen, daß sie nicht das Original erhalten
+   haben, damit irgendwelche von anderen verursachte Probleme nicht den Ruf des
+   urspr&uuml;nglichen Autors sch&auml;digen.
+  </p>
+  <p>
+   Schließlich und endlich ist jedes freie Programm permanent durch
+   Software-Patente bedroht. Wir m&ouml;chten die Gefahr ausschließen, daß
+   Distributoren eines freien Programms individuell Patente lizensieren &ndash;
+   mit dem Ergebnis, daß das Programm propriet&auml;r w&uuml;rde. Um dies zu verhindern,
+   haben wir klargestellt, daß jedes Patent entweder f&uuml;r freie Benutzung durch
+   jedermann lizenziert werden muß oder &uuml;berhaupt nicht lizenziert werden darf.
+  </p>
+  <p>
+   Es folgen die genauen Bedingungen f&uuml;r die Vervielf&auml;ltigung, Verbreitung und
+   Bearbeitung:
+  </p>
+  <h3>
+   Allgemeine &Ouml;ffentliche GNU-Lizenz<br>
+   Bedingungen f&uuml;r die Vervielf&auml;ltigung,<br>
+   Verbreitung und Bearbeitung
+  </h3>
+  <p>
+   &sect;0. Diese Lizenz gilt f&uuml;r jedes Programm und jedes andere Datenwerk, in
+   dem ein entsprechender Vermerk des Copyright-Inhabers darauf hinweist, daß
+   das Datenwerk unter den Bestimmungen dieser <em>General Public License</em>
+   verbreitet werden darf. Im folgenden wird jedes derartige Programm oder
+   Datenwerk als &bdquo;das Programm&ldquo; bezeichnet; die Formulierung
+   &bdquo;auf dem Programm basierendes Datenwerk&ldquo; bezeichnet das Programm
+   sowie jegliche Bearbeitung des Programms im urheberrechtlichen Sinne, also
+   ein Datenwerk, welches das Programm, auch auszugsweise, sei es unver&auml;ndert
+   oder ver&auml;ndert und/oder in eine andere Sprache &uuml;bersetzt, enth&auml;lt. (Im
+   folgenden wird die &Uuml;bersetzung ohne Einschr&auml;nkung als
+   &bdquo;Bearbeitung&ldquo; eingestuft.) Jeder Lizenznehmer wird im folgenden
+   als &bdquo;Sie&ldquo; angesprochen.
+  </p>
+  <p>
+   Andere Handlungen als Vervielf&auml;ltigung, Verbreitung und Bearbeitung werden
+   von dieser Lizenz nicht ber&uuml;hrt; sie fallen nicht in ihren
+   Anwendungsbereich. Der Vorgang der Ausf&uuml;hrung des Programms wird nicht
+   eingeschr&auml;nkt, und die Ausgaben des Programms unterliegen dieser Lizenz nur,
+   wenn der Inhalt ein auf dem Programm basierendes Datenwerk darstellt
+   (unabh&auml;ngig davon, daß die Ausgabe durch die Ausf&uuml;hrung des Programmes
+   erfolgte). Ob dies zutrifft, h&auml;ngt von den Funktionen des Programms ab.
+  </p>
+  <p>
+   &sect;1. Sie d&uuml;rfen auf beliebigen Medien unver&auml;nderte Kopien des
+   Quelltextes des Programms, wie sie ihn erhalten haben, anfertigen und
+   verbreiten. Voraussetzung hierf&uuml;r ist, daß Sie mit jeder Kopie einen
+   entsprechenden Copyright-Vermerk sowie einen Haftungsausschluß
+   ver&ouml;ffentlichen, alle Vermerke, die sich auf diese Lizenz und das Fehlen
+   einer Garantie beziehen, unver&auml;ndert lassen und desweiteren allen anderen
+   Empf&auml;ngern des Programms zusammen mit dem Programm eine Kopie dieser Lizenz
+   zukommen lassen.
+  </p>
+  <p>
+   Sie d&uuml;rfen f&uuml;r den eigentlichen Kopiervorgang eine Geb&uuml;hr verlangen.
+   Wenn Sie es w&uuml;nschen, d&uuml;rfen Sie auch gegen Entgelt eine Garantie f&uuml;r das
+   Programm anbieten.
+  </p>
+  <p>
+   &sect;2. Sie d&uuml;rfen Ihre Kopie(n) des Programms oder eines Teils davon
+   ver&auml;ndern, wodurch ein auf dem Programm basierendes Datenwerk entsteht; Sie
+   d&uuml;rfen derartige Bearbeitungen unter den Bestimmungen von Paragraph 1
+   vervielf&auml;ltigen und verbreiten, vorausgesetzt, daß zus&auml;tzlich alle im
+   folgenden genannten Bedingungen erf&uuml;llt werden:
+  </p>
+  <ol>
+   <li><p>
+    Sie m&uuml;ssen die ver&auml;nderten Dateien mit einem auff&auml;lligen Vermerk versehen,
+    der auf die von Ihnen vorgenommene Modifizierung und das Datum jeder
+    &Auml;nderung hinweist.
+   </p></li>
+   <li><p>
+    Sie m&uuml;ssen daf&uuml;r sorgen, daß jede von Ihnen verbreitete oder
+    ver&ouml;ffentlichte Arbeit, die ganz oder teilweise von dem Programm oder
+    Teilen davon abgeleitet ist, Dritten gegen&uuml;ber als Ganzes unter den
+    Bedingungen dieser Lizenz ohne Lizenzgeb&uuml;hren zur Verf&uuml;gung gestellt wird.
+   </p></li>
+   <li><p>
+    Wenn das ver&auml;nderte Programm normalerweise bei der Ausf&uuml;hrung interaktiv
+    Kommandos einliest, m&uuml;ssen Sie daf&uuml;r sorgen, daß es, wenn es auf dem
+    &uuml;blichsten Wege f&uuml;r solche interaktive Nutzung gestartet wird, eine Meldung
+    ausgibt oder ausdruckt, die einen geeigneten Copyright-Vermerk enth&auml;lt
+    sowie einen Hinweis, daß es keine Gew&auml;hrleistung gibt (oder anderenfalls,
+    daß Sie Garantie leisten), und daß die Benutzer das Programm unter diesen
+    Bedingungen weiter verbreiten d&uuml;rfen. Auch muß der Benutzer darauf
+    hingewiesen werden, wie er eine Kopie dieser Lizenz ansehen kann.
+    (Ausnahme: Wenn das Programm selbst interaktiv arbeitet, aber normalerweise
+    keine derartige Meldung ausgibt, muß Ihr auf dem Programm basierendes
+    Datenwerk auch keine solche Meldung ausgeben).
+   </p></li>
+  </ol>
+  <p>
+   Diese Anforderungen gelten f&uuml;r das bearbeitete Datenwerk als Ganzes.  Wenn
+   identifizierbare Teile des Datenwerkes nicht von dem Programm abgeleitet
+   sind und vern&uuml;nftigerweise als unabh&auml;ngige und eigenst&auml;ndige Datenwerke f&uuml;r
+   sich selbst zu betrachten sind, dann gelten diese Lizenz und ihre
+   Bedingungen nicht f&uuml;r die betroffenen Teile, wenn Sie diese als
+   eigenst&auml;ndige Datenwerke weitergeben.  Wenn Sie jedoch dieselben Abschnitte
+   als Teil eines Ganzen weitergeben, das ein auf dem Programm basierendes
+   Datenwerk darstellt, dann muß die Weitergabe des Ganzen nach den Bedingungen
+   dieser Lizenz erfolgen, deren Bedingungen f&uuml;r weitere Lizenznehmer somit auf
+   das gesamte Ganze ausgedehnt werden &ndash; und somit auf jeden einzelnen
+   Teil, unabh&auml;ngig vom jeweiligen Autor.
+  </p>
+  <p>
+   Somit ist es nicht die Absicht dieses Abschnittes, Rechte f&uuml;r Datenwerke in
+   Anspruch zu nehmen oder Ihnen die Rechte f&uuml;r Datenwerke streitig zu machen,
+   die komplett von Ihnen geschrieben wurden; vielmehr ist es die Absicht, die
+   Rechte zur Kontrolle der Verbreitung von Datenwerken, die auf dem Programm
+   basieren oder unter seiner auszugsweisen Verwendung zusammengestellt worden
+   sind, auszu&uuml;ben.
+  </p>
+  <p>
+   Ferner bringt auch das einfache Zusammenlegen eines anderen Datenwerkes, das
+   nicht auf dem Programm basiert, mit dem Programm oder einem auf dem Programm
+   basierenden Datenwerk auf ein- und demselben Speicher- oder Vertriebsmedium
+   dieses andere Datenwerk nicht in den Anwendungsbereich dieser Lizenz.
+  </p>
+  <p>
+   &sect;3. Sie d&uuml;rfen das Programm (oder ein darauf basierendes Datenwerk
+   gem&auml;ß Paragraph 2) als Objectcode oder in ausf&uuml;hrbarer Form unter den
+   Bedingungen der Paragraphen 1 und 2 kopieren und weitergeben &ndash;
+   vorausgesetzt, daß Sie außerdem eine der folgenden Leistungen erbringen:
+  </p>
+  <ol>
+   <li><p>
+    Liefern Sie das Programm zusammen mit dem vollst&auml;ndigen zugeh&ouml;rigen
+    maschinenlesbaren Quelltext auf einem f&uuml;r den Datenaustausch &uuml;blichen
+    Medium aus, wobei die Verteilung unter den Bedingungen der Paragraphen 1
+    und 2 erfolgen muß. Oder:
+   </p></li>
+   <li><p>
+    Liefern Sie das Programm zusammen mit einem mindestens drei Jahre lang
+    g&uuml;ltigen schriftlichen Angebot aus, jedem Dritten eine vollst&auml;ndige
+    maschinenlesbare Kopie des Quelltextes zur Verf&uuml;gung zu stellen &ndash; zu
+    nicht h&ouml;heren Kosten als denen, die durch den physikalischen Kopiervorgang
+    anfallen &ndash;, wobei der Quelltext unter den Bedingungen der Paragraphen
+    1 und 2 auf einem f&uuml;r den Datenaustausch &uuml;blichen Medium weitergegeben
+    wird. Oder:
+   </p></li>
+   <li><p>
+    Liefern Sie das Programm zusammen mit dem schriftlichen Angebot der
+    Zurverf&uuml;gungstellung des Quelltextes aus, das Sie selbst erhalten haben.
+    (Diese Alternative ist nur f&uuml;r nicht-kommerzielle Verbreitung zul&auml;ssig und
+    nur, wenn Sie das Programm als Objectcode oder in ausf&uuml;hrbarer Form mit
+    einem entsprechenden Angebot gem&auml;ß Absatz b erhalten haben.)
+   </p></li>
+  </ol>
+  <p>
+   Unter dem Quelltext eines Datenwerkes wird diejenige Form des Datenwerkes
+   verstanden, die f&uuml;r Bearbeitungen vorzugsweise verwendet wird. F&uuml;r ein
+   ausf&uuml;hrbares Programm bedeutet &bdquo;der komplette Quelltext&ldquo;: Der
+   Quelltext aller im Programm enthaltenen Module einschließlich aller
+   zugeh&ouml;rigen Modulschnittstellen-Definitionsdateien sowie der zur Compilation
+   und Installation verwendeten Skripte. Als besondere Ausnahme jedoch braucht
+   der verteilte Quelltext nichts von dem zu enthalten, was &uuml;blicherweise
+   (entweder als Quelltext oder in bin&auml;rer Form) zusammen mit den
+   Hauptkomponenten des Betriebssystems (Kernel, Compiler usw.) geliefert wird,
+   unter dem das Programm l&auml;uft &ndash; es sei denn, diese Komponente selbst
+   geh&ouml;rt zum ausf&uuml;hrbaren Programm.
+  </p>
+  <p>
+   Wenn die Verbreitung eines ausf&uuml;hrbaren Programms oder von Objectcode
+   dadurch erfolgt, daß der Kopierzugriff auf eine daf&uuml;r vorgesehene Stelle
+   gew&auml;hrt wird, so gilt die Gew&auml;hrung eines gleichwertigen Zugriffs auf den
+   Quelltext als Verbreitung des Quelltextes, auch wenn Dritte nicht dazu
+   gezwungen sind, den Quelltext zusammen mit dem Objectcode zu kopieren.
+  </p>
+  <p>
+   &sect;4. Sie d&uuml;rfen das Programm nicht vervielf&auml;ltigen, ver&auml;ndern, weiter
+   lizenzieren oder verbreiten, sofern es nicht durch diese Lizenz ausdr&uuml;cklich
+   gestattet ist. Jeder anderweitige Versuch der Vervielf&auml;ltigung,
+   Modifizierung, Weiterlizenzierung und Verbreitung ist nichtig und beendet
+   automatisch Ihre Rechte unter dieser Lizenz. Jedoch werden die Lizenzen
+   Dritter, die von Ihnen Kopien oder Rechte unter dieser Lizenz erhalten
+   haben, nicht beendet, solange diese die Lizenz voll anerkennen und befolgen.
+  </p>
+  <p>
+   &sect;5. Sie sind nicht verpflichtet, diese Lizenz anzunehmen, da Sie sie
+   nicht unterzeichnet haben. Jedoch gibt Ihnen nichts anderes die Erlaubnis,
+   das Programm oder von ihm abgeleitete Datenwerke zu ver&auml;ndern oder zu
+   verbreiten. Diese Handlungen sind gesetzlich verboten, wenn Sie diese Lizenz
+   nicht anerkennen. Indem Sie das Programm (oder ein darauf basierendes
+   Datenwerk) ver&auml;ndern oder verbreiten, erkl&auml;ren Sie Ihr Einverst&auml;ndnis mit
+   dieser Lizenz und mit allen ihren Bedingungen bez&uuml;glich der
+   Vervielf&auml;ltigung, Verbreitung und Ver&auml;nderung des Programms oder eines
+   darauf basierenden Datenwerks.
+  </p>
+  <p>
+   &sect;6. Jedesmal, wenn Sie das Programm (oder ein auf dem Programm
+   basierendes Datenwerk) weitergeben, erh&auml;lt der Empf&auml;nger automatisch vom
+   urspr&uuml;nglichen Lizenzgeber die Lizenz, das Programm entsprechend den hier
+   festgelegten Bestimmungen zu vervielf&auml;ltigen, zu verbreiten und zu
+   ver&auml;ndern. Sie d&uuml;rfen keine weiteren Einschr&auml;nkungen der Durchsetzung der
+   hierin zugestandenen Rechte des Empf&auml;ngers vornehmen. Sie sind nicht daf&uuml;r
+   verantwortlich, die Einhaltung dieser Lizenz durch Dritte durchzusetzen.
+  </p>
+  <p>
+   &sect;7. Sollten Ihnen infolge eines Gerichtsurteils, des Vorwurfs einer
+   Patentverletzung oder aus einem anderen Grunde (nicht auf Patentfragen
+   begrenzt) Bedingungen (durch Gerichtsbeschluß, Vergleich oder anderweitig)
+   auferlegt werden, die den Bedingungen dieser Lizenz widersprechen, so
+   befreien Sie diese Umst&auml;nde nicht von den Bestimmungen dieser Lizenz. Wenn
+   es Ihnen nicht m&ouml;glich ist, das Programm unter gleichzeitiger Beachtung der
+   Bedingungen in dieser Lizenz und Ihrer anderweitigen Verpflichtungen zu
+   verbreiten, dann d&uuml;rfen Sie als Folge das Programm &uuml;berhaupt nicht
+   verbreiten. Wenn zum Beispiel ein Patent nicht die geb&uuml;hrenfreie
+   Weiterverbreitung des Programms durch diejenigen erlaubt, die das Programm
+   direkt oder indirekt von Ihnen erhalten haben, dann besteht der einzige Weg,
+   sowohl das Patentrecht als auch diese Lizenz zu befolgen, darin, ganz auf
+   die Verbreitung des Programms zu verzichten.
+  </p>
+  <p>
+   Sollte sich ein Teil dieses Paragraphen als ung&uuml;ltig oder unter bestimmten
+   Umst&auml;nden nicht durchsetzbar erweisen, so soll dieser Paragraph seinem Sinne
+   nach angewandt werden; im &uuml;brigen soll dieser Paragraph als Ganzes gelten.
+  </p>
+  <p>
+   Zweck dieses Paragraphen ist nicht, Sie dazu zu bringen, irgendwelche
+   Patente oder andere Eigentumsanspr&uuml;che zu verletzen oder die G&uuml;ltigkeit
+   solcher Anspr&uuml;che zu bestreiten; dieser Paragraph hat einzig den Zweck, die
+   Integrit&auml;t des Verbreitungssystems der freien Software zu sch&uuml;tzen, das
+   durch die Praxis &ouml;ffentlicher Lizenzen verwirklicht wird. Viele Leute haben
+   großz&uuml;gige Beitr&auml;ge zu dem großen Angebot der mit diesem System verbreiteten
+   Software im Vertrauen auf die konsistente Anwendung dieses Systems
+   geleistet; es liegt am Autor/Geber, zu entscheiden, ob er die Software
+   mittels irgendeines anderen Systems verbreiten will; ein Lizenznehmer hat
+   auf diese Entscheidung keinen Einfluß.
+  </p>
+  <p>
+   Dieser Paragraph ist dazu gedacht, deutlich klarzustellen, was als
+   Konsequenz aus dem Rest dieser Lizenz betrachtet wird.
+  </p>
+  <p>
+   &sect;8. Wenn die Verbreitung und/oder die Benutzung des Programms in
+   bestimmten Staaten entweder durch Patente oder durch urheberrechtlich
+   gesch&uuml;tzte Schnittstellen eingeschr&auml;nkt ist, kann der Urheberrechtsinhaber,
+   der das Programm unter diese Lizenz gestellt hat, eine explizite
+   geographische Begrenzung der Verbreitung angeben, in der diese Staaten
+   ausgeschlossen werden, so daß die Verbreitung nur innerhalb und zwischen den
+   Staaten erlaubt ist, die nicht ausgeschlossen sind. In einem solchen Fall
+   beinhaltet diese Lizenz die Beschr&auml;nkung, als w&auml;re sie in diesem Text
+   niedergeschrieben.
+  </p>
+  <p>
+   &sect;9. Die <em>Free Software Foundation</em> kann von Zeit zu Zeit
+   &uuml;berarbeitete und/oder neue Versionen der <em>General Public License</em>
+   ver&ouml;ffentlichen. Solche neuen Versionen werden vom Grundprinzip her der
+   gegenw&auml;rtigen entsprechen, k&ouml;nnen aber im Detail abweichen, um neuen
+   Problemen und Anforderungen gerecht zu werden.
+  </p>
+  <p>
+   Jede Version dieser Lizenz hat eine eindeutige Versionsnummer. Wenn in
+   einem Programm angegeben wird, daß es dieser Lizenz in einer bestimmten
+   Versionsnummer oder &bdquo;jeder sp&auml;teren Version&ldquo; <em>(&ldquo;any
+   later version&rdquo;)</em> unterliegt, so haben Sie die Wahl, entweder den
+   Bestimmungen der genannten Version zu folgen oder denen jeder beliebigen
+   sp&auml;teren Version, die von der <em>Free Software Foundation</em>
+   ver&ouml;ffentlicht wurde. Wenn das Programm keine Versionsnummer angibt, k&ouml;nnen
+   Sie eine beliebige Version w&auml;hlen, die je von der <em>Free Software
+   Foundation</em> ver&ouml;ffentlicht wurde.
+  </p>
+  <p>
+   &sect;10. Wenn Sie den Wunsch haben, Teile des Programms in anderen freien
+   Programmen zu verwenden, deren Bedingungen f&uuml;r die Verbreitung anders sind,
+   schreiben Sie an den Autor, um ihn um die Erlaubnis zu bitten. F&uuml;r Software,
+   die unter dem Copyright der <em>Free Software Foundation</em> steht,
+   schreiben Sie an die <em>Free Software Foundation</em>; wir machen zu diesem
+   Zweck gelegentlich Ausnahmen. Unsere Entscheidung wird von den beiden Zielen
+   geleitet werden, zum einen den freien Status aller von unserer freien
+   Software abgeleiteten Datenwerke zu erhalten und zum anderen das
+   gemeinschaftliche Nutzen und Wiederverwenden von Software im allgemeinen zu
+   f&ouml;rdern.
+  </p>
+  <h3>Keine Gew&auml;hrleistung</h3>
+  <p><strong>
+   &sect;11. Da das Programm ohne jegliche Kosten lizenziert wird, besteht
+   keinerlei Gew&auml;hrleistung f&uuml;r das Programm, soweit dies gesetzlich zul&auml;ssig
+   ist. Sofern nicht anderweitig schriftlich best&auml;tigt, stellen die
+   Copyright-Inhaber und/oder Dritte das Programm so zur Verf&uuml;gung, &bdquo;wie
+   es ist&ldquo;, ohne irgendeine Gew&auml;hrleistung, weder ausdr&uuml;cklich noch
+   implizit, einschließlich &ndash; aber nicht begrenzt auf &ndash; Marktreife
+   oder Verwendbarkeit f&uuml;r einen bestimmten Zweck. Das volle Risiko bez&uuml;glich
+   Qualit&auml;t und Leistungsf&auml;higkeit des Programms liegt bei Ihnen. Sollte sich
+   das Programm als fehlerhaft herausstellen, liegen die Kosten f&uuml;r notwendigen
+   Service, Reparatur oder Korrektur bei Ihnen.
+  </strong></p>
+  <p><strong>
+   &sect;12. In keinem Fall, außer wenn durch geltendes Recht gefordert oder
+   schriftlich zugesichert, ist irgendein Copyright-Inhaber oder irgendein
+   Dritter, der das Programm wie oben erlaubt modifiziert oder verbreitet hat,
+   Ihnen gegen&uuml;ber f&uuml;r irgendwelche Sch&auml;den haftbar, einschließlich jeglicher
+   allgemeiner oder spezieller Sch&auml;den, Sch&auml;den durch Seiteneffekte
+   (Nebenwirkungen) oder Folgesch&auml;den, die aus der Benutzung des Programms oder
+   der Unbenutzbarkeit des Programms folgen (einschließlich &ndash; aber nicht
+   beschr&auml;nkt auf &ndash; Datenverluste, fehlerhafte Verarbeitung von Daten,
+   Verluste, die von Ihnen oder anderen getragen werden m&uuml;ssen, oder dem
+   Unverm&ouml;gen des Programms, mit irgendeinem anderen Programm
+   zusammenzuarbeiten), selbst wenn ein Copyright-Inhaber oder Dritter &uuml;ber die
+   M&ouml;glichkeit solcher Sch&auml;den unterrichtet worden war.
+  </strong></p>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

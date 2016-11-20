@@ -1,0 +1,408 @@
+/*
+################################################################################
+#        P H P - W E B - S T A T      S T Y L E - T H E M E     Statistic      #
+################################################################################
+# Made by: Holger Naves                                                        #
+# Contact: http://www.php-web-statistik.de                                     #
+################################################################################
+*/
+
+/* --------------------------------------------- */
+/* --------------- general style --------------- */
+/* --------------------------------------------- */
+body {
+  background: #70B1D1 url('bg_body.gif') repeat-x;
+  background-attachment: fixed;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 11px;
+  letter-spacing: 0.2mm;
+  word-spacing: 0.4mm;
+  margin: 5px auto;
+}
+
+/* ------------------------------------------- */
+/* --------------- font styles --------------- */
+/* ------------------------------------------- */
+.display_max_style {
+  color: #CC0000;
+}
+
+/* ------------------------------------------- */
+/* --------------- table style --------------- */
+/* ------------------------------------------- */
+#groundtable {
+  border: 1px solid #000000;
+  background: #C7C8CB;
+  color: #090909;
+  font-size: 11px;
+  padding: 5px 10px 5px 10px;
+  -moz-border-radius: 12px 14px 14px 12px;    /* with mozilla prefix */
+  -webkit-border-radius: 12px 14px 14px 12px; /* with safari prefix */
+  border-radius: 12px 14px 14px 12px;         /* with explorer prefix */
+}
+#header1_stat {
+  background: url('bg_header-st.gif') no-repeat;
+  height: 65px;
+  color: #003A59;
+  font-size: 11px;
+}
+#header2_stat {
+  border-bottom: 1px solid #252729;
+  background: url('bg_header-st.gif') left bottom no-repeat;
+}
+#navmenu {
+  background: url('menu/bg_menu.gif') no-repeat;
+}
+#header_lh {
+  height: 45px;
+  color: #003A59;
+  font-size: 11px;
+  text-align: center;
+}
+#header_archive {
+
+}
+#header1_plugin {
+  background: url('bg_header-pl.gif') no-repeat;
+  height: 62px;
+  color: #003A59;
+  font-size: 11px;
+}
+#header2_plugin {
+  height:26px;
+  border-bottom: 2px solid #252729;
+  background: url('bg_header-pl.gif') left bottom no-repeat;
+  padding: 1px;
+  padding-bottom: 4px;
+}
+#content {
+  border-top: 1px solid #3B3E40;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-left: 1px solid #000000;
+  background: #FEFEFE url('bg_content.gif') repeat-x;
+  padding: 8px 5px 10px 5px;
+}
+td {
+  font-size: 11px;
+}
+/* ----------------------------------------------- */
+/* --------------- overview module --------------- */
+/* ----------------------------------------------- */
+.overview_table {
+  border-top: 2px solid #6F6F6F;
+  border-right: 2px outset #6F6F6F;
+  border-bottom: 2px outset #6F6F6F;
+  border-left: 2px solid #6F6F6F;
+  background: #E2EAF1;
+  color: #000000;
+  font-size: 11px;
+}
+.overview_header {
+  border-bottom: 1px solid #6F6F6F;
+  background: #436783;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-align: left;
+  padding: 3px;
+}
+.overview_data {
+  text-align: left;
+  padding: 0px 0px 0px 3px;
+}
+.overview_hits {
+  width: 60px;
+  text-align: right;
+  padding: 0px;
+  padding-right: 5px;
+}
+
+/* ------------------------------------------- */
+/* --------------- stat module --------------- */
+/* ------------------------------------------- */
+.stat_table {
+  border-top: 2px solid #6F6F6F;
+  border-right: 2px outset #6F6F6F;
+  border-bottom: 2px outset #6F6F6F;
+  border-left: 2px solid #6F6F6F;
+  background: #E2EAF1;
+  color: #000000;
+  font-size: 11px;
+}
+.stat_header {
+  border-bottom: 1px outset #6F6F6F;
+  background: #436783;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-align: left;
+  padding: 3px;
+}
+.stat_module_data {
+  text-align: left;
+  padding: 0px 0px 0px 3px;
+}
+.stat_hits {
+  width: 60px;
+  text-align: right;
+  padding: 0px;
+  padding-right: 8px;
+}
+.stat_slidebar {
+  width: 102px;
+  padding: 0px;
+}
+.stat_percent {
+  width: 50px;
+  text-align: right;
+  padding: 0px 3px 0px 0px;
+}
+.stat_user {
+  font-weight: bold;
+}
+.stat_footer {
+  border-top: 1px solid #6F6F6F;
+  background: #B1C9E3;
+  color: #002E45;
+  font-size: 9px;
+  font-weight: bold;
+  text-align: left;
+  padding: 2px 2px 2px 6px;
+}
+
+/* ----------------------------------------- */
+/* --------------- last hits --------------- */
+/* ----------------------------------------- */
+.lh_menue {
+  border-bottom: 2px outset #000000;
+  color: #51748F;
+  font-weight: bold;
+  padding: 3px;
+  padding-bottom: 4px;
+}
+.lh_input {
+  border-top: 2px solid #6F6F6F;
+  border-right: 1px outset #000000;
+  border-bottom: 0px outset #6F6F6F;
+  border-left: 1px solid #000000;
+  height: 432px;
+  background: #E2EAF1;
+  overflow: auto;
+}
+.lh_table {
+  border-top: 0px solid #6F6F6F;
+  border-right: 0px outset #6F6F6F;
+  border-bottom: 0px outset #6F6F6F;
+  border-left: 0px solid #6F6F6F;
+  background: #FFFFFF;
+  color: #000000;
+  font-size: 11px;
+}
+.lh_header {
+  border-top: 0px solid #6F6F6F;
+  border-right: 0px outset #6F6F6F;
+  border-bottom: 1px outset #6F6F6F;
+  border-left: 0px solid #6F6F6F;
+  background: #436783;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-align: center;
+  padding: 3px;
+}
+.lh_row1 {
+  background: #FFFFFF;
+}
+.lh_row2 {
+  background: #EBECED;
+}
+.lh_time {
+  width: 74px;
+  color: #000000;
+  text-align: center;
+  padding: 1px;
+}
+.lh_iphost {
+  width: 140px;
+  color: #000000;
+  text-align: left;
+  padding: 1px;
+}
+.lh_os {
+  width: 45px;
+  color: #000000;
+  text-align: left;
+  padding: 1px;
+}
+.lh_site {
+  width: 230px;
+  color: #000000;
+  text-align: left;
+  padding: 1px;
+}
+.lh_referer {
+  color: #000000;
+  text-align: left;
+  padding: 1px;
+}
+.lh_footer {
+  border-top: 1px solid #6F6F6F;
+  border-right: 1px outset #000000;
+  border-bottom: 2px outset #6F6F6F;
+  border-left: 1px solid #000000;
+  background: #B1C9E3;
+  color: #002E45;
+  font-size: 9px;
+  font-weight: bold;
+  text-align: left;
+  padding: 2px 2px 2px 6px;
+}
+
+/* ------------------------------------------ */
+/* --------------- link style --------------- */
+/* ------------------------------------------ */
+a:link, a:visited, a:active {
+  background: transparent;
+  color: #000000;
+  text-decoration: underline;
+}
+a:hover, a:focus {
+  background: transparent;
+  color: #002E45;
+  text-decoration: underline;
+}
+.referer:link, .referer:visited, .referer:active {
+  background: transparent;
+  color: #0D638A;
+  font-size: 11px;
+  text-decoration: none;
+}
+.referer:hover, .referer:focus {
+  background: transparent;
+  color: #0D638A;
+  font-size: 11px;
+  text-decoration: underline;
+}
+.lh:link, .lh:visited, .lh:active {
+  background: transparent;
+  color: #002E45;
+  text-decoration: none;
+}
+.lh:hover, .lh:focus {
+  background: transparent;
+  color: #51748F;
+  text-decoration: none;
+}
+
+/* ------------------------------------------ */
+/* --------------- form style --------------- */
+/* ------------------------------------------ */
+form {
+  display: inline;
+  margin: 0px;
+}
+.select {
+
+}
+.input {
+
+}
+.pw:focus {
+  background: #C9E3FE;
+}
+.button {
+  width: auto;
+  border: 1px solid #0D638A;
+  background: #FEFEFE;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+  text-decoration: none;
+  padding: 1px 10px 1px 10px;
+  overflow: visible;
+  cursor: pointer;
+}
+.button:hover {
+  background: #D7E2EA;
+}
+.submit {
+  width: auto;
+  padding: 0px 10px 0px 10px;
+  overflow: visible;
+  cursor: pointer;
+}
+.submit:hover {
+  width: auto;
+  padding: 0px 10px 0px 10px;
+  overflow: visible;
+  cursor: pointer;
+}
+
+/* ------------------------------------------- */
+/* --------------- image style --------------- */
+/* ------------------------------------------- */
+img {
+  border: none;
+}
+img.percent {
+  background: url('percentimage.gif') top left no-repeat;
+  padding: 0px;
+  margin: 0px;
+  background-position: 0px 0;
+}
+
+/* ----------------------------------------- */
+/* --------------- tabs menu --------------- */
+/* ----------------------------------------- */
+#tabs {
+  float: right;
+  background: transparent;
+  font-size: 93%;
+  line-height: 17px;
+}
+#tabs ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px 25px 0px 0px;
+}
+#tabs li {
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+}
+#tabs a {
+  float: left;
+  background: url('tableft.gif') top left no-repeat;
+  text-decoration: none;
+  margin: 0px;
+  padding: 0px 0px 0px 7px;
+}
+#tabs a span {
+  float: left;
+  background: url('tabright.gif') top right no-repeat;
+  color: #51748F;
+  font-weight: bold;
+  display: block;
+  padding: 2px 12px 2px 3px;
+}
+
+/* Commented Backslash Hack hides rule from IE5-Mac */
+#tabs a span { float:none; }
+/* End IE5-Mac hack */
+
+#tabs a:hover         { background-position: 0% -30px; }
+#tabs a:hover span    { background-position: 100% -30px; color: #002E45; }
+#tabs a:focus         { background-position: 0% -30px; }
+#tabs a:focus span    { background-position: 100% -30px; color: #002E45; }
+#tabs a:active        { background-position: 0% -60px; }
+#tabs a:active span   { background-position: 100% -60px; color: #FFFFFF; }
+#tabs #current a      { background-position: 0% -60px; }
+#tabs #current a span { background-position: 100% -60px; color: #FFFFFF; }
+
+/* change tab */
+.changetab { width: 100%; display: none; }
+
+/* ------------------------------------------- */
+/* --------------- print style --------------- */
+/* ------------------------------------------- */
+#print { display: none; }
+.print { display: none; }

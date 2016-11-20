@@ -95,8 +95,6 @@ Configure::write('Dispatcher.filters', array(
 	'CacheDispatcher'
 ));
 
-CakePlugin::load('Stats');
-
 /**
  * Configures default file logging options
  */

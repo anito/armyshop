@@ -54,7 +54,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     var base_url = '<?php echo $this->Html->url('/'); ?>';
     <?php
     echo $this->Html->scriptEnd();
-    echo $this->Html->script('app/public/application');
     ?>
 
     <?php
@@ -208,7 +207,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
       <?php echo $this->fetch('content'); ?>
       <?php echo $this->element('sql_dump'); ?>
-
+      <?php echo $this->element('tracking_code'); ?>
     </div>
   </div>
   <footer class="footer bg-inverse">
@@ -218,11 +217,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <span><a href="#" class=" opt-agb">AGB</a></span>
     <span><a href="#" class=" opt-pay">Zahlungsmöglichkeiten</a></span>
     <span><a href="#" class=" opt-del">Versand</a></span>
+    <span><a href="#" class="opt-stats">Statistik</a></span>
   </footer>
+  <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away"></iframe>
   <!-- modal-dialogue -->
   <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="top: 65px;"></div>
   <!-- /.modal -->
-<?php echo $this->element('sql_dump'); ?>
-
 </body>
 </html>

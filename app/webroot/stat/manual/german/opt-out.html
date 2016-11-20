@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_de.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">Deutsch</option>
+      <option value="../english/index.html">English</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a href="index.html">Einf&uuml;hrung</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a href="step_1.html">Schritt 1 - Uploaden</a></li></ul>
+    <ul><li><a href="step_2.html">Schritt 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Schritt 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Schritt 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a href="handling.html">Bedienung</a></li></ul>
+    <ul><li><a href="counter.html">Counter</a></li></ul>
+    <ul><li><a href="onclick.html">Klick-Z&auml;hler</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a class="current" href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Sonstiges</h3>
+    <ul><li><a href="license.html">Lizenz</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Opt Out (Aufzeichnung ablehnen)</h3>
+      <p><br>Nach neuesten Datenschutzrichtlinien ist Besuchern von Webseiten die Möglichkeit zu bieten, sich von etwaigen Aufzeichnungen durch Statistiken ausschliessen zu können (sogenanntes Opt-Out).</p>
+      <p>Aus diesem Grunde wurde die Möglichkeit zur Erstellung sowie Löschung eines Cookies in die PHP Web Stat eingebaut. Der Besucher erhält die Möglichkeit ein von uns generiertes Cookie in seinem Browser abzuspeichern, so dass seine Besuche nicht aufgezeichnet werden.</p>
+      <p>Bitte benutzen Sie den von uns hier zur Verfügung gestellten Beispielcode, um ihn auf Ihren eigenen Seiten einzubinden.</p>
+      <p style="text-align: left;"><b>&#60;iframe allowtransparency="true" name="opt-out" src="http://www.example.com/stat/cookie.php?action=opt-out" style="width: 100%; height: 125px;" frameborder="0" scrolling="no"&#62;Sorry but your browser does not support iframes&#60;/iframe&#62;</b></p>
+      <p>Bitte achten Sie darauf, dass der Pfad zu der auf Ihrem Server liegenden COOKIE.PHP angegeben werden muss!</p>
+      <p>Des Weiteren stehen Ihnen verschiedene Möglichkeiten zur Anpassung an Ihre Bedürfnisse zur Verfügung:</p>
+      <ul class="st1">
+        <li><span class="lang2">Angabe der Sprache</span> <b>&amp;language=de</b></li>
+        <li><span class="lang2">Angabe zur Schriftfarbe</span> <b>&amp;color=000000</b></li>
+        <li><span class="lang2">Angabe zur Hintergrundfarbe</span> <b>&amp;bgcolor=A7A7A7</b></li>
+        <li><span class="lang2">Angabe zur Schriftgröße</span> <b>&amp;fontsize=12</b></li>
+        <li><span class="lang2">URL einer Stylesheet Datei</span> <b>&amp;stylesheet=layout.css</b></li>
+      </ul>
+      <p><b>Beispiel: &nbsp; ...stat/cookie.php?action=opt-out&amp;color=666666&amp;fontsize=14</b></p>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

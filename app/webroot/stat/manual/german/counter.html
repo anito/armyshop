@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_de.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">Deutsch</option>
+      <option value="../english/index.html">English</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a href="index.html">Einf&uuml;hrung</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a href="step_1.html">Schritt 1 - Uploaden</a></li></ul>
+    <ul><li><a href="step_2.html">Schritt 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Schritt 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Schritt 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a href="handling.html">Bedienung</a></li></ul>
+    <ul><li><a class="current" href="counter.html">Counter</a></li></ul>
+    <ul><li><a href="onclick.html">Klick-Z&auml;hler</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Sonstiges</h3>
+    <ul><li><a href="license.html">Lizenz</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Counter</h3>
+      <p><br><img class="imga" src="../images/counter_de.png" title="PHP Web Stat Counter" alt="PHP Web Stat Counter">Neben der PHP-Web-Statistik bieten wir Ihnen einen separaten Counter an, den Sie in Ihrer Webpr&auml;senz einbinden k&ouml;nnen. Dieser Counter ist an die Statistik gekoppelt und spiegelt einige Daten wieder.</p>
+      <p>Verwenden Sie den nachstehenden Code um den Counter in Ihre Webseite einzubetten.</p>
+      <p style="text-align: left;"><b>&#60;iframe allowtransparency="true" name="stat_counter" src="http://www.example.com/stat/counter.php" style="width: 136px; height: 147px;" frameborder="0" scrolling="no"&#62;Sorry but your browser does not support iframes&#60;/iframe&#62;</b></p>
+      <p>Bitte achten Sie darauf, dass der vollst&auml;ndige Pfad zu der auf dem Server liegenden COUNTER.PHP angegeben werden sollte!<br>Da es sich hierbei um einen externen Pfad handelt, kann diese Zeile auch unver&auml;ndert in Unterverzeichnissen des Server verwendet werden.</p>
+      <p>Die Werte f&uuml;r Weite und Höhe (width, height) sind abh&auml;ngig von voreingestellten Counter-Einstellungen im Admin Center als auch ggf. hinterlegten Werten im CSS und m&uuml;ssen demnach unter Ber&uuml;cksichtigung dieser Angaben angepasst werden.</p>
+      <p><b>Anpassen der Sprache</b><br>Wenn Sie den Counter auf Ihrer Webseite in einer anderen Sprachen ausgeben m&ouml;chten, so ist dies ohne Probleme m&ouml;glich. Benutzen Sie einfach folgenden Code f&uuml;r die jeweilige Sprache und h&auml;gen Sie diesen dem Link an:</p>
+      <ul class="st1">
+        <li><span class="lang2">Ausgabe erfolgt in Englisch</span><b>?language=en</b></li>
+        <li><span class="lang2">Ausgabe erfolgt in Niederl&auml;ndisch</span><b>?language=nl</b></li>
+        <li><span class="lang2">Ausgabe erfolgt in Italienisch</span><b>?language=it</b></li>
+      </ul>
+      <p><b>Beispiel: &nbsp; ...stat/counter.php?language=en</b></p>
+      <p>Die Statistik wird in deutscher und englischer Sprache ausgeliefert.<br>Weitere Sprachpakete m&uuml;ssen zun&auml;chst <a href="http://www.php-web-statistik.de/download-deutsch.html" target="_blank">heruntergeladen, entpackt und in den Ordner language kopiert werden</a>.<br>Erst dann ist eine Unterst&uuml;tzung in Niederl&auml;ndisch, Italienisch oder anderer Sprachen m&ouml;glich.</p>
+      <p>Welche Sprachen zur Verf&uuml;gung stehen, k&ouml;nnen Sie dem Ordner language entnehmen.</p>
+      <p><br><b>Anpassen der Farbgebung mittels CSS</b><br>Durch das Anpassen einer CSS Datei (Cascading Style Sheets) k&ouml;nnen Sie den Counter farblich Ihrer Homepage anpassen. Neben Farben k&ouml;nnen auch Positionen so wie die Schriftart editiert werden.<br>Im <u>Admin-Center</u> finden Sie den Men&uuml;punkt "CSS Editor" mit dessen Hilfe Sie den aktuell verwendeten Style nach Belieben verändern k&ouml;nnen.</p>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

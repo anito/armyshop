@@ -18,6 +18,7 @@ class App extends Spine.Controller
     '#goodies'          : 'goodiesEl',
     '#outdoor'          : 'outdoorEl',
     '#nav'              : 'nav'
+    '#stats'            : 'stats'
     '#menu-trigger'     : 'menutrigger'
     '.logo-1'           : 'logo1'
     '.logo-2'           : 'logo2'
@@ -29,6 +30,9 @@ class App extends Spine.Controller
     'mouseenter .item-menu'                     :           'background'
     'mouseenter .opt-sidebar'                   :           'showSidebar'
     'mouseleave .opt-sidebar'                   :           'hideSidebar'
+    'mouseenter .opt-stats'                     :           'showStats' 
+    'mousemove  .opt-stats'                     :           'moveStats' 
+    'mouseleave .opt-stats'                     :           'hideStats' 
     
     'click .opt-hint'                           :           'showWarning'
     'click .opt-agreed'                         :           'agreed'
@@ -229,7 +233,7 @@ class App extends Spine.Controller
     dialog.show(options)
     e.preventDefault()
     
-  showPay: (e) -> 
+  showPay: (e) ->
     dialog = new ModalSimpleView
       modalOptions:
         keyboard: true
@@ -345,6 +349,18 @@ class App extends Spine.Controller
     return
     e.preventDefault()
     @sidebar.addClass('off')
+  
+  showStats: (e) ->
+    @stats.attr('src', '/stat/counter.php').addClass('in').removeClass('away')
+    e.preventDefault()
+    
+  moveStats: (e) ->
+    @stats.position(e)
+    e.preventDefault()
+    
+  hideStats: (e) ->
+    @stats.attr('src', '').removeClass('in').addClass('away')
+    e.preventDefault()
     
   reset: ->
     Settings.update(Settings.first().id, {hidden: false, agreed: false})

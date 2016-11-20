@@ -30,3 +30,4 @@ Thumbs.db
 /node_modules
 nbproject
 mysql/*
+/app/webroot/stat/config/config.php

@@ -1,0 +1,2 @@
+allow from localhost
+deny from All

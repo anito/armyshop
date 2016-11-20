@@ -15,6 +15,7 @@ class App extends Spine.Controller
     '#content'          : 'content',
     '#nav'              : 'nav'
     '#menu-trigger'     : 'menutrigger'
+    '#stats'            : 'stats'
     '.logo-1'           : 'logo1'
     '.logo-2'           : 'logo2'
     '.sidebar'          : 'sidebar'

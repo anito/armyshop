@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_de.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">Deutsch</option>
+      <option value="../english/index.html">English</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a href="index.html">Einf&uuml;hrung</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a href="step_1.html">Schritt 1 - Uploaden</a></li></ul>
+    <ul><li><a href="step_2.html">Schritt 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Schritt 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Schritt 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a class="current" href="handling.html">Bedienung</a></li></ul>
+    <ul><li><a href="counter.html">Counter</a></li></ul>
+    <ul><li><a href="onclick.html">Klick-Z&auml;hler</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Sonstiges</h3>
+    <ul><li><a href="license.html">Lizenz</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Bedienung</h3><br>
+      <p><b>Allgemein</b><br>
+      Um die Zugriffe auf Ihre Webseite im Detail zu verfolgen, k&ouml;nnen Sie den Button <u>Letzte Zugriffe</u> aufrufen.
+      </p>
+
+      <p><b>Auswertung eines Zeitintervalls</b><br>
+      Wir bieten zus&auml;tzlich zu der Gesamt&uuml;bersicht noch eine M&ouml;glichkeit, Auswertungen &uuml;ber zeitliche Intervalle zu erstellen.
+      Dazu klicken Sie auf den Button <u>Archiv</u> und w&auml;hlen &uuml;ber die beiden Eingabefelder den zeitlichen Anfangs- und Endpunkt ihres gew&uuml;nschten Intervalls aus.
+      Nachdem die Auswertung angezeigt wird, haben Sie im oberen Bereich des angezeigten Fensters die M&ouml;glichkeit, diese Auswertung abzuspeichern.
+      Wenn Sie also beim n&auml;chsten Male das <u>Archiv</u> aufrufen, werden Ihnen die abgespeicherten Intervalle zur Auswahl angezeigt. Sollten Sie eines dieser gespeicherten Intervalle
+      l&ouml;schen wollen, so k&ouml;nnen Sie dies im <u>Admin-Center</u> tuen.
+      </p>
+
+      <p><b>Dynamische Seiten</b><br>
+      Sollten Sie in Ihrer Internetpr&auml;senz mit dynamischen Seiten arbeiten (Bsp.: index.php?x=1&amp;y=2), dann bieten wir Ihnen die M&ouml;glichkeit, einzelne Parameter aufzuzeichnen bzw.
+      nicht gew&uuml;nschte Parameter zu l&ouml;schen.
+      Die Vorgehensweise dazu ist wie folgt: die Statistik schneidet grunds&auml;tzlich alle Parameter hinter einem Seitennamen komplett ab. Es sei denn, Sie wollen einzelne Parameter aufzeichnen lassen.
+      <br>
+      <br>
+      Beispiel:
+      <br>
+      Der Seitenname &quot;index.php?x=1&amp;y=2&amp;PHPSESSID=579874398h59843&quot; wird aufgezeichnet mit &quot;index.php&quot; wenn Sie keinerlei Einstellungen vornehmen.
+      Um zu verhindern, dass eine ID in der URL mit aufgezeichnet wird, alle anderen Parameter jedoch aufgezeichnet werden, tragen Sie im <u>Admin-Center</u> unter
+      <u>Dynamische URLs</u> alle Parameter (ein Parameter pro Zeile) getrennt voneinander ein.
+      Wenn Sie nun feststellen, dass die Aufzeichnung korrekt erfolgt ist, der Seitenname Ihnen aber zu wenig Informationen bietet, so k&ouml;nnen Sie eine eigene Benennung vorgeben.
+      Dies k&ouml;nnen Sie unter <b>Vergabe von eigenen Seitennamen</b> nachlesen.
+      </p>
+
+      <p><b>Vergabe von eigenen Seitennamen</b><br>
+      Sollten Sie beispielweise Seitennamen in Ihrer Auswertung haben, die unleserlich und schlecht nachvollziehbar sind (Bsp.: index.php?x=1&amp;y=2), dann bieten wir Ihnen die M&ouml;glichkeit,
+      diese umzubenennen. Dazu klicken Sie im <u>Admin Center</u> auf <u>Seiten-Benennung</u> und gehen bei der Benennung wie folgt vor:
+      <p>
+      <ul>
+      	<li><b>index.html|Startseite</b></li>
+      	<li><b>contact.html|Kontakt</b></li>
+      	<li><b>usw.</b></li>
+      </ul>
+      <p>
+      Welchen internen Namen Sie an den Anfang schreiben, k&ouml;nnen Sie aus der aktuellen Version Ihrer Statistik unter <u>Seitenaufrufe</u> entnehmen.
+      Bitte achten Sie darauf, dass Sie hinter dem Link Ihrer Seite einen senkrechten Trennstrich in Form des Zeichens &quot;|&quot; vornehmen.
+      </p>
+
+      <p><b>Vergabe von Teilstrings</b><br>
+      Um die Ansicht von Seitenaufrufen innerhalb der Statistik komfortabel zu gestalten, bietet sich die Funktion Teilstring ersetzen im <u>Admin Center</u> an.
+      Damit k&ouml;nnen Sie Teile von Seitennamen (URLs) durch beliebige Werte automatisch ersetzen lassen.
+      Werden beispielsweise Seitennamen umbenannt, so k&ouml;nnen Sie durch diese Funktion die alten sowie die neuen Seitennamen f&uuml;r die Ansicht innerhalb der Statistik zusammenfassen.
+      Folgendes Beispiel erl&auml;utert die Vorgehensweise zum Erstellen einer String-Umbenennung:
+      </p>
+      <ul>
+      	<li><b>shop-einkaufs-wagen|warenkorb</b></li>
+      	<li><b>usw.</b></li>
+      </ul>
+      <p>
+      Auch hier m&uuml;ssen Sie darauf achten, dass Sie hinter dem String einen senkrechten Trennstrich in Form des Zeichens &quot;|&quot; einsetzen.
+      </p>
+
+      <p><b>Cache per Cronjob aktualisieren</b><br>
+      Wenn Sie die Statistik f&uuml;r l&auml;ngere Zeit nicht genutzt haben, so kann beim Betreten eine l&auml;ngere Zeit verstreichen. Dies ist damit zu erkl&auml;ren dass alle Zugriffe, die seit dem letzten Login erfolgt sind, noch nicht verarbeitet wurden.
+      Weiterhin kann es auf langsamen oder speicherarmen Servern nicht nur zu Verz&ouml;gerungen kommen, sondern auch die Performance fehlen, grosse Mengen an aufgelaufenen Logdatei-Zeilen aufarbeiten zu k&ouml;nnen.
+      F&uuml;r diese F&auml;lle eignet sich die Nutzung von automatisch ablaufenden Scripten im Hintergrund zu festgelegten Zeiten (Cron Job).
+      Wir bieten mit der mitgelieferten Datei cache_creator.php diese M&ouml;glichkeit. Wenn Sie also einen Cron Job Service nutzen m&ouml;chten, so k&ouml;nnen Sie diese Datei als Script verwenden. Bitte beachten Sie, dass ein Aufruf der cache_creator.php am besten in Abst&auml;nden von 2 Stunden pro Tag erfolgen soll, aber nicht zu den Zeiten, in denen Sie als Betreiber die Statistik selbst bedienen m&ouml;chten. Daher empfehlen wir zwei Aufrufe der cache_creator.php in der Zeit von 0-7 Uhr morgens.
+      Auf diese Weise schonen Sie die Performance Ihres Servers und k&ouml;nnen getrost ohne Probleme die Statistik &uuml;ber l&auml;ngere Zeit nicht betreten.
+      Aus Sicherheitsgr&uuml;nden muss der Aufruf inklusiv dem Parameter &quot;pw&quot; und Ihrem Passwort erfolgen um unbefugtes Starten durch Dritte zu verhindern. Folgendes Beispiel w&auml;re dann die URL, die der Cron Job ausf&uuml;hren m&uuml;sste:
+      <p>
+      <ul>
+      	<li><b>http://www.example.com/stat/cache_creator.php?pw=adminpasswort</b></li>
+      </ul>
+      </p>
+      </p>
+
+      <p><b>IP-Anonymisierung</b><br>
+      Auf Grund von Datenschutzgesetzen verschiedener L&auml;nder ist es nicht erlaubt, die IP-Adresse des Besuchers aufzuzeichnen und vorzuhalten. Aus diesem Grund erhalten Sie die M&ouml;glichkeit im <u>Admin Center</u>, die IP-Adresse des Besuchers zu anonymisieren.
+      Dazu bieten wir die komplette Ersetzung der IP-Adresse durch einen Hashwert. Sie k&ouml;nnen aber auch nur eine Teilanonymisierung vornehmen, die lediglich den letzten Block einer IP-Adresse anonymisiert.
+      Bitte beachten Sie, dass diese Einstellung sich nur auf neu hinzugekommene Besucher bezieht. Bereits erfolgte Aufzeichnungen und somit Logfiles halten die IP-Adressen der Besucher weiterhin vor.
+      </p>
+
+      <p><b>Eigene Besuche nicht aufzeichnen</b><br>
+      Um eigene Besuche nicht aufzuzeichnen, klicken Sie bitte auf die Grafik oben rechts. Die Statistik setzt dann ein Cookie auf Ihrem Rechner und zeichnet ab sofort Ihre
+      eigenen Besuche nicht mehr auf.
+      </p>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

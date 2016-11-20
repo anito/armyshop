@@ -1,0 +1,186 @@
+/*
+################################################################################
+#        P H P - W E B - S T A T      S T Y L E - T H E M E     Print Layout   #
+################################################################################
+# This file is part of php web stat.                                           #
+# Open-Source Statistic Software for Webmasters                                #
+# Official web site and latest version:    http://www.php-web-statistik.de     #
+#==============================================================================#
+# Authors: Reimar Hoven, Holger Naves                                          #
+# Copyright (C) 2009 by PHP Web Stat - All Rights Reserved.                    #
+################################################################################
+*/
+
+/* --------------------------------------------- */
+/* --------------- general style --------------- */
+/* --------------------------------------------- */
+body {
+  color: black;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+}
+table {
+  color: black;
+}
+
+/* ------------------------------------------ */
+/* --------------- text style --------------- */
+/* ------------------------------------------ */
+.display_max_style {
+  color: black;
+  font-weight: bold;
+}
+
+/* ------------------------------------------- */
+/* --------------- table style --------------- */
+/* ------------------------------------------- */
+#groundtable {
+  border: 1px solid black;
+  color: black;
+}
+#content {
+  border: 1px solid black;
+  padding: 10px 5px 10px 5px;
+}
+
+/* ----------------------------------------------- */
+/* --------------- overview module --------------- */
+/* ----------------------------------------------- */
+.overview_table {
+  border-top: 2px solid gray;
+  border-right: 2px outset gray;
+  border-bottom: 2px outset gray;
+  border-left: 2px solid gray;
+  color: black;
+  font-size: 12px;
+}
+.overview_header {
+  border-bottom: 1px outset gray;
+  color: black;
+  padding: 2px;
+}
+.overview_data {
+  padding: 0px 0px 0px 3px;
+}
+.overview_hits {
+  width: 60px;
+  text-align: center;
+}
+
+/* ------------------------------------------------ */
+/* --------------- statistic module --------------- */
+/* ------------------------------------------------ */
+.stat_table {
+  border-top: 2px solid gray;
+  border-right: 2px outset gray;
+  border-bottom: 2px outset gray;
+  border-left: 2px solid gray;
+  color: black;
+  font-size: 12px;
+}
+.stat_header {
+  border-bottom: 1px outset gray;
+  color: black;
+  text-align: left;
+  padding: 2px;
+}
+.stat_module_data {
+  text-align: left;
+  padding: 0px 0px 0px 3px;
+}
+.stat_hits {
+  width: 60px;
+  text-align: right;
+  padding: 0px;
+  padding-right: 8px;
+}
+.stat_slidebar {
+  width: 102px;
+}
+.stat_percent {
+  width: 50px;
+  text-align: right;
+  padding: 0px 3px 0px 0px;
+}
+.stat_footer {
+  border-top: 1px solid gray;
+  color: black;
+  text-align: left;
+  padding: 2px;
+}
+
+/* ----------------------------------------- */
+/* --------------- last hits --------------- */
+/* ----------------------------------------- */
+.lh_table {
+  border-top: 2px solid gray;
+  border-right: 2px outset gray;
+  border-bottom: 2px outset gray;
+  border-left: 2px solid gray;
+  color: black;
+}
+.lh_header {
+  border-bottom: 1px outset gray;
+  color: black;
+  text-align: center;
+}
+.lh_time {
+  text-align: center;
+}
+.lh_time, .lh_iphost, .lh_os, .lh_site, .lh_referer {
+  color: black;
+}
+.lh_footer {
+  border-top: 1px solid gray;
+  border-right: 1px outset gray;
+  border-bottom: 2px outset gray;
+  border-left: 1px solid gray;
+  color: black;
+}
+
+/* ------------------------------------------- */
+/* --------------- link styles --------------- */
+/* ------------------------------------------- */
+a:link, a:visited, a:active, a:hover, a:focus {
+  color: black;
+}
+.referer:link, .referer:visited, .referer:active {
+  color: black;
+}
+.referer:hover, .referer:focus {
+  color: black;
+}
+
+/* ------------------------------------------- */
+/* --------------- image style --------------- */
+/* ------------------------------------------- */
+img {
+  border:none;
+}
+img.percent {
+  background: white url("percentimage.gif") top left no-repeat;
+  padding: 0px;
+  margin: 0px;
+  background-position: 0px 0;
+}
+
+/* ------------------------------------------- */
+/* --------------- print style --------------- */
+/* ------------------------------------------- */
+#print {
+  display: block;
+  border: none;
+  color: black;
+  font-size: 12px;
+  margin: 0px;
+  padding: 10px;
+}
+.print {
+  display: block;
+}
+.changetab {
+  display: none;
+}
+#header1_stat, #header2_stat, #header_lh, .lh_menue, #header_archive, #refresh {
+  display: none;
+}

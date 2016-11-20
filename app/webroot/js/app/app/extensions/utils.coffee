@@ -45,3 +45,25 @@ $.fn.unparam = (value) ->
     params[decodeURIComponent(pair[0])] = if pair.length is 2 then decodeURIComponent(pair[1].replace(/\+|false/g, '')) else true
   params
 
+$.fn.position = (e) ->
+  parent=@parent()
+  info_h=@innerHeight()
+  info_w=@innerWidth()
+  w=$(window).width()
+  h=$(window).height()
+  t=$(window).scrollTop()
+  s=parent.scrollTop()
+  x_offset = 30
+  y_offset = -10
+  posx=e.pageX+x_offset-parent.offset().left
+  posy=e.pageY+y_offset-parent.offset().top+s
+  maxx=posx+info_w
+  minx=posx-info_w
+  maxy=posy+info_h
+  if(maxx>=w)
+    posx=e.pageX-(info_w)-x_offset
+  if(maxy>=(h+t))
+    posy=e.pageY-(info_h)-y_offset
+  @css
+    top:posy+'px'
+    left:posx+'px'

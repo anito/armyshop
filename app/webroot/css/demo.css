@@ -58,7 +58,7 @@
     margin-left: 260px;
   }
 }
-@media screen and (max-width:1050px) and (min-width:800px) {
+@media screen and (min-width:800px) and (max-width:1050px) {
   .lehmann {
     font-size: 5em;
   }
@@ -459,6 +459,23 @@ body {
   font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;
   font-size: 0.8rem;
   font-weight: 300;
+}
+.away {
+  top: -100000px !important;
+  left: -100000px !important;
+}
+.fadeslow {
+  opacity: 0;
+  -webkit-transition: opacity 0.55s linear;
+  transition: opacity 0.45s linear;
+}
+#stats {
+  position: absolute;
+  z-index: 100000;
+}
+.fadeslow.in {
+  opacity: 1;
+  transition: opacity 0.45s linear;
 }
 body.fade.out {
   background: transparent url(../img/home_creative.jpg) 50% 0 fixed;

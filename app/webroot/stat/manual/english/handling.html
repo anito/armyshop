@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_en.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">English</option>
+      <option value="../german/index.html">German</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a href="index.html">Introduction</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a href="step_1.html">Step 1 - Uploading</a></li></ul>
+    <ul><li><a href="step_2.html">Step 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Step 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Step 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a class="current" href="handling.html">Handling</a></li></ul>
+    <ul><li><a href="counter.html">Counter</a></li></ul>
+    <ul><li><a href="onclick.html">Click Counter</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Other</h3>
+    <ul><li><a href="license.html">License</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Handling</h3><br>
+
+      <p><b>General</b><br>
+      If you want to see a detailed view of your visitors, click on <u>Last Visits</u>.
+      </p>
+
+      <p><b>Analysis of a time interval</b><br>
+      If you want to analyze the visitors by a time interval, please click on <u>Archive</u>. There choose the starting and end date of your interval.
+      Besides, the analysis of this choosen interval can be saved at the top of the page. So if you revisit the <u>Archive</u> function you can directly choose the saved interval.
+      If you want to delete such a saved analysis, you can do this in the <u>Admin-Center</u>.
+      </p>
+
+      <p><b>Dynamic Sites</b><br>
+      Some sites run with dynamic url parameters like &quot;index.php?x=1&amp;y=2&quot;. The default setting of the stat is to delete all url parameters. So only the name
+      &quot;index.php&quot; will be saved in the logfile. If you prefer to track such a parameter, just open the <u>Admin-Center</u> and edit the entry <u>Dynamic URL</u> with the
+      parameters you want to be tracked.
+      <br>
+      <br>
+      Example: If the URL is &quot;index.php?x=1&amp;y=2&quot;, edit &quot;x,y&quot; to track all parameters.
+      <br>
+      <br>
+      Besides we give you the possibility to rename all sites you tracked. Take a look at the paragraph <u>Renaming Sites</u>.
+      </p>
+
+      <p><b>Renaming Sites</b><br>
+      Sometimes its useful to rename sites in your stat. This can be done within the <u>Admin-Center</u>.
+      Just click on <u>Edit Sitenames</u>. The format you got to use for editing is the following:
+      </p>
+      <ul>
+        <li><b>index.html|Startpage</b></li>
+        <li><b>contact.html|Contact</b></li>
+        <li><b>...</b></li>
+      </ul>
+      <p>
+      Please be aware to use the char &quot;|&quot; for seperation.
+      </p>
+
+      <p><b>Replacement of String Parts</b><br>
+      The stat view can be enhanced by replacing parts of your own sitenames (URLs).
+      In cases of changing sitenames over the time, this function enables you to integrate these different sitenames.
+      You can also simply replace all specific string parts you would like to shorten or to merge.
+      The following example should give you an idea of what can be done with this replacement function:
+      </p>
+      <ul>
+      	<li><b>shop-buy-cart|shoppingcart</b></li>
+      	<li><b>...</b></li>
+      </ul>
+      <p>
+      Please notice that between the two words the folling char has to be set: "|"
+      </p>
+
+      <p><b>Cache Refresh via Cronjob</b><br>
+      If you did not open the stat for a longer time period, the cache refresh time can take a few minutes due to the amount of new lines in the logfiles since your last opening. Also it can cause problems by some server speed or memory limits to refresh the high amount of new entries.
+      So if you encounter such problems by opening the stat due to a long cache refresh time, we created a function to run the cache refresh function in an invisible mode.
+      So you can run the cache refresh function in the background, for example via a cronjob.
+      This enables you to run the cache refresh function in different time interval, each interval working just a little bit of lines to reduce the server performance. Also you are not longer forced to open the stat regularly to have a lower amount of logfile lines to be checked.
+      Please be aware that you run the invisible mode only at times, where you do not enter the stat. We advise you to set the time interval to 2 hours between each run. Normaly the cronjob should start between 0am til 7am in the night, every 2 hours.
+      The following example shows you the call of the invisible mode. You just have to open the normal file with the admin password as the parameter:
+      <p>
+      <ul>
+      	<li><b>http://www.example.com/stat/cache_creator.php?pw=adminpassword</b></li>
+      </ul>
+      </p>
+      </p>
+
+      <p><b>IP Anonymization</b><br>
+      Due to legal issues in different countries, we created an ip anonymization function within the stat. So you are able to anonymize the ip address of a visitor within the Admin Center.
+      Choose between no anonymization, partly anonymization (last ip block) or the full anonymization. Theses modes all work with an individual hash value instead of tracking the original ip address of the visitor.
+      Please be aware that this setting only works for new coming visitors. Former Cache and Logfiles are not affected.
+      </p>
+
+      <p><b>Exclude own visits</b><br>
+      To exclude your own visits from tracking, just click on the graphic on the top.
+      </p>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

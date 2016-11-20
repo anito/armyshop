@@ -1,0 +1,148 @@
+/*
+################################################################################
+#        P H P - W E B - S T A T      S T Y L E - T H E M E     General Layout #
+################################################################################
+# This file is part of php web stat.                                           #
+# Open-Source Statistic Software for Webmasters                                #
+# Official web site and latest version:    http://www.php-web-statistik.de     #
+#==============================================================================#
+# Authors: Reimar Hoven, Holger Naves                                          #
+# Copyright © 2014 by PHP Web Stat - All Rights Reserved.                      #
+################################################################################
+*/
+
+/* ------------------------------------------- */
+/* --------------- login style --------------- */
+/* ------------------------------------------- */
+#login {
+ width: 420px;
+ height: 334px;
+ border: none;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ margin-left: -210px;   /* half width */
+ margin-top: -167px;    /* half height */
+ background: url(../images/login.png) no-repeat;
+ color: #000000;
+}
+#login .li_td1 {
+ height: 103px;
+ text-align: center;
+}
+#login .li_td2 {
+ height: 78px;
+ line-height: 16px;
+ vertical-align: middle;
+ padding: 0px 100px 0px 45px;
+}
+#login .li_td3 {
+ height: 10px;
+}
+#login .li_td4 {
+ height: 100px;
+ vertical-align: top;
+ text-align: center;
+}
+#login .li_td5 {
+ height: 43px;
+ vertical-align: top;
+ text-align: center;
+ padding-top: 10px;
+ font-size: 10px;
+}
+.pw {
+ width: 214px;
+ height: 18px;
+ padding: 3px 5px 0px 5px;
+ border: 1px solid #7F9DB9;
+ background: #FFFFFF url(../images/bg_form_input.png);
+}
+.pw:focus {
+ background: #FCF7B9 url(../images/bg_form_input.png);
+}
+#autologout {
+ width: 420px;
+ height: 334px;
+ border: none;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ margin-left: -210px;   /* half width */
+ margin-top: -167px;    /* half height */
+ background: url(../images/login_blank.png) no-repeat;
+ color: #000000;
+}
+#autologout_info {
+ width: 360px;
+ height: 150px;
+ border: 1px solid #A1A1A1;
+ background: #fff;
+ margin: auto;
+ padding: 5px;
+ margin-top: 120px;
+ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+ font-size: 14px;
+ color: #000;
+}
+
+/* ------------------------------------------- */
+/* --------------- refresh box --------------- */
+/* ------------------------------------------- */
+#refresh {
+ width: 323px;
+ height: 193px;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ margin-left: -161px;   /* half width */
+ margin-top: -96px;     /* half height */
+ background: url(../images/refresh.png) no-repeat;
+ text-align: center;
+ z-index: 10;
+}
+#rf_header {
+ width: 283px;
+ height: 25px;
+ background: #436783;
+ color: #FFFFFF;
+ font: bold 18px Arial, Verdana, Helvetica, Sans-Serif;
+ text-align: center;
+ margin: auto;
+ margin-top: 20px;
+}
+#rf_indicator {
+ float: left;
+ width: 80px;
+ height: 80px;
+ background: transparent;
+ text-align: center;
+}
+#rf_text {
+ float: left;
+ width: 203px;
+ height: 80px;
+ background: transparent;
+ color: #000000;
+ letter-spacing: -0.01mm;
+ word-spacing: 0.4mm;
+ text-align: left;
+}
+#rf_co_th {
+ clear: left;
+ width: 283px;
+ height: 18px;
+ background: transparent;
+ color: #446D8C;
+ font-size: 13px;
+ font-weight: bold;
+ text-align: center;
+ margin: auto;
+}
+#rf_co_iframe {
+ width: 283px;
+ height: 24px;
+ background: transparent;
+ text-align: center;
+ margin: auto;
+}

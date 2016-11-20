@@ -113,5 +113,6 @@
   <body class="hal cat views canvas" data-model-name="" data-models-name="Root">
     <?php echo $content_for_layout; ?>
     <?php echo $this->element('sql_dump'); ?>
+    <?php echo $this->element('tracking_code'); ?>
   </body>
 </html>

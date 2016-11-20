@@ -1,0 +1,384 @@
+/*
+################################################################################
+#        P H P - W E B - S T A T      S T Y L E - T H E M E     Admin Center   #
+################################################################################
+# This file is part of php web stat.                                           #
+# Open-Source Statistic Software for Webmasters                                #
+# Official web site and latest version:    http://www.php-web-statistik.de     #
+#==============================================================================#
+# Authors: Reimar Hoven, Holger Naves                                          #
+# Copyright (C) 2009 by PHP Web Stat - All Rights Reserved.                    #
+################################################################################
+*/
+
+/* --------------------------------------------- */
+/* --------------- general style --------------- */
+/* --------------------------------------------- */
+body {}
+
+.body_ac {
+  background: url('../images/admin/adminbg.gif') #DFE4E9 repeat-y;
+}
+
+img#adminlogo {
+  width: 201px;
+  height: 131px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+}
+
+/* ----------------------------------------------- */
+/* --------------- left menu style --------------- */
+/* ----------------------------------------------- */
+html>body #menu_left li a {
+  width: auto;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 11px;
+}
+#menu_left {
+  width: 190px;
+  position: absolute;
+  top: 127px;
+  left: 0px;
+  z-index: 3;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 10px;
+}
+#menu_left h3 {
+  width: 185px;
+  border: 1px solid #FFFFFF;
+  border-left: none;
+  background: #0D638A;
+  color: #FFFFFF;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 11px;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: capitalize;
+  margin: 0px;
+  margin-top: 8px;
+  padding: 2px;
+  padding-left: 5px;
+}
+#menu_left li {
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 10px;
+  margin: 0px;
+  padding-left: 2px;
+  padding-right: 7px;
+}
+#menu_left li a {
+  width: 100%;
+  border: 1px solid transparent;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 11px;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  margin: 2px;
+  padding: 1px;
+  padding-left: 5px;
+}
+#menu_left li a.current {
+  border: 1px solid #0D638A;
+  background: #FEFEFE;
+}
+#menu_left li a.current:hover {
+  border: 1px solid #0D638A;
+  background: #FEFEFE;
+}
+#menu_left li a:hover {
+  border: 1px solid #0D638A;
+  background: #DFE4E9;
+  color: #000000;
+}
+#menu_left ul {
+  border: none;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 11px;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* ---------------------------------------------- */
+/* --------------- top menu style --------------- */
+/* ---------------------------------------------- */
+#menu_top {
+  width: 100%;
+  height: 35px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: 1;
+  background: url('../images/admin/admintopbg.gif') #DFE4E9 repeat-x;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+}
+#menu_top a {
+  width: auto;
+  border: 1px solid #0D638A;
+  background: #FEFEFE;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+  text-decoration: none;
+  padding: 2px 11px 2px 11px;
+  overflow: visible;
+  cursor: pointer;
+}
+#menu_top a:hover {
+  background: #D7E2EA;
+}
+#menu_top td {
+  height: 29px;
+  padding-top: 8px;
+  vertical-align: top;
+}
+
+/* ------------------------------------------ */
+/* --------------- tab-menu 1 --------------- */
+/* ------------------------------------------ */
+#tablist1 {
+  margin: 0px 4px 2px 0px;
+  padding: 3px 0px 0px 0px;
+}
+#tablist1 li {
+  border: 1px solid #0D638A;
+  background: #FEFEFE;
+  color: #0D638A;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline;
+  list-style: none;
+  margin: 0px 2px 0px 0px;
+  padding: 2px;
+  cursor: pointer;
+}
+#tablist1 li:hover {
+  background: #D7E2EA;
+  color: #0D638A;
+}
+#tablist1 li a {
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+}
+#tablist1 li.curtab1 {
+  border-bottom: 1px solid #0D638A;
+  background: #0D638A;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding-bottom: 3px;
+  cursor: default;
+}
+
+/* ------------------------------------------ */
+/* --------------- tab-menu 2 --------------- */
+/* ------------------------------------------ */
+#tablist2 {
+  margin: 0px 4px 2px 0px;
+  padding: 3px 0px 0px 0px;
+}
+#tablist2 li {
+  border: 1px solid #0D638A;
+  background: #FEFEFE;
+  color: #0D638A;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline;
+  list-style: none;
+  margin: 0px 2px 0px 0px;
+  padding: 2px;
+  cursor: pointer;
+}
+#tablist2 li:hover {
+  background: #D7E2EA;
+  color: #0D638A;
+}
+#tablist2 li a {
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+}
+#tablist2 li.curtab2 {
+  border-bottom: 1px solid #0D638A;
+  background: #0D638A;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding-bottom: 3px;
+  cursor: default;
+}
+
+/* --------------------------------------------- */
+/* --------------- content style --------------- */
+/* --------------------------------------------- */
+#content {
+  width: 75%;
+  position: absolute;
+  top: 60px;
+  left: 225px;
+  z-index: 10;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 11px;
+}
+
+/* ------------------------------------------- */
+/* --------------- table style --------------- */
+/* ------------------------------------------- */
+table {
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+}
+th {
+  border: 1px solid #FFFFFF;
+  background: #0D638A;
+  color: #FFFFFF;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+}
+td {
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+}
+.standard {
+  background: #0D638A;
+}
+.th2 {
+  background: #DCE0E4;
+  font-size: 12px;
+  padding: 2px;
+}
+.bg1 {
+  background: #FEFEFE;
+  font-size: 12px;
+  padding: 0px;
+}
+.bg2 {
+  width: 50%;
+  border-bottom: 1px solid #A4A4A4;
+  background: #FEFEFE;
+  vertical-align: top;
+  padding: 5px 3px 3px 3px;
+}
+.bg3 {
+  width: 50%;
+  border-bottom: 1px solid #A4A4A4;
+  background: #D7E2EA;
+  vertical-align: top;
+  padding: 3px 3px 3px 3px;
+}
+
+/* ------------------------------------------ */
+/* --------------- font style --------------- */
+/* ------------------------------------------ */
+.left   { text-align: left; }
+.center { text-align: center; }
+.top    { vertical-align: top; }
+.middle { vertical-align: middle; }
+.bold   { font-weight: bold; }
+.small  { color: #5C5C5C; font-family: Verdana, Arial, Sans-Serif; font-size: 10px; padding-top: 2px; }
+
+/* ------------------------------------------ */
+/* --------------- link style --------------- */
+/* ------------------------------------------ */
+a:link, a:visited { color: #0C5A7C; font-weight: normal; text-decoration: underline; }
+a:hover, a:focus  { color: #505050; font-weight: normal; text-decoration: underline; }
+
+.ip:link, .ip:visited { color: #0C5A7C; font-weight: normal; text-decoration: none; }
+.ip:hover, .ip:focus  { color: #505050; font-weight: normal; text-decoration: none; }
+/* ------------------------------------------ */
+/* --------------- form style --------------- */
+/* ------------------------------------------ */
+form {
+  display: inline;
+  margin: 0px;
+}
+input, select, textarea {
+  border: 1px solid #7F9DB9;
+  background:#F9FAFB;
+  color: #000000;
+  font-family: monospace;
+  font-size: 12px;
+}
+/*
+input:disabled, select:disabled, textarea:disabled {
+  color: #888888;
+}
+*/
+input:focus, select:focus, textarea:focus {
+  background: #F9FBE0;
+}
+.button {
+  width: auto;
+  border: 1px solid #0D638A;
+  background: #FEFEFE;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+  padding: 1px 10px 1px 10px;
+  overflow: visible;
+  cursor: pointer;
+}
+a.button {
+  width: auto;
+  border: 1px solid #0D638A;
+  background: #FEFEFE;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+  text-decoration: none;
+  padding: 1px 10px 1px 10px;
+  overflow: visible;
+  cursor: pointer;
+}
+.submit {
+  width: auto;
+  border: 1px solid #7F9DB9;
+  background: #FEFEFE;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+  padding: 1px 10px 1px 10px;
+  overflow: visible;
+  cursor: pointer;
+}
+
+.frame_menu {
+  width: auto;
+  height: 20px;
+  border: 1px solid #0D638A;
+  background: #FEFEFE;
+  color: #000000;
+  font-family: Verdana, Arial, Sans-Serif;
+  font-size: 12px;
+  text-decoration: none;
+  padding: 0px 11px 2px 11px;
+  overflow: visible;
+  cursor: pointer;
+}
+.frame_menu:hover {
+  background: #D7E2EA;
+}
+
+.h28 {
+  height: 28px;
+}
+.warning {
+  border:2px solid #CC0000;
+  background:#F9FBE0;
+  color:#CC0000;
+  vertical-align:top;
+}
+.changeid { width: 100%; display: none; }

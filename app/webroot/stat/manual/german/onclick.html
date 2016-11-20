@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<title>PHP-Web-Statistik Quick Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script type="text/javascript">
+function surfto(form) {
+var myindex=form.language.selectedIndex
+if (form.language.options[myindex].value != "0") {
+location=form.language.options[myindex].value;}
+}
+</script>
+</head>
+
+<body>
+<div id="logo"><img class="logo" src="../images/logo.gif" alt="www.php-web-statistik.de" title="www.php-web-statistik.de"></div>
+<div id="guide"><img src="../images/qgtitle_de.gif" alt=""></div>
+<div id="version"><i>Version 4.9.x</i></div>
+<table id="groundtable" cellspacing="0" cellpadding="0" align="center">
+<tr>
+  <td class="header" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+  <td class="menue">
+    <div id="project">PHP Web Stat</div>
+    <div id="language">
+    <form method="post" action="">
+      <select name="language" onchange="surfto(this.form)" size="1">
+      <option value="index.html">Deutsch</option>
+      <option value="../english/index.html">English</option>
+      </select>
+    </form>
+    </div>
+    <div id="menu_left">
+    <ul><li><a href="index.html">Einf&uuml;hrung</a></li></ul>
+    <h3>Installation</h3>
+    <ul><li><a href="step_1.html">Schritt 1 - Uploaden</a></li></ul>
+    <ul><li><a href="step_2.html">Schritt 2 - chmod</a></li></ul>
+    <ul><li><a href="step_3.html">Schritt 3 - Setup</a></li></ul>
+    <ul><li><a href="step_4.html">Schritt 4 - Javascript</a></li></ul>
+    <h3>Extras</h3>
+    <ul><li><a href="handling.html">Bedienung</a></li></ul>
+    <ul><li><a href="counter.html">Counter</a></li></ul>
+    <ul><li><a class="current" href="onclick.html">Klick-Z&auml;hler</a></li></ul>
+    <ul><li><a href="sysinfo.html">Sysinfo</a></li></ul>
+    <ul><li><a href="opt-out.html">Opt Out</a></li></ul>
+    <h3>Service</h3>
+    <ul><li><a href="faq.html">FAQ</a></li></ul>
+    <ul><li><a href="support.html">Support-Forum</a></li></ul>
+    <h3>Sonstiges</h3>
+    <ul><li><a href="license.html">Lizenz</a></li></ul>
+    </div>
+  </td>
+  <td class="content">
+    <div id="content">
+      <h3>Klick-Z&auml;hler</h3>
+      <p><br>Die PHP Web Stat bietet auch die M&ouml;glichkeit, Klicks auf Links/Dateien aufzuzeichnen. Um diese Funktion zu nutzen, bedarf es eines zus&auml;tzlichen Eingriffs in die aufzuzeichnenede Webseite. Kopieren Sie f&uuml;r diese Erweiterung, wie schon unter Schritt 4 beschrieben, zus&auml;tzlich das folgende Javascript in jede aufzuzeichnende Seite zwischen &#60;body&#62; und &#60;/body&#62;:</p>
+      <p style="text-align: left;"><b>&#60;script type="text/javascript" src="http://www.example.com/stat/track_file.php"&#62;&#60;/script&#62;</b></p>
+      <p>Bitte achten Sie auch hier darauf, dass der vollst&auml;ndige Pfad zu der auf dem Server liegenden TRACK_FILE.PHP angegeben werden muss!</p>
+      <p>Anschliessend ist f&uuml;r jeden Klick, der aufgezeichnet werden soll, ein Javascript-Code in den HTML-Tag des jeweiligen Objektes einzubauen. Der Befehl lautet in Rohfassung:</p>
+      <p style="text-align: left;"><b>onfocus="track_file('Beispiel_ID')"</b></p>
+      <p>Wenn Sie also beispielsweise den Klick auf einen Link aufzeichnen m&ouml;chten, so w&auml;re dieses Beispiel passend f&uuml;r Sie:</p>
+      <p><b>Bisher: &nbsp; &nbsp; &nbsp; &nbsp; &#60;a href="link.html">Link&#60;/a&#62;</b><br><b>Angepasst:  &nbsp;&#60;a href="link.html" onfocus="track_file('Beispiel_ID')">Link&#60;/a&#62;</b></p>
+      <p>Bitte ersetzen Sie den Wert f&uuml;r Beispiel_ID durch einen von Ihnen gew&auml;hlten Wert.</p>
+      <p><br>Die Auswertung der aufgezeichneten Klicks finden Sie dann innerhalb Ihrer Statistik in den Plugins unter dem Namen Klick-Z&auml;hler.</p>
+    </div>
+  </td>
+</tr>
+</table>
+
+
+
+</body>
+</html>

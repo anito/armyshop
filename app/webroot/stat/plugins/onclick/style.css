@@ -1,0 +1,11 @@
+/*Default style for SPAN icons. Edit if desired: */
+.iconspan   { float:right; margin:0px; cursor:pointer }
+.icongroup  { padding:5px; text-align:left; background:#DBE5F1; border-bottom:1px solid #303030 }
+/*Page CSS style */
+#overview { width:600px; margin-top:15px; border:1px solid #000000 }
+#title_1  { width:386px; padding:3px; float:left; background:#C7C8CB; border-bottom:1px solid #000000 }
+#title_2  { width:100px; padding:3px; float:left; background:#C7C8CB; border-left:1px solid #000000; border-bottom:1px solid #000000 }
+#title_3  { width:94px; padding:3px; float:left; background:#C7C8CB; border-left:1px solid #000000; border-bottom:1px solid #000000 }
+.id       { width:380px; height:13px; padding:6px; float:left; background:#FFFFFF; border-bottom:1px solid #303030; text-align:left }
+.clicks   { width:94px; height:13px; padding:6px; float:left; background:#FFFFFF; border-left:1px solid #303030; border-bottom:1px solid #303030 }
+.delete   { width:88px; height:13px; padding:6px; float:left; background:#FFFFFF; border-left:1px solid #303030; border-bottom:1px solid #303030 }
