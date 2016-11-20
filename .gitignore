@@ -30,4 +30,4 @@ Thumbs.db
 /node_modules
 nbproject
 mysql/*
-*.dta
+/app/webroot/stat/log/*
