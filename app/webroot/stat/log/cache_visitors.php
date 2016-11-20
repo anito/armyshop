@@ -78,7 +78,7 @@ $javascript_status = array (
 );
 
 $site_name = array ( 
-"1" => "16" ,
+"1" => "4" ,
  "2" => "1" ,
  "3" => "3" ,
  "4" => "2" ,
