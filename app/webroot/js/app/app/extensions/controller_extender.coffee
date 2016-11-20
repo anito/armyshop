@@ -132,6 +132,10 @@ Controller.Extender =
       findModelElement: (item) ->
         @children().forItem(item, true)
         
+      noMethod: (e) ->
+        e.stopPropagation()
+        e.preventDefault()
+        
     @extend Extend
     @include Include
 

@@ -10,7 +10,7 @@
   <div class="">
     <!-- Example row of columns -->
     <ul class="row ca-menu pricing">
-      <li id="defense-item-menu" class="item-menu  pricing__item">
+      <li id="defense-item-menu" class="item-menu  pricing__item defense category">
           <a href="/pages/defense/">
             <span class="flaticon-pepper-spray"></span>
             <div class="ca-content">
@@ -19,7 +19,7 @@
             </div>
           </a>
       </li>
-      <li id="outdoor-item-menu" class="item-menu  pricing__item">
+      <li id="outdoor-item-menu" class="item-menu  pricing__item outdoor category">
           <a href="/pages/outdoor/">
             <span class="flaticon-hiking-up-2"></span>
             <div class="ca-content">
@@ -28,7 +28,7 @@
             </div>
           </a>
      </li>
-     <li id="goodies-item-menu" class="item-menu  pricing__item">
+     <li id="goodies-item-menu" class="item-menu  pricing__item goodies category">
           <a href="/pages/goodies/">
             <span class="flaticon-sales-label"></span>
             <div class="ca-content">

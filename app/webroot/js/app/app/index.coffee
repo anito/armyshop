@@ -1,15 +1,18 @@
 require('lib/setup')
 
-Spine = require('spine')
-$      = Spine.$
+Spine           = require('spine')
+$               = Spine.$
 ModalSimpleView = require("controllers/modal_simple_view")
 RefreshView     = require('controllers/refresh_view')
-Settings = require("models/settings")
+Extender        = require('extensions/controller_extender')
+Settings        = require("models/settings")
 User            = require("models/user")
 
 
 class App extends Spine.Controller
 
+  @extend Extender
+  
   elements:
     '#header'           : 'header',
     '#header .nav.items': 'items',
@@ -29,11 +32,10 @@ class App extends Spine.Controller
     'mouseenter #outdoor-item-menu' :           'changeBackground'
     'mouseenter #defense-item-menu' :           'changeBackground'
     'mouseenter #goodies-item-menu' :           'changeBackground'
-    'mouseenter .opt-sidebar'       :           'showSidebar'
-    'mouseleave .opt-sidebar'       :           'hideSidebar'
     'mouseenter .opt-stats'         :           'showStats' 
     'mousemove  .opt-stats'         :           'moveStats' 
     'mouseleave .opt-stats'         :           'hideStats' 
+    'click .opt-stats'              :           'noMethod' 
     
     'click .opt-hint'               :           'showWarning'
     'click .opt-agreed'             :           'agreed'

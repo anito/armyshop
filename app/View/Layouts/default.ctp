@@ -113,7 +113,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('script');
 	?>
 </head>
-<body class="hal fade in">
+<body class="hal home fade in">
   <div class="logos">
     <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
     <div class="logo logo-2 hide"></div>

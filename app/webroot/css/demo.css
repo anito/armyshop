@@ -44,6 +44,15 @@
     transition: font-size 0.3s;
   }
 }
+@media screen and (min-width:940px) {
+  header::before {
+    content: url(/img/free_delivery.png);
+    position: absolute;
+    z-index: 1;
+    right: 10px;
+    top: -10px;
+  }
+}
 @media screen and (min-width:1050px) {
   .lehmann {
     text-shadow: 5px 3px 8px rgba(0, 0, 0, .5);
@@ -81,13 +90,6 @@
   }
 }
 @media screen  and (min-width:1200px) {
-  header::before {
-    content: url(/img/free_delivery.png);
-    position: absolute;
-    z-index: 1;
-    right: 10px;
-    top: -10px;
-  }
   #container {
     margin: 71px 0;
     position: relative;
@@ -454,7 +456,7 @@ html {
   min-height: 100%;
 }
 body {
-  background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
+  background: transparent url(../img/home_creative_blurry.jpg) 50% 0 fixed;
   color: #333;
   font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;
   font-size: 0.8rem;
@@ -483,20 +485,41 @@ body {
   transition: opacity 0.45s linear;
 }
 body.fade.out {
-  background: transparent url(../img/home_creative.jpg) 50% 0 fixed;
+  background: transparent url(../img/home_creative_blurry.jpg) 50% 0 fixed;
   transition: background 2s linear;
 }
 body.fade.in.defense {
-  background: transparent url(../img/defense_creative.jpg) 50% 10% fixed;
+  background: transparent url(../img/defense_creative_blurry.jpg) 50% 10% fixed;
   transition: background 1s ease-in-out;
 }
 body.fade.in.outdoor {
-  background: transparent url(../img/outdoor_creative.jpg) 40% 20% fixed; 
+  background: transparent url(../img/outdoor_creative_blurry.jpg) 60% 20% fixed; 
   transition: background 1s ease-in-out;
 }
 body.fade.in.goodies {
-  background: transparent url(../img/goodies_creative.jpg) 20% 30% fixed; 
+  background: transparent url(../img/goodies_creative_blurry.jpg) 20% 30% fixed; 
   transition: background 1s ease-in-out;
+}
+.item-menu.defense:hover {
+  background: transparent url(../img/defense_creative_blurry.jpg) 50% 10% fixed;
+}
+.item-menu.outdoor:hover {
+  background: transparent url(../img/outdoor_creative_blurry.jpg) 60% 20% fixed;
+}
+.item-menu.goodies:hover {
+  background: transparent url(../img/goodies_creative_blurry.jpg) 20% 30% fixed;
+}
+.home .item-menu.category {
+  background: transparent url(../img/home_creative_light.jpg) 50% 10% fixed;
+}
+.defense .item-menu.defense.category:hover {
+  background: transparent url(../img/defense_creative_light.jpg) 50% 10% fixed;
+}
+.outdoor .item-menu.outdoor.category:hover {
+  background: transparent url(../img/outdoor_creative_light.jpg) 60% 20% fixed;
+}
+.goodies .item-menu.goodies.category:hover {
+  background: transparent url(../img/goodies_creative_light.jpg) 20% 30% fixed;
 }
 .jumbotron {
   border-radius: 0;
