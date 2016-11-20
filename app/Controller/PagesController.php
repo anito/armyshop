@@ -66,7 +66,7 @@ class PagesController extends AppController {
 			$subpage = $path[1];
 		}
 		if (!empty($path[$count - 1])) {
-			$title_for_layout = Inflector::humanize($path[$count - 1])."Test";
+			$title_for_layout = Inflector::humanize($path[$count - 1]);
 		}
     
     $this->Product->recursive = 1;
