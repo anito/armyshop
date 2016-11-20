@@ -515,11 +515,11 @@ if ( ( $_POST [ "hidden_admin" ] == $_SESSION [ "hidden_admin" ] ) && ( trim ( $
   }
   //------------------------------
   /* write tracking_code file */
-  $tracking_code_file = fopen ( "tracking_code.php" , "w+" );
+  $tracking_code_file = fopen ( "tracking_code.ctp" , "w+" );
    flock  ( $tracking_code_file , 2 );
     fwrite ( $tracking_code_file , "<?php\n" );
     fwrite ( $tracking_code_file , "//------------------------------------------------------------------------------\n" );
-    fwrite ( $tracking_code_file , "if ( strpos ( strtolower ( \$_SERVER [ \"PHP_SELF\" ] ) , \"tracking_code.php\" ) > 0 )\n" );
+    fwrite ( $tracking_code_file , "if ( strpos ( strtolower ( \$_SERVER [ \"PHP_SELF\" ] ) , \"tracking_code.ctp\" ) > 0 )\n" );
     fwrite ( $tracking_code_file , " {\n" );
     fwrite ( $tracking_code_file , "  exit;\n" );
     fwrite ( $tracking_code_file , " }\n" );

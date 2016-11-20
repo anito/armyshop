@@ -399,7 +399,7 @@ echo '
            ( $value != "pattern_site_name.inc"       ) &&
            ( $value != "pattern_string_replace.inc"  ) &&
            ( $value != "repair.php"                  ) &&
-           ( $value != "tracking_code.php"           ) &&
+           ( $value != "tracking_code.ctp"           ) &&
            // folder func
            ( $value != "change_id.js"                ) &&
            ( $value != "checkversion.dta"            ) &&
@@ -566,12 +566,12 @@ echo '
     echo '
   </tr>
   <tr>
-    <td align="left" style="padding-left:3px;">config/tracking_code.php</td>
-    <td align="right" style="padding-right:20px">'.file_size("config/tracking_code.php").' KB</td>
-    <td align="right" style="padding-right:20px;">'.file_row_size_small("config/tracking_code.php").'</td>
-    <td align="center">'.file_perms('config/tracking_code.php').'</td>
+    <td align="left" style="padding-left:3px;">config/tracking_code.ctp</td>
+    <td align="right" style="padding-right:20px">'.file_size("config/tracking_code.ctp").' KB</td>
+    <td align="right" style="padding-right:20px;">'.file_row_size_small("config/tracking_code.ctp").'</td>
+    <td align="center">'.file_perms('config/tracking_code.ctp').'</td>
     ';
-    if ( ( decoct ( fileperms ( "config/config/tracking_code.php" ) ) != 100666 ) && ( decoct ( fileperms ( "config/tracking_code.php" ) ) != 100660 ) ) { echo "<td align=\"center\"><img src=\"images/sysinfo_error.png\" width=\"16\" height=\"16\" title=\"Check CHMOD\" alt=\"Check CHMOD\" /></td>\n"; } else { echo "<td align=\"center\"><img src=\"images/sysinfo_ok.png\" width=\"16\" height=\"16\" alt=\"\" /></td>\n"; }
+    if ( ( decoct ( fileperms ( "config/config/tracking_code.ctp" ) ) != 100666 ) && ( decoct ( fileperms ( "config/tracking_code.ctp" ) ) != 100660 ) ) { echo "<td align=\"center\"><img src=\"images/sysinfo_error.png\" width=\"16\" height=\"16\" title=\"Check CHMOD\" alt=\"Check CHMOD\" /></td>\n"; } else { echo "<td align=\"center\"><img src=\"images/sysinfo_ok.png\" width=\"16\" height=\"16\" alt=\"\" /></td>\n"; }
     echo '
   </tr>
   <tr>

@@ -15,8 +15,7 @@
     Page = require("controllers/homepage_view");
     exports.HomePage = new Page({
       el: $("#outdoor"),
-      nav: $(".nav.items"),
-      categoryName: 'outdoor',
+      categoryName: 'outdoor'
     });
     
     <?php
