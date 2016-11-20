@@ -275,7 +275,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </script>
 
 <script id="norbuImageListTemplate" type="text/x-tmpl">
-  <div id="${id}" class="pricing__image"><img class="image" src=""/></div>
+  <div id="${id}" class="pricing__image"><img class="image load" src="/img/ajax-loader-66.gif"/></div>
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">

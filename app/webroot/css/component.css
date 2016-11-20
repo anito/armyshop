@@ -108,6 +108,10 @@
   margin: 0em;
   transition: all 0.3s;
 }
+.pricing--norbu .pricing__item img.load {
+  width: 66px;
+  transition: all 0.3s;
+}
 .pricing--norbu .pricing__item img {
   width: 130px;
   margin: 0em;
