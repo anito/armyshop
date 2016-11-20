@@ -34,3 +34,4 @@ mysql/*
 /app/webroot/stat/log/*.php
 /app/webroot/stat/config/config.php
 /app/webroot/stat/config/config_db.php
+/app/webroot/stat/config/*.inc
