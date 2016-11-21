@@ -64,6 +64,8 @@ class Main extends Spine.Controller
     '#show .content'      : 'content'
     '.vdraggable'         : 'vDrag'
     '.hdraggable'         : 'hDrag'
+    '.vdivide'            : 'vDragHandle'
+    '.hdivide'            : 'hDragHandle'
     '.status-symbol img'  : 'statusIcon'
     '.status-text'        : 'statusText'
     '.status-symbol'      : 'statusSymbol'

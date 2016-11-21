@@ -63,15 +63,36 @@
       var descriptions = <?php echo $this->Js->object($descriptions); ?>;
       
       var startScript = function() {
-        setTimeout(function() {
-          App.showView.toggleDraghandle('');
-        }, 2000)
         setTimeout(function(){
-          //App.sidebar.toggleDraghandle('');
+          App.sidebar.toggleDraghandle();
         }, 2500)
         setTimeout(function(){
-          //App.previewView.togglePreview();
-        }, 3000)
+          App.sidebar.toggleDraghandle();
+        }, 3500)
+        setTimeout(function(){
+          App.sidebar.toggleDraghandle();
+        }, 4500)
+        setTimeout(function() {
+          App.showView.toggleDraghandle('');
+        }, 5500)
+        setTimeout(function() {
+          App.showView.toggleDraghandle('');
+        }, 6500)
+        setTimeout(function() {
+          App.showView.toggleDraghandle('');
+        }, 7500)
+        setTimeout(function() {
+          App.vDragHandle.addClass('fire puls');
+        }, 9000)
+        setTimeout(function(){
+          App.vDragHandle.removeClass('fire puls');
+        }, 12000)
+        setTimeout(function() {
+          App.hDragHandle.addClass('fire puls');
+        }, 9000)
+        setTimeout(function(){
+          App.hDragHandle.removeClass('fire puls');
+        }, 12000)
       };
       
       require("lib/setup")

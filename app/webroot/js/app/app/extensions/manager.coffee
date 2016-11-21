@@ -28,11 +28,11 @@ Spine.Manager.include
       manager: @
       initSize: -> 500
       disabled: false
-      sleep: false
+      sleep: true
       axis: 'x'
       min: -> 20
       max: -> 300
-      tol: 10
+      tol: 50
       handle: '.draghandle'
       goSleep: ->
       awake: ->

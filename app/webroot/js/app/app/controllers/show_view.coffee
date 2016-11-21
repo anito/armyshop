@@ -611,7 +611,7 @@ class ShowView extends Spine.Controller
     min = 25
     
     options = $().extend {open: false}, options
-    speed = if options.close or options.open then 600 else 400
+    speed = if options.close or options.open then 800 else 700
     
     if options.open
       App.hmanager.el.removeClass('open')

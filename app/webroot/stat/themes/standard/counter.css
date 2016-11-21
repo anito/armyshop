@@ -17,8 +17,8 @@ html {
 body {
   background: transparent;
   color: #000000;
-  font-family: Verdana, Arial, Sans-Serif;
-  font-size: 11px;
+  font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;;
+  font-size: 2em;
   letter-spacing: 0.1mm;
   margin: 0px 0px 0px 0px;
 }
@@ -28,18 +28,16 @@ body {
 /* --------------------------------------------- */
 .counter_table {
   width: 136px;
-  font-size: 11px;
+  font-size: 0.4em;
 }
 .header_l {
   width: 7px;
-  background: url('bg_counter.png') top left no-repeat;
   background-position: 0% 0px;
   line-height: 22px;
   margin: 0px;
   padding: 0px;
 }
 .header_r {
-  background: url('bg_counter.png') top right no-repeat;
   background-position: 100% 0px;
   font-weight: bold;
   text-align: left;
@@ -50,7 +48,7 @@ body {
 .data {
   padding: 4px;
   border: 1px solid #537392;
-  background: antiquewhite;
+  background: #fafafa;
   color: rgba(50, 50, 50, 1);
 }
 .module {
@@ -75,7 +73,7 @@ body {
 .footer_r {
   height: 20px;
   color: #FFFFFF;
-  font-size: 11px;
+  font-size: 1em;
   line-height: 1.2em;
   text-align: center;
   vertical-align: top;
