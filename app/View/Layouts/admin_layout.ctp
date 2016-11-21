@@ -105,8 +105,9 @@
       Photo = require('models/photo')
       Description = require('models/description')
       
-      User    = require("models/user");
-      Main    = require("admin");
+      Settings  = require("models/settings");
+      User      = require("models/user");
+      Main      = require("admin");
       
       User.ping();
       
@@ -121,7 +122,8 @@
       Category.refresh(categories, {clear: true});
       
       Spine.Route.setup()
-      startScript()
+      
+      //startScript()
       
     });
     <?php

@@ -86,6 +86,7 @@ class Main extends Spine.Controller
     @version = "2.0.0"
     @autoupload = true
     @useDragImage = false
+    @intro = true
     
     Spine.dragItem = SpineDragItem.create()
     
@@ -312,7 +313,7 @@ class Main extends Spine.Controller
     Model.Root.current root
       
   validate: (user, json) ->
-    valid = (usid = user.sessionid) and (jsid = json.sessionid) and !!(usid) and !!(jsid)
+    valid = (usid = user.sessionid) and (jsid = json.sessionid) and (usid is jsid)
     unless valid
       User.logout()
     else
@@ -321,8 +322,48 @@ class Main extends Spine.Controller
       user.save()
       settings = @loadUserSettings(user.id)
       @initLocation(settings)
-#      @setInterval()
       @delay @setupView, 500
+      console.log settings.intro
+      unless (b = settings.intro)?
+        settings.updateAttributes(intro: !b)
+        b = true
+      @startScript(b)
+  
+  startScript: (b) ->
+    setTimeout ->
+      App.sidebar.toggleDraghandle()
+    , 2500
+    setTimeout ->
+      App.showView.toggleDraghandle()
+    , 3500
+    return unless b
+    setTimeout ->
+      App.sidebar.toggleDraghandle()
+    , 4500
+    setTimeout ->
+      App.sidebar.toggleDraghandle()
+    , 5500
+    setTimeout ->
+      App.showView.toggleDraghandle()
+    , 6500
+    setTimeout ->
+      App.showView.toggleDraghandle()
+    , 7500
+    setTimeout ->
+      App.vDragHandle.addClass('fire puls')
+    , 9000
+    setTimeout ->
+      App.vDragHandle.removeClass('fire puls')
+    , 12000
+    setTimeout ->
+      App.hDragHandle.addClass('fire puls')
+    , 9000
+    setTimeout ->
+      App.hDragHandle.removeClass('fire puls')
+    , 12000
+    setTimeout ->
+      alert 'Intro abschalten über Extras -> Intro-Quatsch'
+    , 13000
   
   loadUserSettings: (id) ->
     Settings.fetch()
@@ -336,6 +377,7 @@ class Main extends Spine.Controller
       settings = Settings.create
         user_id   : id
         autoupload: @autoupload
+        intro     : @intro
     settings
         
   initLocation: (settings) ->

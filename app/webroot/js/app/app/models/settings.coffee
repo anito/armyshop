@@ -6,7 +6,7 @@ Extender      = require("extensions/model_extender")
 require('spine/lib/local')
 
 class Settings extends Spine.Model
-  @configure 'Settings', 'hidden', 'agreed', 'sidebaropened', 'user_id', 'autoupload', 'hash', 'previousHash'
+  @configure 'Settings', 'hidden', 'agreed', 'sidebaropened', 'user_id', 'autoupload', 'hash', 'previousHash', 'intro'
   
   @extend Model.Local
   @extend Extender
@@ -25,6 +25,10 @@ class Settings extends Spine.Model
   @isAutoUpload: ->
     setting = @loadSettings()
     !!setting?.autoupload
+  
+  @isIntroQuatsch: ->
+    setting = @loadSettings()
+    !!setting?.intro
   
   @findLogoSettings: ->
 #    @findByAttribute('logo_id', 'logo1')

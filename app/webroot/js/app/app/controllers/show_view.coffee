@@ -101,6 +101,7 @@ class ShowView extends Spine.Controller
     'click .opt-EmptyProduct'                           : 'emptyProduct'
     'click .opt-EmptyPhotosTrash'                       : 'emptyPhotosTrash'
     'click .opt-EmptyProductsTrash'                     : 'emptyProductsTrash'
+    'click .opt-IntroQuatsch'                           : 'toggleIntroQuatsch'
     
     'click .opt-CreatePhoto:not(.disabled)'           : 'createPhoto'
     'click .opt-DestroyEmptyProducts:not(.disabled)'  : 'destroyEmptyProducts'
@@ -580,6 +581,13 @@ class ShowView extends Spine.Controller
     b = if args.length then args[0] else !settings.autoupload
     active = settings.autoupload = !!b
     @uploader.fileupload('option', 'autoUpload', active)
+    settings.save()
+    @refreshToolbars()
+  
+  toggleIntroQuatsch: (e) ->
+    settings = Model.Settings.loadSettings()
+    b = !settings.intro
+    active = settings.intro = !!b
     settings.save()
     @refreshToolbars()
   
