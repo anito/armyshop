@@ -128,7 +128,7 @@ class PhotosList extends Spine.Controller
     item = $(e.currentTarget).item()
     return unless item?.constructor?.className is 'Photo' 
     
-    Spine.trigger('delete:photo', [item.id])
+    Spine.trigger('delete:photos', [item.id])
     
     e.stopPropagation()
     e.preventDefault()

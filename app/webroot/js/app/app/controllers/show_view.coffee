@@ -7,6 +7,8 @@ Category            = require('models/category')
 Product             = require('models/product')
 Photo               = require('models/photo')
 ProductsPhoto       = require('models/products_photo')
+ProductsTrash       = require('models/products_trash')
+PhotosTrash         = require('models/photos_trash')
 CategoriesProduct   = require('models/categories_product')
 Clipboard           = require("models/clipboard")
 ToolbarView         = require("controllers/toolbar_view")
@@ -55,11 +57,11 @@ class ShowView extends Spine.Controller
     '.opt-Sidebar'            : 'btnSidebar'
     '.opt-FullScreen'         : 'btnFullScreen'
     '.opt-Save'               : 'btnSave'
-    '.toolbar-one'             : 'toolbarOneEl'
-    '.toolbar-two'             : 'toolbarTwoEl'
+    '.toolbar-one'            : 'toolbarOneEl'
+    '.toolbar-two'            : 'toolbarTwoEl'
     '.props'                  : 'propsEl'
-    '.content.photos-trash'           : 'photosTrashEl'
-    '.content.products-trash'         : 'productsTrashEl'
+    '.content.photos-trash'   : 'photosTrashEl'
+    '.content.products-trash' : 'productsTrashEl'
     '.content.categories'     : 'categoriesEl'
     '.content.products'       : 'productsEl'
     '.content.photos'         : 'photosEl'
@@ -76,6 +78,7 @@ class ShowView extends Spine.Controller
     '.opt-Upload'             : 'btnUpload'
     
   events:
+    'click .dropdown-toggle'                          : 'dropdown'
     'click a[href]'                                   : 'followLink'
     'click .opt-MysqlDump'                            : 'mysqlDump'
     'click .opt-MysqlRestore'                         : 'mysqlRestore'
@@ -237,6 +240,8 @@ class ShowView extends Spine.Controller
     Category.bind('change:selection', @proxy @refreshToolbars)
     Product.bind('change:selection', @proxy @refreshToolbars)
     CategoriesProduct.bind('change', @proxy @refreshToolbars)
+    ProductsTrash.bind('change:selection', @proxy @refreshToolbars)
+    PhotosTrash.bind('change:selection', @proxy @refreshToolbars)
     CategoriesProduct.bind('error', @proxy @error)
     CategoriesProduct.bind('destroy', @proxy @removeJoinedProductElement)
     ProductsPhoto.bind('destroy', @proxy @removeJoinedPhotoElement)
@@ -269,6 +274,12 @@ class ShowView extends Spine.Controller
     
     Model.Settings.bind('change', @proxy @changeSettings)
     Model.Settings.bind('refresh', @proxy @refreshSettings)
+    
+  dropdown: (e) ->
+#    @toolbarOne.renderSub()
+    el = $(e.target)
+    el.dropdown('toggle')
+    e.stopPropagation()
     
   active: (controller, params) ->
     @log 'active'
@@ -480,7 +491,7 @@ class ShowView extends Spine.Controller
     
   emptyPhotosTrash: ->
     items = Photo.filter(true, func: 'selectDeleted')
-    Photo.trigger('destroy:trash', items)
+    Photo.trigger('empty:trash', items)
     
   editCategory: (e) ->
     Spine.trigger('edit:category')
@@ -503,12 +514,12 @@ class ShowView extends Spine.Controller
     Spine.trigger('delete:category', id)
   
   deleteProduct: (e) ->
-    return unless id = Product.record?.id
-    Spine.trigger('delete:product', id)
+    model = App.showView.current.model
+    Spine.trigger('delete:products', model.selectionList())
 
   deletePhoto: (e) ->
-    return unless id = Photo.record?.id
-    Spine.trigger('delete:photo', id)
+    model = App.showView.current.model
+    Spine.trigger('delete:photos', model.selectionList())
 
   toggleCategoryShow: (e) ->
     @trigger('activate:editview', 'category', e.target)

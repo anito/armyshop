@@ -105,7 +105,7 @@
           <div data-model-name="ProductsTrash" data-models-name="Product" tabindex="1" class="view products-trash content vbox flex data parent autoflow fadeelement" style="">
             <div class="items flex autoflow fadein in1">Product Trash</div>
           </div>
-          <div data-model-name="PhotosTrash" data-models-name="Photo" tabindex="1" class="view photos-trash content vbox flex data parent autoflow fade" style="">
+          <div data-model-name="PhotosTrash" data-models-name="Photo" tabindex="1" class="view photos-trash content vbox flex data parent autoflow fadeelement" style="">
             <div class="items flex autoflow fadein in1">Photo Trash</div>
           </div>
         </div>
@@ -642,7 +642,7 @@
       <span class="left">
         <a href="#" class="dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <li role="presentation" class="opt-delete"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="{{if Category.record}}Entfernen{{else}}endgültig Löschen{{/if}} " href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Category.record}}Entfernen{{else}}Löschen{{/if}}</a></li>
+          <li role="presentation" class="opt-destroy"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="endgültig Löschen" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Category.record}}Entfernen{{else}}Löschen{{/if}}</a></li>
         </ul>
       </span>
     </div>
@@ -1073,8 +1073,17 @@
 </script>
 
 <script id="photosTrashTemplate" type="text/x-jquery-tmpl">
-  <li  id="${id}" data-id="${id}" data-model-name="" data-models-name="Photo" class="item data fade in" draggable="true">
-    {{tmpl() "#photosThumbnailTemplate"}}
+  <li  id="${id}" data-id="${id}" data-model-name="" data-models-name="Photo" class="item data fade in">
+    <div class="thumbnail image left fadeslow"></div>
+    <div class="glyphicon-set right fade out" style="">
+      <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
+      <span class="left">
+        <a href="#" class="dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <li role="presentation" class="opt-destroy"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}</a></li>
+        </ul>
+      </span>
+    </div>
     <div class="center order hide" style="color: aliceblue">{{if order}}${order}{{else}}0{{/if}}</div>
   </li>
 </script>
@@ -1178,7 +1187,7 @@
   {{tmpl(itemGroup)  "#dropdownTemplate"}}
   {{else}}
   <li class="${klass}"{{if outerstyle}} style="${outerstyle}"{{/if}}{{if id}} id="${id}"{{/if}}>
-  <{{if type}}${type} class="{{if icon}}symbol{{/if}} tb-name {{if innerklass}}${innerklass}{{/if}}"{{else}}button class="symbol dark {{if innerklass}}${innerklass}{{/if}}" {{if dataToggle}} data-toggle="${dataToggle}"{{/if}}{{/if}}
+  <{{if type}}${type} class="{{if icon}}symbol{{/if}} tb-name {{if innerklass}}${innerklass}{{/if}}"{{else}}button class="symbol dark {{if innerklass}}${innerklass}{{/if}}" {{if dataToggle}}data-toggle="dropdown"{{/if}}{{/if}}
   {{if innerstyle}} style="${innerstyle}"{{/if}}
   {{if disabled}}disabled{{/if}}>
   {{if icon}}

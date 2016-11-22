@@ -52,7 +52,6 @@ class PhotoView extends Spine.Controller
       template: @infoTemplate
     @viewport = @itemsEl
     
-    Photo.bind('beforeDestroy', @proxy @back)
     Photo.one('refresh', @proxy @refresh)
     Product.bind('change:collection', @proxy @refresh)
     Photo.bind('change:current', @proxy @changeNavigation)
@@ -127,7 +126,7 @@ class PhotoView extends Spine.Controller
   
   dropdownToggle: (e) ->
     el = $(e.currentTarget)
-    el.dropdown()
+    el.dropdown('toggle')
     
     e.preventDefault()
     e.stopPropagation()
@@ -136,7 +135,7 @@ class PhotoView extends Spine.Controller
     item = $(e.currentTarget).item()
     return unless item?.constructor?.className is 'Photo' 
     
-    Spine.trigger('delete:photo', [item.id], @proxy @list.back)
+    Spine.trigger('delete:photos', [item.id], @proxy @list.back)
     
     @stopInfo(e)
     

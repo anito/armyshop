@@ -25,7 +25,7 @@ class ProductsTrashView extends Spine.Controller
     'click'                        : 'clearSelection'
     'click .item'                  : 'click'
     'click .dropdown-toggle'       : 'dropdownToggle'
-    'click .opt-delete'            : 'destroyProduct'
+    'click .opt-destroy'           : 'destroyProduct'
     
     'mousemove .item'              : 'in'
     'mouseleave .item'             : 'out'
@@ -50,7 +50,6 @@ class ProductsTrashView extends Spine.Controller
     Product.bind('destroy:trash', @proxy @destroy)
     Product.bind('inbound:trash', @proxy @inbound)
     Product.bind('outbound:trash', @proxy @outbound)
-    
     Product.bind('destroy:products', @proxy @destroyProducts)
     Product.bind('empty:trash', @proxy @emptyTrash)
     Product.bind('refresh', @proxy @initTrash)

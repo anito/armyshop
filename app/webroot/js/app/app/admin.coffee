@@ -267,7 +267,7 @@ class Main extends Spine.Controller
         items = Product.filter(true, func: 'selectDeleted')
         @showView.trigger('active', @showView.productsTrashView, items)
       '/trash/photos/:id': (params) ->
-        items = Photo.unusedPhotos(true)
+        items = Photo.filter(true, func: 'selectDeleted')
         @showView.trigger('active', @showView.photosTrashView, items)
       '/wait/*glob': (params) ->
         @showView.trigger('active', @showView.waitView)
@@ -323,7 +323,6 @@ class Main extends Spine.Controller
       settings = @loadUserSettings(user.id)
       @initLocation(settings)
       @delay @setupView, 500
-      console.log settings.intro
       unless (b = settings.intro)?
         settings.updateAttributes(intro: !b)
         b = true

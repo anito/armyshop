@@ -71,13 +71,13 @@ class PhotosView extends Spine.Controller
     Spine.bind('refresh:one', @proxy @refreshOne)
     
     Photo.bind('create', @proxy @add)
-    Photo.bind('destroy', @proxy @destroy)
-    Photo.bind('beforeDestroy', @proxy @beforeDestroyPhoto)
+#    Photo.bind('destroy', @proxy @destroy)
     Photo.bind('create:join', @proxy @createJoin)
     Photo.bind('destroy:join', @proxy @destroyJoin)
     Photo.bind('ajaxError', Photo.errorHandler)
+    Photo.bind('trashed', @proxy @remove)
     
-    Spine.bind('delete:photo', @proxy @deletePhoto)
+    Spine.bind('delete:photos', @proxy @deletePhotos)
     Spine.bind('loading:done', @proxy @refresh)
     
   refreshOne: ->
@@ -178,22 +178,6 @@ class PhotosView extends Spine.Controller
       
   clearPhotoCache: ->
     Photo.clearCache()
-  
-  beforeDestroyPhoto: (photo) ->
-    # remove selection from root
-    Product.removeFromSelection null, photo.id
-    
-    # all involved products
-    products = ProductsPhoto.products(photo.id)
-    
-    for product in products
-      product.removeFromSelection photo.id
-      photo.removeSelectionID()
-      
-      # remove all associated photos
-      @destroyJoin
-        photos: photo.id
-        product: product
       
   beforeDestroyProductsPhoto: (ap) ->
     product = Product.find ap.product_id
@@ -208,8 +192,55 @@ class PhotosView extends Spine.Controller
     photos = ProductsPhoto.photos ap.product_id
     @render(null, 'html') unless photos.length
   
-  deletePhoto: (ids, callback) ->
+  deletePhoto_: (ids, callback) ->
     App.confirm('METHOD_NOT_SUPPORTED', mode: 'alert')
+    
+  deletePhotos: (ids, callback) ->
+    @log 'deletePhotos'
+    console.log ids
+    # only joins should be here when no Product is selected
+    # otherwise (no Product is selected) we should mark the photo as deleted
+    ids = [ids] unless Array.isArray(ids)
+    @stopInfo()
+
+#    ids = Product.selectionList()[..] #or ids[..]
+    photos = Photo.toRecords(ids)
+    for photo in photos
+      if photo.deleted
+        Photo.trigger('destroy:photos', ids)
+        break
+      prods = ProductsPhoto.products(photo.id)
+      unless product = Product.record
+        # for the Catalogue View
+        if prods.length
+          #remove from all Products
+          if res1 or (res1 = App.confirm('REMOVE_AND_DELETE', plural: photos.length > 1))
+            for prod in prods
+              @destroyJoin {photos: photo, product: prod}
+            Photo.trigger('inbound:trash', photo)
+            continue
+          else break
+        else
+          if res2 or (res2 = App.confirm('DELETE', plural: photos.length > 1))
+            Photo.trigger('inbound:trash', photo)
+            continue
+          else break
+      else
+        # for the Joins View
+        # send the last joined product to trash
+        if prods.length is 1
+          if res3 or (res3 = App.confirm('DELETE', plural: photos.length > 1))
+            @destroyJoin( {photos: photo, product: product} )
+            Photo.trigger('inbound:trash', photo)
+            continue
+          else break
+        else
+          # there are still other identical Products
+          # just remove it from the Cat
+          if res4 or (res4 = App.confirm('REMOVE', plural: photos.length > 1))
+            @destroyJoin( {photos: photo, product: product} )
+            continue
+          else break
   
   save: (item) ->
 

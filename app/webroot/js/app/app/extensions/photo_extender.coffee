@@ -72,11 +72,11 @@ Controller.PhotoExtender =
 
       size: (val, bg='none') ->
         # 2*10 = border radius
-        @thumbEl.css
+        thumb = $('.thumbnail', @el)
+        thumb.css
           'height'          : val+'px'
           'width'           : val+'px'
           'backgroundSize'  : bg
-      
       
     @extend Extend
     @include Include

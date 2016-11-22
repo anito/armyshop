@@ -93,7 +93,7 @@ class ProductsView extends Spine.Controller
     Spine.bind('loading:start', @proxy @loadingStart)
     Spine.bind('loading:done', @proxy @loadingDone)
     Spine.bind('loading:fail', @proxy @loadingFail)
-    Spine.bind('delete:product', @proxy @deleteProduct)
+    Spine.bind('delete:products', @proxy @deleteProducts)
 #    Spine.bind('select:product', @proxy @select)
     
     @bind('drag:start', @proxy @dragStart)
@@ -239,7 +239,7 @@ class ProductsView extends Spine.Controller
     ga.ignored = ignored
     ga.save()
     
-  deleteProduct: (ids, callback) ->
+  deleteProducts: (ids, callback) ->
     @log 'deleteProduct'
     # only joins should be here when no Category is selected
     # otherwise (no Category is selected) we should mark the product as deleted
@@ -249,6 +249,9 @@ class ProductsView extends Spine.Controller
     ids = Category.selectionList()[..] #or ids[..]
     products = Product.toRecords(ids)
     for product in products
+      if product.deleted
+        Product.trigger('destroy:products', ids)
+        break
       cats = CategoriesProduct.categories(product.id)
       unless category = Category.record
         # for the Catalogue View

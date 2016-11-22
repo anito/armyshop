@@ -15,7 +15,7 @@ require("spine/lib/ajax")
 
 class Photo extends Spine.Model
 
-  @configure "Photo", 'id', 'title', "photo", 'filesize', 'captured', 'exposure', "iso", 'longitude', 'aperture', 'software', 'model', 'order', 'user_id', 'active', 'src', 'selected'
+  @configure "Photo", 'id', 'title', "photo", 'filesize', 'captured', 'exposure', "iso", 'longitude', 'aperture', 'software', 'model', 'order', 'user_id', 'active', 'src', 'selected', 'deleted'
 
   @extend Cache
   @extend Model.Ajax

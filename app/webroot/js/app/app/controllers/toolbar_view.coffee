@@ -58,6 +58,18 @@ class ToolbarView extends Spine.Controller
     @current = []
     @render()
     
+  renderSub: ->
+    items = @current[..]
+    test = ->
+      res = []
+      name = itm.itemGroup.name
+      if typeof name is 'function'
+        res.push name.call()
+      else
+        res.push name
+      res[0]
+    itm for itm in items when test(itm) is 'Hilfe'
+      
   render: (list=@current) ->
     return if @locked
     
