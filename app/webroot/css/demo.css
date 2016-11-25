@@ -456,7 +456,7 @@ html {
   min-height: 100%;
 }
 body {
-  background: transparent url(../img/outdoor_creative_blurry.jpg) 50% 0 fixed;
+  background: transparent url(../img/outdoor_creative.jpg) 50% 0 fixed;
   color: #333;
   font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;
   font-size: 0.8rem;
@@ -491,11 +491,11 @@ body {
   transition: opacity 0.45s linear;
 }
 body.fade.out {
-  background: transparent url(../img/outdoor_creative_blurry.jpg) 50% 0 fixed;
+  background: transparent url(../img/outdoor_creative.jpg) 50% 0 fixed;
   transition: background 2s linear;
 }
 body.fade.in.defense {
-  background: transparent url(../img/outdoor_creative_blurry.jpg) 50% 10% fixed;
+  background: transparent url(../img/outdoor_creative.jpg) 50% 10% fixed;
   transition: background 1s ease-in-out;
 }
 body.fade.in.outdoor {
@@ -507,7 +507,7 @@ body.fade.in.goodies {
   transition: background 1s ease-in-out;
 }
 .item-menu.defense:hover {
-  background: transparent url(../img/outdoor_creative_blurry.jpg) 50% 10% fixed;
+  background: transparent url(../img/outdoor_creative.jpg) 50% 10% fixed;
 }
 .item-menu.outdoor:hover {
   background: transparent url(../img/fitness_creative.jpg) 60% 20% fixed;
