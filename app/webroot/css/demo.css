@@ -45,6 +45,9 @@
   }
 }
 @media screen and (min-width:940px) {
+  
+}
+@media screen and (min-width:1050px) {
   header::before {
     content: url(/img/free_delivery.png);
     position: absolute;
@@ -52,8 +55,6 @@
     right: 10px;
     top: -10px;
   }
-}
-@media screen and (min-width:1050px) {
   .lehmann {
     text-shadow: 5px 3px 8px rgba(0, 0, 0, .5);
     position: absolute;
@@ -89,7 +90,7 @@
     display: none;
   }
 }
-@media screen  and (min-width:1200px) {
+@media screen  and (min-width:1201px) {
   #container {
     margin: 71px 0;
     position: relative;
@@ -248,7 +249,6 @@
   .header {
     color: white;
     line-height: 24px;
-    font-size: 11px;
     background: #000;
     opacity: 1;
     text-transform: uppercase;
@@ -479,6 +479,12 @@ body {
 #stats {
   position: absolute;
   z-index: 100000;
+  width: 140px;
+}
+.nav-group {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
 }
 .fadeslow.in {
   opacity: 1;
@@ -573,7 +579,7 @@ footer.footer {
   bottom: 50px;
 }
 .footer span {
-  padding-left: 20px;
+  padding: 0 40px;
 }
 [class^="logo-"], [class*=" logo-"] {
   cursor: pointer;
@@ -600,4 +606,9 @@ h5.display-3 {
 }
 .navbar {
   border-radius: 0 !important;
+}
+a.search {
+  font-size: 1.3em;
+  padding: 0;
+  margin: 0;
 }

@@ -28,13 +28,14 @@ class RefreshView extends Spine.Controller
     e.stopPropagation()
     e.preventDefault()
     
+  render: (icon) ->
+    @html @template icon
+    
   fetchAll: ->
     Photo.fetch(null, clear:true)
     Product.fetch(null, clear:true)
     Category.fetch(null, clear:true)
     Description.fetch(null, clear:true)
     
-  render: (icon) ->
-    @html @template icon
 
 module?.exports = RefreshView

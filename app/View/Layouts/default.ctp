@@ -119,19 +119,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <div class="logo logo-2 hide"></div>
   </div>
   <header id="header" class="header">
-    <nav class=" navbar navbar-sm navbar-static-top navbar-dark bg-inverse">
+    <nav class="navbar navbar-sm navbar-static-top navbar-dark bg-inverse">
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
           <a class="nav-link flaticon-home-3" href="/pages/home/">Home<span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item defense">
-          <a class="nav-link flaticon-pepper-spray" href="/pages/defense/">Selbstschutz</a>
+          <a class="nav-link flaticon-hiking-up-3" href="/pages/defense/">Outdoor</a>
         </li>
         <li id="" class="nav-item outdoor">
-          <a class="nav-link flaticon-hiking-up-2" href="/pages/outdoor/">Outdoor</a>
+          <a class="nav-link flaticon-hiking-up-2" href="/pages/outdoor/">Fitness</a>
         </li>
         <li id="" class="nav-item goodies">
-          <a class="nav-link flaticon-sales-label" href="/pages/goodies/">Restposten</a>
+          <a class="nav-link flaticon-sales-label" href="/pages/goodies/">Specials</a>
         </li>
       </ul>
     </nav>
@@ -141,13 +141,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <a class="nav-link flaticon-home-3" href="/pages/home/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item defense">
-          <a class="nav-link flaticon-pepper-spray" href="/pages/defense/">Selbstschutz & Security</a>
+          <a class="nav-link nav-link flaticon-hiking-up-3" href="/pages/defense/">Outdoor</a>
         </li>
         <li id="" class="nav-item outdoor">
-          <a class="nav-link flaticon-hiking-up-2" href="/pages/outdoor/">Outdoor & Fitness</a>
+          <a class="nav-link flaticon-hiking-up-2" href="/pages/outdoor/">Fitness</a>
         </li>
         <li id="" class="nav-item goodies">
-          <a class="nav-link flaticon-sales-label" href="/pages/goodies/">Restposten & Specials</a>
+          <a class="nav-link flaticon-sales-label" href="/pages/goodies/">Specials</a>
         </li>
       </ul>
     </nav>
@@ -212,13 +212,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
   </div>
   <footer class="footer bg-inverse">
-    <span id='refresh'></span>
-    <span class="opt-reset" title="FSK 18 Hinweis zurücksetzen">© HA Lehman</span>
-    <span><a href="#" class="opt-imp">Impressum</a></span>
-    <span><a href="#" class="opt-agb">AGB</a></span>
-    <span><a href="#" class="opt-pay">Zahlungsmöglichkeiten</a></span>
-    <span><a href="#" class="opt-del">Versand</a></span>
-    <span><a href="#" class="opt-stats">Statistik</a></span>
+    <span class="nav-group">
+      <span id="refresh" class="left-inline"></span>
+      <span class="opt-reset" title="FSK 18 Hinweis zurücksetzen">© HA Lehman</span>
+      <span><a href="#" class="opt-imp">Impressum</a></span>
+      <span><a href="#" class="opt-agb">AGB</a></span>
+      <span><a href="#" class="opt-pay">Zahlungsmöglichkeiten</a></span>
+      <span><a href="#" class="opt-del">Versand</a></span>
+      <span><a href="#" class="opt-stats stats">Statistik</a></span>
+    </span>
   </footer>
   <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away"></iframe>
   <!-- modal-dialogue -->
