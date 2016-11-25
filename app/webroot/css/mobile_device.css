@@ -521,9 +521,6 @@ body.fade.in.goodies {
 .item-menu.goodies:hover {
   background: transparent url(../img/specials_creative_light.jpg) 20% 30% fixed;
 }
-.home .item-menu.category {
-  background: transparent url(../img/outdoor_creative.jpg) 50% 10% fixed;
-}
 .defense .item-menu.defense.category:hover {
   background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
 }
@@ -800,7 +797,6 @@ h5.display-3 {
 
 .ca-menu .pricing__item {
   overflow: hidden;
-  background-color: rgba(255,255,255,.8);
   -webkit-box-shadow: 7px 7px 20px rgba(0,0,0,0.5);
   -moz-box-shadow: 7px 7px 20px rgba(0,0,0,0.5);
   box-shadow: 7px 7px 20px rgba(0,0,0,0.5);
@@ -881,18 +877,18 @@ h5.display-3 {
 }
 .goodies .ca-menu li a:not(:hover) {
     color: #000;
-    background: rgba(233, 233, 233, 0.54);
+    background: rgba(233, 233, 233, 0.8);
 }
-.goodies .ca-menu li a:not(:hover) {
+.outdoor .ca-menu li a:not(:hover) {
     color: #000;
-    background: rgba(233, 233, 233, 0.54);
+    background: rgba(233, 233, 233, 0.8);
 }
 .defense .ca-menu li a:not(:hover) {
     color: #423a35;
-    background: rgba(227, 225, 225, 0.72);
+    background: rgba(227, 225, 225, 0.8);
 }
 .ca-menu li:hover {
-    background-color: rgba(20,20,20,.8);
+    background-color: rgba(255, 255, 255,.9);
 }
 .ca-menu li:hover .ca-icon,
 .ca-menu li:hover [class^="flaticon-"]:before, .ca-menu li:hover [class*=" flaticon-"]:before,
