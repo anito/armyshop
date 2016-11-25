@@ -1,7 +1,7 @@
 <div id="goodies" class="view active">
   <div class="jumbotron">
     <div class="container">
-      <h1 class="display-3">Restposten & Specials</h1>
+      <h1 class="display-3">Specials</h1>
       <h5 class="h5 display-3">Günstige Angebote und Restposten</h5>
     </div>
   </div>

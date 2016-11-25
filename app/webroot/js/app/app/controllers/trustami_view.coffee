@@ -29,7 +29,12 @@ class TrustamiView extends Spine.Controller
     
   save:  ->
     atts = @el.serializeForm()
-    @user.updateAttributes(atts)
+    if isNaN(n = parseInt(atts.tmi)) or n < 1
+      @input.val(@user.tmi)
+      return
+      
+    @input.val(n)
+    @user.updateAttributes(tmi:n)
     @user.setTmi(@setCallback)
     
   countUp: ->
@@ -52,6 +57,7 @@ class TrustamiView extends Spine.Controller
     
   saveOnKeyup: (e) =>
     code = e.charCode or e.keyCode
+    return if code >= 37 and code <= 40
     
     el=$(document.activeElement)
     isFormfield = $().isFormElement(el)

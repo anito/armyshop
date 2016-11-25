@@ -1,8 +1,8 @@
 <div id="outdoor" class="view active">
   <div class="jumbotron">
     <div class="container">
-      <h1 class="display-3">Outdoor & Fitness</h1>
-      <h5 class="h5 display-3">Angebote für Sport und Freizeit</h5>
+      <h1 class="display-3">Fitness</h1>
+      <h5 class="h5 display-3">Angebote für Sport & Fitness</h5>
     </div>
   </div>
   <div class="items pricing pricing--norbu"></div>

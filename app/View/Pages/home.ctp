@@ -12,10 +12,10 @@
     <ul class="row ca-menu pricing">
       <li id="defense-item-menu" class="item-menu  pricing__item defense category">
           <a href="/pages/defense/">
-            <span class="flaticon-pepper-spray"></span>
+            <span class="flaticon-hiking-up-3"></span>
             <div class="ca-content">
-              <h2 class="ca-main">Selbstschutz & Security</h2>
-              <h3 class="ca-sub">Fühlen Sie sich sicher?</h3>
+              <h2 class="ca-main">Outdoor</h2>
+              <h3 class="ca-sub">Atmen Sie durch</h3>
             </div>
           </a>
       </li>
@@ -23,7 +23,7 @@
           <a href="/pages/outdoor/">
             <span class="flaticon-hiking-up-2"></span>
             <div class="ca-content">
-              <h2 class="ca-main">Outdoor & Fitness</h2>
+              <h2 class="ca-main">Fitness</h2>
               <h3 class="ca-sub">Bleiben Sie Gesund</h3>
             </div>
           </a>
@@ -32,7 +32,7 @@
           <a href="/pages/goodies/">
             <span class="flaticon-sales-label"></span>
             <div class="ca-content">
-              <h2 class="ca-main">Restposten & Specials</h2>
+              <h2 class="ca-main">Specials</h2>
               <h3 class="ca-sub">24/7 Geld sparen</h3>
             </div>
           </a>
@@ -46,8 +46,8 @@
   <div class="jumbotron">
     <div class="container">
       <div class="inner">
-        <h1 class="display-3">Selbstschutz & Security</h1>
-        <h5 class="h5 display-3">Schützen Sie sich und Ihre Mitmenschen vor möglichen Gefahren</h5>
+        <h1 class="display-3">Outdoor</h1>
+        <h5 class="h5 display-3">Angebote für Outdoor & Freizeit</h5>
         <div class="opt-hint hint"><a class="btn btn-primary btn-lg" href="#" role="button" style="font-size: 1rem;">Hinweis zu FSK18 Artikeln anzeigen»</a></div>
       </div>
     </div>
@@ -58,8 +58,8 @@
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
     <div class="container">
-      <h1 class="display-3">Outdoor & Fitness</h1>
-      <h5 class="h5 display-3">Angebote für Sport und Freizeit</h5>
+      <h1 class="display-3">Fitness</h1>
+      <h5 class="h5 display-3">Angebote für Sport und Fitness</h5>
     </div>
   </div>
   <div class="items  pricing pricing--norbu"></div>
@@ -68,7 +68,7 @@
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
     <div class="container">
-      <h1 class="display-3">Restposten & Specials</h1>
+      <h1 class="display-3">Specials</h1>
       <h5 class="h5 display-3">Günstige Angebote und Restposten</h5>
     </div>
   </div>
