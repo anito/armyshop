@@ -505,7 +505,7 @@ body.fade.in.defense {
   transition: background 1s ease-in-out;
 }
 body.fade.in.outdoor {
-  background: transparent url(../img/outdoor_creative_blurry.jpg) 60% 20% fixed; 
+  background: transparent url(../img/fitness_creative.jpg) 60% 20% fixed; 
   transition: background 1s ease-in-out;
 }
 body.fade.in.goodies {
@@ -516,7 +516,7 @@ body.fade.in.goodies {
   background: transparent url(../img/outdoor_creative_blurry.jpg) 50% 10% fixed;
 }
 .item-menu.outdoor:hover {
-  background: transparent url(../img/outdoor_creative_blurry.jpg) 60% 20% fixed;
+  background: transparent url(../img/fitness_creative.jpg) 60% 20% fixed;
 }
 .item-menu.goodies:hover {
   background: transparent url(../img/goodies_creative_blurry.jpg) 20% 30% fixed;
@@ -528,7 +528,7 @@ body.fade.in.goodies {
   background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
 }
 .outdoor .item-menu.outdoor.category:hover {
-  background: transparent url(../img/outdoor_creative_light.jpg) 60% 20% fixed;
+  background: transparent url(../img/fitness_creative.jpg) 60% 20% fixed;
 }
 .goodies .item-menu.goodies.category:hover {
   background: transparent url(../img/goodies_creative_light.jpg) 20% 30% fixed;
