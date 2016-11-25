@@ -82,7 +82,7 @@ class App extends Spine.Controller
       '/*glob' : (params) ->
     
   initCategory: (cat) ->
-    if cat.name is 'defense' then @checkWarning()
+#    if cat.name is 'defense' then @checkWarning()
     @initBackground(cat.name)
     @exposeNav(cat.name)
     
