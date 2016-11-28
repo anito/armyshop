@@ -7,7 +7,12 @@
       <h5 class="h5 display-3">Der Versandhändler Ihres Vertrauens</h5>
     </div>
   </div>
-  <div class="">
+  <div class="jumbotron brand">
+    <div class="container">
+      <div class="brands display-5"></div>
+    </div>
+  </div>
+  <div class="inner">
     <!-- Example row of columns -->
     <ul class="row ca-menu pricing">
       <li id="defense-item-menu" class="item-menu  pricing__item defense category">

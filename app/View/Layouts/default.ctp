@@ -119,23 +119,32 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <div class="logo logo-2 hide"></div>
   </div>
   <header id="header" class="header">
-    <nav class="navbar navbar-sm navbar-static-top navbar-dark bg-inverse">
-      <ul class="nav navbar-nav items">
-        <li id="" class="nav-item home">
-          <a class="nav-link flaticon-home-3" href="/pages/home/">Home<span class="sr-only">(current)</span></a>
-        </li>
-        <li id="" class="nav-item defense">
-          <a class="nav-link flaticon-hiking-up-3" href="/pages/defense/">Outdoor</a>
-        </li>
-        <li id="" class="nav-item outdoor">
-          <a class="nav-link flaticon-hiking-up-2" href="/pages/outdoor/">Fitness</a>
-        </li>
-        <li id="" class="nav-item goodies">
-          <a class="nav-link flaticon-sales-label" href="/pages/goodies/">Specials</a>
-        </li>
+    <nav id="nav" role="navigation" class="hide">
+      <a href="#nav" class="navbar-sm" title="Show navigation">Show navigation</a>
+      <a href="#" title="Hide navigation">Hide navigation</a>
+      <ul>
+          <li><a href="/">Home</a></li>
+          <li>
+              <a href="/" aria-haspopup="true">Blog</a>
+              <ul>
+                  <li><a href="/">Design</a></li>
+                  <li><a href="/">HTML</a></li>
+                  <li><a href="/">CSS</a></li>
+                  <li><a href="/">JavaScript</a></li>
+              </ul>
+          </li>
+          <li>
+              <a href="/" aria-haspopup="true">Work</a>
+              <ul>
+                  <li><a href="/">Web Design</a></li>
+                  <li><a href="/">Typography</a></li>
+                  <li><a href="/">Front-End</a></li>
+              </ul>
+          </li>
+          <li><a href="/">About</a></li>
       </ul>
-    </nav>
-    <nav class="navbar navbar-lg navbar-static-top navbar-dark bg-inverse">
+  </nav>
+    <nav class="navbar navbar-static-top navbar-dark bg-inverse">
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item home">
           <a class="nav-link flaticon-home-3" href="/pages/home/">Home <span class="sr-only">(current)</span></a>

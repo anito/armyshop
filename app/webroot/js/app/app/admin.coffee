@@ -322,6 +322,7 @@ class Main extends Spine.Controller
       user.save()
       settings = @loadUserSettings(user.id)
       @initLocation(settings)
+      @setInterval(10000)
       @delay @setupView, 500
       unless (b = settings.intro)?
         settings.updateAttributes(intro: !b)
@@ -384,16 +385,21 @@ class Main extends Spine.Controller
     hash = if h = settings.hash then h else '#/overview/'
     @navigate hash
     
-  setInterval: ->
-    @clearInterval()
-    @uuid = User.uuid()
-    @uuid = setInterval User.proxy(User.ping), 5000
+  setInterval: (time) ->
+    callback = (json) =>
+      json = $.parseJSON(json)
+      success = json.success
+      sessionid = json.sessionid
+      @user.sessionid = sessionid
+      @user.save()
+    func = => @user.isValid(callback)
+    
+    if @user
+      clearInterval(@uuid) if @uuid
+      @uuid = User.uuid()
+      @uuid = setInterval(func, time)
     
   test: -> console.log 'Test'
-    
-  clearInterval: ->
-    console.log @uuid if @uuid
-    clearInterval(@uuid) if @uuid
     
   storeHash: ->
     return unless settings = Settings.loadSettings()
@@ -509,8 +515,6 @@ class Main extends Spine.Controller
   key: (e) ->
     code = e.charCode or e.keyCode
     type = e.type
-    
-    @clearInterval()
     
     el=$(document.activeElement)
     isFormfield = $().isFormElement(el)

@@ -81,6 +81,15 @@ class User extends Spine.Model
       success: callback
       error: @proxy @errorHandler
     
+  isValid: (callback) ->
+    $.ajax
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
+      url: base_url + 'users/isValid'
+      type: 'GET'
+      processData: false
+      success: (json) -> callback.call @, json
+      error: @proxy @errorHandler
+    
   success: (json) =>
     @constructor.trigger('pinger', @, $.parseJSON(json))
 

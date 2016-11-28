@@ -69,8 +69,8 @@ class OverviewView extends Spine.Controller
     @carousel.data('bs.carousel')
     @carousel.carousel(@carouselOptions)
     
-    Category.bind('change:collection', @proxy @renderAux)
-    Spine.bind('product:ignore', @proxy @renderAux)
+#    Category.bind('change:collection', @proxy @renderAux)
+#    Spine.bind('product:ignore', @proxy @renderAux)
     Recent.bind('refresh', @proxy @render)
     
   active: ->

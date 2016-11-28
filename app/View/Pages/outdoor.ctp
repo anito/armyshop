@@ -5,6 +5,11 @@
       <h5 class="h5 display-3">Angebote für Sport & Fitness</h5>
     </div>
   </div>
+  <div class="jumbotron brand">
+    <div class="container">
+      <div class="brands display-5"></div>
+    </div>
+  </div>
   <div class="items pricing pricing--norbu"></div>
 </div>
 <?php

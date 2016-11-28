@@ -219,7 +219,11 @@ Configure::write('Routing.prefixes', array('admin'));
  * the cake shell command: cake schema create Sessions
  */
 	Configure::write('Session', array(
-		'defaults' => 'cache', 'cookie' => 'LEHMANN'
+		'defaults' => 'cache',
+    'cookie' => 'LEHMANN',
+    'timeout' => 3,
+    'autoRegenerate' => TRUE,
+    'countdown' => 2
 	));
 
 /**

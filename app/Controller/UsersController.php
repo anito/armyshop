@@ -9,9 +9,10 @@ class UsersController extends AppController {
   public $helpers = array('Form');
 
   function beforeFilter() {
-    $this->Auth->allowedActions = array('login', 'logout', 'ping', 'getTmi');//, 'add', 'index', 'edit', 'view');
+    $this->Auth->allowedActions = array('login', 'logout', 'ping', 'getTmi', 'checkSession');//, 'add', 'index', 'edit', 'view');
     $this->allowedGroups = array('Administrators', 'Managers');
     $this->layout = 'cake';
+    
     parent::beforeFilter();
   }
   
@@ -238,9 +239,27 @@ class UsersController extends AppController {
       if ($user = $this->Auth->user()) {
         $this->User->id = $this->data['id'];
         $res = $this->User->saveField('tmi', $this->data['tmi']);
+        $this->set('_serialize', array('success' => TRUE, 'tmi' => $res));
+      } else {
+        $this->Flash->error(__('Login fehlgeschlagen'));
+        $this->response->header("WWW-Authenticate: Negotiate");
+        $this->set('_serialize', array('success' => FALSE));
       }
+      $this->render(SIMPLE_JSON);
+    } else {
       
-      $this->set('_serialize', array('success' => TRUE, 'tmi' => $res));
+    }
+  }
+  
+  function isValid() {
+    $session = Configure::read('Session');
+    $this->log($session['countdown'], LOG_DEBUG);
+    if($this->request->is('ajax')) {
+      if ($this->Auth->user()) {
+        $this->set('_serialize', array('success' => TRUE, 'timeout' => $session['timeout'], 'sessionid' => $this->Session->id()));
+      } else {
+        $this->set('_serialize', array('success' => FALSE));
+      }
       $this->render(SIMPLE_JSON);
     }
   }
