@@ -113,8 +113,8 @@ class Category extends Spine.Model
    
   init: (instance) ->
     return unless id = instance.id
-    if @isProtectedModel(instance.name)
-      instance.protected = true
+    prot = @isProtectedModel(instance.name)
+    instance.protected = prot
     s = new Object()
     s[id] = []
     @constructor.selection.push s

@@ -1,10 +1,8 @@
-<div id="outdoor" class="view active">
+<div id="specials" class="view active">
   <div class="jumbotron">
     <div class="container">
-      <div class="inner">
-        <h1 class="display-3">Outdoor</h1>
-        <h5 class="h5 display-3">Angebote für Outdoor & Freizeit</h5>
-      </div>
+      <h1 class="display-3">Specials</h1>
+      <h5 class="h5 display-3">Günstige Angebote und Restposten</h5>
     </div>
   </div>
   <div class="jumbotron brand">
@@ -12,14 +10,13 @@
       <div class="brands display-5"></div>
     </div>
   </div>
-  <div class="items  pricing pricing--norbu"></div>
+  <div class="items pricing pricing--norbu"></div>
 </div>
-    
 <?php
   echo $this->Html->scriptStart();
     ?>
     var base_url = '<?php echo $this->Html->url('/'); ?>';
-    var cat = 'outdoor'
+    var cat = 'specials'
     
     Page = require("controllers/homepage_view");
     exports.HomePage = new Page({

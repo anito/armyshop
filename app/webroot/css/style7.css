@@ -114,15 +114,15 @@
     -ms-transition: all 200ms linear;
     transition: all 200ms linear;
 }
-.goodies .ca-menu li a:not(:hover) {
+.specials .ca-menu li a:not(:hover) {
+    color: #000;
+    background: rgba(233, 233, 233, 0.8);
+}
+.fitness .ca-menu li a:not(:hover) {
     color: #000;
     background: rgba(233, 233, 233, 0.8);
 }
 .outdoor .ca-menu li a:not(:hover) {
-    color: #000;
-    background: rgba(233, 233, 233, 0.8);
-}
-.defense .ca-menu li a:not(:hover) {
     color: #423a35;
     background: rgba(227, 225, 225, 0.8);
 }

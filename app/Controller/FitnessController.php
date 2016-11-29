@@ -19,7 +19,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-App::uses('AppController', 'Controller');
+App::uses('Controller', 'Controller');
 
 /**
  * Application Controller
@@ -30,15 +30,14 @@ App::uses('AppController', 'Controller');
  * @package		app.Controller
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
-class DefenseController extends AppController {
+class OutdoorController extends Controller {
 
-  public $name = 'Defense';
-//  public $components = array('RequestHandler', 'Session', 'Auth', 'Cookie');
-  
+  public $name = 'Fitness';
+  public $uses = array();
+
   function beforeFilter() {
-    $this->Auth->allowedActions = array('index');
+    $this->autoRender = true;
     $this->layout = '';
-    parent::beforeFilter();
   }
   
 //  function beforeRender() {
@@ -48,13 +47,8 @@ class DefenseController extends AppController {
 //  }
   
   public function index() {
-//    $this->redirect(array('controller' => 'user', 'action' => 'login'));
-//    $this->log($this->Auth->user('id'), LOG_DEBUG);
-//    $this->Defenses->recursive = 1;
-//    $this->log($this->Auth->user('id'), LOG_DEBUG);
-//    $albums = $this->Defenses->findAllByUser_id((string)($this->Auth->user('id')));
-//    $this->set('_serialize', $albums);
-//    $this->render(SIMPLE_JSON);
+    
+    
   }
-            
+
 }

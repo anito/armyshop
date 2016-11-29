@@ -14,9 +14,9 @@ class App extends Spine.Controller
     '#header .nav.items': 'navItems',
     '#header .nav-item' : 'item',
     '#home'             : 'homeEl',
-    '#defense'          : 'defenseEl',
-    '#goodies'          : 'goodiesEl',
     '#outdoor'          : 'outdoorEl',
+    '#specials'          : 'goodiesEl',
+    '#fitness'          : 'outdoorEl',
     '#nav'              : 'nav'
     '#stats'            : 'stats'
     '#menu-trigger'     : 'menutrigger'
@@ -67,23 +67,23 @@ class App extends Spine.Controller
       nav: @navItems
       categoryName: 'home'
       refreshView: @refreshView
-    @defense = new HomepageView
-      el: @defenseEl
-      nav: @navItems
-      categoryName: 'defense'
-      refreshView: @refreshView
     @outdoor = new HomepageView
       el: @outdoorEl
       nav: @navItems
       categoryName: 'outdoor'
       refreshView: @refreshView
-    @goodies = new HomepageView
+    @fitness = new HomepageView
+      el: @outdoorEl
+      nav: @navItems
+      categoryName: 'fitness'
+      refreshView: @refreshView
+    @specials = new HomepageView
       el: @goodiesEl
       nav: @navItems
-      categoryName: 'goodies'
+      categoryName: 'specials'
       refreshView: @refreshView
       
-    @manager = new Spine.Manager(@home, @defense, @outdoor, @goodies)
+    @manager = new Spine.Manager(@home, @outdoor, @fitness, @specials)
     @manager.bind('change', @proxy @viewChanged)
     
     $(window).bind('hashchange', @proxy @storeHash)
@@ -95,12 +95,12 @@ class App extends Spine.Controller
     @initLocation()
     
     @routes
-      '/defense/' : (params) ->
-        @defense.trigger('active')
       '/outdoor/' : (params) ->
         @outdoor.trigger('active')
-      '/goodies/' : (params) ->
-        @goodies.trigger('active')
+      '/fitness/' : (params) ->
+        @fitness.trigger('active')
+      '/specials/' : (params) ->
+        @specials.trigger('active')
       '/home/' : (params) ->
         @home.trigger('active')
       '/*glob' : (params) ->
@@ -152,7 +152,7 @@ class App extends Spine.Controller
   viewChanged: (c) ->
     @changeNavbar c.categoryName
     @changeBackground c.categoryName
-    if c.categoryName == 'defense' then @checkWarning()
+    if c.categoryName == 'outdoor' then @checkWarning()
     @refreshView.render()
     @getTrustami()
     

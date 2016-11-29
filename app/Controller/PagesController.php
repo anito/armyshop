@@ -53,12 +53,12 @@ class PagesController extends AppController {
 	public function display() {
 		$path = func_get_args();
     
-    $titles   = array('home' => 'Startseite', 'defense' => 'Selbstschutz & Security', 'outdoor' => 'Outdoor & Fitness', 'goodies' => 'Restposten & Specials');
+    $titles   = array('home' => 'Startseite', 'outdoor' => 'Selbstschutz & Security', 'fitness' => 'Fitness & Fitness', 'specials' => 'Restposten & Specials');
     $keywords = array(
         'home'     => array('second Set of keywords'),
-        'defense'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Outdoor'),
-        'outdoor'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Outdoor'),
-        'goodies'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Outdoor'),
+        'outdoor'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Fitness'),
+        'fitness'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Fitness'),
+        'specials'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Fitness'),
     );
 
 		$count = count($path);

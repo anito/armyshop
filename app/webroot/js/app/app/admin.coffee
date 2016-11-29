@@ -118,7 +118,7 @@ class Main extends Spine.Controller
     @IMAGE_DOUBLE_MOVE = @createImage('/img/cursor_images_3.png')
     
     @ignoredHashes = ['slideshow', 'preview', 'flickr', 'logout']
-    @arr = ['false', 'outdoor', 'defense', 'goodies']
+    @arr = ['false', 'fitness', 'outdoor', 'specials']
     
     $(window).bind('hashchange', @proxy @storeHash)
     User.bind('pinger', @proxy @validate)

@@ -10,8 +10,8 @@
   <div class="">
     <!-- Example row of columns -->
     <ul class="row ca-menu pricing">
-      <li id="defense-item-menu" class="item-menu  pricing__item">
-          <a href="/#/defense/">
+      <li id="outdoor-item-menu" class="item-menu  pricing__item">
+          <a href="/#/outdoor/">
             <span class="flaticon-pepper-spray"></span>
             <div class="ca-content">
               <h2 class="ca-main">Selbstschutz & Security</h2>
@@ -19,17 +19,17 @@
             </div>
           </a>
       </li>
-      <li id="outdoor-item-menu" class="item-menu  pricing__item">
-          <a href="/#/outdoor/">
+      <li id="fitness-item-menu" class="item-menu  pricing__item">
+          <a href="/#/fitness/">
             <span class="flaticon-hiking-up-2"></span>
             <div class="ca-content">
-              <h2 class="ca-main">Outdoor & Fitness</h2>
+              <h2 class="ca-main">Fitness & Fitness</h2>
               <h3 class="ca-sub">Bleiben Sie Gesund</h3>
             </div>
           </a>
      </li>
-     <li id="goodies-item-menu" class="item-menu  pricing__item">
-          <a href="/#/goodies/">
+     <li id="specials-item-menu" class="item-menu  pricing__item">
+          <a href="/#/specials/">
             <span class="flaticon-sales-label"></span>
             <div class="ca-content">
               <h2 class="ca-main">Restposten & Specials</h2>
@@ -41,7 +41,7 @@
   </div> <!-- /container -->
   
 </div>
-<div id="defense" class="view">
+<div id="outdoor" class="view">
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
     <div class="container">
@@ -54,17 +54,17 @@
   </div>
   <div class="items  pricing pricing--norbu"></div>
 </div>
-<div id="outdoor" class="view">
+<div id="fitness" class="view">
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
     <div class="container">
-      <h1 class="display-3">Outdoor & Fitness</h1>
+      <h1 class="display-3">Fitness & Fitness</h1>
       <h5 class="h5 display-3">Angebote für Sport und Freizeit</h5>
     </div>
   </div>
   <div class="items  pricing pricing--norbu"></div>
 </div>
-<div id="goodies" class="view">
+<div id="specials" class="view">
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
     <div class="container">

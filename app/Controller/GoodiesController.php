@@ -32,12 +32,12 @@ App::uses('Controller', 'Controller');
  */
 class GoodiesController extends Controller {
 
-  public $name = 'Goodies';
+  public $name = 'Specials';
   public $uses = array();
 
   function beforeFilter() {
     $this->autoRender = true;
-    $this->layout = 'goodies';
+    $this->layout = 'specials';
   }
   
 //  function beforeRender() {

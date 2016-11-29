@@ -29,9 +29,10 @@ class App extends Spine.Controller
     '.trustami-badge'   : 'trustami'
 
   events:
+    'mouseenter #fitness-item-menu' :           'changeBackground'
     'mouseenter #outdoor-item-menu' :           'changeBackground'
-    'mouseenter #defense-item-menu' :           'changeBackground'
-    'mouseenter #goodies-item-menu' :           'changeBackground'
+    'mouseenter #tools-item-menu'   :           'changeBackground'
+    'mouseenter #specials-item-menu':           'changeBackground'
     'mouseenter .opt-stats'         :           'showStats' 
     'mousemove  .opt-stats'         :           'moveStats' 
     'mouseleave .opt-stats'         :           'hideStats' 
@@ -58,7 +59,7 @@ class App extends Spine.Controller
     # Getting started - should be removed
     @modal = exists: false
     
-    @arr = ['home', 'outdoor', 'defense', 'goodies', 'out']
+    @arr = ['home', 'fitness', 'outdoor', 'tools', 'specials', 'out']
     
     setting =
       hidden        : false
@@ -82,7 +83,7 @@ class App extends Spine.Controller
       '/*glob' : (params) ->
     
   initCategory: (cat) ->
-#    if cat.name is 'defense' then @checkWarning()
+#    if cat.name is 'outdoor' then @checkWarning()
     @initBackground(cat.name)
     @exposeNav(cat.name)
     

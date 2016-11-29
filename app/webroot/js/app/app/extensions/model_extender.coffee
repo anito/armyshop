@@ -37,12 +37,14 @@ Model.Extender =
 
       
       protected:
-        'defense':
-          screenname: 'Defense'
         'outdoor':
           screenname: 'Outdoor'
-        'goodies':
-          screenname: 'Goodies'
+        'fitness':
+          screenname: 'Fitness'
+        'tools':
+          screenname: 'Tools'
+        'specials':
+          screenname: 'Specials'
       
       record: false
 

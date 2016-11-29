@@ -500,37 +500,37 @@ body.fade.out {
   background: transparent url(../img/home_creative_blurry.jpg) 50% 0 fixed;
   transition: background 2s linear;
 }
-body.fade.in.defense {
-  background: transparent url(../img/defense_creative_blurry.jpg) 50% 10% fixed;
+body.fade.in.outdoor {
+  background: transparent url(../img/outdoor_creative_blurry.jpg) 50% 10% fixed;
   transition: background 1s ease-in-out;
 }
-body.fade.in.outdoor {
+body.fade.in.fitness {
   background: transparent url(../img/outdoor_creative_blurry.jpg) 60% 20% fixed; 
   transition: background 1s ease-in-out;
 }
-body.fade.in.goodies {
+body.fade.in.specials {
   background: transparent url(../img/goodies_creative_blurry.jpg) 20% 30% fixed; 
   transition: background 1s ease-in-out;
 }
-.item-menu.defense:hover {
-  background: transparent url(../img/defense_creative_blurry.jpg) 50% 10% fixed;
-}
 .item-menu.outdoor:hover {
+  background: transparent url(../img/outdoor_creative_blurry.jpg) 50% 10% fixed;
+}
+.item-menu.fitness:hover {
   background: transparent url(../img/outdoor_creative_blurry.jpg) 60% 20% fixed;
 }
-.item-menu.goodies:hover {
+.item-menu.specials:hover {
   background: transparent url(../img/goodies_creative_blurry.jpg) 20% 30% fixed;
 }
 .home .item-menu.category {
   background: transparent url(../img/home_creative_light.jpg) 50% 10% fixed;
 }
-.defense .item-menu.defense.category:hover {
-  background: transparent url(../img/defense_creative_light.jpg) 50% 10% fixed;
-}
 .outdoor .item-menu.outdoor.category:hover {
+  background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
+}
+.fitness .item-menu.fitness.category:hover {
   background: transparent url(../img/outdoor_creative_light.jpg) 60% 20% fixed;
 }
-.goodies .item-menu.goodies.category:hover {
+.specials .item-menu.specials.category:hover {
   background: transparent url(../img/goodies_creative_light.jpg) 20% 30% fixed;
 }
 .jumbotron {
@@ -875,15 +875,15 @@ h5.display-3 {
     -ms-transition: all 200ms linear;
     transition: all 200ms linear;
 }
-.goodies .ca-menu li a:not(:hover) {
+.specials .ca-menu li a:not(:hover) {
     color: #000;
     background: rgba(233, 233, 233, 0.54);
 }
-.goodies .ca-menu li a:not(:hover) {
+.specials .ca-menu li a:not(:hover) {
     color: #000;
     background: rgba(233, 233, 233, 0.54);
 }
-.defense .ca-menu li a:not(:hover) {
+.outdoor .ca-menu li a:not(:hover) {
     color: #423a35;
     background: rgba(227, 225, 225, 0.72);
 }

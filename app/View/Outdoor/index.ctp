@@ -9,7 +9,7 @@
 <?php
   echo $this->Html->scriptStart();
     ?>
-    var base_url = '<?php echo $this->Html->url('/outdoor'); ?>';
+    var base_url = '<?php echo $this->Html->url('/fitness'); ?>';
     alert(base_url)
     <?php
   echo $this->Html->scriptEnd();

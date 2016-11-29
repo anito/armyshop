@@ -15,8 +15,8 @@
   <div class="inner">
     <!-- Example row of columns -->
     <ul class="row ca-menu pricing">
-      <li id="defense-item-menu" class="item-menu  pricing__item defense category">
-          <a href="/pages/defense/">
+      <li id="outdoor-item-menu" class="item-menu  pricing__item outdoor category">
+          <a href="/pages/outdoor/">
             <span class="flaticon-hiking-up-3"></span>
             <div class="ca-content">
               <h2 class="ca-main">Outdoor</h2>
@@ -24,18 +24,27 @@
             </div>
           </a>
       </li>
-      <li id="outdoor-item-menu" class="item-menu  pricing__item outdoor category">
-          <a href="/pages/outdoor/">
-            <span class="flaticon-hiking-up-2"></span>
+      <li id="fitness-item-menu" class="item-menu  pricing__item fitness category">
+          <a href="/pages/fitness/">
+            <span class="flaticon-fitness_center"></span>
             <div class="ca-content">
               <h2 class="ca-main">Fitness</h2>
               <h3 class="ca-sub">Bleiben Sie Gesund</h3>
             </div>
           </a>
      </li>
-     <li id="goodies-item-menu" class="item-menu  pricing__item goodies category">
-          <a href="/pages/goodies/">
-            <span class="flaticon-sales-label"></span>
+     <li id="tools-item-menu" class="item-menu  pricing__item tools category">
+          <a href="/pages/specials/">
+            <span class="flaticon-knife"></span>
+            <div class="ca-content">
+              <h2 class="ca-main">Messer & Tools</h2>
+              <h3 class="ca-sub">24/7 Geld sparen</h3>
+            </div>
+          </a>
+      </li>
+     <li id="specials-item-menu" class="item-menu  pricing__item specials category">
+          <a href="/pages/specials/">
+            <span class="flaticon-sales-label-1"></span>
             <div class="ca-content">
               <h2 class="ca-main">Specials</h2>
               <h3 class="ca-sub">24/7 Geld sparen</h3>
@@ -46,39 +55,7 @@
   </div> <!-- /container -->
   
 </div>
-<div id="defense" class="view">
-  <!-- Main jumbotron for a primary marketing message or call to action -->
-  <div class="jumbotron">
-    <div class="container">
-      <div class="inner">
-        <h1 class="display-3">Outdoor</h1>
-        <h5 class="h5 display-3">Angebote für Outdoor & Freizeit</h5>
-        <div class="opt-hint hint"><a class="btn btn-primary btn-lg" href="#" role="button" style="font-size: 1rem;">Hinweis zu FSK18 Artikeln anzeigen»</a></div>
-      </div>
-    </div>
-  </div>
-  <div class="items  pricing pricing--norbu"></div>
-</div>
-<div id="outdoor" class="view">
-  <!-- Main jumbotron for a primary marketing message or call to action -->
-  <div class="jumbotron">
-    <div class="container">
-      <h1 class="display-3">Fitness</h1>
-      <h5 class="h5 display-3">Angebote für Sport und Fitness</h5>
-    </div>
-  </div>
-  <div class="items  pricing pricing--norbu"></div>
-</div>
-<div id="goodies" class="view">
-  <!-- Main jumbotron for a primary marketing message or call to action -->
-  <div class="jumbotron">
-    <div class="container">
-      <h1 class="display-3">Specials</h1>
-      <h5 class="h5 display-3">Günstige Angebote und Restposten</h5>
-    </div>
-  </div>
-  <div class="items  pricing pricing--norbu"></div>
-</div>
+
 <?php
   echo $this->Html->scriptStart();
     ?>

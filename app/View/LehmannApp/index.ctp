@@ -9,8 +9,8 @@
 <div class="container">
   <!-- Example row of columns -->
   <ul class="row ca-menu pricing">
-    <li id="defense-item-menu" class="item-menu  pricing__item">
-        <a href="/pages/defense">
+    <li id="outdoor-item-menu" class="item-menu  pricing__item">
+        <a href="/pages/outdoor">
           <span class="flaticon-pepper-spray"></span>
           <div class="ca-content">
             <h2 class="ca-main">Selbstschutz & Security</h2>
@@ -18,17 +18,17 @@
           </div>
         </a>
     </li>
-    <li id="outdoor-item-menu" class="item-menu  pricing__item">
-        <a href="/pages/outdoor">
+    <li id="fitness-item-menu" class="item-menu  pricing__item">
+        <a href="/pages/fitness">
           <span class="flaticon-hiking-up-2"></span>
           <div class="ca-content">
-            <h2 class="ca-main">Outdoor & Fitness</h2>
+            <h2 class="ca-main">Fitness & Fitness</h2>
             <h3 class="ca-sub">Bleiben Sie Gesund</h3>
           </div>
         </a>
    </li>
-   <li id="goodies-item-menu" class="item-menu  pricing__item">
-        <a href="/pages/goodies">
+   <li id="specials-item-menu" class="item-menu  pricing__item">
+        <a href="/pages/specials">
           <span class="flaticon-sales-label"></span>
           <div class="ca-content">
             <h2 class="ca-main">Restposten & Specials</h2>

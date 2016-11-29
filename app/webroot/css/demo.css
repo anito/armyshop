@@ -502,38 +502,48 @@ body.fade.out {
   background: transparent url(../img/outdoor_creative.jpg) 50% 0 fixed;
   transition: background 2s linear;
 }
-body.fade.in.defense {
+body.fade.in.outdoor {
   background: transparent url(../img/outdoor_creative.jpg) 50% 10% fixed;
   transition: background 1s ease-in-out;
 }
-body.fade.in.outdoor {
+body.fade.in.fitness {
   background: transparent url(../img/fitness_creative.jpg) 60% 20% fixed; 
   transition: background 1s ease-in-out;
 }
-body.fade.in.goodies {
+body.fade.in.specials {
   background: transparent url(../img/specials_creative.jpg) 20% 30% fixed; 
   transition: background 1s ease-in-out;
 }
-.item-menu.defense:hover {
-  background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
+body.fade.in.tools {
+  background: transparent url(../img/tools_creative.jpg) 0% 80% fixed; 
+  transition: background 1s ease-in-out;
 }
 .item-menu.outdoor:hover {
+  background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
+}
+.item-menu.fitness:hover {
   background: transparent url(../img/fitness_creative_light.jpg) 60% 20% fixed;
 }
-.item-menu.goodies:hover {
+.item-menu.specials:hover {
   background: transparent url(../img/specials_creative_light.jpg) 20% 30% fixed;
+}
+.item-menu.tools:hover {
+  background: transparent url(../img/tools_creative_light.jpg) 0% 80% fixed;
 }
 .home .item-menu.category {
   background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
 }
-.defense .item-menu.defense.category:hover {
+.outdoor .item-menu.outdoor.category:hover {
   background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
 }
-.outdoor .item-menu.outdoor.category:hover {
+.fitness .item-menu.fitness.category:hover {
   background: transparent url(../img/fitness_creative_light.jpg) 60% 20% fixed;
 }
-.goodies .item-menu.goodies.category:hover {
+.specials .item-menu.specials.category:hover {
   background: transparent url(../img/specials_creative_light.jpg) 20% 30% fixed;
+}
+.tools .item-menu.tools.category:hover {
+  background: transparent url(../img/tools_creative_light.jpg) 00% 80% fixed;
 }
 .jumbotron {
   border-radius: 0;
