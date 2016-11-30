@@ -30,6 +30,7 @@ Thumbs.db
 /node_modules
 nbproject
 mysql/*
+mysqlconf/*
 /app/webroot/stat/log/*.dta
 /app/webroot/stat/log/*.php
 /app/webroot/stat/config/config.php
