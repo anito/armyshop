@@ -40709,7 +40709,7 @@ Released under the MIT License
           return results;
         };
       })(this);
-      return this.callDeferred(this.product.photos(1), this.uriSettings(400, 400), cb);
+      return this.callDeferred(this.product.photos(1), this.uriSettings(420, 420), cb);
     };
 
     App.prototype.shownmodal = function(e) {

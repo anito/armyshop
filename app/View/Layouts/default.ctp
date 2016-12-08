@@ -270,7 +270,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       </div>
       <ul class="pricing__feature-list">{{tmpl($item.data.descriptions()) "#norbuFeatureListTemplate" }}</ul>
       {{if link}}
-      <a href="${link}}" target="_blank" class="pricing__action btn-dark" role="button" aria-disabled="">Zum Shop</a>
+      <a href="${link}}" target="_blank" class="pricing__action btn-dark col-md-6" role="button" aria-disabled="">Zum Shop</a>
+      <a href="#" data-dismiss="modal" class="pricing__action btn-dark col-md-6" role="button" aria-disabled="">schliessen</a>
       {{/if}}
     </div>
   </div>

@@ -396,7 +396,7 @@ class App extends Spine.Controller
       for res in result
         snap(res)
 
-    @callDeferred @product.photos(1), @uriSettings(400, 400), cb
+    @callDeferred @product.photos(1), @uriSettings(420, 420), cb
       
   shownmodal: (e) ->
     @log 'shownmodal'
