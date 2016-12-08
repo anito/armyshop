@@ -65,6 +65,11 @@
   line-height: 3em;
   margin-top: 25px;
 }
+.pricing--details .pricing__action.ebay {
+  background-image: url(/img/ebay.png);
+  background-repeat: no-repeat;
+  background-position: 270px;
+}
 
 .pricing {
   display: -webkit-flex;

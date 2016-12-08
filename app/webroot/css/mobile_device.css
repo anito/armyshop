@@ -666,6 +666,12 @@ h5.display-3 {
   width: 740px;
 }
 
+.pricing--details .pricing__action.ebay {
+  background-image: url(/img/ebay_lg.png);
+  background-repeat: no-repeat;
+  background-position: 480px;
+}
+
 .pricing--details .pricing__action {
   margin: 20px 0;
   height: 100px;

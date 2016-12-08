@@ -162,7 +162,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         </div>
         <div class="tr">
           <div class="td"><img src="/img/truck.png"></div>
-          <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs <span style="color: white;">frei Haus.</span><br><a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
+          <div class="td">Ab einem Bestellwert von <span style="color: white;">50€ </span>liefern wir innerhalb Österreichs <span style="color: white;">frei Haus.</span><i class="dpd-dhl-logo"></i><a href="#" class=" opt-del"> Weitere Informationen zum Versand.</a></div>
         </div>
         <div class="tr">
           <div class="td"></div>
@@ -270,7 +270,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       </div>
       <ul class="pricing__feature-list">{{tmpl($item.data.descriptions()) "#norbuFeatureListTemplate" }}</ul>
       {{if link}}
-      <a href="${link}}" target="_blank" class="pricing__action btn-dark col-md-6" role="button" aria-disabled="">Zum Shop</a>
+      <a href="${link}}" target="_blank" class="pricing__action ebay btn-dark col-md-6" role="button" aria-disabled="">Zum Shop</a>
       <a href="#" data-dismiss="modal" class="pricing__action btn-dark col-md-6" role="button" aria-disabled="">schliessen</a>
       {{/if}}
     </div>

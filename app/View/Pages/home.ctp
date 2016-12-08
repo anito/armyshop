@@ -37,7 +37,7 @@
             <span class="flaticon-knife"></span>
             <div class="ca-content">
               <h2 class="ca-main">Messer & Tools</h2>
-              <h3 class="ca-sub">24/7 Geld sparen</h3>
+              <h3 class="ca-sub">Messerscharfe Angebote</h3>
             </div>
           </a>
       </li>
