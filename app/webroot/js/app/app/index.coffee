@@ -340,7 +340,7 @@ class App extends Spine.Controller
     
     options =
       small: false
-      css: 'alert alert-warning'
+      css: 'alert'
       header: @product.title
       body: => $('#norbuPricingDetailsTemplate').tmpl(@product).html()
     

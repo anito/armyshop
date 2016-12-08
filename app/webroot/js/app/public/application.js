@@ -40619,7 +40619,7 @@ Released under the MIT License
       }
       options = {
         small: false,
-        css: 'alert alert-warning',
+        css: 'alert',
         header: this.product.title,
         body: (function(_this) {
           return function() {
