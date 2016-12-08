@@ -643,10 +643,9 @@ h5.display-3 {
 }
 
 .pricing--details .pricing__action {
-  margin: 40px 0;
-  height: 100px;
-  line-height: 2.5em;
-  position: absolute;
+  margin: 20px 0;
+  height: 150px;
+  line-height: 2em;
   bottom: 0px;
   padding: 20px;
   width: 90%;
