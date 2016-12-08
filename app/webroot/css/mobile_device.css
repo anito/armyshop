@@ -642,9 +642,14 @@ h5.display-3 {
   border: 0 none;
 }
 
+.pricing--details .pricing__image {
+  height: 420px;
+  width: 420px;
+}
+
 .pricing--details .pricing__action {
   margin: 20px 0;
-  height: 150px;
+  height: 100px;
   line-height: 2em;
   bottom: 0px;
   padding: 20px;
@@ -652,7 +657,7 @@ h5.display-3 {
 }
 .pricing--details .pricing__feature-list {
   margin: 25px;
-  max-height: 590px;
+  height: 550px;
   overflow: auto;
 }
 
