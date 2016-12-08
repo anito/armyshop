@@ -624,6 +624,9 @@ h5.display-3 {
 }
 #header ul li {
   padding: 30px 6px 0;
+  width: 168px;
+  height: 115px;
+  
 }
 .pricing {
   display: -webkit-flex;
