@@ -666,10 +666,14 @@ h5.display-3 {
   width: 740px;
 }
 
-.pricing--details .pricing__action.ebay {
+i.ebay {
   background-image: url(/img/ebay_lg.png);
   background-repeat: no-repeat;
-  background-position: 480px;
+  background-position: 0;
+  width: 100px;
+  height: 50px;
+  position: absolute;
+  right: 140px;
 }
 
 .pricing--details .pricing__action {

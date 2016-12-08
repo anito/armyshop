@@ -159,6 +159,15 @@
     margin: 9px 0;
     padding: 0;
   }
+  i.ebay {
+    background-image: url(/img/ebay.png);
+    background-repeat: no-repeat;
+    background-position: 0;
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    right: 56px;
+  }
   span.fc-logo img {
     width: 100px;
   }
