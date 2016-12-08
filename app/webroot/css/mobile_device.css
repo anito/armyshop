@@ -706,7 +706,7 @@ h5.display-3 {
 
 .pricing--norbu .pricing__item {
   color: rgb(100,100,100);
-  border: 1px solid rgba(255,255,255,1);
+  border: 1px solid rgb(53, 52, 52);
   background: #ffffff;
   position: relative;
 }
