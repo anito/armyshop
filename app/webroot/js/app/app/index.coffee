@@ -7,11 +7,12 @@ RefreshView     = require('controllers/refresh_view')
 Extender        = require('extensions/controller_extender')
 Settings        = require("models/settings")
 User            = require("models/user")
-
+UriHelper       = require('extensions/uri_helper')
 
 class App extends Spine.Controller
 
   @extend Extender
+  @extend UriHelper
   
   elements:
     '#header'           : 'header',
@@ -27,6 +28,7 @@ class App extends Spine.Controller
     '.sidebar'          : 'sidebar'
     '#refresh'          : 'refreshEl'
     '.trustami-badge'   : 'trustami'
+    '.hb-badge'         : 'hb'
 
   events:
     'mouseenter #fitness-item-menu' :           'changeBackground'
@@ -47,12 +49,17 @@ class App extends Spine.Controller
     'click .opt-del'                :           'showDelivery'
     'click .opt-agb'                :           'showAgb'
     'click .opt-imp'                :           'showImp'
+    'click .opt-privacy'            :           'showPrivacy'
+    'click .opt-revocation'         :           'showRevocation'
     'click .opt-pay'                :           'showPay'
     'click .opt-reset'              :           'reset'
     'click [class^="logo-"], [class*=" logo-"]':'redirectHome'
   
   trustamiTemplate:  (item) ->
     $('#trustamiTemplate').tmpl item
+  
+  hbTemplate: ->
+    $('#hbTemplate').tmpl()
   
   constructor: ->
     super
@@ -78,8 +85,12 @@ class App extends Spine.Controller
     @exposeNav()
     @renderRefreshView()
     @getTrustami()
+    @renderHb()
     
     @routes
+    
+      '/item/:pid': (params) ->
+        @showDetails params.pid
       '/*glob' : (params) ->
     
   initCategory: (cat) ->
@@ -97,6 +108,9 @@ class App extends Spine.Controller
     
   renderTrustami: (tmi) ->
     @trustami.html @trustamiTemplate tmi: tmi
+    
+  renderHb: () ->
+    @hb.html @hbTemplate()
     
   getTrustami: ->
     callback = (json) =>
@@ -152,11 +166,6 @@ class App extends Spine.Controller
     @el.addClass('out')
     
   showAgb: (e) -> 
-    dialog = new ModalSimpleView
-      modalOptions:
-        keyboard: true
-        show: false
-      
     options =
       small: false
       css: 'alert alert-warning'
@@ -167,6 +176,12 @@ class App extends Spine.Controller
         app_version   : App.version
         bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
+    dialog = new ModalSimpleView
+      modalOptions:
+        keyboard: true
+        show: false
+      renderOptions: options
+      
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
@@ -176,13 +191,8 @@ class App extends Spine.Controller
     e.preventDefault()
     
   showImp: (e) -> 
-    dialog = new ModalSimpleView
-      modalOptions:
-        keyboard: true
-        show: false
-      
     options =
-      small: true
+      small: false
       css: 'alert alert-warning'
       header: 'Impressum'
       body: -> require("views/imp")
@@ -190,6 +200,12 @@ class App extends Spine.Controller
         spine_version : Spine.version
         app_version   : App.version
         bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
+      
+    dialog = new ModalSimpleView
+      modalOptions:
+        keyboard: true
+        show: false
+      renderOptions: options
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
@@ -200,11 +216,6 @@ class App extends Spine.Controller
     e.preventDefault()
     
   showPay: (e) ->
-    dialog = new ModalSimpleView
-      modalOptions:
-        keyboard: true
-        show: false
-    
     options =
       small: false
       css: 'alert alert-warning'
@@ -215,6 +226,12 @@ class App extends Spine.Controller
         app_version   : App.version
         bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
+    dialog = new ModalSimpleView
+      modalOptions:
+        keyboard: true
+        show: false
+      renderOptions: options
+    
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
@@ -225,11 +242,6 @@ class App extends Spine.Controller
     
   showWarning: (e) -> 
     agreed = @isAgreed()
-    dialog = new ModalSimpleView
-      modalOptions:
-        keyboard: true
-        show: false
-      
     options =
       small: false
       css: 'alert alert-danger'
@@ -242,6 +254,12 @@ class App extends Spine.Controller
       footer:
         footerButtonText: -> if !agreed then "Verstanden"
       
+    dialog = new ModalSimpleView
+      modalOptions:
+        keyboard: true
+        show: false
+      renderOptions: options
+      
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
@@ -250,11 +268,6 @@ class App extends Spine.Controller
     dialog.show(options)
     
   showDelivery: (e) ->
-    dialog = new ModalSimpleView
-      modalOptions:
-        keyboard: true
-        show: false
-      
     options =
       small: false
       css: 'alert alert-warning'
@@ -265,24 +278,125 @@ class App extends Spine.Controller
         app_version   : App.version
         bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
       
+    dialog = new ModalSimpleView
+      modalOptions:
+        keyboard: true
+        show: false
+      renderOptions: options
+        
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.show(options)
+    dialog.show()
     e.preventDefault()
     
+  showPrivacy: (e) ->
+    options =
+      small: false
+      css: 'alert alert-warning'
+      header: 'Datenschutzerklärung'
+      body: -> require("views/privacy")()
+      
+    dialog = new ModalSimpleView
+      modalOptions:
+        keyboard: true
+        show: false
+      renderOptions: options
+        
+    dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
+    dialog.el.one('hide.bs.modal', @proxy @hidemodal)
+    dialog.el.one('show.bs.modal', @proxy @showmodal)
+    dialog.el.one('shown.bs.modal', @proxy @shownmodal)
+    
+    dialog.show()
+    e.preventDefault()
+    
+  showRevocation: (e) ->
+    options =
+      small: false
+      css: 'alert alert-warning'
+      header: 'Widerrufsrecht'
+      body: -> require("views/revocation")()
+      
+    dialog = new ModalSimpleView
+      modalOptions:
+        keyboard: true
+        show: false
+      renderOptions: options
+        
+    dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
+    dialog.el.one('hide.bs.modal', @proxy @hidemodal)
+    dialog.el.one('show.bs.modal', @proxy @showmodal)
+    dialog.el.one('shown.bs.modal', @proxy @shownmodal)
+    
+    dialog.show()
+    e.preventDefault()
+    
+  showDetails: (id) ->
+    @product = Product.find id
+    return unless @product
+    
+    options =
+      small: false
+      css: 'alert alert-warning'
+      header: @product.title
+      body: => $('#norbuPricingDetailsTemplate').tmpl(@product).html()
+    
+    dialog = new ModalSimpleView
+      modalOptions:
+        keyboard: true
+        show: false
+      renderOptions: options
+      
+    dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
+    dialog.el.one('hide.bs.modal', @proxy @hidemodal)
+    dialog.el.one('show.bs.modal', @proxy @showmodaldetails)
+    dialog.el.bind('shown.bs.modal', @proxy @shownmodal)
+    
+    dialog.show()
+    
   hidemodal: (e) ->
-    @log 'hidemodal'
+    @navigate '/'
     
   hiddenmodal: (e) ->
     @log 'hiddenmodal'
     @modal.exists = false
     
-  showmodal: (e) ->
+  showmodal: (e) =>
     @log 'showmodal'
     @modal.exists = true
+    
+  showmodaldetails: (e) =>
+    @log 'showmodal'
+    @modal.exists = true
+    cb = (json, items) =>
+      result = for jsn in json
+        ret = for key, val of jsn
+          src: val.src
+          id: key
+        ret[0]
+
+      onError = -> throw 'unable to load image'
+      onLoad = ->
+        @imgEl.attr('src', @src).removeClass('load')
+        @imgEl.addClass('in')
+      
+      snap = (res) =>
+        imgEl = $('#'+res.id+' img', @el)
+        img = @createImage()
+        img.imgEl = imgEl
+        img.this = @
+        img.res = res
+        img.onload = onLoad
+        img.onerror = onError
+        img.src = res.src
+
+      for res in result
+        snap(res)
+
+    @callDeferred @product.photos(1), @uriSettings(400, 400), cb
       
   shownmodal: (e) ->
     @log 'shownmodal'

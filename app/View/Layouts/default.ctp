@@ -64,7 +64,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     var exports = this;
     $(function() {
       
-      var isProduction = true
+      var isProduction = false
       
       
       var categories = <?php echo $this->Js->object($categories); ?>;
@@ -187,6 +187,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <div class="td"></div>
         </div>
         <div class="trustami-badge"></div>
+        <div class="hb-badge"></div>
       </div>
     </div>
   </div>
@@ -204,9 +205,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       <span class="opt-reset" title="FSK 18 Hinweis zurücksetzen">© HA Lehman</span>
       <span><a href="#" class="opt-imp">Impressum</a></span>
       <span><a href="#" class="opt-agb">AGB</a></span>
+      <span><a href="#" class="opt-privacy">Datenschutz</a></span>
+      <span><a href="#" class="opt-revocation">Widerruf</a></span>
       <span><a href="#" class="opt-pay">Zahlungsmöglichkeiten</a></span>
       <span><a href="#" class="opt-del">Versand</a></span>
       <span><a href="#" class="opt-stats stats">Statistik</a></span>
+      <span class="fc-logo"><a href="https://www.haendlerbund.de/faircommerce" target="_blank"><img src="/img/fc_logo.gif"></img></a></span>
     </span>
   </footer>
   <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away"></iframe>
@@ -245,20 +249,45 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   </div>
 </script>
 
+<script id="norbuPricingDetailsTemplate" type="text/x-tmpl">
+  <div class="">
+    {{tmpl() "#norbuPricingDetailsTemplate_" }}
+  </div>
+</script>
+  
+<script id="norbuPricingDetailsTemplate_" type="text/x-tmpl">
+  <div class="pricing--details pricing--norbu_">
+    <div id="${id}" data-id="${id}" class="pricing__item">
+      <p class="h5 pricing__sentence">{{if subtitle}}${$().name(subtitle, 80)}{{else}}<hr>{{/if}}</p>
+      <div class="pricing__price"><span class="pricing__currency">€</span>${price}
+        {{if link}}
+        <a href="${link}" target="_blank" class="slides" aria-disabled="false">
+        {{tmpl($item.data.photos()) "#norbuImageListTemplate" }}
+        </a>
+        {{else}}
+        {{tmpl($item.data.photos()) "#norbuImageListTemplate" }}
+        {{/if}}
+      </div>
+      <ul class="pricing__feature-list">{{tmpl($item.data.descriptions()) "#norbuFeatureListTemplate" }}</ul>
+      {{if link}}
+      <a href="${link}}" target="_blank" class="pricing__action btn-dark" role="button" aria-disabled="">Zum Shop</a>
+      {{/if}}
+    </div>
+  </div>
+</script>
+
 <script id="norbuPricingTemplate" type="text/x-tmpl">
-  {{if !product.ignored}}
-  <div id="${product.id}" class="pricing__item">
-    <h3 class="pricing__title">${$().name(product.title, 60)}</h3>
-    <p class="pricing__sentence">${$().name(product.subtitle, 80)}</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
-      <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="slides" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">
-        {{tmpl($item.data.photos) "#norbuImageListTemplate" }}
-      </a>
+  {{if !ignored}}
+  <div id="${id}" data-id="${id}" class="pricing__item">
+    <h3 class="pricing__title">${$().name(title, 60)}</h3>
+    <p class="pricing__sentence">${$().name(subtitle, 80)}</p>
+    <div class="pricing__price"><span class="pricing__currency">€</span>${price}
+      {{tmpl($item.data.photos()) "#norbuImageListTemplate" }}
     </div>
     <div class="pricing__feature-list">
-      <ul class="">{{tmpl($item.data.descriptions) "#norbuFeatureListTemplate" }}</ul>
+      <ul class="">{{tmpl($item.data.descriptions()) "#norbuFeatureListTemplate" }}</ul>
     </div>
-    <a href="{{if product.link}}${product.link}{{else}}#{{/if}}" target="_blank" class="pricing__action btn-dark" role="button" aria-disabled="{{if product.link}}${product.link}{{else}}false{{/if}}">Zum Shop</a>
+    <a href="{{if link}}${link}{{else}}#{{/if}}" target="_blank" class="pricing__action btn-dark" role="button" aria-disabled="{{if link}}${link}{{else}}false{{/if}}">Zum Shop</a>
   </div>
   {{/if}}
 </script>
@@ -281,5 +310,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       <i class="trustami-image"></i>
       <span class="trustami-count">${tmi}</span>
     </div>
+  </a>
+</script>
+
+<script id="hbTemplate" type="text/x-tmpl">
+  <a href="https://www.haendlerbund.de/mitglied/show.php?uuid=13b695f4-b7a3-11e6-8974-9c5c8e4fb375-3496146168" target="_blank">
+    <img src="/img/hbLogo.jpg" title="H&auml;ndlerbund Mitglied" alt="Mitglied im H&auml;ndlerbund" hspace="5" vspace="5" border="0" />
   </a>
 </script>

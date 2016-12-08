@@ -24,27 +24,27 @@ class ModalSimpleView extends Spine.Controller
   constructor: ->
     super
     @el = $('#modal-view')
-    @modalOptions = {}
     
-    modalDefaults =
+    modalOptions =
       keyboard: true
       show: false
       
-    renderDefaults =
+    renderOptions =
       small: true
+      header  : 'Default Header'
       body    : 'Default Body Text'
 
-    @renderOptions = $.extend renderDefaults, @renderOptions
-    modalsOptions = $.extend modalDefaults, @modalOptions
-    @el.modal modalsOptions
+    @renderOptions = if @renderOptions then $.extend(renderOptions, @renderOptions) else renderOptions
+    $.extend(modalOptions, @modalOptions) if @modalOptions
+    @el.modal modalOptions
     
-  render: (options = @renderOptions) ->
-    @html @template options
+  render: ->
+    @html @template @renderOptions
     @refreshElements()
     @el
       
-  show: (options) ->
-    @render(options).modal('show')
+  show: ->
+    @render().modal('show')
     
   close: (e) ->
     @el.modal('hide')

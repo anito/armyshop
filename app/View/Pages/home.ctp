@@ -1,4 +1,3 @@
-
 <div id="home" class="view active">
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
@@ -34,7 +33,7 @@
           </a>
      </li>
      <li id="tools-item-menu" class="item-menu  pricing__item tools category">
-          <a href="/pages/specials/">
+          <a href="/pages/tools/">
             <span class="flaticon-knife"></span>
             <div class="ca-content">
               <h2 class="ca-main">Messer & Tools</h2>

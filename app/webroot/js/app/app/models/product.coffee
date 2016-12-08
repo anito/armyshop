@@ -62,12 +62,13 @@ class Product extends Spine.Model
     return Model[@childType].all() unless id
     @photos id
     
-  @photos: (id, max) ->
+  @photos: (id, max=1) ->
+    max = if max <= 0 then 1 else max
     filterOptions =
       model: 'Product'
       sort: 'sortByReverseOrder'
-    ret = Photo.filterRelated(id, filterOptions)
-    ret[0...max || ret.length]
+    photos = Photo.filterRelated(id, filterOptions)
+    ret = photos[0...max]
     ret
     
   @descriptions: (id) ->
@@ -214,10 +215,10 @@ class Product extends Spine.Model
   contains: (inc = 0) =>
     @constructor.contains(@id).length + inc
   
-  photos: (max) ->
+  photos: (max=1) =>
     @constructor.photos @id, max
   
-  descriptions: ->
+  descriptions: =>
     @constructor.descriptions @id
   
   validUrl: -> @constructor.validUrl @

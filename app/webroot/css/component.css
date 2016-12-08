@@ -23,6 +23,52 @@
   font-size: 0.6em;
 }
 
+.pricing--details {
+  margin: -60px -10px 0;
+}
+
+.pricing--details .pricing__item {
+  margin: 0.5em;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+  text-align: left;
+  flex: 0 1 800px; 
+  margin: 1em;
+  border: 0 none;
+  border-radius: 0px 0px 0 0;
+  transition: flex 0.3s;
+}
+
+.pricing--details .pricing__feature-list {
+  margin: 85px 20px 0 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: left;
+  width: 45%;
+  height: 400px;
+  overflow: auto;
+}
+
+.pricing--details .pricing__action {
+  text-align: center;
+  height: 50px;
+  line-height: 3em;
+  margin-top: 25px;
+}
+
+.pricing--details .pricing__item .pricing__price {
+  font-size: 2em;
+}
+
+.pricing--norbu .pricing__item {
+  height: 320px;
+}
+
 .pricing__item {
   margin: 0.5em;
   display: -webkit-flex;
@@ -32,12 +78,11 @@
   -webkit-align-items: stretch;
   align-items: stretch;
   text-align: center;
-  height: 420px;
-  /* flex: 1 300; */
+  flex: 0 1 300px; 
   margin: 1em;
-  width: 44em;
   border: 2px solid rgba(0, 0, 0, .5);
   border-radius: 0px 0px 0 0;
+  transition: flex 0.3s;
 }
 
 .pricing__feature-list {
@@ -55,7 +100,7 @@
 /* norbu */
 .pricing--norbu .pricing__item {
   color: rgb(100,100,100);
-  cursor: default;
+  cursor: pointer;
   background: rgba(255,255,255, 1);
   border-radius: 0px;
   -webkit-transition: border-color 0.3s, background 0.3s;
@@ -96,9 +141,30 @@
   width: 295px;
   transition: all 0.3s;
 }
+.pricing--norbu .pricing__item:hover {
+/*  flex: 0 1 600px;
+  transition: flex 0.3s;*/
+}
 .pricing--norbu--inverse .pricing--norbu .pricing__item:hover img {
-  width: 130px;
+  /*width: 130px;*/
   margin: 0em;
+  transition: all 0.3s;
+}
+.pricing--norbu .pricing__price:hover img {
+  /*width: 295px;*/
+  transition: all 0.3s;
+}
+.pricing--norbu .pricing__price:hover + .pricing__feature-list {
+  /*opacity: 0;*/
+  transition: all 0.3s;
+}
+.pricing--norbu .pricing__price:hover + div + a {
+  /*opacity: 0;*/
+  transition: all 0.3s;
+}
+.pricing--norbu .pricing__price:hover {
+/*  font-size: 0em;
+  line-height: 0;*/
   transition: all 0.3s;
 }
 .pricing--norbu .pricing__item img.load {
@@ -106,12 +172,8 @@
   transition: all 0.3s;
 }
 .pricing--norbu .pricing__item img {
-  width: 130px;
+  width: 160px;
   margin: 0em;
-  transition: all 0.3s;
-}
-.pricing--norbu .pricing__price:hover img {
-  width: 295px;
   transition: all 0.3s;
 }
 .pricing--norbu .pricing__price {
@@ -124,7 +186,6 @@
   z-index: 100;
   transition: top 0.3s;
 }
-
 .pricing--norbu .pricing__currency {
   font-size: 0.5em;
   vertical-align: super;
@@ -136,22 +197,9 @@
   padding: 0 2em;
 }
 
-.pricing--norbu .pricing__price:hover + .pricing__feature-list {
-  opacity: 0;
-  transition: all 0.3s;
+.pricing--norbu .pricing__feature-list {
+  display: none;
 }
-
-.pricing--norbu .pricing__price:hover + div + a {
-  opacity: 0;
-  transition: all 0.3s;
-}
-
-.pricing--norbu .pricing__price:hover {
-  font-size: 0em;
-  line-height: 0;
-  transition: all 0.3s;
-}
-
 .pricing--norbu .pricing__feature-list {
   font-size: 1.15em;
   margin: 0em 1.5em;
@@ -176,7 +224,9 @@
   vertical-align: middle;
   padding: 0 0.75em 0 0;
 }
-
+.pricing--norbu .pricing__action {
+  display: none;
+}
 .pricing--norbu .pricing__action {
   flex: none;
   margin: auto 1em 1em;

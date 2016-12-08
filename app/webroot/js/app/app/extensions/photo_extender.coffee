@@ -2,6 +2,8 @@ Spine       = require("spine")
 $           = Spine.$
 Controller  = Spine.Controller
 
+require('extensions/controller_extender')
+
 Controller.PhotoExtender =
   
   extended: ->

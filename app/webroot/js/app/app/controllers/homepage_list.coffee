@@ -1,7 +1,15 @@
 Spine = require("spine")
 $     = Spine.$
 
+require('extensions/tmpl')
+
 class HomepageList extends Spine.Controller
+  
+  elements:
+    '.pricing__item'      : 'item'
+    
+  events:
+    'click .pricing__item': 'click'
   
   template:  (item) ->
     $('#norbuPricingTemplate').tmpl item
@@ -33,10 +41,15 @@ class HomepageList extends Spine.Controller
         fade:
           speed     : 200
           crossfade : true
-        
+          
   render: (items) ->
     @html @template items
 #    @createSlides items
+    
+  click: (e) ->
+    id = $(e.currentTarget).data('id')
+    item = $(e.currentTarget).item()
+    @navigate '/item', item.id
     
   createSlides: (items) ->
     for item in items

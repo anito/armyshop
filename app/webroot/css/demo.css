@@ -151,6 +151,19 @@
     right: 200px;
     top: -5px;*/
   }
+  span.fc-logo img {
+    width: 100px;
+  }
+  .glinch .hb-badge {
+    position: relative;
+    top: 37px;
+    left: 118px;
+    transition: all 0.3s;
+  }
+  .glinch.off .hb-badge {
+    left: -70px;
+    transition: all 0.3s;
+  }
   .glinch .trustami-badge {
     position: relative;
     left: 137px;
@@ -158,7 +171,6 @@
     transition: all 0.3s;
   }
   .glinch.off .trustami-badge {
-    position: relative;
     left: -48px;
     transition: all 0.3s;
   }
@@ -408,7 +420,7 @@
   .modal p {
     line-height: 2;
   }
-  .modal li h5::before {
+  .modal li::before {
     content: "\e87a";
     font-family: 'linearicons';
     display: inline-block;
