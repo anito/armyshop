@@ -153,8 +153,8 @@
   }
   i.dpd-dhl-logo {
     background: url(/img/dhl_dpd.gif) no-repeat 0px 0px;
-    width: 108px;
-    height: 54px;
+    width: 215px;
+    height: 39px;
     display: block;
     margin: 9px 0;
     padding: 0;
@@ -523,6 +523,13 @@ body {
   margin: 0 auto;
   text-align: center;
 }
+.nav-group span:not(:first-child) {
+  padding: 0 3px;
+}
+.nav-group span:not(:last-child)::after {
+  content: "|";
+  margin-left: 10px;
+}
 .fadeslow.in {
   opacity: 1;
   transition: opacity 0.45s linear;
@@ -623,9 +630,6 @@ footer.footer {
 }
 .footer .menu {
   bottom: 50px;
-}
-.footer span:not(:first-child) {
-  padding: 0 30px;
 }
 [class^="logo-"], [class*=" logo-"] {
   cursor: pointer;

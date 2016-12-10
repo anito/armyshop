@@ -26,11 +26,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<?php echo $this->fetch('title'); ?>
 	</title>
 	<?php
-    echo $this->Html->meta('viewport', array('width'=>'device-width', 'initial-scale'=>1, 'shrink-to-fit'=>'no'));
+    echo $this->Html->meta('viewport', array('width'=>'device-width', 'initial-scale'=>1, 'shrink-to-fit'=>'no', 'minimum-scale'=>1, 'maximum-scale'=>1));
 		echo $this->Html->meta('http-equiv', "x-ua-compatible");
 		echo $this->Html->meta('icon');
-		echo $this->Html->meta('keywords', array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Outdoor', 'Fitness'));
+		echo $this->Html->meta('keywords', $keywords);
 		echo $this->Html->meta('description', 'Der Versandhandel Ihres Vertrauens, HA-Lehmann, bietet Ihnen Artikel aus verschiedenen Branchen, wie Selbstschutz, Selbstverteidigung, Outdoor, Fitness sowie Alltagsrtikel und Restposten verschiedenster Art zu besonders günstigen Preisen an.');
+		echo $this->Html->meta('description', $meta);
 
 //    echo $this->Html->css('jquery-ui-1.8.16.custom');
     echo $this->Html->css('bootstrap');
@@ -45,23 +46,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("style7");
     echo $this->Html->css("component");
     echo $this->Html->css("mobile_device", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 667px) '));
+//    echo $this->Html->css("swiper/swiper.min", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 667px) '));
+//    echo $this->Html->css("swipe", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 667px) '));
     echo $this->Html->css("spine");
     
 //    jQuery first, then Tether, then Bootstrap JS.
     echo $this->Html->script('app/public/application');
-    echo $this->Html->script("app/lib/jquery.slides");
+//    echo $this->Html->script("app/lib/swiper.min");
 
     echo $this->Html->scriptStart();
-    ?>
+  ?>
     var base_url = '<?php echo $this->Html->url('/'); ?>';
-    <?php
-    echo $this->Html->scriptEnd();
-    ?>
-
-    <?php
-    echo $this->Html->scriptStart();
-    ?>
     var exports = this;
+    
     $(function() {
       
       var isProduction = false
@@ -103,11 +100,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       startScript()
       
     });
-    <?php
+  
+  <?php echo $this->Html->scriptEnd(); ?>
     
-    echo $this->Html->scriptEnd();
-    
-    $this->log($this->fetch('meta'), LOG_DEBUG);
+  <?php
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
@@ -139,6 +135,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       </ul>
     </nav>
   </header>
+  <div class="swiper-container hide">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide menu">Menu slide</div>
+			<div class="swiper-slide content">
+        <div class="menu-button">
+					<div class="bar"></div>
+					<div class="bar"></div>
+					<div class="bar"></div>
+				</div>
+				Content slide
+			</div>
+		</div>
+	</div>
   <div class="sidebar bg-inverse glinch">
     <div class="container">
     	<div class="table">
@@ -201,22 +210,25 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   </div>
   <footer class="footer bg-inverse">
     <span class="nav-group">
-      <span id="refresh" class="left-inline"></span>
+      <span class="fc-logo"><a href="https://www.haendlerbund.de/faircommerce" target="_blank"><img src="/img/fc_logo.gif"></img></a></span>
       <span class="opt-reset" title="FSK 18 Hinweis zurücksetzen">© HA Lehman</span>
       <span><a href="#" class="opt-imp">Impressum</a></span>
-      <span><a href="#" class="opt-agb">AGB</a></span>
-      <span><a href="#" class="opt-privacy">Datenschutz</a></span>
-      <span><a href="#" class="opt-revocation">Widerruf</a></span>
-      <span><a href="#" class="opt-pay">Zahlungsmöglichkeiten</a></span>
       <span><a href="#" class="opt-del">Versand</a></span>
+      <span><a href="#" class="opt-pay">Zahlungsmöglichkeiten</a></span>
+      <span><a href="#" class="opt-privacy">Datenschutz</a></span>
+      <span><a href="#" class="opt-revocation">Widerrufsbelehrung</a></span>
+      <span><a href="#" class="opt-agb">AGB</a></span>
+      <span id="refresh" class="left-inline"></span>
       <span><a href="#" class="opt-stats stats">Statistik</a></span>
-      <span class="fc-logo"><a href="https://www.haendlerbund.de/faircommerce" target="_blank"><img src="/img/fc_logo.gif"></img></a></span>
     </span>
   </footer>
   <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away"></iframe>
   <!-- modal-dialogue -->
   <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="top: 65px; z-index: 9999;"></div>
   <!-- /.modal -->
+  <script>
+
+	</script>
 </body>
 </html>
 

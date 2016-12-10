@@ -15,13 +15,13 @@ class App extends Spine.Controller
   @extend UriHelper
   
   elements:
-    '#header'           : 'header',
-    '#header .nav.items': 'items',
-    '#header .nav-item' : 'item',
-    '#content'          : 'content',
-    '#nav'              : 'nav'
+    '#header'           : 'header'
+    '#header .nav.items': 'items'
+    '#header .nav-item' : 'item'
+    '#content'          : 'content'
     '#stats'            : 'stats'
     '#menu-trigger'     : 'menutrigger'
+    '.menu-button'      : 'menuButton'
     '#stats'            : 'stats'
     '.logo-1'           : 'logo1'
     '.logo-2'           : 'logo2'
@@ -54,7 +54,7 @@ class App extends Spine.Controller
     'click .opt-pay'                :           'showPay'
     'click .opt-reset'              :           'reset'
     'click [class^="logo-"], [class*=" logo-"]':'redirectHome'
-  
+    
   trustamiTemplate:  (item) ->
     $('#trustamiTemplate').tmpl item
   
@@ -78,6 +78,7 @@ class App extends Spine.Controller
     
     Spine.bind('active:category', @proxy @initCategory)
     Spine.bind('refresh:complete', @proxy @renderRefreshView)
+    @menuButton.on('click', @proxy @toggleMenu)
     
     @initSettings(setting)
     @initSidebar()
@@ -86,6 +87,7 @@ class App extends Spine.Controller
     @renderRefreshView()
     @getTrustami()
     @renderHb()
+#    @initSwipe()
     
     @routes
     
@@ -111,6 +113,33 @@ class App extends Spine.Controller
     
   renderHb: () ->
     @hb.html @hbTemplate()
+    
+  toggleMenu: ->
+    @swiper.slidePrev() if (@swiper.previousIndex == 0)
+    
+  initSwipe: ->
+        
+    onSlideChangeStart = (slider) =>
+      if (slider.activeIndex == 0)
+        @menuButton.addClass('cross')
+        @menuButton.off('click', @proxy @toggleMenu)
+      else
+        @menuButton.removeClass('cross')
+
+    onSlideChangeEnd = (slider) =>
+      if (slider.activeIndex == 0)
+        @menuButton.off('click', @proxy @toggleMenu)
+      else
+        @menuButton.on('click', @proxy @toggleMenu)
+        
+    @swiper = swiper = new Swiper '.swiper-container',
+      slidesPerView: 'auto'
+      initialSlide: 1
+      resistanceRatio: .00000000000001
+      slideToClickedSlide: true
+      
+    swiper.on('slideChangeStart', onSlideChangeStart)
+    swiper.on('slideChangeEnd', onSlideChangeEnd)
     
   getTrustami: ->
     callback = (json) =>

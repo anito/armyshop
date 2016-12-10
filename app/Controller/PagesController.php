@@ -53,12 +53,20 @@ class PagesController extends AppController {
 	public function display() {
 		$path = func_get_args();
     
-    $titles   = array('home' => 'Startseite', 'outdoor' => 'Selbstschutz & Security', 'fitness' => 'Fitness & Fitness', 'specials' => 'Restposten & Specials');
+    $titles   = array('home' => 'Startseite', 'outdoor' => 'Sport & Outdoor', 'fitness' => 'Sport & Fitness', 'tools' => 'Messer & Tools', 'specials' => 'Restposten & Specials');
     $keywords = array(
-        'home'     => array('second Set of keywords'),
+        'home'     => array(''),
         'outdoor'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Fitness'),
         'fitness'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Fitness'),
+        'tools'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Fitness'),
         'specials'  => array('Restposten', 'Ausverkauf', 'Schnäppchen', 'Aktion', 'Sale', 'Selbstschutz', 'Selbstverteidigung', 'Pfefferspray', 'Fitness', 'Fitness'),
+    );
+    $meta = array(
+        'home'     => array(''),
+        'outdoor'  => array('Viele gute Dinge in Outdoor'),
+        'fitness'  => array('Viele gute Dinge in Fitness'),
+        'tools'    => array('Viele gute Dinge in Tools & Messer'),
+        'specials' => array('Viele gute Dinge in Restposten & Specials'),
     );
 
 		$count = count($path);
@@ -77,7 +85,9 @@ class PagesController extends AppController {
 			$title_for_layout = Inflector::humanize($path[$count - 1]) . ' | ' . $titles[$path[$count - 1]];
 		}
     
-    $scripts_for_layout = $keywords[$path[$count - 1]]; #???? 
+    $keywords = $keywords[$path[$count - 1]]; #???? 
+    $meta = $meta[$path[$count - 1]]; #???? 
+//    $this->log($meta, LOG_DEBUG);
     
     $this->Product->recursive = 1;
     
@@ -106,7 +116,7 @@ class PagesController extends AppController {
 
     $this->set(compact('categories', 'products', 'photos', 'descriptions'));
     
-		$this->set(compact('page', 'subpage', 'title_for_layout'));
+		$this->set(compact('page', 'subpage', 'title_for_layout', 'keywords', 'meta'));
     
 		try {
 			$this->render(implode('/', $path));

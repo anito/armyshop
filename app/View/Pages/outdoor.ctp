@@ -1,3 +1,6 @@
+<?php
+$this->Html->meta('description', array('block' => 'meta'));
+?>
 <div id="outdoor" class="view active">
   <div class="jumbotron">
     <div class="container">

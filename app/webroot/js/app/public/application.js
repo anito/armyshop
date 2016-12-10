@@ -40222,9 +40222,9 @@ Released under the MIT License
       '#header .nav.items': 'items',
       '#header .nav-item': 'item',
       '#content': 'content',
-      '#nav': 'nav',
       '#stats': 'stats',
       '#menu-trigger': 'menutrigger',
+      '.menu-button': 'menuButton',
       '#stats': 'stats',
       '.logo-1': 'logo1',
       '.logo-2': 'logo2',
@@ -40286,6 +40286,7 @@ Released under the MIT License
       });
       Spine.bind('active:category', this.proxy(this.initCategory));
       Spine.bind('refresh:complete', this.proxy(this.renderRefreshView));
+      this.menuButton.on('click', this.proxy(this.toggleMenu));
       this.initSettings(setting);
       this.initSidebar();
       this.initLogos();
@@ -40327,6 +40328,43 @@ Released under the MIT License
 
     App.prototype.renderHb = function() {
       return this.hb.html(this.hbTemplate());
+    };
+
+    App.prototype.toggleMenu = function() {
+      if (this.swiper.previousIndex === 0) {
+        return this.swiper.slidePrev();
+      }
+    };
+
+    App.prototype.initSwipe = function() {
+      var onSlideChangeEnd, onSlideChangeStart, swiper;
+      onSlideChangeStart = (function(_this) {
+        return function(slider) {
+          if (slider.activeIndex === 0) {
+            _this.menuButton.addClass('cross');
+            return _this.menuButton.off('click', _this.proxy(_this.toggleMenu));
+          } else {
+            return _this.menuButton.removeClass('cross');
+          }
+        };
+      })(this);
+      onSlideChangeEnd = (function(_this) {
+        return function(slider) {
+          if (slider.activeIndex === 0) {
+            return _this.menuButton.off('click', _this.proxy(_this.toggleMenu));
+          } else {
+            return _this.menuButton.on('click', _this.proxy(_this.toggleMenu));
+          }
+        };
+      })(this);
+      this.swiper = swiper = new Swiper('.swiper-container', {
+        slidesPerView: 'auto',
+        initialSlide: 1,
+        resistanceRatio: .00000000000001,
+        slideToClickedSlide: true
+      });
+      swiper.on('slideChangeStart', onSlideChangeStart);
+      return swiper.on('slideChangeEnd', onSlideChangeEnd);
     };
 
     App.prototype.getTrustami = function() {
@@ -40932,6 +40970,8 @@ Released under the MIT License
 }, "lib/setup": function(exports, require, module) {(function() {
   require('lib/array');
 
+  require('lib/swiper');
+
   require('spine');
 
   require('spine/lib/local');
@@ -40939,6 +40979,10 @@ Released under the MIT License
   require('spine/lib/manager');
 
   require('spine/lib/route');
+
+}).call(this);
+}, "lib/swiper": function(exports, require, module) {(function() {
+
 
 }).call(this);
 }, "login": function(exports, require, module) {(function() {
