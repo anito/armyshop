@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:ror="http://rorweb.com/0.1/" >
+<channel>
+  <title>ROR Sitemap for http://ha-lehmann.at/</title>
+  <link>http://ha-lehmann.at/</link>
+
+<item>
+     <link>http://ha-lehmann.at/</link>
+     <title>
+		HA-Lehmann:
+		Home | Startseite	</title>
+     <description>Der Versandhandel Ihres Vertrauens, HA-Lehmann, bietet Ihnen Artikel aus verschiedenen Branchen, wie Selbstschutz, Selbstverteidigung, Outdoor, Fitness sowie Alltagsrtikel und Restposten verschiedenster Art zu besonders günstigen Preisen an.</description>
+     <ror:updatePeriod>weekly</ror:updatePeriod>
+     <ror:sortOrder>0</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>http://ha-lehmann.at/pages/home/</link>
+     <title>
+		HA-Lehmann:
+		Home | Startseite	</title>
+     <description>Der Versandhandel Ihres Vertrauens, HA-Lehmann, bietet Ihnen Artikel aus verschiedenen Branchen, wie Selbstschutz, Selbstverteidigung, Outdoor, Fitness sowie Alltagsrtikel und Restposten verschiedenster Art zu besonders günstigen Preisen an.</description>
+     <ror:updatePeriod>weekly</ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>http://ha-lehmann.at/pages/outdoor/</link>
+     <title>
+		HA-Lehmann:
+		Outdoor | Sport &amp; Outdoor	</title>
+     <description>Der Versandhandel Ihres Vertrauens, HA-Lehmann, bietet Ihnen Artikel aus verschiedenen Branchen, wie Selbstschutz, Selbstverteidigung, Outdoor, Fitness sowie Alltagsrtikel und Restposten verschiedenster Art zu besonders günstigen Preisen an.</description>
+     <ror:updatePeriod>weekly</ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>http://ha-lehmann.at/pages/fitness/</link>
+     <title>
+		HA-Lehmann:
+		Fitness | Sport &amp; Fitness	</title>
+     <description>Der Versandhandel Ihres Vertrauens, HA-Lehmann, bietet Ihnen Artikel aus verschiedenen Branchen, wie Selbstschutz, Selbstverteidigung, Outdoor, Fitness sowie Alltagsrtikel und Restposten verschiedenster Art zu besonders günstigen Preisen an.</description>
+     <ror:updatePeriod>weekly</ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>http://ha-lehmann.at/pages/tools/</link>
+     <title>
+		HA-Lehmann:
+		Tools | Messer &amp; Tools	</title>
+     <description>Der Versandhandel Ihres Vertrauens, HA-Lehmann, bietet Ihnen Artikel aus verschiedenen Branchen, wie Selbstschutz, Selbstverteidigung, Outdoor, Fitness sowie Alltagsrtikel und Restposten verschiedenster Art zu besonders günstigen Preisen an.</description>
+     <ror:updatePeriod>weekly</ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>http://ha-lehmann.at/pages/specials/</link>
+     <title>
+		HA-Lehmann:
+		Specials | Restposten &amp; Specials	</title>
+     <description>Der Versandhandel Ihres Vertrauens, HA-Lehmann, bietet Ihnen Artikel aus verschiedenen Branchen, wie Selbstschutz, Selbstverteidigung, Outdoor, Fitness sowie Alltagsrtikel und Restposten verschiedenster Art zu besonders günstigen Preisen an.</description>
+     <ror:updatePeriod>weekly</ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+</channel>
+</rss>
+  
