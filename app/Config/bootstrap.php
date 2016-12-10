@@ -96,6 +96,15 @@ Configure::write('Dispatcher.filters', array(
 ));
 
 /**
+ * Configures Google Analytics
+ */
+Configure::write('google-analytics.tracker-code', 'UA-88792343-1'); // Google Analytics Enabled
+/*
+you can disable anlytics by initilize it by false ,see here
+Configure::write('google-analytics.tracker-code', false); //  Google Analytics disabled
+*/
+
+/**
  * Configures default file logging options
  */
 App::uses('CakeLog', 'Log');
