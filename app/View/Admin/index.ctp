@@ -705,7 +705,7 @@
             <span id="validLink" class="invalid glyphicon glyphicon-link"></span>
           </button>
         </div>
-        <input type="text" class="form-control" aria-describedby="link"  placeholder="Link to Hood.de" name="link" value="${link}">
+        <input type="text" class="form-control" aria-describedby="link"  placeholder="Link to Ebay" name="link" value="${link}">
       </div>
     </div>
   </div>
