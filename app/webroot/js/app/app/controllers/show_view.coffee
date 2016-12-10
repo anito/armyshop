@@ -1160,6 +1160,8 @@ class ShowView extends Spine.Controller
     
 #    @waitView.trigger('active',
     Spine.trigger('show:wait',
+      small: true
+      header: false
       body: 'Datensicherung läuft...'
     )
     @mysql 'dump', options
@@ -1173,6 +1175,8 @@ class ShowView extends Spine.Controller
       fail: (e) ->
       
     Spine.trigger('show:wait',
+      small: true
+      header: false
       body: 'Wiederherstellung läuft...'
     )
     @mysql 'restore', options

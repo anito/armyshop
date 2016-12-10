@@ -1390,7 +1390,7 @@ span.inner-sub {
   float: left;
   margin: -9px 5px;
   cursor: pointer;
-  top: 17px;
+  top: 10px;
   position: relative;
 }
 .badge {
@@ -1424,7 +1424,7 @@ span.inner-sub {
   border: 1px solid #5a5a5a;
 }
 .gal.cta {
-  border-color: 1px solid #787878;
+  border: 1px solid #787878;
 /*  border-radius: 30px 30px 30px 30px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;*/
   font-size: 0.9em;
@@ -1432,7 +1432,7 @@ span.inner-sub {
   padding: 7px 11px;
   position: absolute;
   right: 10px;
-  top: 21px;
+  top: 13px;
 }
 .hoverinfo .cta {
   background-color: rgba(0,0,0,0.1);
@@ -1483,7 +1483,7 @@ span.inner-sub {
 }
 .sidebar .parent > .item-header {
   padding-bottom: 13px;
-  line-height: 2.2em;
+  line-height: 1.4em;
 }
 [class*="toolbar-"] {
   font-size: 1.2em;

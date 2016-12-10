@@ -13,8 +13,6 @@ class WaitView extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
-    @modalSimpleView = new ModalSimpleView
-      el: $('#modal-view')
     
     @header = new Spine.Controller
     
@@ -36,11 +34,19 @@ class WaitView extends Spine.Controller
       small: true
     options = $.extend defaults, options
     
+      
+    @modalSimpleView = new ModalSimpleView
+      modalOptions:
+        keyboard: true
+        show: false
+      renderOptions: options
+      
+      
     @modalSimpleView.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     @modalSimpleView.el.one('hide.bs.modal', @proxy @hidemodal)
     @modalSimpleView.el.one('show.bs.modal', @proxy @showmodal)
     
-    @modalSimpleView.show(options)
+    @modalSimpleView.show()
       
   close: (cb) ->
     @modalSimpleView.close()

@@ -25,8 +25,8 @@ class RefreshView extends Spine.Controller
     Spine.trigger('refresh:one')
     @fetchAll()
     
-    e.stopPropagation()
-    e.preventDefault()
+    e?.stopPropagation()
+    e?.preventDefault()
     
   render: (icon) ->
     @html @template icon

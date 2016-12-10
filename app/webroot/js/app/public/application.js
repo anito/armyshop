@@ -26407,6 +26407,8 @@ Released under the MIT License
       Settings.fetch();
       if (!(settings = Settings.findByAttribute('user_id', id))) {
         Spine.trigger('show:wait', {
+          small: true,
+          header: false,
           body: '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>'
         });
         settings = Settings.create({
@@ -32592,8 +32594,10 @@ Released under the MIT License
       this.render('cloud-download');
       Spine.trigger('refresh:one');
       this.fetchAll();
-      e.stopPropagation();
-      return e.preventDefault();
+      if (e != null) {
+        e.stopPropagation();
+      }
+      return e != null ? e.preventDefault() : void 0;
     };
 
     RefreshView.prototype.render = function(icon) {
@@ -34123,6 +34127,8 @@ Released under the MIT License
         fail: function(e) {}
       };
       Spine.trigger('show:wait', {
+        small: true,
+        header: false,
         body: 'Datensicherung läuft...'
       });
       return this.mysql('dump', options);
@@ -34142,6 +34148,8 @@ Released under the MIT License
         fail: function(e) {}
       };
       Spine.trigger('show:wait', {
+        small: true,
+        header: false,
         body: 'Wiederherstellung läuft...'
       });
       return this.mysql('restore', options);
@@ -36021,9 +36029,6 @@ Released under the MIT License
     function WaitView() {
       WaitView.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
-      this.modalSimpleView = new ModalSimpleView({
-        el: $('#modal-view')
-      });
       this.header = new Spine.Controller;
       Spine.bind('show:wait', this.proxy(this.show));
       Spine.bind('done:wait', this.proxy(this.close));
@@ -36050,10 +36055,17 @@ Released under the MIT License
         small: true
       };
       options = $.extend(defaults, options);
+      this.modalSimpleView = new ModalSimpleView({
+        modalOptions: {
+          keyboard: true,
+          show: false
+        },
+        renderOptions: options
+      });
       this.modalSimpleView.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
       this.modalSimpleView.el.one('hide.bs.modal', this.proxy(this.hidemodal));
       this.modalSimpleView.el.one('show.bs.modal', this.proxy(this.showmodal));
-      return this.modalSimpleView.show(options);
+      return this.modalSimpleView.show();
     };
 
     WaitView.prototype.close = function(cb) {
