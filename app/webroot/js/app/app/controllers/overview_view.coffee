@@ -43,11 +43,10 @@ class OverviewView extends Spine.Controller
         published   : CategoriesProduct.publishedProductsAll(true)
         unpublished : CategoriesProduct.unpublishedProducts(true)
         others      : CategoriesProduct.otherProducts(true)
-        trashed       : Product.filter(true, func: 'selectDeleted')
-      products      : products
+        trashed     : Product.filter(true, func: 'selectDeleted')
       counter: ->
         li = []
-        li.push i for p, i in products
+#        li.push i for p, i in products
         li = li.concat([li.length, li.length+1])# add the to previous slides
         li
 
@@ -59,7 +58,7 @@ class OverviewView extends Spine.Controller
     @bind('active', @proxy @active)
 #    @carousel.on('slide.bs.carousel', @proxy @focus)
     @el.data current: Recent
-    @max = 100
+    @max = 42
     @bind('render:toolbar', @proxy @renderToolbar)
     
     @carouselOptions =

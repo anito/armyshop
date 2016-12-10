@@ -2514,16 +2514,19 @@ a.feature-list {
   text-decoration: underline;
 }
 body.cat li.parent.preview {
-  background: url("/img/home_creative_blurry.jpg") -700px -300px;
+  background: url("/img/home_creative.jpg") -700px -300px;
 }
 body.cat.outdoor li.parent.preview {
-  background: url("/img/outdoor_creative_blurry.jpg") -497px -265px;
+  background: url("/img/outdoor_creative.jpg") -497px -265px;
 }
 body.cat.specials li.parent.preview {
-  background: url("/img/goodies_creative_blurry.jpg") -700px -100px;
+  background: url("/img/specials_creative.jpg") -700px -100px;
 }
 body.cat.fitness li.parent.preview {
-  background: url("/img/outdoor_creative_blurry.jpg") -497px -365px;
+  background: url("/img/fitness_creative.jpg") -497px -365px;
+}
+body.cat.tools li.parent.preview {
+  background: url("/img/tools_creative.jpg") -497px -365px;
 }
 @-webkit-keyframes pulsate {
   from {

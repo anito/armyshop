@@ -26117,7 +26117,7 @@ Released under the MIT License
       this.IMAGE_SINGLE_MOVE = this.createImage('/img/cursor_images_1.png');
       this.IMAGE_DOUBLE_MOVE = this.createImage('/img/cursor_images_3.png');
       this.ignoredHashes = ['slideshow', 'preview', 'flickr', 'logout'];
-      this.arr = ['false', 'fitness', 'outdoor', 'specials'];
+      this.arr = ['false', 'fitness', 'outdoor', 'specials', 'tools'];
       $(window).bind('hashchange', this.proxy(this.storeHash));
       User.bind('pinger', this.proxy(this.validate));
       Clipboard.fetch();
@@ -28461,14 +28461,9 @@ Released under the MIT License
             func: 'selectDeleted'
           })
         },
-        products: products,
         counter: function() {
-          var i, j, len, li, p;
+          var li;
           li = [];
-          for (i = j = 0, len = products.length; j < len; i = ++j) {
-            p = products[i];
-            li.push(i);
-          }
           li = li.concat([li.length, li.length + 1]);
           return li;
         }
@@ -28485,7 +28480,7 @@ Released under the MIT License
       this.el.data({
         current: Recent
       });
-      this.max = 100;
+      this.max = 42;
       this.bind('render:toolbar', this.proxy(this.renderToolbar));
       this.carouselOptions = {
         keyboard: true,
@@ -28505,10 +28500,10 @@ Released under the MIT License
     };
 
     OverviewView.prototype.parse = function(json) {
-      var item, j, len, recents;
+      var i, item, len, recents;
       recents = [];
-      for (j = 0, len = json.length; j < len; j++) {
-        item = json[j];
+      for (i = 0, len = json.length; i < len; i++) {
+        item = json[i];
         recents.push(item['Photo']);
       }
       return Recent.refresh(recents, {
@@ -28521,10 +28516,10 @@ Released under the MIT License
     };
 
     OverviewView.prototype.render = function(tests) {
-      var items, j, len, photo, photos, products, test;
+      var i, items, len, photo, photos, products, test;
       items = [];
-      for (j = 0, len = tests.length; j < len; j++) {
-        test = tests[j];
+      for (i = 0, len = tests.length; i < len; i++) {
+        test = tests[i];
         if (photo = Photo.find(test.id)) {
           items.push(photo);
         }
@@ -28551,10 +28546,10 @@ Released under the MIT License
     };
 
     OverviewView.prototype.callbackRecents = function(json) {
-      var id, img, j, jsn, len, photoEl, results, src;
+      var i, id, img, jsn, len, photoEl, results, src;
       results = [];
-      for (j = 0, len = json.length; j < len; j++) {
-        jsn = json[j];
+      for (i = 0, len = json.length; i < len; i++) {
+        jsn = json[i];
         for (id in jsn) {
           id;
         }
@@ -28570,12 +28565,12 @@ Released under the MIT License
     };
 
     OverviewView.prototype.callbackPreview = function(json, items) {
-      var j, jsn, key, len, res, result, results, ret, val;
+      var i, jsn, key, len, res, result, results, ret, val;
       result = (function() {
-        var j, len, results;
+        var i, len, results;
         results = [];
-        for (j = 0, len = json.length; j < len; j++) {
-          jsn = json[j];
+        for (i = 0, len = json.length; i < len; i++) {
+          jsn = json[i];
           ret = (function() {
             var results1;
             results1 = [];
@@ -28593,8 +28588,8 @@ Released under the MIT License
         return results;
       })();
       results = [];
-      for (j = 0, len = result.length; j < len; j++) {
-        res = result[j];
+      for (i = 0, len = result.length; i < len; i++) {
+        res = result[i];
         results.push(this.snap(res));
       }
       return results;
@@ -28622,11 +28617,11 @@ Released under the MIT License
     };
 
     OverviewView.prototype.getProducts = function() {
-      var item, j, len, ref, results;
+      var i, item, len, ref, results;
       ref = Product.records;
       results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        item = ref[j];
+      for (i = 0, len = ref.length; i < len; i++) {
+        item = ref[i];
         results.push({
           product: item,
           descriptions: Description.filterSortByOrder(item.id),

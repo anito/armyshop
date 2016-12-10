@@ -1275,7 +1275,7 @@
   </a>
   <div class="x-xl" style="">
   Übersicht
-  <div class="x-xs hide" style="">hit space (play/pause) or arrow keys (navigate)</div>
+  <div class="x-xs hide" style="font-size:0.4em;">hit space (play/pause) or arrow keys (navigate)</div>
   </div>
   </div>
   </div>
@@ -1291,7 +1291,6 @@
   <div class="flower"></div>
   </div> 
   </div>
-  {{tmpl($item.data.products) '#overviewPreviewTemplate'}}
   <div class="item recents">
   <img src="/img/overview-background.png" style="">
   <div class="carousel-item">
