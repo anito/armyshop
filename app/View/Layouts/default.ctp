@@ -26,7 +26,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<?php echo $this->fetch('title'); ?>
 	</title>
 	<?php
-    echo $this->Html->meta('viewport', array('width'=>'device-width', 'initial-scale'=>1, 'shrink-to-fit'=>'no', 'minimum-scale'=>1, 'maximum-scale'=>1));
+    echo $this->Html->meta(array('name' => 'viewport', 'content'=> 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'));
 		echo $this->Html->meta('http-equiv', "x-ua-compatible");
 		echo $this->Html->meta('icon');
 		echo $this->Html->meta('keywords', $keywords);
@@ -42,17 +42,23 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("muli");
     echo $this->Html->css("icons");
     echo $this->Html->css("lehmann");
-    echo $this->Html->css("demo");
-    echo $this->Html->css("style7");
-    echo $this->Html->css("component");
-    echo $this->Html->css("mobile_device", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 667px) '));
-//    echo $this->Html->css("swiper/swiper.min", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 667px) '));
-//    echo $this->Html->css("swipe", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 667px) '));
+    echo $this->Html->css("common");
+    echo $this->Html->css("demo", array('media' => 'only screen and (min-device-width : 768px)'));
+    echo $this->Html->css("style7", array('media' => 'only screen and (min-device-width : 768px)'));
+    echo $this->Html->css("component", array('media' => 'only screen and (min-device-width : 768px)'));
+    echo $this->Html->css("component_mobile", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+//    echo $this->Html->css("mobile_device", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+//    echo $this->Html->css("swiper/swipe", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+    echo $this->Html->css("swiper/style", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+    echo $this->Html->css("swiper/custom", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+    echo $this->Html->css("swiper/swiper.min", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("spine");
     
 //    jQuery first, then Tether, then Bootstrap JS.
     echo $this->Html->script('app/public/application');
-//    echo $this->Html->script("app/lib/swiper.min");
+    echo $this->Html->script("app/lib/swiper/script");
+    echo $this->Html->script("app/lib/swiper/swiper.min");
+    echo $this->Html->script("app/lib/swiper/swipe");
 
     echo $this->Html->scriptStart();
   ?>
@@ -111,46 +117,103 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->element('google-analytics');
 	?>
 </head>
-<body class="hal home fade in">
-  <div class="logos">
+<body class="hal hal-home fade in">
+  <div class="logos hidemobile">
     <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
     <div class="logo logo-2 hide"></div>
   </div>
-  <header id="header" class="header">
+  <header id="header" class="header hidemobile">
     <nav class="navbar navbar-static-top navbar-dark bg-inverse">
       <ul class="nav navbar-nav items">
-        <li id="" class="nav-item home">
-          <a class="nav-link flaticon-home-3" href="/pages/home/">Home <span class="sr-only">(current)</span></a>
+        <li id="" class="nav-item">
+          <a class="nav-link linearicons-home" href="/pages/home/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li id="" class="nav-item outdoor">
-          <a class="nav-link nav-link flaticon-hiking-up-3" href="/pages/outdoor/">Outdoor</a>
+          <a class="nav-link nav-link linearicons-outdoor" href="/pages/outdoor/">Outdoor</a>
         </li>
         <li id="" class="nav-item fitness">
-          <a class="nav-link flaticon-fitness_center" href="/pages/fitness/">Fitness</a>
+          <a class="nav-link linearicons-fitness" href="/pages/fitness/">Fitness</a>
         </li>
         <li id="" class="nav-item tools">
-          <a class="nav-link flaticon-knife" href="/pages/tools/">Messer & Tools</a>
+          <a class="nav-link linearicons-tools" href="/pages/tools/">Messer & Tools</a>
         </li>
         <li id="" class="nav-item specials">
-          <a class="nav-link flaticon-sales-label-1" href="/pages/specials/">Specials</a>
+          <a class="nav-link linearicons-specials" href="/pages/specials/">Specials</a>
         </li>
       </ul>
     </nav>
   </header>
-  <div class="swiper-container hide">
-		<div class="swiper-wrapper">
-			<div class="swiper-slide menu">Menu slide</div>
-			<div class="swiper-slide content">
-        <div class="menu-button">
-					<div class="bar"></div>
-					<div class="bar"></div>
-					<div class="bar"></div>
-				</div>
-				Content slide
+  <header class="main">
+		 <!-- SPRACHWÄHLER -->
+		<div class="main-header">
+			<a href="/" rel="home" class="home-link">Handelagentur Lehmann</a>
+			<div class="open-menu">
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<div>MENÜ</div>
 			</div>
 		</div>
-	</div>
-  <div class="sidebar bg-inverse glinch">
+	</header>
+  
+  <div id="container" style="">
+    <div id="content" class="views">
+
+      <?php echo $this->fetch('content'); ?>
+      <?php echo $this->element('sql_dump'); ?>
+
+    </div>
+  </div>
+  
+  <footer class="mobile hide">
+    <div class="bottom">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+            <p>© 2016 HA Lehmann</p>
+            <div class="menu-footer-menu-rechtliches-container">
+              <ul id="" class="menu">
+                <li id="" class=""><a href="#" class="opt-imp">Impressum</a></li>
+                <li id="" class=""><a href="#" class="opt-del">Versand</a></li>
+                <li id="" class=""><a href="#" class="opt-pay">Zahlungsmöglichkeiten</a></li>
+                <li id="" class=""><a href="#" class="opt-privacy">Datenschutz</a></li>
+                <li id="" class=""><a href="#" class="opt-revocation">Widerrufsbelehrung</a></li>
+                <li id="" class=""><a href="#" class="opt-agb">AGB</a></li>
+                <li id="" class="" id="refresh" class="left-inline"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <nav id="menu-push-right" class="menu-push-right hide">
+    <div class="language-selector-mobile"></div>
+    <span class="menu-push-right-close menu-push-to-close"></span>
+    <div class="menu-main-menu-container">
+      <ul id="menu-main-menu" class="menu">
+        <li id="" class="menu-item-has-children navigation"><a href="#">Navigation</a></li>
+        <li id="" class=""><a href="/">Home</a></li>
+        <li id="" class=""><a href="/pages/outdoor">Outdoor</a></li>
+        <li id="" class=""><a href="/pages/fitness">Fitness</a></li>
+        <li id="" class=""><a href="/pages/tools">Messer & Tools</a></li>
+        <li id="" class=""><a href="/pages/specials">Restposten & Specials</a></li>
+      </ul>
+    </div>
+    <div class="menu-seitenmenue-unten-container">
+      <ul id="menu-seitenmenue-unten" class="menu">
+        <li id="" class="menu-item-has-children misc"><a href="#">Wichtiges</a></li>
+        <li id=""><a href="#" class="opt-imp menu-push-to-close">Impressum</a></li>
+        <li id=""><a href="#" class="opt-del menu-push-to-close">Versand</a></li>
+        <li id=""><a href="#" class="opt-pay menu-push-to-close">Zahlungsmöglichkeiten</a></li>
+        <li id=""><a href="#" class="opt-privacy menu-push-to-close">Datenschutz</a></li>
+        <li id=""><a href="#"  class="opt-revocation menu-push-to-close">Widerrufsbelehrung</a></li>
+        <li id=""><a href="#"  class="opt-agb menu-push-to-close">AGB</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="sidebar bg-inverse glinch hidemobile">
     <div class="container">
     	<div class="table">
         <div class="tr">
@@ -202,15 +265,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       </div>
     </div>
   </div>
-  <div id="container" style="">
-    <div id="content" class="views">
-
-      <?php echo $this->fetch('content'); ?>
-      <?php echo $this->element('sql_dump'); ?>
-      
-    </div>
-  </div>
-  <footer class="footer bg-inverse">
+  
+  <footer class="footer bg-inverse hidemobile">
     <span class="nav-group">
       <span class="fc-logo"><a href="https://www.haendlerbund.de/faircommerce" target="_blank"><img src="/img/fc_logo.gif"></img></a></span>
       <span class="opt-reset" title="FSK 18 Hinweis zurücksetzen">© HA Lehman</span>
@@ -224,9 +280,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       <span><a href="#" class="opt-stats stats">Statistik</a></span>
     </span>
   </footer>
-  <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away"></iframe>
+  <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away hidemobile"></iframe>
   <!-- modal-dialogue -->
-  <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="top: 65px; z-index: 9999;"></div>
+  <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="z-index: 9999;"></div>
   <!-- /.modal -->
   <script>
 
@@ -255,8 +311,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       {{/if}}
       {{if (typeof footer != 'undefined' && footer.footerButtonText)}}
       <div class="modal-footer" style="position: relative">
-        <div class="" style="text-align: left; max-width: 90%">{{if footer.footerBody}}{{html footer.footerBody}}{{/if}} </div>
-        <button class="btn btn-dark opt-agreed" style="" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
+        <a class="opt-agreed" style="" role="button" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
       </div>
       {{/if}}
     </div>
@@ -273,19 +328,14 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   <div class="pricing--details pricing--norbu_">
     <div id="${id}" data-id="${id}" class="pricing__item">
       <p class="h5 pricing__sentence">{{if subtitle}}${$().name(subtitle, 80)}{{else}}<hr>{{/if}}</p>
-      <div class="pricing__price"><span class="pricing__currency">€</span>${price}
-        {{if link}}
-        <a href="${link}" target="_blank" class="slides" aria-disabled="false">
+      <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
+        {{if link}}<a href="${link}" target="_blank" class="slides" aria-disabled="false">{{/if}}
         {{tmpl($item.data.photos()) "#norbuImageListTemplate" }}
-        </a>
-        {{else}}
-        {{tmpl($item.data.photos()) "#norbuImageListTemplate" }}
-        {{/if}}
+        {{if link}}</a>{{/if}}
       </div>
       <ul class="pricing__feature-list">{{tmpl($item.data.descriptions()) "#norbuFeatureListTemplate" }}</ul>
       {{if link}}
       <a href="${link}}" target="_blank" class="pricing__action ebay btn-dark col-md-6" role="button" aria-disabled=""><i class="ebay"></i>Zum Shop</a>
-      <a href="#" data-dismiss="modal" class="pricing__action btn-dark col-md-6" role="button" aria-disabled="">schliessen</a>
       {{/if}}
     </div>
   </div>
@@ -296,7 +346,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   <div id="${id}" data-id="${id}" class="pricing__item">
     <h3 class="pricing__title">${$().name(title, 60)}</h3>
     <p class="pricing__sentence">${$().name(subtitle, 80)}</p>
-    <div class="pricing__price"><span class="pricing__currency">€</span>${price}
+    <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
       {{tmpl($item.data.photos()) "#norbuImageListTemplate" }}
     </div>
     <div class="pricing__feature-list">

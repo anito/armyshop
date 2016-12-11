@@ -975,6 +975,9 @@ i.ebay {
 .stats {
   display: none;
 }
+.hide {
+  display: none;
+}
 @-webkit-keyframes smallToBig{
     from {
         -webkit-transform: scale(0.1);

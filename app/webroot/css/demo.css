@@ -135,6 +135,8 @@
   }
   .jumbotron {
     background-color: rgba(44, 45, 45, .7);
+    color: #ccc7c7;
+    text-shadow: 0 -1px 1px #2c2d2d;
     padding: 2rem 0rem 1.9rem;
     margin-right: 0;
     margin-bottom: 0;
@@ -242,6 +244,7 @@
   }
   .sidebar.glinch {
     right: -600px;
+    top: 0px;
     transition: right .5s ease-in-out;
   }
   .sidebar.off .tr *:not(:first-child) {
@@ -647,12 +650,8 @@ a:hover {
   text-align: center;
 }
 h1.display-3 {
-  color: #CCC7C7;
-  text-shadow: 0 -1px 2px #2c2d2d;
 }
 h5.display-3 {
-  color: #AAA7A7;
-  text-shadow: 0 -1px 1px #2c2d2d;
 }
 .navbar {
   border-radius: 0 !important;

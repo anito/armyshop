@@ -30,9 +30,12 @@ class ModalSimpleView extends Spine.Controller
       show: false
       
     renderOptions =
+      css: 'default';
       small: true
       header  : 'Default Header'
       body    : 'Default Body Text'
+      footer:
+        footerButtonText: 'schliessen'
 
     @renderOptions = if @renderOptions then $.extend(renderOptions, @renderOptions) else renderOptions
     $.extend(modalOptions, @modalOptions) if @modalOptions

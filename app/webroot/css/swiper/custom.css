@@ -1,0 +1,125 @@
+/*
+  CUSTOM CSS
+*/
+
+/*//////// GENERAL ////////*/
+
+h3 {
+  font-size:1.4rem;
+}
+
+.toggle .toggle-title {
+  margin-top: 25px;
+}
+
+div.light-font {
+  font-weight:300;
+}
+
+.fake-footer {
+  padding-top: 30px;
+}
+
+/*//////// HOMEPAGE ////////*/
+
+.home .teaser-text h1 {
+  font-size: 2.25rem;
+  font-weight: 100;
+  margin: 70px 0 -55px 0;
+  color: #e30001;
+  text-align:center;
+}
+
+.home .teaser-text p {
+  font-size: 1.8rem;
+}
+
+.home .content-box {
+  padding: 40px 0px;
+  font-weight:300;
+}
+
+.home .content-box h1 {
+  display: none;
+}
+
+.home .content-box h2 {
+  font-size: 1.825rem;
+}
+
+.home .content-box h3 {
+  font-weight: 300;
+}
+
+
+/*//////// BLOG ////////*/
+
+.single-article .entry-content h2 {
+  font-size: 1.625rem;
+  margin: 50px 0 30px 0;
+  color: red;
+}
+
+
+.single-article .entry-content p {
+  line-height: 160%;
+}
+
+
+/*//////// NAVIGATION ////////*/
+
+
+.menu-push-right .menu-main-menu-container {
+  margin-bottom: 20px;
+}
+
+
+/*/// Digital Analytics Academy /////*/ 
+
+#ninja_forms_field_70, #ninja_forms_field_70_label, #ninja_forms_field_71, #ninja_forms_field_71_label  {
+  /*color:#e30001;*/
+  font-weight:100;
+}
+
+form#ninja_forms_form_29 {
+  max-width:100%!important;
+}
+.hidemobile {
+  display: none !important;
+}
+.home .page-header {
+  background: url(/img/outdoor_creative.jpg) no-repeat -320px -110px;
+}
+.fitness .page-header {
+  background: url(/img/fitness_creative.jpg) no-repeat -695px -410px;
+}
+.tools .page-header {
+  background: url(/img/tools_creative.jpg) no-repeat -720px -610px;
+}
+.specials .page-header {
+  background: url(/img/specials_creative_dark.jpg) no-repeat -720px -11px;
+}
+.page-header .linearicons {
+  font-size: 4.5em;
+}
+.modal-view {
+  top: 0;
+}
+.modal-header.alert {
+  color: #e30001;
+}
+.modal-header.default {
+  color: #000;
+}
+i.ebay {
+  background-image: url(/img/ebay_lg.png);
+  background-repeat: no-repeat;
+  background-position: 0;
+  width: 100px;
+  height: 50px;
+  position: fixed;
+  right: 0;
+}
+.close {
+  font-size: 3.5rem;
+}

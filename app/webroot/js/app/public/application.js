@@ -28284,9 +28284,13 @@ Released under the MIT License
         show: false
       };
       renderOptions = {
+        css: 'default',
         small: true,
         header: 'Default Header',
-        body: 'Default Body Text'
+        body: 'Default Body Text',
+        footer: {
+          footerButtonText: 'schliessen'
+        }
       };
       this.renderOptions = this.renderOptions ? $.extend(renderOptions, this.renderOptions) : renderOptions;
       if (this.modalOptions) {
@@ -40293,7 +40297,6 @@ Released under the MIT License
       });
       Spine.bind('active:category', this.proxy(this.initCategory));
       Spine.bind('refresh:complete', this.proxy(this.renderRefreshView));
-      this.menuButton.on('click', this.proxy(this.toggleMenu));
       this.initSettings(setting);
       this.initSidebar();
       this.initLogos();
@@ -40344,25 +40347,23 @@ Released under the MIT License
     };
 
     App.prototype.initSwipe = function() {
-      var onSlideChangeEnd, onSlideChangeStart, swiper;
+      var onInit, onSlideChangeEnd, onSlideChangeStart, swiper;
+      onInit = (function(_this) {
+        return function(slider) {
+          return 'alert Init slider';
+        };
+      })(this);
       onSlideChangeStart = (function(_this) {
         return function(slider) {
           if (slider.activeIndex === 0) {
-            _this.menuButton.addClass('cross');
-            return _this.menuButton.off('click', _this.proxy(_this.toggleMenu));
+            return _this.menuButton.addClass('cross');
           } else {
             return _this.menuButton.removeClass('cross');
           }
         };
       })(this);
       onSlideChangeEnd = (function(_this) {
-        return function(slider) {
-          if (slider.activeIndex === 0) {
-            return _this.menuButton.off('click', _this.proxy(_this.toggleMenu));
-          } else {
-            return _this.menuButton.on('click', _this.proxy(_this.toggleMenu));
-          }
-        };
+        return function(slider) {};
       })(this);
       this.swiper = swiper = new Swiper('.swiper-container', {
         slidesPerView: 'auto',
@@ -40406,6 +40407,9 @@ Released under the MIT License
     };
 
     App.prototype.initBackground = function(name) {
+      if (name == null) {
+        name = 'home';
+      }
       return this.el.addClass(name);
     };
 
@@ -40453,7 +40457,7 @@ Released under the MIT License
       var dialog, options;
       options = {
         small: false,
-        css: 'alert alert-warning',
+        css: 'default',
         header: 'AGBs',
         body: function() {
           return require("views/agb")({
@@ -40483,7 +40487,7 @@ Released under the MIT License
       var dialog, options;
       options = {
         small: false,
-        css: 'alert alert-warning',
+        css: 'default',
         header: 'Impressum',
         body: function() {
           return require("views/imp")({
@@ -40513,8 +40517,8 @@ Released under the MIT License
       var dialog, options;
       options = {
         small: false,
-        css: 'alert alert-warning',
-        header: 'Zahlungsmöglichkeiten',
+        css: 'default',
+        header: 'Zahlungs- möglichkeiten',
         body: function() {
           return require("views/pay")({
             copyright: 'Axel Nitzschner',
@@ -40580,7 +40584,7 @@ Released under the MIT License
       var dialog, options;
       options = {
         small: false,
-        css: 'alert alert-warning',
+        css: 'default',
         header: 'Versand',
         body: function() {
           return require("views/delivery")({
@@ -40610,8 +40614,8 @@ Released under the MIT License
       var dialog, options;
       options = {
         small: false,
-        css: 'alert alert-warning',
-        header: 'Datenschutzerklärung',
+        css: 'default',
+        header: 'Datenschutz',
         body: function() {
           return require("views/privacy")();
         }
@@ -40635,7 +40639,7 @@ Released under the MIT License
       var dialog, options;
       options = {
         small: false,
-        css: 'alert alert-warning',
+        css: 'default',
         header: 'Widerrufsrecht',
         body: function() {
           return require("views/revocation")();
@@ -44108,41 +44112,53 @@ jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-leh
 jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Allgemeine Geschäftsbedingungen und Kundeninformationen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
+jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
+buf.push("I. Allgemeine Geschäftsbedingungen");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</h3>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("I. Allgemeine Geschäftsbedingungen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
 buf.push("§ 1 Grundlegende Bestimmungen");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
+buf.push("(1) Die nachstehenden Geschäftsbedingungen gelten für alle Verträge, die Sie mit uns als Anbieter (Angela Lehmann) über die Internetseite www.ha-lehmann.at schließen. Soweit nicht anders vereinbart, wird der Einbeziehung gegebenenfalls von Ihnen verwendeter eigener Bedingungen widersprochen.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
+buf.push("(2) Verbraucher im Sinne der nachstehenden Regelungen ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden kann. Unternehmer ist jede natürliche oder juristische Person oder eine rechtsfähige Personengesellschaft, die bei Abschluss eines Rechtsgeschäfts in Ausübung ihrer selbständigen beruflichen oder gewerblichen Tätigkeit handelt.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
+buf.push("§ 2 Zustandekommen des Vertrages");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("(1) Die nachstehenden Geschäftsbedingungen gelten für alle Verträge, die Sie mit uns als Anbieter (Angela Lehmann) über die Internetseite www.ha-lehmann.at schließen. Soweit nicht anders vereinbart, wird der Einbeziehung gegebenenfalls von Ihnen verwendeter eigener Bedingungen widersprochen.");
+buf.push("(1) Gegenstand des Vertrages ist der Verkauf von Waren.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44151,25 +44167,25 @@ jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-leh
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("(2) Verbraucher im Sinne der nachstehenden Regelungen ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden kann. Unternehmer ist jede natürliche oder juristische Person oder eine rechtsfähige Personengesellschaft, die bei Abschluss eines Rechtsgeschäfts in Ausübung ihrer selbständigen beruflichen oder gewerblichen Tätigkeit handelt.");
+buf.push("Unsere Angebote im Internet sind unverbindlich und kein verbindliches Angebot zum Abschluss eines Vertrages.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("§ 2 Zustandekommen des Vertrages");
+buf.push("(2) Sie können ein verbindliches Kaufangebot (Bestellung) über das Online-Warenkorbsystem abgeben. Dabei werden die zum Kauf beabsichtigten Waren im „Warenkorb\" abgelegt. Über die entsprechende Schaltfläche in der Navigationsleiste können Sie den „Warenkorb\" aufrufen und dort jederzeit Änderungen vornehmen. Nach Aufrufen der Seite „Kasse\" und der Eingabe der persönlichen Daten sowie der Zahlungs- und Versandbedingungen werden abschließend nochmals alle Bestelldaten auf der Bestellübersichtsseite angezeigt. Soweit Sie das Bezahl-System \"amazon-payments\" durch Anklicken der im Shopsystem integrierten Schaltfläche \"Bezahlen über amazon\" nutzen, werden Sie auf die Log-In Seite von amazon.de weitergeleitet. Nach erfolgreicher Anmeldung werden Ihre bei amazon.de hinterlegten Versandadressen und Zahlungsarten angezeigt. Sie wählen Versandadresse und Zahlungsart aus und werden über die Schaltfläche \"weiter\" zurück in unseren Online-Shop geleitet. Vor Absenden der Bestellung haben Sie die Möglichkeit, hier sämtliche Angaben nochmals zu überprüfen, zu ändern (auch über die Funktion „zurück\" des Internetbrowsers) bzw. den Kauf abzubrechen. Mit dem Absenden der Bestellung über die Schaltfläche \"zahlungspflichtig bestellen\" geben Sie ein verbindliches Angebot bei uns ab. Sie erhalten zunächst eine automatische E-Mail über den Eingang Ihrer Bestellung, die noch nicht zum Vertragsschluss führt. Bei Zahlung über \"amazon payments\" erhalten Sie diese Bestätigungs-E-Mail von amazon.de.");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("(1) Gegenstand des Vertrages ist der Verkauf von Waren.");
+buf.push("(3) Die Annahme des Angebots (und damit der Vertragsabschluss) erfolgt innerhalb von 2 Tagen durchBestätigung in Textform (z.B. E-Mail), in welcher Ihnen die Ausführung der Bestellung oder Auslieferung der Ware bestätigt wird (Auftragsbestätigung). Soweit Sie das Bezahl-System \"amazon-payments\" gewählt haben, erfolgt die Angebotsannahme (Vertragsschluss) innerhalb von 2 Tagen durch Bestätigung per E-Mail seitens amazon.de, in welcher Ihnen die Auslieferung der Ware mitgeteilt wird. Sollten Sie keine entsprechende Nachricht erhalten haben, sind Sie nicht mehr an Ihre Bestellung gebunden. Gegebenenfalls bereits erbrachte Leistungen werden in diesem Fall unverzüglich zurückerstattet.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44178,25 +44194,25 @@ jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("Unsere Angebote im Internet sind unverbindlich und kein verbindliches Angebot zum Abschluss eines Vertrages.");
+buf.push("(4) Die Abwicklung der Bestellung und Übermittlung aller im Zusammenhang mit dem Vertragsschlusserforderlichen Informationen erfolgt per E-Mail zum Teil automatisiert. Sie haben deshalb sicherzustellen, dass die von Ihnen bei uns hinterlegte E-Mail-Adresse zutreffend ist, der Empfang der E-Mails technisch sichergestellt und insbesondere nicht durch SPAM-Filter verhindert wird.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("(2) Sie können ein verbindliches Kaufangebot (Bestellung) über das Online-Warenkorbsystem abgeben. Dabei werden die zum Kauf beabsichtigten Waren im „Warenkorb\" abgelegt. Über die entsprechende Schaltfläche in der Navigationsleiste können Sie den „Warenkorb\" aufrufen und dort jederzeit Änderungen vornehmen. Nach Aufrufen der Seite „Kasse\" und der Eingabe der persönlichen Daten sowie der Zahlungs- und Versandbedingungen werden abschließend nochmals alle Bestelldaten auf der Bestellübersichtsseite angezeigt. Soweit Sie das Bezahl-System \"amazon-payments\" durch Anklicken der im Shopsystem integrierten Schaltfläche \"Bezahlen über amazon\" nutzen, werden Sie auf die Log-In Seite von amazon.de weitergeleitet. Nach erfolgreicher Anmeldung werden Ihre bei amazon.de hinterlegten Versandadressen und Zahlungsarten angezeigt. Sie wählen Versandadresse und Zahlungsart aus und werden über die Schaltfläche \"weiter\" zurück in unseren Online-Shop geleitet. Vor Absenden der Bestellung haben Sie die Möglichkeit, hier sämtliche Angaben nochmals zu überprüfen, zu ändern (auch über die Funktion „zurück\" des Internetbrowsers) bzw. den Kauf abzubrechen. Mit dem Absenden der Bestellung über die Schaltfläche \"zahlungspflichtig bestellen\" geben Sie ein verbindliches Angebot bei uns ab. Sie erhalten zunächst eine automatische E-Mail über den Eingang Ihrer Bestellung, die noch nicht zum Vertragsschluss führt. Bei Zahlung über \"amazon payments\" erhalten Sie diese Bestätigungs-E-Mail von amazon.de.");
+buf.push("§ 3 Zurückbehaltungsrecht, Eigentumsvorbehalt");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</p>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 12, jade_debug[0].filename ));
-buf.push("(3) Die Annahme des Angebots (und damit der Vertragsabschluss) erfolgt innerhalb von 2 Tagen durchBestätigung in Textform (z.B. E-Mail), in welcher Ihnen die Ausführung der Bestellung oder Auslieferung der Ware bestätigt wird (Auftragsbestätigung). Soweit Sie das Bezahl-System \"amazon-payments\" gewählt haben, erfolgt die Angebotsannahme (Vertragsschluss) innerhalb von 2 Tagen durch Bestätigung per E-Mail seitens amazon.de, in welcher Ihnen die Auslieferung der Ware mitgeteilt wird. Sollten Sie keine entsprechende Nachricht erhalten haben, sind Sie nicht mehr an Ihre Bestellung gebunden. Gegebenenfalls bereits erbrachte Leistungen werden in diesem Fall unverzüglich zurückerstattet.");
+buf.push("(1) Ein Zurückbehaltungsrecht können Sie nur ausüben, soweit es sich um Forderungen aus dem selben Vertragsverhältnis handelt.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44205,25 +44221,25 @@ jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("(4) Die Abwicklung der Bestellung und Übermittlung aller im Zusammenhang mit dem Vertragsschlusserforderlichen Informationen erfolgt per E-Mail zum Teil automatisiert. Sie haben deshalb sicherzustellen, dass die von Ihnen bei uns hinterlegte E-Mail-Adresse zutreffend ist, der Empfang der E-Mails technisch sichergestellt und insbesondere nicht durch SPAM-Filter verhindert wird.");
+buf.push("(2) Die Ware bleibt bis zur vollständigen Zahlung des Kaufpreises unser Eigentum.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 14, jade_debug[0].filename ));
-buf.push("§ 3 Zurückbehaltungsrecht, Eigentumsvorbehalt");
+buf.push("§ 4 Haftung");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 15, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
-buf.push("(1) Ein Zurückbehaltungsrecht können Sie nur ausüben, soweit es sich um Forderungen aus dem selben Vertragsverhältnis handelt.");
+buf.push("(1) Wir haften jeweils uneingeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit. Weiter haften wir ohne Einschränkung in allen Fällen des Vorsatzes und grober Fahrlässigkeit, bei arglistigem Verschweigen eines Mangels, bei Übernahme der Garantie für die Beschaffenheit des Kaufgegenstandes und in allen anderen gesetzlich geregelten Fällen.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44232,25 +44248,25 @@ jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("(2) Die Ware bleibt bis zur vollständigen Zahlung des Kaufpreises unser Eigentum.");
+buf.push("(2) Die Haftung für Mängel im Rahmen der gesetzlichen Gewährleistung richtet sich nach der entsprechenden Regelung in unseren Kundeninformationen (Teil II).");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
-buf.push("§ 4 Haftung");
+buf.push("(3) Sofern wesentliche Vertragspflichten betroffen sind, ist unsere Haftung bei leichter Fahrlässigkeit auf den vertragstypischen, vorhersehbaren Schaden beschränkt. Wesentliche Vertragspflichten sind wesentliche Pflichten, die sich aus der Natur des Vertrages ergeben und deren Verletzung die Erreichung des Vertragszweckes gefährden würde sowie Pflichten, die der Vertrag uns nach seinem Inhalt zur Erreichung des Vertragszwecks auferlegt, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst möglich machen und auf deren Einhaltung Sie regelmäßig vertrauen dürfen.");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 18, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
-buf.push("(1) Wir haften jeweils uneingeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit. Weiter haften wir ohne Einschränkung in allen Fällen des Vorsatzes und grober Fahrlässigkeit, bei arglistigem Verschweigen eines Mangels, bei Übernahme der Garantie für die Beschaffenheit des Kaufgegenstandes und in allen anderen gesetzlich geregelten Fällen.");
+buf.push("(4) Bei der Verletzung unwesentlicher Vertragspflichten ist die Haftung bei leicht fahrlässigen Pflichtverletzungen ausgeschlossen.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44259,25 +44275,25 @@ jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("(2) Die Haftung für Mängel im Rahmen der gesetzlichen Gewährleistung richtet sich nach der entsprechenden Regelung in unseren Kundeninformationen (Teil II).");
+buf.push("(5) Die Datenkommunikation über das Internet kann nach dem derzeitigen Stand der Technik nicht fehlerfrei und/oder jederzeit verfügbar gewährleistet werden. Wir haften insoweit weder für die ständige noch ununterbrochene Verfügbarkeit der Webseite und der dort angebotenen Dienstleistung.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 20, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
-buf.push("(3) Sofern wesentliche Vertragspflichten betroffen sind, ist unsere Haftung bei leichter Fahrlässigkeit auf den vertragstypischen, vorhersehbaren Schaden beschränkt. Wesentliche Vertragspflichten sind wesentliche Pflichten, die sich aus der Natur des Vertrages ergeben und deren Verletzung die Erreichung des Vertragszweckes gefährden würde sowie Pflichten, die der Vertrag uns nach seinem Inhalt zur Erreichung des Vertragszwecks auferlegt, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst möglich machen und auf deren Einhaltung Sie regelmäßig vertrauen dürfen.");
+buf.push("§ 5 Rechtswahl");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</p>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 21, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 21, jade_debug[0].filename ));
-buf.push("(4) Bei der Verletzung unwesentlicher Vertragspflichten ist die Haftung bei leicht fahrlässigen Pflichtverletzungen ausgeschlossen.");
+buf.push("(1) Es gilt deutsches Recht. Bei Verbrauchern gilt diese Rechtswahl nur, soweit hierdurch der durch zwingende Bestimmungen des Rechts des Staates des gewöhnlichen Aufenthaltes des Verbrauchers gewährte Schutz nicht entzogen wird (Günstigkeitsprinzip).");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44286,25 +44302,25 @@ jade_debug.unshift(new jade.DebugItem( 22, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 22, jade_debug[0].filename ));
-buf.push("(5) Die Datenkommunikation über das Internet kann nach dem derzeitigen Stand der Technik nicht fehlerfrei und/oder jederzeit verfügbar gewährleistet werden. Wir haften insoweit weder für die ständige noch ununterbrochene Verfügbarkeit der Webseite und der dort angebotenen Dienstleistung.");
+buf.push("(2) Die Bestimmungen des UN-Kaufrechts finden ausdrücklich keine Anwendung.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 23, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 23, jade_debug[0].filename ));
-buf.push("§ 5 Rechtswahl");
+buf.push("§ 6 Jugendschutz");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 24, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 24, jade_debug[0].filename ));
-buf.push("(1) Es gilt deutsches Recht. Bei Verbrauchern gilt diese Rechtswahl nur, soweit hierdurch der durch zwingende Bestimmungen des Rechts des Staates des gewöhnlichen Aufenthaltes des Verbrauchers gewährte Schutz nicht entzogen wird (Günstigkeitsprinzip).");
+buf.push("(1) Beim Verkauf von Ware, die den Regelungen des Jugendschutzgesetzes unterfällt, gehen wir nur Vertragsbeziehungen mit Kunden ein, die das gesetzlich vorgeschriebene Mindestalter erreicht haben. Auf bestehende Altersbeschränkungen wird in der jeweiligen Artikelbeschreibung hingewiesen.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44313,79 +44329,79 @@ jade_debug.unshift(new jade.DebugItem( 25, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 25, jade_debug[0].filename ));
-buf.push("(2) Die Bestimmungen des UN-Kaufrechts finden ausdrücklich keine Anwendung.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("§ 6 Jugendschutz");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 27, jade_debug[0].filename ));
-buf.push("(1) Beim Verkauf von Ware, die den Regelungen des Jugendschutzgesetzes unterfällt, gehen wir nur Vertragsbeziehungen mit Kunden ein, die das gesetzlich vorgeschriebene Mindestalter erreicht haben. Auf bestehende Altersbeschränkungen wird in der jeweiligen Artikelbeschreibung hingewiesen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
 buf.push("(2) Sie versichern mit Absenden Ihrer Bestellung, das gesetzlich vorgeschriebene Mindestalter erreicht zu haben und dass Ihre Angaben bezüglich Ihres Namens und Ihrer Adresse richtig sind. Sie sind verpflichtet, dafür Sorge zu tragen, dass nur Sie selbst oder solche von Ihnen zur Entgegennahme der Lieferung ermächtigte Personen, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, die Ware in Empfang nehmen.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+jade_debug.unshift(new jade.DebugItem( 26, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
 buf.push("(3) Soweit wir aufgrund der gesetzlichen Bestimmungen verpflichtet sind, eine Alterskontrolle vorzunehmen,weisen wir den mit der Lieferung beauftragten Logistikdienstleister an, die Lieferung nur an Personen zu übergeben, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, und sich im Zweifelsfall den Personalausweis der die Ware in Empfang nehmenden Person zur Alterskontrolle vorzeigen zu lassen.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+jade_debug.unshift(new jade.DebugItem( 27, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 27, jade_debug[0].filename ));
 buf.push("(4) Soweit wir über das gesetzlich vorgeschriebene Mindestalter hinausgehend in der jeweiligen Artikelbeschreibung ausweisen, dass Sie für den Kauf der Ware das 18. Lebensjahr vollendet haben müssen, gelten vorstehende Absätze 1-3 mit der Maßgabe, dass anstelle des gesetzlich vorgeschriebenen Mindestalters Volljährigkeit vorliegen muss.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 31, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+jade_debug.unshift(new jade.DebugItem( 28, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 31, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
 buf.push("II. Kundeninformationen");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 32, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+jade_debug.unshift(new jade.DebugItem( 29, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 32, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 29, jade_debug[0].filename ));
 buf.push("1. Identität des Verkäufers");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 30, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
+buf.push("Angela Lehmann");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 31, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 31, jade_debug[0].filename ));
+buf.push("Dornachgasse 15");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 32, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 32, jade_debug[0].filename ));
+buf.push("6850 Dornbirn");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 33, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 33, jade_debug[0].filename ));
-buf.push("Angela Lehmann");
+buf.push("Österreich");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44394,7 +44410,7 @@ jade_debug.unshift(new jade.DebugItem( 34, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 34, jade_debug[0].filename ));
-buf.push("Dornachgasse 15");
+buf.push("Telefon: 00436641306372");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44403,7 +44419,7 @@ jade_debug.unshift(new jade.DebugItem( 35, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 35, jade_debug[0].filename ));
-buf.push("6850 Dornbirn");
+buf.push("E-Mail: ha-lehmann@gmx.at");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44411,9 +44427,6 @@ jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 36, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 36, jade_debug[0].filename ));
-buf.push("Österreich");
-jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
@@ -44421,130 +44434,133 @@ jade_debug.unshift(new jade.DebugItem( 37, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 37, jade_debug[0].filename ));
-buf.push("Telefon: 00436641306372");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 38, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 38, jade_debug[0].filename ));
-buf.push("E-Mail: ha-lehmann@gmx.at");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 40, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 40, jade_debug[0].filename ));
 buf.push("Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter http://ec.europa.eu/odr.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 41, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+jade_debug.unshift(new jade.DebugItem( 38, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 41, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 38, jade_debug[0].filename ));
 buf.push("2. Informationen zum Zustandekommen des Vertrages");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 42, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+jade_debug.unshift(new jade.DebugItem( 39, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 42, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
 buf.push("Die technischen Schritte zum Vertragsschluss, der Vertragsschluss selbst und die Korrekturmöglichkeiten erfolgen nach Maßgabe des § 2 unserer Allgemeinen Geschäftsbedingungen (Teil I.).");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 43, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+jade_debug.unshift(new jade.DebugItem( 40, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 40, jade_debug[0].filename ));
 buf.push("3. Vertragssprache, Vertragstextspeicherung");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 44, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+jade_debug.unshift(new jade.DebugItem( 41, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 44, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 41, jade_debug[0].filename ));
 buf.push("3.1. Vertragssprache ist deutsch.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 45, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+jade_debug.unshift(new jade.DebugItem( 42, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 45, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 42, jade_debug[0].filename ));
 buf.push("3.2. Der vollständige Vertragstext wird von uns nicht gespeichert. Vor Absenden der Bestellung über das Online Warenkorbsystem  können die Vertragsdaten über die Druckfunktion des Browsers ausgedruckt oder elektronisch gesichert werden. Nach Zugang der Bestellung bei uns werden die Bestelldaten, die gesetzlich vorgeschriebenen Informationen bei Fernabsatzverträgen und die Allgemeinen Geschäftsbedingungen nochmals per E-Mail an Sie übersandt.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 46, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+jade_debug.unshift(new jade.DebugItem( 43, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
 buf.push("4. Wesentliche Merkmale der Ware oder Dienstleistung");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+jade_debug.unshift(new jade.DebugItem( 44, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 47, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 44, jade_debug[0].filename ));
 buf.push("Die wesentlichen Merkmale der Ware und/oder Dienstleistung finden sich im jeweiligen Angebot.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 48, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+jade_debug.unshift(new jade.DebugItem( 45, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 48, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 45, jade_debug[0].filename ));
 buf.push("5. Preise und Zahlungsmodalitäten");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+jade_debug.unshift(new jade.DebugItem( 46, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 49, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 46, jade_debug[0].filename ));
 buf.push("5.1. Die in den jeweiligen Angeboten angeführten Preise sowie die Versandkosten stellen Gesamtpreise dar. Sie beinhalten alle Preisbestandteile einschließlich aller anfallenden Steuern.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 50, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+jade_debug.unshift(new jade.DebugItem( 47, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 50, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 47, jade_debug[0].filename ));
 buf.push("5.2. Die anfallenden Versandkosten sind nicht im Kaufpreis enthalten. Sie sind über eine entsprechend bezeichnete Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot aufrufbar, werden im Laufe des Bestellvorganges gesondert ausgewiesen und sind von Ihnen zusätzlich zu tragen, soweit nicht die versandkostenfreie Lieferung zugesagt ist.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 48, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 48, jade_debug[0].filename ));
+buf.push("5.3. Die Ihnen zur Verfügung stehenden Zahlungsarten sind unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot ausgewiesen.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 49, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<p>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 49, jade_debug[0].filename ));
+buf.push("5.4. Soweit bei den einzelnen Zahlungsarten nicht anders angegeben, sind die Zahlungsansprüche aus dem geschlossenen Vertrag sofort zur Zahlung fällig.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 50, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 50, jade_debug[0].filename ));
+buf.push("6. Lieferbedingungen");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</h3>");
+jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 51, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 51, jade_debug[0].filename ));
-buf.push("5.3. Die Ihnen zur Verfügung stehenden Zahlungsarten sind unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot ausgewiesen.");
+buf.push("6.1. Die Lieferbedingungen, der Liefertermin sowie gegebenenfalls bestehende Lieferbeschränkungen finden sich unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44553,25 +44569,25 @@ jade_debug.unshift(new jade.DebugItem( 52, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 52, jade_debug[0].filename ));
-buf.push("5.4. Soweit bei den einzelnen Zahlungsarten nicht anders angegeben, sind die Zahlungsansprüche aus dem geschlossenen Vertrag sofort zur Zahlung fällig.");
+buf.push("6.2. Soweit Sie Verbraucher sind ist gesetzlich geregelt, dass die Gefahr des zufälligen Untergangs und der zufälligen Verschlechterung der verkauften Sache während der Versendung erst mit der Übergabe der Ware an Sie übergeht, unabhängig davon, ob die Versendung versichert oder unversichert erfolgt. Dies gilt nicht, wenn Sie eigenständig ein nicht vom Unternehmer benanntes Transportunternehmen oder eine sonst zur Ausführung der Versendung bestimmte Person beauftragt haben. ");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 53, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 53, jade_debug[0].filename ));
-buf.push("6. Lieferbedingungen");
+buf.push("7. Gesetzliches Mängelhaftungsrecht");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 54, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 54, jade_debug[0].filename ));
-buf.push("6.1. Die Lieferbedingungen, der Liefertermin sowie gegebenenfalls bestehende Lieferbeschränkungen finden sich unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot.");
+buf.push("7.1. Es bestehen die gesetzlichen Mängelhaftungsrechte.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44580,34 +44596,31 @@ jade_debug.unshift(new jade.DebugItem( 55, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 55, jade_debug[0].filename ));
-buf.push("6.2. Soweit Sie Verbraucher sind ist gesetzlich geregelt, dass die Gefahr des zufälligen Untergangs und der zufälligen Verschlechterung der verkauften Sache während der Versendung erst mit der Übergabe der Ware an Sie übergeht, unabhängig davon, ob die Versendung versichert oder unversichert erfolgt. Dies gilt nicht, wenn Sie eigenständig ein nicht vom Unternehmer benanntes Transportunternehmen oder eine sonst zur Ausführung der Versendung bestimmte Person beauftragt haben. ");
+buf.push("7.2. Als Verbraucher werden Sie gebeten, die Ware bei Lieferung umgehend auf Vollständigkeit, offensichtliche Mängel und Transportschäden zu überprüfen und uns sowie dem Spediteur Beanstandungen schnellstmöglich mitzuteilen. Kommen Sie dem nicht nach, hat dies keine Auswirkung auf Ihre gesetzlichen Gewährleistungsansprüche. Diese AGB und Kundeninformationen wurden von den auf IT-Recht spezialisierten Juristen des Händlerbundes erstellt und werden permanent auf Rechtskonformität geprüft. Die Händlerbund Management AG garantiert für die Rechtssicherheit der Texte und haftet im Falle von Abmahnungen. Nähere Informationen dazu finden Sie unter: http://www.haendlerbund.de/agb-service.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 56, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 56, jade_debug[0].filename ));
-buf.push("7. Gesetzliches Mängelhaftungsrecht");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 57, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 57, jade_debug[0].filename ));
-buf.push("7.1. Es bestehen die gesetzlichen Mängelhaftungsrechte.");
-jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 57, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
+buf.push("<h3 class=\"h3\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 57, jade_debug[0].filename ));
+buf.push("Hinweise zur Batterieentsorgung");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 58, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 58, jade_debug[0].filename ));
-buf.push("7.2. Als Verbraucher werden Sie gebeten, die Ware bei Lieferung umgehend auf Vollständigkeit, offensichtliche Mängel und Transportschäden zu überprüfen und uns sowie dem Spediteur Beanstandungen schnellstmöglich mitzuteilen. Kommen Sie dem nicht nach, hat dies keine Auswirkung auf Ihre gesetzlichen Gewährleistungsansprüche. Diese AGB und Kundeninformationen wurden von den auf IT-Recht spezialisierten Juristen des Händlerbundes erstellt und werden permanent auf Rechtskonformität geprüft. Die Händlerbund Management AG garantiert für die Rechtssicherheit der Texte und haftet im Falle von Abmahnungen. Nähere Informationen dazu finden Sie unter: http://www.haendlerbund.de/agb-service.");
+buf.push("Im Zusammenhang mit dem Vertrieb von Batterien oder mit der Lieferung von Geräten, die Batterien enthalten, sind wir verpflichtet, Sie auf folgendes hinzuweisen:");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44615,23 +44628,26 @@ jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 59, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 59, jade_debug[0].filename ));
+buf.push("Sie sind zur Rückgabe gebrauchter Batterien als Endnutzer gesetzlich verpflichtet. Sie können Altbatterien, die wir als Neubatterien im Sortiment führen oder geführt haben, unentgeltlich an unserem Versandlager (Handelsagentur Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich) zurückgeben.");
+jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 60, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 60, jade_debug[0].filename ));
-buf.push("Hinweise zur Batterieentsorgung");
+buf.push("Die auf den Batterien abgebildeten Symbole haben folgende Bedeutung:");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 61, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 61, jade_debug[0].filename ));
-buf.push("Im Zusammenhang mit dem Vertrieb von Batterien oder mit der Lieferung von Geräten, die Batterien enthalten, sind wir verpflichtet, Sie auf folgendes hinzuweisen:");
+buf.push(" ");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44640,7 +44656,7 @@ jade_debug.unshift(new jade.DebugItem( 62, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 62, jade_debug[0].filename ));
-buf.push("Sie sind zur Rückgabe gebrauchter Batterien als Endnutzer gesetzlich verpflichtet. Sie können Altbatterien, die wir als Neubatterien im Sortiment führen oder geführt haben, unentgeltlich an unserem Versandlager (Handelsagentur Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich) zurückgeben.");
+buf.push("Das Symbol der durchgekreuzten Mülltonne bedeutet, dass die Batterie nicht in den Hausmüll gegeben werden darf.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44649,7 +44665,7 @@ jade_debug.unshift(new jade.DebugItem( 63, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 63, jade_debug[0].filename ));
-buf.push("Die auf den Batterien abgebildeten Symbole haben folgende Bedeutung:");
+buf.push("Pb = Batterie enthält mehr als 0,004 Masseprozent Blei");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44658,7 +44674,7 @@ jade_debug.unshift(new jade.DebugItem( 64, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 64, jade_debug[0].filename ));
-buf.push(" ");
+buf.push("Cd = Batterie enthält mehr als 0,002 Masseprozent Cadmium");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44667,25 +44683,7 @@ jade_debug.unshift(new jade.DebugItem( 65, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 65, jade_debug[0].filename ));
-buf.push("Das Symbol der durchgekreuzten Mülltonne bedeutet, dass die Batterie nicht in den Hausmüll gegeben werden darf.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 66, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 66, jade_debug[0].filename ));
-buf.push("Pb = Batterie enthält mehr als 0,004 Masseprozent Blei");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 67, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 67, jade_debug[0].filename ));
-buf.push("Cd = Batterie enthält mehr als 0,002 Masseprozent Cadmium");
+buf.push("Hg = Batterie enthält mehr als 0,0005 Masseprozent Quecksilber.");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
@@ -44694,26 +44692,14 @@ jade_debug.unshift(new jade.DebugItem( 68, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<p>");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 68, jade_debug[0].filename ));
-buf.push("Hg = Batterie enthält mehr als 0,0005 Masseprozent Quecksilber.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 71, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 71, jade_debug[0].filename ));
 buf.push("letzte Aktualisierung: 28.09.2016");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 72, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3\n  div Allgemeine Geschäftsbedingungen und Kundeninformationen\n\nh5.h5 I. Allgemeine Geschäftsbedingungen\nh5.h5 § 1 Grundlegende Bestimmungen\np (1) Die nachstehenden Geschäftsbedingungen gelten für alle Verträge, die Sie mit uns als Anbieter (Angela Lehmann) über die Internetseite www.ha-lehmann.at schließen. Soweit nicht anders vereinbart, wird der Einbeziehung gegebenenfalls von Ihnen verwendeter eigener Bedingungen widersprochen.\np (2) Verbraucher im Sinne der nachstehenden Regelungen ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden kann. Unternehmer ist jede natürliche oder juristische Person oder eine rechtsfähige Personengesellschaft, die bei Abschluss eines Rechtsgeschäfts in Ausübung ihrer selbständigen beruflichen oder gewerblichen Tätigkeit handelt.\nh5.h5 § 2 Zustandekommen des Vertrages\np (1) Gegenstand des Vertrages ist der Verkauf von Waren.\np Unsere Angebote im Internet sind unverbindlich und kein verbindliches Angebot zum Abschluss eines Vertrages.\np (2) Sie können ein verbindliches Kaufangebot (Bestellung) über das Online-Warenkorbsystem abgeben. Dabei werden die zum Kauf beabsichtigten Waren im „Warenkorb\" abgelegt. Über die entsprechende Schaltfläche in der Navigationsleiste können Sie den „Warenkorb\" aufrufen und dort jederzeit Änderungen vornehmen. Nach Aufrufen der Seite „Kasse\" und der Eingabe der persönlichen Daten sowie der Zahlungs- und Versandbedingungen werden abschließend nochmals alle Bestelldaten auf der Bestellübersichtsseite angezeigt. Soweit Sie das Bezahl-System \"amazon-payments\" durch Anklicken der im Shopsystem integrierten Schaltfläche \"Bezahlen über amazon\" nutzen, werden Sie auf die Log-In Seite von amazon.de weitergeleitet. Nach erfolgreicher Anmeldung werden Ihre bei amazon.de hinterlegten Versandadressen und Zahlungsarten angezeigt. Sie wählen Versandadresse und Zahlungsart aus und werden über die Schaltfläche \"weiter\" zurück in unseren Online-Shop geleitet. Vor Absenden der Bestellung haben Sie die Möglichkeit, hier sämtliche Angaben nochmals zu überprüfen, zu ändern (auch über die Funktion „zurück\" des Internetbrowsers) bzw. den Kauf abzubrechen. Mit dem Absenden der Bestellung über die Schaltfläche \"zahlungspflichtig bestellen\" geben Sie ein verbindliches Angebot bei uns ab. Sie erhalten zunächst eine automatische E-Mail über den Eingang Ihrer Bestellung, die noch nicht zum Vertragsschluss führt. Bei Zahlung über \"amazon payments\" erhalten Sie diese Bestätigungs-E-Mail von amazon.de.\np (3) Die Annahme des Angebots (und damit der Vertragsabschluss) erfolgt innerhalb von 2 Tagen durchBestätigung in Textform (z.B. E-Mail), in welcher Ihnen die Ausführung der Bestellung oder Auslieferung der Ware bestätigt wird (Auftragsbestätigung). Soweit Sie das Bezahl-System \"amazon-payments\" gewählt haben, erfolgt die Angebotsannahme (Vertragsschluss) innerhalb von 2 Tagen durch Bestätigung per E-Mail seitens amazon.de, in welcher Ihnen die Auslieferung der Ware mitgeteilt wird. Sollten Sie keine entsprechende Nachricht erhalten haben, sind Sie nicht mehr an Ihre Bestellung gebunden. Gegebenenfalls bereits erbrachte Leistungen werden in diesem Fall unverzüglich zurückerstattet.\np (4) Die Abwicklung der Bestellung und Übermittlung aller im Zusammenhang mit dem Vertragsschlusserforderlichen Informationen erfolgt per E-Mail zum Teil automatisiert. Sie haben deshalb sicherzustellen, dass die von Ihnen bei uns hinterlegte E-Mail-Adresse zutreffend ist, der Empfang der E-Mails technisch sichergestellt und insbesondere nicht durch SPAM-Filter verhindert wird.\nh5.h5 § 3 Zurückbehaltungsrecht, Eigentumsvorbehalt\np (1) Ein Zurückbehaltungsrecht können Sie nur ausüben, soweit es sich um Forderungen aus dem selben Vertragsverhältnis handelt.\np (2) Die Ware bleibt bis zur vollständigen Zahlung des Kaufpreises unser Eigentum.\nh5.h5 § 4 Haftung\np (1) Wir haften jeweils uneingeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit. Weiter haften wir ohne Einschränkung in allen Fällen des Vorsatzes und grober Fahrlässigkeit, bei arglistigem Verschweigen eines Mangels, bei Übernahme der Garantie für die Beschaffenheit des Kaufgegenstandes und in allen anderen gesetzlich geregelten Fällen.\np (2) Die Haftung für Mängel im Rahmen der gesetzlichen Gewährleistung richtet sich nach der entsprechenden Regelung in unseren Kundeninformationen (Teil II).\np (3) Sofern wesentliche Vertragspflichten betroffen sind, ist unsere Haftung bei leichter Fahrlässigkeit auf den vertragstypischen, vorhersehbaren Schaden beschränkt. Wesentliche Vertragspflichten sind wesentliche Pflichten, die sich aus der Natur des Vertrages ergeben und deren Verletzung die Erreichung des Vertragszweckes gefährden würde sowie Pflichten, die der Vertrag uns nach seinem Inhalt zur Erreichung des Vertragszwecks auferlegt, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst möglich machen und auf deren Einhaltung Sie regelmäßig vertrauen dürfen.\np (4) Bei der Verletzung unwesentlicher Vertragspflichten ist die Haftung bei leicht fahrlässigen Pflichtverletzungen ausgeschlossen.\np (5) Die Datenkommunikation über das Internet kann nach dem derzeitigen Stand der Technik nicht fehlerfrei und/oder jederzeit verfügbar gewährleistet werden. Wir haften insoweit weder für die ständige noch ununterbrochene Verfügbarkeit der Webseite und der dort angebotenen Dienstleistung.\nh5.h5 § 5 Rechtswahl\np (1) Es gilt deutsches Recht. Bei Verbrauchern gilt diese Rechtswahl nur, soweit hierdurch der durch zwingende Bestimmungen des Rechts des Staates des gewöhnlichen Aufenthaltes des Verbrauchers gewährte Schutz nicht entzogen wird (Günstigkeitsprinzip).\np (2) Die Bestimmungen des UN-Kaufrechts finden ausdrücklich keine Anwendung.\nh5.h5 § 6 Jugendschutz\np (1) Beim Verkauf von Ware, die den Regelungen des Jugendschutzgesetzes unterfällt, gehen wir nur Vertragsbeziehungen mit Kunden ein, die das gesetzlich vorgeschriebene Mindestalter erreicht haben. Auf bestehende Altersbeschränkungen wird in der jeweiligen Artikelbeschreibung hingewiesen.\np (2) Sie versichern mit Absenden Ihrer Bestellung, das gesetzlich vorgeschriebene Mindestalter erreicht zu haben und dass Ihre Angaben bezüglich Ihres Namens und Ihrer Adresse richtig sind. Sie sind verpflichtet, dafür Sorge zu tragen, dass nur Sie selbst oder solche von Ihnen zur Entgegennahme der Lieferung ermächtigte Personen, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, die Ware in Empfang nehmen.\np (3) Soweit wir aufgrund der gesetzlichen Bestimmungen verpflichtet sind, eine Alterskontrolle vorzunehmen,weisen wir den mit der Lieferung beauftragten Logistikdienstleister an, die Lieferung nur an Personen zu übergeben, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, und sich im Zweifelsfall den Personalausweis der die Ware in Empfang nehmenden Person zur Alterskontrolle vorzeigen zu lassen.\np (4) Soweit wir über das gesetzlich vorgeschriebene Mindestalter hinausgehend in der jeweiligen Artikelbeschreibung ausweisen, dass Sie für den Kauf der Ware das 18. Lebensjahr vollendet haben müssen, gelten vorstehende Absätze 1-3 mit der Maßgabe, dass anstelle des gesetzlich vorgeschriebenen Mindestalters Volljährigkeit vorliegen muss.\nh5.h5 II. Kundeninformationen\nh5.h5 1. Identität des Verkäufers\np Angela Lehmann\np Dornachgasse 15\np 6850 Dornbirn\np Österreich\np Telefon: 00436641306372\np E-Mail: ha-lehmann@gmx.at\np\np Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter http://ec.europa.eu/odr.\nh5.h5 2. Informationen zum Zustandekommen des Vertrages\np Die technischen Schritte zum Vertragsschluss, der Vertragsschluss selbst und die Korrekturmöglichkeiten erfolgen nach Maßgabe des § 2 unserer Allgemeinen Geschäftsbedingungen (Teil I.).\nh5.h5 3. Vertragssprache, Vertragstextspeicherung\np 3.1. Vertragssprache ist deutsch.\np 3.2. Der vollständige Vertragstext wird von uns nicht gespeichert. Vor Absenden der Bestellung über das Online Warenkorbsystem  können die Vertragsdaten über die Druckfunktion des Browsers ausgedruckt oder elektronisch gesichert werden. Nach Zugang der Bestellung bei uns werden die Bestelldaten, die gesetzlich vorgeschriebenen Informationen bei Fernabsatzverträgen und die Allgemeinen Geschäftsbedingungen nochmals per E-Mail an Sie übersandt.\nh5.h5 4. Wesentliche Merkmale der Ware oder Dienstleistung\np Die wesentlichen Merkmale der Ware und/oder Dienstleistung finden sich im jeweiligen Angebot.\nh5.h5 5. Preise und Zahlungsmodalitäten\np 5.1. Die in den jeweiligen Angeboten angeführten Preise sowie die Versandkosten stellen Gesamtpreise dar. Sie beinhalten alle Preisbestandteile einschließlich aller anfallenden Steuern.\np 5.2. Die anfallenden Versandkosten sind nicht im Kaufpreis enthalten. Sie sind über eine entsprechend bezeichnete Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot aufrufbar, werden im Laufe des Bestellvorganges gesondert ausgewiesen und sind von Ihnen zusätzlich zu tragen, soweit nicht die versandkostenfreie Lieferung zugesagt ist.\np 5.3. Die Ihnen zur Verfügung stehenden Zahlungsarten sind unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot ausgewiesen.\np 5.4. Soweit bei den einzelnen Zahlungsarten nicht anders angegeben, sind die Zahlungsansprüche aus dem geschlossenen Vertrag sofort zur Zahlung fällig.\nh5.h5 6. Lieferbedingungen\np 6.1. Die Lieferbedingungen, der Liefertermin sowie gegebenenfalls bestehende Lieferbeschränkungen finden sich unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot.\np 6.2. Soweit Sie Verbraucher sind ist gesetzlich geregelt, dass die Gefahr des zufälligen Untergangs und der zufälligen Verschlechterung der verkauften Sache während der Versendung erst mit der Übergabe der Ware an Sie übergeht, unabhängig davon, ob die Versendung versichert oder unversichert erfolgt. Dies gilt nicht, wenn Sie eigenständig ein nicht vom Unternehmer benanntes Transportunternehmen oder eine sonst zur Ausführung der Versendung bestimmte Person beauftragt haben. \nh5.h5 7. Gesetzliches Mängelhaftungsrecht\np 7.1. Es bestehen die gesetzlichen Mängelhaftungsrechte.\np 7.2. Als Verbraucher werden Sie gebeten, die Ware bei Lieferung umgehend auf Vollständigkeit, offensichtliche Mängel und Transportschäden zu überprüfen und uns sowie dem Spediteur Beanstandungen schnellstmöglich mitzuteilen. Kommen Sie dem nicht nach, hat dies keine Auswirkung auf Ihre gesetzlichen Gewährleistungsansprüche. Diese AGB und Kundeninformationen wurden von den auf IT-Recht spezialisierten Juristen des Händlerbundes erstellt und werden permanent auf Rechtskonformität geprüft. Die Händlerbund Management AG garantiert für die Rechtssicherheit der Texte und haftet im Falle von Abmahnungen. Nähere Informationen dazu finden Sie unter: http://www.haendlerbund.de/agb-service.\np\nh5.h5 Hinweise zur Batterieentsorgung\np Im Zusammenhang mit dem Vertrieb von Batterien oder mit der Lieferung von Geräten, die Batterien enthalten, sind wir verpflichtet, Sie auf folgendes hinzuweisen:\np Sie sind zur Rückgabe gebrauchter Batterien als Endnutzer gesetzlich verpflichtet. Sie können Altbatterien, die wir als Neubatterien im Sortiment führen oder geführt haben, unentgeltlich an unserem Versandlager (Handelsagentur Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich) zurückgeben.\np Die auf den Batterien abgebildeten Symbole haben folgende Bedeutung:\np \np Das Symbol der durchgekreuzten Mülltonne bedeutet, dass die Batterie nicht in den Hausmüll gegeben werden darf.\np Pb = Batterie enthält mehr als 0,004 Masseprozent Blei\np Cd = Batterie enthält mehr als 0,002 Masseprozent Cadmium\np Hg = Batterie enthält mehr als 0,0005 Masseprozent Quecksilber.\n\n\np letzte Aktualisierung: 28.09.2016\nhr");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 I. Allgemeine Geschäftsbedingungen\nh3.h3 § 1 Grundlegende Bestimmungen\np (1) Die nachstehenden Geschäftsbedingungen gelten für alle Verträge, die Sie mit uns als Anbieter (Angela Lehmann) über die Internetseite www.ha-lehmann.at schließen. Soweit nicht anders vereinbart, wird der Einbeziehung gegebenenfalls von Ihnen verwendeter eigener Bedingungen widersprochen.\np (2) Verbraucher im Sinne der nachstehenden Regelungen ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden kann. Unternehmer ist jede natürliche oder juristische Person oder eine rechtsfähige Personengesellschaft, die bei Abschluss eines Rechtsgeschäfts in Ausübung ihrer selbständigen beruflichen oder gewerblichen Tätigkeit handelt.\nh3.h3 § 2 Zustandekommen des Vertrages\np (1) Gegenstand des Vertrages ist der Verkauf von Waren.\np Unsere Angebote im Internet sind unverbindlich und kein verbindliches Angebot zum Abschluss eines Vertrages.\np (2) Sie können ein verbindliches Kaufangebot (Bestellung) über das Online-Warenkorbsystem abgeben. Dabei werden die zum Kauf beabsichtigten Waren im „Warenkorb\" abgelegt. Über die entsprechende Schaltfläche in der Navigationsleiste können Sie den „Warenkorb\" aufrufen und dort jederzeit Änderungen vornehmen. Nach Aufrufen der Seite „Kasse\" und der Eingabe der persönlichen Daten sowie der Zahlungs- und Versandbedingungen werden abschließend nochmals alle Bestelldaten auf der Bestellübersichtsseite angezeigt. Soweit Sie das Bezahl-System \"amazon-payments\" durch Anklicken der im Shopsystem integrierten Schaltfläche \"Bezahlen über amazon\" nutzen, werden Sie auf die Log-In Seite von amazon.de weitergeleitet. Nach erfolgreicher Anmeldung werden Ihre bei amazon.de hinterlegten Versandadressen und Zahlungsarten angezeigt. Sie wählen Versandadresse und Zahlungsart aus und werden über die Schaltfläche \"weiter\" zurück in unseren Online-Shop geleitet. Vor Absenden der Bestellung haben Sie die Möglichkeit, hier sämtliche Angaben nochmals zu überprüfen, zu ändern (auch über die Funktion „zurück\" des Internetbrowsers) bzw. den Kauf abzubrechen. Mit dem Absenden der Bestellung über die Schaltfläche \"zahlungspflichtig bestellen\" geben Sie ein verbindliches Angebot bei uns ab. Sie erhalten zunächst eine automatische E-Mail über den Eingang Ihrer Bestellung, die noch nicht zum Vertragsschluss führt. Bei Zahlung über \"amazon payments\" erhalten Sie diese Bestätigungs-E-Mail von amazon.de.\np (3) Die Annahme des Angebots (und damit der Vertragsabschluss) erfolgt innerhalb von 2 Tagen durchBestätigung in Textform (z.B. E-Mail), in welcher Ihnen die Ausführung der Bestellung oder Auslieferung der Ware bestätigt wird (Auftragsbestätigung). Soweit Sie das Bezahl-System \"amazon-payments\" gewählt haben, erfolgt die Angebotsannahme (Vertragsschluss) innerhalb von 2 Tagen durch Bestätigung per E-Mail seitens amazon.de, in welcher Ihnen die Auslieferung der Ware mitgeteilt wird. Sollten Sie keine entsprechende Nachricht erhalten haben, sind Sie nicht mehr an Ihre Bestellung gebunden. Gegebenenfalls bereits erbrachte Leistungen werden in diesem Fall unverzüglich zurückerstattet.\np (4) Die Abwicklung der Bestellung und Übermittlung aller im Zusammenhang mit dem Vertragsschlusserforderlichen Informationen erfolgt per E-Mail zum Teil automatisiert. Sie haben deshalb sicherzustellen, dass die von Ihnen bei uns hinterlegte E-Mail-Adresse zutreffend ist, der Empfang der E-Mails technisch sichergestellt und insbesondere nicht durch SPAM-Filter verhindert wird.\nh3.h3 § 3 Zurückbehaltungsrecht, Eigentumsvorbehalt\np (1) Ein Zurückbehaltungsrecht können Sie nur ausüben, soweit es sich um Forderungen aus dem selben Vertragsverhältnis handelt.\np (2) Die Ware bleibt bis zur vollständigen Zahlung des Kaufpreises unser Eigentum.\nh3.h3 § 4 Haftung\np (1) Wir haften jeweils uneingeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit. Weiter haften wir ohne Einschränkung in allen Fällen des Vorsatzes und grober Fahrlässigkeit, bei arglistigem Verschweigen eines Mangels, bei Übernahme der Garantie für die Beschaffenheit des Kaufgegenstandes und in allen anderen gesetzlich geregelten Fällen.\np (2) Die Haftung für Mängel im Rahmen der gesetzlichen Gewährleistung richtet sich nach der entsprechenden Regelung in unseren Kundeninformationen (Teil II).\np (3) Sofern wesentliche Vertragspflichten betroffen sind, ist unsere Haftung bei leichter Fahrlässigkeit auf den vertragstypischen, vorhersehbaren Schaden beschränkt. Wesentliche Vertragspflichten sind wesentliche Pflichten, die sich aus der Natur des Vertrages ergeben und deren Verletzung die Erreichung des Vertragszweckes gefährden würde sowie Pflichten, die der Vertrag uns nach seinem Inhalt zur Erreichung des Vertragszwecks auferlegt, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst möglich machen und auf deren Einhaltung Sie regelmäßig vertrauen dürfen.\np (4) Bei der Verletzung unwesentlicher Vertragspflichten ist die Haftung bei leicht fahrlässigen Pflichtverletzungen ausgeschlossen.\np (5) Die Datenkommunikation über das Internet kann nach dem derzeitigen Stand der Technik nicht fehlerfrei und/oder jederzeit verfügbar gewährleistet werden. Wir haften insoweit weder für die ständige noch ununterbrochene Verfügbarkeit der Webseite und der dort angebotenen Dienstleistung.\nh3.h3 § 5 Rechtswahl\np (1) Es gilt deutsches Recht. Bei Verbrauchern gilt diese Rechtswahl nur, soweit hierdurch der durch zwingende Bestimmungen des Rechts des Staates des gewöhnlichen Aufenthaltes des Verbrauchers gewährte Schutz nicht entzogen wird (Günstigkeitsprinzip).\np (2) Die Bestimmungen des UN-Kaufrechts finden ausdrücklich keine Anwendung.\nh3.h3 § 6 Jugendschutz\np (1) Beim Verkauf von Ware, die den Regelungen des Jugendschutzgesetzes unterfällt, gehen wir nur Vertragsbeziehungen mit Kunden ein, die das gesetzlich vorgeschriebene Mindestalter erreicht haben. Auf bestehende Altersbeschränkungen wird in der jeweiligen Artikelbeschreibung hingewiesen.\np (2) Sie versichern mit Absenden Ihrer Bestellung, das gesetzlich vorgeschriebene Mindestalter erreicht zu haben und dass Ihre Angaben bezüglich Ihres Namens und Ihrer Adresse richtig sind. Sie sind verpflichtet, dafür Sorge zu tragen, dass nur Sie selbst oder solche von Ihnen zur Entgegennahme der Lieferung ermächtigte Personen, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, die Ware in Empfang nehmen.\np (3) Soweit wir aufgrund der gesetzlichen Bestimmungen verpflichtet sind, eine Alterskontrolle vorzunehmen,weisen wir den mit der Lieferung beauftragten Logistikdienstleister an, die Lieferung nur an Personen zu übergeben, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, und sich im Zweifelsfall den Personalausweis der die Ware in Empfang nehmenden Person zur Alterskontrolle vorzeigen zu lassen.\np (4) Soweit wir über das gesetzlich vorgeschriebene Mindestalter hinausgehend in der jeweiligen Artikelbeschreibung ausweisen, dass Sie für den Kauf der Ware das 18. Lebensjahr vollendet haben müssen, gelten vorstehende Absätze 1-3 mit der Maßgabe, dass anstelle des gesetzlich vorgeschriebenen Mindestalters Volljährigkeit vorliegen muss.\nh3.h3 II. Kundeninformationen\nh3.h3 1. Identität des Verkäufers\np Angela Lehmann\np Dornachgasse 15\np 6850 Dornbirn\np Österreich\np Telefon: 00436641306372\np E-Mail: ha-lehmann@gmx.at\np\np Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter http://ec.europa.eu/odr.\nh3.h3 2. Informationen zum Zustandekommen des Vertrages\np Die technischen Schritte zum Vertragsschluss, der Vertragsschluss selbst und die Korrekturmöglichkeiten erfolgen nach Maßgabe des § 2 unserer Allgemeinen Geschäftsbedingungen (Teil I.).\nh3.h3 3. Vertragssprache, Vertragstextspeicherung\np 3.1. Vertragssprache ist deutsch.\np 3.2. Der vollständige Vertragstext wird von uns nicht gespeichert. Vor Absenden der Bestellung über das Online Warenkorbsystem  können die Vertragsdaten über die Druckfunktion des Browsers ausgedruckt oder elektronisch gesichert werden. Nach Zugang der Bestellung bei uns werden die Bestelldaten, die gesetzlich vorgeschriebenen Informationen bei Fernabsatzverträgen und die Allgemeinen Geschäftsbedingungen nochmals per E-Mail an Sie übersandt.\nh3.h3 4. Wesentliche Merkmale der Ware oder Dienstleistung\np Die wesentlichen Merkmale der Ware und/oder Dienstleistung finden sich im jeweiligen Angebot.\nh3.h3 5. Preise und Zahlungsmodalitäten\np 5.1. Die in den jeweiligen Angeboten angeführten Preise sowie die Versandkosten stellen Gesamtpreise dar. Sie beinhalten alle Preisbestandteile einschließlich aller anfallenden Steuern.\np 5.2. Die anfallenden Versandkosten sind nicht im Kaufpreis enthalten. Sie sind über eine entsprechend bezeichnete Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot aufrufbar, werden im Laufe des Bestellvorganges gesondert ausgewiesen und sind von Ihnen zusätzlich zu tragen, soweit nicht die versandkostenfreie Lieferung zugesagt ist.\np 5.3. Die Ihnen zur Verfügung stehenden Zahlungsarten sind unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot ausgewiesen.\np 5.4. Soweit bei den einzelnen Zahlungsarten nicht anders angegeben, sind die Zahlungsansprüche aus dem geschlossenen Vertrag sofort zur Zahlung fällig.\nh3.h3 6. Lieferbedingungen\np 6.1. Die Lieferbedingungen, der Liefertermin sowie gegebenenfalls bestehende Lieferbeschränkungen finden sich unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot.\np 6.2. Soweit Sie Verbraucher sind ist gesetzlich geregelt, dass die Gefahr des zufälligen Untergangs und der zufälligen Verschlechterung der verkauften Sache während der Versendung erst mit der Übergabe der Ware an Sie übergeht, unabhängig davon, ob die Versendung versichert oder unversichert erfolgt. Dies gilt nicht, wenn Sie eigenständig ein nicht vom Unternehmer benanntes Transportunternehmen oder eine sonst zur Ausführung der Versendung bestimmte Person beauftragt haben. \nh3.h3 7. Gesetzliches Mängelhaftungsrecht\np 7.1. Es bestehen die gesetzlichen Mängelhaftungsrechte.\np 7.2. Als Verbraucher werden Sie gebeten, die Ware bei Lieferung umgehend auf Vollständigkeit, offensichtliche Mängel und Transportschäden zu überprüfen und uns sowie dem Spediteur Beanstandungen schnellstmöglich mitzuteilen. Kommen Sie dem nicht nach, hat dies keine Auswirkung auf Ihre gesetzlichen Gewährleistungsansprüche. Diese AGB und Kundeninformationen wurden von den auf IT-Recht spezialisierten Juristen des Händlerbundes erstellt und werden permanent auf Rechtskonformität geprüft. Die Händlerbund Management AG garantiert für die Rechtssicherheit der Texte und haftet im Falle von Abmahnungen. Nähere Informationen dazu finden Sie unter: http://www.haendlerbund.de/agb-service.\np\nh3.h3 Hinweise zur Batterieentsorgung\np Im Zusammenhang mit dem Vertrieb von Batterien oder mit der Lieferung von Geräten, die Batterien enthalten, sind wir verpflichtet, Sie auf folgendes hinzuweisen:\np Sie sind zur Rückgabe gebrauchter Batterien als Endnutzer gesetzlich verpflichtet. Sie können Altbatterien, die wir als Neubatterien im Sortiment führen oder geführt haben, unentgeltlich an unserem Versandlager (Handelsagentur Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich) zurückgeben.\np Die auf den Batterien abgebildeten Symbole haben folgende Bedeutung:\np \np Das Symbol der durchgekreuzten Mülltonne bedeutet, dass die Batterie nicht in den Hausmüll gegeben werden darf.\np Pb = Batterie enthält mehr als 0,004 Masseprozent Blei\np Cd = Batterie enthält mehr als 0,002 Masseprozent Cadmium\np Hg = Batterie enthält mehr als 0,0005 Masseprozent Quecksilber.\n\n\np letzte Aktualisierung: 28.09.2016");
 }
 };}, "views/agb_1": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/agb_1.jade" ) ];
@@ -45500,13 +45486,13 @@ var jade_interp;
 
 jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<li class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
 buf.push("Versandkosten");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</li>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
 buf.push("<p>");
@@ -45557,13 +45543,13 @@ jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 15, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<li class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
 buf.push("Lieferfristen");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</li>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
 buf.push("<p>");
@@ -45605,13 +45591,13 @@ jade_debug.unshift(new jade.DebugItem( 22, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<hr/>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 24, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<li class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 24, jade_debug[0].filename ));
 buf.push("Zahlungsbedingungen");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</li>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 26, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/delivery.jade" ));
 buf.push("<p>");
@@ -45777,7 +45763,7 @@ buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "li.h5 Versandkosten\n\np Kosten des Versandes nach Österreich: 3,90 Euro\n\np Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro\n\np Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!\n\np Wir versenden mit den Paketdiensten DPD und DHL.\n  \nhr.\n\np Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 3,90 (Österreich) bzw. € 5,90 (Deutschland) an.\n\nli.h5 Lieferfristen\np Soweit im jeweiligen Angebot keine andere Frist angegeben ist, erfolgt die Lieferung der Ware in Österreich innerhalb von 2-4 Tagen, bei Auslandslieferungen innerhalb von 2-5 Tagen nach Vertragsschluss (bei vereinbarter Vorauszahlung nach dem Zeitpunkt Ihrer Zahlungsanweisung).\np Beachten Sie, dass an Sonn- und Feiertagen keine Zustellung erfolgt.\np Haben Sie Artikel mit unterschiedlichen Lieferzeiten bestellt, versenden wir die Ware in einer gemeinsamen Sendung, sofern wir keine abweichenden Vereinbarungen mit Ihnen getroffen haben. Die Lieferzeit bestimmt sich in diesem Fall nach dem Artikel mit der längsten Lieferzeit den Sie bestellt haben.\n\np Bei Selbstabholung informieren wir Sie per E-Mail über die Bereitstellung der Ware und die Abholmöglichkeiten. In diesem Fall werden keine Versandkosten berechnet.\n\nhr \n\nli.h5 Zahlungsbedingungen\n\np Bei Lieferungen innerhalb Österreichs haben Sie folgende Zahlungsmöglichkeiten:\np -  Barzahlung bei Abholung\np -  Vorkasse per Überweisung\np -  Zahlung per Nachnahme \np -  Zahlung per PayPal\np -  Zahlung per amazon payments\n\np Bei Lieferungen ins Ausland haben Sie folgende Zahlungsmöglichkeiten:\np -  Barzahlung bei Abholung\np -  Vorkasse per Überweisung\np -  Zahlung per Lastschrift (Bankeinzug)\np -  Zahlung per PayPal\np -  Zahlung per amazon payments\np \np Bei Zahlung per Lastschrift (Bankeinzug) ermächtigen Sie uns widerruflich, den Rechnungsbetrag vom angegebenen Konto einzuziehen.\np \np Unsere Bankverbindung:\np IBAN: AT482060200000347112\np BIC: DOSPAT2DXXX");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Versandkosten\n\np Kosten des Versandes nach Österreich: 3,90 Euro\n\np Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro\n\np Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!\n\np Wir versenden mit den Paketdiensten DPD und DHL.\n  \nhr.\n\np Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 3,90 (Österreich) bzw. € 5,90 (Deutschland) an.\n\nh3.h3 Lieferfristen\np Soweit im jeweiligen Angebot keine andere Frist angegeben ist, erfolgt die Lieferung der Ware in Österreich innerhalb von 2-4 Tagen, bei Auslandslieferungen innerhalb von 2-5 Tagen nach Vertragsschluss (bei vereinbarter Vorauszahlung nach dem Zeitpunkt Ihrer Zahlungsanweisung).\np Beachten Sie, dass an Sonn- und Feiertagen keine Zustellung erfolgt.\np Haben Sie Artikel mit unterschiedlichen Lieferzeiten bestellt, versenden wir die Ware in einer gemeinsamen Sendung, sofern wir keine abweichenden Vereinbarungen mit Ihnen getroffen haben. Die Lieferzeit bestimmt sich in diesem Fall nach dem Artikel mit der längsten Lieferzeit den Sie bestellt haben.\n\np Bei Selbstabholung informieren wir Sie per E-Mail über die Bereitstellung der Ware und die Abholmöglichkeiten. In diesem Fall werden keine Versandkosten berechnet.\n\nhr \n\nh3.h3 Zahlungsbedingungen\n\np Bei Lieferungen innerhalb Österreichs haben Sie folgende Zahlungsmöglichkeiten:\np -  Barzahlung bei Abholung\np -  Vorkasse per Überweisung\np -  Zahlung per Nachnahme \np -  Zahlung per PayPal\np -  Zahlung per amazon payments\n\np Bei Lieferungen ins Ausland haben Sie folgende Zahlungsmöglichkeiten:\np -  Barzahlung bei Abholung\np -  Vorkasse per Überweisung\np -  Zahlung per Lastschrift (Bankeinzug)\np -  Zahlung per PayPal\np -  Zahlung per amazon payments\np \np Bei Zahlung per Lastschrift (Bankeinzug) ermächtigen Sie uns widerruflich, den Rechnungsbetrag vom angegebenen Konto einzuziehen.\np \np Unsere Bankverbindung:\np IBAN: AT482060200000347112\np BIC: DOSPAT2DXXX");
 }
 };}, "views/imp": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ) ];
@@ -45788,13 +45774,13 @@ var jade_interp;
 
 jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
 buf.push("Gesetzliche Anbieterkennung");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
 buf.push("<p>");
@@ -45965,13 +45951,13 @@ jade_debug.unshift(new jade.DebugItem( 21, "/Library/Server/Web/Data/Sites/ha-le
 buf.push("<hr/>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 22, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 22, jade_debug[0].filename ));
 buf.push("Rechtliche Hinweise zur Webseite");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 23, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
 buf.push("<p>");
@@ -46012,12 +45998,9 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Gesetzliche Anbieterkennung\np Handelsagentur Lehmann\np Angela Lehmann\np Dornachgasse 15\np 6850 Dornbirn\np Vorarlberg -  Österreich\nhr\np Telefon: +43 664-1306372\np Telefax: +43 5572-422498\np Email  : ha-lehmann@gmx.at\np USt-IdNr.: ATU71224409\np Wi-ID-Nr.: 8206629\np \np Unternehmensgegenstand: Online-Handel mit Outdoor, Fitness und Restposten\np Mitgliedschaften: Händlerbund\np Berufsrecht: Gewerbeordnung: http://www.ris.bka.gv.at\np Aufsichtsbehörde: Bezirkshauptmannschaft Dornbirn\np \np Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter . http://ec.europa.eu/odr\np Wir sind seit 01.12.2016 Mitglied der Initiative \"FairCommerce\". Nähere Informationen hierzu finden Sie unter www.fair-commerce.de.\nhr\nh5.h5 Rechtliche Hinweise zur Webseite\np Alle Texte, Bilder und weiter hier veröffentlichten Informationen unterliegen dem Urheberrecht des Anbieters, soweit nicht Urheberrechte Dritter bestehen. In jedem Fall ist eine Vervielfältigung, Verbreitung oder öffentliche Wiedergabe ausschließlich im Falle einer widerruflichen und nicht übertragbaren Zustimmung des Anbieters gestattet.\np Für alle mittels Querverweis (Link) verbundenen Webinhalte übernimmt der Anbieter keine Verantwortung, da es sich hierbei nicht um eigene Inhalte handelt. Die verlinkten Seiten wurden auf rechtswidrige Inhalte überprüft, zum Zeitpunkt der Verlinkung waren solche nicht erkennbar. Verantwortlich für den Inhalt der verlinkten Seiten ist deren Betreiber. Der Anbieter hat hierzu keine allgemeine Überwachungs- und Prüfungspflicht. Bei Bekanntwerden einer Rechtsverletzung wird der entsprechende Link jedoch umgehend entfernt.\np\n  div\n    a(href=\"https://www.haendlerbund.de/faircommerce\", target=\"_blank\")\n      img(src=\"/img/fc_logo.gif\")\nhr");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Gesetzliche Anbieterkennung\np Handelsagentur Lehmann\np Angela Lehmann\np Dornachgasse 15\np 6850 Dornbirn\np Vorarlberg -  Österreich\nhr\np Telefon: +43 664-1306372\np Telefax: +43 5572-422498\np Email  : ha-lehmann@gmx.at\np USt-IdNr.: ATU71224409\np Wi-ID-Nr.: 8206629\np \np Unternehmensgegenstand: Online-Handel mit Outdoor, Fitness und Restposten\np Mitgliedschaften: Händlerbund\np Berufsrecht: Gewerbeordnung: http://www.ris.bka.gv.at\np Aufsichtsbehörde: Bezirkshauptmannschaft Dornbirn\np \np Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter . http://ec.europa.eu/odr\np Wir sind seit 01.12.2016 Mitglied der Initiative \"FairCommerce\". Nähere Informationen hierzu finden Sie unter www.fair-commerce.de.\nhr\nh3.h3 Rechtliche Hinweise zur Webseite\np Alle Texte, Bilder und weiter hier veröffentlichten Informationen unterliegen dem Urheberrecht des Anbieters, soweit nicht Urheberrechte Dritter bestehen. In jedem Fall ist eine Vervielfältigung, Verbreitung oder öffentliche Wiedergabe ausschließlich im Falle einer widerruflichen und nicht übertragbaren Zustimmung des Anbieters gestattet.\np Für alle mittels Querverweis (Link) verbundenen Webinhalte übernimmt der Anbieter keine Verantwortung, da es sich hierbei nicht um eigene Inhalte handelt. Die verlinkten Seiten wurden auf rechtswidrige Inhalte überprüft, zum Zeitpunkt der Verlinkung waren solche nicht erkennbar. Verantwortlich für den Inhalt der verlinkten Seiten ist deren Betreiber. Der Anbieter hat hierzu keine allgemeine Überwachungs- und Prüfungspflicht. Bei Bekanntwerden einer Rechtsverletzung wird der entsprechende Link jedoch umgehend entfernt.\np\n  div\n    a(href=\"https://www.haendlerbund.de/faircommerce\", target=\"_blank\")\n      img(src=\"/img/fc_logo.gif\")");
 }
 };}, "views/notify": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/notify.jade" ) ];
@@ -46055,13 +46038,13 @@ var jade_interp;
 
 jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<li class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
 buf.push("Paypal");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</li>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<p>");
@@ -46082,13 +46065,13 @@ jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<li class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
 buf.push("Vorkasse");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</li>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<p>");
@@ -46100,13 +46083,13 @@ jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<li class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
 buf.push("Bei Abholung");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</li>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/pay.jade" ));
 buf.push("<p>");
@@ -46119,7 +46102,7 @@ buf.push("</p>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "li.h5 Paypal\np Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung\np Sie sind über den PayPal-Verkäuferschutz abgesichert\nli.h5 Vorkasse\np Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nli.h5 Bei Abholung\np Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Paypal\np Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung\np Sie sind über den PayPal-Verkäuferschutz abgesichert\nh3.h3 Vorkasse\np Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nh3.h3 Bei Abholung\np Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.");
 }
 };}, "views/privacy": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/privacy.jade" ) ];
@@ -46130,13 +46113,13 @@ var jade_interp;
 
 jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/privacy.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/privacy.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
 buf.push("Herzlich Willkommen auf unserer Webseite!");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/privacy.jade" ));
 buf.push("<p>");
@@ -46168,12 +46151,9 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/privacy.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Herzlich Willkommen auf unserer Webseite!\np\np Wir legen größten Wert auf den Schutz Ihrer Daten und die Wahrung Ihrer Privatsphäre. Nachstehend informieren wir Sie deshalb über die Erhebung und Verwendung persönlicher Daten bei Nutzung unserer Webseite. Anonyme Datenerhebung Sie können unsere Webseiten besuchen, ohne Angaben zu Ihrer Person zu machen. Wir speichern in diesem Zusammenhang keinerlei persönliche Daten. Um unser Angebot zu verbessern, werten wir lediglich statistische Daten aus, die keinen Rückschluss auf Ihre Person erlauben. Erhebung, Verarbeitung und Nutzung personenbezogener Daten Wir erheben personenbezogene Daten (Einzelangaben über persönliche oder sachliche Verhältnisse einer bestimmten oder bestimmbaren natürlichen Person) nur in dem von Ihnen zur Verfügung gestellten Umfang. Die Verarbeitung und Nutzung Ihrer personenbezogenen Daten erfolgt zur Erfüllung und Abwicklung Ihrer Bestellung sowie zur Bearbeitung Ihrer Anfragen. Nach vollständiger Vertragsabwicklung werden alle personenbezogenen Daten zunächst unter Berücksichtigung steuer- und handelsrechtlicher Aufbewahrungsfristen gespeichert und dann nach Fristablauf gelöscht, sofern Sie der weitergehenden Verarbeitung und Nutzung nicht zugestimmt haben. Zusätzlich weisen wir auf Folgendes hin: Wir verwenden das . Nach Ihrer Bestellung möchten wir Sie bitten, Ihren Kauf Käufersiegel-Bewertungssystem bei uns zu bewerten und zu kommentieren. Zu diesem Zweck werden Sie von uns im Rahmen der Vertragsabwicklung angeschrieben, wobei wir uns hierbei des technischen Systems des Anbieters des Käufersiegel-Bewertungstools, der Händlerbund Management AG,  Leipzig, im Torgauer Straße 233 B, 04347 Rahmen einer Auftragsdatenverarbeitung bedienen. Ihre E-Mail-Adresse wird dabei nur zu diesem Zweck und insbesondere nicht zu weitergehender Werbung benutzt und auch nicht an sonstige Dritte weitergegeben. Die in diesem Zusammenhang im technischen System des Käufersiegel-Bewertungstools gespeicherten personenbezogenen Daten werden 3 Monate nach der zur Bewertung erfassten Warenlieferung gelöscht. Weitergabe personenbezogener Daten Eine Weitergabe Ihrer Daten an Dritte ohne Ihre ausdrückliche Einwilligung erfolgt nicht. Ausgenommen hiervon sind lediglich unsere Dienstleistungspartner, die wir zur Abwicklung des Vertragsverhältnisses benötigen. In diesen Fällen beachten wir strikt die Vorgaben des Bundesdatenschutzgesetzes. Der Umfang der Datenübermittlung beschränkt sich auf ein Mindestmaß. Cookies Unsere Internetseiten verwenden an mehreren Stellen so genannte Cookies. Cookies sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert. Sie dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Des Weiteren ermöglichen Cookies unseren Systemen, Ihren Browser zu erkennen und Ihnen Services anzubieten. Cookies enthalten keine personenbezogenen Daten. Auskunft, Berichtigung, Sperrung und Löschung von Daten Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten Daten sowie das Recht auf Berichtigung, Löschung bzw. Sperrung. Kontaktieren Sie uns auf Wunsch. Die Kontaktdaten finden Sie in unserem Impressum.\np\np letzte Aktualisierung: 03.12.2015\nhr");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Herzlich Willkommen auf unserer Webseite!\np\np Wir legen größten Wert auf den Schutz Ihrer Daten und die Wahrung Ihrer Privatsphäre. Nachstehend informieren wir Sie deshalb über die Erhebung und Verwendung persönlicher Daten bei Nutzung unserer Webseite. Anonyme Datenerhebung Sie können unsere Webseiten besuchen, ohne Angaben zu Ihrer Person zu machen. Wir speichern in diesem Zusammenhang keinerlei persönliche Daten. Um unser Angebot zu verbessern, werten wir lediglich statistische Daten aus, die keinen Rückschluss auf Ihre Person erlauben. Erhebung, Verarbeitung und Nutzung personenbezogener Daten Wir erheben personenbezogene Daten (Einzelangaben über persönliche oder sachliche Verhältnisse einer bestimmten oder bestimmbaren natürlichen Person) nur in dem von Ihnen zur Verfügung gestellten Umfang. Die Verarbeitung und Nutzung Ihrer personenbezogenen Daten erfolgt zur Erfüllung und Abwicklung Ihrer Bestellung sowie zur Bearbeitung Ihrer Anfragen. Nach vollständiger Vertragsabwicklung werden alle personenbezogenen Daten zunächst unter Berücksichtigung steuer- und handelsrechtlicher Aufbewahrungsfristen gespeichert und dann nach Fristablauf gelöscht, sofern Sie der weitergehenden Verarbeitung und Nutzung nicht zugestimmt haben. Zusätzlich weisen wir auf Folgendes hin: Wir verwenden das . Nach Ihrer Bestellung möchten wir Sie bitten, Ihren Kauf Käufersiegel-Bewertungssystem bei uns zu bewerten und zu kommentieren. Zu diesem Zweck werden Sie von uns im Rahmen der Vertragsabwicklung angeschrieben, wobei wir uns hierbei des technischen Systems des Anbieters des Käufersiegel-Bewertungstools, der Händlerbund Management AG,  Leipzig, im Torgauer Straße 233 B, 04347 Rahmen einer Auftragsdatenverarbeitung bedienen. Ihre E-Mail-Adresse wird dabei nur zu diesem Zweck und insbesondere nicht zu weitergehender Werbung benutzt und auch nicht an sonstige Dritte weitergegeben. Die in diesem Zusammenhang im technischen System des Käufersiegel-Bewertungstools gespeicherten personenbezogenen Daten werden 3 Monate nach der zur Bewertung erfassten Warenlieferung gelöscht. Weitergabe personenbezogener Daten Eine Weitergabe Ihrer Daten an Dritte ohne Ihre ausdrückliche Einwilligung erfolgt nicht. Ausgenommen hiervon sind lediglich unsere Dienstleistungspartner, die wir zur Abwicklung des Vertragsverhältnisses benötigen. In diesen Fällen beachten wir strikt die Vorgaben des Bundesdatenschutzgesetzes. Der Umfang der Datenübermittlung beschränkt sich auf ein Mindestmaß. Cookies Unsere Internetseiten verwenden an mehreren Stellen so genannte Cookies. Cookies sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert. Sie dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Des Weiteren ermöglichen Cookies unseren Systemen, Ihren Browser zu erkennen und Ihnen Services anzubieten. Cookies enthalten keine personenbezogenen Daten. Auskunft, Berichtigung, Sperrung und Löschung von Daten Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten Daten sowie das Recht auf Berichtigung, Löschung bzw. Sperrung. Kontaktieren Sie uns auf Wunsch. Die Kontaktdaten finden Sie in unserem Impressum.\np\np letzte Aktualisierung: 03.12.2015");
 }
 };}, "views/product": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/product.jade" ) ];
@@ -46277,13 +46257,13 @@ var jade_interp;
 
 jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
 jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
 buf.push("Widerrufsrecht für Verbraucher");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
 buf.push("<p>");
@@ -46295,13 +46275,13 @@ jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
 buf.push("Widerrufsbelehrung");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
 buf.push("<p>");
@@ -46349,13 +46329,13 @@ jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
 buf.push("Folgen des Widerrufs");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
 buf.push("<p>");
@@ -46403,13 +46383,13 @@ jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
 buf.push("Ausschluss- bzw. Erlöschensgründe");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 18, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
 buf.push("<p>");
@@ -46448,13 +46428,13 @@ jade_debug.shift();
 buf.push("</p>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 23, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h5 class=\"h5\">");
+buf.push("<h3 class=\"h3\">");
 jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
 jade_debug.unshift(new jade.DebugItem( 23, jade_debug[0].filename ));
 buf.push("Widerrufsformular");
 jade_debug.shift();
 jade_debug.shift();
-buf.push("</h5>");
+buf.push("</h3>");
 jade_debug.shift();
 jade_debug.unshift(new jade.DebugItem( 24, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
 buf.push("<iframe src=\"https://docs.google.com/forms/d/e/1FAIpQLSdKP-t3e19dPw1xbsJmaJqCzfTNMWQQ_Knyqr-F5Cfrlej7Jw/viewform?embedded=true\" width=\"100%\" height=\"1350\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\">");
@@ -46471,12 +46451,9 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("</iframe>");
 jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h5.h5 Widerrufsrecht für Verbraucher\np (Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbstständigen beruflichen Tätigkeit zugerechnet werden kann.)\n\nh5.h5 Widerrufsbelehrung\np Widerrufsrecht Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag,\np - an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat, sofern Sie eine oder mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese einheitlich geliefert wird bzw. werden\np - an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die letzte Ware in Besitz genommen haben bzw. hat, sofern Sie mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese getrennt geliefert werden\np Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Angela Lehmann, Dornachgasse 15, 6850 Dornbirn, Telefonnummer: +43 664-1306372, Telefaxnummer: +43 5572-422498, E-Mail-Adresse: mittels einer eindeutigen Erklärung (z.B. ein mit der Post versandter Brief, Telefax oder ha-lehmann@gmx.at) E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.\np Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.\n\nh5.h5 Folgen des Widerrufs\np Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf vierzehn Tagen dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.\np Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.\np Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen ab dem Tag, an dem Sie vierzehn Tagen uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von absenden. vierzehn Tagen\np Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.\np Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.\nh5.h5 Ausschluss- bzw. Erlöschensgründe\np Das Widerrufsrecht besteht nicht bei Verträgen\np - zur Lieferung von Waren, die nicht vorgefertigt sind und für deren Herstellung eine individuelle Auswahl oder Bestimmung durch den Verbraucher maßgeblich ist oder die eindeutig auf die persönlichen Bedürfnisse des Verbrauchers zugeschnitten sind; - zur Lieferung von Waren, die schnell verderben können oder deren Verfallsdatum schnell überschritten würde; - zur Lieferung alkoholischer Getränke, deren Preis bei Vertragsschluss vereinbart wurde, die aber frühestens 30 Tage nach Vertragsschluss geliefert werden können und deren aktueller Wert von Schwankungen auf dem Markt abhängt, auf die der Unternehmer keinen Einfluss hat; - zur Lieferung von Zeitungen, Zeitschriften oder Illustrierten mit Ausnahme von Abonnement-Verträgen.\np Das Widerrufsrecht erlischt vorzeitig bei Verträgen\np - zur Lieferung versiegelter Waren, die aus Gründen des Gesundheitsschutzes oder der Hygiene nicht zur Rückgabe geeignet sind, wenn ihre Versiegelung nach der Lieferung entfernt wurde; - zur Lieferung von Waren, wenn diese nach der Lieferung aufgrund ihrer Beschaffenheit untrennbar mit anderen Gütern vermischt wurden; - zur Lieferung von Ton- oder Videoaufnahmen oder Computersoftware in einer versiegelten Packung, wenn die Versiegelung nach der Lieferung entfernt wurde. \n\nh5.h5 Widerrufsformular\niframe(src=\"https://docs.google.com/forms/d/e/1FAIpQLSdKP-t3e19dPw1xbsJmaJqCzfTNMWQQ_Knyqr-F5Cfrlej7Jw/viewform?embedded=true\", width=\"100%\", height=\"1350\", frameborder=\"0\", marginheight=\"0\", marginwidth=\"0\")\n  div Wird geladen...\nhr\n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Widerrufsrecht für Verbraucher\np (Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbstständigen beruflichen Tätigkeit zugerechnet werden kann.)\n\nh3.h3 Widerrufsbelehrung\np Widerrufsrecht Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag,\np - an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat, sofern Sie eine oder mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese einheitlich geliefert wird bzw. werden\np - an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die letzte Ware in Besitz genommen haben bzw. hat, sofern Sie mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese getrennt geliefert werden\np Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Angela Lehmann, Dornachgasse 15, 6850 Dornbirn, Telefonnummer: +43 664-1306372, Telefaxnummer: +43 5572-422498, E-Mail-Adresse: mittels einer eindeutigen Erklärung (z.B. ein mit der Post versandter Brief, Telefax oder ha-lehmann@gmx.at) E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.\np Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.\n\nh3.h3 Folgen des Widerrufs\np Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf vierzehn Tagen dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.\np Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.\np Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen ab dem Tag, an dem Sie vierzehn Tagen uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von absenden. vierzehn Tagen\np Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.\np Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.\nh3.h3 Ausschluss- bzw. Erlöschensgründe\np Das Widerrufsrecht besteht nicht bei Verträgen\np - zur Lieferung von Waren, die nicht vorgefertigt sind und für deren Herstellung eine individuelle Auswahl oder Bestimmung durch den Verbraucher maßgeblich ist oder die eindeutig auf die persönlichen Bedürfnisse des Verbrauchers zugeschnitten sind; - zur Lieferung von Waren, die schnell verderben können oder deren Verfallsdatum schnell überschritten würde; - zur Lieferung alkoholischer Getränke, deren Preis bei Vertragsschluss vereinbart wurde, die aber frühestens 30 Tage nach Vertragsschluss geliefert werden können und deren aktueller Wert von Schwankungen auf dem Markt abhängt, auf die der Unternehmer keinen Einfluss hat; - zur Lieferung von Zeitungen, Zeitschriften oder Illustrierten mit Ausnahme von Abonnement-Verträgen.\np Das Widerrufsrecht erlischt vorzeitig bei Verträgen\np - zur Lieferung versiegelter Waren, die aus Gründen des Gesundheitsschutzes oder der Hygiene nicht zur Rückgabe geeignet sind, wenn ihre Versiegelung nach der Lieferung entfernt wurde; - zur Lieferung von Waren, wenn diese nach der Lieferung aufgrund ihrer Beschaffenheit untrennbar mit anderen Gütern vermischt wurden; - zur Lieferung von Ton- oder Videoaufnahmen oder Computersoftware in einer versiegelten Packung, wenn die Versiegelung nach der Lieferung entfernt wurde. \n\nh3.h3 Widerrufsformular\niframe(src=\"https://docs.google.com/forms/d/e/1FAIpQLSdKP-t3e19dPw1xbsJmaJqCzfTNMWQQ_Knyqr-F5Cfrlej7Jw/viewform?embedded=true\", width=\"100%\", height=\"1350\", frameborder=\"0\", marginheight=\"0\", marginwidth=\"0\")\n  div Wird geladen...\n");
 }
 };}, "views/sample": function(exports, require, module) {module.exports = function template(locals) {
 var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann/app/webroot/js/app/app/views/sample.jade" ) ];

@@ -78,9 +78,9 @@
   font-size: 0.6em;
 }
 
-
 .pricing--norbu .pricing__item {
   height: 320px;
+  position: relative;
 }
 
 .pricing__item {
@@ -195,7 +195,6 @@
   font-size: 3em;
   padding: 0; 
   font-weight: 400;
-  position: relative;
   height: 175px;
   top: 0;
   z-index: 100;

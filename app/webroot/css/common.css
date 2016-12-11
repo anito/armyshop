@@ -1,0 +1,41 @@
+.items .price {
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 27px;
+  padding: 0px 14px;
+  background-color: #9E9E9E;
+  color: #fff;
+  font-size: 1.4rem;
+}
+
+.items .price {
+  position: absolute;
+  right: 35px;
+  bottom: 25px;
+  z-index: 1;
+}
+[class*="linearicons-"]::before {
+  font-family: "linearicons" !important;
+  width: 30px;
+  height: 30px;
+  font-weight: 300 !important;
+  line-height: 0em;
+  margin: 0 5px;
+}
+.linearicons-home::before {
+  content: "\e800";
+}
+.linearicons-home2::before {
+  content: "\e844";
+}
+.linearicons-outdoor::before {
+  content: "\e807";
+}
+.linearicons-fitness::before {
+  content: "\e850";
+}
+.linearicons-tools::before {
+  content: "\e845";
+}
+.linearicons-specials::before {
+  content: "\e814";
+}

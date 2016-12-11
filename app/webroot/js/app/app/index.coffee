@@ -39,7 +39,6 @@ class App extends Spine.Controller
     'mousemove  .opt-stats'         :           'moveStats' 
     'mouseleave .opt-stats'         :           'hideStats' 
     'click .opt-stats'              :           'noMethod' 
-    
     'click .opt-hint'               :           'showWarning'
     'click .opt-agreed'             :           'agreed'
     'click .opt-close'              :           'closeSidebar'
@@ -78,7 +77,8 @@ class App extends Spine.Controller
     
     Spine.bind('active:category', @proxy @initCategory)
     Spine.bind('refresh:complete', @proxy @renderRefreshView)
-    @menuButton.on('click', @proxy @toggleMenu)
+    
+#    @menuButton.on('click', @proxy @toggleMenu)
     
     @initSettings(setting)
     @initSidebar()
@@ -118,19 +118,20 @@ class App extends Spine.Controller
     @swiper.slidePrev() if (@swiper.previousIndex == 0)
     
   initSwipe: ->
+    onInit = (slider) => 'alert Init slider'
         
     onSlideChangeStart = (slider) =>
       if (slider.activeIndex == 0)
         @menuButton.addClass('cross')
-        @menuButton.off('click', @proxy @toggleMenu)
+#        @menuButton.off('click', @proxy @toggleMenu)
       else
         @menuButton.removeClass('cross')
 
     onSlideChangeEnd = (slider) =>
-      if (slider.activeIndex == 0)
-        @menuButton.off('click', @proxy @toggleMenu)
-      else
-        @menuButton.on('click', @proxy @toggleMenu)
+#      if (slider.activeIndex == 0)
+#        @menuButton.off('click', @proxy @toggleMenu)
+#      else
+#        @menuButton.on('click', @proxy @toggleMenu)
         
     @swiper = swiper = new Swiper '.swiper-container',
       slidesPerView: 'auto'
@@ -160,7 +161,7 @@ class App extends Spine.Controller
     s.save()
     s.id
     
-  initBackground: (name) ->
+  initBackground: (name='home') ->
     @el.addClass(name)
     
   initLogos: ->
@@ -197,7 +198,7 @@ class App extends Spine.Controller
   showAgb: (e) -> 
     options =
       small: false
-      css: 'alert alert-warning'
+      css: 'default'
       header: 'AGBs'
       body: -> require("views/agb")
         copyright     : 'Axel Nitzschner'
@@ -222,7 +223,7 @@ class App extends Spine.Controller
   showImp: (e) -> 
     options =
       small: false
-      css: 'alert alert-warning'
+      css: 'default'
       header: 'Impressum'
       body: -> require("views/imp")
         copyright     : 'Axel Nitzschner'
@@ -247,8 +248,8 @@ class App extends Spine.Controller
   showPay: (e) ->
     options =
       small: false
-      css: 'alert alert-warning'
-      header: 'Zahlungsmöglichkeiten'
+      css: 'default'
+      header: 'Zahlungs- möglichkeiten'
       body: -> require("views/pay")
         copyright     : 'Axel Nitzschner'
         spine_version : Spine.version
@@ -299,7 +300,7 @@ class App extends Spine.Controller
   showDelivery: (e) ->
     options =
       small: false
-      css: 'alert alert-warning'
+      css: 'default'
       header: 'Versand'
       body: -> require("views/delivery")
         copyright     : 'Axel Nitzschner'
@@ -324,8 +325,8 @@ class App extends Spine.Controller
   showPrivacy: (e) ->
     options =
       small: false
-      css: 'alert alert-warning'
-      header: 'Datenschutzerklärung'
+      css: 'default'
+      header: 'Datenschutz'
       body: -> require("views/privacy")()
       
     dialog = new ModalSimpleView
@@ -345,7 +346,7 @@ class App extends Spine.Controller
   showRevocation: (e) ->
     options =
       small: false
-      css: 'alert alert-warning'
+      css: 'default'
       header: 'Widerrufsrecht'
       body: -> require("views/revocation")()
       
