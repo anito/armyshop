@@ -28268,12 +28268,7 @@ Released under the MIT License
       'hidden.bs.modal': 'hiddenmodal',
       'show.bs.modal': 'showmodal',
       'shown.bs.modal': 'shownmodal',
-      'keydown': 'keydown',
-      'touchstart': 'stop'
-    };
-
-    ModalSimpleView.prototype.stop = function() {
-      return alert('stop touch');
+      'keydown': 'keydown'
     };
 
     ModalSimpleView.prototype.template = function(item) {
