@@ -1713,7 +1713,7 @@ header.fixed #lang_sel ul li ul li:after {
   display: block;
   width: 30px;
   height: 30px;
-  content: "\e817";
+  content: "\e821";
   font-size: 2rem;
   color: #FFFFFF;
   font-weight: 300 !important; }

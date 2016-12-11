@@ -17,6 +17,9 @@ class ModalSimpleView extends Spine.Controller
     'show.bs.modal'            : 'showmodal'
     'shown.bs.modal'           : 'shownmodal'
     'keydown'                  : 'keydown'
+    'touchstart'               :  'stop'
+  
+  stop: -> alert 'stop touch'
   
   template: (item) ->
     $('#modalSimpleTemplate').tmpl(item)

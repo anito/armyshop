@@ -203,7 +203,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
     <div class="menu-seitenmenue-unten-container">
       <ul id="menu-seitenmenue-unten" class="menu">
-        <li id="" class="menu-item-has-children misc"><a href="#">Wichtiges</a></li>
+        <li id="" class="menu-item-has-children misc"><a href="#">Rechtliches</a></li>
         <li id=""><a href="#" class="opt-imp menu-push-to-close">Impressum</a></li>
         <li id=""><a href="#" class="opt-del menu-push-to-close">Versand</a></li>
         <li id=""><a href="#" class="opt-pay menu-push-to-close">Zahlungsmöglichkeiten</a></li>
