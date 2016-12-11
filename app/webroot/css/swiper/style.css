@@ -537,6 +537,9 @@ article.home-blog .bottom .author p.name a:hover {
 .single-post .breadcrumbs {
   margin-top: 130px;
   margin-bottom: 40px; }
+.page-header * {
+  color: #fff !important;
+}
 .page-header .breadcrumbs {
   display: inline-block;
   text-align: left;

@@ -1,7 +1,7 @@
 <div class="outer-wrapper">
 		<div class="content">
       <div class="page-sidebar">
-
+      
         <div class="page-header hide" style="">
           <div class="container">
             
@@ -18,15 +18,17 @@
                   <span property="name">Specials</span>
                 </span>
             </div>
+            <a href="#scrollspecials" class="scroll">
             <div class="row">
               <div class="col-xs-12 col-sm-10 col-sm-offset-1">
                 <i class="linearicons linearicons-specials"></i>
-                <h1>Specials</h1><p></p>
+                <h1>Specials</h1>
               </div>
             </div>
+            </a>
           </div>
         </div>
-        
+      
         <div id="specials" class="view active">
           <div class="jumbotron">
             <div class="container">
@@ -40,7 +42,7 @@
               <div class="brands display-5"></div>
             </div>
           </div>
-          <div class="items pricing pricing--norbu"></div>
+          <div id="scrollspecials" class="items pricing pricing--norbu"></div>
         </div>
         <!-- page_header_hintergrundbild -->
 
@@ -157,7 +159,7 @@
           </div>
         </div>
 
-      </div>
+      
 
       <script>
       <!--

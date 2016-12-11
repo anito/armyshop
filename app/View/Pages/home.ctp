@@ -2,26 +2,28 @@
 		<div class="content">
       <div class="page-sidebar">
 
-        <div class="page-header hide" style="">
-          <div class="container">
-            
-            
-            
-            
-            <div class="breadcrumbs" typeof="BreadcrumbList" vocab="http://schema.org/">
-              <!-- Breadcrumb NavXT 5.5.1 -->
-              <span property="itemListElement" typeof="ListItem">
-                  <span property="name">Home</span>
-              </span>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                <i class="linearicons linearicons-home2"></i>
-                <h1>Herzlich Willkommen</h1>
+          <div id="home" class="page-header hide" style="">
+            <div class="container">
+
+
+
+
+              <div class="breadcrumbs" typeof="BreadcrumbList" vocab="http://schema.org/">
+                <!-- Breadcrumb NavXT 5.5.1 -->
+                <span property="itemListElement" typeof="ListItem">
+                    <span property="name">Home</span>
+                </span>
               </div>
+              <a href="#scrollhome" class="scroll">
+              <div class="row">
+                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                  <i class="linearicons linearicons-home2"></i>
+                  <h1>Herzlich Willkommen</h1>
+                </div>
+              </div>
+              </a>
             </div>
           </div>
-        </div>
         
         <div id="home" class="view active">
           <!-- Main jumbotron for a primary marketing message or call to action -->
@@ -82,7 +84,7 @@
         </div>
         <!-- page_header_hintergrundbild -->
 
-        <div class="container hide"><!-- outer .container -->
+        <div id="scrollhome" class="container hide"><!-- outer .container -->
           <!-- seitennavi_links -->
           <div class="row">
             <div class="col-xs-12 col-md-5 col-lg-4">

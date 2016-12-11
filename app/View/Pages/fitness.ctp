@@ -18,12 +18,14 @@
                   <span property="name">Fitness</span>
                 </span>
             </div>
+            <a href="#scrollfitness" class="scroll">
             <div class="row">
               <div class="col-xs-12 col-sm-10 col-sm-offset-1">
                 <i class="linearicons linearicons-fitness"></i>
                   <h1>Fitness</h1>
               </div>
             </div>
+            </a>
           </div>
         </div>
         
@@ -40,7 +42,7 @@
               <div class="brands display-5"></div>
             </div>
           </div>
-          <div class="items pricing pricing--norbu"></div>
+          <div id="scrollfitness" class="items pricing pricing--norbu"></div>
         </div>
         <!-- page_header_hintergrundbild -->
 

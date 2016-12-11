@@ -18,12 +18,14 @@
                   <span property="name">Outdoor</span>
                 </span>
             </div>
+            <a href="#scrolloutdoor" class="scroll">
             <div class="row">
               <div class="col-xs-12 col-sm-10 col-sm-offset-1">
                 <i class="linearicons linearicons-outdoor"></i>
                 <h1>Outdoor</h1>
               </div>
             </div>
+            </a>
           </div>
         </div>
         
@@ -42,7 +44,7 @@
               <div class="brands display-5"></div>
             </div>
           </div>
-          <div class="items  pricing pricing--norbu"></div>
+          <div id="scrolloutdoor" class="items  pricing pricing--norbu"></div>
         </div>
         <!-- page_header_hintergrundbild -->
 
