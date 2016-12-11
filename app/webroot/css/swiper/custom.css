@@ -123,6 +123,16 @@ i.ebay {
   position: fixed;
   right: 0;
 }
+.hb-badge-sw {
+  background: url(/img/hbLogo_sw.gif);
+  width: 130px;
+  height: 73px;
+  position: absolute;
+  content: " ";
+  left: 0;
+  bottom: 0;
+  margin: 10px;
+}
 .close {
   font-size: 3.5rem;
 }

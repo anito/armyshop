@@ -173,6 +173,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <div class="row">
           <div class="col-xs-12 col-sm-12">
             <p>© 2016 HA Lehmann</p>
+            <a href="https://www.haendlerbund.de/mitglied/show.php?uuid=13b695f4-b7a3-11e6-8974-9c5c8e4fb375-3496146168" target="_blank">
+              <i class="hb-badge-sw"></i>
+            </a>
             <div class="menu-footer-menu-rechtliches-container">
               <ul id="" class="menu">
                 <li id="" class=""><a href="#" class="opt-imp">Impressum</a></li>
