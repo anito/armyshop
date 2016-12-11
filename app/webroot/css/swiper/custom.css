@@ -90,6 +90,9 @@ form#ninja_forms_form_29 {
 .home .page-header {
   background: url(/img/outdoor_creative.jpg) no-repeat -320px -110px;
 }
+.outdoor .page-header {
+  background: url(/img/outdoor_creative.jpg) no-repeat -320px -110px;
+}
 .fitness .page-header {
   background: url(/img/fitness_creative.jpg) no-repeat -695px -410px;
 }
