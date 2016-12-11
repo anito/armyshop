@@ -39,7 +39,3 @@
 .linearicons-specials::before {
   content: "\e814";
 }
-.modal {
-  overflow-y: scroll; /* has to be scroll, not auto */
-  -webkit-overflow-scrolling: touch;
-}

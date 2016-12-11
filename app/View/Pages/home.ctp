@@ -42,7 +42,7 @@
             <ul class="row ca-menu pricing">
               <li id="outdoor-item-menu" class="item-menu  pricing__item outdoor category">
                   <a href="/pages/outdoor/">
-                    <span class="flaticon-hiking-up-3"></span>
+                    <span class="linearicons linearicons-outdoor"></span>
                     <div class="ca-content">
                       <h2 class="ca-main">Outdoor</h2>
                       <h3 class="ca-sub">Atmen Sie durch</h3>
@@ -51,7 +51,7 @@
               </li>
               <li id="fitness-item-menu" class="item-menu  pricing__item fitness category">
                   <a href="/pages/fitness/">
-                    <span class="flaticon-fitness_center"></span>
+                    <span class="linearicons linearicons-fitness"></span>
                     <div class="ca-content">
                       <h2 class="ca-main">Fitness</h2>
                       <h3 class="ca-sub">Bleiben Sie Gesund</h3>
@@ -60,7 +60,7 @@
              </li>
              <li id="tools-item-menu" class="item-menu  pricing__item tools category">
                   <a href="/pages/tools/">
-                    <span class="flaticon-knife"></span>
+                    <span class="linearicons linearicons-tools"></span>
                     <div class="ca-content">
                       <h2 class="ca-main">Messer & Tools</h2>
                       <h3 class="ca-sub">Messerscharfe Angebote</h3>
@@ -69,7 +69,7 @@
               </li>
              <li id="specials-item-menu" class="item-menu  pricing__item specials category">
                   <a href="/pages/specials/">
-                    <span class="flaticon-sales-label-1"></span>
+                    <span class="linearicons linearicons-specials"></span>
                     <div class="ca-content">
                       <h2 class="ca-main">Specials</h2>
                       <h3 class="ca-sub">24/7 Geld sparen</h3>

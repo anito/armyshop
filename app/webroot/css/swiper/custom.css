@@ -22,7 +22,7 @@ div.light-font {
 
 /*//////// HOMEPAGE ////////*/
 
-.home .teaser-text h1 {
+.hal-home .teaser-text h1 {
   font-size: 2.25rem;
   font-weight: 100;
   margin: 70px 0 -55px 0;
@@ -30,24 +30,24 @@ div.light-font {
   text-align:center;
 }
 
-.home .teaser-text p {
+.hal-home .teaser-text p {
   font-size: 1.8rem;
 }
 
-.home .content-box {
+.hal-home .content-box {
   padding: 40px 0px;
   font-weight:300;
 }
 
-.home .content-box h1 {
+.hal-home .content-box h1 {
   display: none;
 }
 
-.home .content-box h2 {
+.hal-home .content-box h2 {
   font-size: 1.825rem;
 }
 
-.home .content-box h3 {
+.hal-home .content-box h3 {
   font-weight: 300;
 }
 
