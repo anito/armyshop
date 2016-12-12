@@ -11,7 +11,7 @@
   position: absolute;
   right: 35px;
   bottom: 25px;
-  z-index: 1;
+  z-index: 999;
 }
 [class*="linearicons-"]::before {
   font-family: "linearicons" !important;
