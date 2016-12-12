@@ -95,13 +95,13 @@
                     <a href="/pages/outdoor" title="Outdoor" class="">Outdoor</a>
                   </li>
                   <li>
-                    <a href="/pages/fitness" title="Fitness" class="scroll">Fitness</a>
+                    <a href="/pages/fitness" title="Fitness" class="">Fitness</a>
                   </li>
                   <li>
-                    <a href="/pages/tools" title="Messer & Tools" class="scroll">Messer & Tools</a>
+                    <a href="/pages/tools" title="Messer & Tools" class="">Messer & Tools</a>
                   </li>
                   <li>
-                    <a href="/pages/specials" title="Restposten & Specials" class="scroll">Restposten & Specials</a>
+                    <a href="/pages/specials" title="Restposten & Specials" class="">Restposten & Specials</a>
                   </li>
                 </ul>
                 <span>Viel Spass beim Einkauf</span>
@@ -122,7 +122,9 @@
               </ul>
               <div class="toggle">
                 <h2 id="wasistsea" class="toggle-title">Was ist SEA?</h2>
-                <p><iframe width="640" height="360" src="https://www.youtube.com/embed/qBE2WReD39k?feature=oembed&amp;enablejsapi=1&amp;origin=https://www.ranking-check.de" frameborder="0" allowfullscreen="" id="youtubeplayer_qBE2WReD39k"></iframe></p>
+                <p>
+                  <!--<iframe width="640" height="360" src="https://www.youtube.com/embed/qBE2WReD39k?feature=oembed&amp;enablejsapi=1&amp;origin=https://www.ranking-check.de" frameborder="0" allowfullscreen="" id="youtubeplayer_qBE2WReD39k"></iframe>-->
+                </p>
                 <p>&nbsp;</p>
                 <div class="collapse " id="toggle1">
                 </div>

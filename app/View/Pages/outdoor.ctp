@@ -88,7 +88,9 @@
               </ul>
               <div class="toggle">
                 <h2 id="wasistsea" class="toggle-title">Was ist SEA?</h2>
-                <p><iframe width="640" height="360" src="https://www.youtube.com/embed/qBE2WReD39k?feature=oembed&amp;enablejsapi=1&amp;origin=https://www.ranking-check.de" frameborder="0" allowfullscreen="" id="youtubeplayer_qBE2WReD39k"></iframe></p>
+                <p>
+                  <!--<iframe width="640" height="360" src="https://www.youtube.com/embed/qBE2WReD39k?feature=oembed&amp;enablejsapi=1&amp;origin=https://www.ranking-check.de" frameborder="0" allowfullscreen="" id="youtubeplayer_qBE2WReD39k"></iframe>-->
+                </p>
                 <p>&nbsp;</p>
                 <div class="collapse " id="toggle1">
                 </div>
