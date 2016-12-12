@@ -1163,6 +1163,7 @@ class ShowView extends Spine.Controller
       small: true
       header: false
       body: 'Datensicherung läuft...'
+      footer: false
     )
     @mysql 'dump', options
     
@@ -1178,6 +1179,7 @@ class ShowView extends Spine.Controller
       small: true
       header: false
       body: 'Wiederherstellung läuft...'
+      footer: false
     )
     @mysql 'restore', options
   

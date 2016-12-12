@@ -373,6 +373,7 @@ class Main extends Spine.Controller
         small: true
         header: false
         body: '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>'
+        footer: false
       )
       
       

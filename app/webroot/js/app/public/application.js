@@ -26409,7 +26409,8 @@ Released under the MIT License
         Spine.trigger('show:wait', {
           small: true,
           header: false,
-          body: '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>'
+          body: '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>',
+          footer: false
         });
         settings = Settings.create({
           user_id: id,
@@ -34133,7 +34134,8 @@ Released under the MIT License
       Spine.trigger('show:wait', {
         small: true,
         header: false,
-        body: 'Datensicherung läuft...'
+        body: 'Datensicherung läuft...',
+        footer: false
       });
       return this.mysql('dump', options);
     };
@@ -34154,7 +34156,8 @@ Released under the MIT License
       Spine.trigger('show:wait', {
         small: true,
         header: false,
-        body: 'Wiederherstellung läuft...'
+        body: 'Wiederherstellung läuft...',
+        footer: false
       });
       return this.mysql('restore', options);
     };
