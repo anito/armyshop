@@ -621,7 +621,7 @@ body.fade.in.tools {
   border-color: #223528;
 }
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   line-height: 60px;
