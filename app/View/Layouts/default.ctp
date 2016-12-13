@@ -285,7 +285,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   </footer>
   <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away hidemobile"></iframe>
   <!-- modal-dialogue -->
-  <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="z-index: 9999;"></div>
+  <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="z-index: 10000;"></div>
   <!-- /.modal -->
   <script>
 
@@ -333,7 +333,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       <p class="h5 pricing__sentence">{{if subtitle}}${$().name(subtitle, 80)}{{else}}<hr>{{/if}}</p>
       <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
         {{if link}}<a href="${link}" target="_blank" class="slides" aria-disabled="false">{{/if}}
-        {{tmpl($item.data.photos()) "#norbuImageListTemplate" }}
+        {{tmpl($item.data.photos(1)) "#norbuImageListTemplate" }}
         {{if link}}</a>{{/if}}
       </div>
       <ul class="pricing__feature-list">{{tmpl($item.data.descriptions()) "#norbuFeatureListTemplate" }}</ul>
