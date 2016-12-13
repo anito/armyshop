@@ -641,6 +641,7 @@ footer.footer {
 }
 [class^="logo-"], [class*=" logo-"] {
   cursor: pointer;
+  z-index: 100000;
 }
 a{
   color: #fff;
