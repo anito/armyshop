@@ -627,6 +627,10 @@ body.fade.in.tools {
   width: 100%;
   line-height: 60px;
   color: #999;
+  moz-box-shadow: 0px 0px 2px #000;
+  -webkit-box-shadow: 0px 0px 2px #000;
+  box-shadow: 0px 0px 2px #000;
+  
 }
 footer.footer {
   z-index: 9999;
