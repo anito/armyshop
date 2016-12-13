@@ -99,11 +99,11 @@ class ProductsList extends Spine.Controller
     e.stopPropagation()
       
   zoom: (e) ->
-    item = $(e.currentTarget).item() or @models.record
+    item = if e.type is 'click' then $(e.currentTarget).item() else @models.record
     
     @parent.stopInfo()
     
-    @navigate '/category', Category.record?.id or '', item?.id or '', iid = if (iid = item?.selectionList().first()) then 'iid/' + iid else null
+    @navigate '/category', Category.record?.id or '', item?.id or '', iid = if (iid = item.selectionList().first()) then 'iid/' + iid else null
     
     e.preventDefault()
     e.stopPropagation()

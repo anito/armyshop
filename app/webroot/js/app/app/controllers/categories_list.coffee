@@ -123,7 +123,7 @@ class CategoriesList extends Spine.Controller
     el.dropdown()
     
   zoom: (e) ->
-    item = $(e.currentTarget).item() or @models.record
+    item = if e.type is 'click' then $(e.currentTarget).item() else @models.record
     
     if cid = item?.id
       @navigate '/category', cid, pid = if (pid = Category.record?.selectionList().first()) then 'pid/' + pid else null

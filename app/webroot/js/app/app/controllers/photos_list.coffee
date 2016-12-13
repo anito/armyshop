@@ -134,7 +134,7 @@ class PhotosList extends Spine.Controller
     e.preventDefault()
     
   zoom: (e) ->
-    item = $(e.currentTarget).item() or @models.record
+    item = if e.type is 'click' then $(e.currentTarget).item() else @models.record
     
     @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', item.id or null
     

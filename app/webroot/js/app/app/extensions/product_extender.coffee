@@ -22,15 +22,15 @@ Controller.ProductExtender =
         deferredProcess = (product) =>
           @log 'deferredProcess'
           deferred = $.Deferred()
-          all = product.photos()
-          n = if (n = all.length) is 1 then n else 4
+          photos = product.photos(4)
+          n = if (n = photos.length) is 1 then n else 4
           single = !!(n is 1)
           args = if single then [140, 140] else [68, 68]
-          sorted = all.sort Photo.sortByReverseOrder
-          data = sorted.slice(0, n)
+          photos = photos.sort Photo.sortByReverseOrder
+#          photos = sorted.slice(0, n)
           product.single = single
 
-          @callDeferred data, @uriSettings(args...), (xhr) -> deferred.resolve(xhr, product)
+          @callDeferred photos, @uriSettings(args...), (xhr) -> deferred.resolve(xhr, product)
 #          @callDeferred data, product.to, (xhr) -> deferred.resolve(xhr, product)
 
           deferred.promise()

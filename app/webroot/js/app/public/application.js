@@ -27003,7 +27003,7 @@ Released under the MIT License
 
     CategoriesList.prototype.zoom = function(e) {
       var cid, item, pid, ref;
-      item = $(e.currentTarget).item() || this.models.record;
+      item = e.type === 'click' ? $(e.currentTarget).item() : this.models.record;
       if (cid = item != null ? item.id : void 0) {
         this.navigate('/category', cid, pid = (pid = (ref = Category.record) != null ? ref.selectionList().first() : void 0) ? 'pid/' + pid : null);
       } else {
@@ -29814,7 +29814,7 @@ Released under the MIT License
 
     PhotosList.prototype.zoom = function(e) {
       var item, ref, ref1;
-      item = $(e.currentTarget).item() || this.models.record;
+      item = e.type === 'click' ? $(e.currentTarget).item() : this.models.record;
       this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) || '', item.id || null);
       e.stopPropagation();
       return e.preventDefault();
@@ -31612,9 +31612,9 @@ Released under the MIT License
 
     ProductsList.prototype.zoom = function(e) {
       var iid, item, ref;
-      item = $(e.currentTarget).item() || this.models.record;
+      item = e.type === 'click' ? $(e.currentTarget).item() : this.models.record;
       this.parent.stopInfo();
-      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', (item != null ? item.id : void 0) || '', iid = (iid = item != null ? item.selectionList().first() : void 0) ? 'iid/' + iid : null);
+      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', (item != null ? item.id : void 0) || '', iid = (iid = item.selectionList().first()) ? 'iid/' + iid : null);
       e.preventDefault();
       return e.stopPropagation();
     };
@@ -38705,17 +38705,16 @@ Released under the MIT License
           this.log('renderBackgrounds');
           deferredProcess = (function(_this) {
             return function(product) {
-              var all, args, data, deferred, n, single, sorted;
+              var args, deferred, n, photos, single;
               _this.log('deferredProcess');
               deferred = $.Deferred();
-              all = product.photos();
-              n = (n = all.length) === 1 ? n : 4;
+              photos = product.photos(4);
+              n = (n = photos.length) === 1 ? n : 4;
               single = !!(n === 1);
               args = single ? [140, 140] : [68, 68];
-              sorted = all.sort(Photo.sortByReverseOrder);
-              data = sorted.slice(0, n);
+              photos = photos.sort(Photo.sortByReverseOrder);
               product.single = single;
-              _this.callDeferred(data, _this.uriSettings.apply(_this, args), function(xhr) {
+              _this.callDeferred(photos, _this.uriSettings.apply(_this, args), function(xhr) {
                 return deferred.resolve(xhr, product);
               });
               return deferred.promise();
@@ -42478,16 +42477,13 @@ Released under the MIT License
 
     Product.photos = function(id, max) {
       var filterOptions, photos, ret;
-      if (max == null) {
-        max = 1;
-      }
       max = max <= 0 ? 1 : max;
       filterOptions = {
         model: 'Product',
         sort: 'sortByReverseOrder'
       };
       photos = Photo.filterRelated(id, filterOptions);
-      ret = photos.slice(0, max);
+      ret = max ? photos.slice(0, max) : photos;
       return ret;
     };
 
@@ -42739,9 +42735,6 @@ Released under the MIT License
     };
 
     Product.prototype.photos = function(max) {
-      if (max == null) {
-        max = 1;
-      }
       return this.constructor.photos(this.id, max);
     };
 

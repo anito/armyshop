@@ -350,7 +350,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <h3 class="pricing__title">${$().name(title, 60)}</h3>
     <p class="pricing__sentence">${$().name(subtitle, 80)}</p>
     <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
-      {{tmpl($item.data.photos()) "#norbuImageListTemplate" }}
+      {{tmpl($item.data.photos) "#norbuImageListTemplate" }}
     </div>
     <div class="pricing__feature-list">
       <ul class="">{{tmpl($item.data.descriptions()) "#norbuFeatureListTemplate" }}</ul>
