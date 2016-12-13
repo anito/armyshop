@@ -285,7 +285,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
   </footer>
   <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away hidemobile"></iframe>
   <!-- modal-dialogue -->
-  <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="z-index: 10000;"></div>
+  <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="z-index: 99999;"></div>
   <!-- /.modal -->
   <script>
 
