@@ -41093,6 +41093,7 @@ Released under the MIT License
         return this.contentEl.addClass('fade');
       };
       redirectFunc = function() {
+        this.log('redirect: admin' + location.hash);
         return User.redirect('admin' + location.hash);
       };
       this.delay(fadeFunc, 2000);
@@ -44034,7 +44035,6 @@ Released under the MIT License
     User.prototype.logoutRedirect = function(json) {
       var flash;
       json = $.parseJSON(json);
-      console.log(json);
       Flash.fetch();
       flash = Flash.first() || new Flash;
       flash.updateAttributes(json);

@@ -62,6 +62,7 @@ class Login extends Spine.Controller
     fadeFunc = ->
       @contentEl.addClass('fade')
     redirectFunc = ->
+      @log 'redirect: admin'+location.hash
       User.redirect 'admin'+location.hash
     @delay fadeFunc, 2000
     @delay redirectFunc, 2000

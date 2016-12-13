@@ -50,7 +50,6 @@ class User extends Spine.Model
   
   logoutRedirect: (json) ->
     json = $.parseJSON json
-    console.log json
     Flash.fetch()
     flash = Flash.first() or new Flash
     flash.updateAttributes json
