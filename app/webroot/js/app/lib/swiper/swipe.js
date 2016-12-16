@@ -19,7 +19,7 @@ function pricingSlider() {
         paginationClickable: true,
         nextButton: ".swiper-button-next",
         prevButton: ".swiper-button-prev",
-        effect: "cube",
+        effect: "fade",
         fade: {
           crossFade: true
         },
