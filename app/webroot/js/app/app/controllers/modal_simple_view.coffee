@@ -43,7 +43,6 @@ class ModalSimpleView extends Spine.Controller
     
   render: ->
     @html @template @renderOptions
-    @refreshElements()
     @el
       
   show: ->

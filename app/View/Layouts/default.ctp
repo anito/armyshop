@@ -51,6 +51,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("touch", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/style", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/custom", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+//    echo $this->Html->css("swiper/swipe");//, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/swiper.min");//, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("spine");
     
@@ -336,7 +337,18 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       <p class="h5 pricing__sentence">{{if subtitle}}${$().name(subtitle, 80)}{{else}}<hr>{{/if}}</p>
       <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
         {{if link}}<a href="${link}" target="_blank" class="slides" aria-disabled="false">{{/if}}
-        {{tmpl(p=photos(1, 'norbuPricingDetailsTemplate_')) "#norbuImageListTemplate" }}
+        <div class="swiper-container-details swiper-container-horizontal">
+          <div class="swiper-wrapper">
+          {{tmpl(p=photos()) "#norbuImageListTemplate" }}
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+            <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
+          </div>
+          <!-- Add Arrows -->
+          <div class="swiper-button-next hidemobile"></div>
+          <div class="swiper-button-prev hidemobile"></div>
+        </div>
         {{if link}}</a>{{/if}}
       </div>
       <ul class="pricing__feature-list">{{tmpl(descriptions()) "#norbuFeatureListTemplate" }}</ul>

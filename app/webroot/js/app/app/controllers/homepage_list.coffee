@@ -22,6 +22,8 @@ class HomepageList extends Spine.Controller
     
   render: (items) ->
     @html @template items
+    @refreshElements()
+    @el
     
   click: (e) ->
     item = $(e.currentTarget).parents('.pricing__item').item()

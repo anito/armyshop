@@ -27633,7 +27633,9 @@ Released under the MIT License
     }
 
     HomepageList.prototype.render = function(items) {
-      return this.html(this.template(items));
+      this.html(this.template(items));
+      this.refreshElements();
+      return this.el;
     };
 
     HomepageList.prototype.click = function(e) {
@@ -27717,27 +27719,32 @@ Released under the MIT License
     };
 
     HomepageView.prototype.render = function() {
-      var i, len, product, products, results;
+      var j, len, p, product, products, results;
       if (!this.current) {
         return;
       }
       products = Category.publishedProducts(this.current.id);
       this.list.render(products);
       results = [];
-      for (i = 0, len = products.length; i < len; i++) {
-        product = products[i];
-        results.push(this.callDeferred(product.photos(), this.uriSettings(300, 300), this.proxy(this.callback)));
+      for (j = 0, len = products.length; j < len; j++) {
+        product = products[j];
+        this.callDeferred(p = product.photos(), this.uriSettings(300, 300), this.proxy(this.callback));
+        if (p.length > 1) {
+          results.push(pricingSlider(product.id));
+        } else {
+          results.push(void 0);
+        }
       }
       return results;
     };
 
     HomepageView.prototype.callback = function(json, items) {
-      var i, jsn, key, len, res, result, results, ret, val;
+      var idx, j, jsn, key, len, res, result, results, ret, val;
       result = (function() {
-        var i, len, results;
+        var j, len, results;
         results = [];
-        for (i = 0, len = json.length; i < len; i++) {
-          jsn = json[i];
+        for (j = 0, len = json.length; j < len; j++) {
+          jsn = json[j];
           ret = (function() {
             var results1;
             results1 = [];
@@ -27755,20 +27762,21 @@ Released under the MIT License
         return results;
       })();
       results = [];
-      for (i = 0, len = result.length; i < len; i++) {
-        res = result[i];
-        pricingSlider();
-        results.push(this.snap(res));
+      for (idx = j = 0, len = result.length; j < len; idx = ++j) {
+        res = result[idx];
+        results.push(this.snap(res, result.length, idx));
       }
       return results;
     };
 
-    HomepageView.prototype.snap = function(res) {
+    HomepageView.prototype.snap = function(res, l, i) {
       var img, imgEl;
       imgEl = $('#' + res.id + ' img', this.el);
       img = this.createImage();
       img.imgEl = imgEl;
-      img["this"] = this;
+      img.l = l;
+      img.i = i;
+      img.me = this;
       img.res = res;
       img.onload = this.onLoad;
       img.onerror = this.onError;
@@ -27777,7 +27785,13 @@ Released under the MIT License
 
     HomepageView.prototype.onLoad = function() {
       this.imgEl.attr('src', this.src).removeClass('load');
-      return this.imgEl.addClass('in');
+      this.imgEl.addClass('in');
+      if (this.i === this.l - 1) {
+        this.me.log('all loaded');
+      }
+      if (0 && (this.i === this.l - 1)) {
+        return setTimeout(pricingSlider, 300);
+      }
     };
 
     HomepageView.prototype.onError = function(e) {};
@@ -28254,7 +28268,6 @@ Released under the MIT License
 
     ModalSimpleView.prototype.render = function() {
       this.html(this.template(this.renderOptions));
-      this.refreshElements();
       return this.el;
     };
 
@@ -40233,8 +40246,11 @@ Released under the MIT License
     };
 
     function App() {
+      this.shownmodal = bind(this.shownmodal, this);
       this.showmodaldetails = bind(this.showmodaldetails, this);
       this.showmodal = bind(this.showmodal, this);
+      this.hiddenmodal = bind(this.hiddenmodal, this);
+      this.hidemodal = bind(this.hidemodal, this);
       var setting;
       App.__super__.constructor.apply(this, arguments);
       this.modal = {
@@ -40640,7 +40656,7 @@ Released under the MIT License
       dialog.el.one('hidden.bs.modal', this.proxy(this.hiddenmodal));
       dialog.el.one('hide.bs.modal', this.proxy(this.hidemodal));
       dialog.el.one('show.bs.modal', this.proxy(this.showmodaldetails));
-      dialog.el.bind('shown.bs.modal', this.proxy(this.shownmodal));
+      dialog.el.one('shown.bs.modal', this.proxy(this.shownmodal));
       return dialog.show();
     };
 
@@ -40649,22 +40665,19 @@ Released under the MIT License
     };
 
     App.prototype.hiddenmodal = function(e) {
-      this.log('hiddenmodal');
-      return this.modal.exists = false;
+      return this.log('hiddenmodal');
     };
 
     App.prototype.showmodal = function(e) {
-      this.log('showmodal');
-      return this.modal.exists = true;
+      return this.log('showmodal');
     };
 
     App.prototype.showmodaldetails = function(e) {
-      var cb;
+      var cb, p;
       this.log('showmodal');
-      this.modal.exists = true;
       cb = (function(_this) {
         return function(json, items) {
-          var j, jsn, key, len, onError, onLoad, res, result, results, ret, snap, val;
+          var idx, j, jsn, key, len, onError, onLoad, res, result, results, ret, snap, val;
           result = (function() {
             var j, len, results;
             results = [];
@@ -40691,28 +40704,36 @@ Released under the MIT License
           };
           onLoad = function() {
             this.imgEl.attr('src', this.src).removeClass('load');
-            return this.imgEl.addClass('in');
+            this.imgEl.addClass('in');
+            if (this.i === this.l - 1) {
+              this.me.log('all loaded');
+            }
+            if ((this.l - 1) && (this.i === this.l - 1)) {
+              return setTimeout(detailsSlider, 300);
+            }
           };
-          snap = function(res) {
+          snap = function(res, l, i) {
             var img, imgEl;
             imgEl = $('#' + res.id + ' img', _this.el);
             img = _this.createImage();
             img.imgEl = imgEl;
-            img["this"] = _this;
+            img.l = l;
+            img.i = i;
+            img.me = _this;
             img.res = res;
             img.onload = onLoad;
             img.onerror = onError;
             return img.src = res.src;
           };
           results = [];
-          for (j = 0, len = result.length; j < len; j++) {
-            res = result[j];
-            results.push(snap(res));
+          for (idx = j = 0, len = result.length; j < len; idx = ++j) {
+            res = result[idx];
+            results.push(snap(res, result.length, idx));
           }
           return results;
         };
       })(this);
-      return this.callDeferred(this.product.photos(1), this.uriSettings(740, 740), cb);
+      return this.callDeferred(p = this.product.photos(), this.uriSettings(740, 740), cb);
     };
 
     App.prototype.shownmodal = function(e) {

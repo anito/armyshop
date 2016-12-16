@@ -136,3 +136,9 @@ i.ebay {
 .close {
   font-size: 3.5rem;
 }
+*:not(.swiper) > .swiper-pagination {
+  display: none;
+}
+.swiper .swiper-wrapper {
+  margin-bottom: 35px;
+}

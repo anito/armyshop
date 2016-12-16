@@ -13,19 +13,39 @@ function pricingSlider_() {
         }
     })
 }
-function pricingSlider() {
-    var e = new Swiper(".swiper-container-pricing",{
+function pricingSlider(id) {
+    var query = $('#'+id + " .swiper-container-pricing");
+    query.addClass('swiper')
+    var e = new Swiper(query[0], {
         pagination: ".swiper-pagination",
         paginationClickable: true,
         nextButton: ".swiper-button-next",
         prevButton: ".swiper-button-prev",
         effect: "fade",
         fade: {
-          crossFade: true
+          crossFade: false
         },
         loop: true,
-//        autoplay: 6e3
+        autoplay: 6e3
     })
+    return e;
+}
+function detailsSlider() {
+    var query = $(".swiper-container-details");
+    query.addClass('swiper')
+    var e = new Swiper(query[0], {
+        pagination: ".swiper-pagination",
+        paginationClickable: true,
+        nextButton: ".swiper-button-next",
+        prevButton: ".swiper-button-prev",
+        effect: "fade",
+        fade: {
+          crossFade: false
+        },
+        loop: true,
+        autoplay: 6e3
+    })
+    return e;
 }
 function testimonialSlider2() {
     var e = new Swiper(".swiper-container-testimonial-2",{

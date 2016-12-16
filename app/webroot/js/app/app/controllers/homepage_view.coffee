@@ -50,7 +50,10 @@ class HomepageView extends Spine.Controller
     return unless @current
     products = Category.publishedProducts @current.id
     @list.render products
-    (@callDeferred product.photos(), @uriSettings(300, 300), @proxy @callback) for product in products
+    for product in products
+      (@callDeferred p = product.photos(), @uriSettings(300, 300), @proxy @callback)
+      if p.length > 1
+        pricingSlider(product.id)
 
   callback: (json, items) ->
     result = for jsn in json
@@ -59,15 +62,16 @@ class HomepageView extends Spine.Controller
         id: key
       ret[0]
 
-    for res in result
-      pricingSlider()
-      @snap(res)
+    for res, idx in result
+      @snap(res, result.length, idx)
 
-  snap: (res) ->
+  snap: (res, l, i) ->
     imgEl = $('#'+res.id+' img', @el)
     img = @createImage()
     img.imgEl = imgEl
-    img.this = @
+    img.l = l
+    img.i = i
+    img.me = @
     img.res = res
     img.onload = @onLoad
     img.onerror = @onError
@@ -76,6 +80,9 @@ class HomepageView extends Spine.Controller
   onLoad: ->
     @imgEl.attr('src', @src).removeClass('load')
     @imgEl.addClass('in')
+    @me.log 'all loaded' if @i is @l-1
+    if 0 and (@i is @l-1)
+      setTimeout(pricingSlider, 300)
 
   onError: (e) ->
     

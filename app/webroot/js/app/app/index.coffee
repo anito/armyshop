@@ -383,24 +383,21 @@ class App extends Spine.Controller
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodaldetails)
-    dialog.el.bind('shown.bs.modal', @proxy @shownmodal)
+    dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
     dialog.show()
     
-  hidemodal: (e) ->
+  hidemodal: (e) =>
     @navigate '/'
     
-  hiddenmodal: (e) ->
+  hiddenmodal: (e) =>
     @log 'hiddenmodal'
-    @modal.exists = false
     
   showmodal: (e) =>
     @log 'showmodal'
-    @modal.exists = true
     
   showmodaldetails: (e) =>
     @log 'showmodal'
-    @modal.exists = true
     cb = (json, items) =>
       result = for jsn in json
         ret = for key, val of jsn
@@ -412,23 +409,30 @@ class App extends Spine.Controller
       onLoad = ->
         @imgEl.attr('src', @src).removeClass('load')
         @imgEl.addClass('in')
+        @me.log 'all loaded' if @i is @l-1
+        if (@l-1) and (@i is @l-1)
+          setTimeout(detailsSlider, 300)
       
-      snap = (res) =>
+      snap = (res, l, i) =>
         imgEl = $('#'+res.id+' img', @el)
         img = @createImage()
         img.imgEl = imgEl
-        img.this = @
+        img.l = l
+        img.i = i
+        img.me = @
         img.res = res
         img.onload = onLoad
         img.onerror = onError
         img.src = res.src
 
-      for res in result
-        snap(res)
-
-    @callDeferred @product.photos(1), @uriSettings(740, 740), cb
+      for res, idx in result
+        snap(res, result.length, idx)
       
-  shownmodal: (e) ->
+    @callDeferred p = @product.photos(), @uriSettings(740, 740), cb
+#    if p.length > 1
+#        detailsSlider(@product.id)
+      
+  shownmodal: (e) =>
     @log 'shownmodal'
     
   redirectHome: -> location.href = '/'
