@@ -1,0 +1,7 @@
+
+*:not(.swiper) > .swiper-pagination, *:not(.swiper) > [class*="swiper-button-"] {
+  display: none;
+}
+.swiper .swiper-wrapper {
+  margin-bottom: 35px;
+}

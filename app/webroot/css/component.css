@@ -99,6 +99,7 @@
   border-radius: 0px 0px 0 0;
   transition: flex 0.3s;
   max-width: 390px;
+  min-width: 390px;
 }
 
 .pricing__feature-list {

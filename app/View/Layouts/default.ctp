@@ -51,7 +51,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("touch", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/style", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/custom", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-//    echo $this->Html->css("swiper/swipe");//, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+    echo $this->Html->css("swiper/myswipe");//, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/swiper.min");//, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("spine");
     
@@ -373,8 +373,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
         </div>
         <!-- Add Arrows -->
-        <div class="swiper-button-next hidemobile"></div>
-        <div class="swiper-button-prev hidemobile"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
       </div>
     </div>
     <div class="pricing__feature-list">
