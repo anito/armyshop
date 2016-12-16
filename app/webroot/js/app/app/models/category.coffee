@@ -66,7 +66,7 @@ class Category extends Spine.Model
     filterOptions =
       func: 'selectNotIgnored'
     ret = []
-    cps = CategoriesProduct.filter(id, filterOptions)
+    cps = CategoriesProduct.filterSortByOrder(id, filterOptions)
     ret.push Product.find(cp.product_id) for cp in cps
     ret
 

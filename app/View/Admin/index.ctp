@@ -623,7 +623,7 @@
       </span>
     </div>
     <div class="titles">
-      <div class="title">{{if title}}${$().name(title, 250)}{{/if}}</div>
+      <div class="title">{{if title}}${$().name(title, 250)}{{/if}}${order}</div>
       <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 1200)}}{{/if}}</div>
         {{if validUrl()}}<a href="${link}" target="_blank">{{/if}}
         <section class="info-badges">
