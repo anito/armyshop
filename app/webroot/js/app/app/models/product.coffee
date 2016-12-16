@@ -68,7 +68,7 @@ class Product extends Spine.Model
       model: 'Product'
       sort: 'sortByReverseOrder'
     photos = Photo.filterRelated(id, filterOptions)
-    ret = if max then photos[0...max] else photos
+    ret = photos[0...max]
     ret
     
   @descriptions: (id) ->

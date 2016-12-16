@@ -27619,8 +27619,10 @@ Released under the MIT License
     };
 
     HomepageList.prototype.events = {
-      'click .pricing__item': 'click'
+      'click .pricing__item img': 'click'
     };
+
+    HomepageList.prototype.test = function() {};
 
     HomepageList.prototype.template = function(item) {
       return $('#norbuPricingTemplate').tmpl(item);
@@ -27628,43 +27630,6 @@ Released under the MIT License
 
     function HomepageList() {
       HomepageList.__super__.constructor.apply(this, arguments);
-      this.options = {
-        width: 500,
-        height: 500,
-        play: {
-          active: true,
-          effect: "slide",
-          interval: 5000,
-          auto: true,
-          swap: true,
-          pauseOnHover: false,
-          restartDelay: 2500
-        },
-        callback: {
-          loaded: function(n) {
-            return console.log(n + 'loaded ');
-          },
-          start: function(n) {
-            return console.log(this);
-          },
-          complete: function(n) {
-            return console.log(n);
-          }
-        },
-        pagination: {
-          active: false,
-          effect: "slide"
-        },
-        effect: {
-          slide: {
-            speed: 200
-          },
-          fade: {
-            speed: 200,
-            crossfade: true
-          }
-        }
-      };
     }
 
     HomepageList.prototype.render = function(items) {
@@ -27672,21 +27637,9 @@ Released under the MIT License
     };
 
     HomepageList.prototype.click = function(e) {
-      var id, item;
-      id = $(e.currentTarget).data('id');
-      item = $(e.currentTarget).item();
+      var item;
+      item = $(e.currentTarget).parents('.pricing__item').item();
       return this.navigate('/item', item.id);
-    };
-
-    HomepageList.prototype.createSlides = function(items) {
-      var i, item, len, photos, results;
-      results = [];
-      for (i = 0, len = items.length; i < len; i++) {
-        item = items[i];
-        photos = item.photos;
-        results.push($('#' + item.product.id, this.el).slidesjs(this.options));
-      }
-      return results;
     };
 
     return HomepageList;
@@ -27699,7 +27652,7 @@ Released under the MIT License
 
 }).call(this);
 }, "controllers/homepage_view": function(exports, require, module) {(function() {
-  var $, Category, Extender, HomepageList, HomepageView, Spine, UriHelper,
+  var $, CategoriesProduct, Category, Extender, HomepageList, HomepageView, Spine, UriHelper,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -27708,6 +27661,8 @@ Released under the MIT License
   $ = Spine.$;
 
   Category = require('models/category');
+
+  CategoriesProduct = require('models/categories_product');
 
   Extender = require('extensions/controller_extender');
 
@@ -27751,11 +27706,7 @@ Released under the MIT License
     };
 
     HomepageView.prototype.refreshOne = function() {
-      this.tracker = [1, 2, 3, 4];
-      Photo.one('refresh', this.proxy(this.untrackBinds));
-      Description.one('refresh', this.proxy(this.untrackBinds));
-      Product.one('refresh', this.proxy(this.untrackBinds));
-      return Category.one('refresh', this.proxy(this.untrackBinds));
+      return this.tracker = [Photo.one('refresh', this.proxy(this.untrackBinds)), Description.one('refresh', this.proxy(this.untrackBinds)), Product.one('refresh', this.proxy(this.untrackBinds)), Category.one('refresh', this.proxy(this.untrackBinds))];
     };
 
     HomepageView.prototype.untrackBinds = function(arr) {
@@ -27770,12 +27721,12 @@ Released under the MIT License
       if (!this.current) {
         return;
       }
-      products = Category.products(this.current.id);
+      products = Category.publishedProducts(this.current.id);
       this.list.render(products);
       results = [];
       for (i = 0, len = products.length; i < len; i++) {
         product = products[i];
-        results.push(this.callDeferred(product.photos(1), this.uriSettings(300, 300), this.proxy(this.callback)));
+        results.push(this.callDeferred(product.photos(), this.uriSettings(300, 300), this.proxy(this.callback)));
       }
       return results;
     };
@@ -27806,6 +27757,7 @@ Released under the MIT License
       results = [];
       for (i = 0, len = result.length; i < len; i++) {
         res = result[i];
+        pricingSlider();
         results.push(this.snap(res));
       }
       return results;
@@ -41552,11 +41504,17 @@ Released under the MIT License
     };
 
     Category.publishedProducts = function(id) {
-      var filterOptions;
+      var cp, cps, filterOptions, i, len, ret;
       filterOptions = {
         func: 'selectNotIgnored'
       };
-      return CategoriesProduct.filter(id, filterOptions);
+      ret = [];
+      cps = CategoriesProduct.filter(id, filterOptions);
+      for (i = 0, len = cps.length; i < len; i++) {
+        cp = cps[i];
+        ret.push(Product.find(cp.product_id));
+      }
+      return ret;
     };
 
     Category.selectedProductsHasPhotos = function() {
@@ -42483,7 +42441,7 @@ Released under the MIT License
         sort: 'sortByReverseOrder'
       };
       photos = Photo.filterRelated(id, filterOptions);
-      ret = max ? photos.slice(0, max) : photos;
+      ret = photos.slice(0, max);
       return ret;
     };
 

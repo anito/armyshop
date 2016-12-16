@@ -1,24 +1,30 @@
-function heroSlider() {
-    var e = new Swiper(".swiper-container-hero",{
-        pagination: ".swiper-pagination-hero",
+function pricingSlider_() {
+    var e = new Swiper(".swiper-container-pricing",{
+        pagination: ".swiper-pagination",
         paginationClickable: !0,
         nextButton: ".swiper-button-next",
         prevButton: ".swiper-button-prev",
-        loop: !0,
+        loop: true,
         autoplay: 6e3,
-        speed: 800,
         effect: "fade",
+        speed: 800,
         fade: {
             crossFade: !1
         }
     })
 }
-function testimonialSlider() {
-    var e = new Swiper(".swiper-container-testimonial",{
-        pagination: ".swiper-pagination-testimonial",
-        paginationClickable: !0,
+function pricingSlider() {
+    var e = new Swiper(".swiper-container-pricing",{
+        pagination: ".swiper-pagination",
+        paginationClickable: true,
         nextButton: ".swiper-button-next",
-        prevButton: ".swiper-button-prev"
+        prevButton: ".swiper-button-prev",
+        effect: "cube",
+        fade: {
+          crossFade: true
+        },
+        loop: true,
+//        autoplay: 6e3
     })
 }
 function testimonialSlider2() {

@@ -221,9 +221,7 @@ Configure::write('Routing.prefixes', array('admin'));
 	Configure::write('Session', array(
 		'defaults' => 'cache',
     'cookie' => 'LEHMANN',
-    'timeout' => 3600,
-    'autoRegenerate' => FALSE,
-    'countdown' => 20
+    'timeout' => 3600
 	));
 
 /**

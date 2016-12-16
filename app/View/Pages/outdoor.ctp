@@ -164,12 +164,6 @@
         </div>
 
       </div>
-
-      <script>
-      <!--
-      testimonialSlider();
-      //-->
-      </script>
       
     </div><!-- .content -->
 

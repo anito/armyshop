@@ -65,7 +65,10 @@ class Category extends Spine.Model
   @publishedProducts: (id) ->
     filterOptions =
       func: 'selectNotIgnored'
-    CategoriesProduct.filter(id, filterOptions)
+    ret = []
+    cps = CategoriesProduct.filter(id, filterOptions)
+    ret.push Product.find(cp.product_id) for cp in cps
+    ret
 
   @selectedProductsHasPhotos: ->
     products = Product.toRecords @selectionList()

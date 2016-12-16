@@ -75,7 +75,6 @@
               <!-- seitennavi_links -->
 
               <!-- module_seitennavi -->
-              <div id=""></div> 
               <h2 class="p1"><span class="s1">Search Engine Advertising (SEA) steht für bezahlte Anzeigen auf den Ergebnisseiten von Suchmaschinen. SEA ist eine der effizientesten Möglichkeiten, Produkte oder Dienstleistungen zu vermarkten.</span></h2>
               <p class="p1"><span class="s1">Eine Erfolgskontrolle und Optimierung anhand von Echtzeitdaten ermöglicht ein sehr schnelles Reagieren auf sich ändernde Gegebenheiten. Die mit Abstand wichtigste Plattform für SEA ist <a href="https://www.ranking-check.de/paid-advertising/google-adwords/">Google AdWords</a>. Darüber hinaus spielen die Werbeprogramme bei Bing, Yahoo, Yandex und Baidu eine Rolle.</span></p>
               <p><strong>Unsere SEA Leistungen:</strong></p>
@@ -163,12 +162,6 @@
 
       </div>
 
-      <script>
-      <!--
-      testimonialSlider();
-      //-->
-      </script>
-      
     </div><!-- .content -->
 
   </div>

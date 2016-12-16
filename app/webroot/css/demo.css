@@ -104,6 +104,10 @@
 @media screen and (min-width:800px) {
   .hal .pricing {
     padding-right: 64px;
+    display: flex;
+    flex: 0 1 300px;
+    flex-wrap: wrap;
+    align-items: center;
   }
 }
 @media screen and (max-width:800px) {

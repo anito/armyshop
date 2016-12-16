@@ -1,6 +1,7 @@
 Spine     = require("spine")
 $         = Spine.$
 Category  = require('models/category')
+CategoriesProduct  = require('models/categories_product')
 Extender  = require('extensions/controller_extender')
 UriHelper = require('extensions/uri_helper')
 HomepageList  = require('controllers/homepage_list')
@@ -34,11 +35,12 @@ class HomepageView extends Spine.Controller
     @render()
     
   refreshOne: ->
-    @tracker = [1,2,3,4]
-    Photo.one('refresh', @proxy @untrackBinds)
-    Description.one('refresh', @proxy @untrackBinds)
-    Product.one('refresh', @proxy @untrackBinds)
-    Category.one('refresh', @proxy @untrackBinds)
+    @tracker = [
+      Photo.one('refresh', @proxy @untrackBinds)
+      Description.one('refresh', @proxy @untrackBinds)
+      Product.one('refresh', @proxy @untrackBinds)
+      Category.one('refresh', @proxy @untrackBinds)
+    ]
     
   untrackBinds: (arr) ->
     @tracker.pop()
@@ -46,10 +48,10 @@ class HomepageView extends Spine.Controller
     
   render: ->
     return unless @current
-    products = Category.products @current.id
+    products = Category.publishedProducts @current.id
     @list.render products
-    (@callDeferred product.photos(1), @uriSettings(300, 300), @proxy @callback) for product in products
-    
+    (@callDeferred product.photos(), @uriSettings(300, 300), @proxy @callback) for product in products
+
   callback: (json, items) ->
     result = for jsn in json
       ret = for key, val of jsn
@@ -58,6 +60,7 @@ class HomepageView extends Spine.Controller
       ret[0]
 
     for res in result
+      pricingSlider()
       @snap(res)
 
   snap: (res) ->

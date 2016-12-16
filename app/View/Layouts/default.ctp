@@ -51,7 +51,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("touch", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/style", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/custom", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-    echo $this->Html->css("swiper/swiper.min", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+    echo $this->Html->css("swiper/swiper.min");//, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("spine");
     
 //    jQuery first, then Tether, then Bootstrap JS.
@@ -206,13 +206,16 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
     <div class="menu-seitenmenue-unten-container">
       <ul id="menu-seitenmenue-unten" class="menu">
-        <li id="" class="menu-item-has-children misc"><a href="#">Rechtliches</a></li>
-        <li id=""><a href="#" class="opt-imp menu-push-to-close">Impressum</a></li>
-        <li id=""><a href="#" class="opt-del menu-push-to-close">Versand</a></li>
-        <li id=""><a href="#" class="opt-pay menu-push-to-close">Zahlungsmöglichkeiten</a></li>
-        <li id=""><a href="#" class="opt-privacy menu-push-to-close">Datenschutz</a></li>
-        <li id=""><a href="#"  class="opt-revocation menu-push-to-close">Widerrufsbelehrung</a></li>
-        <li id=""><a href="#"  class="opt-agb menu-push-to-close">AGB</a></li>
+        <li id="" class="menu-item-has-children misc"><a href="#">Rechtliches</a>
+          <ul class="sub-menu">
+            <li id=""><a href="#" class="opt-imp menu-push-to-close">Impressum</a></li>
+            <li id=""><a href="#" class="opt-del menu-push-to-close">Versand</a></li>
+            <li id=""><a href="#" class="opt-pay menu-push-to-close">Zahlungsmöglichkeiten</a></li>
+            <li id=""><a href="#" class="opt-privacy menu-push-to-close">Datenschutz</a></li>
+            <li id=""><a href="#"  class="opt-revocation menu-push-to-close">Widerrufsbelehrung</a></li>
+            <li id=""><a href="#"  class="opt-agb menu-push-to-close">AGB</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </nav>
@@ -333,10 +336,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       <p class="h5 pricing__sentence">{{if subtitle}}${$().name(subtitle, 80)}{{else}}<hr>{{/if}}</p>
       <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
         {{if link}}<a href="${link}" target="_blank" class="slides" aria-disabled="false">{{/if}}
-        {{tmpl($item.data.photos(1)) "#norbuImageListTemplate" }}
+        {{tmpl(p=photos(1, 'norbuPricingDetailsTemplate_')) "#norbuImageListTemplate" }}
         {{if link}}</a>{{/if}}
       </div>
-      <ul class="pricing__feature-list">{{tmpl($item.data.descriptions()) "#norbuFeatureListTemplate" }}</ul>
+      <ul class="pricing__feature-list">{{tmpl(descriptions()) "#norbuFeatureListTemplate" }}</ul>
       {{if link}}
       <a href="${link}}" target="_blank" class="pricing__action ebay btn-dark col-md-6" role="button" aria-disabled=""><i class="ebay"></i>Zum Shop</a>
       {{/if}}
@@ -345,28 +348,47 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </script>
 
 <script id="norbuPricingTemplate" type="text/x-tmpl">
-  {{if !ignored}}
   <div id="${id}" data-id="${id}" class="pricing__item">
     <h3 class="pricing__title">${$().name(title, 60)}</h3>
     <p class="pricing__sentence">${$().name(subtitle, 80)}</p>
     <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
-      {{tmpl($item.data.photos(1)) "#norbuImageListTemplate" }}
+      <div class="swiper-container-pricing swiper-container-horizontal">
+        <div class="swiper-wrapper">
+          {{tmpl(p=photos()) "#norbuImageListTemplate" }}
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+          <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
+        </div>
+        <!-- Add Arrows -->
+        <div class="swiper-button-next hidemobile"></div>
+        <div class="swiper-button-prev hidemobile"></div>
+      </div>
     </div>
     <div class="pricing__feature-list">
-      <ul class="">{{tmpl($item.data.descriptions()) "#norbuFeatureListTemplate" }}</ul>
+      <ul class="">{{tmpl(descriptions()) "#norbuFeatureListTemplate" }}</ul>
     </div>
     <a href="{{if link}}${link}{{else}}#{{/if}}" target="_blank" class="pricing__action btn-dark" role="button" aria-disabled="{{if link}}${link}{{else}}false{{/if}}">Zum Shop</a>
   </div>
-  {{/if}}
+</script>
+
+<script id="norbuImageListTemplate_" type="text/x-tmpl">
+  <div class="swiper-slide">Test ${id}</div>
 </script>
 
 <script id="norbuImageListTemplate" type="text/x-tmpl">
-  <div id="${id}" class="pricing__image"><img class="image load" src="/img/ajax-loader-66.gif"/></div>
+  <div class="swiper-slide">
+    <div id="${id}" class="pricing__image"><img class="image load" src="/img/ajax-loader-66.gif"/></div>
+  </div>
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">
   <li class="pricing__feature">{{html description}}</li>
 </script>
+
+
+
+
 
 <script id="refreshTemplate" type="text/x-tmpl">
   <a href="${location.hash}" class="opt-Refresh"><i class="glyphicon glyphicon-${icon}"></i></a>

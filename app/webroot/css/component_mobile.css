@@ -67,19 +67,19 @@
 }
 
 .pricing {
-  display: -webkit-flex;
+/*  display: -webkit-flex;
   display: flex;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   -webkit-justify-content: center;
   justify-content: center;
   width: 100%;
-  margin: 0 auto 3em;
+  margin: 0 auto 3em;*/
   font-size: 0.6em;
 }
 
 .pricing--norbu .pricing__item {
-  /*height: 320px;*/
+  min-height: 340px;
   position: relative;
 }
 
@@ -147,7 +147,7 @@
 .pricing--norbu .pricing__image {
   font-size: 0.55em;
   display: block;
-  padding: 0em;
+  padding: 0 0 2em;
   position: relative;
   min-height: 160px;
 }
@@ -195,7 +195,6 @@
   padding: 0; 
   font-weight: 400;
   height: 175px;
-  top: 0;
   z-index: 100;
   transition: top 0.3s;
 }

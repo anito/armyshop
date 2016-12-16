@@ -62,19 +62,20 @@
 .pricing--details .pricing__action {
   text-align: center;
   height: 50px;
+  width: 107%;
   line-height: 3em;
   margin-top: 25px;
 }
 
 .pricing {
-  display: -webkit-flex;
+/*  display: -webkit-flex;
   display: flex;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   -webkit-justify-content: center;
   justify-content: center;
   width: 100%;
-  margin: 0 auto 3em;
+  margin: 0 auto 3em;*/
   font-size: 0.6em;
 }
 
@@ -85,18 +86,19 @@
 
 .pricing__item {
   margin: 0.5em;
-  display: -webkit-flex;
+/*  display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
   flex-direction: column;
   -webkit-align-items: stretch;
   align-items: stretch;
+  flex: 0 1 300px; */
   text-align: center;
-  flex: 0 1 300px; 
   margin: 1em;
   border: 2px solid rgba(0, 0, 0, .5);
   border-radius: 0px 0px 0 0;
   transition: flex 0.3s;
+  max-width: 390px;
 }
 
 .pricing__feature-list {
@@ -148,7 +150,7 @@
 .pricing--norbu .pricing__image {
   font-size: 0.55em;
   display: block;
-  padding: 0em;
+  padding: 0 0 3em;
   position: relative;
   min-height: 160px;
 }
