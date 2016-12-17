@@ -146,7 +146,8 @@ class App extends Spine.Controller
     callback = (json) =>
       tmi = $.parseJSON(json).tmi
       @renderTrustami(tmi)
-      
+    
+    User.fetch()
     return unless user = User.first()
     user.getTmi(callback)
     
