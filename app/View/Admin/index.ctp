@@ -642,7 +642,8 @@
       <span class="left">
         <a href="#" class="dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <li role="presentation" class="opt-destroy"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="endgültig Löschen" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Category.record}}Entfernen{{else}}Löschen{{/if}}</a></li>
+          <li role="presentation" class="opt-destroy"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="endgültig Löschen" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>Löschen</a></li>
+          <li role="presentation" class="opt-recover"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Wiederherstellen" href="#"><i class="glyphicon glyphicon glyphicon-repeat"></i>Wiederherstellen</a></li>
         </ul>
       </span>
     </div>
@@ -1080,7 +1081,8 @@
       <span class="left">
         <a href="#" class="dropdown-toggle glyphicon glyphicon-chevron-down glyphicon-white" data-toggle="dropdown"></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <li role="presentation" class="opt-destroy"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}</a></li>
+          <li role="presentation" class="opt-destroy"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#"><i class="glyphicon glyphicon glyphicon-trash"></i>Löschen</a></li>
+          <li role="presentation" class="opt-recover"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Wiederherstellen" href="#"><i class="glyphicon glyphicon glyphicon-repeat"></i>Wiederherstellen</a></li>
         </ul>
       </span>
     </div>

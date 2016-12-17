@@ -23,6 +23,7 @@ class PhotosTrashView extends Spine.Controller
     'click .item'                  : 'click'
     'click .dropdown-toggle'       : 'dropdownToggle'
     'click .opt-destroy'           : 'destroyPhoto'
+    'click .opt-recover'           : 'recoverPhoto'
     
     'mousemove .item'              : 'in'
     'mouseleave .item'             : 'out'
@@ -94,6 +95,7 @@ class PhotosTrashView extends Spine.Controller
   watch: (item) ->
     if !item.deleted or item.destroyed
       trash = PhotosTrash.find(item.id)
+      console.log trash
       trash.destroy()
       Photo.trigger('outbound:trash')
       @remove(item)
@@ -104,6 +106,12 @@ class PhotosTrashView extends Spine.Controller
     
     e.stopPropagation()
     e.preventDefault()
+    
+  recoverPhoto: (e) ->
+    e.stopPropagation()
+    item = $(e.currentTarget).item()
+    item.deleted = false
+    item.save()
     
   destroyPhoto: (e) ->
     e.stopPropagation()

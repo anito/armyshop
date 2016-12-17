@@ -26,6 +26,7 @@ class ProductsTrashView extends Spine.Controller
     'click .item'                  : 'click'
     'click .dropdown-toggle'       : 'dropdownToggle'
     'click .opt-destroy'           : 'destroyProduct'
+    'click .opt-recover'           : 'recoverProduct'
     
     'mousemove .item'              : 'in'
     'mouseleave .item'             : 'out'
@@ -114,6 +115,12 @@ class ProductsTrashView extends Spine.Controller
     
     e.stopPropagation()
     e.preventDefault()
+    
+  recoverProduct: (e) ->
+    e.stopPropagation()
+    item = $(e.currentTarget).item()
+    item.deleted = false
+    item.save()
     
   destroyProduct: (e) ->
     e.stopPropagation()
