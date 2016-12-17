@@ -92,13 +92,13 @@ class Main extends Spine.Controller
     
     @CONFIRM =  
       'REMOVE': (options) ->
-        if options.plural then '\nSollen ' + option.length + ' ' + options.type + ' wirklich entfernt werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" wirklich entfernt werden?\n\n'
+        if options.plural then '\nSollen ' + options.length + ' ' + options.type + ' wirklich entfernt werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" wirklich entfernt werden?\n\n'
       'DELETE': (options) ->
-        if options.plural then '\nSollen ' + option.length + ' ' + options.type + ' in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" in den Papierkorb verschoben werden?\n\n'
+        if options.plural then '\nSollen ' + options.length + ' ' + options.type + ' in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" in den Papierkorb verschoben werden?\n\n'
       'DESTROY': (options) ->
-        if options.plural then '\nSollen ' + option.length + ' ' + options.type + ' endgültig gelöscht werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" endgültig gelöscht werden?\n\n'
+        if options.plural then '\nSollen ' + options.length + ' ' + options.type + ' endgültig gelöscht werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" endgültig gelöscht werden?\n\n'
       'REMOVE_AND_DELETE': (options) ->
-        if options.plural then '\nSollen ' + option.length + ' ' + options.type + ' entfernt und in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" entfernt und in den Papierkorb verschoben werden?\n\n'
+        if options.plural then '\nSollen ' + options.length + ' ' + options.type + ' entfernt und in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" entfernt und in den Papierkorb verschoben werden?\n\n'
       'NOCAT': (options) ->
         '\nKeine Kategorie ausgwählt.\n\n'
       'EMPTYTRASH': (options) ->
