@@ -91,7 +91,7 @@
   -webkit-align-items: stretch;
   align-items: stretch;
   text-align: center;
-  flex: 0 1 340px; 
+  flex: 1 1 300px; 
   margin: 2em 0 0;
   border-bottom: 1px solid rgba(0, 0, 0, .3);
   border-radius: 0px 0px 0 0;

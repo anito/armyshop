@@ -147,9 +147,8 @@ class App extends Spine.Controller
       tmi = $.parseJSON(json).tmi
       @renderTrustami(tmi)
       
-    @user = if !(user = @user) then user = new User else user
-    @user.save()
-    @user.getTmi(callback)
+    return unless user = User.first()
+    user.getTmi(callback)
     
   checkWarning: ->
     if !@isAgreed() then @showWarning()

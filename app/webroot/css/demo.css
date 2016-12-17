@@ -8,9 +8,6 @@
   } 
 }
 @media screen and (max-width:800px) {
-  .logos .lehmann {
-    display: none;
-  }
   .sidebar {
     display: none;
   }
@@ -44,8 +41,13 @@
     transition: font-size 0.3s;
   }
 }
-@media screen and (min-width:940px) {
-  
+@media screen and (max-width:950px) {
+  .logos .lehmann {
+    display: none;
+  }
+  li.nav-item:first-child {
+    margin-left: 0;
+  }
 }
 @media screen and (min-width:1050px) {
   header::before {
@@ -68,7 +70,7 @@
     margin-left: 260px;
   }
 }
-@media screen and (min-width:800px) and (max-width:1050px) {
+@media screen and (min-width:951px) and (max-width:1200px) {
   .lehmann {
     font-size: 5em;
   }

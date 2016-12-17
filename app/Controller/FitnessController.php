@@ -30,7 +30,7 @@ App::uses('Controller', 'Controller');
  * @package		app.Controller
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
-class OutdoorController extends Controller {
+class FitnessController extends Controller {
 
   public $name = 'Fitness';
   public $uses = array();

@@ -46,6 +46,9 @@ class SidebarList extends Spine.Controller
     
     Product.bind('change:collection', @proxy @renderProduct)
     Product.bind('create destroy update', @proxy @renderSublists)
+    
+    Root.bind('change:selection', @proxy @closeAllOtherSublists)
+    
     Spine.bind('scroll', @proxy @scrollTo)
     
   template: -> arguments[0]
@@ -175,7 +178,7 @@ class SidebarList extends Spine.Controller
   exposeSelection: (item = Category.record) ->
     @children().removeClass('active')
     @children().forItem(item).addClass("active") if item
-#    @expand item, true
+    @expand item, true
     @exposeSublistSelection null, item?.id
     
   exposeSublistSelection: (selection = Category.selectionList(), id=Category.record?.id) ->
@@ -209,7 +212,6 @@ class SidebarList extends Spine.Controller
       when 'Category'
         @expand(item, (@isOpen(el)) or (!(Category.record?.id is item.id) or !@isOpen(el)))
         @navigate '/category', cid, pid = if (pid = item.selectionList().first()) then 'pid/' + pid else null
-#        @closeAllOtherSublists item
       when 'Product'
         category = $(e.target).closest('li.gal').item()
         @navigate '/category', category.id, 'pid', item.id
@@ -246,9 +248,9 @@ class SidebarList extends Spine.Controller
     el.toggleClass('open', open)
     return
     if open
-      @openSublist(categoryEl)
+      @openSublist(el)
     else
-      @closeSublist(categoryEl) unless categoryEl.hasClass('manual')
+      @closeSublist(el) unless el.hasClass('manual')
         
   isOpen: (el) ->
     el.hasClass('open')
@@ -263,9 +265,11 @@ class SidebarList extends Spine.Controller
     for category in Category.all()
       @expand category
   
-  closeAllOtherSublists: (item) ->
+  closeAllOtherSublists: (list) ->
+    @log list
+    id = list[0]
     for category in Category.all()
-      @expand category, item?.id is category.id
+      @expand category, id is category.id
   
   categoryElFromItem: (item) ->
     @children().forItem(item)

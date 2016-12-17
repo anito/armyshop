@@ -44,7 +44,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("lehmann");
     echo $this->Html->css("common");
     echo $this->Html->css("demo", array('media' => 'only screen and (min-device-width : 768px)'));
-    echo $this->Html->css("style7", array('media' => 'only screen and (min-device-width : 768px)'));
+    echo $this->Html->css("style7", array('media' => 'only screen and (min-device-width : 320px)'));
     echo $this->Html->css("component", array('media' => 'only screen and (min-device-width : 768px)'));
     echo $this->Html->css("component_mobile", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
 //    echo $this->Html->css("mobile_device", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));

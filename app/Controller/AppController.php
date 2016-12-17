@@ -19,7 +19,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-App::uses('Controller', 'Controller');
+App::uses('Component', 'Controller');
 
 /**
  * Application Controller
@@ -32,7 +32,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
-  public $helpers = array('Session', 'Html', 'Js', 'Flash');
+  public $helpers = array('Session', 'Html', 'Js', 'Flash', );
   public $components = array('RequestHandler', 'Session', 'Flash', 'Cookie', 'Auth' => array(
       'authenticate' => array(
           'Form' => array(
@@ -44,7 +44,7 @@ class AppController extends Controller {
   function beforeFilter() {
     if ($this->request->is('ajax')) {
       $this->autoRender = FALSE;
-      $this->Auth->autoRedirect = TRUE;
+      $this->Auth->autoRedirect = FALSE;
       $data = $this->request->input('json_decode');
       if (!empty($data)) {
 //        $this->log('json decoded data-> ' . $data, LOG_DEBUG);

@@ -5,7 +5,7 @@ class AdminController extends AppController {
 
   public $name = 'Admin';
   public $uses = array('Category', 'Product', 'Photo', 'Description');
-  
+      
   function beforeFilter() {
     $this->autoRender = true;
     $this->layout = 'admin_layout';

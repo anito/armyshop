@@ -9,7 +9,8 @@ class UsersController extends AppController {
   public $helpers = array('Form');
 
   function beforeFilter() {
-    $this->Auth->allowedActions = array('login', 'logout', 'ping', 'getTmi', 'checkSession');//, 'add', 'index', 'edit', 'view');
+    $this->Auth->allowedActions = array('login', 'logout', 'ping', 'getTmi');//, 'add', 'index', 'edit', 'view');
+//    $this->Auth->allow();
     $this->allowedGroups = array('Administrators', 'Managers');
     $this->layout = 'cake';
     
@@ -74,9 +75,9 @@ class UsersController extends AppController {
         }
         $this->render(FLASH_JSON);
       } else {
-        if($this->isAuthGroup()) {
-          $this->Auth->login();
-        }
+//        if($this->isAuthGroup()) {
+//          $this->Auth->login();
+//        }
       }
     } else {
       $this->set('redirect', $this->Auth->redirect(array('controller' => 'users', 'action' => 'index')));
@@ -253,7 +254,7 @@ class UsersController extends AppController {
   
   function isValid() {
     $session = Configure::read('Session');
-    $this->log($session['countdown'], LOG_DEBUG);
+//    $this->log($session['countdown'], LOG_DEBUG);
     if($this->request->is('ajax')) {
       if ($this->Auth->user()) {
         $this->set('_serialize', array('success' => TRUE, 'timeout' => $session['timeout'], 'sessionid' => $this->Session->id()));

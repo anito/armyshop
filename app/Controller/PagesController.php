@@ -38,9 +38,11 @@ class PagesController extends AppController {
   public $uses = array('CategoriesProduct', 'ProductsPhoto', 'Category', 'Product', 'Photo', 'Description', 'User');
 
   function beforeFilter() {
-    $this->autoRender = true;
-    $this->Auth->allowedActions = array('display');
     parent::beforeFilter();
+    
+    $this->autoRender = true;
+    $this->Auth->allow('display');
+    $this->Security->allowedControllers = array('pages');
   }
   
 /**
@@ -91,10 +93,11 @@ class PagesController extends AppController {
     
     $this->Product->recursive = 1;
     
+    $this->log('$this->Auth->user()', LOG_DEBUG);
+    $this->log($this->Auth->user(), LOG_DEBUG);
     if($this->Auth->user()) {
       $user_id = $this->Auth->user('id');
 //      $this->log('Auth', LOG_DEBUG);
-//      $this->log($this->Auth->user(), LOG_DEBUG);
     } else {
       $user = $this->User->find('first', array(
           'conditions' => array('User.username' => DEFAULT_USER)
