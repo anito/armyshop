@@ -193,11 +193,10 @@ class PhotosView extends Spine.Controller
     @render(null, 'html') unless photos.length
   
   deletePhoto_: (ids, callback) ->
-    App.confirm('METHOD_NOT_SUPPORTED', mode: 'alert')
+    App.confirm('METHOD_NOT_SUPPORTED', null, 'alert')
     
   deletePhotos: (ids, callback) ->
     @log 'deletePhotos'
-    console.log ids
     # only joins should be here when no Product is selected
     # otherwise (no Product is selected) we should mark the photo as deleted
     ids = [ids] unless Array.isArray(ids)
@@ -214,14 +213,14 @@ class PhotosView extends Spine.Controller
         # for the Catalogue View
         if prods.length
           #remove from all Products
-          if res1 or (res1 = App.confirm('REMOVE_AND_DELETE', plural: photos.length > 1))
+          if res1 or (res1 = App.confirm('REMOVE_AND_DELETE', @humanize(photos)))
             for prod in prods
               @destroyJoin {photos: photo, product: prod}
             Photo.trigger('inbound:trash', photo)
             continue
           else break
         else
-          if res2 or (res2 = App.confirm('DELETE', plural: photos.length > 1))
+          if res2 or (res2 = App.confirm('DELETE', @humanize(photos)))
             Photo.trigger('inbound:trash', photo)
             continue
           else break
@@ -229,7 +228,7 @@ class PhotosView extends Spine.Controller
         # for the Joins View
         # send the last joined product to trash
         if prods.length is 1
-          if res3 or (res3 = App.confirm('DELETE', plural: photos.length > 1))
+          if res3 or (res3 = App.confirm('DELETE', @humanize(photos)))
             @destroyJoin( {photos: photo, product: product} )
             Photo.trigger('inbound:trash', photo)
             continue
@@ -237,7 +236,7 @@ class PhotosView extends Spine.Controller
         else
           # there are still other identical Products
           # just remove it from the Cat
-          if res4 or (res4 = App.confirm('REMOVE', plural: photos.length > 1))
+          if res4 or (res4 = App.confirm('REMOVE', @humanize(photos)))
             @destroyJoin( {photos: photo, product: product} )
             continue
           else break

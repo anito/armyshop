@@ -21,6 +21,9 @@ class Category extends Spine.Model
   @extend Uri
   @extend Extender
 
+  @humanName: -> 'die Kategorie'
+  @humanNames: -> 'die Kategorien'
+
   @selectAttributes: ['screenname']
   
   @parent: 'Root'

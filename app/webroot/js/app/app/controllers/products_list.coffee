@@ -103,7 +103,7 @@ class ProductsList extends Spine.Controller
     
     @parent.stopInfo()
     
-    @navigate '/category', Category.record?.id or '', item?.id or '', iid = if (iid = item.selectionList().first()) then 'iid/' + iid else null
+    @navigate '/category', Category.record?.id or '', item?.id or '', iid = if (iid = item.selectionList?().first()) then 'iid/' + iid else null
     
     e.preventDefault()
     e.stopPropagation()

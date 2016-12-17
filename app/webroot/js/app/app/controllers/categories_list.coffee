@@ -95,7 +95,8 @@ class CategoriesList extends Spine.Controller
     itemEl.toggleClass('active', active)
     itemEl.toggleClass('hot', hot)
     innerEl.attr('style', style)
-    
+    console.log active
+    console.log hot
     @el.sortable()
     
   reorder: (item) ->

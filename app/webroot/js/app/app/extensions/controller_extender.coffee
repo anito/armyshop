@@ -25,6 +25,17 @@ Controller.Extender =
 
       p: -> App.sidebar.products  
       
+      humanize: (arr) ->
+        arr = [arr] unless Array.isArray arr
+        throw 'nothing to humanize' unless arr.length
+        record = arr[0]
+        plural = arr.length > 1
+        
+        plural: plural
+        length: arr.length
+        type: record.constructor['humanName'+ if (p = plural) then 's' else '']()
+        name: record.n()
+      
       emptyMessage: (name) -> name
       
       followLink: (e) ->

@@ -13,6 +13,8 @@ Model.Extender =
       trace: !Spine.isProduction
       logPrefix: '(' + @className + ')'
       
+      humanName: -> 'no human Name'
+      humanNames: -> 'no human Names'
       
       guid: ->
         mask = [8, 4, 4, 4, 12]
@@ -35,6 +37,7 @@ Model.Extender =
         s4 = -> Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
         s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
 
+      n: (inst) -> inst.name or inst.title or inst.src or throw 'no name exists'
       
       protected:
         'outdoor':
@@ -191,6 +194,8 @@ Model.Extender =
       
       trace: !Spine.isProduction
       logPrefix: @className + '::'
+      
+      n: () -> @constructor.n(@)
       
       isInvalid: ->
         !@isValid()

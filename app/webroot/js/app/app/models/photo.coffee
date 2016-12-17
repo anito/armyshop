@@ -25,6 +25,9 @@ class Photo extends Spine.Model
   @extend Filter
   @extend Extender
 
+  @humanName: -> 'das Foto'
+  @humanNames: -> 'die Fotos'
+  
   @selectAttributes: ['title', "photo", 'user_id', 'order']
   
   @parent: 'Product'

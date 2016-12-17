@@ -130,7 +130,7 @@ class ProductsTrashView extends Spine.Controller
     for product in products
       if product.deleted
         # delete from the trash
-        if res or (res = App.confirm('DESTROY', plural: products.length > 1))
+        if res or (res = App.confirm('DESTROY', @humanize(products)))
           Product.trigger('destroy:trash', product)
           continue
         else break

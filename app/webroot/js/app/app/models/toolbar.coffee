@@ -317,7 +317,7 @@ class Toolbar extends Spine.Model
           name: 'Intro-Quatsch'
           klass: 'opt-IntroQuatsch'
           icon: -> if Model.Settings.isIntroQuatsch() then 'ok' else ''
-          disabled: -> false
+          disabled: -> true
         ]
     group4:
       name: -> 

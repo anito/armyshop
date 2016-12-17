@@ -91,25 +91,25 @@ class Main extends Spine.Controller
     Spine.dragItem = SpineDragItem.create()
     
     @CONFIRM =  
-      'REMOVE': (plural) ->
-        if plural then '\nSollen die Artikel wirklich entfernt werden?\n\n' else '\nSoll der Artikel wirklich entfernt werden?\n\n'
-      'DELETE': (plural) ->
-        if plural then '\nSollen die Artikel in den Papierkorb verschoben werden?\n\n' else '\nSoll der Artikel in den Papierkorb verschoben werden?\n\n'
-      'DESTROY': (plural) ->
-        if plural then '\nSollen die Artikel endgültig gelöscht werden?\n\n' else '\nSoll der Artikel endgültig gelöscht werden?\n\n'
-      'REMOVE_AND_DELETE': (plural) ->
-        if plural then '\nSollen die Artikel aus den Kategorien entfernt und in den Papierkorb verschoben werden?\n\n' else '\nSoll derArtikel aus den Kategorien entfernt und in den Papierkorb verschoben werden?\n\n'
-      'NOCAT': () ->
+      'REMOVE': (options) ->
+        if options.plural then '\nSollen ' + option.length + ' ' + options.type + ' wirklich entfernt werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" wirklich entfernt werden?\n\n'
+      'DELETE': (options) ->
+        if options.plural then '\nSollen ' + option.length + ' ' + options.type + ' in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" in den Papierkorb verschoben werden?\n\n'
+      'DESTROY': (options) ->
+        if options.plural then '\nSollen ' + option.length + ' ' + options.type + ' endgültig gelöscht werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" endgültig gelöscht werden?\n\n'
+      'REMOVE_AND_DELETE': (options) ->
+        if options.plural then '\nSollen ' + option.length + ' ' + options.type + ' entfernt und in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" entfernt und in den Papierkorb verschoben werden?\n\n'
+      'NOCAT': (options) ->
         '\nKeine Kategorie ausgwählt.\n\n'
-      'EMPTYTRASH': () ->
+      'EMPTYTRASH': (options) ->
         '\nSoll der Papierkorb geleert werden?\n\n'
-      'DESTROY_CATEGORY': () ->
+      'DESTROY_CATEGORY': (options) ->
         '\nSoll die Kategorie entfernt werden?\n\n'
-      'DESTROY_CATEGORY_NOT_ALLOWED': () ->
+      'DESTROY_CATEGORY_NOT_ALLOWED': (options) ->
         '\nGeschützte Kategorie!\n\n'
-      'METHOD_NOT_SUPPORTED': () ->
+      'METHOD_NOT_SUPPORTED': (options) ->
         '\nFunktion momentan nicht verfügbar!\n\n'
-      'NO_CAT_FOR_UPLOAD': () ->
+      'NO_CAT_FOR_UPLOAD': (options) ->
         '\nEs ist momentan kein Produkt ausgewählt!\n\nUm den Upload abzuschliessen, markiere ein Produkt und klicke anschliessend unten auf "Start".\n\n'
     
     @ALBUM_SINGLE_MOVE = @createImage('/img/cursor_folder_1.png')
@@ -324,10 +324,11 @@ class Main extends Spine.Controller
       @initLocation(settings)
       @setInterval(10000)
       @delay @setupView, 500
-      unless (b = settings.intro)?
-        settings.updateAttributes(intro: !b)
-        b = true
-      @startScript(b)
+      unless (intro = settings.intro)?
+        settings.updateAttributes(intro: !intro)
+        intro = true
+#      @startScript(intro)
+      @startScript(false)
   
   startScript: (b) ->
     setTimeout ->
@@ -509,11 +510,11 @@ class Main extends Spine.Controller
     for a, i in arr
       return arr[i] if test s, a
     
-  confirm: (phrase, options) ->
-    defaults = {mode: 'confirm', plural: false}
+  confirm: (phrase, options={}, mode='confirm') ->
+    defaults = {plural: false}
     options = $().extend defaults, options
     
-    if window[options.mode].call(null, @CONFIRM[phrase](options.plural))
+    if window[mode].call(null, @CONFIRM[phrase](options))
       return true
     return
   

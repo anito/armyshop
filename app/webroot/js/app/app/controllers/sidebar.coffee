@@ -156,10 +156,10 @@ class Sidebar extends Spine.Controller
   deleteCategory: (id) ->
     return unless category = Category.find id
     if category.isValid()
-      if App.confirm('DESTROY_CATEGORY')
+      if App.confirm('DESTROY_CATEGORY', @humanize(category))
         category.destroy() 
     else
-      App.confirm('DESTROY_CATEGORY_NOT_ALLOWED', mode: 'alert')
+      App.confirm('DESTROY_CATEGORY_NOT_ALLOWED', null, 'alert')
 
   clearSearch: ->
     $(@input).val('')

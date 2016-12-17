@@ -217,7 +217,7 @@ class ProductsView extends Spine.Controller
         
       
     unless Category.record
-      return App.confirm('NOCAT', mode: 'alert')
+      return App.confirm('NOCAT', null, 'alert')
       
     product = new Product @newAttributes()
     product.one('ajaxSuccess', @proxy cb)
@@ -257,14 +257,14 @@ class ProductsView extends Spine.Controller
         # for the Catalogue View
         if cats.length
           #remove from all Categories
-          if res1 or (res1 = App.confirm('REMOVE_AND_DELETE', plural: products.length > 1))
+          if res1 or (res1 = App.confirm('REMOVE_AND_DELETE', @humanize(products)))
             for cat in cats
               @destroyJoin product, cat
             Product.trigger('inbound:trash', product)
             continue
           else break
         else
-          if res2 or (res2 = App.confirm('DELETE', plural: products.length > 1))
+          if res2 or (res2 = App.confirm('DELETE', @humanize(products)))
             Product.trigger('inbound:trash', product)
             continue
           else break
@@ -272,7 +272,7 @@ class ProductsView extends Spine.Controller
         # for the Joins View
         # send the last joined product to trash
         if cats.length is 1
-          if res3 or (res3 = App.confirm('DELETE', plural: products.length > 1))
+          if res3 or (res3 = App.confirm('DELETE', @humanize(products)))
             @destroyJoin(product, category)
             Product.trigger('inbound:trash', product)
             continue
@@ -280,7 +280,7 @@ class ProductsView extends Spine.Controller
         else
           # there are still other identical Products
           # just remove it from the Cat
-          if res4 or (res4 = App.confirm('REMOVE', plural: products.length > 1))
+          if res4 or (res4 = App.confirm('REMOVE', @humanize(products)))
             @destroyJoin(product, category)
             continue
           else break

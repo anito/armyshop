@@ -119,7 +119,7 @@ class PhotosTrashView extends Spine.Controller
     for photo in photos
       if photo.deleted
         # delete from the trash
-        if res or (res = App.confirm('DESTROY', plural: photos.length > 1))
+        if res or (res = App.confirm('DESTROY', @humanize(photos)))
           Photo.trigger('destroy:trash', photo)
           continue
         else break
