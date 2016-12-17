@@ -2,6 +2,10 @@
 
 $ = jQuery ? require("jqueryify")
 
+$.fn.brace = (str='') ->
+  str = str.toString()
+  return '(' + str + ')'
+
 $.fn.deselect = () ->
   els = $(@).find('.item')
   els.removeClass('active hot')

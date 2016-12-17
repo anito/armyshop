@@ -92,19 +92,19 @@ class Main extends Spine.Controller
     
     @CONFIRM =  
       'REMOVE': (options) ->
-        if options.plural then '\nSollen ' + options.length + ' ' + options.type + ' wirklich entfernt werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" wirklich entfernt werden?\n\n'
+        if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' wirklich entfernt werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" wirklich entfernt werden?\n\n'
       'DELETE': (options) ->
-        if options.plural then '\nSollen ' + options.length + ' ' + options.type + ' in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" in den Papierkorb verschoben werden?\n\n'
+        if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" in den Papierkorb verschoben werden?\n\n'
       'DESTROY': (options) ->
-        if options.plural then '\nSollen ' + options.length + ' ' + options.type + ' endgültig gelöscht werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" endgültig gelöscht werden?\n\n'
+        if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' endgültig gelöscht werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" endgültig gelöscht werden?\n\n'
       'REMOVE_AND_DELETE': (options) ->
-        if options.plural then '\nSollen ' + options.length + ' ' + options.type + ' entfernt und in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" entfernt und in den Papierkorb verschoben werden?\n\n'
+        if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' entfernt und in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" entfernt und in den Papierkorb verschoben werden?\n\n'
       'NOCAT': (options) ->
         '\nKeine Kategorie ausgwählt.\n\n'
       'EMPTYTRASH': (options) ->
         '\nSoll der Papierkorb geleert werden?\n\n'
       'DESTROY_CATEGORY': (options) ->
-        '\nSoll die Kategorie entfernt werden?\n\n'
+        '\nSoll die Kategorie "' + options.name + '" entfernt werden?\n\n'
       'DESTROY_CATEGORY_NOT_ALLOWED': (options) ->
         '\nGeschützte Kategorie!\n\n'
       'METHOD_NOT_SUPPORTED': (options) ->

@@ -37,7 +37,7 @@ Model.Extender =
         s4 = -> Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
         s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
 
-      n: (inst) -> inst.name or inst.title or inst.src or throw 'no name exists'
+      n: (inst) -> inst.name or inst.screenname or inst.title or inst.src or 'no name'
       
       protected:
         'outdoor':
