@@ -26,7 +26,7 @@ class PreviewView extends Spine.Controller
     'click .item-content'    : 'expand'
 
   template:  (item) ->
-    $('#norbuPricingTemplate').tmpl item if item
+    $('#norbuPricingTemplate').tmpl item
     
   constructor: ->
     super
@@ -75,19 +75,11 @@ class PreviewView extends Spine.Controller
     item = Product.find(item.product_id)
     @change item
     
-  item: (item) ->
-    product: item
-    descriptions: Description.filterSortByOrder(item.id)
-    photo: Product.photos(item.id).first()
-    
-    
   render: ->
     return unless @current
-    item = @item(@current)
-    photo = item.photo
-    @contentEl.html @template item
-    return unless Photo.exists(photo?.id)
-    @callDeferred photo, @uriSettings(300, 300), @callback
+    @contentEl.html @template @current
+    @callDeferred p = @current.photos(), @uriSettings(300, 300), @callback
+    pricingSlider(@current.id) if p.length > 1
     
   callback: (json, items) =>
     result = for jsn in json
@@ -100,7 +92,7 @@ class PreviewView extends Spine.Controller
       @snap(res)
 
   snap: (res) ->
-    imgEl = $('[data-image-id='+res.id+'] img', @el)
+    imgEl = $('#'+res.id+' img', @el)
     img = @createImage()
     img.imgEl = imgEl
     img.this = @
@@ -110,8 +102,7 @@ class PreviewView extends Spine.Controller
     img.src = res.src
 
   onLoad: ->
-    @imgEl.attr('src', @src)
-    @imgEl.addClass('in')
+    @imgEl.attr('src', @src).removeClass('load').addClass('in')
 
   onError: (e) ->
     @this.snap @res

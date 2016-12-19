@@ -45,21 +45,18 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->Html->css("common");
     echo $this->Html->css("demo", array('media' => 'only screen and (min-device-width : 768px)'));
     echo $this->Html->css("style7", array('media' => 'only screen and (min-device-width : 320px)'));
+    echo $this->Html->css("custom", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("component", array('media' => 'only screen and (min-device-width : 768px)'));
     echo $this->Html->css("component_mobile", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
 //    echo $this->Html->css("mobile_device", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("touch", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-    echo $this->Html->css("swiper/style", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-    echo $this->Html->css("swiper/custom", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+    echo $this->Html->css("style", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/myswipe");//, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("swiper/swiper.min");//, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
     echo $this->Html->css("spine");
     
 //    jQuery first, then Tether, then Bootstrap JS.
     echo $this->Html->script('app/public/application');
-    echo $this->Html->script("app/lib/swiper/script");
-    echo $this->Html->script("app/lib/swiper/swiper.min");
-    echo $this->Html->script("app/lib/swiper/swipe");
 
     echo $this->Html->scriptStart();
   ?>
@@ -382,10 +379,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
     <a href="{{if link}}${link}{{else}}#{{/if}}" target="_blank" class="pricing__action btn-dark" role="button" aria-disabled="{{if link}}${link}{{else}}false{{/if}}">Zum Shop</a>
   </div>
-</script>
-
-<script id="norbuImageListTemplate_" type="text/x-tmpl">
-  <div class="swiper-slide">Test ${id}</div>
 </script>
 
 <script id="norbuImageListTemplate" type="text/x-tmpl">

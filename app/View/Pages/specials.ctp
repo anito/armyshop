@@ -42,7 +42,7 @@
               <div class="brands display-5"></div>
             </div>
           </div>
-          <div id="scrollspecials" class="items pricing pricing--norbu"></div>
+          <div id="scrollspecials" class="items tile pricing pricing--norbu"></div>
         </div>
         <!-- page_header_hintergrundbild -->
 

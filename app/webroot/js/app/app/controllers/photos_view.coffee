@@ -285,7 +285,7 @@ class PhotosView extends Spine.Controller
         ap = ProductsPhoto.fromPhotoId(item.id)
         if ap and parseInt(ap.order) isnt idx
           ap.order = idx
-          ap.save(ajax:false)
+          ap.silentUpdate()
         # set a *invalid flag*, so when we return to products cover view, thumbnails will be regenerated
         Product.record.invalid = true
         

@@ -199,16 +199,14 @@ class Sidebar extends Spine.Controller
     list = o.item.parent()
     category = list.parent().item()
     gas = CategoriesProduct.filter(category.id, associationForeignKey: 'category_id')
-    result = []
     list.children().each (index) ->
       product = $(@).item()
       for ga in gas
         if ga.product_id is product.id and parseInt(ga.order) isnt index
           ga.order = index
-          result.push ga
+          ga.silentUpdate()
         
           
-    res.save(ajax:false) for res in result
     category.save()
     Spine.trigger('reorder', category)
     

@@ -405,13 +405,13 @@ class App extends Spine.Controller
           id: key
         ret[0]
 
-      onError = -> throw 'unable to load image'
+      onError = -> throw 'unable to load image (modal)'
       onLoad = ->
-        @imgEl.attr('src', @src).removeClass('load')
-        @imgEl.addClass('in')
-        @me.log 'all loaded' if @i is @l-1
-        if (@l-1) and (@i is @l-1)
-          setTimeout(detailsSlider, 300)
+        @imgEl.attr('src', @src).removeClass('load').addClass('in')
+        if @l > 1
+          detailsSlider()
+        if @i is @l-1
+          @me.log 'all loaded'
       
       snap = (res, l, i) =>
         imgEl = $('#'+res.id+' img', @el)
@@ -429,8 +429,6 @@ class App extends Spine.Controller
         snap(res, result.length, idx)
       
     @callDeferred p = @product.photos(), @uriSettings(740, 740), cb
-#    if p.length > 1
-#        detailsSlider(@product.id)
       
   shownmodal: (e) =>
     @log 'shownmodal'

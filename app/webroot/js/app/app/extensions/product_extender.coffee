@@ -31,7 +31,6 @@ Controller.ProductExtender =
           product.single = single
 
           @callDeferred photos, @uriSettings(args...), (xhr) -> deferred.resolve(xhr, product)
-#          @callDeferred data, product.to, (xhr) -> deferred.resolve(xhr, product)
 
           deferred.promise()
           

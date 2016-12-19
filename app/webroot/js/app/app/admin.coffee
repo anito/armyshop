@@ -87,6 +87,7 @@ class Main extends Spine.Controller
     @autoupload = true
     @useDragImage = false
     @intro = true
+    @sidebarInitWidth = 430
     
     Spine.dragItem = SpineDragItem.create()
     
@@ -172,7 +173,7 @@ class Main extends Spine.Controller
     @vmanager = new Spine.Manager(@sidebar)
     @vmanager.external = @showView.toolbarOne
     @vmanager.initDrag @vDrag,
-      initSize: => 375 #@el.width()/3.5
+      initSize: => @sidebarInitWidth #@el.width()/3.5
       sleep: true
       disabled: false
       axis: 'x'
@@ -337,6 +338,9 @@ class Main extends Spine.Controller
     setTimeout ->
       App.showView.toggleDraghandle()
     , 3500
+    setTimeout ->
+      App.previewView.togglePreview()
+    , 4500
     return unless b
     setTimeout ->
       App.sidebar.toggleDraghandle()
@@ -419,7 +423,6 @@ class Main extends Spine.Controller
     Spine.trigger('chromeless', true)
     
   changeBackground: (cat) ->
-    
     arr = @arr
     res = @getData(cat, arr)
     
@@ -503,12 +506,12 @@ class Main extends Spine.Controller
     e.stopPropagation()
     e.preventDefault()
       
-  getData: (s, arr=[]) ->
+  getData: (s) ->
     test = (s, a) -> 
       matcher = new RegExp(".*"+a+".*", "g");
       found = matcher.test(s);
-    for a, i in arr
-      return arr[i] if test s, a
+    ret = a for a in @arr when test s, a
+    ret
     
   confirm: (phrase, options={}, mode='confirm') ->
     defaults = {plural: false}

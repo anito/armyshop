@@ -1,5 +1,4 @@
 require('lib/array')
-require('lib/swiper')
 require('spine')
 require('spine/lib/local')
 require('spine/lib/manager')

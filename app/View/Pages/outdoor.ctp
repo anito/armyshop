@@ -44,7 +44,7 @@
               <div class="brands display-5"></div>
             </div>
           </div>
-          <div id="scrolloutdoor" class="items  pricing pricing--norbu"></div>
+          <div id="scrolloutdoor" class="items tile pricing pricing--norbu"></div>
         </div>
         <!-- page_header_hintergrundbild -->
 

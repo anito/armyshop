@@ -330,7 +330,7 @@ class ProductsView extends Spine.Controller
         ga = CategoriesProduct.filter(item.id, func: 'selectProduct')[0]
         if ga and parseInt(ga.order) isnt index
           ga.order = index
-          ga.save(ajax:false)
+          ga.silentUpdate()
           
     Category.record.save(done: cb)
     

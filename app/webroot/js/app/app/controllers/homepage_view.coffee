@@ -52,8 +52,7 @@ class HomepageView extends Spine.Controller
     @list.render products
     for product in products
       (@callDeferred p = product.photos(), @uriSettings(300, 300), @proxy @callback)
-      if p.length > 1
-        pricingSlider(product.id)
+      pricingSlider(product.id) if p.length > 1
 
   callback: (json, items) ->
     result = for jsn in json
@@ -78,12 +77,9 @@ class HomepageView extends Spine.Controller
     img.src = res.src
 
   onLoad: ->
-    @imgEl.attr('src', @src).removeClass('load')
-    @imgEl.addClass('in')
+    @imgEl.attr('src', @src).removeClass('load').addClass('in')
     @me.log 'all loaded' if @i is @l-1
-    if 0 and (@i is @l-1)
-      setTimeout(pricingSlider, 300)
-
-  onError: (e) ->
+    
+  onError: (e) -> throw 'unable to load image (Homepage)'
     
  module?.exports = HomepageView

@@ -35,10 +35,13 @@
     echo $this->Html->css('blueimp/blueimp-gallery');
     echo $this->Html->css('blueimp/blueimp-gallery-indicator');
     echo $this->Html->css('html5sortable/jquery.sortable');
+    echo $this->Html->css("common");
     echo $this->Html->css("muli");
     echo $this->Html->css("lehmann");
     echo $this->Html->css("icons");
     echo $this->Html->css("component");
+    echo $this->Html->css("swiper/myswipe");
+    echo $this->Html->css("swiper/swiper.min");
     echo $this->Html->css('/js/app/public/application');
 
     echo $this->Html->scriptStart();

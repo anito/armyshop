@@ -40,9 +40,13 @@
         isHandle = false;
         var w = $(this).css('width');
         var h = $(this).css('height');
+        var m = $(this).css('margin');
+        console.log(m);
+        console.log('test');
         var dt = e.originalEvent.dataTransfer;
         placeholder.css('width', w);
         placeholder.css('height', h);
+        placeholder.css('margin', m);
         dt.effectAllowed = 'move';
         dt.setData('Text', 'localhost');
         index = (dragging = $(this)).addClass('sortable-dragging').index();

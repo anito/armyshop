@@ -15,18 +15,19 @@ function pricingSlider_() {
 }
 function pricingSlider(id) {
     var query = $('#'+id + " .swiper-container-pricing");
-    query.addClass('swiper')
+    query.addClass('swiper');
     var e = new Swiper(query[0], {
         pagination: ".swiper-pagination",
         paginationClickable: true,
         nextButton: ".swiper-button-next",
         prevButton: ".swiper-button-prev",
         effect: "fade",
+        grabCursor: true,
         fade: {
           crossFade: false
         },
         loop: true,
-        autoplay: 6e3
+        autoplay: false
     })
     return e;
 }
@@ -39,6 +40,8 @@ function detailsSlider() {
         nextButton: ".swiper-button-next",
         prevButton: ".swiper-button-prev",
         effect: "fade",
+        grabCursor: true,
+        lazyLoading: true,
         fade: {
           crossFade: false
         },

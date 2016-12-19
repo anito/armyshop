@@ -38,7 +38,10 @@
         "lib/blueimp/jquery.fileupload-audio.js",
         "lib/blueimp/jquery.fileupload-video.js",
         "lib/blueimp/jquery.fileupload-validate.js",
-        "lib/blueimp/jquery.fileupload-ui.js"
+        "lib/blueimp/jquery.fileupload-ui.js",
+        "lib/swiper/script.js",
+        "lib/swiper/swiper.min.js",
+        "lib/swiper/swipe.js"
       ],
       "paths"  : ["./app"],
       "target" : "./public/application.js",
@@ -46,7 +49,8 @@
     },
     "css": {
       "paths"  : "./css",
-      "target" : "./public/application.css"
+      "target" : "./public/application.css",
+      "libs" : []
     }
   }
 }

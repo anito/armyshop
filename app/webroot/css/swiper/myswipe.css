@@ -5,3 +5,6 @@
 .swiper .swiper-wrapper {
   margin-bottom: 5px;
 }
+.swiper-slide:nth-child(n+2) img.load {
+  display: none;
+}

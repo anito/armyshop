@@ -42,7 +42,7 @@
                 <span class="">Vorschau</span>
               </div>
             </div>
-            <ul class="sublist" style="">
+            <ul class="sublist tile pricing pricing--norbu" style="">
               <li class="content item item-content"></li>
             </ul>
           </li>
@@ -1446,42 +1446,38 @@
 </script>
 
 <script id="sidebarPreviewTemplate_" type="text/x-jquery-tmpl">
-  <li class="" title="">
-  <div class="item-header">
-  <div class="expander"></div>
-  <div class="item-content">
-  <span class="opt-preview">${name}</span>
-  </div>
-  </div>
-  <ul class="sublist" style="">
-  <li class="sublist-item item item-content ${klass}">
-  {{tmpl($item.data.product) "#norbuPricingTemplate"}}
-  </li>
-  </ul>
-  </li>
+  
 </script>
 
 <script id="norbuPricingTemplate" type="text/x-tmpl">
-  <div id="${product.id}" class="pricing pricing--norbu {{if product.ignored}}ignored{{/if}}" style="margin:0;"> 
-  <div class="pricing__item">
-  <i class="glyphicon glyphicon-eye-{{if product.ignored}}close{{else}}open{{/if}}"></i>
-  <h3 class="pricing__title">${$().name(product.title, 60)}</h3>
-  <p class="pricing__sentence">${$().name(product.subtitle, 80)}</p>
-  <div class="pricing__price"><span class="pricing__currency">€</span>${product.price}
-  <a href="${product.link}" target="_blank" class="" aria-disabled="false">
-  {{tmpl($item.data.photo) "#norbuImageTemplate" }}
-  </a>
-  </div>
-  <div class="pricing__feature-list">
-  <ul class="">{{tmpl($item.data.descriptions) "#norbuFeatureListTemplate" }}</ul>
-  </div>
-  <a href="${product.link}" target="_blank" class="pricing__action btn btn-dark btn-lg" role="button" aria-disabled="false">Zum Shop</a>
-  </div>
+  <div id="${id}" data-id="${id}" class="pricing__item">
+    <h3 class="pricing__title">${$().name(title, 60)}</h3>
+    <p class="pricing__sentence">${$().name(subtitle, 80)}</p>
+    <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
+      <div class="swiper-container-pricing swiper-container-horizontal">
+        <div class="swiper-wrapper">
+          {{tmpl(p=photos()) "#norbuImageListTemplate" }}
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+          <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
+        </div>
+        <!-- Add Arrows -->
+        <div class="swiper-button-next swiper-button-grey hidemobile"></div>
+        <div class="swiper-button-prev swiper-button-grey hidemobile"></div>
+      </div>
+    </div>
+    <div class="pricing__feature-list">
+      <ul class="">{{tmpl(descriptions()) "#norbuFeatureListTemplate" }}</ul>
+    </div>
+    <a href="{{if link}}${link}{{else}}#{{/if}}" target="_blank" class="pricing__action btn-dark" role="button" aria-disabled="{{if link}}${link}{{else}}false{{/if}}">Zum Shop</a>
   </div>
 </script>
 
-<script id="norbuImageTemplate" type="text/x-tmpl">
-  <div data-image-id="${id}" class="pricing__image"><img class="image" src="/img/products/dummy.png"/></div>
+<script id="norbuImageListTemplate" type="text/x-tmpl">
+  <div class="swiper-slide">
+    <div id="${id}" class="pricing__image"><img class="image load" src="/img/ajax-loader-66.gif"/></div>
+  </div>
 </script>
 
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">

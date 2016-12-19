@@ -11,6 +11,7 @@
     right: 0;
     text-align: left;
     width: 45%;
+    padding-right: 20px;
     height: 400px;
     overflow: auto;
   }
@@ -74,7 +75,7 @@
 }
 
 .pricing--norbu .pricing__item {
-  height: 264px;
+  height: 285px;
   position: relative;
 }
 

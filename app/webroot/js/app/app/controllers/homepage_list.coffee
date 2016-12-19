@@ -10,9 +10,6 @@ class HomepageList extends Spine.Controller
     
   events:
     'click .pricing__item img': 'click'
-#    'click .pricing__item': 'test'
-  
-  test: ->
   
   template:  (item) ->
     $('#norbuPricingTemplate').tmpl item
