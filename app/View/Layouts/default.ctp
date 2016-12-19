@@ -346,8 +346,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
           </div>
           <!-- Add Arrows -->
-          <div class="swiper-button-next hidemobile"></div>
-          <div class="swiper-button-prev hidemobile"></div>
+          <div class="swiper-button-next swiper-button-black hidemobile"></div>
+          <div class="swiper-button-prev swiper-button-black hidemobile"></div>
         </div>
         {{if link}}</a>{{/if}}
       </div>
@@ -373,8 +373,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
           <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
         </div>
         <!-- Add Arrows -->
-        <div class="swiper-button-next hidemobile"></div>
-        <div class="swiper-button-prev hidemobile"></div>
+        <div class="swiper-button-next swiper-button-grey hidemobile"></div>
+        <div class="swiper-button-prev swiper-button-grey hidemobile"></div>
       </div>
     </div>
     <div class="pricing__feature-list">
