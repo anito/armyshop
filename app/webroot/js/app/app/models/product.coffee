@@ -74,12 +74,14 @@ class Product extends Spine.Model
     ret = photos[0...max]
     ret
     
-  @getFavoriteId: ->
+  @getFavoriteUrl: ->
     favorite = Product.findByAttribute('favorite', true)
-#    catPro = CategoriesProduct.findByAttribute('product_id', proId = favorite.id)
-#    catId = catPro.category_id
     return unless favorite
-    favorite.id
+    catPro = CategoriesProduct.findByAttribute('product_id', favorite.id)
+    catId = catPro.category_id
+    cat = Category.find(catId)
+    location = '/pages/' + cat.name + '#/item/' + favorite.id
+    location
     
   @descriptions: (id) ->
     Description.filterSortByOrder(id)

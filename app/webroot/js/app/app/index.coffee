@@ -82,7 +82,7 @@ class App extends Spine.Controller
     
     Spine.bind('active:category', @proxy @initCategory)
     Spine.bind('refresh:complete', @proxy @renderRefreshView)
-    Product.bind('refresh', @proxy @renderFv)
+    Category.bind('refresh', @proxy @renderFv)
     
 #    @menuButton.on('click', @proxy @toggleMenu)
     
@@ -121,7 +121,7 @@ class App extends Spine.Controller
     @hb.html @hbTemplate()
     
   renderFv: () ->
-    if id = Product.getFavoriteId()
+    if Product.getFavoriteUrl()
       @fv.addClass('badge2')
     else
       @fv.removeClass('badge2')
@@ -164,7 +164,8 @@ class App extends Spine.Controller
     user.getTmi(callback)
     
   showFavorite: (e) ->
-    @navigate '/item', Product.getFavoriteId()
+    return unless url = Product.getFavoriteUrl()
+    location.href = url
     
     e.preventDefault()
     e.stopPropagation()
