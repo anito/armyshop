@@ -62,9 +62,6 @@ class App extends Spine.Controller
   hbTemplate: ->
     $('#hbTemplate').tmpl()
   
-  fvTemplate: ->
-    $('#fvTemplate').tmpl()
-  
   constructor: ->
     super
     # Getting started - should be removed

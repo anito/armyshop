@@ -76,13 +76,16 @@ class Product extends Spine.Model
     
   @getFavoriteUrl: (isAdmin) ->
     favorite = Product.findByAttribute('favorite', true)
-    return unless favorite
+    return unless favorite.id
+    cats = CategoriesProduct.categories favorite.id
+    console.log cats
     catPro = CategoriesProduct.findByAttribute('product_id', favorite.id)
     catId = catPro.category_id
     cat = Category.find(catId)
     if isAdmin
       location = '/category/' + catId + '/pid/' + favorite.id
     else
+      return if catPro.ignored
       location = '/pages/' + cat.name + '#/item/' + favorite.id
     location
     
