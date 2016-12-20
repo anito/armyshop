@@ -137,6 +137,7 @@ class ShowView extends Spine.Controller
     'click .opt-Prev:not(.disabled)'                  : 'prev'
     'click .opt-ShowProductsTrash:not(.disabled)'     : 'showProductsTrash'
     'click .opt-ShowPhotosTrash:not(.disabled)'       : 'showPhotosTrash'
+    'click .opt-ShowFavorite:not(.disabled)'          : 'showFavorite'
     
     'dblclick .draghandle'                            : 'toggleDraghandle'
     
@@ -1039,6 +1040,14 @@ class ShowView extends Spine.Controller
   uploadDialogue: (e) ->
     @toggleUploadShow(e)
     $('input','#fu').click()
+      
+  showFavorite: (e) ->
+    return unless url = Product.getFavoriteUrl('admin')
+    @navigate url
+    @refreshToolbars()
+    
+    e.preventDefault()
+    e.stopPropagation()
       
   selectByKey: (e, direction) ->
     isMeta = e.metaKey or e.ctrlKey or e.shiftKey

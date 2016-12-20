@@ -189,6 +189,11 @@ class Toolbar extends Spine.Model
           icon: 'book'
           disabled: -> false
         ,
+          name: -> 'zeige Produkt des Tages'
+          klass: 'opt-ShowFavorite'
+          icon: 'star'
+          disabled: -> !Product.findByAttribute('favorite', true)
+        ,
           devider: true
         ,
           name: -> 'Papierkorb'

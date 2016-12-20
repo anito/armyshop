@@ -74,13 +74,16 @@ class Product extends Spine.Model
     ret = photos[0...max]
     ret
     
-  @getFavoriteUrl: ->
+  @getFavoriteUrl: (isAdmin) ->
     favorite = Product.findByAttribute('favorite', true)
     return unless favorite
     catPro = CategoriesProduct.findByAttribute('product_id', favorite.id)
     catId = catPro.category_id
     cat = Category.find(catId)
-    location = '/pages/' + cat.name + '#/item/' + favorite.id
+    if isAdmin
+      location = '/category/' + catId + '/pid/' + favorite.id
+    else
+      location = '/pages/' + cat.name + '#/item/' + favorite.id
     location
     
   @descriptions: (id) ->
