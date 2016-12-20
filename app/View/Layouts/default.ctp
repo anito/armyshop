@@ -333,6 +333,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <script id="norbuPricingDetailsTemplate_" type="text/x-tmpl">
   <div class="pricing--details pricing--norbu_">
     <div id="${id}" data-id="${id}" class="pricing__item">
+      {{if favorite}}
+      <i class="badge2-modal"></i>
+      {{/if}}
       <p class="h5 pricing__sentence">{{if subtitle}}${$().name(subtitle, 80)}{{else}}<hr>{{/if}}</p>
       <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
         {{if link}}<a href="${link}" target="_blank" class="slides" aria-disabled="false">{{/if}}
