@@ -42779,7 +42779,7 @@ Released under the MIT License
     Product.getFavoriteUrl = function(isAdmin) {
       var cat, catId, catPro, cats, favorite, location;
       favorite = Product.findByAttribute('favorite', true);
-      if (!favorite.id) {
+      if (!favorite) {
         return;
       }
       cats = CategoriesProduct.categories(favorite.id);

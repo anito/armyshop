@@ -76,7 +76,7 @@ class Product extends Spine.Model
     
   @getFavoriteUrl: (isAdmin) ->
     favorite = Product.findByAttribute('favorite', true)
-    return unless favorite.id
+    return unless favorite
     cats = CategoriesProduct.categories favorite.id
     catPro = CategoriesProduct.findByAttribute('product_id', favorite.id)
     catId = catPro.category_id
@@ -184,7 +184,6 @@ class Product extends Spine.Model
         res.push record.silentUpdate('order': join.order, 'ignored': join.ignored)
     res
         
-      
   @unusedProducts: ->
     @filter(true, {func: 'selectUnused'})
       
