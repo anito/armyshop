@@ -121,6 +121,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <div class="logo logo-2 hide"></div>
   </div>
   <header id="header" class="header hidemobile">
+    <i class="badge1"></i>
+    <i class="favorite-badge opt-favorite"></i>
     <nav class="navbar navbar-static-top navbar-dark bg-inverse">
       <ul class="nav navbar-nav items">
         <li id="" class="nav-item">
@@ -358,6 +360,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 <script id="norbuPricingTemplate" type="text/x-tmpl">
   <div id="${id}" data-id="${id}" class="pricing__item">
+    {{if favorite}}
+    <i class="badge3"></i>
+    {{/if}}
     <h3 class="pricing__title">${$().name(title, 60)}</h3>
     <p class="pricing__sentence">${$().name(subtitle, 80)}</p>
     <div class="pricing__price"><div class="price"><span class="pricing__currency">€</span>${price}</div>
@@ -390,10 +395,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <script id="norbuFeatureListTemplate" type="text/x-tmpl">
   <li class="pricing__feature">{{html description}}</li>
 </script>
-
-
-
-
 
 <script id="refreshTemplate" type="text/x-tmpl">
   <a href="${location.hash}" class="opt-Refresh"><i class="glyphicon glyphicon-${icon}"></i></a>

@@ -31,7 +31,8 @@ function pricingSlider(id) {
     })
     return e;
 }
-function detailsSlider() {
+function detailsSlider(id) {
+//    var query = $("[data-id=" + id + "] .swiper-container-details");
     var query = $(".swiper-container-details");
     query.addClass('swiper')
     var e = new Swiper(query[0], {
@@ -48,6 +49,7 @@ function detailsSlider() {
         loop: true,
         autoplay: 6e3
     })
+    $('img', query).removeClass('load')
     return e;
 }
 function testimonialSlider2() {

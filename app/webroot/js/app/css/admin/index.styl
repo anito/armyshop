@@ -73,6 +73,7 @@ body {
 *:-khtml-drag {
   background-color: rgba(255,255,0, 0.5) !important;
 }
+
 *[tabindex] {
   outline: none !important;
 }
@@ -258,6 +259,15 @@ ul, li {
 }
 .symbol i {
   margin: 0;
+}
+
+.admin .sidebar .preview .favorite {
+  position: absolute;
+  color: #f00;
+  font-size: 5em;
+  left: 3px;
+  top: -8px;
+  z-index: 1;
 }
 .items {
 /*  height: 0;*/
@@ -1356,7 +1366,7 @@ right: -14px;
   opacity: .3;
 }
 #content .ignored .glyphicon[class*='-eye'] {
-  color: red !important;
+  /*color: red !important;*/
 }
 #content [class*='-camera'] {
   color: red;

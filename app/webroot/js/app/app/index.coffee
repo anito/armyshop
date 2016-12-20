@@ -29,6 +29,7 @@ class App extends Spine.Controller
     '#refresh'          : 'refreshEl'
     '.trustami-badge'   : 'trustami'
     '.hb-badge'         : 'hb'
+    '.favorite-badge'   : 'fv'
 
   events:
     'mouseenter #fitness-item-menu' :           'changeBackground'
@@ -53,12 +54,16 @@ class App extends Spine.Controller
     'click .opt-pay'                :           'showPay'
     'click .opt-reset'              :           'reset'
     'click [class^="logo-"], [class*=" logo-"]':'redirectHome'
+    'click .opt-favorite'           :           'showFavorite'
     
   trustamiTemplate:  (item) ->
     $('#trustamiTemplate').tmpl item
   
   hbTemplate: ->
     $('#hbTemplate').tmpl()
+  
+  fvTemplate: ->
+    $('#fvTemplate').tmpl()
   
   constructor: ->
     super
@@ -77,6 +82,7 @@ class App extends Spine.Controller
     
     Spine.bind('active:category', @proxy @initCategory)
     Spine.bind('refresh:complete', @proxy @renderRefreshView)
+    Product.bind('refresh', @proxy @renderFv)
     
 #    @menuButton.on('click', @proxy @toggleMenu)
     
@@ -114,6 +120,12 @@ class App extends Spine.Controller
   renderHb: () ->
     @hb.html @hbTemplate()
     
+  renderFv: () ->
+    if id = Product.getFavoriteId()
+      @fv.addClass('badge2')
+    else
+      @fv.removeClass('badge2')
+    
   toggleMenu: ->
     @swiper.slidePrev() if (@swiper.previousIndex == 0)
     
@@ -150,6 +162,12 @@ class App extends Spine.Controller
     User.fetch()
     return unless user = User.first()
     user.getTmi(callback)
+    
+  showFavorite: (e) ->
+    @navigate '/item', Product.getFavoriteId()
+    
+    e.preventDefault()
+    e.stopPropagation()
     
   checkWarning: ->
     if !@isAgreed() then @showWarning()
@@ -407,11 +425,12 @@ class App extends Spine.Controller
 
       onError = -> throw 'unable to load image (modal)'
       onLoad = ->
-        @imgEl.attr('src', @src).removeClass('load').addClass('in')
-        if @l > 1
-          detailsSlider()
+        @imgEl.attr('src', @src)
+        if @i is 0 then @imgEl.removeClass('load').addClass('in')
         if @i is @l-1
           @me.log 'all loaded'
+          if @l > 1
+            setTimeout(@me.detailsSwiper = detailsSlider, 300) #workaround
       
       snap = (res, l, i) =>
         imgEl = $('#'+res.id+' img', @el)

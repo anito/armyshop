@@ -64,8 +64,8 @@ class PreviewView extends Spine.Controller
     if item?.destroyed or !item
       @current = @dummy
     else
-      @current = item
-    @render() 
+      @current = Product.record
+    @render() if item.id is Product.record.id
     
   changedRelatedPhoto: (item) ->
     item = Product.find(item.product_id)

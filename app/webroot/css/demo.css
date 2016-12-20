@@ -50,12 +50,19 @@
   }
 }
 @media screen and (min-width:1050px) {
-  header::before {
-    content: url(/img/free_delivery.png);
+  .badge1::before {
+    content: url(/img/free_delivery2.png);
     position: absolute;
     z-index: 1;
-    right: 10px;
-    top: -10px;
+    right: 6px;
+    top: 37px;
+  }
+  .badge2::before {
+    content: url(/img/favorite.png);
+    position: absolute;
+    z-index: 1;
+    right: 110px;
+    top: 6px;
   }
   .lehmann {
     text-shadow: 5px 3px 8px rgba(0, 0, 0, .5);
@@ -117,6 +124,7 @@
     padding-right: 0;
   }
 }
+
   #container {
     margin: 71px 0;
     position: relative;

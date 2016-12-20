@@ -26,6 +26,7 @@ class ProductsList extends Spine.Controller
     'click .opt-delete'            : 'deleteProduct'
     'click .opt-ignored'           : 'ignoreProduct'
     'click .opt-original'          : 'original'
+    'click .opt-favorite'           : 'toggleFavorite'
     'click .zoom'                  : 'zoom'
     
   constructor: ->
@@ -94,6 +95,16 @@ class ProductsList extends Spine.Controller
     id = $(e.currentTarget).item().id
     Category.selection[0].global.update [id]
     @navigate '/category', ''
+    
+    e.preventDefault()
+    e.stopPropagation()
+      
+  toggleFavorite: (e) ->
+    item = $(e.currentTarget).item()
+    isFavorite = item.favorite
+    favorites = Product.findAllByAttribute('favorite', true)
+    favorite.updateAttributes('favorite': false) for favorite in favorites
+    item.updateAttributes('favorite': !isFavorite)
     
     e.preventDefault()
     e.stopPropagation()

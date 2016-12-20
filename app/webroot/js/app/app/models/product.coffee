@@ -14,7 +14,7 @@ require("spine/lib/ajax")
 
 class Product extends Spine.Model
 
-  @configure "Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'ignored', 'order', 'invalid', 'deleted', 'active', 'selected'
+  @configure "Product", 'id', 'cid', 'title', 'subtitle', 'link', 'notes', 'price', 'user_id', 'ignored', 'favorite', 'order', 'invalid', 'deleted', 'active', 'selected'
 
   @extend Model.Cache
   @extend Model.Ajax
@@ -73,6 +73,13 @@ class Product extends Spine.Model
     photos = Photo.filterRelated(id, filterOptions)
     ret = photos[0...max]
     ret
+    
+  @getFavoriteId: ->
+    favorite = Product.findByAttribute('favorite', true)
+#    catPro = CategoriesProduct.findByAttribute('product_id', proId = favorite.id)
+#    catId = catPro.category_id
+    return unless favorite
+    favorite.id
     
   @descriptions: (id) ->
     Description.filterSortByOrder(id)

@@ -266,7 +266,6 @@ class SidebarList extends Spine.Controller
       @expand category
   
   closeAllOtherSublists: (list) ->
-    @log list
     id = list[0]
     for category in Category.all()
       @expand category, id is category.id

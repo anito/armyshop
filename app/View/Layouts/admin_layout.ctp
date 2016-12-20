@@ -101,7 +101,7 @@
     echo $scripts_for_layout;
     ?>
   </head>
-  <body class="hal cat views canvas" data-model-name="" data-models-name="Root">
+  <body class="admin hal cat views canvas" data-model-name="" data-models-name="Root">
     <?php echo $content_for_layout; ?>
     <?php echo $this->element('sql_dump'); ?>
     <?php echo $this->element(STATCONFIG . 'tracking_code'); ?>
