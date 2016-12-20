@@ -108,6 +108,12 @@ class Main extends Spine.Controller
         '\nSoll die Kategorie "' + options.name + '" entfernt werden?\n\n'
       'DESTROY_CATEGORY_NOT_ALLOWED': (options) ->
         '\nGeschützte Kategorie!\n\n'
+      'NO_VALID_CATEGORY': (options) ->
+        '\nDiese Kategorie unterstützt diese Funktion nicht!\n\n'
+      'NO_FAVORITE_FOR_IGNORED': (options) ->
+        '\nAusgeblendeter Artikel kann kein Produkt des Tages sein!\n\n'
+      'NO_IGNORE_FOR_FAVORITE': (options) ->
+        '\nEin Produkt des Tages kann nicht ausgeblendet werden!\n\n'
       'METHOD_NOT_SUPPORTED': (options) ->
         '\nFunktion momentan nicht verfügbar!\n\n'
       'NO_CAT_FOR_UPLOAD': (options) ->

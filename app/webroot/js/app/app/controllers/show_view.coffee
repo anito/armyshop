@@ -917,7 +917,11 @@ class ShowView extends Spine.Controller
     itemId = product.id
     categoryId = category.id
     if ga = CategoriesProduct.productExists(itemId, categoryId)
-      CategoriesProduct.trigger('ignored', ga, !ga.ignored)
+      newIgnored = !ga.ignored
+      if product.favorite and newIgnored
+        App.confirm('NO_IGNORE_FOR_FAVORITE', null, 'alert')
+        return
+      CategoriesProduct.trigger('ignored', ga, newIgnored)
       
   help: (e) ->
     carouselOptions =

@@ -78,14 +78,13 @@ class Product extends Spine.Model
     favorite = Product.findByAttribute('favorite', true)
     return unless favorite.id
     cats = CategoriesProduct.categories favorite.id
-    console.log cats
     catPro = CategoriesProduct.findByAttribute('product_id', favorite.id)
     catId = catPro.category_id
     cat = Category.find(catId)
     if isAdmin
       location = '/category/' + catId + '/pid/' + favorite.id
     else
-      return if catPro.ignored
+      return if catPro.ignored or !Category.protected[cat.name]
       location = '/pages/' + cat.name + '#/item/' + favorite.id
     location
     
