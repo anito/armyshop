@@ -174,6 +174,7 @@ class ProductsView extends Spine.Controller
       author  : User.first().name
       invalid : true
       ignored : true
+      favorite: false
       user_id : user_id
       order   : Product.count()
     else
