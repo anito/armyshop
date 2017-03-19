@@ -32429,7 +32429,10 @@ Released under the MIT License
           author: User.first().name,
           invalid: true,
           ignored: true,
+<<<<<<< HEAD
+=======
           favorite: false,
+>>>>>>> 92bd2f460189024c9bdf8756df4c892edcfac2b9
           user_id: user_id,
           order: Product.count()
         };
