@@ -14,15 +14,13 @@
               <span class="h2" style="line-height: 4rem;">Login</span>
               <div class="clearfix"></div>
             </div>
-            <div class="dialogue-scroll">
-              <fieldset>
-                <div class="left">
-                  <label>Benutzer</label>
-                  <?php echo $this->Form->input('username', array('label' => false, 'div' => false, 'autofocus' => 'autofocus')); ?>
+            <div class="dialogue-scroll table grid-2">
+              <fieldset class="tr">
+                <div class="td">
+                  <?php echo $this->Form->input('username', array('label' => "Benutzer", 'div' => false, 'autofocus' => 'autofocus')); ?>
                 </div>
-                <div class="left">
-                  <label>Passwort</label>
-                  <?php echo $this->Form->input('password', array('label' => false, 'div' => false)); ?>
+                <div class="td">
+                  <?php echo $this->Form->input('password', array('label' => "Passwort", 'div' => false)); ?>
                 </div>
               </fieldset>
             </div>

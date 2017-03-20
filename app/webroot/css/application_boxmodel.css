@@ -491,25 +491,6 @@ button.disabled {
   color: #B0B0B0;
   text-shadow: 0 -1px 0 #2f2f2f;
 }
-fieldset legend {
-  font-size: 100%;
-  color: #999999;
-  padding: 5px
-}
-fieldset {
-  padding: 0;
-  border: 0 none;
-}
-fieldset button {
-  margin: 0 10px
-}
-
-fieldset label {
-  padding: 0 10px 0 0
-}
-fieldset > div:nth-child(2) {
-  padding-left: 10px
-}
 #tasks li {
   margin-top: 2px
 }
@@ -632,6 +613,15 @@ div.dialogue div.dialogue-scroll {
 .message {
   
 }
+.table {
+  display: table;
+}
+.tr {
+  display: table-row;
+}
+.td {
+  display: table-cell;
+}
 .error {
   color: red;
 }
@@ -642,4 +632,35 @@ div.dialogue div.dialogue-scroll {
   padding: 7px 0 0 61px;
   font-weight: lighter;
   font-style: normal;
+}
+input[type="text"], input[type="password"] {
+    width: 80%;
+}
+.grid-2 .td:first-child {
+  margin-right: 40px;
+}
+.grid-2 .td {
+  width: 40%;
+}
+form fieldset label {
+  display: block;
+}
+fieldset legend {
+  font-size: 100%;
+  color: #999999;
+  padding: 5px
+}
+fieldset {
+  padding: 0;
+  border: 0 none;
+}
+fieldset button {
+  margin: 0 10px
+}
+
+fieldset label {
+  padding: 0 10px 0 0
+}
+fieldset > div:nth-child(2) {
+  
 }
