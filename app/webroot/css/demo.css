@@ -121,7 +121,6 @@
   .hal .pricing {
     padding-right: 64px;
     display: flex;
-    flex: 0 1 300px;
     flex-wrap: wrap;
     align-items: center;
   }
