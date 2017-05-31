@@ -122,6 +122,8 @@ class ProductsTrashView extends Spine.Controller
     item.deleted = false
     item.save()
     
+    Product.createJoin [item], Category.findByAttribute('name', 'none')
+    
   destroyProduct: (e) ->
     e.stopPropagation()
     item = $(e.currentTarget).item()

@@ -39,15 +39,7 @@ Model.Extender =
 
       n: (inst) -> inst.name or inst.screenname or inst.title or inst.src or 'no name'
       
-      protected:
-        'outdoor':
-          screenname: 'Outdoor'
-        'fitness':
-          screenname: 'Fitness'
-        'tools':
-          screenname: 'Tools'
-        'specials':
-          screenname: 'Specials'
+      protected: {}
       
       record: false
 

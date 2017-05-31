@@ -31,6 +31,18 @@ class Category extends Spine.Model
   @childType: 'Product'
   
   @url: '' + base_url + 'categories'
+  
+  @protected:
+    'outdoor':
+      screenname: 'Outdoor'
+    'fitness':
+      screenname: 'Fitness'
+    'tools':
+      screenname: 'Tools'
+    'specials':
+      screenname: 'Specials'
+    'none':
+      screenname: 'keine Kategorie'
 
   @fromJSON: (objects) ->
     super
@@ -45,11 +57,11 @@ class Category extends Spine.Model
       joinTable             : 'CategoriesProduct'
       foreignKey            : 'category_id'
       associationForeignKey : 'product_id'
-    
+			
   @contains: (id=@record.id) ->
     return Model[@childType].all() unless id
     @products id
-    
+
   @products: (id) ->
     filterOptions =
       model: 'Category'

@@ -247,7 +247,9 @@ class ProductsView extends Spine.Controller
     ids = [ids] unless Array.isArray(ids)
     @stopInfo()
     
-    ids = Category.selectionList()[..] #or ids[..]
+    unless ids.length
+      ids = Category.selectionList()[..]
+      
     products = Product.toRecords(ids)
     for product in products
       if product.deleted
