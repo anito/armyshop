@@ -116,7 +116,7 @@ class CategoriesProduct extends Spine.Model
     return true if (@product_id is options.product_id) and (@category_id is options.category_id)
     
   selectNotIgnored: (id, opts) ->
-    return true if !@ignored and (@category_id is id) and @isProtectedModel(Category.find(@category_id)?.name)
+    return true if !@ignored and (@category_id is id) #and @isProtectedModel(Category.find(@category_id)?.name)
     
   selectNotIgnoredAll: (id) ->
     return true if (!@ignored) and (@isProtectedModel(Category.find(@category_id)?.name))
