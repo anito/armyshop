@@ -42,7 +42,7 @@ class Category extends Spine.Model
     'specials':
       screenname: 'Specials'
     'none':
-      screenname: 'keine Kategorie'
+      screenname: 'ohne Kategorie'
 
   @fromJSON: (objects) ->
     super
