@@ -112,7 +112,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('css');
 		echo $this->fetch('script');
     
-    echo $this->element('google-analytics');
+    echo $this->element('google-analytics');#set the ga-ID in bootstrap.php
 	?>
 </head>
 <body class="hal hal-home fade in">
