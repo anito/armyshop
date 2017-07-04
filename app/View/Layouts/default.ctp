@@ -26,6 +26,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<?php echo $this->fetch('title'); ?>
 	</title>
 	<?php
+    echo $this->Html->meta(array('name' => 'robots', 'content'=> 'noindex, nofollow'));
     echo $this->Html->meta(array('name' => 'viewport', 'content'=> 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'));
 		echo $this->Html->meta('http-equiv', "x-ua-compatible");
 		echo $this->Html->meta('icon');
