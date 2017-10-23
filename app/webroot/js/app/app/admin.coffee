@@ -280,34 +280,6 @@ class Main extends Spine.Controller
         @showView.trigger('active', @showView.waitView)
       '/*glob': (params) ->
         @navigate '/overview', ''
-          
-#      '/category/:gid/:aid/:pid': (params) ->
-#        Model.Root.updateSelection params.gid or []
-#        if (params.aid is 'pid') and (pid = params.pid)
-#          alert '3'
-#          Category.updateSelection pid
-#          buffer = Product.renderBuffer()
-#          @showView.trigger('active', @showView.productsView, buffer || Product.buffer)
-#        else
-#          alert '4'
-#          Category.updateSelection params.aid or []
-#          Product.updateSelection params.pid or []
-#          @showView.trigger('active', @showView.photoView, params.pid)
-#      '/category/:gid/:aid': (params) ->
-#        Model.Root.updateSelection params.gid or []
-#        if (params.gid is 'cid') and (aid = params.aid)
-#          alert '5'
-#          Category.updateSelection aid
-#          @showView.trigger('active', @showView.categoriesView)
-#        else
-#          alert '6'
-#          Category.updateSelection params.aid or []
-#          buffer = Photo.renderBuffer()
-#          @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
-#      '/category/*': ->
-#        alert '7'
-#        Root.updateSelection []
-#        @showView.trigger('active', @showView.categoriesView)
 
     @loadToolbars()
     @defaultSettings =
@@ -344,9 +316,9 @@ class Main extends Spine.Controller
     setTimeout ->
       App.showView.toggleDraghandle()
     , 3500
-    setTimeout ->
-      App.previewView.togglePreview()
-    , 4500
+#    setTimeout ->
+#      App.previewView.togglePreview()
+#    , 4500
     return unless b
     setTimeout ->
       App.sidebar.toggleDraghandle()

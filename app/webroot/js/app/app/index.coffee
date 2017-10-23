@@ -36,6 +36,7 @@ class App extends Spine.Controller
     'mouseenter #outdoor-item-menu' :           'changeBackground'
     'mouseenter #tools-item-menu'   :           'changeBackground'
     'mouseenter #specials-item-menu':           'changeBackground'
+    'mouseenter #defense-item-menu' :           'changeBackground'
     'mouseenter .opt-stats'         :           'showStats' 
     'mousemove  .opt-stats'         :           'moveStats' 
     'mouseleave .opt-stats'         :           'hideStats' 

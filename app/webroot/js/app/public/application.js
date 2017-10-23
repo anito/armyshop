@@ -24269,9 +24269,6 @@ if (typeof JSON !== 'object') {
       setTimeout(function() {
         return App.showView.toggleDraghandle();
       }, 3500);
-      setTimeout(function() {
-        return App.previewView.togglePreview();
-      }, 4500);
       if (!b) {
         return;
       }
@@ -37584,7 +37581,7 @@ if (typeof JSON !== 'object') {
   };
 
 }).call(this);
- },"home____": function(exports, require, module) { (function() {
+ },"home": function(exports, require, module) { (function() {
   var $, App, HomepageView, ModalSimpleView, RefreshView, Settings, Spine, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -38176,6 +38173,7 @@ if (typeof JSON !== 'object') {
       'mouseenter #outdoor-item-menu': 'changeBackground',
       'mouseenter #tools-item-menu': 'changeBackground',
       'mouseenter #specials-item-menu': 'changeBackground',
+      'mouseenter #defense-item-menu': 'changeBackground',
       'mouseenter .opt-stats': 'showStats',
       'mousemove  .opt-stats': 'moveStats',
       'mouseleave .opt-stats': 'hideStats',
