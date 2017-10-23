@@ -39,6 +39,8 @@ class Category extends Spine.Model
       screenname: 'Fitness'
     'tools':
       screenname: 'Tools'
+    'defense':
+      screenname: 'Defense'
     'specials':
       screenname: 'Specials'
     'none':

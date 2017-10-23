@@ -1,3 +1,4 @@
+
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jade = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
@@ -6835,2326 +6836,12 @@ $.effects.effect.slide = function( o, done ) {
 })(jQuery);
 
 /*!
- * Bootstrap v3.3.4 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
-
-/*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=c81f1cf77b97289f3017)
- * Config saved to config.json and https://gist.github.com/c81f1cf77b97289f3017
- */
-if (typeof jQuery === 'undefined') {
-  throw new Error('Bootstrap\'s JavaScript requires jQuery')
-}
-+function ($) {
-  'use strict';
-  var version = $.fn.jquery.split(' ')[0].split('.')
-  if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1)) {
-    throw new Error('Bootstrap\'s JavaScript requires jQuery version 1.9.1 or higher')
-  }
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: alert.js v3.3.2
- * http://getbootstrap.com/javascript/#alerts
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // ALERT CLASS DEFINITION
-  // ======================
-
-  var dismiss = '[data-dismiss="alert"]'
-  var Alert   = function (el) {
-    $(el).on('click', dismiss, this.close)
-  }
-
-  Alert.VERSION = '3.3.2'
-
-  Alert.TRANSITION_DURATION = 150
-
-  Alert.prototype.close = function (e) {
-    var $this    = $(this)
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    var $parent = $(selector)
-
-    if (e) e.preventDefault()
-
-    if (!$parent.length) {
-      $parent = $this.closest('.alert')
-    }
-
-    $parent.trigger(e = $.Event('close.bs.alert'))
-
-    if (e.isDefaultPrevented()) return
-
-    $parent.removeClass('in')
-
-    function removeElement() {
-      // detach from parent, fire event then clean up data
-      $parent.detach().trigger('closed.bs.alert').remove()
-    }
-
-    $.support.transition && $parent.hasClass('fade') ?
-      $parent
-        .one('bsTransitionEnd', removeElement)
-        .emulateTransitionEnd(Alert.TRANSITION_DURATION) :
-      removeElement()
-  }
-
-
-  // ALERT PLUGIN DEFINITION
-  // =======================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.alert')
-
-      if (!data) $this.data('bs.alert', (data = new Alert(this)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.alert
-
-  $.fn.alert             = Plugin
-  $.fn.alert.Constructor = Alert
-
-
-  // ALERT NO CONFLICT
-  // =================
-
-  $.fn.alert.noConflict = function () {
-    $.fn.alert = old
-    return this
-  }
-
-
-  // ALERT DATA-API
-  // ==============
-
-  $(document).on('click.bs.alert.data-api', dismiss, Alert.prototype.close)
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: button.js v3.3.2
- * http://getbootstrap.com/javascript/#buttons
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // BUTTON PUBLIC CLASS DEFINITION
-  // ==============================
-
-  var Button = function (element, options) {
-    this.$element  = $(element)
-    this.options   = $.extend({}, Button.DEFAULTS, options)
-    this.isLoading = false
-  }
-
-  Button.VERSION  = '3.3.2'
-
-  Button.DEFAULTS = {
-    loadingText: 'loading...'
-  }
-
-  Button.prototype.setState = function (state) {
-    var d    = 'disabled'
-    var $el  = this.$element
-    var val  = $el.is('input') ? 'val' : 'html'
-    var data = $el.data()
-
-    state = state + 'Text'
-
-    if (data.resetText == null) $el.data('resetText', $el[val]())
-
-    // push to event loop to allow forms to submit
-    setTimeout($.proxy(function () {
-      $el[val](data[state] == null ? this.options[state] : data[state])
-
-      if (state == 'loadingText') {
-        this.isLoading = true
-        $el.addClass(d).attr(d, d)
-      } else if (this.isLoading) {
-        this.isLoading = false
-        $el.removeClass(d).removeAttr(d)
-      }
-    }, this), 0)
-  }
-
-  Button.prototype.toggle = function () {
-    var changed = true
-    var $parent = this.$element.closest('[data-toggle="buttons"]')
-
-    if ($parent.length) {
-      var $input = this.$element.find('input')
-      if ($input.prop('type') == 'radio') {
-        if ($input.prop('checked') && this.$element.hasClass('active')) changed = false
-        else $parent.find('.active').removeClass('active')
-      }
-      if (changed) $input.prop('checked', !this.$element.hasClass('active')).trigger('change')
-    } else {
-      this.$element.attr('aria-pressed', !this.$element.hasClass('active'))
-    }
-
-    if (changed) this.$element.toggleClass('active')
-  }
-
-
-  // BUTTON PLUGIN DEFINITION
-  // ========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.button')
-      var options = typeof option == 'object' && option
-
-      if (!data) $this.data('bs.button', (data = new Button(this, options)))
-
-      if (option == 'toggle') data.toggle()
-      else if (option) data.setState(option)
-    })
-  }
-
-  var old = $.fn.button
-
-  $.fn.button             = Plugin
-  $.fn.button.Constructor = Button
-
-
-  // BUTTON NO CONFLICT
-  // ==================
-
-  $.fn.button.noConflict = function () {
-    $.fn.button = old
-    return this
-  }
-
-
-  // BUTTON DATA-API
-  // ===============
-
-  $(document)
-    .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      var $btn = $(e.target)
-      if (!$btn.hasClass('btn')) $btn = $btn.closest('.btn')
-      Plugin.call($btn, 'toggle')
-      e.preventDefault()
-    })
-    .on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type))
-    })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: carousel.js v3.3.2
- * http://getbootstrap.com/javascript/#carousel
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // CAROUSEL CLASS DEFINITION
-  // =========================
-
-  var Carousel = function (element, options) {
-    this.$element    = $(element)
-    this.$indicators = this.$element.find('.carousel-indicators')
-    this.options     = options
-    this.paused      = null
-    this.sliding     = null
-    this.interval    = null
-    this.$active     = null
-    this.$items      = null
-
-    this.options.keyboard && this.$element.on('keydown.bs.carousel', $.proxy(this.keydown, this))
-
-    this.options.pause == 'hover' && !('ontouchstart' in document.documentElement) && this.$element
-      .on('mouseenter.bs.carousel', $.proxy(this.pause, this))
-      .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
-  }
-
-  Carousel.VERSION  = '3.3.2'
-
-  Carousel.TRANSITION_DURATION = 600
-
-  Carousel.DEFAULTS = {
-    interval: 5000,
-    pause: 'hover',
-    wrap: true,
-    keyboard: true
-  }
-
-  Carousel.prototype.keydown = function (e) {
-    if (/input|textarea/i.test(e.target.tagName)) return
-    switch (e.which) {
-      case 37: this.prev(); break
-      case 39: this.next(); break
-      default: return
-    }
-
-    e.preventDefault()
-  }
-
-  Carousel.prototype.cycle = function (e) {
-    e || (this.paused = false)
-
-    this.interval && clearInterval(this.interval)
-
-    this.options.interval
-      && !this.paused
-      && (this.interval = setInterval($.proxy(this.next, this), this.options.interval))
-
-    return this
-  }
-
-  Carousel.prototype.getItemIndex = function (item) {
-    this.$items = item.parent().children('.item')
-    return this.$items.index(item || this.$active)
-  }
-
-  Carousel.prototype.getItemForDirection = function (direction, active) {
-    var activeIndex = this.getItemIndex(active)
-    var willWrap = (direction == 'prev' && activeIndex === 0)
-                || (direction == 'next' && activeIndex == (this.$items.length - 1))
-    if (willWrap && !this.options.wrap) return active
-    var delta = direction == 'prev' ? -1 : 1
-    var itemIndex = (activeIndex + delta) % this.$items.length
-    return this.$items.eq(itemIndex)
-  }
-
-  Carousel.prototype.to = function (pos) {
-    var that        = this
-    var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
-
-    if (pos > (this.$items.length - 1) || pos < 0) return
-
-    if (this.sliding)       return this.$element.one('slid.bs.carousel', function () { that.to(pos) }) // yes, "slid"
-    if (activeIndex == pos) return this.pause().cycle()
-
-    return this.slide(pos > activeIndex ? 'next' : 'prev', this.$items.eq(pos))
-  }
-
-  Carousel.prototype.pause = function (e) {
-    e || (this.paused = true)
-
-    if (this.$element.find('.next, .prev').length && $.support.transition) {
-      this.$element.trigger($.support.transition.end)
-      this.cycle(true)
-    }
-
-    this.interval = clearInterval(this.interval)
-
-    return this
-  }
-
-  Carousel.prototype.next = function () {
-    if (this.sliding) return
-    return this.slide('next')
-  }
-
-  Carousel.prototype.prev = function () {
-    if (this.sliding) return
-    return this.slide('prev')
-  }
-
-  Carousel.prototype.slide = function (type, next) {
-    var $active   = this.$element.find('.item.active')
-    var $next     = next || this.getItemForDirection(type, $active)
-    var isCycling = this.interval
-    var direction = type == 'next' ? 'left' : 'right'
-    var that      = this
-
-    if ($next.hasClass('active')) return (this.sliding = false)
-
-    var relatedTarget = $next[0]
-    var slideEvent = $.Event('slide.bs.carousel', {
-      relatedTarget: relatedTarget,
-      direction: direction
-    })
-    this.$element.trigger(slideEvent)
-    if (slideEvent.isDefaultPrevented()) return
-
-    this.sliding = true
-
-    isCycling && this.pause()
-
-    if (this.$indicators.length) {
-      this.$indicators.find('.active').removeClass('active')
-      var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
-      $nextIndicator && $nextIndicator.addClass('active')
-    }
-
-    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
-    if ($.support.transition && this.$element.hasClass('slide')) {
-      $next.addClass(type)
-      $next[0].offsetWidth // force reflow
-      $active.addClass(direction)
-      $next.addClass(direction)
-      $active
-        .one('bsTransitionEnd', function () {
-          $next.removeClass([type, direction].join(' ')).addClass('active')
-          $active.removeClass(['active', direction].join(' '))
-          that.sliding = false
-          setTimeout(function () {
-            that.$element.trigger(slidEvent)
-          }, 0)
-        })
-        .emulateTransitionEnd(Carousel.TRANSITION_DURATION)
-    } else {
-      $active.removeClass('active')
-      $next.addClass('active')
-      this.sliding = false
-      this.$element.trigger(slidEvent)
-    }
-
-    isCycling && this.cycle()
-
-    return this
-  }
-
-
-  // CAROUSEL PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.carousel')
-      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
-      var action  = typeof option == 'string' ? option : options.slide
-
-      if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
-      if (typeof option == 'number') data.to(option)
-      else if (action) data[action]()
-      else if (options.interval) data.pause().cycle()
-    })
-  }
-
-  var old = $.fn.carousel
-
-  $.fn.carousel             = Plugin
-  $.fn.carousel.Constructor = Carousel
-
-
-  // CAROUSEL NO CONFLICT
-  // ====================
-
-  $.fn.carousel.noConflict = function () {
-    $.fn.carousel = old
-    return this
-  }
-
-
-  // CAROUSEL DATA-API
-  // =================
-
-  var clickHandler = function (e) {
-    var href
-    var $this   = $(this)
-    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
-    if (!$target.hasClass('carousel')) return
-    var options = $.extend({}, $target.data(), $this.data())
-    var slideIndex = $this.attr('data-slide-to')
-    if (slideIndex) options.interval = false
-
-    Plugin.call($target, options)
-
-    if (slideIndex) {
-      $target.data('bs.carousel').to(slideIndex)
-    }
-
-    e.preventDefault()
-  }
-
-  $(document)
-    .on('click.bs.carousel.data-api', '[data-slide]', clickHandler)
-    .on('click.bs.carousel.data-api', '[data-slide-to]', clickHandler)
-
-  $(window).on('load', function () {
-    $('[data-ride="carousel"]').each(function () {
-      var $carousel = $(this)
-      Plugin.call($carousel, $carousel.data())
-    })
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: dropdown.js v3.3.2
- * http://getbootstrap.com/javascript/#dropdowns
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // DROPDOWN CLASS DEFINITION
-  // =========================
-
-  var backdrop = '.dropdown-backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
-  var Dropdown = function (element) {
-    $(element).on('click.bs.dropdown', this.toggle)
-  }
-
-  Dropdown.VERSION = '3.3.2'
-
-  Dropdown.prototype.toggle = function (e) {
-    var $this = $(this)
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    clearMenus()
-
-    if (!isActive) {
-      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-        // if mobile we use a backdrop because click events don't delegate
-        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
-      }
-
-      var relatedTarget = { relatedTarget: this }
-      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
-
-      if (e.isDefaultPrevented()) return
-
-      $this
-        .trigger('focus')
-        .attr('aria-expanded', 'true')
-
-      $parent
-        .toggleClass('open')
-        .trigger('shown.bs.dropdown', relatedTarget)
-    }
-
-    return false
-  }
-
-  Dropdown.prototype.keydown = function (e) {
-    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
-
-    var $this = $(this)
-
-    e.preventDefault()
-    e.stopPropagation()
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    if ((!isActive && e.which != 27) || (isActive && e.which == 27)) {
-      if (e.which == 27) $parent.find(toggle).trigger('focus')
-      return $this.trigger('click')
-    }
-
-    var desc = ' li:not(.disabled):visible a'
-    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
-
-    if (!$items.length) return
-
-    var index = $items.index(e.target)
-
-    if (e.which == 38 && index > 0)                 index--                        // up
-    if (e.which == 40 && index < $items.length - 1) index++                        // down
-    if (!~index)                                      index = 0
-
-    $items.eq(index).trigger('focus')
-  }
-
-  function clearMenus(e) {
-    if (e && e.which === 3) return
-    $(backdrop).remove()
-    $(toggle).each(function () {
-      var $this         = $(this)
-      var $parent       = getParent($this)
-      var relatedTarget = { relatedTarget: this }
-
-      if (!$parent.hasClass('open')) return
-
-      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-
-      if (e.isDefaultPrevented()) return
-
-      $this.attr('aria-expanded', 'false')
-      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
-    })
-  }
-
-  function getParent($this) {
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    var $parent = selector && $(selector)
-
-    return $parent && $parent.length ? $parent : $this.parent()
-  }
-
-
-  // DROPDOWN PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.dropdown')
-
-      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.dropdown
-
-  $.fn.dropdown             = Plugin
-  $.fn.dropdown.Constructor = Dropdown
-
-
-  // DROPDOWN NO CONFLICT
-  // ====================
-
-  $.fn.dropdown.noConflict = function () {
-    $.fn.dropdown = old
-    return this
-  }
-
-
-  // APPLY TO STANDARD DROPDOWN ELEMENTS
-  // ===================================
-
-  $(document)
-    .on('click.bs.dropdown.data-api', clearMenus)
-    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
-    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
-    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
-    .on('keydown.bs.dropdown.data-api', '[role="menu"]', Dropdown.prototype.keydown)
-    .on('keydown.bs.dropdown.data-api', '[role="listbox"]', Dropdown.prototype.keydown)
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: modal.js v3.3.2
- * http://getbootstrap.com/javascript/#modals
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // MODAL CLASS DEFINITION
-  // ======================
-
-  var Modal = function (element, options) {
-    this.options             = options
-    this.$body               = $(document.body)
-    this.$element            = $(element)
-    this.$dialog             = this.$element.find('.modal-dialog')
-    this.$backdrop           = null
-    this.isShown             = null
-    this.originalBodyPad     = null
-    this.scrollbarWidth      = 0
-    this.ignoreBackdropClick = false
-
-    if (this.options.remote) {
-      this.$element
-        .find('.modal-content')
-        .load(this.options.remote, $.proxy(function () {
-          this.$element.trigger('loaded.bs.modal')
-        }, this))
-    }
-  }
-
-  Modal.VERSION  = '3.3.2'
-
-  Modal.TRANSITION_DURATION = 300
-  Modal.BACKDROP_TRANSITION_DURATION = 150
-
-  Modal.DEFAULTS = {
-    backdrop: true,
-    keyboard: true,
-    show: true
-  }
-
-  Modal.prototype.toggle = function (_relatedTarget) {
-    return this.isShown ? this.hide() : this.show(_relatedTarget)
-  }
-
-  Modal.prototype.show = function (_relatedTarget) {
-    var that = this
-    var e    = $.Event('show.bs.modal', { relatedTarget: _relatedTarget })
-
-    this.$element.trigger(e)
-
-    if (this.isShown || e.isDefaultPrevented()) return
-
-    this.isShown = true
-
-    this.checkScrollbar()
-    this.setScrollbar()
-    this.$body.addClass('modal-open')
-
-    this.escape()
-    this.resize()
-
-    this.$element.on('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
-
-    this.$dialog.on('mousedown.dismiss.bs.modal', function () {
-      that.$element.one('mouseup.dismiss.bs.modal', function (e) {
-        if ($(e.target).is(that.$element)) that.ignoreBackdropClick = true
-      })
-    })
-
-    this.backdrop(function () {
-      var transition = $.support.transition && that.$element.hasClass('fade')
-
-      if (!that.$element.parent().length) {
-        that.$element.appendTo(that.$body) // don't move modals dom position
-      }
-
-      that.$element
-        .show()
-        .scrollTop(0)
-
-      that.adjustDialog()
-
-      if (transition) {
-        that.$element[0].offsetWidth // force reflow
-      }
-
-      that.$element
-        .addClass('in')
-        .attr('aria-hidden', false)
-
-      that.enforceFocus()
-
-      var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget })
-
-      transition ?
-        that.$dialog // wait for modal to slide in
-          .one('bsTransitionEnd', function () {
-            that.$element.trigger('focus').trigger(e)
-          })
-          .emulateTransitionEnd(Modal.TRANSITION_DURATION) :
-        that.$element.trigger('focus').trigger(e)
-    })
-  }
-
-  Modal.prototype.hide = function (e) {
-    if (e) e.preventDefault()
-
-    e = $.Event('hide.bs.modal')
-
-    this.$element.trigger(e)
-
-    if (!this.isShown || e.isDefaultPrevented()) return
-
-    this.isShown = false
-
-    this.escape()
-    this.resize()
-
-    $(document).off('focusin.bs.modal')
-
-    this.$element
-      .removeClass('in')
-      .attr('aria-hidden', true)
-      .off('click.dismiss.bs.modal')
-      .off('mouseup.dismiss.bs.modal')
-
-    this.$dialog.off('mousedown.dismiss.bs.modal')
-
-    $.support.transition && this.$element.hasClass('fade') ?
-      this.$element
-        .one('bsTransitionEnd', $.proxy(this.hideModal, this))
-        .emulateTransitionEnd(Modal.TRANSITION_DURATION) :
-      this.hideModal()
-  }
-
-  Modal.prototype.enforceFocus = function () {
-    $(document)
-      .off('focusin.bs.modal') // guard against infinite focus loop
-      .on('focusin.bs.modal', $.proxy(function (e) {
-        if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
-          this.$element.trigger('focus')
-        }
-      }, this))
-  }
-
-  Modal.prototype.escape = function () {
-    if (this.isShown && this.options.keyboard) {
-      this.$element.on('keydown.dismiss.bs.modal', $.proxy(function (e) {
-        e.which == 27 && this.hide()
-      }, this))
-    } else if (!this.isShown) {
-      this.$element.off('keydown.dismiss.bs.modal')
-    }
-  }
-
-  Modal.prototype.resize = function () {
-    if (this.isShown) {
-      $(window).on('resize.bs.modal', $.proxy(this.handleUpdate, this))
-    } else {
-      $(window).off('resize.bs.modal')
-    }
-  }
-
-  Modal.prototype.hideModal = function () {
-    var that = this
-    this.$element.hide()
-    this.backdrop(function () {
-      that.$body.removeClass('modal-open')
-      that.resetAdjustments()
-      that.resetScrollbar()
-      that.$element.trigger('hidden.bs.modal')
-    })
-  }
-
-  Modal.prototype.removeBackdrop = function () {
-    this.$backdrop && this.$backdrop.remove()
-    this.$backdrop = null
-  }
-
-  Modal.prototype.backdrop = function (callback) {
-    var that = this
-    var animate = this.$element.hasClass('fade') ? 'fade' : ''
-
-    if (this.isShown && this.options.backdrop) {
-      var doAnimate = $.support.transition && animate
-
-      this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />')
-        .appendTo(this.$body)
-
-      this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
-        if (this.ignoreBackdropClick) {
-          this.ignoreBackdropClick = false
-          return
-        }
-        if (e.target !== e.currentTarget) return
-        this.options.backdrop == 'static'
-          ? this.$element[0].focus()
-          : this.hide()
-      }, this))
-
-      if (doAnimate) this.$backdrop[0].offsetWidth // force reflow
-
-      this.$backdrop.addClass('in')
-
-      if (!callback) return
-
-      doAnimate ?
-        this.$backdrop
-          .one('bsTransitionEnd', callback)
-          .emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) :
-        callback()
-
-    } else if (!this.isShown && this.$backdrop) {
-      this.$backdrop.removeClass('in')
-
-      var callbackRemove = function () {
-        that.removeBackdrop()
-        callback && callback()
-      }
-      $.support.transition && this.$element.hasClass('fade') ?
-        this.$backdrop
-          .one('bsTransitionEnd', callbackRemove)
-          .emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) :
-        callbackRemove()
-
-    } else if (callback) {
-      callback()
-    }
-  }
-
-  // these following methods are used to handle overflowing modals
-
-  Modal.prototype.handleUpdate = function () {
-    this.adjustDialog()
-  }
-
-  Modal.prototype.adjustDialog = function () {
-    var modalIsOverflowing = this.$element[0].scrollHeight > document.documentElement.clientHeight
-
-    this.$element.css({
-      paddingLeft:  !this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '',
-      paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : ''
-    })
-  }
-
-  Modal.prototype.resetAdjustments = function () {
-    this.$element.css({
-      paddingLeft: '',
-      paddingRight: ''
-    })
-  }
-
-  Modal.prototype.checkScrollbar = function () {
-    var fullWindowWidth = window.innerWidth
-    if (!fullWindowWidth) { // workaround for missing window.innerWidth in IE8
-      var documentElementRect = document.documentElement.getBoundingClientRect()
-      fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left)
-    }
-    this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth
-    this.scrollbarWidth = this.measureScrollbar()
-  }
-
-  Modal.prototype.setScrollbar = function () {
-    var bodyPad = parseInt((this.$body.css('padding-right') || 0), 10)
-    this.originalBodyPad = document.body.style.paddingRight || ''
-    if (this.bodyIsOverflowing) this.$body.css('padding-right', bodyPad + this.scrollbarWidth)
-  }
-
-  Modal.prototype.resetScrollbar = function () {
-    this.$body.css('padding-right', this.originalBodyPad)
-  }
-
-  Modal.prototype.measureScrollbar = function () { // thx walsh
-    var scrollDiv = document.createElement('div')
-    scrollDiv.className = 'modal-scrollbar-measure'
-    this.$body.append(scrollDiv)
-    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
-    this.$body[0].removeChild(scrollDiv)
-    return scrollbarWidth
-  }
-
-
-  // MODAL PLUGIN DEFINITION
-  // =======================
-
-  function Plugin(option, _relatedTarget) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.modal')
-      var options = $.extend({}, Modal.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
-      if (!data) $this.data('bs.modal', (data = new Modal(this, options)))
-      if (typeof option == 'string') data[option](_relatedTarget)
-      else if (options.show) data.show(_relatedTarget)
-    })
-  }
-
-  var old = $.fn.modal
-
-  $.fn.modal             = Plugin
-  $.fn.modal.Constructor = Modal
-
-
-  // MODAL NO CONFLICT
-  // =================
-
-  $.fn.modal.noConflict = function () {
-    $.fn.modal = old
-    return this
-  }
-
-
-  // MODAL DATA-API
-  // ==============
-
-  $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
-    var $this   = $(this)
-    var href    = $this.attr('href')
-    var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) // strip for ie7
-    var option  = $target.data('bs.modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data())
-
-    if ($this.is('a')) e.preventDefault()
-
-    $target.one('show.bs.modal', function (showEvent) {
-      if (showEvent.isDefaultPrevented()) return // only register focus restorer if modal will actually get shown
-      $target.one('hidden.bs.modal', function () {
-        $this.is(':visible') && $this.trigger('focus')
-      })
-    })
-    Plugin.call($target, option, this)
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: tooltip.js v3.3.2
- * http://getbootstrap.com/javascript/#tooltip
- * Inspired by the original jQuery.tipsy by Jason Frame
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // TOOLTIP PUBLIC CLASS DEFINITION
-  // ===============================
-
-  var Tooltip = function (element, options) {
-    this.type       = null
-    this.options    = null
-    this.enabled    = null
-    this.timeout    = null
-    this.hoverState = null
-    this.$element   = null
-
-    this.init('tooltip', element, options)
-  }
-
-  Tooltip.VERSION  = '3.3.2'
-
-  Tooltip.TRANSITION_DURATION = 150
-
-  Tooltip.DEFAULTS = {
-    animation: true,
-    placement: 'top',
-    selector: false,
-    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
-    trigger: 'hover focus',
-    title: '',
-    delay: 0,
-    html: false,
-    container: false,
-    viewport: {
-      selector: 'body',
-      padding: 0
-    }
-  }
-
-  Tooltip.prototype.init = function (type, element, options) {
-    this.enabled   = true
-    this.type      = type
-    this.$element  = $(element)
-    this.options   = this.getOptions(options)
-    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
-
-    if (this.$element[0] instanceof document.constructor && !this.options.selector) {
-      throw new Error('`selector` option must be specified when initializing ' + this.type + ' on the window.document object!')
-    }
-
-    var triggers = this.options.trigger.split(' ')
-
-    for (var i = triggers.length; i--;) {
-      var trigger = triggers[i]
-
-      if (trigger == 'click') {
-        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
-      } else if (trigger != 'manual') {
-        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
-        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
-
-        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
-        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
-      }
-    }
-
-    this.options.selector ?
-      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
-      this.fixTitle()
-  }
-
-  Tooltip.prototype.getDefaults = function () {
-    return Tooltip.DEFAULTS
-  }
-
-  Tooltip.prototype.getOptions = function (options) {
-    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
-
-    if (options.delay && typeof options.delay == 'number') {
-      options.delay = {
-        show: options.delay,
-        hide: options.delay
-      }
-    }
-
-    return options
-  }
-
-  Tooltip.prototype.getDelegateOptions = function () {
-    var options  = {}
-    var defaults = this.getDefaults()
-
-    this._options && $.each(this._options, function (key, value) {
-      if (defaults[key] != value) options[key] = value
-    })
-
-    return options
-  }
-
-  Tooltip.prototype.enter = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (self && self.$tip && self.$tip.is(':visible')) {
-      self.hoverState = 'in'
-      return
-    }
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'in'
-
-    if (!self.options.delay || !self.options.delay.show) return self.show()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'in') self.show()
-    }, self.options.delay.show)
-  }
-
-  Tooltip.prototype.leave = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'out'
-
-    if (!self.options.delay || !self.options.delay.hide) return self.hide()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'out') self.hide()
-    }, self.options.delay.hide)
-  }
-
-  Tooltip.prototype.show = function () {
-    var e = $.Event('show.bs.' + this.type)
-
-    if (this.hasContent() && this.enabled) {
-      this.$element.trigger(e)
-
-      var inDom = $.contains(this.$element[0].ownerDocument.documentElement, this.$element[0])
-      if (e.isDefaultPrevented() || !inDom) return
-      var that = this
-
-      var $tip = this.tip()
-
-      var tipId = this.getUID(this.type)
-
-      this.setContent()
-      $tip.attr('id', tipId)
-      this.$element.attr('aria-describedby', tipId)
-
-      if (this.options.animation) $tip.addClass('fade')
-
-      var placement = typeof this.options.placement == 'function' ?
-        this.options.placement.call(this, $tip[0], this.$element[0]) :
-        this.options.placement
-
-      var autoToken = /\s?auto?\s?/i
-      var autoPlace = autoToken.test(placement)
-      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
-
-      $tip
-        .detach()
-        .css({ top: 0, left: 0, display: 'block' })
-        .addClass(placement)
-        .data('bs.' + this.type, this)
-
-      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
-
-      var pos          = this.getPosition()
-      var actualWidth  = $tip[0].offsetWidth
-      var actualHeight = $tip[0].offsetHeight
-
-      if (autoPlace) {
-        var orgPlacement = placement
-        var $container   = this.options.container ? $(this.options.container) : this.$element.parent()
-        var containerDim = this.getPosition($container)
-
-        placement = placement == 'bottom' && pos.bottom + actualHeight > containerDim.bottom ? 'top'    :
-                    placement == 'top'    && pos.top    - actualHeight < containerDim.top    ? 'bottom' :
-                    placement == 'right'  && pos.right  + actualWidth  > containerDim.width  ? 'left'   :
-                    placement == 'left'   && pos.left   - actualWidth  < containerDim.left   ? 'right'  :
-                    placement
-
-        $tip
-          .removeClass(orgPlacement)
-          .addClass(placement)
-      }
-
-      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
-
-      this.applyPlacement(calculatedOffset, placement)
-
-      var complete = function () {
-        var prevHoverState = that.hoverState
-        that.$element.trigger('shown.bs.' + that.type)
-        that.hoverState = null
-
-        if (prevHoverState == 'out') that.leave(that)
-      }
-
-      $.support.transition && this.$tip.hasClass('fade') ?
-        $tip
-          .one('bsTransitionEnd', complete)
-          .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
-        complete()
-    }
-  }
-
-  Tooltip.prototype.applyPlacement = function (offset, placement) {
-    var $tip   = this.tip()
-    var width  = $tip[0].offsetWidth
-    var height = $tip[0].offsetHeight
-
-    // manually read margins because getBoundingClientRect includes difference
-    var marginTop = parseInt($tip.css('margin-top'), 10)
-    var marginLeft = parseInt($tip.css('margin-left'), 10)
-
-    // we must check for NaN for ie 8/9
-    if (isNaN(marginTop))  marginTop  = 0
-    if (isNaN(marginLeft)) marginLeft = 0
-
-    offset.top  = offset.top  + marginTop
-    offset.left = offset.left + marginLeft
-
-    // $.fn.offset doesn't round pixel values
-    // so we use setOffset directly with our own function B-0
-    $.offset.setOffset($tip[0], $.extend({
-      using: function (props) {
-        $tip.css({
-          top: Math.round(props.top),
-          left: Math.round(props.left)
-        })
-      }
-    }, offset), 0)
-
-    $tip.addClass('in')
-
-    // check to see if placing tip in new offset caused the tip to resize itself
-    var actualWidth  = $tip[0].offsetWidth
-    var actualHeight = $tip[0].offsetHeight
-
-    if (placement == 'top' && actualHeight != height) {
-      offset.top = offset.top + height - actualHeight
-    }
-
-    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
-
-    if (delta.left) offset.left += delta.left
-    else offset.top += delta.top
-
-    var isVertical          = /top|bottom/.test(placement)
-    var arrowDelta          = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
-    var arrowOffsetPosition = isVertical ? 'offsetWidth' : 'offsetHeight'
-
-    $tip.offset(offset)
-    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical)
-  }
-
-  Tooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
-    this.arrow()
-      .css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
-      .css(isVertical ? 'top' : 'left', '')
-  }
-
-  Tooltip.prototype.setContent = function () {
-    var $tip  = this.tip()
-    var title = this.getTitle()
-
-    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
-    $tip.removeClass('fade in top bottom left right')
-  }
-
-  Tooltip.prototype.hide = function (callback) {
-    var that = this
-    var $tip = $(this.$tip)
-    var e    = $.Event('hide.bs.' + this.type)
-
-    function complete() {
-      if (that.hoverState != 'in') $tip.detach()
-      that.$element
-        .removeAttr('aria-describedby')
-        .trigger('hidden.bs.' + that.type)
-      callback && callback()
-    }
-
-    this.$element.trigger(e)
-
-    if (e.isDefaultPrevented()) return
-
-    $tip.removeClass('in')
-
-    $.support.transition && $tip.hasClass('fade') ?
-      $tip
-        .one('bsTransitionEnd', complete)
-        .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
-      complete()
-
-    this.hoverState = null
-
-    return this
-  }
-
-  Tooltip.prototype.fixTitle = function () {
-    var $e = this.$element
-    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
-      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
-    }
-  }
-
-  Tooltip.prototype.hasContent = function () {
-    return this.getTitle()
-  }
-
-  Tooltip.prototype.getPosition = function ($element) {
-    $element   = $element || this.$element
-
-    var el     = $element[0]
-    var isBody = el.tagName == 'BODY'
-
-    var elRect    = el.getBoundingClientRect()
-    if (elRect.width == null) {
-      // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
-      elRect = $.extend({}, elRect, { width: elRect.right - elRect.left, height: elRect.bottom - elRect.top })
-    }
-    var elOffset  = isBody ? { top: 0, left: 0 } : $element.offset()
-    var scroll    = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() }
-    var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null
-
-    return $.extend({}, elRect, scroll, outerDims, elOffset)
-  }
-
-  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
-    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2 } :
-           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } :
-           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
-        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width }
-
-  }
-
-  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
-    var delta = { top: 0, left: 0 }
-    if (!this.$viewport) return delta
-
-    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
-    var viewportDimensions = this.getPosition(this.$viewport)
-
-    if (/right|left/.test(placement)) {
-      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
-      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
-      if (topEdgeOffset < viewportDimensions.top) { // top overflow
-        delta.top = viewportDimensions.top - topEdgeOffset
-      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
-        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
-      }
-    } else {
-      var leftEdgeOffset  = pos.left - viewportPadding
-      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
-      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
-        delta.left = viewportDimensions.left - leftEdgeOffset
-      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
-        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
-      }
-    }
-
-    return delta
-  }
-
-  Tooltip.prototype.getTitle = function () {
-    var title
-    var $e = this.$element
-    var o  = this.options
-
-    title = $e.attr('data-original-title')
-      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
-
-    return title
-  }
-
-  Tooltip.prototype.getUID = function (prefix) {
-    do prefix += ~~(Math.random() * 1000000)
-    while (document.getElementById(prefix))
-    return prefix
-  }
-
-  Tooltip.prototype.tip = function () {
-    return (this.$tip = this.$tip || $(this.options.template))
-  }
-
-  Tooltip.prototype.arrow = function () {
-    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
-  }
-
-  Tooltip.prototype.enable = function () {
-    this.enabled = true
-  }
-
-  Tooltip.prototype.disable = function () {
-    this.enabled = false
-  }
-
-  Tooltip.prototype.toggleEnabled = function () {
-    this.enabled = !this.enabled
-  }
-
-  Tooltip.prototype.toggle = function (e) {
-    var self = this
-    if (e) {
-      self = $(e.currentTarget).data('bs.' + this.type)
-      if (!self) {
-        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
-        $(e.currentTarget).data('bs.' + this.type, self)
-      }
-    }
-
-    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
-  }
-
-  Tooltip.prototype.destroy = function () {
-    var that = this
-    clearTimeout(this.timeout)
-    this.hide(function () {
-      that.$element.off('.' + that.type).removeData('bs.' + that.type)
-    })
-  }
-
-
-  // TOOLTIP PLUGIN DEFINITION
-  // =========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.tooltip')
-      var options = typeof option == 'object' && option
-
-      if (!data && /destroy|hide/.test(option)) return
-      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.tooltip
-
-  $.fn.tooltip             = Plugin
-  $.fn.tooltip.Constructor = Tooltip
-
-
-  // TOOLTIP NO CONFLICT
-  // ===================
-
-  $.fn.tooltip.noConflict = function () {
-    $.fn.tooltip = old
-    return this
-  }
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: popover.js v3.3.2
- * http://getbootstrap.com/javascript/#popovers
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // POPOVER PUBLIC CLASS DEFINITION
-  // ===============================
-
-  var Popover = function (element, options) {
-    this.init('popover', element, options)
-  }
-
-  if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
-
-  Popover.VERSION  = '3.3.2'
-
-  Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
-    placement: 'right',
-    trigger: 'click',
-    content: '',
-    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
-  })
-
-
-  // NOTE: POPOVER EXTENDS tooltip.js
-  // ================================
-
-  Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
-
-  Popover.prototype.constructor = Popover
-
-  Popover.prototype.getDefaults = function () {
-    return Popover.DEFAULTS
-  }
-
-  Popover.prototype.setContent = function () {
-    var $tip    = this.tip()
-    var title   = this.getTitle()
-    var content = this.getContent()
-
-    $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
-    $tip.find('.popover-content').children().detach().end()[ // we use append for html objects to maintain js events
-      this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
-    ](content)
-
-    $tip.removeClass('fade top bottom left right in')
-
-    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
-    // this manually by checking the contents.
-    if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
-  }
-
-  Popover.prototype.hasContent = function () {
-    return this.getTitle() || this.getContent()
-  }
-
-  Popover.prototype.getContent = function () {
-    var $e = this.$element
-    var o  = this.options
-
-    return $e.attr('data-content')
-      || (typeof o.content == 'function' ?
-            o.content.call($e[0]) :
-            o.content)
-  }
-
-  Popover.prototype.arrow = function () {
-    return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
-  }
-
-
-  // POPOVER PLUGIN DEFINITION
-  // =========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.popover')
-      var options = typeof option == 'object' && option
-
-      if (!data && /destroy|hide/.test(option)) return
-      if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.popover
-
-  $.fn.popover             = Plugin
-  $.fn.popover.Constructor = Popover
-
-
-  // POPOVER NO CONFLICT
-  // ===================
-
-  $.fn.popover.noConflict = function () {
-    $.fn.popover = old
-    return this
-  }
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: tab.js v3.3.2
- * http://getbootstrap.com/javascript/#tabs
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // TAB CLASS DEFINITION
-  // ====================
-
-  var Tab = function (element) {
-    this.element = $(element)
-  }
-
-  Tab.VERSION = '3.3.2'
-
-  Tab.TRANSITION_DURATION = 150
-
-  Tab.prototype.show = function () {
-    var $this    = this.element
-    var $ul      = $this.closest('ul:not(.dropdown-menu)')
-    var selector = $this.data('target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    if ($this.parent('li').hasClass('active')) return
-
-    var $previous = $ul.find('.active:last a')
-    var hideEvent = $.Event('hide.bs.tab', {
-      relatedTarget: $this[0]
-    })
-    var showEvent = $.Event('show.bs.tab', {
-      relatedTarget: $previous[0]
-    })
-
-    $previous.trigger(hideEvent)
-    $this.trigger(showEvent)
-
-    if (showEvent.isDefaultPrevented() || hideEvent.isDefaultPrevented()) return
-
-    var $target = $(selector)
-
-    this.activate($this.closest('li'), $ul)
-    this.activate($target, $target.parent(), function () {
-      $previous.trigger({
-        type: 'hidden.bs.tab',
-        relatedTarget: $this[0]
-      })
-      $this.trigger({
-        type: 'shown.bs.tab',
-        relatedTarget: $previous[0]
-      })
-    })
-  }
-
-  Tab.prototype.activate = function (element, container, callback) {
-    var $active    = container.find('> .active')
-    var transition = callback
-      && $.support.transition
-      && (($active.length && $active.hasClass('fade')) || !!container.find('> .fade').length)
-
-    function next() {
-      $active
-        .removeClass('active')
-        .find('> .dropdown-menu > .active')
-          .removeClass('active')
-        .end()
-        .find('[data-toggle="tab"]')
-          .attr('aria-expanded', false)
-
-      element
-        .addClass('active')
-        .find('[data-toggle="tab"]')
-          .attr('aria-expanded', true)
-
-      if (transition) {
-        element[0].offsetWidth // reflow for transition
-        element.addClass('in')
-      } else {
-        element.removeClass('fade')
-      }
-
-      if (element.parent('.dropdown-menu').length) {
-        element
-          .closest('li.dropdown')
-            .addClass('active')
-          .end()
-          .find('[data-toggle="tab"]')
-            .attr('aria-expanded', true)
-      }
-
-      callback && callback()
-    }
-
-    $active.length && transition ?
-      $active
-        .one('bsTransitionEnd', next)
-        .emulateTransitionEnd(Tab.TRANSITION_DURATION) :
-      next()
-
-    $active.removeClass('in')
-  }
-
-
-  // TAB PLUGIN DEFINITION
-  // =====================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.tab')
-
-      if (!data) $this.data('bs.tab', (data = new Tab(this)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.tab
-
-  $.fn.tab             = Plugin
-  $.fn.tab.Constructor = Tab
-
-
-  // TAB NO CONFLICT
-  // ===============
-
-  $.fn.tab.noConflict = function () {
-    $.fn.tab = old
-    return this
-  }
-
-
-  // TAB DATA-API
-  // ============
-
-  var clickHandler = function (e) {
-    e.preventDefault()
-    Plugin.call($(this), 'show')
-  }
-
-  $(document)
-    .on('click.bs.tab.data-api', '[data-toggle="tab"]', clickHandler)
-    .on('click.bs.tab.data-api', '[data-toggle="pill"]', clickHandler)
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: affix.js v3.3.2
- * http://getbootstrap.com/javascript/#affix
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // AFFIX CLASS DEFINITION
-  // ======================
-
-  var Affix = function (element, options) {
-    this.options = $.extend({}, Affix.DEFAULTS, options)
-
-    this.$target = $(this.options.target)
-      .on('scroll.bs.affix.data-api', $.proxy(this.checkPosition, this))
-      .on('click.bs.affix.data-api',  $.proxy(this.checkPositionWithEventLoop, this))
-
-    this.$element     = $(element)
-    this.affixed      = null
-    this.unpin        = null
-    this.pinnedOffset = null
-
-    this.checkPosition()
-  }
-
-  Affix.VERSION  = '3.3.2'
-
-  Affix.RESET    = 'affix affix-top affix-bottom'
-
-  Affix.DEFAULTS = {
-    offset: 0,
-    target: window
-  }
-
-  Affix.prototype.getState = function (scrollHeight, height, offsetTop, offsetBottom) {
-    var scrollTop    = this.$target.scrollTop()
-    var position     = this.$element.offset()
-    var targetHeight = this.$target.height()
-
-    if (offsetTop != null && this.affixed == 'top') return scrollTop < offsetTop ? 'top' : false
-
-    if (this.affixed == 'bottom') {
-      if (offsetTop != null) return (scrollTop + this.unpin <= position.top) ? false : 'bottom'
-      return (scrollTop + targetHeight <= scrollHeight - offsetBottom) ? false : 'bottom'
-    }
-
-    var initializing   = this.affixed == null
-    var colliderTop    = initializing ? scrollTop : position.top
-    var colliderHeight = initializing ? targetHeight : height
-
-    if (offsetTop != null && scrollTop <= offsetTop) return 'top'
-    if (offsetBottom != null && (colliderTop + colliderHeight >= scrollHeight - offsetBottom)) return 'bottom'
-
-    return false
-  }
-
-  Affix.prototype.getPinnedOffset = function () {
-    if (this.pinnedOffset) return this.pinnedOffset
-    this.$element.removeClass(Affix.RESET).addClass('affix')
-    var scrollTop = this.$target.scrollTop()
-    var position  = this.$element.offset()
-    return (this.pinnedOffset = position.top - scrollTop)
-  }
-
-  Affix.prototype.checkPositionWithEventLoop = function () {
-    setTimeout($.proxy(this.checkPosition, this), 1)
-  }
-
-  Affix.prototype.checkPosition = function () {
-    if (!this.$element.is(':visible')) return
-
-    var height       = this.$element.height()
-    var offset       = this.options.offset
-    var offsetTop    = offset.top
-    var offsetBottom = offset.bottom
-    var scrollHeight = $(document.body).height()
-
-    if (typeof offset != 'object')         offsetBottom = offsetTop = offset
-    if (typeof offsetTop == 'function')    offsetTop    = offset.top(this.$element)
-    if (typeof offsetBottom == 'function') offsetBottom = offset.bottom(this.$element)
-
-    var affix = this.getState(scrollHeight, height, offsetTop, offsetBottom)
-
-    if (this.affixed != affix) {
-      if (this.unpin != null) this.$element.css('top', '')
-
-      var affixType = 'affix' + (affix ? '-' + affix : '')
-      var e         = $.Event(affixType + '.bs.affix')
-
-      this.$element.trigger(e)
-
-      if (e.isDefaultPrevented()) return
-
-      this.affixed = affix
-      this.unpin = affix == 'bottom' ? this.getPinnedOffset() : null
-
-      this.$element
-        .removeClass(Affix.RESET)
-        .addClass(affixType)
-        .trigger(affixType.replace('affix', 'affixed') + '.bs.affix')
-    }
-
-    if (affix == 'bottom') {
-      this.$element.offset({
-        top: scrollHeight - height - offsetBottom
-      })
-    }
-  }
-
-
-  // AFFIX PLUGIN DEFINITION
-  // =======================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.affix')
-      var options = typeof option == 'object' && option
-
-      if (!data) $this.data('bs.affix', (data = new Affix(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.affix
-
-  $.fn.affix             = Plugin
-  $.fn.affix.Constructor = Affix
-
-
-  // AFFIX NO CONFLICT
-  // =================
-
-  $.fn.affix.noConflict = function () {
-    $.fn.affix = old
-    return this
-  }
-
-
-  // AFFIX DATA-API
-  // ==============
-
-  $(window).on('load', function () {
-    $('[data-spy="affix"]').each(function () {
-      var $spy = $(this)
-      var data = $spy.data()
-
-      data.offset = data.offset || {}
-
-      if (data.offsetBottom != null) data.offset.bottom = data.offsetBottom
-      if (data.offsetTop    != null) data.offset.top    = data.offsetTop
-
-      Plugin.call($spy, data)
-    })
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: collapse.js v3.3.2
- * http://getbootstrap.com/javascript/#collapse
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // COLLAPSE PUBLIC CLASS DEFINITION
-  // ================================
-
-  var Collapse = function (element, options) {
-    this.$element      = $(element)
-    this.options       = $.extend({}, Collapse.DEFAULTS, options)
-    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
-                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
-    this.transitioning = null
-
-    if (this.options.parent) {
-      this.$parent = this.getParent()
-    } else {
-      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
-    }
-
-    if (this.options.toggle) this.toggle()
-  }
-
-  Collapse.VERSION  = '3.3.2'
-
-  Collapse.TRANSITION_DURATION = 350
-
-  Collapse.DEFAULTS = {
-    toggle: true
-  }
-
-  Collapse.prototype.dimension = function () {
-    var hasWidth = this.$element.hasClass('width')
-    return hasWidth ? 'width' : 'height'
-  }
-
-  Collapse.prototype.show = function () {
-    if (this.transitioning || this.$element.hasClass('in')) return
-
-    var activesData
-    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
-
-    if (actives && actives.length) {
-      activesData = actives.data('bs.collapse')
-      if (activesData && activesData.transitioning) return
-    }
-
-    var startEvent = $.Event('show.bs.collapse')
-    this.$element.trigger(startEvent)
-    if (startEvent.isDefaultPrevented()) return
-
-    if (actives && actives.length) {
-      Plugin.call(actives, 'hide')
-      activesData || actives.data('bs.collapse', null)
-    }
-
-    var dimension = this.dimension()
-
-    this.$element
-      .removeClass('collapse')
-      .addClass('collapsing')[dimension](0)
-      .attr('aria-expanded', true)
-
-    this.$trigger
-      .removeClass('collapsed')
-      .attr('aria-expanded', true)
-
-    this.transitioning = 1
-
-    var complete = function () {
-      this.$element
-        .removeClass('collapsing')
-        .addClass('collapse in')[dimension]('')
-      this.transitioning = 0
-      this.$element
-        .trigger('shown.bs.collapse')
-    }
-
-    if (!$.support.transition) return complete.call(this)
-
-    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
-
-    this.$element
-      .one('bsTransitionEnd', $.proxy(complete, this))
-      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
-  }
-
-  Collapse.prototype.hide = function () {
-    if (this.transitioning || !this.$element.hasClass('in')) return
-
-    var startEvent = $.Event('hide.bs.collapse')
-    this.$element.trigger(startEvent)
-    if (startEvent.isDefaultPrevented()) return
-
-    var dimension = this.dimension()
-
-    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
-
-    this.$element
-      .addClass('collapsing')
-      .removeClass('collapse in')
-      .attr('aria-expanded', false)
-
-    this.$trigger
-      .addClass('collapsed')
-      .attr('aria-expanded', false)
-
-    this.transitioning = 1
-
-    var complete = function () {
-      this.transitioning = 0
-      this.$element
-        .removeClass('collapsing')
-        .addClass('collapse')
-        .trigger('hidden.bs.collapse')
-    }
-
-    if (!$.support.transition) return complete.call(this)
-
-    this.$element
-      [dimension](0)
-      .one('bsTransitionEnd', $.proxy(complete, this))
-      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
-  }
-
-  Collapse.prototype.toggle = function () {
-    this[this.$element.hasClass('in') ? 'hide' : 'show']()
-  }
-
-  Collapse.prototype.getParent = function () {
-    return $(this.options.parent)
-      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
-      .each($.proxy(function (i, element) {
-        var $element = $(element)
-        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
-      }, this))
-      .end()
-  }
-
-  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
-    var isOpen = $element.hasClass('in')
-
-    $element.attr('aria-expanded', isOpen)
-    $trigger
-      .toggleClass('collapsed', !isOpen)
-      .attr('aria-expanded', isOpen)
-  }
-
-  function getTargetFromTrigger($trigger) {
-    var href
-    var target = $trigger.attr('data-target')
-      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
-
-    return $(target)
-  }
-
-
-  // COLLAPSE PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.collapse')
-      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
-      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
-      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.collapse
-
-  $.fn.collapse             = Plugin
-  $.fn.collapse.Constructor = Collapse
-
-
-  // COLLAPSE NO CONFLICT
-  // ====================
-
-  $.fn.collapse.noConflict = function () {
-    $.fn.collapse = old
-    return this
-  }
-
-
-  // COLLAPSE DATA-API
-  // =================
-
-  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
-    var $this   = $(this)
-
-    if (!$this.attr('data-target')) e.preventDefault()
-
-    var $target = getTargetFromTrigger($this)
-    var data    = $target.data('bs.collapse')
-    var option  = data ? 'toggle' : $this.data()
-
-    Plugin.call($target, option)
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: scrollspy.js v3.3.2
- * http://getbootstrap.com/javascript/#scrollspy
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // SCROLLSPY CLASS DEFINITION
-  // ==========================
-
-  function ScrollSpy(element, options) {
-    this.$body          = $(document.body)
-    this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
-    this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
-    this.selector       = (this.options.target || '') + ' .nav li > a'
-    this.offsets        = []
-    this.targets        = []
-    this.activeTarget   = null
-    this.scrollHeight   = 0
-
-    this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
-    this.refresh()
-    this.process()
-  }
-
-  ScrollSpy.VERSION  = '3.3.2'
-
-  ScrollSpy.DEFAULTS = {
-    offset: 10
-  }
-
-  ScrollSpy.prototype.getScrollHeight = function () {
-    return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
-  }
-
-  ScrollSpy.prototype.refresh = function () {
-    var that          = this
-    var offsetMethod  = 'offset'
-    var offsetBase    = 0
-
-    this.offsets      = []
-    this.targets      = []
-    this.scrollHeight = this.getScrollHeight()
-
-    if (!$.isWindow(this.$scrollElement[0])) {
-      offsetMethod = 'position'
-      offsetBase   = this.$scrollElement.scrollTop()
-    }
-
-    this.$body
-      .find(this.selector)
-      .map(function () {
-        var $el   = $(this)
-        var href  = $el.data('target') || $el.attr('href')
-        var $href = /^#./.test(href) && $(href)
-
-        return ($href
-          && $href.length
-          && $href.is(':visible')
-          && [[$href[offsetMethod]().top + offsetBase, href]]) || null
-      })
-      .sort(function (a, b) { return a[0] - b[0] })
-      .each(function () {
-        that.offsets.push(this[0])
-        that.targets.push(this[1])
-      })
-  }
-
-  ScrollSpy.prototype.process = function () {
-    var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
-    var scrollHeight = this.getScrollHeight()
-    var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
-    var offsets      = this.offsets
-    var targets      = this.targets
-    var activeTarget = this.activeTarget
-    var i
-
-    if (this.scrollHeight != scrollHeight) {
-      this.refresh()
-    }
-
-    if (scrollTop >= maxScroll) {
-      return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
-    }
-
-    if (activeTarget && scrollTop < offsets[0]) {
-      this.activeTarget = null
-      return this.clear()
-    }
-
-    for (i = offsets.length; i--;) {
-      activeTarget != targets[i]
-        && scrollTop >= offsets[i]
-        && (offsets[i + 1] === undefined || scrollTop <= offsets[i + 1])
-        && this.activate(targets[i])
-    }
-  }
-
-  ScrollSpy.prototype.activate = function (target) {
-    this.activeTarget = target
-
-    this.clear()
-
-    var selector = this.selector +
-      '[data-target="' + target + '"],' +
-      this.selector + '[href="' + target + '"]'
-
-    var active = $(selector)
-      .parents('li')
-      .addClass('active')
-
-    if (active.parent('.dropdown-menu').length) {
-      active = active
-        .closest('li.dropdown')
-        .addClass('active')
-    }
-
-    active.trigger('activate.bs.scrollspy')
-  }
-
-  ScrollSpy.prototype.clear = function () {
-    $(this.selector)
-      .parentsUntil(this.options.target, '.active')
-      .removeClass('active')
-  }
-
-
-  // SCROLLSPY PLUGIN DEFINITION
-  // ===========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.scrollspy')
-      var options = typeof option == 'object' && option
-
-      if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.scrollspy
-
-  $.fn.scrollspy             = Plugin
-  $.fn.scrollspy.Constructor = ScrollSpy
-
-
-  // SCROLLSPY NO CONFLICT
-  // =====================
-
-  $.fn.scrollspy.noConflict = function () {
-    $.fn.scrollspy = old
-    return this
-  }
-
-
-  // SCROLLSPY DATA-API
-  // ==================
-
-  $(window).on('load.bs.scrollspy.data-api', function () {
-    $('[data-spy="scroll"]').each(function () {
-      var $spy = $(this)
-      Plugin.call($spy, $spy.data())
-    })
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: transition.js v3.3.2
- * http://getbootstrap.com/javascript/#transitions
- * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
-  // ============================================================
-
-  function transitionEnd() {
-    var el = document.createElement('bootstrap')
-
-    var transEndEventNames = {
-      WebkitTransition : 'webkitTransitionEnd',
-      MozTransition    : 'transitionend',
-      OTransition      : 'oTransitionEnd otransitionend',
-      transition       : 'transitionend'
-    }
-
-    for (var name in transEndEventNames) {
-      if (el.style[name] !== undefined) {
-        return { end: transEndEventNames[name] }
-      }
-    }
-
-    return false // explicit for ie8 (  ._.)
-  }
-
-  // http://blog.alexmaccaw.com/css-transitions
-  $.fn.emulateTransitionEnd = function (duration) {
-    var called = false
-    var $el = this
-    $(this).one('bsTransitionEnd', function () { called = true })
-    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
-    setTimeout(callback, duration)
-    return this
-  }
-
-  $(function () {
-    $.support.transition = transitionEnd()
-
-    if (!$.support.transition) return
-
-    $.event.special.bsTransitionEnd = {
-      bindType: $.support.transition.end,
-      delegateType: $.support.transition.end,
-      handle: function (e) {
-        if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments)
-      }
-    }
-  })
-
-}(jQuery);
-
+  * Bootstrap v4.0.0-beta.2 (https://getbootstrap.com)
+  * Copyright 2011-2017 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  */
+var bootstrap=function(t,e){"use strict";function n(t,e){for(var n=0;n<e.length;n++){var i=e[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(t,i.key,i)}}function i(t){return t&&"[object Function]"==={}.toString.call(t)}function r(t,e){if(1!==t.nodeType)return[];var n=window.getComputedStyle(t,null);return e?n[e]:n}function o(t){return"HTML"===t.nodeName?t:t.parentNode||t.host}function s(t){if(!t||-1!==["HTML","BODY","#document"].indexOf(t.nodeName))return window.document.body;var e=r(t),n=e.overflow,i=e.overflowX;return/(auto|scroll)/.test(n+e.overflowY+i)?t:s(o(t))}function a(t){var e=t&&t.offsetParent,n=e&&e.nodeName;return n&&"BODY"!==n&&"HTML"!==n?-1!==["TD","TABLE"].indexOf(e.nodeName)&&"static"===r(e,"position")?a(e):e:window.document.documentElement}function l(t){var e=t.nodeName;return"BODY"!==e&&("HTML"===e||a(t.firstElementChild)===t)}function c(t){return null!==t.parentNode?c(t.parentNode):t}function f(t,e){if(!(t&&t.nodeType&&e&&e.nodeType))return window.document.documentElement;var n=t.compareDocumentPosition(e)&Node.DOCUMENT_POSITION_FOLLOWING,i=n?t:e,r=n?e:t,o=document.createRange();o.setStart(i,0),o.setEnd(r,0);var s=o.commonAncestorContainer;if(t!==s&&e!==s||i.contains(r))return l(s)?s:a(s);var h=c(t);return h.host?f(h.host,e):f(t,c(e).host)}function h(t){var e="top"===(arguments.length>1&&void 0!==arguments[1]?arguments[1]:"top")?"scrollTop":"scrollLeft",n=t.nodeName;if("BODY"===n||"HTML"===n){var i=window.document.documentElement;return(window.document.scrollingElement||i)[e]}return t[e]}function u(t,e){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],i=h(e,"top"),r=h(e,"left"),o=n?-1:1;return t.top+=i*o,t.bottom+=i*o,t.left+=r*o,t.right+=r*o,t}function d(t,e){var n="x"===e?"Left":"Top",i="Left"===n?"Right":"Bottom";return+t["border"+n+"Width"].split("px")[0]+ +t["border"+i+"Width"].split("px")[0]}function p(t,e,n,i){return Math.max(e["offset"+t],e["scroll"+t],n["client"+t],n["offset"+t],n["scroll"+t],lt()?n["offset"+t]+i["margin"+("Height"===t?"Top":"Left")]+i["margin"+("Height"===t?"Bottom":"Right")]:0)}function g(){var t=window.document.body,e=window.document.documentElement,n=lt()&&window.getComputedStyle(e);return{height:p("Height",t,e,n),width:p("Width",t,e,n)}}function m(t){return ut({},t,{right:t.left+t.width,bottom:t.top+t.height})}function _(t){var e={};if(lt())try{e=t.getBoundingClientRect();var n=h(t,"top"),i=h(t,"left");e.top+=n,e.left+=i,e.bottom+=n,e.right+=i}catch(t){}else e=t.getBoundingClientRect();var o={left:e.left,top:e.top,width:e.right-e.left,height:e.bottom-e.top},s="HTML"===t.nodeName?g():{},a=s.width||t.clientWidth||o.right-o.left,l=s.height||t.clientHeight||o.bottom-o.top,c=t.offsetWidth-a,f=t.offsetHeight-l;if(c||f){var u=r(t);c-=d(u,"x"),f-=d(u,"y"),o.width-=c,o.height-=f}return m(o)}function v(t,e){var n=lt(),i="HTML"===e.nodeName,o=_(t),a=_(e),l=s(t),c=r(e),f=+c.borderTopWidth.split("px")[0],h=+c.borderLeftWidth.split("px")[0],d=m({top:o.top-a.top-f,left:o.left-a.left-h,width:o.width,height:o.height});if(d.marginTop=0,d.marginLeft=0,!n&&i){var p=+c.marginTop.split("px")[0],g=+c.marginLeft.split("px")[0];d.top-=f-p,d.bottom-=f-p,d.left-=h-g,d.right-=h-g,d.marginTop=p,d.marginLeft=g}return(n?e.contains(l):e===l&&"BODY"!==l.nodeName)&&(d=u(d,e)),d}function E(t){var e=window.document.documentElement,n=v(t,e),i=Math.max(e.clientWidth,window.innerWidth||0),r=Math.max(e.clientHeight,window.innerHeight||0),o=h(e),s=h(e,"left");return m({top:o-n.top+n.marginTop,left:s-n.left+n.marginLeft,width:i,height:r})}function T(t){var e=t.nodeName;return"BODY"!==e&&"HTML"!==e&&("fixed"===r(t,"position")||T(o(t)))}function b(t,e,n,i){var r={top:0,left:0},a=f(t,e);if("viewport"===i)r=E(a);else{var l=void 0;"scrollParent"===i?"BODY"===(l=s(o(t))).nodeName&&(l=window.document.documentElement):l="window"===i?window.document.documentElement:i;var c=v(l,a);if("HTML"!==l.nodeName||T(a))r=c;else{var h=g(),u=h.height,d=h.width;r.top+=c.top-c.marginTop,r.bottom=u+c.top,r.left+=c.left-c.marginLeft,r.right=d+c.left}}return r.left+=n,r.top+=n,r.right-=n,r.bottom-=n,r}function C(t){return t.width*t.height}function A(t,e,n,i,r){var o=arguments.length>5&&void 0!==arguments[5]?arguments[5]:0;if(-1===t.indexOf("auto"))return t;var s=b(n,i,o,r),a={top:{width:s.width,height:e.top-s.top},right:{width:s.right-e.right,height:s.height},bottom:{width:s.width,height:s.bottom-e.bottom},left:{width:e.left-s.left,height:s.height}},l=Object.keys(a).map(function(t){return ut({key:t},a[t],{area:C(a[t])})}).sort(function(t,e){return e.area-t.area}),c=l.filter(function(t){var e=t.width,i=t.height;return e>=n.clientWidth&&i>=n.clientHeight}),f=c.length>0?c[0].key:l[0].key,h=t.split("-")[1];return f+(h?"-"+h:"")}function I(t,e,n){return v(n,f(e,n))}function O(t){var e=window.getComputedStyle(t),n=parseFloat(e.marginTop)+parseFloat(e.marginBottom),i=parseFloat(e.marginLeft)+parseFloat(e.marginRight);return{width:t.offsetWidth+i,height:t.offsetHeight+n}}function y(t){var e={left:"right",right:"left",bottom:"top",top:"bottom"};return t.replace(/left|right|bottom|top/g,function(t){return e[t]})}function D(t,e,n){n=n.split("-")[0];var i=O(t),r={width:i.width,height:i.height},o=-1!==["right","left"].indexOf(n),s=o?"top":"left",a=o?"left":"top",l=o?"height":"width",c=o?"width":"height";return r[s]=e[s]+e[l]/2-i[l]/2,r[a]=n===a?e[a]-i[c]:e[y(a)],r}function S(t,e){return Array.prototype.find?t.find(e):t.filter(e)[0]}function w(t,e,n){if(Array.prototype.findIndex)return t.findIndex(function(t){return t[e]===n});var i=S(t,function(t){return t[e]===n});return t.indexOf(i)}function N(t,e,n){return(void 0===n?t:t.slice(0,w(t,"name",n))).forEach(function(t){t.function&&console.warn("`modifier.function` is deprecated, use `modifier.fn`!");var n=t.function||t.fn;t.enabled&&i(n)&&(e.offsets.popper=m(e.offsets.popper),e.offsets.reference=m(e.offsets.reference),e=n(e,t))}),e}function L(){if(!this.state.isDestroyed){var t={instance:this,styles:{},arrowStyles:{},attributes:{},flipped:!1,offsets:{}};t.offsets.reference=I(this.state,this.popper,this.reference),t.placement=A(this.options.placement,t.offsets.reference,this.popper,this.reference,this.options.modifiers.flip.boundariesElement,this.options.modifiers.flip.padding),t.originalPlacement=t.placement,t.offsets.popper=D(this.popper,t.offsets.reference,t.placement),t.offsets.popper.position="absolute",t=N(this.modifiers,t),this.state.isCreated?this.options.onUpdate(t):(this.state.isCreated=!0,this.options.onCreate(t))}}function P(t,e){return t.some(function(t){var n=t.name;return t.enabled&&n===e})}function R(t){for(var e=[!1,"ms","Webkit","Moz","O"],n=t.charAt(0).toUpperCase()+t.slice(1),i=0;i<e.length-1;i++){var r=e[i],o=r?""+r+n:t;if("undefined"!=typeof window.document.body.style[o])return o}return null}function H(){return this.state.isDestroyed=!0,P(this.modifiers,"applyStyle")&&(this.popper.removeAttribute("x-placement"),this.popper.style.left="",this.popper.style.position="",this.popper.style.top="",this.popper.style[R("transform")]=""),this.disableEventListeners(),this.options.removeOnDestroy&&this.popper.parentNode.removeChild(this.popper),this}function k(t,e,n,i){var r="BODY"===t.nodeName,o=r?window:t;o.addEventListener(e,n,{passive:!0}),r||k(s(o.parentNode),e,n,i),i.push(o)}function W(t,e,n,i){n.updateBound=i,window.addEventListener("resize",n.updateBound,{passive:!0});var r=s(t);return k(r,"scroll",n.updateBound,n.scrollParents),n.scrollElement=r,n.eventsEnabled=!0,n}function x(){this.state.eventsEnabled||(this.state=W(this.reference,this.options,this.state,this.scheduleUpdate))}function M(t,e){return window.removeEventListener("resize",e.updateBound),e.scrollParents.forEach(function(t){t.removeEventListener("scroll",e.updateBound)}),e.updateBound=null,e.scrollParents=[],e.scrollElement=null,e.eventsEnabled=!1,e}function U(){this.state.eventsEnabled&&(window.cancelAnimationFrame(this.scheduleUpdate),this.state=M(this.reference,this.state))}function V(t){return""!==t&&!isNaN(parseFloat(t))&&isFinite(t)}function F(t,e){Object.keys(e).forEach(function(n){var i="";-1!==["width","height","top","right","bottom","left"].indexOf(n)&&V(e[n])&&(i="px"),t.style[n]=e[n]+i})}function j(t,e){Object.keys(e).forEach(function(n){!1!==e[n]?t.setAttribute(n,e[n]):t.removeAttribute(n)})}function B(t,e,n){var i=S(t,function(t){return t.name===e}),r=!!i&&t.some(function(t){return t.name===n&&t.enabled&&t.order<i.order});if(!r){var o="`"+e+"`",s="`"+n+"`";console.warn(s+" modifier is required by "+o+" modifier in order to work, be sure to include it before "+o+"!")}return r}function G(t){return"end"===t?"start":"start"===t?"end":t}function K(t){var e=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=pt.indexOf(t),i=pt.slice(n+1).concat(pt.slice(0,n));return e?i.reverse():i}function Q(t,e,n,i){var r=t.match(/((?:\-|\+)?\d*\.?\d*)(.*)/),o=+r[1],s=r[2];if(!o)return t;if(0===s.indexOf("%")){var a=void 0;switch(s){case"%p":a=n;break;case"%":case"%r":default:a=i}return m(a)[e]/100*o}if("vh"===s||"vw"===s){return("vh"===s?Math.max(document.documentElement.clientHeight,window.innerHeight||0):Math.max(document.documentElement.clientWidth,window.innerWidth||0))/100*o}return o}function Y(t,e,n,i){var r=[0,0],o=-1!==["right","left"].indexOf(i),s=t.split(/(\+|\-)/).map(function(t){return t.trim()}),a=s.indexOf(S(s,function(t){return-1!==t.search(/,|\s/)}));s[a]&&-1===s[a].indexOf(",")&&console.warn("Offsets separated by white space(s) are deprecated, use a comma (,) instead.");var l=/\s*,\s*|\s+/,c=-1!==a?[s.slice(0,a).concat([s[a].split(l)[0]]),[s[a].split(l)[1]].concat(s.slice(a+1))]:[s];return(c=c.map(function(t,i){var r=(1===i?!o:o)?"height":"width",s=!1;return t.reduce(function(t,e){return""===t[t.length-1]&&-1!==["+","-"].indexOf(e)?(t[t.length-1]=e,s=!0,t):s?(t[t.length-1]+=e,s=!1,t):t.concat(e)},[]).map(function(t){return Q(t,r,e,n)})})).forEach(function(t,e){t.forEach(function(n,i){V(n)&&(r[e]+=n*("-"===t[i-1]?-1:1))})}),r}e=e&&e.hasOwnProperty("default")?e.default:e;for(var X=function(){function t(t){return{}.toString.call(t).match(/\s([a-zA-Z]+)/)[1].toLowerCase()}function n(){return{bindType:o.end,delegateType:o.end,handle:function(t){if(e(t.target).is(this))return t.handleObj.handler.apply(this,arguments)}}}function i(){if(window.QUnit)return!1;var t=document.createElement("bootstrap");for(var e in s)if("undefined"!=typeof t.style[e])return{end:s[e]};return!1}function r(t){var n=this,i=!1;return e(this).one(a.TRANSITION_END,function(){i=!0}),setTimeout(function(){i||a.triggerTransitionEnd(n)},t),this}var o=!1,s={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"},a={TRANSITION_END:"bsTransitionEnd",getUID:function(t){do{t+=~~(1e6*Math.random())}while(document.getElementById(t));return t},getSelectorFromElement:function(t){var n=t.getAttribute("data-target");n&&"#"!==n||(n=t.getAttribute("href")||"");try{return e(document).find(n).length>0?n:null}catch(t){return null}},reflow:function(t){return t.offsetHeight},triggerTransitionEnd:function(t){e(t).trigger(o.end)},supportsTransitionEnd:function(){return Boolean(o)},isElement:function(t){return(t[0]||t).nodeType},typeCheckConfig:function(e,n,i){for(var r in i)if(Object.prototype.hasOwnProperty.call(i,r)){var o=i[r],s=n[r],l=s&&a.isElement(s)?"element":t(s);if(!new RegExp(o).test(l))throw new Error(e.toUpperCase()+': Option "'+r+'" provided type "'+l+'" but expected type "'+o+'".')}}};return o=i(),e.fn.emulateTransitionEnd=r,a.supportsTransitionEnd()&&(e.event.special[a.TRANSITION_END]=n()),a}(),q=function(t,e,i){return e&&n(t.prototype,e),i&&n(t,i),t},z=function(t,e){t.prototype=Object.create(e.prototype),t.prototype.constructor=t,t.__proto__=e},Z=function(){var t="alert",n=e.fn[t],i={CLOSE:"close.bs.alert",CLOSED:"closed.bs.alert",CLICK_DATA_API:"click.bs.alert.data-api"},r={ALERT:"alert",FADE:"fade",SHOW:"show"},o=function(){function t(t){this._element=t}var n=t.prototype;return n.close=function(t){t=t||this._element;var e=this._getRootElement(t);this._triggerCloseEvent(e).isDefaultPrevented()||this._removeElement(e)},n.dispose=function(){e.removeData(this._element,"bs.alert"),this._element=null},n._getRootElement=function(t){var n=X.getSelectorFromElement(t),i=!1;return n&&(i=e(n)[0]),i||(i=e(t).closest("."+r.ALERT)[0]),i},n._triggerCloseEvent=function(t){var n=e.Event(i.CLOSE);return e(t).trigger(n),n},n._removeElement=function(t){var n=this;e(t).removeClass(r.SHOW),X.supportsTransitionEnd()&&e(t).hasClass(r.FADE)?e(t).one(X.TRANSITION_END,function(e){return n._destroyElement(t,e)}).emulateTransitionEnd(150):this._destroyElement(t)},n._destroyElement=function(t){e(t).detach().trigger(i.CLOSED).remove()},t._jQueryInterface=function(n){return this.each(function(){var i=e(this),r=i.data("bs.alert");r||(r=new t(this),i.data("bs.alert",r)),"close"===n&&r[n](this)})},t._handleDismiss=function(t){return function(e){e&&e.preventDefault(),t.close(this)}},q(t,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}}]),t}();return e(document).on(i.CLICK_DATA_API,{DISMISS:'[data-dismiss="alert"]'}.DISMISS,o._handleDismiss(new o)),e.fn[t]=o._jQueryInterface,e.fn[t].Constructor=o,e.fn[t].noConflict=function(){return e.fn[t]=n,o._jQueryInterface},o}(),J=function(){var t="button",n=e.fn[t],i={ACTIVE:"active",BUTTON:"btn",FOCUS:"focus"},r={DATA_TOGGLE_CARROT:'[data-toggle^="button"]',DATA_TOGGLE:'[data-toggle="buttons"]',INPUT:"input",ACTIVE:".active",BUTTON:".btn"},o={CLICK_DATA_API:"click.bs.button.data-api",FOCUS_BLUR_DATA_API:"focus.bs.button.data-api blur.bs.button.data-api"},s=function(){function t(t){this._element=t}var n=t.prototype;return n.toggle=function(){var t=!0,n=!0,o=e(this._element).closest(r.DATA_TOGGLE)[0];if(o){var s=e(this._element).find(r.INPUT)[0];if(s){if("radio"===s.type)if(s.checked&&e(this._element).hasClass(i.ACTIVE))t=!1;else{var a=e(o).find(r.ACTIVE)[0];a&&e(a).removeClass(i.ACTIVE)}if(t){if(s.hasAttribute("disabled")||o.hasAttribute("disabled")||s.classList.contains("disabled")||o.classList.contains("disabled"))return;s.checked=!e(this._element).hasClass(i.ACTIVE),e(s).trigger("change")}s.focus(),n=!1}}n&&this._element.setAttribute("aria-pressed",!e(this._element).hasClass(i.ACTIVE)),t&&e(this._element).toggleClass(i.ACTIVE)},n.dispose=function(){e.removeData(this._element,"bs.button"),this._element=null},t._jQueryInterface=function(n){return this.each(function(){var i=e(this).data("bs.button");i||(i=new t(this),e(this).data("bs.button",i)),"toggle"===n&&i[n]()})},q(t,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}}]),t}();return e(document).on(o.CLICK_DATA_API,r.DATA_TOGGLE_CARROT,function(t){t.preventDefault();var n=t.target;e(n).hasClass(i.BUTTON)||(n=e(n).closest(r.BUTTON)),s._jQueryInterface.call(e(n),"toggle")}).on(o.FOCUS_BLUR_DATA_API,r.DATA_TOGGLE_CARROT,function(t){var n=e(t.target).closest(r.BUTTON)[0];e(n).toggleClass(i.FOCUS,/^focus(in)?$/.test(t.type))}),e.fn[t]=s._jQueryInterface,e.fn[t].Constructor=s,e.fn[t].noConflict=function(){return e.fn[t]=n,s._jQueryInterface},s}(),$=function(){var t="carousel",n="bs.carousel",i="."+n,r=e.fn[t],o={interval:5e3,keyboard:!0,slide:!1,pause:"hover",wrap:!0},s={interval:"(number|boolean)",keyboard:"boolean",slide:"(boolean|string)",pause:"(string|boolean)",wrap:"boolean"},a={NEXT:"next",PREV:"prev",LEFT:"left",RIGHT:"right"},l={SLIDE:"slide"+i,SLID:"slid"+i,KEYDOWN:"keydown"+i,MOUSEENTER:"mouseenter"+i,MOUSELEAVE:"mouseleave"+i,TOUCHEND:"touchend"+i,LOAD_DATA_API:"load.bs.carousel.data-api",CLICK_DATA_API:"click.bs.carousel.data-api"},c={CAROUSEL:"carousel",ACTIVE:"active",SLIDE:"slide",RIGHT:"carousel-item-right",LEFT:"carousel-item-left",NEXT:"carousel-item-next",PREV:"carousel-item-prev",ITEM:"carousel-item"},f={ACTIVE:".active",ACTIVE_ITEM:".active.carousel-item",ITEM:".carousel-item",NEXT_PREV:".carousel-item-next, .carousel-item-prev",INDICATORS:".carousel-indicators",DATA_SLIDE:"[data-slide], [data-slide-to]",DATA_RIDE:'[data-ride="carousel"]'},h=function(){function r(t,n){this._items=null,this._interval=null,this._activeElement=null,this._isPaused=!1,this._isSliding=!1,this.touchTimeout=null,this._config=this._getConfig(n),this._element=e(t)[0],this._indicatorsElement=e(this._element).find(f.INDICATORS)[0],this._addEventListeners()}var h=r.prototype;return h.next=function(){this._isSliding||this._slide(a.NEXT)},h.nextWhenVisible=function(){!document.hidden&&e(this._element).is(":visible")&&"hidden"!==e(this._element).css("visibility")&&this.next()},h.prev=function(){this._isSliding||this._slide(a.PREV)},h.pause=function(t){t||(this._isPaused=!0),e(this._element).find(f.NEXT_PREV)[0]&&X.supportsTransitionEnd()&&(X.triggerTransitionEnd(this._element),this.cycle(!0)),clearInterval(this._interval),this._interval=null},h.cycle=function(t){t||(this._isPaused=!1),this._interval&&(clearInterval(this._interval),this._interval=null),this._config.interval&&!this._isPaused&&(this._interval=setInterval((document.visibilityState?this.nextWhenVisible:this.next).bind(this),this._config.interval))},h.to=function(t){var n=this;this._activeElement=e(this._element).find(f.ACTIVE_ITEM)[0];var i=this._getItemIndex(this._activeElement);if(!(t>this._items.length-1||t<0))if(this._isSliding)e(this._element).one(l.SLID,function(){return n.to(t)});else{if(i===t)return this.pause(),void this.cycle();var r=t>i?a.NEXT:a.PREV;this._slide(r,this._items[t])}},h.dispose=function(){e(this._element).off(i),e.removeData(this._element,n),this._items=null,this._config=null,this._element=null,this._interval=null,this._isPaused=null,this._isSliding=null,this._activeElement=null,this._indicatorsElement=null},h._getConfig=function(n){return n=e.extend({},o,n),X.typeCheckConfig(t,n,s),n},h._addEventListeners=function(){var t=this;this._config.keyboard&&e(this._element).on(l.KEYDOWN,function(e){return t._keydown(e)}),"hover"===this._config.pause&&(e(this._element).on(l.MOUSEENTER,function(e){return t.pause(e)}).on(l.MOUSELEAVE,function(e){return t.cycle(e)}),"ontouchstart"in document.documentElement&&e(this._element).on(l.TOUCHEND,function(){t.pause(),t.touchTimeout&&clearTimeout(t.touchTimeout),t.touchTimeout=setTimeout(function(e){return t.cycle(e)},500+t._config.interval)}))},h._keydown=function(t){if(!/input|textarea/i.test(t.target.tagName))switch(t.which){case 37:t.preventDefault(),this.prev();break;case 39:t.preventDefault(),this.next();break;default:return}},h._getItemIndex=function(t){return this._items=e.makeArray(e(t).parent().find(f.ITEM)),this._items.indexOf(t)},h._getItemByDirection=function(t,e){var n=t===a.NEXT,i=t===a.PREV,r=this._getItemIndex(e),o=this._items.length-1;if((i&&0===r||n&&r===o)&&!this._config.wrap)return e;var s=(r+(t===a.PREV?-1:1))%this._items.length;return-1===s?this._items[this._items.length-1]:this._items[s]},h._triggerSlideEvent=function(t,n){var i=this._getItemIndex(t),r=this._getItemIndex(e(this._element).find(f.ACTIVE_ITEM)[0]),o=e.Event(l.SLIDE,{relatedTarget:t,direction:n,from:r,to:i});return e(this._element).trigger(o),o},h._setActiveIndicatorElement=function(t){if(this._indicatorsElement){e(this._indicatorsElement).find(f.ACTIVE).removeClass(c.ACTIVE);var n=this._indicatorsElement.children[this._getItemIndex(t)];n&&e(n).addClass(c.ACTIVE)}},h._slide=function(t,n){var i,r,o,s=this,h=e(this._element).find(f.ACTIVE_ITEM)[0],u=this._getItemIndex(h),d=n||h&&this._getItemByDirection(t,h),p=this._getItemIndex(d),g=Boolean(this._interval);if(t===a.NEXT?(i=c.LEFT,r=c.NEXT,o=a.LEFT):(i=c.RIGHT,r=c.PREV,o=a.RIGHT),d&&e(d).hasClass(c.ACTIVE))this._isSliding=!1;else if(!this._triggerSlideEvent(d,o).isDefaultPrevented()&&h&&d){this._isSliding=!0,g&&this.pause(),this._setActiveIndicatorElement(d);var m=e.Event(l.SLID,{relatedTarget:d,direction:o,from:u,to:p});X.supportsTransitionEnd()&&e(this._element).hasClass(c.SLIDE)?(e(d).addClass(r),X.reflow(d),e(h).addClass(i),e(d).addClass(i),e(h).one(X.TRANSITION_END,function(){e(d).removeClass(i+" "+r).addClass(c.ACTIVE),e(h).removeClass(c.ACTIVE+" "+r+" "+i),s._isSliding=!1,setTimeout(function(){return e(s._element).trigger(m)},0)}).emulateTransitionEnd(600)):(e(h).removeClass(c.ACTIVE),e(d).addClass(c.ACTIVE),this._isSliding=!1,e(this._element).trigger(m)),g&&this.cycle()}},r._jQueryInterface=function(t){return this.each(function(){var i=e(this).data(n),s=e.extend({},o,e(this).data());"object"==typeof t&&e.extend(s,t);var a="string"==typeof t?t:s.slide;if(i||(i=new r(this,s),e(this).data(n,i)),"number"==typeof t)i.to(t);else if("string"==typeof a){if("undefined"==typeof i[a])throw new Error('No method named "'+a+'"');i[a]()}else s.interval&&(i.pause(),i.cycle())})},r._dataApiClickHandler=function(t){var i=X.getSelectorFromElement(this);if(i){var o=e(i)[0];if(o&&e(o).hasClass(c.CAROUSEL)){var s=e.extend({},e(o).data(),e(this).data()),a=this.getAttribute("data-slide-to");a&&(s.interval=!1),r._jQueryInterface.call(e(o),s),a&&e(o).data(n).to(a),t.preventDefault()}}},q(r,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}},{key:"Default",get:function(){return o}}]),r}();return e(document).on(l.CLICK_DATA_API,f.DATA_SLIDE,h._dataApiClickHandler),e(window).on(l.LOAD_DATA_API,function(){e(f.DATA_RIDE).each(function(){var t=e(this);h._jQueryInterface.call(t,t.data())})}),e.fn[t]=h._jQueryInterface,e.fn[t].Constructor=h,e.fn[t].noConflict=function(){return e.fn[t]=r,h._jQueryInterface},h}(),tt=function(){var t="collapse",n="bs.collapse",i=e.fn[t],r={toggle:!0,parent:""},o={toggle:"boolean",parent:"(string|element)"},s={SHOW:"show.bs.collapse",SHOWN:"shown.bs.collapse",HIDE:"hide.bs.collapse",HIDDEN:"hidden.bs.collapse",CLICK_DATA_API:"click.bs.collapse.data-api"},a={SHOW:"show",COLLAPSE:"collapse",COLLAPSING:"collapsing",COLLAPSED:"collapsed"},l={WIDTH:"width",HEIGHT:"height"},c={ACTIVES:".show, .collapsing",DATA_TOGGLE:'[data-toggle="collapse"]'},f=function(){function i(t,n){this._isTransitioning=!1,this._element=t,this._config=this._getConfig(n),this._triggerArray=e.makeArray(e('[data-toggle="collapse"][href="#'+t.id+'"],[data-toggle="collapse"][data-target="#'+t.id+'"]'));for(var i=e(c.DATA_TOGGLE),r=0;r<i.length;r++){var o=i[r],s=X.getSelectorFromElement(o);null!==s&&e(s).filter(t).length>0&&this._triggerArray.push(o)}this._parent=this._config.parent?this._getParent():null,this._config.parent||this._addAriaAndCollapsedClass(this._element,this._triggerArray),this._config.toggle&&this.toggle()}var f=i.prototype;return f.toggle=function(){e(this._element).hasClass(a.SHOW)?this.hide():this.show()},f.show=function(){var t=this;if(!this._isTransitioning&&!e(this._element).hasClass(a.SHOW)){var r,o;if(this._parent&&((r=e.makeArray(e(this._parent).children().children(c.ACTIVES))).length||(r=null)),!(r&&(o=e(r).data(n))&&o._isTransitioning)){var l=e.Event(s.SHOW);if(e(this._element).trigger(l),!l.isDefaultPrevented()){r&&(i._jQueryInterface.call(e(r),"hide"),o||e(r).data(n,null));var f=this._getDimension();e(this._element).removeClass(a.COLLAPSE).addClass(a.COLLAPSING),this._element.style[f]=0,this._triggerArray.length&&e(this._triggerArray).removeClass(a.COLLAPSED).attr("aria-expanded",!0),this.setTransitioning(!0);var h=function(){e(t._element).removeClass(a.COLLAPSING).addClass(a.COLLAPSE).addClass(a.SHOW),t._element.style[f]="",t.setTransitioning(!1),e(t._element).trigger(s.SHOWN)};if(X.supportsTransitionEnd()){var u="scroll"+(f[0].toUpperCase()+f.slice(1));e(this._element).one(X.TRANSITION_END,h).emulateTransitionEnd(600),this._element.style[f]=this._element[u]+"px"}else h()}}}},f.hide=function(){var t=this;if(!this._isTransitioning&&e(this._element).hasClass(a.SHOW)){var n=e.Event(s.HIDE);if(e(this._element).trigger(n),!n.isDefaultPrevented()){var i=this._getDimension();if(this._element.style[i]=this._element.getBoundingClientRect()[i]+"px",X.reflow(this._element),e(this._element).addClass(a.COLLAPSING).removeClass(a.COLLAPSE).removeClass(a.SHOW),this._triggerArray.length)for(var r=0;r<this._triggerArray.length;r++){var o=this._triggerArray[r],l=X.getSelectorFromElement(o);null!==l&&(e(l).hasClass(a.SHOW)||e(o).addClass(a.COLLAPSED).attr("aria-expanded",!1))}this.setTransitioning(!0);var c=function(){t.setTransitioning(!1),e(t._element).removeClass(a.COLLAPSING).addClass(a.COLLAPSE).trigger(s.HIDDEN)};this._element.style[i]="",X.supportsTransitionEnd()?e(this._element).one(X.TRANSITION_END,c).emulateTransitionEnd(600):c()}}},f.setTransitioning=function(t){this._isTransitioning=t},f.dispose=function(){e.removeData(this._element,n),this._config=null,this._parent=null,this._element=null,this._triggerArray=null,this._isTransitioning=null},f._getConfig=function(n){return n=e.extend({},r,n),n.toggle=Boolean(n.toggle),X.typeCheckConfig(t,n,o),n},f._getDimension=function(){return e(this._element).hasClass(l.WIDTH)?l.WIDTH:l.HEIGHT},f._getParent=function(){var t=this,n=null;X.isElement(this._config.parent)?(n=this._config.parent,"undefined"!=typeof this._config.parent.jquery&&(n=this._config.parent[0])):n=e(this._config.parent)[0];var r='[data-toggle="collapse"][data-parent="'+this._config.parent+'"]';return e(n).find(r).each(function(e,n){t._addAriaAndCollapsedClass(i._getTargetFromElement(n),[n])}),n},f._addAriaAndCollapsedClass=function(t,n){if(t){var i=e(t).hasClass(a.SHOW);n.length&&e(n).toggleClass(a.COLLAPSED,!i).attr("aria-expanded",i)}},i._getTargetFromElement=function(t){var n=X.getSelectorFromElement(t);return n?e(n)[0]:null},i._jQueryInterface=function(t){return this.each(function(){var o=e(this),s=o.data(n),a=e.extend({},r,o.data(),"object"==typeof t&&t);if(!s&&a.toggle&&/show|hide/.test(t)&&(a.toggle=!1),s||(s=new i(this,a),o.data(n,s)),"string"==typeof t){if("undefined"==typeof s[t])throw new Error('No method named "'+t+'"');s[t]()}})},q(i,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}},{key:"Default",get:function(){return r}}]),i}();return e(document).on(s.CLICK_DATA_API,c.DATA_TOGGLE,function(t){"A"===t.currentTarget.tagName&&t.preventDefault();var i=e(this),r=X.getSelectorFromElement(this);e(r).each(function(){var t=e(this),r=t.data(n)?"toggle":i.data();f._jQueryInterface.call(t,r)})}),e.fn[t]=f._jQueryInterface,e.fn[t].Constructor=f,e.fn[t].noConflict=function(){return e.fn[t]=i,f._jQueryInterface},f}(),et=["native code","[object MutationObserverConstructor]"],nt="undefined"!=typeof window,it=["Edge","Trident","Firefox"],rt=0,ot=0;ot<it.length;ot+=1)if(nt&&navigator.userAgent.indexOf(it[ot])>=0){rt=1;break}var st=nt&&function(t){return et.some(function(e){return(t||"").toString().indexOf(e)>-1})}(window.MutationObserver)?function(t){var e=!1,n=0,i=document.createElement("span");return new MutationObserver(function(){t(),e=!1}).observe(i,{attributes:!0}),function(){e||(e=!0,i.setAttribute("x-index",n),n+=1)}}:function(t){var e=!1;return function(){e||(e=!0,setTimeout(function(){e=!1,t()},rt))}},at=void 0,lt=function(){return void 0===at&&(at=-1!==navigator.appVersion.indexOf("MSIE 10")),at},ct=function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")},ft=function(){function t(t,e){for(var n=0;n<e.length;n++){var i=e[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(t,i.key,i)}}return function(e,n,i){return n&&t(e.prototype,n),i&&t(e,i),e}}(),ht=function(t,e,n){return e in t?Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[e]=n,t},ut=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var i in n)Object.prototype.hasOwnProperty.call(n,i)&&(t[i]=n[i])}return t},dt=["auto-start","auto","auto-end","top-start","top","top-end","right-start","right","right-end","bottom-end","bottom","bottom-start","left-end","left","left-start"],pt=dt.slice(3),gt={FLIP:"flip",CLOCKWISE:"clockwise",COUNTERCLOCKWISE:"counterclockwise"},mt={placement:"bottom",eventsEnabled:!0,removeOnDestroy:!1,onCreate:function(){},onUpdate:function(){},modifiers:{shift:{order:100,enabled:!0,fn:function(t){var e=t.placement,n=e.split("-")[0],i=e.split("-")[1];if(i){var r=t.offsets,o=r.reference,s=r.popper,a=-1!==["bottom","top"].indexOf(n),l=a?"left":"top",c=a?"width":"height",f={start:ht({},l,o[l]),end:ht({},l,o[l]+o[c]-s[c])};t.offsets.popper=ut({},s,f[i])}return t}},offset:{order:200,enabled:!0,fn:function(t,e){var n=e.offset,i=t.placement,r=t.offsets,o=r.popper,s=r.reference,a=i.split("-")[0],l=void 0;return l=V(+n)?[+n,0]:Y(n,o,s,a),"left"===a?(o.top+=l[0],o.left-=l[1]):"right"===a?(o.top+=l[0],o.left+=l[1]):"top"===a?(o.left+=l[0],o.top-=l[1]):"bottom"===a&&(o.left+=l[0],o.top+=l[1]),t.popper=o,t},offset:0},preventOverflow:{order:300,enabled:!0,fn:function(t,e){var n=e.boundariesElement||a(t.instance.popper);t.instance.reference===n&&(n=a(n));var i=b(t.instance.popper,t.instance.reference,e.padding,n);e.boundaries=i;var r=e.priority,o=t.offsets.popper,s={primary:function(t){var n=o[t];return o[t]<i[t]&&!e.escapeWithReference&&(n=Math.max(o[t],i[t])),ht({},t,n)},secondary:function(t){var n="right"===t?"left":"top",r=o[n];return o[t]>i[t]&&!e.escapeWithReference&&(r=Math.min(o[n],i[t]-("right"===t?o.width:o.height))),ht({},n,r)}};return r.forEach(function(t){var e=-1!==["left","top"].indexOf(t)?"primary":"secondary";o=ut({},o,s[e](t))}),t.offsets.popper=o,t},priority:["left","right","top","bottom"],padding:5,boundariesElement:"scrollParent"},keepTogether:{order:400,enabled:!0,fn:function(t){var e=t.offsets,n=e.popper,i=e.reference,r=t.placement.split("-")[0],o=Math.floor,s=-1!==["top","bottom"].indexOf(r),a=s?"right":"bottom",l=s?"left":"top",c=s?"width":"height";return n[a]<o(i[l])&&(t.offsets.popper[l]=o(i[l])-n[c]),n[l]>o(i[a])&&(t.offsets.popper[l]=o(i[a])),t}},arrow:{order:500,enabled:!0,fn:function(t,e){if(!B(t.instance.modifiers,"arrow","keepTogether"))return t;var n=e.element;if("string"==typeof n){if(!(n=t.instance.popper.querySelector(n)))return t}else if(!t.instance.popper.contains(n))return console.warn("WARNING: `arrow.element` must be child of its popper element!"),t;var i=t.placement.split("-")[0],o=t.offsets,s=o.popper,a=o.reference,l=-1!==["left","right"].indexOf(i),c=l?"height":"width",f=l?"Top":"Left",h=f.toLowerCase(),u=l?"left":"top",d=l?"bottom":"right",p=O(n)[c];a[d]-p<s[h]&&(t.offsets.popper[h]-=s[h]-(a[d]-p)),a[h]+p>s[d]&&(t.offsets.popper[h]+=a[h]+p-s[d]);var g=a[h]+a[c]/2-p/2,_=r(t.instance.popper,"margin"+f).replace("px",""),v=g-m(t.offsets.popper)[h]-_;return v=Math.max(Math.min(s[c]-p,v),0),t.arrowElement=n,t.offsets.arrow={},t.offsets.arrow[h]=Math.round(v),t.offsets.arrow[u]="",t},element:"[x-arrow]"},flip:{order:600,enabled:!0,fn:function(t,e){if(P(t.instance.modifiers,"inner"))return t;if(t.flipped&&t.placement===t.originalPlacement)return t;var n=b(t.instance.popper,t.instance.reference,e.padding,e.boundariesElement),i=t.placement.split("-")[0],r=y(i),o=t.placement.split("-")[1]||"",s=[];switch(e.behavior){case gt.FLIP:s=[i,r];break;case gt.CLOCKWISE:s=K(i);break;case gt.COUNTERCLOCKWISE:s=K(i,!0);break;default:s=e.behavior}return s.forEach(function(a,l){if(i!==a||s.length===l+1)return t;i=t.placement.split("-")[0],r=y(i);var c=t.offsets.popper,f=t.offsets.reference,h=Math.floor,u="left"===i&&h(c.right)>h(f.left)||"right"===i&&h(c.left)<h(f.right)||"top"===i&&h(c.bottom)>h(f.top)||"bottom"===i&&h(c.top)<h(f.bottom),d=h(c.left)<h(n.left),p=h(c.right)>h(n.right),g=h(c.top)<h(n.top),m=h(c.bottom)>h(n.bottom),_="left"===i&&d||"right"===i&&p||"top"===i&&g||"bottom"===i&&m,v=-1!==["top","bottom"].indexOf(i),E=!!e.flipVariations&&(v&&"start"===o&&d||v&&"end"===o&&p||!v&&"start"===o&&g||!v&&"end"===o&&m);(u||_||E)&&(t.flipped=!0,(u||_)&&(i=s[l+1]),E&&(o=G(o)),t.placement=i+(o?"-"+o:""),t.offsets.popper=ut({},t.offsets.popper,D(t.instance.popper,t.offsets.reference,t.placement)),t=N(t.instance.modifiers,t,"flip"))}),t},behavior:"flip",padding:5,boundariesElement:"viewport"},inner:{order:700,enabled:!1,fn:function(t){var e=t.placement,n=e.split("-")[0],i=t.offsets,r=i.popper,o=i.reference,s=-1!==["left","right"].indexOf(n),a=-1===["top","left"].indexOf(n);return r[s?"left":"top"]=o[n]-(a?r[s?"width":"height"]:0),t.placement=y(e),t.offsets.popper=m(r),t}},hide:{order:800,enabled:!0,fn:function(t){if(!B(t.instance.modifiers,"hide","preventOverflow"))return t;var e=t.offsets.reference,n=S(t.instance.modifiers,function(t){return"preventOverflow"===t.name}).boundaries;if(e.bottom<n.top||e.left>n.right||e.top>n.bottom||e.right<n.left){if(!0===t.hide)return t;t.hide=!0,t.attributes["x-out-of-boundaries"]=""}else{if(!1===t.hide)return t;t.hide=!1,t.attributes["x-out-of-boundaries"]=!1}return t}},computeStyle:{order:850,enabled:!0,fn:function(t,e){var n=e.x,i=e.y,r=t.offsets.popper,o=S(t.instance.modifiers,function(t){return"applyStyle"===t.name}).gpuAcceleration;void 0!==o&&console.warn("WARNING: `gpuAcceleration` option moved to `computeStyle` modifier and will not be supported in future versions of Popper.js!");var s=void 0!==o?o:e.gpuAcceleration,l=_(a(t.instance.popper)),c={position:r.position},f={left:Math.floor(r.left),top:Math.floor(r.top),bottom:Math.floor(r.bottom),right:Math.floor(r.right)},h="bottom"===n?"top":"bottom",u="right"===i?"left":"right",d=R("transform"),p=void 0,g=void 0;if(g="bottom"===h?-l.height+f.bottom:f.top,p="right"===u?-l.width+f.right:f.left,s&&d)c[d]="translate3d("+p+"px, "+g+"px, 0)",c[h]=0,c[u]=0,c.willChange="transform";else{var m="bottom"===h?-1:1,v="right"===u?-1:1;c[h]=g*m,c[u]=p*v,c.willChange=h+", "+u}var E={"x-placement":t.placement};return t.attributes=ut({},E,t.attributes),t.styles=ut({},c,t.styles),t.arrowStyles=ut({},t.offsets.arrow,t.arrowStyles),t},gpuAcceleration:!0,x:"bottom",y:"right"},applyStyle:{order:900,enabled:!0,fn:function(t){return F(t.instance.popper,t.styles),j(t.instance.popper,t.attributes),t.arrowElement&&Object.keys(t.arrowStyles).length&&F(t.arrowElement,t.arrowStyles),t},onLoad:function(t,e,n,i,r){var o=I(r,e,t),s=A(n.placement,o,e,t,n.modifiers.flip.boundariesElement,n.modifiers.flip.padding);return e.setAttribute("x-placement",s),F(e,{position:"absolute"}),n},gpuAcceleration:void 0}}},_t=function(){function t(e,n){var r=this,o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{};ct(this,t),this.scheduleUpdate=function(){return requestAnimationFrame(r.update)},this.update=st(this.update.bind(this)),this.options=ut({},t.Defaults,o),this.state={isDestroyed:!1,isCreated:!1,scrollParents:[]},this.reference=e.jquery?e[0]:e,this.popper=n.jquery?n[0]:n,this.options.modifiers={},Object.keys(ut({},t.Defaults.modifiers,o.modifiers)).forEach(function(e){r.options.modifiers[e]=ut({},t.Defaults.modifiers[e]||{},o.modifiers?o.modifiers[e]:{})}),this.modifiers=Object.keys(this.options.modifiers).map(function(t){return ut({name:t},r.options.modifiers[t])}).sort(function(t,e){return t.order-e.order}),this.modifiers.forEach(function(t){t.enabled&&i(t.onLoad)&&t.onLoad(r.reference,r.popper,r.options,t,r.state)}),this.update();var s=this.options.eventsEnabled;s&&this.enableEventListeners(),this.state.eventsEnabled=s}return ft(t,[{key:"update",value:function(){return L.call(this)}},{key:"destroy",value:function(){return H.call(this)}},{key:"enableEventListeners",value:function(){return x.call(this)}},{key:"disableEventListeners",value:function(){return U.call(this)}}]),t}();_t.Utils=("undefined"!=typeof window?window:global).PopperUtils,_t.placements=dt,_t.Defaults=mt;var vt=function(){if("undefined"==typeof _t)throw new Error("Bootstrap dropdown require Popper.js (https://popper.js.org)");var t="dropdown",n="bs.dropdown",i="."+n,r=e.fn[t],o=new RegExp("38|40|27"),s={HIDE:"hide"+i,HIDDEN:"hidden"+i,SHOW:"show"+i,SHOWN:"shown"+i,CLICK:"click"+i,CLICK_DATA_API:"click.bs.dropdown.data-api",KEYDOWN_DATA_API:"keydown.bs.dropdown.data-api",KEYUP_DATA_API:"keyup.bs.dropdown.data-api"},a={DISABLED:"disabled",SHOW:"show",DROPUP:"dropup",MENURIGHT:"dropdown-menu-right",MENULEFT:"dropdown-menu-left"},l={DATA_TOGGLE:'[data-toggle="dropdown"]',FORM_CHILD:".dropdown form",MENU:".dropdown-menu",NAVBAR_NAV:".navbar-nav",VISIBLE_ITEMS:".dropdown-menu .dropdown-item:not(.disabled)"},c={TOP:"top-start",TOPEND:"top-end",BOTTOM:"bottom-start",BOTTOMEND:"bottom-end"},f={offset:0,flip:!0},h={offset:"(number|string|function)",flip:"boolean"},u=function(){function r(t,e){this._element=t,this._popper=null,this._config=this._getConfig(e),this._menu=this._getMenuElement(),this._inNavbar=this._detectNavbar(),this._addEventListeners()}var u=r.prototype;return u.toggle=function(){if(!this._element.disabled&&!e(this._element).hasClass(a.DISABLED)){var t=r._getParentFromElement(this._element),n=e(this._menu).hasClass(a.SHOW);if(r._clearMenus(),!n){var i={relatedTarget:this._element},o=e.Event(s.SHOW,i);if(e(t).trigger(o),!o.isDefaultPrevented()){var c=this._element;e(t).hasClass(a.DROPUP)&&(e(this._menu).hasClass(a.MENULEFT)||e(this._menu).hasClass(a.MENURIGHT))&&(c=t),this._popper=new _t(c,this._menu,this._getPopperConfig()),"ontouchstart"in document.documentElement&&!e(t).closest(l.NAVBAR_NAV).length&&e("body").children().on("mouseover",null,e.noop),this._element.focus(),this._element.setAttribute("aria-expanded",!0),e(this._menu).toggleClass(a.SHOW),e(t).toggleClass(a.SHOW).trigger(e.Event(s.SHOWN,i))}}}},u.dispose=function(){e.removeData(this._element,n),e(this._element).off(i),this._element=null,this._menu=null,null!==this._popper&&this._popper.destroy(),this._popper=null},u.update=function(){this._inNavbar=this._detectNavbar(),null!==this._popper&&this._popper.scheduleUpdate()},u._addEventListeners=function(){var t=this;e(this._element).on(s.CLICK,function(e){e.preventDefault(),e.stopPropagation(),t.toggle()})},u._getConfig=function(n){return n=e.extend({},this.constructor.Default,e(this._element).data(),n),X.typeCheckConfig(t,n,this.constructor.DefaultType),n},u._getMenuElement=function(){if(!this._menu){var t=r._getParentFromElement(this._element);this._menu=e(t).find(l.MENU)[0]}return this._menu},u._getPlacement=function(){var t=e(this._element).parent(),n=c.BOTTOM;return t.hasClass(a.DROPUP)?(n=c.TOP,e(this._menu).hasClass(a.MENURIGHT)&&(n=c.TOPEND)):e(this._menu).hasClass(a.MENURIGHT)&&(n=c.BOTTOMEND),n},u._detectNavbar=function(){return e(this._element).closest(".navbar").length>0},u._getPopperConfig=function(){var t=this,n={};"function"==typeof this._config.offset?n.fn=function(n){return n.offsets=e.extend({},n.offsets,t._config.offset(n.offsets)||{}),n}:n.offset=this._config.offset;var i={placement:this._getPlacement(),modifiers:{offset:n,flip:{enabled:this._config.flip}}};return this._inNavbar&&(i.modifiers.applyStyle={enabled:!this._inNavbar}),i},r._jQueryInterface=function(t){return this.each(function(){var i=e(this).data(n),o="object"==typeof t?t:null;if(i||(i=new r(this,o),e(this).data(n,i)),"string"==typeof t){if("undefined"==typeof i[t])throw new Error('No method named "'+t+'"');i[t]()}})},r._clearMenus=function(t){if(!t||3!==t.which&&("keyup"!==t.type||9===t.which))for(var i=e.makeArray(e(l.DATA_TOGGLE)),o=0;o<i.length;o++){var c=r._getParentFromElement(i[o]),f=e(i[o]).data(n),h={relatedTarget:i[o]};if(f){var u=f._menu;if(e(c).hasClass(a.SHOW)&&!(t&&("click"===t.type&&/input|textarea/i.test(t.target.tagName)||"keyup"===t.type&&9===t.which)&&e.contains(c,t.target))){var d=e.Event(s.HIDE,h);e(c).trigger(d),d.isDefaultPrevented()||("ontouchstart"in document.documentElement&&e("body").children().off("mouseover",null,e.noop),i[o].setAttribute("aria-expanded","false"),e(u).removeClass(a.SHOW),e(c).removeClass(a.SHOW).trigger(e.Event(s.HIDDEN,h)))}}}},r._getParentFromElement=function(t){var n,i=X.getSelectorFromElement(t);return i&&(n=e(i)[0]),n||t.parentNode},r._dataApiKeydownHandler=function(t){if(!(!o.test(t.which)||/button/i.test(t.target.tagName)&&32===t.which||/input|textarea/i.test(t.target.tagName)||(t.preventDefault(),t.stopPropagation(),this.disabled||e(this).hasClass(a.DISABLED)))){var n=r._getParentFromElement(this),i=e(n).hasClass(a.SHOW);if((i||27===t.which&&32===t.which)&&(!i||27!==t.which&&32!==t.which)){var s=e(n).find(l.VISIBLE_ITEMS).get();if(s.length){var c=s.indexOf(t.target);38===t.which&&c>0&&c--,40===t.which&&c<s.length-1&&c++,c<0&&(c=0),s[c].focus()}}else{if(27===t.which){var f=e(n).find(l.DATA_TOGGLE)[0];e(f).trigger("focus")}e(this).trigger("click")}}},q(r,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}},{key:"Default",get:function(){return f}},{key:"DefaultType",get:function(){return h}}]),r}();return e(document).on(s.KEYDOWN_DATA_API,l.DATA_TOGGLE,u._dataApiKeydownHandler).on(s.KEYDOWN_DATA_API,l.MENU,u._dataApiKeydownHandler).on(s.CLICK_DATA_API+" "+s.KEYUP_DATA_API,u._clearMenus).on(s.CLICK_DATA_API,l.DATA_TOGGLE,function(t){t.preventDefault(),t.stopPropagation(),u._jQueryInterface.call(e(this),"toggle")}).on(s.CLICK_DATA_API,l.FORM_CHILD,function(t){t.stopPropagation()}),e.fn[t]=u._jQueryInterface,e.fn[t].Constructor=u,e.fn[t].noConflict=function(){return e.fn[t]=r,u._jQueryInterface},u}(),Et=function(){var t="modal",n=".bs.modal",i=e.fn[t],r={backdrop:!0,keyboard:!0,focus:!0,show:!0},o={backdrop:"(boolean|string)",keyboard:"boolean",focus:"boolean",show:"boolean"},s={HIDE:"hide.bs.modal",HIDDEN:"hidden.bs.modal",SHOW:"show.bs.modal",SHOWN:"shown.bs.modal",FOCUSIN:"focusin.bs.modal",RESIZE:"resize.bs.modal",CLICK_DISMISS:"click.dismiss.bs.modal",KEYDOWN_DISMISS:"keydown.dismiss.bs.modal",MOUSEUP_DISMISS:"mouseup.dismiss.bs.modal",MOUSEDOWN_DISMISS:"mousedown.dismiss.bs.modal",CLICK_DATA_API:"click.bs.modal.data-api"},a={SCROLLBAR_MEASURER:"modal-scrollbar-measure",BACKDROP:"modal-backdrop",OPEN:"modal-open",FADE:"fade",SHOW:"show"},l={DIALOG:".modal-dialog",DATA_TOGGLE:'[data-toggle="modal"]',DATA_DISMISS:'[data-dismiss="modal"]',FIXED_CONTENT:".fixed-top, .fixed-bottom, .is-fixed, .sticky-top",STICKY_CONTENT:".sticky-top",NAVBAR_TOGGLER:".navbar-toggler"},c=function(){function i(t,n){this._config=this._getConfig(n),this._element=t,this._dialog=e(t).find(l.DIALOG)[0],this._backdrop=null,this._isShown=!1,this._isBodyOverflowing=!1,this._ignoreBackdropClick=!1,this._originalBodyPadding=0,this._scrollbarWidth=0}var c=i.prototype;return c.toggle=function(t){return this._isShown?this.hide():this.show(t)},c.show=function(t){var n=this;if(!this._isTransitioning&&!this._isShown){X.supportsTransitionEnd()&&e(this._element).hasClass(a.FADE)&&(this._isTransitioning=!0);var i=e.Event(s.SHOW,{relatedTarget:t});e(this._element).trigger(i),this._isShown||i.isDefaultPrevented()||(this._isShown=!0,this._checkScrollbar(),this._setScrollbar(),this._adjustDialog(),e(document.body).addClass(a.OPEN),this._setEscapeEvent(),this._setResizeEvent(),e(this._element).on(s.CLICK_DISMISS,l.DATA_DISMISS,function(t){return n.hide(t)}),e(this._dialog).on(s.MOUSEDOWN_DISMISS,function(){e(n._element).one(s.MOUSEUP_DISMISS,function(t){e(t.target).is(n._element)&&(n._ignoreBackdropClick=!0)})}),this._showBackdrop(function(){return n._showElement(t)}))}},c.hide=function(t){var n=this;if(t&&t.preventDefault(),!this._isTransitioning&&this._isShown){var i=e.Event(s.HIDE);if(e(this._element).trigger(i),this._isShown&&!i.isDefaultPrevented()){this._isShown=!1;var r=X.supportsTransitionEnd()&&e(this._element).hasClass(a.FADE);r&&(this._isTransitioning=!0),this._setEscapeEvent(),this._setResizeEvent(),e(document).off(s.FOCUSIN),e(this._element).removeClass(a.SHOW),e(this._element).off(s.CLICK_DISMISS),e(this._dialog).off(s.MOUSEDOWN_DISMISS),r?e(this._element).one(X.TRANSITION_END,function(t){return n._hideModal(t)}).emulateTransitionEnd(300):this._hideModal()}}},c.dispose=function(){e.removeData(this._element,"bs.modal"),e(window,document,this._element,this._backdrop).off(n),this._config=null,this._element=null,this._dialog=null,this._backdrop=null,this._isShown=null,this._isBodyOverflowing=null,this._ignoreBackdropClick=null,this._scrollbarWidth=null},c.handleUpdate=function(){this._adjustDialog()},c._getConfig=function(n){return n=e.extend({},r,n),X.typeCheckConfig(t,n,o),n},c._showElement=function(t){var n=this,i=X.supportsTransitionEnd()&&e(this._element).hasClass(a.FADE);this._element.parentNode&&this._element.parentNode.nodeType===Node.ELEMENT_NODE||document.body.appendChild(this._element),this._element.style.display="block",this._element.removeAttribute("aria-hidden"),this._element.scrollTop=0,i&&X.reflow(this._element),e(this._element).addClass(a.SHOW),this._config.focus&&this._enforceFocus();var r=e.Event(s.SHOWN,{relatedTarget:t}),o=function(){n._config.focus&&n._element.focus(),n._isTransitioning=!1,e(n._element).trigger(r)};i?e(this._dialog).one(X.TRANSITION_END,o).emulateTransitionEnd(300):o()},c._enforceFocus=function(){var t=this;e(document).off(s.FOCUSIN).on(s.FOCUSIN,function(n){document===n.target||t._element===n.target||e(t._element).has(n.target).length||t._element.focus()})},c._setEscapeEvent=function(){var t=this;this._isShown&&this._config.keyboard?e(this._element).on(s.KEYDOWN_DISMISS,function(e){27===e.which&&(e.preventDefault(),t.hide())}):this._isShown||e(this._element).off(s.KEYDOWN_DISMISS)},c._setResizeEvent=function(){var t=this;this._isShown?e(window).on(s.RESIZE,function(e){return t.handleUpdate(e)}):e(window).off(s.RESIZE)},c._hideModal=function(){var t=this;this._element.style.display="none",this._element.setAttribute("aria-hidden",!0),this._isTransitioning=!1,this._showBackdrop(function(){e(document.body).removeClass(a.OPEN),t._resetAdjustments(),t._resetScrollbar(),e(t._element).trigger(s.HIDDEN)})},c._removeBackdrop=function(){this._backdrop&&(e(this._backdrop).remove(),this._backdrop=null)},c._showBackdrop=function(t){var n=this,i=e(this._element).hasClass(a.FADE)?a.FADE:"";if(this._isShown&&this._config.backdrop){var r=X.supportsTransitionEnd()&&i;if(this._backdrop=document.createElement("div"),this._backdrop.className=a.BACKDROP,i&&e(this._backdrop).addClass(i),e(this._backdrop).appendTo(document.body),e(this._element).on(s.CLICK_DISMISS,function(t){n._ignoreBackdropClick?n._ignoreBackdropClick=!1:t.target===t.currentTarget&&("static"===n._config.backdrop?n._element.focus():n.hide())}),r&&X.reflow(this._backdrop),e(this._backdrop).addClass(a.SHOW),!t)return;if(!r)return void t();e(this._backdrop).one(X.TRANSITION_END,t).emulateTransitionEnd(150)}else if(!this._isShown&&this._backdrop){e(this._backdrop).removeClass(a.SHOW);var o=function(){n._removeBackdrop(),t&&t()};X.supportsTransitionEnd()&&e(this._element).hasClass(a.FADE)?e(this._backdrop).one(X.TRANSITION_END,o).emulateTransitionEnd(150):o()}else t&&t()},c._adjustDialog=function(){var t=this._element.scrollHeight>document.documentElement.clientHeight;!this._isBodyOverflowing&&t&&(this._element.style.paddingLeft=this._scrollbarWidth+"px"),this._isBodyOverflowing&&!t&&(this._element.style.paddingRight=this._scrollbarWidth+"px")},c._resetAdjustments=function(){this._element.style.paddingLeft="",this._element.style.paddingRight=""},c._checkScrollbar=function(){var t=document.body.getBoundingClientRect();this._isBodyOverflowing=t.left+t.right<window.innerWidth,this._scrollbarWidth=this._getScrollbarWidth()},c._setScrollbar=function(){var t=this;if(this._isBodyOverflowing){e(l.FIXED_CONTENT).each(function(n,i){var r=e(i)[0].style.paddingRight,o=e(i).css("padding-right");e(i).data("padding-right",r).css("padding-right",parseFloat(o)+t._scrollbarWidth+"px")}),e(l.STICKY_CONTENT).each(function(n,i){var r=e(i)[0].style.marginRight,o=e(i).css("margin-right");e(i).data("margin-right",r).css("margin-right",parseFloat(o)-t._scrollbarWidth+"px")}),e(l.NAVBAR_TOGGLER).each(function(n,i){var r=e(i)[0].style.marginRight,o=e(i).css("margin-right");e(i).data("margin-right",r).css("margin-right",parseFloat(o)+t._scrollbarWidth+"px")});var n=document.body.style.paddingRight,i=e("body").css("padding-right");e("body").data("padding-right",n).css("padding-right",parseFloat(i)+this._scrollbarWidth+"px")}},c._resetScrollbar=function(){e(l.FIXED_CONTENT).each(function(t,n){var i=e(n).data("padding-right");"undefined"!=typeof i&&e(n).css("padding-right",i).removeData("padding-right")}),e(l.STICKY_CONTENT+", "+l.NAVBAR_TOGGLER).each(function(t,n){var i=e(n).data("margin-right");"undefined"!=typeof i&&e(n).css("margin-right",i).removeData("margin-right")});var t=e("body").data("padding-right");"undefined"!=typeof t&&e("body").css("padding-right",t).removeData("padding-right")},c._getScrollbarWidth=function(){var t=document.createElement("div");t.className=a.SCROLLBAR_MEASURER,document.body.appendChild(t);var e=t.getBoundingClientRect().width-t.clientWidth;return document.body.removeChild(t),e},i._jQueryInterface=function(t,n){return this.each(function(){var r=e(this).data("bs.modal"),o=e.extend({},i.Default,e(this).data(),"object"==typeof t&&t);if(r||(r=new i(this,o),e(this).data("bs.modal",r)),"string"==typeof t){if("undefined"==typeof r[t])throw new Error('No method named "'+t+'"');r[t](n)}else o.show&&r.show(n)})},q(i,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}},{key:"Default",get:function(){return r}}]),i}();return e(document).on(s.CLICK_DATA_API,l.DATA_TOGGLE,function(t){var n,i=this,r=X.getSelectorFromElement(this);r&&(n=e(r)[0]);var o=e(n).data("bs.modal")?"toggle":e.extend({},e(n).data(),e(this).data());"A"!==this.tagName&&"AREA"!==this.tagName||t.preventDefault();var a=e(n).one(s.SHOW,function(t){t.isDefaultPrevented()||a.one(s.HIDDEN,function(){e(i).is(":visible")&&i.focus()})});c._jQueryInterface.call(e(n),o,this)}),e.fn[t]=c._jQueryInterface,e.fn[t].Constructor=c,e.fn[t].noConflict=function(){return e.fn[t]=i,c._jQueryInterface},c}(),Tt=function(){if("undefined"==typeof _t)throw new Error("Bootstrap tooltips require Popper.js (https://popper.js.org)");var t="tooltip",n=".bs.tooltip",i=e.fn[t],r=new RegExp("(^|\\s)bs-tooltip\\S+","g"),o={animation:"boolean",template:"string",title:"(string|element|function)",trigger:"string",delay:"(number|object)",html:"boolean",selector:"(string|boolean)",placement:"(string|function)",offset:"(number|string)",container:"(string|element|boolean)",fallbackPlacement:"(string|array)"},s={AUTO:"auto",TOP:"top",RIGHT:"right",BOTTOM:"bottom",LEFT:"left"},a={animation:!0,template:'<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',trigger:"hover focus",title:"",delay:0,html:!1,selector:!1,placement:"top",offset:0,container:!1,fallbackPlacement:"flip"},l={SHOW:"show",OUT:"out"},c={HIDE:"hide"+n,HIDDEN:"hidden"+n,SHOW:"show"+n,SHOWN:"shown"+n,INSERTED:"inserted"+n,CLICK:"click"+n,FOCUSIN:"focusin"+n,FOCUSOUT:"focusout"+n,MOUSEENTER:"mouseenter"+n,MOUSELEAVE:"mouseleave"+n},f={FADE:"fade",SHOW:"show"},h={TOOLTIP:".tooltip",TOOLTIP_INNER:".tooltip-inner",ARROW:".arrow"},u={HOVER:"hover",FOCUS:"focus",CLICK:"click",MANUAL:"manual"},d=function(){function i(t,e){this._isEnabled=!0,this._timeout=0,this._hoverState="",this._activeTrigger={},this._popper=null,this.element=t,this.config=this._getConfig(e),this.tip=null,this._setListeners()}var d=i.prototype;return d.enable=function(){this._isEnabled=!0},d.disable=function(){this._isEnabled=!1},d.toggleEnabled=function(){this._isEnabled=!this._isEnabled},d.toggle=function(t){if(this._isEnabled)if(t){var n=this.constructor.DATA_KEY,i=e(t.currentTarget).data(n);i||(i=new this.constructor(t.currentTarget,this._getDelegateConfig()),e(t.currentTarget).data(n,i)),i._activeTrigger.click=!i._activeTrigger.click,i._isWithActiveTrigger()?i._enter(null,i):i._leave(null,i)}else{if(e(this.getTipElement()).hasClass(f.SHOW))return void this._leave(null,this);this._enter(null,this)}},d.dispose=function(){clearTimeout(this._timeout),e.removeData(this.element,this.constructor.DATA_KEY),e(this.element).off(this.constructor.EVENT_KEY),e(this.element).closest(".modal").off("hide.bs.modal"),this.tip&&e(this.tip).remove(),this._isEnabled=null,this._timeout=null,this._hoverState=null,this._activeTrigger=null,null!==this._popper&&this._popper.destroy(),this._popper=null,this.element=null,this.config=null,this.tip=null},d.show=function(){var t=this;if("none"===e(this.element).css("display"))throw new Error("Please use show on visible elements");var n=e.Event(this.constructor.Event.SHOW);if(this.isWithContent()&&this._isEnabled){e(this.element).trigger(n);var r=e.contains(this.element.ownerDocument.documentElement,this.element);if(n.isDefaultPrevented()||!r)return;var o=this.getTipElement(),s=X.getUID(this.constructor.NAME);o.setAttribute("id",s),this.element.setAttribute("aria-describedby",s),this.setContent(),this.config.animation&&e(o).addClass(f.FADE);var a="function"==typeof this.config.placement?this.config.placement.call(this,o,this.element):this.config.placement,c=this._getAttachment(a);this.addAttachmentClass(c);var u=!1===this.config.container?document.body:e(this.config.container);e(o).data(this.constructor.DATA_KEY,this),e.contains(this.element.ownerDocument.documentElement,this.tip)||e(o).appendTo(u),e(this.element).trigger(this.constructor.Event.INSERTED),this._popper=new _t(this.element,o,{placement:c,modifiers:{offset:{offset:this.config.offset},flip:{behavior:this.config.fallbackPlacement},arrow:{element:h.ARROW}},onCreate:function(e){e.originalPlacement!==e.placement&&t._handlePopperPlacementChange(e)},onUpdate:function(e){t._handlePopperPlacementChange(e)}}),e(o).addClass(f.SHOW),"ontouchstart"in document.documentElement&&e("body").children().on("mouseover",null,e.noop);var d=function(){t.config.animation&&t._fixTransition();var n=t._hoverState;t._hoverState=null,e(t.element).trigger(t.constructor.Event.SHOWN),n===l.OUT&&t._leave(null,t)};X.supportsTransitionEnd()&&e(this.tip).hasClass(f.FADE)?e(this.tip).one(X.TRANSITION_END,d).emulateTransitionEnd(i._TRANSITION_DURATION):d()}},d.hide=function(t){var n=this,i=this.getTipElement(),r=e.Event(this.constructor.Event.HIDE),o=function(){n._hoverState!==l.SHOW&&i.parentNode&&i.parentNode.removeChild(i),n._cleanTipClass(),n.element.removeAttribute("aria-describedby"),e(n.element).trigger(n.constructor.Event.HIDDEN),null!==n._popper&&n._popper.destroy(),t&&t()};e(this.element).trigger(r),r.isDefaultPrevented()||(e(i).removeClass(f.SHOW),"ontouchstart"in document.documentElement&&e("body").children().off("mouseover",null,e.noop),this._activeTrigger[u.CLICK]=!1,this._activeTrigger[u.FOCUS]=!1,this._activeTrigger[u.HOVER]=!1,X.supportsTransitionEnd()&&e(this.tip).hasClass(f.FADE)?e(i).one(X.TRANSITION_END,o).emulateTransitionEnd(150):o(),this._hoverState="")},d.update=function(){null!==this._popper&&this._popper.scheduleUpdate()},d.isWithContent=function(){return Boolean(this.getTitle())},d.addAttachmentClass=function(t){e(this.getTipElement()).addClass("bs-tooltip-"+t)},d.getTipElement=function(){return this.tip=this.tip||e(this.config.template)[0],this.tip},d.setContent=function(){var t=e(this.getTipElement());this.setElementContent(t.find(h.TOOLTIP_INNER),this.getTitle()),t.removeClass(f.FADE+" "+f.SHOW)},d.setElementContent=function(t,n){var i=this.config.html;"object"==typeof n&&(n.nodeType||n.jquery)?i?e(n).parent().is(t)||t.empty().append(n):t.text(e(n).text()):t[i?"html":"text"](n)},d.getTitle=function(){var t=this.element.getAttribute("data-original-title");return t||(t="function"==typeof this.config.title?this.config.title.call(this.element):this.config.title),t},d._getAttachment=function(t){return s[t.toUpperCase()]},d._setListeners=function(){var t=this;this.config.trigger.split(" ").forEach(function(n){if("click"===n)e(t.element).on(t.constructor.Event.CLICK,t.config.selector,function(e){return t.toggle(e)});else if(n!==u.MANUAL){var i=n===u.HOVER?t.constructor.Event.MOUSEENTER:t.constructor.Event.FOCUSIN,r=n===u.HOVER?t.constructor.Event.MOUSELEAVE:t.constructor.Event.FOCUSOUT;e(t.element).on(i,t.config.selector,function(e){return t._enter(e)}).on(r,t.config.selector,function(e){return t._leave(e)})}e(t.element).closest(".modal").on("hide.bs.modal",function(){return t.hide()})}),this.config.selector?this.config=e.extend({},this.config,{trigger:"manual",selector:""}):this._fixTitle()},d._fixTitle=function(){var t=typeof this.element.getAttribute("data-original-title");(this.element.getAttribute("title")||"string"!==t)&&(this.element.setAttribute("data-original-title",this.element.getAttribute("title")||""),this.element.setAttribute("title",""))},d._enter=function(t,n){var i=this.constructor.DATA_KEY;(n=n||e(t.currentTarget).data(i))||(n=new this.constructor(t.currentTarget,this._getDelegateConfig()),e(t.currentTarget).data(i,n)),t&&(n._activeTrigger["focusin"===t.type?u.FOCUS:u.HOVER]=!0),e(n.getTipElement()).hasClass(f.SHOW)||n._hoverState===l.SHOW?n._hoverState=l.SHOW:(clearTimeout(n._timeout),n._hoverState=l.SHOW,n.config.delay&&n.config.delay.show?n._timeout=setTimeout(function(){n._hoverState===l.SHOW&&n.show()},n.config.delay.show):n.show())},d._leave=function(t,n){var i=this.constructor.DATA_KEY;(n=n||e(t.currentTarget).data(i))||(n=new this.constructor(t.currentTarget,this._getDelegateConfig()),e(t.currentTarget).data(i,n)),t&&(n._activeTrigger["focusout"===t.type?u.FOCUS:u.HOVER]=!1),n._isWithActiveTrigger()||(clearTimeout(n._timeout),n._hoverState=l.OUT,n.config.delay&&n.config.delay.hide?n._timeout=setTimeout(function(){n._hoverState===l.OUT&&n.hide()},n.config.delay.hide):n.hide())},d._isWithActiveTrigger=function(){for(var t in this._activeTrigger)if(this._activeTrigger[t])return!0;return!1},d._getConfig=function(n){return"number"==typeof(n=e.extend({},this.constructor.Default,e(this.element).data(),n)).delay&&(n.delay={show:n.delay,hide:n.delay}),"number"==typeof n.title&&(n.title=n.title.toString()),"number"==typeof n.content&&(n.content=n.content.toString()),X.typeCheckConfig(t,n,this.constructor.DefaultType),n},d._getDelegateConfig=function(){var t={};if(this.config)for(var e in this.config)this.constructor.Default[e]!==this.config[e]&&(t[e]=this.config[e]);return t},d._cleanTipClass=function(){var t=e(this.getTipElement()),n=t.attr("class").match(r);null!==n&&n.length>0&&t.removeClass(n.join(""))},d._handlePopperPlacementChange=function(t){this._cleanTipClass(),this.addAttachmentClass(this._getAttachment(t.placement))},d._fixTransition=function(){var t=this.getTipElement(),n=this.config.animation;null===t.getAttribute("x-placement")&&(e(t).removeClass(f.FADE),this.config.animation=!1,this.hide(),this.show(),this.config.animation=n)},i._jQueryInterface=function(t){return this.each(function(){var n=e(this).data("bs.tooltip"),r="object"==typeof t&&t;if((n||!/dispose|hide/.test(t))&&(n||(n=new i(this,r),e(this).data("bs.tooltip",n)),"string"==typeof t)){if("undefined"==typeof n[t])throw new Error('No method named "'+t+'"');n[t]()}})},q(i,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}},{key:"Default",get:function(){return a}},{key:"NAME",get:function(){return t}},{key:"DATA_KEY",get:function(){return"bs.tooltip"}},{key:"Event",get:function(){return c}},{key:"EVENT_KEY",get:function(){return n}},{key:"DefaultType",get:function(){return o}}]),i}();return e.fn[t]=d._jQueryInterface,e.fn[t].Constructor=d,e.fn[t].noConflict=function(){return e.fn[t]=i,d._jQueryInterface},d}(),bt=function(){var t="popover",n=".bs.popover",i=e.fn[t],r=new RegExp("(^|\\s)bs-popover\\S+","g"),o=e.extend({},Tt.Default,{placement:"right",trigger:"click",content:"",template:'<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'}),s=e.extend({},Tt.DefaultType,{content:"(string|element|function)"}),a={FADE:"fade",SHOW:"show"},l={TITLE:".popover-header",CONTENT:".popover-body"},c={HIDE:"hide"+n,HIDDEN:"hidden"+n,SHOW:"show"+n,SHOWN:"shown"+n,INSERTED:"inserted"+n,CLICK:"click"+n,FOCUSIN:"focusin"+n,FOCUSOUT:"focusout"+n,MOUSEENTER:"mouseenter"+n,MOUSELEAVE:"mouseleave"+n},f=function(i){function f(){return i.apply(this,arguments)||this}z(f,i);var h=f.prototype;return h.isWithContent=function(){return this.getTitle()||this._getContent()},h.addAttachmentClass=function(t){e(this.getTipElement()).addClass("bs-popover-"+t)},h.getTipElement=function(){return this.tip=this.tip||e(this.config.template)[0],this.tip},h.setContent=function(){var t=e(this.getTipElement());this.setElementContent(t.find(l.TITLE),this.getTitle()),this.setElementContent(t.find(l.CONTENT),this._getContent()),t.removeClass(a.FADE+" "+a.SHOW)},h._getContent=function(){return this.element.getAttribute("data-content")||("function"==typeof this.config.content?this.config.content.call(this.element):this.config.content)},h._cleanTipClass=function(){var t=e(this.getTipElement()),n=t.attr("class").match(r);null!==n&&n.length>0&&t.removeClass(n.join(""))},f._jQueryInterface=function(t){return this.each(function(){var n=e(this).data("bs.popover"),i="object"==typeof t?t:null;if((n||!/destroy|hide/.test(t))&&(n||(n=new f(this,i),e(this).data("bs.popover",n)),"string"==typeof t)){if("undefined"==typeof n[t])throw new Error('No method named "'+t+'"');n[t]()}})},q(f,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}},{key:"Default",get:function(){return o}},{key:"NAME",get:function(){return t}},{key:"DATA_KEY",get:function(){return"bs.popover"}},{key:"Event",get:function(){return c}},{key:"EVENT_KEY",get:function(){return n}},{key:"DefaultType",get:function(){return s}}]),f}(Tt);return e.fn[t]=f._jQueryInterface,e.fn[t].Constructor=f,e.fn[t].noConflict=function(){return e.fn[t]=i,f._jQueryInterface},f}(),Ct=function(){var t="scrollspy",n=e.fn[t],i={offset:10,method:"auto",target:""},r={offset:"number",method:"string",target:"(string|element)"},o={ACTIVATE:"activate.bs.scrollspy",SCROLL:"scroll.bs.scrollspy",LOAD_DATA_API:"load.bs.scrollspy.data-api"},s={DROPDOWN_ITEM:"dropdown-item",DROPDOWN_MENU:"dropdown-menu",ACTIVE:"active"},a={DATA_SPY:'[data-spy="scroll"]',ACTIVE:".active",NAV_LIST_GROUP:".nav, .list-group",NAV_LINKS:".nav-link",NAV_ITEMS:".nav-item",LIST_ITEMS:".list-group-item",DROPDOWN:".dropdown",DROPDOWN_ITEMS:".dropdown-item",DROPDOWN_TOGGLE:".dropdown-toggle"},l={OFFSET:"offset",POSITION:"position"},c=function(){function n(t,n){var i=this;this._element=t,this._scrollElement="BODY"===t.tagName?window:t,this._config=this._getConfig(n),this._selector=this._config.target+" "+a.NAV_LINKS+","+this._config.target+" "+a.LIST_ITEMS+","+this._config.target+" "+a.DROPDOWN_ITEMS,this._offsets=[],this._targets=[],this._activeTarget=null,this._scrollHeight=0,e(this._scrollElement).on(o.SCROLL,function(t){return i._process(t)}),this.refresh(),this._process()}var c=n.prototype;return c.refresh=function(){var t=this,n=this._scrollElement!==this._scrollElement.window?l.POSITION:l.OFFSET,i="auto"===this._config.method?n:this._config.method,r=i===l.POSITION?this._getScrollTop():0;this._offsets=[],this._targets=[],this._scrollHeight=this._getScrollHeight(),e.makeArray(e(this._selector)).map(function(t){var n,o=X.getSelectorFromElement(t);if(o&&(n=e(o)[0]),n){var s=n.getBoundingClientRect();if(s.width||s.height)return[e(n)[i]().top+r,o]}return null}).filter(function(t){return t}).sort(function(t,e){return t[0]-e[0]}).forEach(function(e){t._offsets.push(e[0]),t._targets.push(e[1])})},c.dispose=function(){e.removeData(this._element,"bs.scrollspy"),e(this._scrollElement).off(".bs.scrollspy"),this._element=null,this._scrollElement=null,this._config=null,this._selector=null,this._offsets=null,this._targets=null,this._activeTarget=null,this._scrollHeight=null},c._getConfig=function(n){if("string"!=typeof(n=e.extend({},i,n)).target){var o=e(n.target).attr("id");o||(o=X.getUID(t),e(n.target).attr("id",o)),n.target="#"+o}return X.typeCheckConfig(t,n,r),n},c._getScrollTop=function(){return this._scrollElement===window?this._scrollElement.pageYOffset:this._scrollElement.scrollTop},c._getScrollHeight=function(){return this._scrollElement.scrollHeight||Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},c._getOffsetHeight=function(){return this._scrollElement===window?window.innerHeight:this._scrollElement.getBoundingClientRect().height},c._process=function(){var t=this._getScrollTop()+this._config.offset,e=this._getScrollHeight(),n=this._config.offset+e-this._getOffsetHeight();if(this._scrollHeight!==e&&this.refresh(),t>=n){var i=this._targets[this._targets.length-1];this._activeTarget!==i&&this._activate(i)}else{if(this._activeTarget&&t<this._offsets[0]&&this._offsets[0]>0)return this._activeTarget=null,void this._clear();for(var r=this._offsets.length;r--;)this._activeTarget!==this._targets[r]&&t>=this._offsets[r]&&("undefined"==typeof this._offsets[r+1]||t<this._offsets[r+1])&&this._activate(this._targets[r])}},c._activate=function(t){this._activeTarget=t,this._clear();var n=this._selector.split(",");n=n.map(function(e){return e+'[data-target="'+t+'"],'+e+'[href="'+t+'"]'});var i=e(n.join(","));i.hasClass(s.DROPDOWN_ITEM)?(i.closest(a.DROPDOWN).find(a.DROPDOWN_TOGGLE).addClass(s.ACTIVE),i.addClass(s.ACTIVE)):(i.addClass(s.ACTIVE),i.parents(a.NAV_LIST_GROUP).prev(a.NAV_LINKS+", "+a.LIST_ITEMS).addClass(s.ACTIVE),i.parents(a.NAV_LIST_GROUP).prev(a.NAV_ITEMS).children(a.NAV_LINKS).addClass(s.ACTIVE)),e(this._scrollElement).trigger(o.ACTIVATE,{relatedTarget:t})},c._clear=function(){e(this._selector).filter(a.ACTIVE).removeClass(s.ACTIVE)},n._jQueryInterface=function(t){return this.each(function(){var i=e(this).data("bs.scrollspy"),r="object"==typeof t&&t;if(i||(i=new n(this,r),e(this).data("bs.scrollspy",i)),"string"==typeof t){if("undefined"==typeof i[t])throw new Error('No method named "'+t+'"');i[t]()}})},q(n,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}},{key:"Default",get:function(){return i}}]),n}();return e(window).on(o.LOAD_DATA_API,function(){for(var t=e.makeArray(e(a.DATA_SPY)),n=t.length;n--;){var i=e(t[n]);c._jQueryInterface.call(i,i.data())}}),e.fn[t]=c._jQueryInterface,e.fn[t].Constructor=c,e.fn[t].noConflict=function(){return e.fn[t]=n,c._jQueryInterface},c}(),At=function(){var t=e.fn.tab,n={HIDE:"hide.bs.tab",HIDDEN:"hidden.bs.tab",SHOW:"show.bs.tab",SHOWN:"shown.bs.tab",CLICK_DATA_API:"click.bs.tab.data-api"},i={DROPDOWN_MENU:"dropdown-menu",ACTIVE:"active",DISABLED:"disabled",FADE:"fade",SHOW:"show"},r={DROPDOWN:".dropdown",NAV_LIST_GROUP:".nav, .list-group",ACTIVE:".active",ACTIVE_UL:"> li > .active",DATA_TOGGLE:'[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list"]',DROPDOWN_TOGGLE:".dropdown-toggle",DROPDOWN_ACTIVE_CHILD:"> .dropdown-menu .active"},o=function(){function t(t){this._element=t}var o=t.prototype;return o.show=function(){var t=this;if(!(this._element.parentNode&&this._element.parentNode.nodeType===Node.ELEMENT_NODE&&e(this._element).hasClass(i.ACTIVE)||e(this._element).hasClass(i.DISABLED))){var o,s,a=e(this._element).closest(r.NAV_LIST_GROUP)[0],l=X.getSelectorFromElement(this._element);if(a){var c="UL"===a.nodeName?r.ACTIVE_UL:r.ACTIVE;s=e.makeArray(e(a).find(c)),s=s[s.length-1]}var f=e.Event(n.HIDE,{relatedTarget:this._element}),h=e.Event(n.SHOW,{relatedTarget:s});if(s&&e(s).trigger(f),e(this._element).trigger(h),!h.isDefaultPrevented()&&!f.isDefaultPrevented()){l&&(o=e(l)[0]),this._activate(this._element,a);var u=function(){var i=e.Event(n.HIDDEN,{relatedTarget:t._element}),r=e.Event(n.SHOWN,{relatedTarget:s});e(s).trigger(i),e(t._element).trigger(r)};o?this._activate(o,o.parentNode,u):u()}}},o.dispose=function(){e.removeData(this._element,"bs.tab"),this._element=null},o._activate=function(t,n,o){var s,a=this,l=(s="UL"===n.nodeName?e(n).find(r.ACTIVE_UL):e(n).children(r.ACTIVE))[0],c=o&&X.supportsTransitionEnd()&&l&&e(l).hasClass(i.FADE),f=function(){return a._transitionComplete(t,l,c,o)};l&&c?e(l).one(X.TRANSITION_END,f).emulateTransitionEnd(150):f(),l&&e(l).removeClass(i.SHOW)},o._transitionComplete=function(t,n,o,s){if(n){e(n).removeClass(i.ACTIVE);var a=e(n.parentNode).find(r.DROPDOWN_ACTIVE_CHILD)[0];a&&e(a).removeClass(i.ACTIVE),"tab"===n.getAttribute("role")&&n.setAttribute("aria-selected",!1)}if(e(t).addClass(i.ACTIVE),"tab"===t.getAttribute("role")&&t.setAttribute("aria-selected",!0),o?(X.reflow(t),e(t).addClass(i.SHOW)):e(t).removeClass(i.FADE),t.parentNode&&e(t.parentNode).hasClass(i.DROPDOWN_MENU)){var l=e(t).closest(r.DROPDOWN)[0];l&&e(l).find(r.DROPDOWN_TOGGLE).addClass(i.ACTIVE),t.setAttribute("aria-expanded",!0)}s&&s()},t._jQueryInterface=function(n){return this.each(function(){var i=e(this),r=i.data("bs.tab");if(r||(r=new t(this),i.data("bs.tab",r)),"string"==typeof n){if("undefined"==typeof r[n])throw new Error('No method named "'+n+'"');r[n]()}})},q(t,null,[{key:"VERSION",get:function(){return"4.0.0-beta.2"}}]),t}();return e(document).on(n.CLICK_DATA_API,r.DATA_TOGGLE,function(t){t.preventDefault(),o._jQueryInterface.call(e(this),"show")}),e.fn.tab=o._jQueryInterface,e.fn.tab.Constructor=o,e.fn.tab.noConflict=function(){return e.fn.tab=t,o._jQueryInterface},o}();return function(){if("undefined"==typeof e)throw new Error("Bootstrap's JavaScript requires jQuery. jQuery must be included before Bootstrap's JavaScript.");var t=e.fn.jquery.split(" ")[0].split(".");if(t[0]<2&&t[1]<9||1===t[0]&&9===t[1]&&t[2]<1||t[0]>=4)throw new Error("Bootstrap's JavaScript requires at least jQuery v1.9.1 but less than v4.0.0")}(),t.Util=X,t.Alert=Z,t.Button=J,t.Carousel=$,t.Collapse=tt,t.Dropdown=vt,t.Modal=Et,t.Popover=bt,t.Scrollspy=Ct,t.Tab=At,t.Tooltip=Tt,t}({},$);
+//# sourceMappingURL=bootstrap.bundle.min.js.map
 /*
  * HTML5 Sortable jQuery Plugin
  * http://farhadi.ir/projects/html5sortable
@@ -12629,7 +10316,6 @@ function teamSlider() {
     })
 }
 
-
 (function(/*! Stitch !*/) {
   if (!this.require) {
     var modules = {}, cache = {}, require = function(name, root) {
@@ -12650,11 +10336,11 @@ function teamSlider() {
           throw err;
         }
       } else {
-        throw 'module \'' + name + '\' not found';
+        throw 'module ' + name + ' not found';
       }
     }, expand = function(root, name) {
       var results = [], parts, part;
-      if (/^\.\.?(\/|$)/.test(name)) {
+      if (/^..?(\/|$)/.test(name)) {
         parts = [root, name].join('/').split('/');
       } else {
         parts = name.split('/');
@@ -12683,1478 +10369,2222 @@ function teamSlider() {
   }
   return this.require.define;
 }).call(this)({
-  "es5-shimify/index": function(exports, require, module) {// Copyright 2009-2012 by contributors, MIT License
-// vim: ts=4 sts=4 sw=4 expandtab
+  
+  "spine/index": function(exports, require, module) { module.exports = require('./lib/spine'); },"spine/lib/spine": function(exports, require, module) { // Generated by CoffeeScript 1.10.0
 
-// Module systems magic dance
-(function (definition) {
-    // RequireJS
-    if (typeof define == "function") {
-        define(definition);
-    // YUI3
-    } else if (typeof YUI == "function") {
-        YUI.add("es5", definition);
-    // CommonJS and <script>
-    } else {
-        definition();
-    }
-})(function () {
-
-/**
- * Brings an environment as close to ECMAScript 5 compliance
- * as is possible with the facilities of erstwhile engines.
- *
- * Annotated ES5: http://es5.github.com/ (specific links below)
- * ES5 Spec: http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf
- * Required reading: http://javascriptweblog.wordpress.com/2011/12/05/extending-javascript-natives/
+/*
+Spine.js MVC library
+Released under the MIT License
  */
 
-//
-// Function
-// ========
-//
+(function() {
+  var $, Controller, Events, Log, Model, Module, Spine, createObject, makeArray, moduleKeywords,
+    slice = [].slice,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-// ES-5 15.3.4.5
-// http://es5.github.com/#x15.3.4.5
-
-function Empty() {}
-
-if (!Function.prototype.bind) {
-    Function.prototype.bind = function bind(that) { // .length is 1
-        // 1. Let Target be the this value.
-        var target = this;
-        // 2. If IsCallable(Target) is false, throw a TypeError exception.
-        if (typeof target != "function") {
-            throw new TypeError("Function.prototype.bind called on incompatible " + target);
+  Events = {
+    bind: function(ev, callback) {
+      var base, evs, j, len, name;
+      evs = ev.split(' ');
+      if (!this.hasOwnProperty('_callbacks')) {
+        this._callbacks || (this._callbacks = {});
+      }
+      for (j = 0, len = evs.length; j < len; j++) {
+        name = evs[j];
+        (base = this._callbacks)[name] || (base[name] = []);
+        this._callbacks[name].push(callback);
+      }
+      return this;
+    },
+    one: function(ev, callback) {
+      var handler;
+      return this.bind(ev, handler = function() {
+        this.unbind(ev, handler);
+        return callback.apply(this, arguments);
+      });
+    },
+    trigger: function() {
+      var args, callback, ev, j, len, list, ref;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      ev = args.shift();
+      list = (ref = this._callbacks) != null ? ref[ev] : void 0;
+      if (!list) {
+        return;
+      }
+      for (j = 0, len = list.length; j < len; j++) {
+        callback = list[j];
+        if (callback.apply(this, args) === false) {
+          break;
         }
-        // 3. Let A be a new (possibly empty) internal list of all of the
-        //   argument values provided after thisArg (arg1, arg2 etc), in order.
-        // XXX slicedArgs will stand in for "A" if used
-        var args = slice.call(arguments, 1); // for normal call
-        // 4. Let F be a new native ECMAScript object.
-        // 11. Set the [[Prototype]] internal property of F to the standard
-        //   built-in Function prototype object as specified in 15.3.3.1.
-        // 12. Set the [[Call]] internal property of F as described in
-        //   15.3.4.5.1.
-        // 13. Set the [[Construct]] internal property of F as described in
-        //   15.3.4.5.2.
-        // 14. Set the [[HasInstance]] internal property of F as described in
-        //   15.3.4.5.3.
-        var bound = function () {
-
-            if (this instanceof bound) {
-                // 15.3.4.5.2 [[Construct]]
-                // When the [[Construct]] internal method of a function object,
-                // F that was created using the bind function is called with a
-                // list of arguments ExtraArgs, the following steps are taken:
-                // 1. Let target be the value of F's [[TargetFunction]]
-                //   internal property.
-                // 2. If target has no [[Construct]] internal method, a
-                //   TypeError exception is thrown.
-                // 3. Let boundArgs be the value of F's [[BoundArgs]] internal
-                //   property.
-                // 4. Let args be a new list containing the same values as the
-                //   list boundArgs in the same order followed by the same
-                //   values as the list ExtraArgs in the same order.
-                // 5. Return the result of calling the [[Construct]] internal
-                //   method of target providing args as the arguments.
-
-                var result = target.apply(
-                    this,
-                    args.concat(slice.call(arguments))
-                );
-                if (Object(result) === result) {
-                    return result;
-                }
-                return this;
-
-            } else {
-                // 15.3.4.5.1 [[Call]]
-                // When the [[Call]] internal method of a function object, F,
-                // which was created using the bind function is called with a
-                // this value and a list of arguments ExtraArgs, the following
-                // steps are taken:
-                // 1. Let boundArgs be the value of F's [[BoundArgs]] internal
-                //   property.
-                // 2. Let boundThis be the value of F's [[BoundThis]] internal
-                //   property.
-                // 3. Let target be the value of F's [[TargetFunction]] internal
-                //   property.
-                // 4. Let args be a new list containing the same values as the
-                //   list boundArgs in the same order followed by the same
-                //   values as the list ExtraArgs in the same order.
-                // 5. Return the result of calling the [[Call]] internal method
-                //   of target providing boundThis as the this value and
-                //   providing args as the arguments.
-
-                // equiv: target.call(this, ...boundArgs, ...args)
-                return target.apply(
-                    that,
-                    args.concat(slice.call(arguments))
-                );
-
+      }
+      return true;
+    },
+    listenTo: function(obj, ev, callback) {
+      obj.bind(ev, callback);
+      this.listeningTo || (this.listeningTo = []);
+      this.listeningTo.push({
+        obj: obj,
+        ev: ev,
+        callback: callback
+      });
+      return this;
+    },
+    listenToOnce: function(obj, ev, callback) {
+      var handler, listeningToOnce;
+      listeningToOnce = this.listeningToOnce || (this.listeningToOnce = []);
+      obj.bind(ev, handler = function() {
+        var i, idx, j, len, lt;
+        idx = -1;
+        for (i = j = 0, len = listeningToOnce.length; j < len; i = ++j) {
+          lt = listeningToOnce[i];
+          if (lt.obj === obj) {
+            if (lt.ev === ev && lt.callback === handler) {
+              idx = i;
             }
+          }
+        }
+        obj.unbind(ev, handler);
+        if (idx !== -1) {
+          listeningToOnce.splice(idx, 1);
+        }
+        return callback.apply(this, arguments);
+      });
+      listeningToOnce.push({
+        obj: obj,
+        ev: ev,
+        callback: handler
+      });
+      return this;
+    },
+    stopListening: function(obj, events, callback) {
+      var e, ev, evts, idx, j, k, l, len, len1, len2, len3, listeningTo, lt, m, n, ref, ref1, ref2;
+      if (arguments.length === 0) {
+        ref = [this.listeningTo, this.listeningToOnce];
+        for (j = 0, len = ref.length; j < len; j++) {
+          listeningTo = ref[j];
+          if (!(listeningTo != null ? listeningTo.length : void 0)) {
+            continue;
+          }
+          for (k = 0, len1 = listeningTo.length; k < len1; k++) {
+            lt = listeningTo[k];
+            lt.obj.unbind(lt.ev, lt.callback);
+          }
+        }
+        this.listeningTo = void 0;
+        this.listeningToOnce = void 0;
+      } else if (obj) {
+        events = events ? events.split(' ') : [void 0];
+        ref1 = [this.listeningTo, this.listeningToOnce];
+        for (l = 0, len2 = ref1.length; l < len2; l++) {
+          listeningTo = ref1[l];
+          if (!listeningTo) {
+            continue;
+          }
+          for (m = 0, len3 = events.length; m < len3; m++) {
+            ev = events[m];
+            for (idx = n = ref2 = listeningTo.length - 1; ref2 <= 0 ? n <= 0 : n >= 0; idx = ref2 <= 0 ? ++n : --n) {
+              lt = listeningTo[idx];
+              if (lt.obj !== obj) {
+                continue;
+              }
+              if (callback && lt.callback !== callback) {
+                continue;
+              }
+              if ((!ev) || (ev === lt.ev)) {
+                lt.obj.unbind(lt.ev, lt.callback);
+                if (idx !== -1) {
+                  listeningTo.splice(idx, 1);
+                }
+              } else if (ev) {
+                evts = lt.ev.split(' ');
+                if (indexOf.call(evts, ev) >= 0) {
+                  evts = (function() {
+                    var len4, p, results;
+                    results = [];
+                    for (p = 0, len4 = evts.length; p < len4; p++) {
+                      e = evts[p];
+                      if (e !== ev) {
+                        results.push(e);
+                      }
+                    }
+                    return results;
+                  })();
+                  lt.ev = $.trim(evts.join(' '));
+                  lt.obj.unbind(ev, lt.callback);
+                }
+              }
+            }
+          }
+        }
+      }
+      return this;
+    },
+    unbind: function(ev, callback) {
+      var cb, evs, i, j, k, len, len1, list, name, ref;
+      if (arguments.length === 0) {
+        this._callbacks = {};
+        return this;
+      }
+      if (!ev) {
+        return this;
+      }
+      evs = ev.split(' ');
+      for (j = 0, len = evs.length; j < len; j++) {
+        name = evs[j];
+        list = (ref = this._callbacks) != null ? ref[name] : void 0;
+        if (!list) {
+          continue;
+        }
+        if (!callback) {
+          delete this._callbacks[name];
+          continue;
+        }
+        for (i = k = 0, len1 = list.length; k < len1; i = ++k) {
+          cb = list[i];
+          if (!(cb === callback)) {
+            continue;
+          }
+          list = list.slice();
+          list.splice(i, 1);
+          this._callbacks[name] = list;
+          break;
+        }
+      }
+      return this;
+    }
+  };
 
+  Events.on = Events.bind;
+
+  Events.off = Events.unbind;
+
+  Log = {
+    trace: true,
+    logPrefix: '(App)',
+    log: function() {
+      var args;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      if (!this.trace) {
+        return;
+      }
+      if (this.logPrefix) {
+        args.unshift(this.logPrefix);
+      }
+      if (typeof console !== "undefined" && console !== null) {
+        if (typeof console.log === "function") {
+          console.log.apply(console, args);
+        }
+      }
+      return this;
+    }
+  };
+
+  moduleKeywords = ['included', 'extended'];
+
+  Module = (function() {
+    Module.include = function(obj) {
+      var key, ref, value;
+      if (!obj) {
+        throw new Error('include(obj) requires obj');
+      }
+      for (key in obj) {
+        value = obj[key];
+        if (indexOf.call(moduleKeywords, key) < 0) {
+          this.prototype[key] = value;
+        }
+      }
+      if ((ref = obj.included) != null) {
+        ref.apply(this);
+      }
+      return this;
+    };
+
+    Module.extend = function(obj) {
+      var key, ref, value;
+      if (!obj) {
+        throw new Error('extend(obj) requires obj');
+      }
+      for (key in obj) {
+        value = obj[key];
+        if (indexOf.call(moduleKeywords, key) < 0) {
+          this[key] = value;
+        }
+      }
+      if ((ref = obj.extended) != null) {
+        ref.apply(this);
+      }
+      return this;
+    };
+
+    Module.proxy = function(func) {
+      return (function(_this) {
+        return function() {
+          return func.apply(_this, arguments);
         };
-        if(target.prototype) {
-            Empty.prototype = target.prototype;
-            bound.prototype = new Empty();
-            // Clean up dangling references.
-            Empty.prototype = null;
-        }
-        // XXX bound.length is never writable, so don't even try
-        //
-        // 15. If the [[Class]] internal property of Target is "Function", then
-        //     a. Let L be the length property of Target minus the length of A.
-        //     b. Set the length own property of F to either 0 or L, whichever is
-        //       larger.
-        // 16. Else set the length own property of F to 0.
-        // 17. Set the attributes of the length own property of F to the values
-        //   specified in 15.3.5.1.
-
-        // TODO
-        // 18. Set the [[Extensible]] internal property of F to true.
-
-        // TODO
-        // 19. Let thrower be the [[ThrowTypeError]] function Object (13.2.3).
-        // 20. Call the [[DefineOwnProperty]] internal method of F with
-        //   arguments "caller", PropertyDescriptor {[[Get]]: thrower, [[Set]]:
-        //   thrower, [[Enumerable]]: false, [[Configurable]]: false}, and
-        //   false.
-        // 21. Call the [[DefineOwnProperty]] internal method of F with
-        //   arguments "arguments", PropertyDescriptor {[[Get]]: thrower,
-        //   [[Set]]: thrower, [[Enumerable]]: false, [[Configurable]]: false},
-        //   and false.
-
-        // TODO
-        // NOTE Function objects created using Function.prototype.bind do not
-        // have a prototype property or the [[Code]], [[FormalParameters]], and
-        // [[Scope]] internal properties.
-        // XXX can't delete prototype in pure-js.
-
-        // 22. Return F.
-        return bound;
+      })(this);
     };
-}
 
-// Shortcut to an often accessed properties, in order to avoid multiple
-// dereference that costs universally.
-// _Please note: Shortcuts are defined after `Function.prototype.bind` as we
-// us it in defining shortcuts.
-var call = Function.prototype.call;
-var prototypeOfArray = Array.prototype;
-var prototypeOfObject = Object.prototype;
-var slice = prototypeOfArray.slice;
-// Having a toString local variable name breaks in Opera so use _toString.
-var _toString = call.bind(prototypeOfObject.toString);
-var owns = call.bind(prototypeOfObject.hasOwnProperty);
+    Module.prototype.proxy = function(func) {
+      return (function(_this) {
+        return function() {
+          return func.apply(_this, arguments);
+        };
+      })(this);
+    };
 
-// If JS engine supports accessors creating shortcuts.
-var defineGetter;
-var defineSetter;
-var lookupGetter;
-var lookupSetter;
-var supportsAccessors;
-if ((supportsAccessors = owns(prototypeOfObject, "__defineGetter__"))) {
-    defineGetter = call.bind(prototypeOfObject.__defineGetter__);
-    defineSetter = call.bind(prototypeOfObject.__defineSetter__);
-    lookupGetter = call.bind(prototypeOfObject.__lookupGetter__);
-    lookupSetter = call.bind(prototypeOfObject.__lookupSetter__);
-}
+    function Module() {
+      if (typeof this.init === "function") {
+        this.init.apply(this, arguments);
+      }
+    }
 
-//
-// Array
-// =====
-//
+    return Module;
 
-// ES5 15.4.4.12
-// http://es5.github.com/#x15.4.4.12
-// Default value for second param
-// [bugfix, ielt9, old browsers]
-// IE < 9 bug: [1,2].splice(0).join("") == "" but should be "12"
-if ([1,2].splice(0).length != 2) {
-    var array_splice = Array.prototype.splice;
-    Array.prototype.splice = function(start, deleteCount) {
-        if (!arguments.length) {
-            return [];
+  })();
+
+  Model = (function(superClass) {
+    extend(Model, superClass);
+
+    Model.extend(Events);
+
+    Model.include(Events);
+
+    Model.records = [];
+
+    Model.irecords = {};
+
+    Model.attributes = [];
+
+    Model.configure = function() {
+      var attributes, name;
+      name = arguments[0], attributes = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+      this.className = name;
+      this.deleteAll();
+      if (attributes.length) {
+        this.attributes = attributes;
+      }
+      this.attributes && (this.attributes = makeArray(this.attributes));
+      this.attributes || (this.attributes = []);
+      this.unbind();
+      return this;
+    };
+
+    Model.toString = function() {
+      return this.className + "(" + (this.attributes.join(", ")) + ")";
+    };
+
+    Model.find = function(id, notFound) {
+      var ref;
+      if (notFound == null) {
+        notFound = this.notFound;
+      }
+      return ((ref = this.irecords[id]) != null ? ref.clone() : void 0) || (typeof notFound === "function" ? notFound(id) : void 0);
+    };
+
+    Model.findAll = function(ids, notFound) {
+      var id, j, len, results;
+      results = [];
+      for (j = 0, len = ids.length; j < len; j++) {
+        id = ids[j];
+        if (this.find(id, notFound)) {
+          results.push(this.find(id));
+        }
+      }
+      return results;
+    };
+
+    Model.notFound = function(id) {
+      return null;
+    };
+
+    Model.exists = function(id) {
+      return Boolean(this.irecords[id]);
+    };
+
+    Model.addRecord = function(record, idx) {
+      var root;
+      if (root = this.irecords[record.id || record.cid]) {
+        root.refresh(record);
+      } else {
+        record.id || (record.id = record.cid);
+        this.irecords[record.id] = this.irecords[record.cid] = record;
+        if (idx !== void 0) {
+          this.records.splice(idx, 0, record);
         } else {
-            return array_splice.apply(this, [
-                start === void 0 ? 0 : start,
-                deleteCount === void 0 ? (this.length - start) : deleteCount
-            ].concat(slice.call(arguments, 2)))
+          this.records.push(record);
         }
+      }
+      return record;
     };
-}
 
-// ES5 15.4.4.12
-// http://es5.github.com/#x15.4.4.13
-// Return len+argCount.
-// [bugfix, ielt8]
-// IE < 8 bug: [].unshift(0) == undefined but should be "1"
-if ([].unshift(0) != 1) {
-    var array_unshift = Array.prototype.unshift;
-    Array.prototype.unshift = function() {
-        array_unshift.apply(this, arguments);
-        return this.length;
+    Model.refresh = function(values, options) {
+      var j, len, record, records, result;
+      if (options == null) {
+        options = {};
+      }
+      if (options.clear) {
+        this.deleteAll();
+      }
+      records = this.fromJSON(values);
+      if (!Array.isArray(records)) {
+        records = [records];
+      }
+      for (j = 0, len = records.length; j < len; j++) {
+        record = records[j];
+        this.addRecord(record);
+      }
+      this.sort();
+      result = this.cloneArray(records);
+      this.trigger('refresh', result, options);
+      return result;
     };
-}
 
-// ES5 15.4.3.2
-// http://es5.github.com/#x15.4.3.2
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray
-if (!Array.isArray) {
-    Array.isArray = function isArray(obj) {
-        return _toString(obj) == "[object Array]";
+    Model.select = function(callback) {
+      var j, len, record, ref, results;
+      ref = this.records;
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        record = ref[j];
+        if (callback(record)) {
+          results.push(record.clone());
+        }
+      }
+      return results;
     };
-}
 
-// The IsCallable() check in the Array functions
-// has been replaced with a strict check on the
-// internal class of the object to trap cases where
-// the provided function was actually a regular
-// expression literal, which in V8 and
-// JavaScriptCore is a typeof "function".  Only in
-// V8 are regular expression literals permitted as
-// reduce parameters, so it is desirable in the
-// general case for the shim to match the more
-// strict and common behavior of rejecting regular
-// expressions.
-
-// ES5 15.4.4.18
-// http://es5.github.com/#x15.4.4.18
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/forEach
-
-// Check failure of by-index access of string characters (IE < 9)
-// and failure of `0 in boxedString` (Rhino)
-var boxedString = Object("a"),
-    splitString = boxedString[0] != "a" || !(0 in boxedString);
-
-if (!Array.prototype.forEach) {
-    Array.prototype.forEach = function forEach(fun /*, thisp*/) {
-        var object = toObject(this),
-            self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                object,
-            thisp = arguments[1],
-            i = -1,
-            length = self.length >>> 0;
-
-        // If no callback function or if callback is not a callable function
-        if (_toString(fun) != "[object Function]") {
-            throw new TypeError(); // TODO message
+    Model.findByAttribute = function(name, value) {
+      var j, len, record, ref;
+      ref = this.records;
+      for (j = 0, len = ref.length; j < len; j++) {
+        record = ref[j];
+        if (record[name] === value) {
+          return record.clone();
         }
-
-        while (++i < length) {
-            if (i in self) {
-                // Invoke the callback function with call, passing arguments:
-                // context, property value, property key, thisArg object
-                // context
-                fun.call(thisp, self[i], i, object);
-            }
-        }
+      }
+      return null;
     };
-}
 
-// ES5 15.4.4.19
-// http://es5.github.com/#x15.4.4.19
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
-if (!Array.prototype.map) {
-    Array.prototype.map = function map(fun /*, thisp*/) {
-        var object = toObject(this),
-            self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                object,
-            length = self.length >>> 0,
-            result = Array(length),
-            thisp = arguments[1];
-
-        // If no callback function or if callback is not a callable function
-        if (_toString(fun) != "[object Function]") {
-            throw new TypeError(fun + " is not a function");
-        }
-
-        for (var i = 0; i < length; i++) {
-            if (i in self)
-                result[i] = fun.call(thisp, self[i], i, object);
-        }
-        return result;
+    Model.findAllByAttribute = function(name, value) {
+      return this.select(function(item) {
+        return item[name] === value;
+      });
     };
-}
 
-// ES5 15.4.4.20
-// http://es5.github.com/#x15.4.4.20
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
-if (!Array.prototype.filter) {
-    Array.prototype.filter = function filter(fun /*, thisp */) {
-        var object = toObject(this),
-            self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                    object,
-            length = self.length >>> 0,
-            result = [],
-            value,
-            thisp = arguments[1];
-
-        // If no callback function or if callback is not a callable function
-        if (_toString(fun) != "[object Function]") {
-            throw new TypeError(fun + " is not a function");
-        }
-
-        for (var i = 0; i < length; i++) {
-            if (i in self) {
-                value = self[i];
-                if (fun.call(thisp, value, i, object)) {
-                    result.push(value);
-                }
-            }
-        }
-        return result;
+    Model.each = function(callback) {
+      var j, len, record, ref, results;
+      ref = this.records;
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        record = ref[j];
+        results.push(callback(record.clone()));
+      }
+      return results;
     };
-}
 
-// ES5 15.4.4.16
-// http://es5.github.com/#x15.4.4.16
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/every
-if (!Array.prototype.every) {
-    Array.prototype.every = function every(fun /*, thisp */) {
-        var object = toObject(this),
-            self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                object,
-            length = self.length >>> 0,
-            thisp = arguments[1];
+    Model.all = function() {
+      return this.cloneArray(this.records);
+    };
 
-        // If no callback function or if callback is not a callable function
-        if (_toString(fun) != "[object Function]") {
-            throw new TypeError(fun + " is not a function");
+    Model.slice = function(begin, end) {
+      if (begin == null) {
+        begin = 0;
+      }
+      return this.cloneArray(this.records.slice(begin, end));
+    };
+
+    Model.first = function(end) {
+      var ref;
+      if (end == null) {
+        end = 1;
+      }
+      if (end > 1) {
+        return this.cloneArray(this.records.slice(0, end));
+      } else {
+        return (ref = this.records[0]) != null ? ref.clone() : void 0;
+      }
+    };
+
+    Model.last = function(begin) {
+      var ref;
+      if (typeof begin === 'number') {
+        return this.cloneArray(this.records.slice(-begin));
+      } else {
+        return (ref = this.records[this.records.length - 1]) != null ? ref.clone() : void 0;
+      }
+    };
+
+    Model.count = function() {
+      return this.records.length;
+    };
+
+    Model.deleteAll = function() {
+      this.records = [];
+      return this.irecords = {};
+    };
+
+    Model.destroyAll = function(options) {
+      var j, len, record, ref, results;
+      ref = this.records;
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        record = ref[j];
+        results.push(record.destroy(options));
+      }
+      return results;
+    };
+
+    Model.update = function(id, atts, options) {
+      return this.find(id).updateAttributes(atts, options);
+    };
+
+    Model.create = function(atts, options) {
+      var record;
+      record = new this(atts);
+      return record.save(options);
+    };
+
+    Model.destroy = function(id, options) {
+      var ref;
+      return (ref = this.find(id)) != null ? ref.destroy(options) : void 0;
+    };
+
+    Model.change = function(callbackOrParams) {
+      if (typeof callbackOrParams === 'function') {
+        return this.bind('change', callbackOrParams);
+      } else {
+        return this.trigger.apply(this, ['change'].concat(slice.call(arguments)));
+      }
+    };
+
+    Model.fetch = function(callbackOrParams) {
+      if (typeof callbackOrParams === 'function') {
+        return this.bind('fetch', callbackOrParams);
+      } else {
+        return this.trigger.apply(this, ['fetch'].concat(slice.call(arguments)));
+      }
+    };
+
+    Model.toJSON = function() {
+      return this.records;
+    };
+
+    Model.beforeFromJSON = function(objects) {
+      return objects;
+    };
+
+    Model.fromJSON = function(objects) {
+      var j, len, results, value;
+      if (!objects) {
+        return;
+      }
+      if (typeof objects === 'string') {
+        objects = JSON.parse(objects);
+      }
+      objects = this.beforeFromJSON(objects);
+      if (Array.isArray(objects)) {
+        results = [];
+        for (j = 0, len = objects.length; j < len; j++) {
+          value = objects[j];
+          if (value instanceof this) {
+            results.push(value);
+          } else {
+            results.push(new this(value));
+          }
         }
-
-        for (var i = 0; i < length; i++) {
-            if (i in self && !fun.call(thisp, self[i], i, object)) {
-                return false;
-            }
+        return results;
+      } else {
+        if (objects instanceof this) {
+          return objects;
         }
+        return new this(objects);
+      }
+    };
+
+    Model.fromForm = function() {
+      var ref;
+      return (ref = new this).fromForm.apply(ref, arguments);
+    };
+
+    Model.sort = function() {
+      if (this.comparator) {
+        this.records.sort(this.comparator);
+      }
+      return this;
+    };
+
+    Model.cloneArray = function(array) {
+      var j, len, results, value;
+      results = [];
+      for (j = 0, len = array.length; j < len; j++) {
+        value = array[j];
+        results.push(value.clone());
+      }
+      return results;
+    };
+
+    Model.idCounter = 0;
+
+    Model.uid = function(prefix) {
+      var uid;
+      if (prefix == null) {
+        prefix = '';
+      }
+      uid = prefix + this.idCounter++;
+      if (this.exists(uid)) {
+        uid = this.uid(prefix);
+      }
+      return uid;
+    };
+
+    function Model(atts) {
+      Model.__super__.constructor.apply(this, arguments);
+      if ((this.constructor.uuid != null) && typeof this.constructor.uuid === 'function') {
+        this.cid = this.constructor.uuid();
+        if (!this.id) {
+          this.id = this.cid;
+        }
+      } else {
+        this.cid = (atts != null ? atts.cid : void 0) || this.constructor.uid('c-');
+      }
+      if (atts) {
+        this.load(atts);
+      }
+    }
+
+    Model.prototype.isNew = function() {
+      return !this.exists();
+    };
+
+    Model.prototype.isValid = function() {
+      return !this.validate();
+    };
+
+    Model.prototype.validate = function() {};
+
+    Model.prototype.load = function(atts) {
+      var key, value;
+      if (atts.id) {
+        this.id = atts.id;
+      }
+      for (key in atts) {
+        value = atts[key];
+        if (key === '_callbacks') {
+          continue;
+        }
+        if (typeof this[key] === 'function') {
+          if (typeof value === 'function') {
+            continue;
+          }
+          this[key](value);
+        } else {
+          this[key] = value;
+        }
+      }
+      return this;
+    };
+
+    Model.prototype.attributes = function() {
+      var j, key, len, ref, result;
+      result = {};
+      ref = this.constructor.attributes;
+      for (j = 0, len = ref.length; j < len; j++) {
+        key = ref[j];
+        if (key in this) {
+          if (typeof this[key] === 'function') {
+            result[key] = this[key]();
+          } else {
+            result[key] = this[key];
+          }
+        }
+      }
+      if (this.id) {
+        result.id = this.id;
+      }
+      return result;
+    };
+
+    Model.prototype.eql = function(rec) {
+      return rec && rec.constructor === this.constructor && ((rec.cid === this.cid) || (rec.id && rec.id === this.id));
+    };
+
+    Model.prototype.save = function(options) {
+      var error, record;
+      if (options == null) {
+        options = {};
+      }
+      if (options.validate !== false) {
+        error = this.validate();
+        if (error) {
+          this.trigger('error', this, error);
+          return false;
+        }
+      }
+      this.trigger('beforeSave', this, options);
+      record = this.isNew() ? this.create(options) : this.update(options);
+      this.stripCloneAttrs();
+      this.trigger('save', record, options);
+      return record;
+    };
+
+    Model.prototype.stripCloneAttrs = function() {
+      var key, value;
+      if (this.hasOwnProperty('cid')) {
+        return;
+      }
+      for (key in this) {
+        if (!hasProp.call(this, key)) continue;
+        value = this[key];
+        if (indexOf.call(this.constructor.attributes, key) >= 0) {
+          delete this[key];
+        }
+      }
+      return this;
+    };
+
+    Model.prototype.updateAttribute = function(name, value, options) {
+      var atts;
+      atts = {};
+      atts[name] = value;
+      return this.updateAttributes(atts, options);
+    };
+
+    Model.prototype.updateAttributes = function(atts, options) {
+      this.load(atts);
+      return this.save(options);
+    };
+
+    Model.prototype.changeID = function(id) {
+      var records;
+      if (id === this.id) {
+        return;
+      }
+      records = this.constructor.irecords;
+      records[id] = records[this.id];
+      if (this.cid !== this.id) {
+        delete records[this.id];
+      }
+      return this.id = id;
+    };
+
+    Model.prototype.remove = function(options) {
+      var i, j, len, record, records;
+      if (options == null) {
+        options = {};
+      }
+      records = this.constructor.records.slice(0);
+      for (i = j = 0, len = records.length; j < len; i = ++j) {
+        record = records[i];
+        if (!(this.eql(record))) {
+          continue;
+        }
+        records.splice(i, 1);
+        break;
+      }
+      this.constructor.records = records;
+      if (options.clear) {
+        delete this.constructor.irecords[this.id];
+        return delete this.constructor.irecords[this.cid];
+      }
+    };
+
+    Model.prototype.destroy = function(options) {
+      if (options == null) {
+        options = {};
+      }
+      if (options.clear == null) {
+        options.clear = true;
+      }
+      this.trigger('beforeDestroy', this, options);
+      this.remove(options);
+      this.destroyed = true;
+      this.trigger('destroy', this, options);
+      this.trigger('change', this, 'destroy', options);
+      if (this.listeningTo) {
+        this.stopListening();
+      }
+      this.unbind();
+      return this;
+    };
+
+    Model.prototype.dup = function(newRecord) {
+      var atts, record;
+      if (newRecord == null) {
+        newRecord = true;
+      }
+      atts = this.attributes();
+      if (newRecord) {
+        delete atts.id;
+      } else {
+        atts.cid = this.cid;
+      }
+      record = new this.constructor(atts);
+      if (!newRecord) {
+        this._callbacks && (record._callbacks = this._callbacks);
+      }
+      return record;
+    };
+
+    Model.prototype.clone = function() {
+      return createObject(this);
+    };
+
+    Model.prototype.reload = function() {
+      var original;
+      if (this.isNew()) {
+        return this;
+      }
+      original = this.constructor.find(this.id);
+      this.load(original.attributes());
+      return original;
+    };
+
+    Model.prototype.refresh = function(atts) {
+      atts = this.constructor.fromJSON(atts);
+      if (atts.id && this.id !== atts.id) {
+        this.changeID(atts.id);
+      }
+      this.constructor.irecords[this.id].load(atts);
+      this.trigger('refresh', this);
+      this.trigger('change', this, 'refresh');
+      return this;
+    };
+
+    Model.prototype.toJSON = function() {
+      return this.attributes();
+    };
+
+    Model.prototype.toString = function() {
+      return "<" + this.constructor.className + " (" + (JSON.stringify(this)) + ")>";
+    };
+
+    Model.prototype.fromForm = function(form) {
+      var checkbox, j, k, key, l, len, len1, len2, name, name1, ref, ref1, ref2, result;
+      result = {};
+      ref = $(form).find('[type=checkbox]:not([value])');
+      for (j = 0, len = ref.length; j < len; j++) {
+        checkbox = ref[j];
+        result[checkbox.name] = $(checkbox).prop('checked');
+      }
+      ref1 = $(form).find('[type=checkbox][name$="[]"]');
+      for (k = 0, len1 = ref1.length; k < len1; k++) {
+        checkbox = ref1[k];
+        name = checkbox.name.replace(/\[\]$/, '');
+        result[name] || (result[name] = []);
+        if ($(checkbox).prop('checked')) {
+          result[name].push(checkbox.value);
+        }
+      }
+      ref2 = $(form).serializeArray();
+      for (l = 0, len2 = ref2.length; l < len2; l++) {
+        key = ref2[l];
+        result[name1 = key.name] || (result[name1] = key.value);
+      }
+      return this.load(result);
+    };
+
+    Model.prototype.exists = function() {
+      return this.constructor.exists(this.id);
+    };
+
+    Model.prototype.update = function(options) {
+      var clone, records;
+      this.trigger('beforeUpdate', this, options);
+      records = this.constructor.irecords;
+      records[this.id].load(this.attributes());
+      this.constructor.sort();
+      clone = records[this.id].clone();
+      clone.trigger('update', clone, options);
+      clone.trigger('change', clone, 'update', options);
+      return clone;
+    };
+
+    Model.prototype.create = function(options) {
+      var clone, record;
+      this.trigger('beforeCreate', this, options);
+      this.id || (this.id = this.cid);
+      record = this.dup(false);
+      this.constructor.addRecord(record, options.idx);
+      this.constructor.sort();
+      clone = record.clone();
+      clone.trigger('create', clone, options);
+      clone.trigger('change', clone, 'create', options);
+      return clone;
+    };
+
+    Model.prototype.bind = function() {
+      var record;
+      record = this.constructor.irecords[this.id] || this;
+      return Events.bind.apply(record, arguments);
+    };
+
+    Model.prototype.one = function() {
+      var record;
+      record = this.constructor.irecords[this.id] || this;
+      return Events.one.apply(record, arguments);
+    };
+
+    Model.prototype.unbind = function() {
+      var record;
+      record = this.constructor.irecords[this.id] || this;
+      return Events.unbind.apply(record, arguments);
+    };
+
+    Model.prototype.trigger = function() {
+      var ref;
+      Events.trigger.apply(this, arguments);
+      if (arguments[0] === 'refresh') {
         return true;
+      }
+      return (ref = this.constructor).trigger.apply(ref, arguments);
     };
-}
 
-// ES5 15.4.4.17
-// http://es5.github.com/#x15.4.4.17
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some
-if (!Array.prototype.some) {
-    Array.prototype.some = function some(fun /*, thisp */) {
-        var object = toObject(this),
-            self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                object,
-            length = self.length >>> 0,
-            thisp = arguments[1];
+    return Model;
 
-        // If no callback function or if callback is not a callable function
-        if (_toString(fun) != "[object Function]") {
-            throw new TypeError(fun + " is not a function");
+  })(Module);
+
+  Model.prototype.on = Model.prototype.bind;
+
+  Model.prototype.off = Model.prototype.unbind;
+
+  Controller = (function(superClass) {
+    extend(Controller, superClass);
+
+    Controller.include(Events);
+
+    Controller.include(Log);
+
+    Controller.prototype.eventSplitter = /^(\S+)\s*(.*)$/;
+
+    Controller.prototype.tag = 'div';
+
+    function Controller(options) {
+      this.release = bind(this.release, this);
+      var context, key, parent_prototype, ref, value;
+      this.options = options;
+      ref = this.options;
+      for (key in ref) {
+        value = ref[key];
+        this[key] = value;
+      }
+      if (!this.el) {
+        this.el = document.createElement(this.tag);
+      }
+      this.el = $(this.el);
+      if (this.className) {
+        this.el.addClass(this.className);
+      }
+      if (this.attributes) {
+        this.el.attr(this.attributes);
+      }
+      if (!this.events) {
+        this.events = this.constructor.events;
+      }
+      if (!this.elements) {
+        this.elements = this.constructor.elements;
+      }
+      context = this;
+      while (parent_prototype = context.constructor.__super__) {
+        if (parent_prototype.events) {
+          this.events = $.extend({}, parent_prototype.events, this.events);
         }
+        if (parent_prototype.elements) {
+          this.elements = $.extend({}, parent_prototype.elements, this.elements);
+        }
+        context = parent_prototype;
+      }
+      if (this.events) {
+        this.delegateEvents(this.events);
+      }
+      if (this.elements) {
+        this.refreshElements();
+      }
+      Controller.__super__.constructor.apply(this, arguments);
+    }
 
-        for (var i = 0; i < length; i++) {
-            if (i in self && fun.call(thisp, self[i], i, object)) {
+    Controller.prototype.release = function() {
+      this.trigger('release', this);
+      this.el.remove();
+      this.unbind();
+      return this.stopListening();
+    };
+
+    Controller.prototype.$ = function(selector) {
+      return this.el.find(selector);
+    };
+
+    Controller.prototype.delegateEvents = function(events) {
+      var eventName, key, match, method, results, selector;
+      results = [];
+      for (key in events) {
+        method = events[key];
+        if (typeof method === 'function') {
+          method = (function(_this) {
+            return function(method) {
+              return function() {
+                method.apply(_this, arguments);
                 return true;
-            }
-        }
-        return false;
-    };
-}
-
-// ES5 15.4.4.21
-// http://es5.github.com/#x15.4.4.21
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
-if (!Array.prototype.reduce) {
-    Array.prototype.reduce = function reduce(fun /*, initial*/) {
-        var object = toObject(this),
-            self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                object,
-            length = self.length >>> 0;
-
-        // If no callback function or if callback is not a callable function
-        if (_toString(fun) != "[object Function]") {
-            throw new TypeError(fun + " is not a function");
-        }
-
-        // no value to return if no initial value and an empty array
-        if (!length && arguments.length == 1) {
-            throw new TypeError("reduce of empty array with no initial value");
-        }
-
-        var i = 0;
-        var result;
-        if (arguments.length >= 2) {
-            result = arguments[1];
-        } else {
-            do {
-                if (i in self) {
-                    result = self[i++];
-                    break;
-                }
-
-                // if array contains no values, no initial value to return
-                if (++i >= length) {
-                    throw new TypeError("reduce of empty array with no initial value");
-                }
-            } while (true);
-        }
-
-        for (; i < length; i++) {
-            if (i in self) {
-                result = fun.call(void 0, result, self[i], i, object);
-            }
-        }
-
-        return result;
-    };
-}
-
-// ES5 15.4.4.22
-// http://es5.github.com/#x15.4.4.22
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduceRight
-if (!Array.prototype.reduceRight) {
-    Array.prototype.reduceRight = function reduceRight(fun /*, initial*/) {
-        var object = toObject(this),
-            self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                object,
-            length = self.length >>> 0;
-
-        // If no callback function or if callback is not a callable function
-        if (_toString(fun) != "[object Function]") {
-            throw new TypeError(fun + " is not a function");
-        }
-
-        // no value to return if no initial value, empty array
-        if (!length && arguments.length == 1) {
-            throw new TypeError("reduceRight of empty array with no initial value");
-        }
-
-        var result, i = length - 1;
-        if (arguments.length >= 2) {
-            result = arguments[1];
-        } else {
-            do {
-                if (i in self) {
-                    result = self[i--];
-                    break;
-                }
-
-                // if array contains no values, no initial value to return
-                if (--i < 0) {
-                    throw new TypeError("reduceRight of empty array with no initial value");
-                }
-            } while (true);
-        }
-
-        do {
-            if (i in this) {
-                result = fun.call(void 0, result, self[i], i, object);
-            }
-        } while (i--);
-
-        return result;
-    };
-}
-
-// ES5 15.4.4.14
-// http://es5.github.com/#x15.4.4.14
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
-if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
-    Array.prototype.indexOf = function indexOf(sought /*, fromIndex */ ) {
-        var self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                toObject(this),
-            length = self.length >>> 0;
-
-        if (!length) {
-            return -1;
-        }
-
-        var i = 0;
-        if (arguments.length > 1) {
-            i = toInteger(arguments[1]);
-        }
-
-        // handle negative indices
-        i = i >= 0 ? i : Math.max(0, length + i);
-        for (; i < length; i++) {
-            if (i in self && self[i] === sought) {
-                return i;
-            }
-        }
-        return -1;
-    };
-}
-
-// ES5 15.4.4.15
-// http://es5.github.com/#x15.4.4.15
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf
-if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
-    Array.prototype.lastIndexOf = function lastIndexOf(sought /*, fromIndex */) {
-        var self = splitString && _toString(this) == "[object String]" ?
-                this.split("") :
-                toObject(this),
-            length = self.length >>> 0;
-
-        if (!length) {
-            return -1;
-        }
-        var i = length - 1;
-        if (arguments.length > 1) {
-            i = Math.min(i, toInteger(arguments[1]));
-        }
-        // handle negative indices
-        i = i >= 0 ? i : length - Math.abs(i);
-        for (; i >= 0; i--) {
-            if (i in self && sought === self[i]) {
-                return i;
-            }
-        }
-        return -1;
-    };
-}
-
-//
-// Object
-// ======
-//
-
-// ES5 15.2.3.14
-// http://es5.github.com/#x15.2.3.14
-if (!Object.keys) {
-    // http://whattheheadsaid.com/2010/10/a-safer-object-keys-compatibility-implementation
-    var hasDontEnumBug = true,
-        dontEnums = [
-            "toString",
-            "toLocaleString",
-            "valueOf",
-            "hasOwnProperty",
-            "isPrototypeOf",
-            "propertyIsEnumerable",
-            "constructor"
-        ],
-        dontEnumsLength = dontEnums.length;
-
-    for (var key in {"toString": null}) {
-        hasDontEnumBug = false;
-    }
-
-    Object.keys = function keys(object) {
-
-        if (
-            (typeof object != "object" && typeof object != "function") ||
-            object === null
-        ) {
-            throw new TypeError("Object.keys called on a non-object");
-        }
-
-        var keys = [];
-        for (var name in object) {
-            if (owns(object, name)) {
-                keys.push(name);
-            }
-        }
-
-        if (hasDontEnumBug) {
-            for (var i = 0, ii = dontEnumsLength; i < ii; i++) {
-                var dontEnum = dontEnums[i];
-                if (owns(object, dontEnum)) {
-                    keys.push(dontEnum);
-                }
-            }
-        }
-        return keys;
-    };
-
-}
-
-//
-// Date
-// ====
-//
-
-// ES5 15.9.5.43
-// http://es5.github.com/#x15.9.5.43
-// This function returns a String value represent the instance in time
-// represented by this Date object. The format of the String is the Date Time
-// string format defined in 15.9.1.15. All fields are present in the String.
-// The time zone is always UTC, denoted by the suffix Z. If the time value of
-// this object is not a finite Number a RangeError exception is thrown.
-var negativeDate = -62198755200000,
-    negativeYearString = "-000001";
-if (
-    !Date.prototype.toISOString ||
-    (new Date(negativeDate).toISOString().indexOf(negativeYearString) === -1)
-) {
-    Date.prototype.toISOString = function toISOString() {
-        var result, length, value, year, month;
-        if (!isFinite(this)) {
-            throw new RangeError("Date.prototype.toISOString called on non-finite value.");
-        }
-
-        year = this.getUTCFullYear();
-
-        month = this.getUTCMonth();
-        // see https://github.com/kriskowal/es5-shim/issues/111
-        year += Math.floor(month / 12);
-        month = (month % 12 + 12) % 12;
-
-        // the date time string format is specified in 15.9.1.15.
-        result = [month + 1, this.getUTCDate(),
-            this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds()];
-        year = (
-            (year < 0 ? "-" : (year > 9999 ? "+" : "")) +
-            ("00000" + Math.abs(year))
-            .slice(0 <= year && year <= 9999 ? -4 : -6)
-        );
-
-        length = result.length;
-        while (length--) {
-            value = result[length];
-            // pad months, days, hours, minutes, and seconds to have two
-            // digits.
-            if (value < 10) {
-                result[length] = "0" + value;
-            }
-        }
-        // pad milliseconds to have three digits.
-        return (
-            year + "-" + result.slice(0, 2).join("-") +
-            "T" + result.slice(2).join(":") + "." +
-            ("000" + this.getUTCMilliseconds()).slice(-3) + "Z"
-        );
-    };
-}
-
-
-// ES5 15.9.5.44
-// http://es5.github.com/#x15.9.5.44
-// This function provides a String representation of a Date object for use by
-// JSON.stringify (15.12.3).
-var dateToJSONIsSupported = false;
-try {
-    dateToJSONIsSupported = (
-        Date.prototype.toJSON &&
-        new Date(NaN).toJSON() === null &&
-        new Date(negativeDate).toJSON().indexOf(negativeYearString) !== -1 &&
-        Date.prototype.toJSON.call({ // generic
-            toISOString: function () {
-                return true;
-            }
-        })
-    );
-} catch (e) {
-}
-if (!dateToJSONIsSupported) {
-    Date.prototype.toJSON = function toJSON(key) {
-        // When the toJSON method is called with argument key, the following
-        // steps are taken:
-
-        // 1.  Let O be the result of calling ToObject, giving it the this
-        // value as its argument.
-        // 2. Let tv be toPrimitive(O, hint Number).
-        var o = Object(this),
-            tv = toPrimitive(o),
-            toISO;
-        // 3. If tv is a Number and is not finite, return null.
-        if (typeof tv === "number" && !isFinite(tv)) {
-            return null;
-        }
-        // 4. Let toISO be the result of calling the [[Get]] internal method of
-        // O with argument "toISOString".
-        toISO = o.toISOString;
-        // 5. If IsCallable(toISO) is false, throw a TypeError exception.
-        if (typeof toISO != "function") {
-            throw new TypeError("toISOString property is not callable");
-        }
-        // 6. Return the result of calling the [[Call]] internal method of
-        //  toISO with O as the this value and an empty argument list.
-        return toISO.call(o);
-
-        // NOTE 1 The argument is ignored.
-
-        // NOTE 2 The toJSON function is intentionally generic; it does not
-        // require that its this value be a Date object. Therefore, it can be
-        // transferred to other kinds of objects for use as a method. However,
-        // it does require that any such object have a toISOString method. An
-        // object is free to use the argument key to filter its
-        // stringification.
-    };
-}
-
-// ES5 15.9.4.2
-// http://es5.github.com/#x15.9.4.2
-// based on work shared by Daniel Friesen (dantman)
-// http://gist.github.com/303249
-if (!Date.parse || "Date.parse is buggy") {
-    // XXX global assignment won't work in embeddings that use
-    // an alternate object for the context.
-    Date = (function(NativeDate) {
-
-        // Date.length === 7
-        function Date(Y, M, D, h, m, s, ms) {
-            var length = arguments.length;
-            if (this instanceof NativeDate) {
-                var date = length == 1 && String(Y) === Y ? // isString(Y)
-                    // We explicitly pass it through parse:
-                    new NativeDate(Date.parse(Y)) :
-                    // We have to manually make calls depending on argument
-                    // length here
-                    length >= 7 ? new NativeDate(Y, M, D, h, m, s, ms) :
-                    length >= 6 ? new NativeDate(Y, M, D, h, m, s) :
-                    length >= 5 ? new NativeDate(Y, M, D, h, m) :
-                    length >= 4 ? new NativeDate(Y, M, D, h) :
-                    length >= 3 ? new NativeDate(Y, M, D) :
-                    length >= 2 ? new NativeDate(Y, M) :
-                    length >= 1 ? new NativeDate(Y) :
-                                  new NativeDate();
-                // Prevent mixups with unfixed Date object
-                date.constructor = Date;
-                return date;
-            }
-            return NativeDate.apply(this, arguments);
-        };
-
-        // 15.9.1.15 Date Time String Format.
-        var isoDateExpression = new RegExp("^" +
-            "(\\d{4}|[\+\-]\\d{6})" + // four-digit year capture or sign +
-                                      // 6-digit extended year
-            "(?:-(\\d{2})" + // optional month capture
-            "(?:-(\\d{2})" + // optional day capture
-            "(?:" + // capture hours:minutes:seconds.milliseconds
-                "T(\\d{2})" + // hours capture
-                ":(\\d{2})" + // minutes capture
-                "(?:" + // optional :seconds.milliseconds
-                    ":(\\d{2})" + // seconds capture
-                    "(?:\\.(\\d{3}))?" + // milliseconds capture
-                ")?" +
-            "(" + // capture UTC offset component
-                "Z|" + // UTC capture
-                "(?:" + // offset specifier +/-hours:minutes
-                    "([-+])" + // sign capture
-                    "(\\d{2})" + // hours offset capture
-                    ":(\\d{2})" + // minutes offset capture
-                ")" +
-            ")?)?)?)?" +
-        "$");
-
-        var months = [
-            0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
-        ];
-
-        function dayFromMonth(year, month) {
-            var t = month > 1 ? 1 : 0;
-            return (
-                months[month] +
-                Math.floor((year - 1969 + t) / 4) -
-                Math.floor((year - 1901 + t) / 100) +
-                Math.floor((year - 1601 + t) / 400) +
-                365 * (year - 1970)
-            );
-        }
-
-        // Copy any custom methods a 3rd party library may have added
-        for (var key in NativeDate) {
-            Date[key] = NativeDate[key];
-        }
-
-        // Copy "native" methods explicitly; they may be non-enumerable
-        Date.now = NativeDate.now;
-        Date.UTC = NativeDate.UTC;
-        Date.prototype = NativeDate.prototype;
-        Date.prototype.constructor = Date;
-
-        // Upgrade Date.parse to handle simplified ISO 8601 strings
-        Date.parse = function parse(string) {
-            var match = isoDateExpression.exec(string);
-            if (match) {
-                // parse months, days, hours, minutes, seconds, and milliseconds
-                // provide default values if necessary
-                // parse the UTC offset component
-                var year = Number(match[1]),
-                    month = Number(match[2] || 1) - 1,
-                    day = Number(match[3] || 1) - 1,
-                    hour = Number(match[4] || 0),
-                    minute = Number(match[5] || 0),
-                    second = Number(match[6] || 0),
-                    millisecond = Number(match[7] || 0),
-                    // When time zone is missed, local offset should be used
-                    // (ES 5.1 bug)
-                    // see https://bugs.ecmascript.org/show_bug.cgi?id=112
-                    offset = !match[4] || match[8] ?
-                        0 : Number(new NativeDate(1970, 0)),
-                    signOffset = match[9] === "-" ? 1 : -1,
-                    hourOffset = Number(match[10] || 0),
-                    minuteOffset = Number(match[11] || 0),
-                    result;
-                if (
-                    hour < (
-                        minute > 0 || second > 0 || millisecond > 0 ?
-                        24 : 25
-                    ) &&
-                    minute < 60 && second < 60 && millisecond < 1000 &&
-                    month > -1 && month < 12 && hourOffset < 24 &&
-                    minuteOffset < 60 && // detect invalid offsets
-                    day > -1 &&
-                    day < (
-                        dayFromMonth(year, month + 1) -
-                        dayFromMonth(year, month)
-                    )
-                ) {
-                    result = (
-                        (dayFromMonth(year, month) + day) * 24 +
-                        hour +
-                        hourOffset * signOffset
-                    ) * 60;
-                    result = (
-                        (result + minute + minuteOffset * signOffset) * 60 +
-                        second
-                    ) * 1000 + millisecond + offset;
-                    if (-8.64e15 <= result && result <= 8.64e15) {
-                        return result;
-                    }
-                }
-                return NaN;
-            }
-            return NativeDate.parse.apply(this, arguments);
-        };
-
-        return Date;
-    })(Date);
-}
-
-// ES5 15.9.4.4
-// http://es5.github.com/#x15.9.4.4
-if (!Date.now) {
-    Date.now = function now() {
-        return new Date().getTime();
-    };
-}
-
-
-//
-// String
-// ======
-//
-
-
-// ES5 15.5.4.14
-// http://es5.github.com/#x15.5.4.14
-// [bugfix, chrome]
-// If separator is undefined, then the result array contains just one String,
-// which is the this value (converted to a String). If limit is not undefined,
-// then the output array is truncated so that it contains no more than limit
-// elements.
-// "0".split(undefined, 0) -> []
-if("0".split(void 0, 0).length) {
-    var string_split = String.prototype.split;
-    String.prototype.split = function(separator, limit) {
-        if(separator === void 0 && limit === 0)return [];
-        return string_split.apply(this, arguments);
-    }
-}
-
-// ECMA-262, 3rd B.2.3
-// Note an ECMAScript standart, although ECMAScript 3rd Edition has a
-// non-normative section suggesting uniform semantics and it should be
-// normalized across all browsers
-// [bugfix, IE lt 9] IE < 9 substr() with negative value not working in IE
-if("".substr && "0b".substr(-1) !== "b") {
-    var string_substr = String.prototype.substr;
-    /**
-     *  Get the substring of a string
-     *  @param  {integer}  start   where to start the substring
-     *  @param  {integer}  length  how many characters to return
-     *  @return {string}
-     */
-    String.prototype.substr = function(start, length) {
-        return string_substr.call(
-            this,
-            start < 0 ? ((start = this.length + start) < 0 ? 0 : start) : start,
-            length
-        );
-    }
-}
-
-// ES5 15.5.4.20
-// http://es5.github.com/#x15.5.4.20
-var ws = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003" +
-    "\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028" +
-    "\u2029\uFEFF";
-if (!String.prototype.trim || ws.trim()) {
-    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
-    // http://perfectionkills.com/whitespace-deviations/
-    ws = "[" + ws + "]";
-    var trimBeginRegexp = new RegExp("^" + ws + ws + "*"),
-        trimEndRegexp = new RegExp(ws + ws + "*$");
-    String.prototype.trim = function trim() {
-        if (this === undefined || this === null) {
-            throw new TypeError("can't convert "+this+" to object");
-        }
-        return String(this)
-            .replace(trimBeginRegexp, "")
-            .replace(trimEndRegexp, "");
-    };
-}
-
-//
-// Util
-// ======
-//
-
-// ES5 9.4
-// http://es5.github.com/#x9.4
-// http://jsperf.com/to-integer
-
-function toInteger(n) {
-    n = +n;
-    if (n !== n) { // isNaN
-        n = 0;
-    } else if (n !== 0 && n !== (1/0) && n !== -(1/0)) {
-        n = (n > 0 || -1) * Math.floor(Math.abs(n));
-    }
-    return n;
-}
-
-function isPrimitive(input) {
-    var type = typeof input;
-    return (
-        input === null ||
-        type === "undefined" ||
-        type === "boolean" ||
-        type === "number" ||
-        type === "string"
-    );
-}
-
-function toPrimitive(input) {
-    var val, valueOf, toString;
-    if (isPrimitive(input)) {
-        return input;
-    }
-    valueOf = input.valueOf;
-    if (typeof valueOf === "function") {
-        val = valueOf.call(input);
-        if (isPrimitive(val)) {
-            return val;
-        }
-    }
-    toString = input.toString;
-    if (typeof toString === "function") {
-        val = toString.call(input);
-        if (isPrimitive(val)) {
-            return val;
-        }
-    }
-    throw new TypeError();
-}
-
-// ES5 9.9
-// http://es5.github.com/#x9.9
-var toObject = function (o) {
-    if (o == null) { // this matches both null and undefined
-        throw new TypeError("can't convert "+o+" to object");
-    }
-    return Object(o);
-};
-
-});
-}, "json2ify/index": function(exports, require, module) {/*
-    json2.js
-    2014-02-04
-
-    Public Domain.
-
-    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
-
-    See http://www.JSON.org/js.html
-
-
-    This code should be minified before deployment.
-    See http://javascript.crockford.com/jsmin.html
-
-    USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
-    NOT CONTROL.
-
-
-    This file creates a global JSON object containing two methods: stringify
-    and parse.
-
-        JSON.stringify(value, replacer, space)
-            value       any JavaScript value, usually an object or array.
-
-            replacer    an optional parameter that determines how object
-                        values are stringified for objects. It can be a
-                        function or an array of strings.
-
-            space       an optional parameter that specifies the indentation
-                        of nested structures. If it is omitted, the text will
-                        be packed without extra whitespace. If it is a number,
-                        it will specify the number of spaces to indent at each
-                        level. If it is a string (such as '\t' or '&nbsp;'),
-                        it contains the characters used to indent at each level.
-
-            This method produces a JSON text from a JavaScript value.
-
-            When an object value is found, if the object contains a toJSON
-            method, its toJSON method will be called and the result will be
-            stringified. A toJSON method does not serialize: it returns the
-            value represented by the name/value pair that should be serialized,
-            or undefined if nothing should be serialized. The toJSON method
-            will be passed the key associated with the value, and this will be
-            bound to the value
-
-            For example, this would serialize Dates as ISO strings.
-
-                Date.prototype.toJSON = function (key) {
-                    function f(n) {
-                        // Format integers to have at least two digits.
-                        return n < 10 ? '0' + n : n;
-                    }
-
-                    return this.getUTCFullYear()   + '-' +
-                         f(this.getUTCMonth() + 1) + '-' +
-                         f(this.getUTCDate())      + 'T' +
-                         f(this.getUTCHours())     + ':' +
-                         f(this.getUTCMinutes())   + ':' +
-                         f(this.getUTCSeconds())   + 'Z';
-                };
-
-            You can provide an optional replacer method. It will be passed the
-            key and value of each member, with this bound to the containing
-            object. The value that is returned from your method will be
-            serialized. If your method returns undefined, then the member will
-            be excluded from the serialization.
-
-            If the replacer parameter is an array of strings, then it will be
-            used to select the members to be serialized. It filters the results
-            such that only members with keys listed in the replacer array are
-            stringified.
-
-            Values that do not have JSON representations, such as undefined or
-            functions, will not be serialized. Such values in objects will be
-            dropped; in arrays they will be replaced with null. You can use
-            a replacer function to replace those with JSON values.
-            JSON.stringify(undefined) returns undefined.
-
-            The optional space parameter produces a stringification of the
-            value that is filled with line breaks and indentation to make it
-            easier to read.
-
-            If the space parameter is a non-empty string, then that string will
-            be used for indentation. If the space parameter is a number, then
-            the indentation will be that many spaces.
-
-            Example:
-
-            text = JSON.stringify(['e', {pluribus: 'unum'}]);
-            // text is '["e",{"pluribus":"unum"}]'
-
-
-            text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\t');
-            // text is '[\n\t"e",\n\t{\n\t\t"pluribus": "unum"\n\t}\n]'
-
-            text = JSON.stringify([new Date()], function (key, value) {
-                return this[key] instanceof Date ?
-                    'Date(' + this[key] + ')' : value;
-            });
-            // text is '["Date(---current time---)"]'
-
-
-        JSON.parse(text, reviver)
-            This method parses a JSON text to produce an object or array.
-            It can throw a SyntaxError exception.
-
-            The optional reviver parameter is a function that can filter and
-            transform the results. It receives each of the keys and values,
-            and its return value is used instead of the original value.
-            If it returns what it received, then the structure is not modified.
-            If it returns undefined then the member is deleted.
-
-            Example:
-
-            // Parse the text. Values that look like ISO date strings will
-            // be converted to Date objects.
-
-            myData = JSON.parse(text, function (key, value) {
-                var a;
-                if (typeof value === 'string') {
-                    a =
-/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
-                    if (a) {
-                        return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
-                            +a[5], +a[6]));
-                    }
-                }
-                return value;
-            });
-
-            myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {
-                var d;
-                if (typeof value === 'string' &&
-                        value.slice(0, 5) === 'Date(' &&
-                        value.slice(-1) === ')') {
-                    d = new Date(value.slice(5, -1));
-                    if (d) {
-                        return d;
-                    }
-                }
-                return value;
-            });
-
-
-    This is a reference implementation. You are free to copy, modify, or
-    redistribute.
-*/
-
-/*jslint evil: true, regexp: true */
-
-/*members "", "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
-    call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,
-    getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,
-    lastIndex, length, parse, prototype, push, replace, slice, stringify,
-    test, toJSON, toString, valueOf
-*/
-
-
-// Create a JSON object only if one does not already exist. We create the
-// methods in a closure to avoid creating global variables.
-
-if (typeof JSON !== 'object') {
-    JSON = {};
-}
-
-(function () {
-    'use strict';
-
-    function f(n) {
-        // Format integers to have at least two digits.
-        return n < 10 ? '0' + n : n;
-    }
-
-    if (typeof Date.prototype.toJSON !== 'function') {
-
-        Date.prototype.toJSON = function () {
-
-            return isFinite(this.valueOf())
-                ? this.getUTCFullYear()     + '-' +
-                    f(this.getUTCMonth() + 1) + '-' +
-                    f(this.getUTCDate())      + 'T' +
-                    f(this.getUTCHours())     + ':' +
-                    f(this.getUTCMinutes())   + ':' +
-                    f(this.getUTCSeconds())   + 'Z'
-                : null;
-        };
-
-        String.prototype.toJSON      =
-            Number.prototype.toJSON  =
-            Boolean.prototype.toJSON = function () {
-                return this.valueOf();
+              };
             };
-    }
-
-    var cx,
-        escapable,
-        gap,
-        indent,
-        meta,
-        rep;
-
-
-    function quote(string) {
-
-// If the string contains no control characters, no quote characters, and no
-// backslash characters, then we can safely slap some quotes around it.
-// Otherwise we must also replace the offending characters with safe escape
-// sequences.
-
-        escapable.lastIndex = 0;
-        return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
-            var c = meta[a];
-            return typeof c === 'string'
-                ? c
-                : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-        }) + '"' : '"' + string + '"';
-    }
-
-
-    function str(key, holder) {
-
-// Produce a string from holder[key].
-
-        var i,          // The loop counter.
-            k,          // The member key.
-            v,          // The member value.
-            length,
-            mind = gap,
-            partial,
-            value = holder[key];
-
-// If the value has a toJSON method, call it to obtain a replacement value.
-
-        if (value && typeof value === 'object' &&
-                typeof value.toJSON === 'function') {
-            value = value.toJSON(key);
+          })(this)(method);
+        } else {
+          if (!this[method]) {
+            throw new Error(method + " doesn't exist");
+          }
+          method = (function(_this) {
+            return function(method) {
+              return function() {
+                _this[method].apply(_this, arguments);
+                return true;
+              };
+            };
+          })(this)(method);
         }
-
-// If we were called with a replacer function, then call the replacer to
-// obtain a replacement value.
-
-        if (typeof rep === 'function') {
-            value = rep.call(holder, key, value);
+        match = key.match(this.eventSplitter);
+        eventName = match[1];
+        selector = match[2];
+        if (selector === '') {
+          results.push(this.el.bind(eventName, method));
+        } else {
+          results.push(this.el.on(eventName, selector, method));
         }
+      }
+      return results;
+    };
 
-// What happens next depends on the value's type.
+    Controller.prototype.refreshElements = function() {
+      var key, ref, results, value;
+      ref = this.elements;
+      results = [];
+      for (key in ref) {
+        value = ref[key];
+        results.push(this[value] = this.$(key));
+      }
+      return results;
+    };
 
-        switch (typeof value) {
-        case 'string':
-            return quote(value);
+    Controller.prototype.delay = function(func, timeout) {
+      return setTimeout(this.proxy(func), timeout || 0);
+    };
 
-        case 'number':
+    Controller.prototype.html = function(element) {
+      this.el.html(element.el || element);
+      this.refreshElements();
+      return this.el;
+    };
 
-// JSON numbers must be finite. Encode non-finite numbers as null.
-
-            return isFinite(value) ? String(value) : 'null';
-
-        case 'boolean':
-        case 'null':
-
-// If the value is a boolean or null, convert it to a string. Note:
-// typeof null does not produce 'null'. The case is included here in
-// the remote chance that this gets fixed someday.
-
-            return String(value);
-
-// If the type is 'object', we might be dealing with an object or an array or
-// null.
-
-        case 'object':
-
-// Due to a specification blunder in ECMAScript, typeof null is 'object',
-// so watch out for that case.
-
-            if (!value) {
-                return 'null';
-            }
-
-// Make an array to hold the partial results of stringifying this object value.
-
-            gap += indent;
-            partial = [];
-
-// Is the value an array?
-
-            if (Object.prototype.toString.apply(value) === '[object Array]') {
-
-// The value is an array. Stringify every element. Use null as a placeholder
-// for non-JSON values.
-
-                length = value.length;
-                for (i = 0; i < length; i += 1) {
-                    partial[i] = str(i, value) || 'null';
-                }
-
-// Join all of the elements together, separated with commas, and wrap them in
-// brackets.
-
-                v = partial.length === 0
-                    ? '[]'
-                    : gap
-                    ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
-                    : '[' + partial.join(',') + ']';
-                gap = mind;
-                return v;
-            }
-
-// If the replacer is an array, use it to select the members to be stringified.
-
-            if (rep && typeof rep === 'object') {
-                length = rep.length;
-                for (i = 0; i < length; i += 1) {
-                    if (typeof rep[i] === 'string') {
-                        k = rep[i];
-                        v = str(k, value);
-                        if (v) {
-                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
-                        }
-                    }
-                }
-            } else {
-
-// Otherwise, iterate through all of the keys in the object.
-
-                for (k in value) {
-                    if (Object.prototype.hasOwnProperty.call(value, k)) {
-                        v = str(k, value);
-                        if (v) {
-                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
-                        }
-                    }
-                }
-            }
-
-// Join all of the member texts together, separated with commas,
-// and wrap them in braces.
-
-            v = partial.length === 0
-                ? '{}'
-                : gap
-                ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
-                : '{' + partial.join(',') + '}';
-            gap = mind;
-            return v;
+    Controller.prototype.append = function() {
+      var e, elements, ref;
+      elements = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      elements = (function() {
+        var j, len, results;
+        results = [];
+        for (j = 0, len = elements.length; j < len; j++) {
+          e = elements[j];
+          results.push(e.el || e);
         }
+        return results;
+      })();
+      (ref = this.el).append.apply(ref, elements);
+      this.refreshElements();
+      return this.el;
+    };
+
+    Controller.prototype.appendTo = function(element) {
+      this.el.appendTo(element.el || element);
+      this.refreshElements();
+      return this.el;
+    };
+
+    Controller.prototype.prepend = function() {
+      var e, elements, ref;
+      elements = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      elements = (function() {
+        var j, len, results;
+        results = [];
+        for (j = 0, len = elements.length; j < len; j++) {
+          e = elements[j];
+          results.push(e.el || e);
+        }
+        return results;
+      })();
+      (ref = this.el).prepend.apply(ref, elements);
+      this.refreshElements();
+      return this.el;
+    };
+
+    Controller.prototype.replace = function(element) {
+      var previous, ref, ref1;
+      element = element.el || element;
+      if (typeof element === "string") {
+        element = $.trim(element);
+      }
+      ref1 = [this.el, $(((ref = $.parseHTML(element)) != null ? ref[0] : void 0) || element)], previous = ref1[0], this.el = ref1[1];
+      previous.replaceWith(this.el);
+      this.delegateEvents(this.events);
+      this.refreshElements();
+      return this.el;
+    };
+
+    return Controller;
+
+  })(Module);
+
+  $ = (typeof window !== "undefined" && window !== null ? window.jQuery : void 0) || (typeof window !== "undefined" && window !== null ? window.Zepto : void 0) || function(element) {
+    return element;
+  };
+
+  createObject = Object.create || function(o) {
+    var Func;
+    Func = function() {};
+    Func.prototype = o;
+    return new Func();
+  };
+
+  makeArray = function(args) {
+    return Array.prototype.slice.call(args, 0);
+  };
+
+  Spine = this.Spine = {};
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Spine;
+  }
+
+  Spine.version = '1.6.2';
+
+  Spine.$ = $;
+
+  Spine.Events = Events;
+
+  Spine.Log = Log;
+
+  Spine.Module = Module;
+
+  Spine.Controller = Controller;
+
+  Spine.Model = Model;
+
+  Module.extend.call(Spine, Events);
+
+  Module.create = Module.sub = Controller.create = Controller.sub = Model.sub = function(instances, statics) {
+    var Result;
+    Result = (function(superClass) {
+      extend(Result, superClass);
+
+      function Result() {
+        return Result.__super__.constructor.apply(this, arguments);
+      }
+
+      return Result;
+
+    })(this);
+    if (instances) {
+      Result.include(instances);
+    }
+    if (statics) {
+      Result.extend(statics);
+    }
+    if (typeof Result.unbind === "function") {
+      Result.unbind();
+    }
+    return Result;
+  };
+
+  Model.setup = function(name, attributes) {
+    var Instance;
+    if (attributes == null) {
+      attributes = [];
+    }
+    Instance = (function(superClass) {
+      extend(Instance, superClass);
+
+      function Instance() {
+        return Instance.__super__.constructor.apply(this, arguments);
+      }
+
+      return Instance;
+
+    })(this);
+    Instance.configure.apply(Instance, [name].concat(slice.call(attributes)));
+    return Instance;
+  };
+
+  Spine.Class = Module;
+
+}).call(this);
+
+//# sourceMappingURL=spine.js.map
+ },"spine/lib/ajax": function(exports, require, module) { // Generated by CoffeeScript 1.10.0
+(function() {
+  var $, Ajax, Base, Collection, Extend, GenerateURL, Include, Model, Queue, Singleton, Spine,
+    slice = [].slice,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = this.Spine || require('spine');
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  Queue = $({});
+
+  Ajax = {
+    getURL: function(object) {
+      if (object.className != null) {
+        return this.generateURL(object);
+      } else {
+        return this.generateURL(object, encodeURIComponent(object.id));
+      }
+    },
+    getCollectionURL: function(object) {
+      return this.generateURL(object);
+    },
+    getScope: function(object) {
+      return (typeof object.scope === "function" ? object.scope() : void 0) || object.scope;
+    },
+    getCollection: function(object) {
+      if (object.url !== object.generateURL) {
+        if (typeof object.url === 'function') {
+          return object.url();
+        } else {
+          return object.url;
+        }
+      } else if (object.className != null) {
+        return object.className.toLowerCase() + 's';
+      }
+    },
+    generateURL: function() {
+      var args, collection, object, path, scope;
+      object = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+      collection = Ajax.getCollection(object) || Ajax.getCollection(object.constructor);
+      scope = Ajax.getScope(object) || Ajax.getScope(object.constructor);
+      args.unshift(collection);
+      args.unshift(scope);
+      path = args.join('/');
+      path = path.replace(/(\/\/)/g, "/");
+      path = path.replace(/^\/|\/$/g, "");
+      if (path.indexOf("../") !== 0) {
+        return Model.host + "/" + path;
+      } else {
+        return path;
+      }
+    },
+    enabled: true,
+    disable: function(callback) {
+      var e, error1;
+      if (this.enabled) {
+        this.enabled = false;
+        try {
+          return callback();
+        } catch (error1) {
+          e = error1;
+          throw e;
+        } finally {
+          this.enabled = true;
+        }
+      } else {
+        return callback();
+      }
+    },
+    queue: function(request) {
+      if (request) {
+        return Queue.queue(request);
+      } else {
+        return Queue.queue();
+      }
+    },
+    clearQueue: function() {
+      return this.queue([]);
+    },
+    config: {
+      loadMethod: 'GET',
+      updateMethod: 'PUT',
+      createMethod: 'POST',
+      destroyMethod: 'DELETE'
+    }
+  };
+
+  Base = (function() {
+    function Base() {}
+
+    Base.prototype.defaults = {
+      dataType: 'json',
+      processData: false,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    };
+
+    Base.prototype.queue = Ajax.queue;
+
+    Base.prototype.ajax = function(params, defaults) {
+      return $.ajax(this.ajaxSettings(params, defaults));
+    };
+
+    Base.prototype.ajaxQueue = function(params, defaults, record) {
+      var deferred, jqXHR, parallel, promise, request, settings;
+      jqXHR = null;
+      deferred = $.Deferred();
+      promise = deferred.promise();
+      if (!Ajax.enabled) {
+        return promise;
+      }
+      settings = this.ajaxSettings(params, defaults);
+      parallel = settings.parallel !== void 0 ? settings.parallel : settings.type === 'GET';
+      request = function(next) {
+        var ref, reject, resolve;
+        if ((record != null ? record.id : void 0) != null) {
+          if (settings.url == null) {
+            settings.url = Ajax.getURL(record);
+          }
+          if ((ref = settings.data) != null) {
+            ref.id = record.id;
+          }
+        }
+        if (typeof settings.data !== 'string' && settings.processData !== true) {
+          settings.data = JSON.stringify(settings.data);
+        }
+        resolve = function() {
+          return deferred.resolve.apply(this, slice.call(arguments).concat([settings]));
+        };
+        reject = function() {
+          return deferred.reject.apply(this, slice.call(arguments).concat([settings]));
+        };
+        jqXHR = $.ajax(settings);
+        jqXHR.done(resolve);
+        jqXHR.fail(reject);
+        jqXHR.then(next, next);
+        if (parallel) {
+          return Queue.dequeue();
+        }
+      };
+      promise.abort = function(statusText) {
+        var index;
+        if (jqXHR) {
+          return jqXHR.abort(statusText);
+        }
+        index = $.inArray(request, this.queue());
+        if (index > -1) {
+          this.queue().splice(index, 1);
+        }
+        deferred.rejectWith(settings.context || settings, [promise, statusText, '']);
+        return promise;
+      };
+      this.queue(request);
+      return promise;
+    };
+
+    Base.prototype.ajaxSettings = function(params, defaults) {
+      return $.extend({}, this.defaults, defaults, params);
+    };
+
+    return Base;
+
+  })();
+
+  Collection = (function(superClass) {
+    extend(Collection, superClass);
+
+    function Collection(model) {
+      this.model = model;
+      this.failResponse = bind(this.failResponse, this);
+      this.recordsResponse = bind(this.recordsResponse, this);
     }
 
-// If the JSON object does not yet have a stringify method, give it one.
+    Collection.prototype.find = function(id, params, options) {
+      var record;
+      if (options == null) {
+        options = {};
+      }
+      record = new this.model({
+        id: id
+      });
+      return this.ajaxQueue(params, {
+        type: options.method || Ajax.config.loadMethod,
+        url: options.url || Ajax.getURL(record),
+        parallel: options.parallel
+      }).done(this.recordsResponse(options)).fail(this.failResponse(options));
+    };
 
-    if (typeof JSON.stringify !== 'function') {
-        escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
-        meta = {    // table of character substitutions
-            '\b': '\\b',
-            '\t': '\\t',
-            '\n': '\\n',
-            '\f': '\\f',
-            '\r': '\\r',
-            '"' : '\\"',
-            '\\': '\\\\'
+    Collection.prototype.all = function(params, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.ajaxQueue(params, {
+        type: options.method || Ajax.config.loadMethod,
+        url: options.url || Ajax.getURL(this.model),
+        parallel: options.parallel
+      }).done(this.recordsResponse(options)).fail(this.failResponse(options));
+    };
+
+    Collection.prototype.fetch = function(params, options) {
+      var id;
+      if (params == null) {
+        params = {};
+      }
+      if (options == null) {
+        options = {};
+      }
+      if (id = params.id) {
+        delete params.id;
+        return this.find(id, params, options).done((function(_this) {
+          return function(record) {
+            return _this.model.refresh(record, options);
+          };
+        })(this));
+      } else {
+        return this.all(params, options).done((function(_this) {
+          return function(records) {
+            return _this.model.refresh(records, options);
+          };
+        })(this));
+      }
+    };
+
+    Collection.prototype.recordsResponse = function(options) {
+      return (function(_this) {
+        return function(data, status, xhr, settings) {
+          var ref;
+          _this.model.trigger('ajaxSuccess', null, status, xhr, settings);
+          return (ref = options.done) != null ? ref.call(_this.model, settings) : void 0;
         };
-        JSON.stringify = function (value, replacer, space) {
+      })(this);
+    };
 
-// The stringify method takes a value and an optional replacer, and an optional
-// space parameter, and returns a JSON text. The replacer can be a function
-// that can replace values, or an array of strings that will select the keys.
-// A default replacer method can be provided. Use of the space parameter can
-// produce text that is more easily readable.
-
-            var i;
-            gap = '';
-            indent = '';
-
-// If the space parameter is a number, make an indent string containing that
-// many spaces.
-
-            if (typeof space === 'number') {
-                for (i = 0; i < space; i += 1) {
-                    indent += ' ';
-                }
-
-// If the space parameter is a string, it will be used as the indent string.
-
-            } else if (typeof space === 'string') {
-                indent = space;
-            }
-
-// If there is a replacer, it must be a function or an array.
-// Otherwise, throw an error.
-
-            rep = replacer;
-            if (replacer && typeof replacer !== 'function' &&
-                    (typeof replacer !== 'object' ||
-                    typeof replacer.length !== 'number')) {
-                throw new Error('JSON.stringify');
-            }
-
-// Make a fake root object containing our value under the key of ''.
-// Return the result of stringifying the value.
-
-            return str('', {'': value});
+    Collection.prototype.failResponse = function(options) {
+      return (function(_this) {
+        return function(xhr, statusText, error, settings) {
+          var ref;
+          _this.model.trigger('ajaxError', null, xhr, statusText, error, settings);
+          return (ref = options.fail) != null ? ref.call(_this.model, settings) : void 0;
         };
+      })(this);
+    };
+
+    return Collection;
+
+  })(Base);
+
+  Singleton = (function(superClass) {
+    extend(Singleton, superClass);
+
+    function Singleton(record1) {
+      this.record = record1;
+      this.failResponse = bind(this.failResponse, this);
+      this.recordResponse = bind(this.recordResponse, this);
+      this.model = this.record.constructor;
     }
 
+    Singleton.prototype.reload = function(params, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.ajaxQueue(params, {
+        type: options.method || Ajax.config.loadMethod,
+        url: options.url,
+        parallel: options.parallel
+      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
+    };
 
-// If the JSON object does not yet have a parse method, give it one.
+    Singleton.prototype.create = function(params, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.ajaxQueue(params, {
+        type: options.method || Ajax.config.createMethod,
+        contentType: 'application/json',
+        data: this.record.toJSON(),
+        url: options.url || Ajax.getCollectionURL(this.record),
+        parallel: options.parallel
+      }).done(this.recordResponse(options)).fail(this.failResponse(options));
+    };
 
-    if (typeof JSON.parse !== 'function') {
-        cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
-        JSON.parse = function (text, reviver) {
+    Singleton.prototype.update = function(params, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.ajaxQueue(params, {
+        type: options.method || Ajax.config.updateMethod,
+        contentType: 'application/json',
+        data: this.record.toJSON(),
+        url: options.url,
+        parallel: options.parallel
+      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
+    };
 
-// The parse method takes a text and an optional reviver function, and returns
-// a JavaScript value if the text is a valid JSON text.
+    Singleton.prototype.destroy = function(params, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.ajaxQueue(params, {
+        type: options.method || Ajax.config.destroyMethod,
+        url: options.url,
+        parallel: options.parallel
+      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
+    };
 
-            var j;
-
-            function walk(holder, key) {
-
-// The walk method is used to recursively walk the resulting structure so
-// that modifications can be made.
-
-                var k, v, value = holder[key];
-                if (value && typeof value === 'object') {
-                    for (k in value) {
-                        if (Object.prototype.hasOwnProperty.call(value, k)) {
-                            v = walk(value, k);
-                            if (v !== undefined) {
-                                value[k] = v;
-                            } else {
-                                delete value[k];
-                            }
-                        }
-                    }
-                }
-                return reviver.call(holder, key, value);
-            }
-
-
-// Parsing happens in four stages. In the first stage, we replace certain
-// Unicode characters with escape sequences. JavaScript handles many characters
-// incorrectly, either silently deleting them, or treating them as line endings.
-
-            text = String(text);
-            cx.lastIndex = 0;
-            if (cx.test(text)) {
-                text = text.replace(cx, function (a) {
-                    return '\\u' +
-                        ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-                });
-            }
-
-// In the second stage, we run the text against regular expressions that look
-// for non-JSON patterns. We are especially concerned with '()' and 'new'
-// because they can cause invocation, and '=' because it can cause mutation.
-// But just to be safe, we want to reject all unexpected forms.
-
-// We split the second stage into 4 regexp operations in order to work around
-// crippling inefficiencies in IE's and Safari's regexp engines. First we
-// replace the JSON backslash pairs with '@' (a non-JSON character). Second, we
-// replace all simple value tokens with ']' characters. Third, we delete all
-// open brackets that follow a colon or comma or that begin the text. Finally,
-// we look to see that the remaining characters are only whitespace or ']' or
-// ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
-
-            if (/^[\],:{}\s]*$/
-                    .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
-                        .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
-                        .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-
-// In the third stage we use the eval function to compile the text into a
-// JavaScript structure. The '{' operator is subject to a syntactic ambiguity
-// in JavaScript: it can begin a block or an object literal. We wrap the text
-// in parens to eliminate the ambiguity.
-
-                j = eval('(' + text + ')');
-
-// In the optional fourth stage, we recursively walk the new structure, passing
-// each name/value pair to a reviver function for possible transformation.
-
-                return typeof reviver === 'function'
-                    ? walk({'': j}, '')
-                    : j;
-            }
-
-// If the text is not JSON parseable, then a SyntaxError is thrown.
-
-            throw new SyntaxError('JSON.parse');
+    Singleton.prototype.recordResponse = function(options) {
+      return (function(_this) {
+        return function(data, status, xhr, settings) {
+          var ref;
+          if ((data != null) && Object.getOwnPropertyNames(data).length && !_this.record.destroyed) {
+            _this.record.refresh(data, {
+              ajax: false
+            });
+          }
+          _this.record.trigger('ajaxSuccess', _this.record, _this.model.fromJSON(data), status, xhr, settings);
+          return (ref = options.done) != null ? ref.call(_this.record, settings) : void 0;
         };
-    }
-}());
+      })(this);
+    };
 
-}, "jquery.tmpl/index": function(exports, require, module) {jQuery = $ = require('jqueryify');
+    Singleton.prototype.failResponse = function(options) {
+      return (function(_this) {
+        return function(xhr, statusText, error, settings) {
+          var ref;
+          switch (settings.type) {
+            case 'POST':
+              _this.createFailed();
+              break;
+            case 'DELETE':
+              _this.destroyFailed();
+          }
+          _this.record.trigger('ajaxError', _this.record, xhr, statusText, error, settings);
+          return (ref = options.fail) != null ? ref.call(_this.record, settings) : void 0;
+        };
+      })(this);
+    };
+
+    Singleton.prototype.createFailed = function() {
+      return this.record.remove({
+        clear: true
+      });
+    };
+
+    Singleton.prototype.destroyFailed = function() {
+      this.record.destroyed = false;
+      return this.record.constructor.refresh(this.record);
+    };
+
+    return Singleton;
+
+  })(Base);
+
+  Model.host = '';
+
+  GenerateURL = {
+    include: function() {
+      var args;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      args.unshift(encodeURIComponent(this.id));
+      return Ajax.generateURL.apply(Ajax, [this].concat(slice.call(args)));
+    },
+    extend: function() {
+      var args;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      return Ajax.generateURL.apply(Ajax, [this].concat(slice.call(args)));
+    }
+  };
+
+  Include = {
+    ajax: function() {
+      return new Singleton(this);
+    },
+    generateURL: GenerateURL.include,
+    url: GenerateURL.include
+  };
+
+  Extend = {
+    ajax: function() {
+      return new Collection(this);
+    },
+    generateURL: GenerateURL.extend,
+    url: GenerateURL.extend
+  };
+
+  Model.Ajax = {
+    extended: function() {
+      this.fetch(this.ajaxFetch);
+      this.change(this.ajaxChange);
+      this.extend(Extend);
+      return this.include(Include);
+    },
+    ajaxFetch: function() {
+      var ref;
+      return (ref = this.ajax()).fetch.apply(ref, arguments);
+    },
+    ajaxChange: function(record, type, options) {
+      var base;
+      if (options == null) {
+        options = {};
+      }
+      if (options.ajax === false) {
+        return;
+      }
+      return typeof (base = record.ajax())[type] === "function" ? base[type](options.ajax, options) : void 0;
+    }
+  };
+
+  Model.Ajax.Methods = {
+    extended: function() {
+      this.extend(Extend);
+      return this.include(Include);
+    }
+  };
+
+  Ajax.defaults = Base.prototype.defaults;
+
+  Ajax.Base = Base;
+
+  Ajax.Singleton = Singleton;
+
+  Ajax.Collection = Collection;
+
+  Spine.Ajax = Ajax;
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Ajax;
+  }
+
+}).call(this);
+
+//# sourceMappingURL=ajax.js.map
+ },"spine/lib/route": function(exports, require, module) { // Generated by CoffeeScript 1.10.0
+(function() {
+  var $, Path, Route, Spine, escapeRegExp, hashStrip, namedParam, splatParam,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    slice = [].slice;
+
+  Spine = this.Spine || require('spine');
+
+  $ = Spine.$;
+
+  hashStrip = /^#*/;
+
+  namedParam = /:([\w\d]+)/g;
+
+  splatParam = /\*([\w\d]+)/g;
+
+  escapeRegExp = /[-[\]{}()+?.,\\^$|#\s]/g;
+
+  Path = (function(superClass) {
+    extend(Path, superClass);
+
+    function Path(path, callback) {
+      var match;
+      this.names = [];
+      this.path = path;
+      this.callback = callback;
+      if (typeof path === 'string') {
+        namedParam.lastIndex = 0;
+        while ((match = namedParam.exec(path)) !== null) {
+          this.names.push(match[1]);
+        }
+        splatParam.lastIndex = 0;
+        while ((match = splatParam.exec(path)) !== null) {
+          this.names.push(match[1]);
+        }
+        path = path.replace(escapeRegExp, '\\$&').replace(namedParam, '([^\/]*)').replace(splatParam, '(.*?)');
+        this.route = new RegExp("^" + path + "$");
+      } else {
+        this.route = path;
+      }
+    }
+
+    Path.prototype.match = function(path, options) {
+      var i, j, len, match, param, params;
+      if (options == null) {
+        options = {};
+      }
+      if (!(match = this.route.exec(path))) {
+        return false;
+      }
+      options.match = match;
+      params = match.slice(1);
+      if (this.names.length) {
+        for (i = j = 0, len = params.length; j < len; i = ++j) {
+          param = params[i];
+          options[this.names[i]] = param;
+        }
+      }
+      Route.trigger('before', this);
+      return this.callback.call(null, options) !== false;
+    };
+
+    return Path;
+
+  })(Spine.Module);
+
+  Route = (function(superClass) {
+    var ref;
+
+    extend(Route, superClass);
+
+    Route.extend(Spine.Events);
+
+    Route.historySupport = ((ref = window.history) != null ? ref.pushState : void 0) != null;
+
+    Route.options = {
+      trigger: true,
+      history: false,
+      shim: false,
+      replace: false,
+      redirect: false
+    };
+
+    Route.routers = [];
+
+    Route.setup = function(options) {
+      if (options == null) {
+        options = {};
+      }
+      this.options = $.extend({}, this.options, options);
+      if (this.options.history) {
+        this.history = this.historySupport && this.options.history;
+      }
+      if (this.options.shim) {
+        return;
+      }
+      if (this.history) {
+        $(window).bind('popstate', this.change);
+      } else {
+        $(window).bind('hashchange', this.change);
+      }
+      return this.change();
+    };
+
+    Route.unbind = function() {
+      var unbindResult;
+      unbindResult = Spine.Events.unbind.apply(this, arguments);
+      if (arguments.length > 0) {
+        return unbindResult;
+      }
+      if (this.options.shim) {
+        return;
+      }
+      if (this.history) {
+        return $(window).unbind('popstate', this.change);
+      } else {
+        return $(window).unbind('hashchange', this.change);
+      }
+    };
+
+    Route.navigate = function() {
+      var args, lastArg, options, path, routes;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      options = {};
+      lastArg = args[args.length - 1];
+      if (typeof lastArg === 'object') {
+        options = args.pop();
+      } else if (typeof lastArg === 'boolean') {
+        options.trigger = args.pop();
+      }
+      options = $.extend({}, this.options, options);
+      path = args.join('/');
+      if (this.path === path) {
+        return;
+      }
+      this.path = path;
+      if (options.trigger) {
+        this.trigger('navigate', this.path);
+        routes = this.matchRoutes(this.path, options);
+        if (!routes.length) {
+          if (typeof options.redirect === 'function') {
+            return options.redirect.apply(this, [this.path, options]);
+          } else {
+            if (options.redirect === true) {
+              this.redirect(this.path);
+            }
+          }
+        }
+      }
+      if (options.shim) {
+        return true;
+      } else if (this.history && options.replace) {
+        return history.replaceState({}, document.title, this.path);
+      } else if (this.history) {
+        return history.pushState({}, document.title, this.path);
+      } else {
+        return window.location.hash = this.path;
+      }
+    };
+
+    Route.create = function() {
+      var router;
+      router = new this;
+      this.routers.push(router);
+      return router;
+    };
+
+    Route.add = function(path, callback) {
+      return this.router.add(path, callback);
+    };
+
+    Route.prototype.add = function(path, callback) {
+      var key, results, value;
+      if (typeof path === 'object' && !(path instanceof RegExp)) {
+        results = [];
+        for (key in path) {
+          value = path[key];
+          results.push(this.add(key, value));
+        }
+        return results;
+      } else {
+        return this.routes.push(new Path(path, callback));
+      }
+    };
+
+    Route.prototype.destroy = function() {
+      var r;
+      this.routes.length = 0;
+      return this.constructor.routers = (function() {
+        var j, len, ref1, results;
+        ref1 = this.constructor.routers;
+        results = [];
+        for (j = 0, len = ref1.length; j < len; j++) {
+          r = ref1[j];
+          if (r !== this) {
+            results.push(r);
+          }
+        }
+        return results;
+      }).call(this);
+    };
+
+    Route.getPath = function() {
+      var path;
+      if (this.history) {
+        path = window.location.pathname;
+        if (path.substr(0, 1) !== '/') {
+          path = '/' + path;
+        }
+      } else {
+        path = window.location.hash;
+        path = path.replace(hashStrip, '');
+      }
+      return path;
+    };
+
+    Route.getHost = function() {
+      return window.location.protocol + "//" + window.location.host;
+    };
+
+    Route.change = function() {
+      var path;
+      path = Route.getPath();
+      if (path === Route.path) {
+        return;
+      }
+      Route.path = path;
+      return Route.matchRoutes(Route.path);
+    };
+
+    Route.matchRoutes = function(path, options) {
+      var j, len, match, matches, ref1, router;
+      matches = [];
+      ref1 = this.routers.concat([this.router]);
+      for (j = 0, len = ref1.length; j < len; j++) {
+        router = ref1[j];
+        match = router.matchRoute(path, options);
+        if (match) {
+          matches.push(match);
+        }
+      }
+      if (matches.length) {
+        this.trigger('change', matches, path);
+      }
+      return matches;
+    };
+
+    Route.redirect = function(path) {
+      return window.location = path;
+    };
+
+    function Route() {
+      this.routes = [];
+    }
+
+    Route.prototype.matchRoute = function(path, options) {
+      var j, len, ref1, route;
+      ref1 = this.routes;
+      for (j = 0, len = ref1.length; j < len; j++) {
+        route = ref1[j];
+        if (route.match(path, options)) {
+          return route;
+        }
+      }
+    };
+
+    Route.prototype.trigger = function() {
+      var args, ref1;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      args.splice(1, 0, this);
+      return (ref1 = this.constructor).trigger.apply(ref1, args);
+    };
+
+    return Route;
+
+  })(Spine.Module);
+
+  Route.router = new Route;
+
+  Spine.Controller.include({
+    route: function(path, callback) {
+      if (this.router instanceof Spine.Route) {
+        return this.router.add(path, this.proxy(callback));
+      } else {
+        return Spine.Route.add(path, this.proxy(callback));
+      }
+    },
+    routes: function(routes) {
+      var key, results, value;
+      results = [];
+      for (key in routes) {
+        value = routes[key];
+        results.push(this.route(key, value));
+      }
+      return results;
+    },
+    navigate: function() {
+      return Spine.Route.navigate.apply(Spine.Route, arguments);
+    }
+  });
+
+  Route.Path = Path;
+
+  Spine.Route = Route;
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Route;
+  }
+
+}).call(this);
+
+//# sourceMappingURL=route.js.map
+ },"spine/lib/manager": function(exports, require, module) { // Generated by CoffeeScript 1.10.0
+(function() {
+  var $, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    slice = [].slice,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  Spine = this.Spine || require('spine');
+
+  $ = Spine.$;
+
+  Spine.Manager = (function(superClass) {
+    extend(Manager, superClass);
+
+    Manager.include(Spine.Events);
+
+    function Manager() {
+      this.controllers = [];
+      this.bind('change', this.change);
+      this.add.apply(this, arguments);
+    }
+
+    Manager.prototype.add = function() {
+      var cont, controllers, i, len, results;
+      controllers = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      results = [];
+      for (i = 0, len = controllers.length; i < len; i++) {
+        cont = controllers[i];
+        results.push(this.addOne(cont));
+      }
+      return results;
+    };
+
+    Manager.prototype.addOne = function(controller) {
+      controller.bind('active', (function(_this) {
+        return function() {
+          var args;
+          args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+          return _this.trigger.apply(_this, ['change', controller].concat(slice.call(args)));
+        };
+      })(this));
+      controller.bind('release', (function(_this) {
+        return function() {
+          var c;
+          return _this.controllers = (function() {
+            var i, len, ref, results;
+            ref = this.controllers;
+            results = [];
+            for (i = 0, len = ref.length; i < len; i++) {
+              c = ref[i];
+              if (c !== controller) {
+                results.push(c);
+              }
+            }
+            return results;
+          }).call(_this);
+        };
+      })(this));
+      return this.controllers.push(controller);
+    };
+
+    Manager.prototype.deactivate = function() {
+      return this.trigger.apply(this, ['change', false].concat(slice.call(arguments)));
+    };
+
+    Manager.prototype.change = function() {
+      var args, cont, current, i, len, ref;
+      current = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+      ref = this.controllers;
+      for (i = 0, len = ref.length; i < len; i++) {
+        cont = ref[i];
+        if (cont !== current) {
+          cont.deactivate.apply(cont, args);
+        }
+      }
+      if (current) {
+        return current.activate.apply(current, args);
+      }
+    };
+
+    return Manager;
+
+  })(Spine.Module);
+
+  Spine.Controller.include({
+    active: function() {
+      var args;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      if (typeof args[0] === 'function') {
+        this.bind('active', args[0]);
+      } else {
+        args.unshift('active');
+        this.trigger.apply(this, args);
+      }
+      return this;
+    },
+    isActive: function() {
+      return this.el.hasClass('active');
+    },
+    activate: function() {
+      this.el.addClass('active');
+      return this;
+    },
+    deactivate: function() {
+      this.el.removeClass('active');
+      return this;
+    }
+  });
+
+  Spine.Stack = (function(superClass) {
+    extend(Stack, superClass);
+
+    Stack.prototype.controllers = {};
+
+    Stack.prototype.routes = {};
+
+    Stack.prototype.className = 'spine stack';
+
+    function Stack() {
+      this.release = bind(this.release, this);
+      var fn, key, ref, ref1, ref2, value;
+      Stack.__super__.constructor.apply(this, arguments);
+      this.manager = new Spine.Manager;
+      this.router = (ref = Spine.Route) != null ? ref.create() : void 0;
+      ref1 = this.controllers;
+      for (key in ref1) {
+        value = ref1[key];
+        if (this[key] != null) {
+          throw Error("'@" + key + "' already assigned");
+        }
+        this[key] = new value({
+          stack: this
+        });
+        this.add(this[key]);
+      }
+      ref2 = this.routes;
+      fn = (function(_this) {
+        return function(key, value) {
+          var callback;
+          if (typeof value === 'function') {
+            callback = value;
+          }
+          callback || (callback = function() {
+            var ref3;
+            return (ref3 = _this[value]).active.apply(ref3, arguments);
+          });
+          return _this.route(key, callback);
+        };
+      })(this);
+      for (key in ref2) {
+        value = ref2[key];
+        fn(key, value);
+      }
+      if (this["default"]) {
+        this[this["default"]].active();
+      }
+    }
+
+    Stack.prototype.add = function(controller) {
+      this.manager.add(controller);
+      return this.append(controller);
+    };
+
+    Stack.prototype.release = function() {
+      var ref;
+      if ((ref = this.router) != null) {
+        ref.destroy();
+      }
+      return Stack.__super__.release.apply(this, arguments);
+    };
+
+    return Stack;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Spine.Manager;
+  }
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports.Stack = Spine.Stack;
+  }
+
+}).call(this);
+
+//# sourceMappingURL=manager.js.map
+ },"spine/lib/local": function(exports, require, module) { // Generated by CoffeeScript 1.10.0
+(function() {
+  var Spine;
+
+  Spine = this.Spine || require('spine');
+
+  Spine.Model.Local = {
+    extended: function() {
+      var e, error, testLocalStorage;
+      testLocalStorage = 'spine' + new Date().getTime();
+      try {
+        localStorage.setItem(testLocalStorage, testLocalStorage);
+        localStorage.removeItem(testLocalStorage);
+      } catch (error) {
+        e = error;
+        return;
+      }
+      this.change(this.saveLocal);
+      return this.fetch(this.loadLocal);
+    },
+    saveLocal: function() {
+      var result;
+      result = JSON.stringify(this);
+      return localStorage[this.className] = result;
+    },
+    loadLocal: function(options) {
+      var result;
+      if (options == null) {
+        options = {};
+      }
+      if (!options.hasOwnProperty('clear')) {
+        options.clear = true;
+      }
+      result = localStorage[this.className];
+      return this.refresh(result || [], options);
+    }
+  };
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Spine.Model.Local;
+  }
+
+}).call(this);
+
+//# sourceMappingURL=local.js.map
+ },"spine/lib/list": function(exports, require, module) { // Generated by CoffeeScript 1.10.0
+(function() {
+  var $, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = this.Spine || require('spine');
+
+  $ = Spine.$;
+
+  Spine.List = (function(superClass) {
+    extend(List, superClass);
+
+    List.prototype.events = {
+      'click .item': 'click'
+    };
+
+    List.prototype.selectFirst = false;
+
+    function List() {
+      this.change = bind(this.change, this);
+      List.__super__.constructor.apply(this, arguments);
+      this.bind('change', this.change);
+    }
+
+    List.prototype.template = function() {
+      throw Error('Override template');
+    };
+
+    List.prototype.change = function(item) {
+      var i, idx, index, len, ref;
+      this.current = item;
+      if (!this.current) {
+        this.children().removeClass('active');
+        return;
+      }
+      this.children().removeClass('active');
+      ref = this.items;
+      for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
+        item = ref[idx];
+        if (!(item === this.current)) {
+          continue;
+        }
+        index = idx;
+        break;
+      }
+      return $(this.children().get(index)).addClass('active');
+    };
+
+    List.prototype.render = function(items) {
+      if (items) {
+        this.items = items;
+      }
+      this.html(this.template(this.items));
+      this.change(this.current);
+      if (this.selectFirst) {
+        if (!this.children('.active').length) {
+          return this.children(':first').click();
+        }
+      }
+    };
+
+    List.prototype.children = function(sel) {
+      return this.el.children(sel);
+    };
+
+    List.prototype.click = function(e) {
+      var item;
+      item = this.items[$(e.currentTarget).index()];
+      this.trigger('change', item);
+      return true;
+    };
+
+    return List;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Spine.List;
+  }
+
+}).call(this);
+
+//# sourceMappingURL=list.js.map
+ },"jquery.tmpl/index": function(exports, require, module) { jQuery = $ = require('jqueryify');
 module.exports = jQuery;
 
 /*!
@@ -14659,7 +13089,7 @@ module.exports = jQuery;
 		jQuery.tmpl( null, null, null, this).insertBefore( coll[0] );
 		jQuery( coll ).remove();
 	}
-})( jQuery );}, "jquery.tmpl/node_modules/jqueryify/index": function(exports, require, module) {/*!
+})( jQuery ); },"jquery.tmpl/node_modules/jqueryify/index": function(exports, require, module) { /*!
  * jQuery JavaScript Library v1.7.1
  * http://jquery.com/
  *
@@ -23926,2221 +22356,1478 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
 })( window );
 
-module.exports = jQuery;}, "spine/index": function(exports, require, module) {module.exports = require('./lib/spine');}, "spine/lib/spine": function(exports, require, module) {// Generated by CoffeeScript 1.10.0
+module.exports = jQuery; },"es5-shimify/index": function(exports, require, module) { // Copyright 2009-2012 by contributors, MIT License
+// vim: ts=4 sts=4 sw=4 expandtab
 
-/*
-Spine.js MVC library
-Released under the MIT License
+// Module systems magic dance
+(function (definition) {
+    // RequireJS
+    if (typeof define == "function") {
+        define(definition);
+    // YUI3
+    } else if (typeof YUI == "function") {
+        YUI.add("es5", definition);
+    // CommonJS and <script>
+    } else {
+        definition();
+    }
+})(function () {
+
+/**
+ * Brings an environment as close to ECMAScript 5 compliance
+ * as is possible with the facilities of erstwhile engines.
+ *
+ * Annotated ES5: http://es5.github.com/ (specific links below)
+ * ES5 Spec: http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf
+ * Required reading: http://javascriptweblog.wordpress.com/2011/12/05/extending-javascript-natives/
  */
 
-(function() {
-  var $, Controller, Events, Log, Model, Module, Spine, createObject, makeArray, moduleKeywords,
-    slice = [].slice,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+//
+// Function
+// ========
+//
 
-  Events = {
-    bind: function(ev, callback) {
-      var base, evs, j, len, name;
-      evs = ev.split(' ');
-      if (!this.hasOwnProperty('_callbacks')) {
-        this._callbacks || (this._callbacks = {});
-      }
-      for (j = 0, len = evs.length; j < len; j++) {
-        name = evs[j];
-        (base = this._callbacks)[name] || (base[name] = []);
-        this._callbacks[name].push(callback);
-      }
-      return this;
-    },
-    one: function(ev, callback) {
-      var handler;
-      return this.bind(ev, handler = function() {
-        this.unbind(ev, handler);
-        return callback.apply(this, arguments);
-      });
-    },
-    trigger: function() {
-      var args, callback, ev, j, len, list, ref;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      ev = args.shift();
-      list = (ref = this._callbacks) != null ? ref[ev] : void 0;
-      if (!list) {
-        return;
-      }
-      for (j = 0, len = list.length; j < len; j++) {
-        callback = list[j];
-        if (callback.apply(this, args) === false) {
-          break;
+// ES-5 15.3.4.5
+// http://es5.github.com/#x15.3.4.5
+
+function Empty() {}
+
+if (!Function.prototype.bind) {
+    Function.prototype.bind = function bind(that) { // .length is 1
+        // 1. Let Target be the this value.
+        var target = this;
+        // 2. If IsCallable(Target) is false, throw a TypeError exception.
+        if (typeof target != "function") {
+            throw new TypeError("Function.prototype.bind called on incompatible " + target);
         }
-      }
-      return true;
-    },
-    listenTo: function(obj, ev, callback) {
-      obj.bind(ev, callback);
-      this.listeningTo || (this.listeningTo = []);
-      this.listeningTo.push({
-        obj: obj,
-        ev: ev,
-        callback: callback
-      });
-      return this;
-    },
-    listenToOnce: function(obj, ev, callback) {
-      var handler, listeningToOnce;
-      listeningToOnce = this.listeningToOnce || (this.listeningToOnce = []);
-      obj.bind(ev, handler = function() {
-        var i, idx, j, len, lt;
-        idx = -1;
-        for (i = j = 0, len = listeningToOnce.length; j < len; i = ++j) {
-          lt = listeningToOnce[i];
-          if (lt.obj === obj) {
-            if (lt.ev === ev && lt.callback === handler) {
-              idx = i;
-            }
-          }
-        }
-        obj.unbind(ev, handler);
-        if (idx !== -1) {
-          listeningToOnce.splice(idx, 1);
-        }
-        return callback.apply(this, arguments);
-      });
-      listeningToOnce.push({
-        obj: obj,
-        ev: ev,
-        callback: handler
-      });
-      return this;
-    },
-    stopListening: function(obj, events, callback) {
-      var e, ev, evts, idx, j, k, l, len, len1, len2, len3, listeningTo, lt, m, n, ref, ref1, ref2;
-      if (arguments.length === 0) {
-        ref = [this.listeningTo, this.listeningToOnce];
-        for (j = 0, len = ref.length; j < len; j++) {
-          listeningTo = ref[j];
-          if (!(listeningTo != null ? listeningTo.length : void 0)) {
-            continue;
-          }
-          for (k = 0, len1 = listeningTo.length; k < len1; k++) {
-            lt = listeningTo[k];
-            lt.obj.unbind(lt.ev, lt.callback);
-          }
-        }
-        this.listeningTo = void 0;
-        this.listeningToOnce = void 0;
-      } else if (obj) {
-        events = events ? events.split(' ') : [void 0];
-        ref1 = [this.listeningTo, this.listeningToOnce];
-        for (l = 0, len2 = ref1.length; l < len2; l++) {
-          listeningTo = ref1[l];
-          if (!listeningTo) {
-            continue;
-          }
-          for (m = 0, len3 = events.length; m < len3; m++) {
-            ev = events[m];
-            for (idx = n = ref2 = listeningTo.length - 1; ref2 <= 0 ? n <= 0 : n >= 0; idx = ref2 <= 0 ? ++n : --n) {
-              lt = listeningTo[idx];
-              if (lt.obj !== obj) {
-                continue;
-              }
-              if (callback && lt.callback !== callback) {
-                continue;
-              }
-              if ((!ev) || (ev === lt.ev)) {
-                lt.obj.unbind(lt.ev, lt.callback);
-                if (idx !== -1) {
-                  listeningTo.splice(idx, 1);
+        // 3. Let A be a new (possibly empty) internal list of all of the
+        //   argument values provided after thisArg (arg1, arg2 etc), in order.
+        // XXX slicedArgs will stand in for "A" if used
+        var args = slice.call(arguments, 1); // for normal call
+        // 4. Let F be a new native ECMAScript object.
+        // 11. Set the [[Prototype]] internal property of F to the standard
+        //   built-in Function prototype object as specified in 15.3.3.1.
+        // 12. Set the [[Call]] internal property of F as described in
+        //   15.3.4.5.1.
+        // 13. Set the [[Construct]] internal property of F as described in
+        //   15.3.4.5.2.
+        // 14. Set the [[HasInstance]] internal property of F as described in
+        //   15.3.4.5.3.
+        var bound = function () {
+
+            if (this instanceof bound) {
+                // 15.3.4.5.2 [[Construct]]
+                // When the [[Construct]] internal method of a function object,
+                // F that was created using the bind function is called with a
+                // list of arguments ExtraArgs, the following steps are taken:
+                // 1. Let target be the value of F's [[TargetFunction]]
+                //   internal property.
+                // 2. If target has no [[Construct]] internal method, a
+                //   TypeError exception is thrown.
+                // 3. Let boundArgs be the value of F's [[BoundArgs]] internal
+                //   property.
+                // 4. Let args be a new list containing the same values as the
+                //   list boundArgs in the same order followed by the same
+                //   values as the list ExtraArgs in the same order.
+                // 5. Return the result of calling the [[Construct]] internal
+                //   method of target providing args as the arguments.
+
+                var result = target.apply(
+                    this,
+                    args.concat(slice.call(arguments))
+                );
+                if (Object(result) === result) {
+                    return result;
                 }
-              } else if (ev) {
-                evts = lt.ev.split(' ');
-                if (indexOf.call(evts, ev) >= 0) {
-                  evts = (function() {
-                    var len4, p, results;
-                    results = [];
-                    for (p = 0, len4 = evts.length; p < len4; p++) {
-                      e = evts[p];
-                      if (e !== ev) {
-                        results.push(e);
-                      }
-                    }
-                    return results;
-                  })();
-                  lt.ev = $.trim(evts.join(' '));
-                  lt.obj.unbind(ev, lt.callback);
-                }
-              }
+                return this;
+
+            } else {
+                // 15.3.4.5.1 [[Call]]
+                // When the [[Call]] internal method of a function object, F,
+                // which was created using the bind function is called with a
+                // this value and a list of arguments ExtraArgs, the following
+                // steps are taken:
+                // 1. Let boundArgs be the value of F's [[BoundArgs]] internal
+                //   property.
+                // 2. Let boundThis be the value of F's [[BoundThis]] internal
+                //   property.
+                // 3. Let target be the value of F's [[TargetFunction]] internal
+                //   property.
+                // 4. Let args be a new list containing the same values as the
+                //   list boundArgs in the same order followed by the same
+                //   values as the list ExtraArgs in the same order.
+                // 5. Return the result of calling the [[Call]] internal method
+                //   of target providing boundThis as the this value and
+                //   providing args as the arguments.
+
+                // equiv: target.call(this, ...boundArgs, ...args)
+                return target.apply(
+                    that,
+                    args.concat(slice.call(arguments))
+                );
+
             }
-          }
-        }
-      }
-      return this;
-    },
-    unbind: function(ev, callback) {
-      var cb, evs, i, j, k, len, len1, list, name, ref;
-      if (arguments.length === 0) {
-        this._callbacks = {};
-        return this;
-      }
-      if (!ev) {
-        return this;
-      }
-      evs = ev.split(' ');
-      for (j = 0, len = evs.length; j < len; j++) {
-        name = evs[j];
-        list = (ref = this._callbacks) != null ? ref[name] : void 0;
-        if (!list) {
-          continue;
-        }
-        if (!callback) {
-          delete this._callbacks[name];
-          continue;
-        }
-        for (i = k = 0, len1 = list.length; k < len1; i = ++k) {
-          cb = list[i];
-          if (!(cb === callback)) {
-            continue;
-          }
-          list = list.slice();
-          list.splice(i, 1);
-          this._callbacks[name] = list;
-          break;
-        }
-      }
-      return this;
-    }
-  };
 
-  Events.on = Events.bind;
-
-  Events.off = Events.unbind;
-
-  Log = {
-    trace: true,
-    logPrefix: '(App)',
-    log: function() {
-      var args;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      if (!this.trace) {
-        return;
-      }
-      if (this.logPrefix) {
-        args.unshift(this.logPrefix);
-      }
-      if (typeof console !== "undefined" && console !== null) {
-        if (typeof console.log === "function") {
-          console.log.apply(console, args);
-        }
-      }
-      return this;
-    }
-  };
-
-  moduleKeywords = ['included', 'extended'];
-
-  Module = (function() {
-    Module.include = function(obj) {
-      var key, ref, value;
-      if (!obj) {
-        throw new Error('include(obj) requires obj');
-      }
-      for (key in obj) {
-        value = obj[key];
-        if (indexOf.call(moduleKeywords, key) < 0) {
-          this.prototype[key] = value;
-        }
-      }
-      if ((ref = obj.included) != null) {
-        ref.apply(this);
-      }
-      return this;
-    };
-
-    Module.extend = function(obj) {
-      var key, ref, value;
-      if (!obj) {
-        throw new Error('extend(obj) requires obj');
-      }
-      for (key in obj) {
-        value = obj[key];
-        if (indexOf.call(moduleKeywords, key) < 0) {
-          this[key] = value;
-        }
-      }
-      if ((ref = obj.extended) != null) {
-        ref.apply(this);
-      }
-      return this;
-    };
-
-    Module.proxy = function(func) {
-      return (function(_this) {
-        return function() {
-          return func.apply(_this, arguments);
         };
-      })(this);
-    };
-
-    Module.prototype.proxy = function(func) {
-      return (function(_this) {
-        return function() {
-          return func.apply(_this, arguments);
-        };
-      })(this);
-    };
-
-    function Module() {
-      if (typeof this.init === "function") {
-        this.init.apply(this, arguments);
-      }
-    }
-
-    return Module;
-
-  })();
-
-  Model = (function(superClass) {
-    extend(Model, superClass);
-
-    Model.extend(Events);
-
-    Model.include(Events);
-
-    Model.records = [];
-
-    Model.irecords = {};
-
-    Model.attributes = [];
-
-    Model.configure = function() {
-      var attributes, name;
-      name = arguments[0], attributes = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-      this.className = name;
-      this.deleteAll();
-      if (attributes.length) {
-        this.attributes = attributes;
-      }
-      this.attributes && (this.attributes = makeArray(this.attributes));
-      this.attributes || (this.attributes = []);
-      this.unbind();
-      return this;
-    };
-
-    Model.toString = function() {
-      return this.className + "(" + (this.attributes.join(", ")) + ")";
-    };
-
-    Model.find = function(id, notFound) {
-      var ref;
-      if (notFound == null) {
-        notFound = this.notFound;
-      }
-      return ((ref = this.irecords[id]) != null ? ref.clone() : void 0) || (typeof notFound === "function" ? notFound(id) : void 0);
-    };
-
-    Model.findAll = function(ids, notFound) {
-      var id, j, len, results;
-      results = [];
-      for (j = 0, len = ids.length; j < len; j++) {
-        id = ids[j];
-        if (this.find(id, notFound)) {
-          results.push(this.find(id));
+        if(target.prototype) {
+            Empty.prototype = target.prototype;
+            bound.prototype = new Empty();
+            // Clean up dangling references.
+            Empty.prototype = null;
         }
-      }
-      return results;
-    };
+        // XXX bound.length is never writable, so don't even try
+        //
+        // 15. If the [[Class]] internal property of Target is "Function", then
+        //     a. Let L be the length property of Target minus the length of A.
+        //     b. Set the length own property of F to either 0 or L, whichever is
+        //       larger.
+        // 16. Else set the length own property of F to 0.
+        // 17. Set the attributes of the length own property of F to the values
+        //   specified in 15.3.5.1.
 
-    Model.notFound = function(id) {
-      return null;
-    };
+        // TODO
+        // 18. Set the [[Extensible]] internal property of F to true.
 
-    Model.exists = function(id) {
-      return Boolean(this.irecords[id]);
-    };
+        // TODO
+        // 19. Let thrower be the [[ThrowTypeError]] function Object (13.2.3).
+        // 20. Call the [[DefineOwnProperty]] internal method of F with
+        //   arguments "caller", PropertyDescriptor {[[Get]]: thrower, [[Set]]:
+        //   thrower, [[Enumerable]]: false, [[Configurable]]: false}, and
+        //   false.
+        // 21. Call the [[DefineOwnProperty]] internal method of F with
+        //   arguments "arguments", PropertyDescriptor {[[Get]]: thrower,
+        //   [[Set]]: thrower, [[Enumerable]]: false, [[Configurable]]: false},
+        //   and false.
 
-    Model.addRecord = function(record, idx) {
-      var root;
-      if (root = this.irecords[record.id || record.cid]) {
-        root.refresh(record);
-      } else {
-        record.id || (record.id = record.cid);
-        this.irecords[record.id] = this.irecords[record.cid] = record;
-        if (idx !== void 0) {
-          this.records.splice(idx, 0, record);
+        // TODO
+        // NOTE Function objects created using Function.prototype.bind do not
+        // have a prototype property or the [[Code]], [[FormalParameters]], and
+        // [[Scope]] internal properties.
+        // XXX can't delete prototype in pure-js.
+
+        // 22. Return F.
+        return bound;
+    };
+}
+
+// Shortcut to an often accessed properties, in order to avoid multiple
+// dereference that costs universally.
+// _Please note: Shortcuts are defined after `Function.prototype.bind` as we
+// us it in defining shortcuts.
+var call = Function.prototype.call;
+var prototypeOfArray = Array.prototype;
+var prototypeOfObject = Object.prototype;
+var slice = prototypeOfArray.slice;
+// Having a toString local variable name breaks in Opera so use _toString.
+var _toString = call.bind(prototypeOfObject.toString);
+var owns = call.bind(prototypeOfObject.hasOwnProperty);
+
+// If JS engine supports accessors creating shortcuts.
+var defineGetter;
+var defineSetter;
+var lookupGetter;
+var lookupSetter;
+var supportsAccessors;
+if ((supportsAccessors = owns(prototypeOfObject, "__defineGetter__"))) {
+    defineGetter = call.bind(prototypeOfObject.__defineGetter__);
+    defineSetter = call.bind(prototypeOfObject.__defineSetter__);
+    lookupGetter = call.bind(prototypeOfObject.__lookupGetter__);
+    lookupSetter = call.bind(prototypeOfObject.__lookupSetter__);
+}
+
+//
+// Array
+// =====
+//
+
+// ES5 15.4.4.12
+// http://es5.github.com/#x15.4.4.12
+// Default value for second param
+// [bugfix, ielt9, old browsers]
+// IE < 9 bug: [1,2].splice(0).join("") == "" but should be "12"
+if ([1,2].splice(0).length != 2) {
+    var array_splice = Array.prototype.splice;
+    Array.prototype.splice = function(start, deleteCount) {
+        if (!arguments.length) {
+            return [];
         } else {
-          this.records.push(record);
+            return array_splice.apply(this, [
+                start === void 0 ? 0 : start,
+                deleteCount === void 0 ? (this.length - start) : deleteCount
+            ].concat(slice.call(arguments, 2)))
         }
-      }
-      return record;
     };
+}
 
-    Model.refresh = function(values, options) {
-      var j, len, record, records, result;
-      if (options == null) {
-        options = {};
-      }
-      if (options.clear) {
-        this.deleteAll();
-      }
-      records = this.fromJSON(values);
-      if (!Array.isArray(records)) {
-        records = [records];
-      }
-      for (j = 0, len = records.length; j < len; j++) {
-        record = records[j];
-        this.addRecord(record);
-      }
-      this.sort();
-      result = this.cloneArray(records);
-      this.trigger('refresh', result, options);
-      return result;
+// ES5 15.4.4.12
+// http://es5.github.com/#x15.4.4.13
+// Return len+argCount.
+// [bugfix, ielt8]
+// IE < 8 bug: [].unshift(0) == undefined but should be "1"
+if ([].unshift(0) != 1) {
+    var array_unshift = Array.prototype.unshift;
+    Array.prototype.unshift = function() {
+        array_unshift.apply(this, arguments);
+        return this.length;
     };
+}
 
-    Model.select = function(callback) {
-      var j, len, record, ref, results;
-      ref = this.records;
-      results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        record = ref[j];
-        if (callback(record)) {
-          results.push(record.clone());
+// ES5 15.4.3.2
+// http://es5.github.com/#x15.4.3.2
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray
+if (!Array.isArray) {
+    Array.isArray = function isArray(obj) {
+        return _toString(obj) == "[object Array]";
+    };
+}
+
+// The IsCallable() check in the Array functions
+// has been replaced with a strict check on the
+// internal class of the object to trap cases where
+// the provided function was actually a regular
+// expression literal, which in V8 and
+// JavaScriptCore is a typeof "function".  Only in
+// V8 are regular expression literals permitted as
+// reduce parameters, so it is desirable in the
+// general case for the shim to match the more
+// strict and common behavior of rejecting regular
+// expressions.
+
+// ES5 15.4.4.18
+// http://es5.github.com/#x15.4.4.18
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/forEach
+
+// Check failure of by-index access of string characters (IE < 9)
+// and failure of `0 in boxedString` (Rhino)
+var boxedString = Object("a"),
+    splitString = boxedString[0] != "a" || !(0 in boxedString);
+
+if (!Array.prototype.forEach) {
+    Array.prototype.forEach = function forEach(fun /*, thisp*/) {
+        var object = toObject(this),
+            self = splitString && _toString(this) == "[object String]" ?
+                this.split("") :
+                object,
+            thisp = arguments[1],
+            i = -1,
+            length = self.length >>> 0;
+
+        // If no callback function or if callback is not a callable function
+        if (_toString(fun) != "[object Function]") {
+            throw new TypeError(); // TODO message
         }
-      }
-      return results;
-    };
 
-    Model.findByAttribute = function(name, value) {
-      var j, len, record, ref;
-      ref = this.records;
-      for (j = 0, len = ref.length; j < len; j++) {
-        record = ref[j];
-        if (record[name] === value) {
-          return record.clone();
+        while (++i < length) {
+            if (i in self) {
+                // Invoke the callback function with call, passing arguments:
+                // context, property value, property key, thisArg object
+                // context
+                fun.call(thisp, self[i], i, object);
+            }
         }
-      }
-      return null;
     };
+}
 
-    Model.findAllByAttribute = function(name, value) {
-      return this.select(function(item) {
-        return item[name] === value;
-      });
-    };
+// ES5 15.4.4.19
+// http://es5.github.com/#x15.4.4.19
+// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
+if (!Array.prototype.map) {
+    Array.prototype.map = function map(fun /*, thisp*/) {
+        var object = toObject(this),
+            self = splitString && _toString(this) == "[object String]" ?
+                this.split("") :
+                object,
+            length = self.length >>> 0,
+            result = Array(length),
+            thisp = arguments[1];
 
-    Model.each = function(callback) {
-      var j, len, record, ref, results;
-      ref = this.records;
-      results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        record = ref[j];
-        results.push(callback(record.clone()));
-      }
-      return results;
-    };
-
-    Model.all = function() {
-      return this.cloneArray(this.records);
-    };
-
-    Model.slice = function(begin, end) {
-      if (begin == null) {
-        begin = 0;
-      }
-      return this.cloneArray(this.records.slice(begin, end));
-    };
-
-    Model.first = function(end) {
-      var ref;
-      if (end == null) {
-        end = 1;
-      }
-      if (end > 1) {
-        return this.cloneArray(this.records.slice(0, end));
-      } else {
-        return (ref = this.records[0]) != null ? ref.clone() : void 0;
-      }
-    };
-
-    Model.last = function(begin) {
-      var ref;
-      if (typeof begin === 'number') {
-        return this.cloneArray(this.records.slice(-begin));
-      } else {
-        return (ref = this.records[this.records.length - 1]) != null ? ref.clone() : void 0;
-      }
-    };
-
-    Model.count = function() {
-      return this.records.length;
-    };
-
-    Model.deleteAll = function() {
-      this.records = [];
-      return this.irecords = {};
-    };
-
-    Model.destroyAll = function(options) {
-      var j, len, record, ref, results;
-      ref = this.records;
-      results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        record = ref[j];
-        results.push(record.destroy(options));
-      }
-      return results;
-    };
-
-    Model.update = function(id, atts, options) {
-      return this.find(id).updateAttributes(atts, options);
-    };
-
-    Model.create = function(atts, options) {
-      var record;
-      record = new this(atts);
-      return record.save(options);
-    };
-
-    Model.destroy = function(id, options) {
-      var ref;
-      return (ref = this.find(id)) != null ? ref.destroy(options) : void 0;
-    };
-
-    Model.change = function(callbackOrParams) {
-      if (typeof callbackOrParams === 'function') {
-        return this.bind('change', callbackOrParams);
-      } else {
-        return this.trigger.apply(this, ['change'].concat(slice.call(arguments)));
-      }
-    };
-
-    Model.fetch = function(callbackOrParams) {
-      if (typeof callbackOrParams === 'function') {
-        return this.bind('fetch', callbackOrParams);
-      } else {
-        return this.trigger.apply(this, ['fetch'].concat(slice.call(arguments)));
-      }
-    };
-
-    Model.toJSON = function() {
-      return this.records;
-    };
-
-    Model.beforeFromJSON = function(objects) {
-      return objects;
-    };
-
-    Model.fromJSON = function(objects) {
-      var j, len, results, value;
-      if (!objects) {
-        return;
-      }
-      if (typeof objects === 'string') {
-        objects = JSON.parse(objects);
-      }
-      objects = this.beforeFromJSON(objects);
-      if (Array.isArray(objects)) {
-        results = [];
-        for (j = 0, len = objects.length; j < len; j++) {
-          value = objects[j];
-          if (value instanceof this) {
-            results.push(value);
-          } else {
-            results.push(new this(value));
-          }
+        // If no callback function or if callback is not a callable function
+        if (_toString(fun) != "[object Function]") {
+            throw new TypeError(fun + " is not a function");
         }
-        return results;
-      } else {
-        if (objects instanceof this) {
-          return objects;
+
+        for (var i = 0; i < length; i++) {
+            if (i in self)
+                result[i] = fun.call(thisp, self[i], i, object);
         }
-        return new this(objects);
-      }
+        return result;
     };
+}
 
-    Model.fromForm = function() {
-      var ref;
-      return (ref = new this).fromForm.apply(ref, arguments);
-    };
+// ES5 15.4.4.20
+// http://es5.github.com/#x15.4.4.20
+// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
+if (!Array.prototype.filter) {
+    Array.prototype.filter = function filter(fun /*, thisp */) {
+        var object = toObject(this),
+            self = splitString && _toString(this) == "[object String]" ?
+                this.split("") :
+                    object,
+            length = self.length >>> 0,
+            result = [],
+            value,
+            thisp = arguments[1];
 
-    Model.sort = function() {
-      if (this.comparator) {
-        this.records.sort(this.comparator);
-      }
-      return this;
-    };
-
-    Model.cloneArray = function(array) {
-      var j, len, results, value;
-      results = [];
-      for (j = 0, len = array.length; j < len; j++) {
-        value = array[j];
-        results.push(value.clone());
-      }
-      return results;
-    };
-
-    Model.idCounter = 0;
-
-    Model.uid = function(prefix) {
-      var uid;
-      if (prefix == null) {
-        prefix = '';
-      }
-      uid = prefix + this.idCounter++;
-      if (this.exists(uid)) {
-        uid = this.uid(prefix);
-      }
-      return uid;
-    };
-
-    function Model(atts) {
-      Model.__super__.constructor.apply(this, arguments);
-      if ((this.constructor.uuid != null) && typeof this.constructor.uuid === 'function') {
-        this.cid = this.constructor.uuid();
-        if (!this.id) {
-          this.id = this.cid;
+        // If no callback function or if callback is not a callable function
+        if (_toString(fun) != "[object Function]") {
+            throw new TypeError(fun + " is not a function");
         }
-      } else {
-        this.cid = (atts != null ? atts.cid : void 0) || this.constructor.uid('c-');
-      }
-      if (atts) {
-        this.load(atts);
-      }
-    }
 
-    Model.prototype.isNew = function() {
-      return !this.exists();
-    };
-
-    Model.prototype.isValid = function() {
-      return !this.validate();
-    };
-
-    Model.prototype.validate = function() {};
-
-    Model.prototype.load = function(atts) {
-      var key, value;
-      if (atts.id) {
-        this.id = atts.id;
-      }
-      for (key in atts) {
-        value = atts[key];
-        if (key === '_callbacks') {
-          continue;
+        for (var i = 0; i < length; i++) {
+            if (i in self) {
+                value = self[i];
+                if (fun.call(thisp, value, i, object)) {
+                    result.push(value);
+                }
+            }
         }
-        if (typeof this[key] === 'function') {
-          if (typeof value === 'function') {
-            continue;
-          }
-          this[key](value);
-        } else {
-          this[key] = value;
+        return result;
+    };
+}
+
+// ES5 15.4.4.16
+// http://es5.github.com/#x15.4.4.16
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/every
+if (!Array.prototype.every) {
+    Array.prototype.every = function every(fun /*, thisp */) {
+        var object = toObject(this),
+            self = splitString && _toString(this) == "[object String]" ?
+                this.split("") :
+                object,
+            length = self.length >>> 0,
+            thisp = arguments[1];
+
+        // If no callback function or if callback is not a callable function
+        if (_toString(fun) != "[object Function]") {
+            throw new TypeError(fun + " is not a function");
         }
-      }
-      return this;
-    };
 
-    Model.prototype.attributes = function() {
-      var j, key, len, ref, result;
-      result = {};
-      ref = this.constructor.attributes;
-      for (j = 0, len = ref.length; j < len; j++) {
-        key = ref[j];
-        if (key in this) {
-          if (typeof this[key] === 'function') {
-            result[key] = this[key]();
-          } else {
-            result[key] = this[key];
-          }
+        for (var i = 0; i < length; i++) {
+            if (i in self && !fun.call(thisp, self[i], i, object)) {
+                return false;
+            }
         }
-      }
-      if (this.id) {
-        result.id = this.id;
-      }
-      return result;
-    };
-
-    Model.prototype.eql = function(rec) {
-      return rec && rec.constructor === this.constructor && ((rec.cid === this.cid) || (rec.id && rec.id === this.id));
-    };
-
-    Model.prototype.save = function(options) {
-      var error, record;
-      if (options == null) {
-        options = {};
-      }
-      if (options.validate === true) {
-        error = this.validate();
-        if (error) {
-          this.trigger('error', this, error);
-          return false;
-        }
-      }
-      this.trigger('beforeSave', this, options);
-      record = this.isNew() ? this.create(options) : this.update(options);
-      this.stripCloneAttrs();
-      this.trigger('save', record, options);
-      return record;
-    };
-
-    Model.prototype.stripCloneAttrs = function() {
-      var key, value;
-      if (this.hasOwnProperty('cid')) {
-        return;
-      }
-      for (key in this) {
-        if (!hasProp.call(this, key)) continue;
-        value = this[key];
-        if (indexOf.call(this.constructor.attributes, key) >= 0) {
-          delete this[key];
-        }
-      }
-      return this;
-    };
-
-    Model.prototype.updateAttribute = function(name, value, options) {
-      var atts;
-      atts = {};
-      atts[name] = value;
-      return this.updateAttributes(atts, options);
-    };
-
-    Model.prototype.updateAttributes = function(atts, options) {
-      this.load(atts);
-      return this.save(options);
-    };
-
-    Model.prototype.changeID = function(id) {
-      var records;
-      if (id === this.id) {
-        return;
-      }
-      records = this.constructor.irecords;
-      records[id] = records[this.id];
-      if (this.cid !== this.id) {
-        delete records[this.id];
-      }
-      return this.id = id;
-    };
-
-    Model.prototype.remove = function(options) {
-      var i, j, len, record, records;
-      if (options == null) {
-        options = {};
-      }
-      records = this.constructor.records.slice(0);
-      for (i = j = 0, len = records.length; j < len; i = ++j) {
-        record = records[i];
-        if (!(this.eql(record))) {
-          continue;
-        }
-        records.splice(i, 1);
-        break;
-      }
-      this.constructor.records = records;
-      if (options.clear) {
-        delete this.constructor.irecords[this.id];
-        return delete this.constructor.irecords[this.cid];
-      }
-    };
-
-    Model.prototype.destroy = function(options) {
-      if (options == null) {
-        options = {};
-      }
-      if (options.clear == null) {
-        options.clear = true;
-      }
-      this.trigger('beforeDestroy', this, options);
-      this.remove(options);
-      this.destroyed = true;
-      this.trigger('destroy', this, options);
-      this.trigger('change', this, 'destroy', options);
-      if (this.listeningTo) {
-        this.stopListening();
-      }
-      this.unbind();
-      return this;
-    };
-
-    Model.prototype.dup = function(newRecord) {
-      var atts, record;
-      if (newRecord == null) {
-        newRecord = true;
-      }
-      atts = this.attributes();
-      if (newRecord) {
-        delete atts.id;
-      } else {
-        atts.cid = this.cid;
-      }
-      record = new this.constructor(atts);
-      if (!newRecord) {
-        this._callbacks && (record._callbacks = this._callbacks);
-      }
-      return record;
-    };
-
-    Model.prototype.clone = function() {
-      return createObject(this);
-    };
-
-    Model.prototype.reload = function() {
-      var original;
-      if (this.isNew()) {
-        return this;
-      }
-      original = this.constructor.find(this.id);
-      this.load(original.attributes());
-      return original;
-    };
-
-    Model.prototype.refresh = function(atts) {
-      atts = this.constructor.fromJSON(atts);
-      if (atts.id && this.id !== atts.id) {
-        this.changeID(atts.id);
-      }
-      this.constructor.irecords[this.id].load(atts);
-      this.trigger('refresh', this);
-      this.trigger('change', this, 'refresh');
-      return this;
-    };
-
-    Model.prototype.toJSON = function() {
-      return this.attributes();
-    };
-
-    Model.prototype.toString = function() {
-      return "<" + this.constructor.className + " (" + (JSON.stringify(this)) + ")>";
-    };
-
-    Model.prototype.fromForm = function(form) {
-      var checkbox, j, k, key, l, len, len1, len2, name, name1, ref, ref1, ref2, result;
-      result = {};
-      ref = $(form).find('[type=checkbox]:not([value])');
-      for (j = 0, len = ref.length; j < len; j++) {
-        checkbox = ref[j];
-        result[checkbox.name] = $(checkbox).prop('checked');
-      }
-      ref1 = $(form).find('[type=checkbox][name$="[]"]');
-      for (k = 0, len1 = ref1.length; k < len1; k++) {
-        checkbox = ref1[k];
-        name = checkbox.name.replace(/\[\]$/, '');
-        result[name] || (result[name] = []);
-        if ($(checkbox).prop('checked')) {
-          result[name].push(checkbox.value);
-        }
-      }
-      ref2 = $(form).serializeArray();
-      for (l = 0, len2 = ref2.length; l < len2; l++) {
-        key = ref2[l];
-        result[name1 = key.name] || (result[name1] = key.value);
-      }
-      return this.load(result);
-    };
-
-    Model.prototype.exists = function() {
-      return this.constructor.exists(this.id);
-    };
-
-    Model.prototype.update = function(options) {
-      var clone, records;
-      this.trigger('beforeUpdate', this, options);
-      records = this.constructor.irecords;
-      records[this.id].load(this.attributes());
-      this.constructor.sort();
-      clone = records[this.id].clone();
-      clone.trigger('update', clone, options);
-      clone.trigger('change', clone, 'update', options);
-      return clone;
-    };
-
-    Model.prototype.create = function(options) {
-      var clone, record;
-      this.trigger('beforeCreate', this, options);
-      this.id || (this.id = this.cid);
-      record = this.dup(false);
-      this.constructor.addRecord(record, options.idx);
-      this.constructor.sort();
-      clone = record.clone();
-      clone.trigger('create', clone, options);
-      clone.trigger('change', clone, 'create', options);
-      return clone;
-    };
-
-    Model.prototype.bind = function() {
-      var record;
-      record = this.constructor.irecords[this.id] || this;
-      return Events.bind.apply(record, arguments);
-    };
-
-    Model.prototype.one = function() {
-      var record;
-      record = this.constructor.irecords[this.id] || this;
-      return Events.one.apply(record, arguments);
-    };
-
-    Model.prototype.unbind = function() {
-      var record;
-      record = this.constructor.irecords[this.id] || this;
-      return Events.unbind.apply(record, arguments);
-    };
-
-    Model.prototype.trigger = function() {
-      var ref;
-      Events.trigger.apply(this, arguments);
-      if (arguments[0] === 'refresh') {
         return true;
-      }
-      return (ref = this.constructor).trigger.apply(ref, arguments);
     };
+}
 
-    return Model;
+// ES5 15.4.4.17
+// http://es5.github.com/#x15.4.4.17
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some
+if (!Array.prototype.some) {
+    Array.prototype.some = function some(fun /*, thisp */) {
+        var object = toObject(this),
+            self = splitString && _toString(this) == "[object String]" ?
+                this.split("") :
+                object,
+            length = self.length >>> 0,
+            thisp = arguments[1];
 
-  })(Module);
-
-  Model.prototype.on = Model.prototype.bind;
-
-  Model.prototype.off = Model.prototype.unbind;
-
-  Controller = (function(superClass) {
-    extend(Controller, superClass);
-
-    Controller.include(Events);
-
-    Controller.include(Log);
-
-    Controller.prototype.eventSplitter = /^(\S+)\s*(.*)$/;
-
-    Controller.prototype.tag = 'div';
-
-    function Controller(options) {
-      this.release = bind(this.release, this);
-      var context, key, parent_prototype, ref, value;
-      this.options = options;
-      ref = this.options;
-      for (key in ref) {
-        value = ref[key];
-        this[key] = value;
-      }
-      if (!this.el) {
-        this.el = document.createElement(this.tag);
-      }
-      this.el = $(this.el);
-      if (this.className) {
-        this.el.addClass(this.className);
-      }
-      if (this.attributes) {
-        this.el.attr(this.attributes);
-      }
-      if (!this.events) {
-        this.events = this.constructor.events;
-      }
-      if (!this.elements) {
-        this.elements = this.constructor.elements;
-      }
-      context = this;
-      while (parent_prototype = context.constructor.__super__) {
-        if (parent_prototype.events) {
-          this.events = $.extend({}, parent_prototype.events, this.events);
+        // If no callback function or if callback is not a callable function
+        if (_toString(fun) != "[object Function]") {
+            throw new TypeError(fun + " is not a function");
         }
-        if (parent_prototype.elements) {
-          this.elements = $.extend({}, parent_prototype.elements, this.elements);
-        }
-        context = parent_prototype;
-      }
-      if (this.events) {
-        this.delegateEvents(this.events);
-      }
-      if (this.elements) {
-        this.refreshElements();
-      }
-      Controller.__super__.constructor.apply(this, arguments);
-    }
 
-    Controller.prototype.release = function() {
-      this.trigger('release', this);
-      this.el.remove();
-      this.unbind();
-      return this.stopListening();
-    };
-
-    Controller.prototype.$ = function(selector) {
-      return this.el.find(selector);
-    };
-
-    Controller.prototype.delegateEvents = function(events) {
-      var eventName, key, match, method, results, selector;
-      results = [];
-      for (key in events) {
-        method = events[key];
-        if (typeof method === 'function') {
-          method = (function(_this) {
-            return function(method) {
-              return function() {
-                method.apply(_this, arguments);
+        for (var i = 0; i < length; i++) {
+            if (i in self && fun.call(thisp, self[i], i, object)) {
                 return true;
-              };
-            };
-          })(this)(method);
-        } else {
-          if (!this[method]) {
-            throw new Error(method + " doesn't exist");
-          }
-          method = (function(_this) {
-            return function(method) {
-              return function() {
-                _this[method].apply(_this, arguments);
-                return true;
-              };
-            };
-          })(this)(method);
+            }
         }
-        match = key.match(this.eventSplitter);
-        eventName = match[1];
-        selector = match[2];
-        if (selector === '') {
-          results.push(this.el.bind(eventName, method));
-        } else {
-          results.push(this.el.on(eventName, selector, method));
-        }
-      }
-      return results;
-    };
-
-    Controller.prototype.refreshElements = function() {
-      var key, ref, results, value;
-      ref = this.elements;
-      results = [];
-      for (key in ref) {
-        value = ref[key];
-        results.push(this[value] = this.$(key));
-      }
-      return results;
-    };
-
-    Controller.prototype.delay = function(func, timeout) {
-      return setTimeout(this.proxy(func), timeout || 0);
-    };
-
-    Controller.prototype.html = function(element) {
-      this.el.html(element.el || element);
-      this.refreshElements();
-      return this.el;
-    };
-
-    Controller.prototype.append = function() {
-      var e, elements, ref;
-      elements = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      elements = (function() {
-        var j, len, results;
-        results = [];
-        for (j = 0, len = elements.length; j < len; j++) {
-          e = elements[j];
-          results.push(e.el || e);
-        }
-        return results;
-      })();
-      (ref = this.el).append.apply(ref, elements);
-      this.refreshElements();
-      return this.el;
-    };
-
-    Controller.prototype.appendTo = function(element) {
-      this.el.appendTo(element.el || element);
-      this.refreshElements();
-      return this.el;
-    };
-
-    Controller.prototype.prepend = function() {
-      var e, elements, ref;
-      elements = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      elements = (function() {
-        var j, len, results;
-        results = [];
-        for (j = 0, len = elements.length; j < len; j++) {
-          e = elements[j];
-          results.push(e.el || e);
-        }
-        return results;
-      })();
-      (ref = this.el).prepend.apply(ref, elements);
-      this.refreshElements();
-      return this.el;
-    };
-
-    Controller.prototype.replace = function(element) {
-      var previous, ref, ref1;
-      element = element.el || element;
-      if (typeof element === "string") {
-        element = $.trim(element);
-      }
-      ref1 = [this.el, $(((ref = $.parseHTML(element)) != null ? ref[0] : void 0) || element)], previous = ref1[0], this.el = ref1[1];
-      previous.replaceWith(this.el);
-      this.delegateEvents(this.events);
-      this.refreshElements();
-      return this.el;
-    };
-
-    return Controller;
-
-  })(Module);
-
-  $ = (typeof window !== "undefined" && window !== null ? window.jQuery : void 0) || (typeof window !== "undefined" && window !== null ? window.Zepto : void 0) || function(element) {
-    return element;
-  };
-
-  createObject = Object.create || function(o) {
-    var Func;
-    Func = function() {};
-    Func.prototype = o;
-    return new Func();
-  };
-
-  makeArray = function(args) {
-    return Array.prototype.slice.call(args, 0);
-  };
-
-  Spine = this.Spine = {};
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = Spine;
-  }
-
-  Spine.version = '1.6.2';
-
-  Spine.$ = $;
-
-  Spine.Events = Events;
-
-  Spine.Log = Log;
-
-  Spine.Module = Module;
-
-  Spine.Controller = Controller;
-
-  Spine.Model = Model;
-
-  Module.extend.call(Spine, Events);
-
-  Module.create = Module.sub = Controller.create = Controller.sub = Model.sub = function(instances, statics) {
-    var Result;
-    Result = (function(superClass) {
-      extend(Result, superClass);
-
-      function Result() {
-        return Result.__super__.constructor.apply(this, arguments);
-      }
-
-      return Result;
-
-    })(this);
-    if (instances) {
-      Result.include(instances);
-    }
-    if (statics) {
-      Result.extend(statics);
-    }
-    if (typeof Result.unbind === "function") {
-      Result.unbind();
-    }
-    return Result;
-  };
-
-  Model.setup = function(name, attributes) {
-    var Instance;
-    if (attributes == null) {
-      attributes = [];
-    }
-    Instance = (function(superClass) {
-      extend(Instance, superClass);
-
-      function Instance() {
-        return Instance.__super__.constructor.apply(this, arguments);
-      }
-
-      return Instance;
-
-    })(this);
-    Instance.configure.apply(Instance, [name].concat(slice.call(attributes)));
-    return Instance;
-  };
-
-  Spine.Class = Module;
-
-}).call(this);
-
-//# sourceMappingURL=spine.js.map
-}, "spine/lib/local": function(exports, require, module) {// Generated by CoffeeScript 1.10.0
-(function() {
-  var Spine;
-
-  Spine = this.Spine || require('spine');
-
-  Spine.Model.Local = {
-    extended: function() {
-      var e, error, testLocalStorage;
-      testLocalStorage = 'spine' + new Date().getTime();
-      try {
-        localStorage.setItem(testLocalStorage, testLocalStorage);
-        localStorage.removeItem(testLocalStorage);
-      } catch (error) {
-        e = error;
-        return;
-      }
-      this.change(this.saveLocal);
-      return this.fetch(this.loadLocal);
-    },
-    saveLocal: function() {
-      var result;
-      result = JSON.stringify(this);
-      return localStorage[this.className] = result;
-    },
-    loadLocal: function(options) {
-      var result;
-      if (options == null) {
-        options = {};
-      }
-      if (!options.hasOwnProperty('clear')) {
-        options.clear = true;
-      }
-      result = localStorage[this.className];
-      return this.refresh(result || [], options);
-    }
-  };
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = Spine.Model.Local;
-  }
-
-}).call(this);
-
-//# sourceMappingURL=local.js.map
-}, "spine/lib/ajax": function(exports, require, module) {// Generated by CoffeeScript 1.10.0
-(function() {
-  var $, Ajax, Base, Collection, Extend, GenerateURL, Include, Model, Queue, Singleton, Spine,
-    slice = [].slice,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
-
-  Spine = this.Spine || require('spine');
-
-  $ = Spine.$;
-
-  Model = Spine.Model;
-
-  Queue = $({});
-
-  Ajax = {
-    getURL: function(object) {
-      if (object.className != null) {
-        return this.generateURL(object);
-      } else {
-        return this.generateURL(object, encodeURIComponent(object.id));
-      }
-    },
-    getCollectionURL: function(object) {
-      return this.generateURL(object);
-    },
-    getScope: function(object) {
-      return (typeof object.scope === "function" ? object.scope() : void 0) || object.scope;
-    },
-    getCollection: function(object) {
-      if (object.url !== object.generateURL) {
-        if (typeof object.url === 'function') {
-          return object.url();
-        } else {
-          return object.url;
-        }
-      } else if (object.className != null) {
-        return object.className.toLowerCase() + 's';
-      }
-    },
-    generateURL: function() {
-      var args, collection, object, path, scope;
-      object = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-      collection = Ajax.getCollection(object) || Ajax.getCollection(object.constructor);
-      scope = Ajax.getScope(object) || Ajax.getScope(object.constructor);
-      args.unshift(collection);
-      args.unshift(scope);
-      path = args.join('/');
-      path = path.replace(/(\/\/)/g, "/");
-      path = path.replace(/^\/|\/$/g, "");
-      if (path.indexOf("../") !== 0) {
-        return Model.host + "/" + path;
-      } else {
-        return path;
-      }
-    },
-    enabled: true,
-    disable: function(callback) {
-      var e, error1;
-      if (this.enabled) {
-        this.enabled = false;
-        try {
-          return callback();
-        } catch (error1) {
-          e = error1;
-          throw e;
-        } finally {
-          this.enabled = true;
-        }
-      } else {
-        return callback();
-      }
-    },
-    queue: function(request) {
-      if (request) {
-        return Queue.queue(request);
-      } else {
-        return Queue.queue();
-      }
-    },
-    clearQueue: function() {
-      return this.queue([]);
-    },
-    config: {
-      loadMethod: 'GET',
-      updateMethod: 'PUT',
-      createMethod: 'POST',
-      destroyMethod: 'DELETE'
-    }
-  };
-
-  Base = (function() {
-    function Base() {}
-
-    Base.prototype.defaults = {
-      dataType: 'json',
-      processData: false,
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      }
-    };
-
-    Base.prototype.queue = Ajax.queue;
-
-    Base.prototype.ajax = function(params, defaults) {
-      return $.ajax(this.ajaxSettings(params, defaults));
-    };
-
-    Base.prototype.ajaxQueue = function(params, defaults, record) {
-      var deferred, jqXHR, parallel, promise, request, settings;
-      jqXHR = null;
-      deferred = $.Deferred();
-      promise = deferred.promise();
-      if (!Ajax.enabled) {
-        return promise;
-      }
-      settings = this.ajaxSettings(params, defaults);
-      parallel = settings.parallel !== void 0 ? settings.parallel : settings.type === 'GET';
-      request = function(next) {
-        var ref, reject, resolve;
-        if ((record != null ? record.id : void 0) != null) {
-          if (settings.url == null) {
-            settings.url = Ajax.getURL(record);
-          }
-          if ((ref = settings.data) != null) {
-            ref.id = record.id;
-          }
-        }
-        if (typeof settings.data !== 'string' && settings.processData !== true) {
-          settings.data = JSON.stringify(settings.data);
-        }
-        resolve = function() {
-          return deferred.resolve.apply(this, slice.call(arguments).concat([settings]));
-        };
-        reject = function() {
-          return deferred.reject.apply(this, slice.call(arguments).concat([settings]));
-        };
-        jqXHR = $.ajax(settings);
-        jqXHR.done(resolve);
-        jqXHR.fail(reject);
-        jqXHR.then(next, next);
-        if (parallel) {
-          return Queue.dequeue();
-        }
-      };
-      promise.abort = function(statusText) {
-        var index;
-        if (jqXHR) {
-          return jqXHR.abort(statusText);
-        }
-        index = $.inArray(request, this.queue());
-        if (index > -1) {
-          this.queue().splice(index, 1);
-        }
-        deferred.rejectWith(settings.context || settings, [promise, statusText, '']);
-        return promise;
-      };
-      this.queue(request);
-      return promise;
-    };
-
-    Base.prototype.ajaxSettings = function(params, defaults) {
-      return $.extend({}, this.defaults, defaults, params);
-    };
-
-    return Base;
-
-  })();
-
-  Collection = (function(superClass) {
-    extend(Collection, superClass);
-
-    function Collection(model) {
-      this.model = model;
-      this.failResponse = bind(this.failResponse, this);
-      this.recordsResponse = bind(this.recordsResponse, this);
-    }
-
-    Collection.prototype.find = function(id, params, options) {
-      var record;
-      if (options == null) {
-        options = {};
-      }
-      record = new this.model({
-        id: id
-      });
-      return this.ajaxQueue(params, {
-        type: options.method || Ajax.config.loadMethod,
-        url: options.url || Ajax.getURL(record),
-        parallel: options.parallel
-      }).done(this.recordsResponse(options)).fail(this.failResponse(options));
-    };
-
-    Collection.prototype.all = function(params, options) {
-      if (options == null) {
-        options = {};
-      }
-      return this.ajaxQueue(params, {
-        type: options.method || Ajax.config.loadMethod,
-        url: options.url || Ajax.getURL(this.model),
-        parallel: options.parallel
-      }).done(this.recordsResponse(options)).fail(this.failResponse(options));
-    };
-
-    Collection.prototype.fetch = function(params, options) {
-      var id;
-      if (params == null) {
-        params = {};
-      }
-      if (options == null) {
-        options = {};
-      }
-      if (id = params.id) {
-        delete params.id;
-        return this.find(id, params, options).done((function(_this) {
-          return function(record) {
-            return _this.model.refresh(record, options);
-          };
-        })(this));
-      } else {
-        return this.all(params, options).done((function(_this) {
-          return function(records) {
-            return _this.model.refresh(records, options);
-          };
-        })(this));
-      }
-    };
-
-    Collection.prototype.recordsResponse = function(options) {
-      return (function(_this) {
-        return function(data, status, xhr, settings) {
-          var ref;
-          _this.model.trigger('ajaxSuccess', null, status, xhr, settings);
-          return (ref = options.done) != null ? ref.call(_this.model, settings) : void 0;
-        };
-      })(this);
-    };
-
-    Collection.prototype.failResponse = function(options) {
-      return (function(_this) {
-        return function(xhr, statusText, error, settings) {
-          var ref;
-          _this.model.trigger('ajaxError', null, xhr, statusText, error, settings);
-          return (ref = options.fail) != null ? ref.call(_this.model, settings) : void 0;
-        };
-      })(this);
-    };
-
-    return Collection;
-
-  })(Base);
-
-  Singleton = (function(superClass) {
-    extend(Singleton, superClass);
-
-    function Singleton(record1) {
-      this.record = record1;
-      this.failResponse = bind(this.failResponse, this);
-      this.recordResponse = bind(this.recordResponse, this);
-      this.model = this.record.constructor;
-    }
-
-    Singleton.prototype.reload = function(params, options) {
-      if (options == null) {
-        options = {};
-      }
-      return this.ajaxQueue(params, {
-        type: options.method || Ajax.config.loadMethod,
-        url: options.url,
-        parallel: options.parallel
-      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
-    };
-
-    Singleton.prototype.create = function(params, options) {
-      if (options == null) {
-        options = {};
-      }
-      return this.ajaxQueue(params, {
-        type: options.method || Ajax.config.createMethod,
-        contentType: 'application/json',
-        data: this.record.toJSON(),
-        url: options.url || Ajax.getCollectionURL(this.record),
-        parallel: options.parallel
-      }).done(this.recordResponse(options)).fail(this.failResponse(options));
-    };
-
-    Singleton.prototype.update = function(params, options) {
-      if (options == null) {
-        options = {};
-      }
-      return this.ajaxQueue(params, {
-        type: options.method || Ajax.config.updateMethod,
-        contentType: 'application/json',
-        data: this.record.toJSON(),
-        url: options.url,
-        parallel: options.parallel
-      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
-    };
-
-    Singleton.prototype.destroy = function(params, options) {
-      if (options == null) {
-        options = {};
-      }
-      return this.ajaxQueue(params, {
-        type: options.method || Ajax.config.destroyMethod,
-        url: options.url,
-        parallel: options.parallel
-      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
-    };
-
-    Singleton.prototype.recordResponse = function(options) {
-      return (function(_this) {
-        return function(data, status, xhr, settings) {
-          var ref;
-          if ((data != null) && Object.getOwnPropertyNames(data).length && !_this.record.destroyed) {
-            _this.record.refresh(data, {
-              ajax: false
-            });
-          }
-          _this.record.trigger('ajaxSuccess', _this.record, _this.model.fromJSON(data), status, xhr, settings);
-          return (ref = options.done) != null ? ref.call(_this.record, settings) : void 0;
-        };
-      })(this);
-    };
-
-    Singleton.prototype.failResponse = function(options) {
-      return (function(_this) {
-        return function(xhr, statusText, error, settings) {
-          var ref;
-          switch (settings.type) {
-            case 'POST':
-              _this.createFailed();
-              break;
-            case 'DELETE':
-              _this.destroyFailed();
-          }
-          _this.record.trigger('ajaxError', _this.record, xhr, statusText, error, settings);
-          return (ref = options.fail) != null ? ref.call(_this.record, settings) : void 0;
-        };
-      })(this);
-    };
-
-    Singleton.prototype.createFailed = function() {
-      return this.record.remove({
-        clear: true
-      });
-    };
-
-    Singleton.prototype.destroyFailed = function() {
-      this.record.destroyed = false;
-      return this.record.constructor.refresh(this.record);
-    };
-
-    return Singleton;
-
-  })(Base);
-
-  Model.host = '';
-
-  GenerateURL = {
-    include: function() {
-      var args;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      args.unshift(encodeURIComponent(this.id));
-      return Ajax.generateURL.apply(Ajax, [this].concat(slice.call(args)));
-    },
-    extend: function() {
-      var args;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      return Ajax.generateURL.apply(Ajax, [this].concat(slice.call(args)));
-    }
-  };
-
-  Include = {
-    ajax: function() {
-      return new Singleton(this);
-    },
-    generateURL: GenerateURL.include,
-    url: GenerateURL.include
-  };
-
-  Extend = {
-    ajax: function() {
-      return new Collection(this);
-    },
-    generateURL: GenerateURL.extend,
-    url: GenerateURL.extend
-  };
-
-  Model.Ajax = {
-    extended: function() {
-      this.fetch(this.ajaxFetch);
-      this.change(this.ajaxChange);
-      this.extend(Extend);
-      return this.include(Include);
-    },
-    ajaxFetch: function() {
-      var ref;
-      return (ref = this.ajax()).fetch.apply(ref, arguments);
-    },
-    ajaxChange: function(record, type, options) {
-      var base;
-      if (options == null) {
-        options = {};
-      }
-      if (options.ajax === false) {
-        return;
-      }
-      return typeof (base = record.ajax())[type] === "function" ? base[type](options.ajax, options) : void 0;
-    }
-  };
-
-  Model.Ajax.Methods = {
-    extended: function() {
-      this.extend(Extend);
-      return this.include(Include);
-    }
-  };
-
-  Ajax.defaults = Base.prototype.defaults;
-
-  Ajax.Base = Base;
-
-  Ajax.Singleton = Singleton;
-
-  Ajax.Collection = Collection;
-
-  Spine.Ajax = Ajax;
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = Ajax;
-  }
-
-}).call(this);
-
-//# sourceMappingURL=ajax.js.map
-}, "spine/lib/route": function(exports, require, module) {// Generated by CoffeeScript 1.10.0
-(function() {
-  var $, Path, Route, Spine, escapeRegExp, hashStrip, namedParam, splatParam,
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty,
-    slice = [].slice;
-
-  Spine = this.Spine || require('spine');
-
-  $ = Spine.$;
-
-  hashStrip = /^#*/;
-
-  namedParam = /:([\w\d]+)/g;
-
-  splatParam = /\*([\w\d]+)/g;
-
-  escapeRegExp = /[-[\]{}()+?.,\\^$|#\s]/g;
-
-  Path = (function(superClass) {
-    extend(Path, superClass);
-
-    function Path(path, callback) {
-      var match;
-      this.names = [];
-      this.path = path;
-      this.callback = callback;
-      if (typeof path === 'string') {
-        namedParam.lastIndex = 0;
-        while ((match = namedParam.exec(path)) !== null) {
-          this.names.push(match[1]);
-        }
-        splatParam.lastIndex = 0;
-        while ((match = splatParam.exec(path)) !== null) {
-          this.names.push(match[1]);
-        }
-        path = path.replace(escapeRegExp, '\\$&').replace(namedParam, '([^\/]*)').replace(splatParam, '(.*?)');
-        this.route = new RegExp("^" + path + "$");
-      } else {
-        this.route = path;
-      }
-    }
-
-    Path.prototype.match = function(path, options) {
-      var i, j, len, match, param, params;
-      if (options == null) {
-        options = {};
-      }
-      if (!(match = this.route.exec(path))) {
         return false;
-      }
-      options.match = match;
-      params = match.slice(1);
-      if (this.names.length) {
-        for (i = j = 0, len = params.length; j < len; i = ++j) {
-          param = params[i];
-          options[this.names[i]] = param;
+    };
+}
+
+// ES5 15.4.4.21
+// http://es5.github.com/#x15.4.4.21
+// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
+if (!Array.prototype.reduce) {
+    Array.prototype.reduce = function reduce(fun /*, initial*/) {
+        var object = toObject(this),
+            self = splitString && _toString(this) == "[object String]" ?
+                this.split("") :
+                object,
+            length = self.length >>> 0;
+
+        // If no callback function or if callback is not a callable function
+        if (_toString(fun) != "[object Function]") {
+            throw new TypeError(fun + " is not a function");
         }
-      }
-      Route.trigger('before', this);
-      return this.callback.call(null, options) !== false;
-    };
 
-    return Path;
+        // no value to return if no initial value and an empty array
+        if (!length && arguments.length == 1) {
+            throw new TypeError("reduce of empty array with no initial value");
+        }
 
-  })(Spine.Module);
+        var i = 0;
+        var result;
+        if (arguments.length >= 2) {
+            result = arguments[1];
+        } else {
+            do {
+                if (i in self) {
+                    result = self[i++];
+                    break;
+                }
 
-  Route = (function(superClass) {
-    var ref;
+                // if array contains no values, no initial value to return
+                if (++i >= length) {
+                    throw new TypeError("reduce of empty array with no initial value");
+                }
+            } while (true);
+        }
 
-    extend(Route, superClass);
-
-    Route.extend(Spine.Events);
-
-    Route.historySupport = ((ref = window.history) != null ? ref.pushState : void 0) != null;
-
-    Route.options = {
-      trigger: true,
-      history: false,
-      shim: false,
-      replace: false,
-      redirect: false
-    };
-
-    Route.routers = [];
-
-    Route.setup = function(options) {
-      if (options == null) {
-        options = {};
-      }
-      this.options = $.extend({}, this.options, options);
-      if (this.options.history) {
-        this.history = this.historySupport && this.options.history;
-      }
-      if (this.options.shim) {
-        return;
-      }
-      if (this.history) {
-        $(window).bind('popstate', this.change);
-      } else {
-        $(window).bind('hashchange', this.change);
-      }
-      return this.change();
-    };
-
-    Route.unbind = function() {
-      var unbindResult;
-      unbindResult = Spine.Events.unbind.apply(this, arguments);
-      if (arguments.length > 0) {
-        return unbindResult;
-      }
-      if (this.options.shim) {
-        return;
-      }
-      if (this.history) {
-        return $(window).unbind('popstate', this.change);
-      } else {
-        return $(window).unbind('hashchange', this.change);
-      }
-    };
-
-    Route.navigate = function() {
-      var args, lastArg, options, path, routes;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      options = {};
-      lastArg = args[args.length - 1];
-      if (typeof lastArg === 'object') {
-        options = args.pop();
-      } else if (typeof lastArg === 'boolean') {
-        options.trigger = args.pop();
-      }
-      options = $.extend({}, this.options, options);
-      path = args.join('/');
-      if (this.path === path) {
-        return;
-      }
-      this.path = path;
-      if (options.trigger) {
-        this.trigger('navigate', this.path);
-        routes = this.matchRoutes(this.path, options);
-        if (!routes.length) {
-          if (typeof options.redirect === 'function') {
-            return options.redirect.apply(this, [this.path, options]);
-          } else {
-            if (options.redirect === true) {
-              this.redirect(this.path);
+        for (; i < length; i++) {
+            if (i in self) {
+                result = fun.call(void 0, result, self[i], i, object);
             }
-          }
         }
-      }
-      if (options.shim) {
-        return true;
-      } else if (this.history && options.replace) {
-        return history.replaceState({}, document.title, this.path);
-      } else if (this.history) {
-        return history.pushState({}, document.title, this.path);
-      } else {
-        return window.location.hash = this.path;
-      }
-    };
 
-    Route.create = function() {
-      var router;
-      router = new this;
-      this.routers.push(router);
-      return router;
+        return result;
     };
+}
 
-    Route.add = function(path, callback) {
-      return this.router.add(path, callback);
-    };
+// ES5 15.4.4.22
+// http://es5.github.com/#x15.4.4.22
+// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduceRight
+if (!Array.prototype.reduceRight) {
+    Array.prototype.reduceRight = function reduceRight(fun /*, initial*/) {
+        var object = toObject(this),
+            self = splitString && _toString(this) == "[object String]" ?
+                this.split("") :
+                object,
+            length = self.length >>> 0;
 
-    Route.prototype.add = function(path, callback) {
-      var key, results, value;
-      if (typeof path === 'object' && !(path instanceof RegExp)) {
-        results = [];
-        for (key in path) {
-          value = path[key];
-          results.push(this.add(key, value));
+        // If no callback function or if callback is not a callable function
+        if (_toString(fun) != "[object Function]") {
+            throw new TypeError(fun + " is not a function");
         }
-        return results;
-      } else {
-        return this.routes.push(new Path(path, callback));
-      }
-    };
 
-    Route.prototype.destroy = function() {
-      var r;
-      this.routes.length = 0;
-      return this.constructor.routers = (function() {
-        var j, len, ref1, results;
-        ref1 = this.constructor.routers;
-        results = [];
-        for (j = 0, len = ref1.length; j < len; j++) {
-          r = ref1[j];
-          if (r !== this) {
-            results.push(r);
-          }
+        // no value to return if no initial value, empty array
+        if (!length && arguments.length == 1) {
+            throw new TypeError("reduceRight of empty array with no initial value");
         }
-        return results;
-      }).call(this);
-    };
 
-    Route.getPath = function() {
-      var path;
-      if (this.history) {
-        path = window.location.pathname;
-        if (path.substr(0, 1) !== '/') {
-          path = '/' + path;
+        var result, i = length - 1;
+        if (arguments.length >= 2) {
+            result = arguments[1];
+        } else {
+            do {
+                if (i in self) {
+                    result = self[i--];
+                    break;
+                }
+
+                // if array contains no values, no initial value to return
+                if (--i < 0) {
+                    throw new TypeError("reduceRight of empty array with no initial value");
+                }
+            } while (true);
         }
-      } else {
-        path = window.location.hash;
-        path = path.replace(hashStrip, '');
-      }
-      return path;
-    };
 
-    Route.getHost = function() {
-      return window.location.protocol + "//" + window.location.host;
-    };
-
-    Route.change = function() {
-      var path;
-      path = Route.getPath();
-      if (path === Route.path) {
-        return;
-      }
-      Route.path = path;
-      return Route.matchRoutes(Route.path);
-    };
-
-    Route.matchRoutes = function(path, options) {
-      var j, len, match, matches, ref1, router;
-      matches = [];
-      ref1 = this.routers.concat([this.router]);
-      for (j = 0, len = ref1.length; j < len; j++) {
-        router = ref1[j];
-        match = router.matchRoute(path, options);
-        if (match) {
-          matches.push(match);
-        }
-      }
-      if (matches.length) {
-        this.trigger('change', matches, path);
-      }
-      return matches;
-    };
-
-    Route.redirect = function(path) {
-      return window.location = path;
-    };
-
-    function Route() {
-      this.routes = [];
-    }
-
-    Route.prototype.matchRoute = function(path, options) {
-      var j, len, ref1, route;
-      ref1 = this.routes;
-      for (j = 0, len = ref1.length; j < len; j++) {
-        route = ref1[j];
-        if (route.match(path, options)) {
-          return route;
-        }
-      }
-    };
-
-    Route.prototype.trigger = function() {
-      var args, ref1;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      args.splice(1, 0, this);
-      return (ref1 = this.constructor).trigger.apply(ref1, args);
-    };
-
-    return Route;
-
-  })(Spine.Module);
-
-  Route.router = new Route;
-
-  Spine.Controller.include({
-    route: function(path, callback) {
-      if (this.router instanceof Spine.Route) {
-        return this.router.add(path, this.proxy(callback));
-      } else {
-        return Spine.Route.add(path, this.proxy(callback));
-      }
-    },
-    routes: function(routes) {
-      var key, results, value;
-      results = [];
-      for (key in routes) {
-        value = routes[key];
-        results.push(this.route(key, value));
-      }
-      return results;
-    },
-    navigate: function() {
-      return Spine.Route.navigate.apply(Spine.Route, arguments);
-    }
-  });
-
-  Route.Path = Path;
-
-  Spine.Route = Route;
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = Route;
-  }
-
-}).call(this);
-
-//# sourceMappingURL=route.js.map
-}, "spine/lib/manager": function(exports, require, module) {// Generated by CoffeeScript 1.10.0
-(function() {
-  var $, Spine,
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty,
-    slice = [].slice,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  Spine = this.Spine || require('spine');
-
-  $ = Spine.$;
-
-  Spine.Manager = (function(superClass) {
-    extend(Manager, superClass);
-
-    Manager.include(Spine.Events);
-
-    function Manager() {
-      this.controllers = [];
-      this.bind('change', this.change);
-      this.add.apply(this, arguments);
-    }
-
-    Manager.prototype.add = function() {
-      var cont, controllers, i, len, results;
-      controllers = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      results = [];
-      for (i = 0, len = controllers.length; i < len; i++) {
-        cont = controllers[i];
-        results.push(this.addOne(cont));
-      }
-      return results;
-    };
-
-    Manager.prototype.addOne = function(controller) {
-      controller.bind('active', (function(_this) {
-        return function() {
-          var args;
-          args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-          return _this.trigger.apply(_this, ['change', controller].concat(slice.call(args)));
-        };
-      })(this));
-      controller.bind('release', (function(_this) {
-        return function() {
-          var c;
-          return _this.controllers = (function() {
-            var i, len, ref, results;
-            ref = this.controllers;
-            results = [];
-            for (i = 0, len = ref.length; i < len; i++) {
-              c = ref[i];
-              if (c !== controller) {
-                results.push(c);
-              }
+        do {
+            if (i in this) {
+                result = fun.call(void 0, result, self[i], i, object);
             }
-            return results;
-          }).call(_this);
+        } while (i--);
+
+        return result;
+    };
+}
+
+// ES5 15.4.4.14
+// http://es5.github.com/#x15.4.4.14
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
+if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
+    Array.prototype.indexOf = function indexOf(sought /*, fromIndex */ ) {
+        var self = splitString && _toString(this) == "[object String]" ?
+                this.split("") :
+                toObject(this),
+            length = self.length >>> 0;
+
+        if (!length) {
+            return -1;
+        }
+
+        var i = 0;
+        if (arguments.length > 1) {
+            i = toInteger(arguments[1]);
+        }
+
+        // handle negative indices
+        i = i >= 0 ? i : Math.max(0, length + i);
+        for (; i < length; i++) {
+            if (i in self && self[i] === sought) {
+                return i;
+            }
+        }
+        return -1;
+    };
+}
+
+// ES5 15.4.4.15
+// http://es5.github.com/#x15.4.4.15
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf
+if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
+    Array.prototype.lastIndexOf = function lastIndexOf(sought /*, fromIndex */) {
+        var self = splitString && _toString(this) == "[object String]" ?
+                this.split("") :
+                toObject(this),
+            length = self.length >>> 0;
+
+        if (!length) {
+            return -1;
+        }
+        var i = length - 1;
+        if (arguments.length > 1) {
+            i = Math.min(i, toInteger(arguments[1]));
+        }
+        // handle negative indices
+        i = i >= 0 ? i : length - Math.abs(i);
+        for (; i >= 0; i--) {
+            if (i in self && sought === self[i]) {
+                return i;
+            }
+        }
+        return -1;
+    };
+}
+
+//
+// Object
+// ======
+//
+
+// ES5 15.2.3.14
+// http://es5.github.com/#x15.2.3.14
+if (!Object.keys) {
+    // http://whattheheadsaid.com/2010/10/a-safer-object-keys-compatibility-implementation
+    var hasDontEnumBug = true,
+        dontEnums = [
+            "toString",
+            "toLocaleString",
+            "valueOf",
+            "hasOwnProperty",
+            "isPrototypeOf",
+            "propertyIsEnumerable",
+            "constructor"
+        ],
+        dontEnumsLength = dontEnums.length;
+
+    for (var key in {"toString": null}) {
+        hasDontEnumBug = false;
+    }
+
+    Object.keys = function keys(object) {
+
+        if (
+            (typeof object != "object" && typeof object != "function") ||
+            object === null
+        ) {
+            throw new TypeError("Object.keys called on a non-object");
+        }
+
+        var keys = [];
+        for (var name in object) {
+            if (owns(object, name)) {
+                keys.push(name);
+            }
+        }
+
+        if (hasDontEnumBug) {
+            for (var i = 0, ii = dontEnumsLength; i < ii; i++) {
+                var dontEnum = dontEnums[i];
+                if (owns(object, dontEnum)) {
+                    keys.push(dontEnum);
+                }
+            }
+        }
+        return keys;
+    };
+
+}
+
+//
+// Date
+// ====
+//
+
+// ES5 15.9.5.43
+// http://es5.github.com/#x15.9.5.43
+// This function returns a String value represent the instance in time
+// represented by this Date object. The format of the String is the Date Time
+// string format defined in 15.9.1.15. All fields are present in the String.
+// The time zone is always UTC, denoted by the suffix Z. If the time value of
+// this object is not a finite Number a RangeError exception is thrown.
+var negativeDate = -62198755200000,
+    negativeYearString = "-000001";
+if (
+    !Date.prototype.toISOString ||
+    (new Date(negativeDate).toISOString().indexOf(negativeYearString) === -1)
+) {
+    Date.prototype.toISOString = function toISOString() {
+        var result, length, value, year, month;
+        if (!isFinite(this)) {
+            throw new RangeError("Date.prototype.toISOString called on non-finite value.");
+        }
+
+        year = this.getUTCFullYear();
+
+        month = this.getUTCMonth();
+        // see https://github.com/kriskowal/es5-shim/issues/111
+        year += Math.floor(month / 12);
+        month = (month % 12 + 12) % 12;
+
+        // the date time string format is specified in 15.9.1.15.
+        result = [month + 1, this.getUTCDate(),
+            this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds()];
+        year = (
+            (year < 0 ? "-" : (year > 9999 ? "+" : "")) +
+            ("00000" + Math.abs(year))
+            .slice(0 <= year && year <= 9999 ? -4 : -6)
+        );
+
+        length = result.length;
+        while (length--) {
+            value = result[length];
+            // pad months, days, hours, minutes, and seconds to have two
+            // digits.
+            if (value < 10) {
+                result[length] = "0" + value;
+            }
+        }
+        // pad milliseconds to have three digits.
+        return (
+            year + "-" + result.slice(0, 2).join("-") +
+            "T" + result.slice(2).join(":") + "." +
+            ("000" + this.getUTCMilliseconds()).slice(-3) + "Z"
+        );
+    };
+}
+
+
+// ES5 15.9.5.44
+// http://es5.github.com/#x15.9.5.44
+// This function provides a String representation of a Date object for use by
+// JSON.stringify (15.12.3).
+var dateToJSONIsSupported = false;
+try {
+    dateToJSONIsSupported = (
+        Date.prototype.toJSON &&
+        new Date(NaN).toJSON() === null &&
+        new Date(negativeDate).toJSON().indexOf(negativeYearString) !== -1 &&
+        Date.prototype.toJSON.call({ // generic
+            toISOString: function () {
+                return true;
+            }
+        })
+    );
+} catch (e) {
+}
+if (!dateToJSONIsSupported) {
+    Date.prototype.toJSON = function toJSON(key) {
+        // When the toJSON method is called with argument key, the following
+        // steps are taken:
+
+        // 1.  Let O be the result of calling ToObject, giving it the this
+        // value as its argument.
+        // 2. Let tv be toPrimitive(O, hint Number).
+        var o = Object(this),
+            tv = toPrimitive(o),
+            toISO;
+        // 3. If tv is a Number and is not finite, return null.
+        if (typeof tv === "number" && !isFinite(tv)) {
+            return null;
+        }
+        // 4. Let toISO be the result of calling the [[Get]] internal method of
+        // O with argument "toISOString".
+        toISO = o.toISOString;
+        // 5. If IsCallable(toISO) is false, throw a TypeError exception.
+        if (typeof toISO != "function") {
+            throw new TypeError("toISOString property is not callable");
+        }
+        // 6. Return the result of calling the [[Call]] internal method of
+        //  toISO with O as the this value and an empty argument list.
+        return toISO.call(o);
+
+        // NOTE 1 The argument is ignored.
+
+        // NOTE 2 The toJSON function is intentionally generic; it does not
+        // require that its this value be a Date object. Therefore, it can be
+        // transferred to other kinds of objects for use as a method. However,
+        // it does require that any such object have a toISOString method. An
+        // object is free to use the argument key to filter its
+        // stringification.
+    };
+}
+
+// ES5 15.9.4.2
+// http://es5.github.com/#x15.9.4.2
+// based on work shared by Daniel Friesen (dantman)
+// http://gist.github.com/303249
+if (!Date.parse || "Date.parse is buggy") {
+    // XXX global assignment won't work in embeddings that use
+    // an alternate object for the context.
+    Date = (function(NativeDate) {
+
+        // Date.length === 7
+        function Date(Y, M, D, h, m, s, ms) {
+            var length = arguments.length;
+            if (this instanceof NativeDate) {
+                var date = length == 1 && String(Y) === Y ? // isString(Y)
+                    // We explicitly pass it through parse:
+                    new NativeDate(Date.parse(Y)) :
+                    // We have to manually make calls depending on argument
+                    // length here
+                    length >= 7 ? new NativeDate(Y, M, D, h, m, s, ms) :
+                    length >= 6 ? new NativeDate(Y, M, D, h, m, s) :
+                    length >= 5 ? new NativeDate(Y, M, D, h, m) :
+                    length >= 4 ? new NativeDate(Y, M, D, h) :
+                    length >= 3 ? new NativeDate(Y, M, D) :
+                    length >= 2 ? new NativeDate(Y, M) :
+                    length >= 1 ? new NativeDate(Y) :
+                                  new NativeDate();
+                // Prevent mixups with unfixed Date object
+                date.constructor = Date;
+                return date;
+            }
+            return NativeDate.apply(this, arguments);
         };
-      })(this));
-      return this.controllers.push(controller);
-    };
 
-    Manager.prototype.deactivate = function() {
-      return this.trigger.apply(this, ['change', false].concat(slice.call(arguments)));
-    };
+        // 15.9.1.15 Date Time String Format.
+        var isoDateExpression = new RegExp("^" +
+            "(\\d{4}|[\+\-]\\d{6})" + // four-digit year capture or sign +
+                                      // 6-digit extended year
+            "(?:-(\\d{2})" + // optional month capture
+            "(?:-(\\d{2})" + // optional day capture
+            "(?:" + // capture hours:minutes:seconds.milliseconds
+                "T(\\d{2})" + // hours capture
+                ":(\\d{2})" + // minutes capture
+                "(?:" + // optional :seconds.milliseconds
+                    ":(\\d{2})" + // seconds capture
+                    "(?:\\.(\\d{3}))?" + // milliseconds capture
+                ")?" +
+            "(" + // capture UTC offset component
+                "Z|" + // UTC capture
+                "(?:" + // offset specifier +/-hours:minutes
+                    "([-+])" + // sign capture
+                    "(\\d{2})" + // hours offset capture
+                    ":(\\d{2})" + // minutes offset capture
+                ")" +
+            ")?)?)?)?" +
+        "$");
 
-    Manager.prototype.change = function() {
-      var args, cont, current, i, len, ref;
-      current = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-      ref = this.controllers;
-      for (i = 0, len = ref.length; i < len; i++) {
-        cont = ref[i];
-        if (cont !== current) {
-          cont.deactivate.apply(cont, args);
+        var months = [
+            0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
+        ];
+
+        function dayFromMonth(year, month) {
+            var t = month > 1 ? 1 : 0;
+            return (
+                months[month] +
+                Math.floor((year - 1969 + t) / 4) -
+                Math.floor((year - 1901 + t) / 100) +
+                Math.floor((year - 1601 + t) / 400) +
+                365 * (year - 1970)
+            );
         }
-      }
-      if (current) {
-        return current.activate.apply(current, args);
-      }
-    };
 
-    return Manager;
-
-  })(Spine.Module);
-
-  Spine.Controller.include({
-    active: function() {
-      var args;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      if (typeof args[0] === 'function') {
-        this.bind('active', args[0]);
-      } else {
-        args.unshift('active');
-        this.trigger.apply(this, args);
-      }
-      return this;
-    },
-    isActive: function() {
-      return this.el.hasClass('active');
-    },
-    activate: function() {
-      this.el.addClass('active');
-      return this;
-    },
-    deactivate: function() {
-      this.el.removeClass('active');
-      return this;
-    }
-  });
-
-  Spine.Stack = (function(superClass) {
-    extend(Stack, superClass);
-
-    Stack.prototype.controllers = {};
-
-    Stack.prototype.routes = {};
-
-    Stack.prototype.className = 'spine stack';
-
-    function Stack() {
-      this.release = bind(this.release, this);
-      var fn, key, ref, ref1, ref2, value;
-      Stack.__super__.constructor.apply(this, arguments);
-      this.manager = new Spine.Manager;
-      this.router = (ref = Spine.Route) != null ? ref.create() : void 0;
-      ref1 = this.controllers;
-      for (key in ref1) {
-        value = ref1[key];
-        if (this[key] != null) {
-          throw Error("'@" + key + "' already assigned");
+        // Copy any custom methods a 3rd party library may have added
+        for (var key in NativeDate) {
+            Date[key] = NativeDate[key];
         }
-        this[key] = new value({
-          stack: this
-        });
-        this.add(this[key]);
-      }
-      ref2 = this.routes;
-      fn = (function(_this) {
-        return function(key, value) {
-          var callback;
-          if (typeof value === 'function') {
-            callback = value;
-          }
-          callback || (callback = function() {
-            var ref3;
-            return (ref3 = _this[value]).active.apply(ref3, arguments);
-          });
-          return _this.route(key, callback);
+
+        // Copy "native" methods explicitly; they may be non-enumerable
+        Date.now = NativeDate.now;
+        Date.UTC = NativeDate.UTC;
+        Date.prototype = NativeDate.prototype;
+        Date.prototype.constructor = Date;
+
+        // Upgrade Date.parse to handle simplified ISO 8601 strings
+        Date.parse = function parse(string) {
+            var match = isoDateExpression.exec(string);
+            if (match) {
+                // parse months, days, hours, minutes, seconds, and milliseconds
+                // provide default values if necessary
+                // parse the UTC offset component
+                var year = Number(match[1]),
+                    month = Number(match[2] || 1) - 1,
+                    day = Number(match[3] || 1) - 1,
+                    hour = Number(match[4] || 0),
+                    minute = Number(match[5] || 0),
+                    second = Number(match[6] || 0),
+                    millisecond = Number(match[7] || 0),
+                    // When time zone is missed, local offset should be used
+                    // (ES 5.1 bug)
+                    // see https://bugs.ecmascript.org/show_bug.cgi?id=112
+                    offset = !match[4] || match[8] ?
+                        0 : Number(new NativeDate(1970, 0)),
+                    signOffset = match[9] === "-" ? 1 : -1,
+                    hourOffset = Number(match[10] || 0),
+                    minuteOffset = Number(match[11] || 0),
+                    result;
+                if (
+                    hour < (
+                        minute > 0 || second > 0 || millisecond > 0 ?
+                        24 : 25
+                    ) &&
+                    minute < 60 && second < 60 && millisecond < 1000 &&
+                    month > -1 && month < 12 && hourOffset < 24 &&
+                    minuteOffset < 60 && // detect invalid offsets
+                    day > -1 &&
+                    day < (
+                        dayFromMonth(year, month + 1) -
+                        dayFromMonth(year, month)
+                    )
+                ) {
+                    result = (
+                        (dayFromMonth(year, month) + day) * 24 +
+                        hour +
+                        hourOffset * signOffset
+                    ) * 60;
+                    result = (
+                        (result + minute + minuteOffset * signOffset) * 60 +
+                        second
+                    ) * 1000 + millisecond + offset;
+                    if (-8.64e15 <= result && result <= 8.64e15) {
+                        return result;
+                    }
+                }
+                return NaN;
+            }
+            return NativeDate.parse.apply(this, arguments);
         };
-      })(this);
-      for (key in ref2) {
-        value = ref2[key];
-        fn(key, value);
-      }
-      if (this["default"]) {
-        this[this["default"]].active();
-      }
+
+        return Date;
+    })(Date);
+}
+
+// ES5 15.9.4.4
+// http://es5.github.com/#x15.9.4.4
+if (!Date.now) {
+    Date.now = function now() {
+        return new Date().getTime();
+    };
+}
+
+
+//
+// String
+// ======
+//
+
+
+// ES5 15.5.4.14
+// http://es5.github.com/#x15.5.4.14
+// [bugfix, chrome]
+// If separator is undefined, then the result array contains just one String,
+// which is the this value (converted to a String). If limit is not undefined,
+// then the output array is truncated so that it contains no more than limit
+// elements.
+// "0".split(undefined, 0) -> []
+if("0".split(void 0, 0).length) {
+    var string_split = String.prototype.split;
+    String.prototype.split = function(separator, limit) {
+        if(separator === void 0 && limit === 0)return [];
+        return string_split.apply(this, arguments);
+    }
+}
+
+// ECMA-262, 3rd B.2.3
+// Note an ECMAScript standart, although ECMAScript 3rd Edition has a
+// non-normative section suggesting uniform semantics and it should be
+// normalized across all browsers
+// [bugfix, IE lt 9] IE < 9 substr() with negative value not working in IE
+if("".substr && "0b".substr(-1) !== "b") {
+    var string_substr = String.prototype.substr;
+    /**
+     *  Get the substring of a string
+     *  @param  {integer}  start   where to start the substring
+     *  @param  {integer}  length  how many characters to return
+     *  @return {string}
+     */
+    String.prototype.substr = function(start, length) {
+        return string_substr.call(
+            this,
+            start < 0 ? ((start = this.length + start) < 0 ? 0 : start) : start,
+            length
+        );
+    }
+}
+
+// ES5 15.5.4.20
+// http://es5.github.com/#x15.5.4.20
+var ws = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003" +
+    "\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028" +
+    "\u2029\uFEFF";
+if (!String.prototype.trim || ws.trim()) {
+    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
+    // http://perfectionkills.com/whitespace-deviations/
+    ws = "[" + ws + "]";
+    var trimBeginRegexp = new RegExp("^" + ws + ws + "*"),
+        trimEndRegexp = new RegExp(ws + ws + "*$");
+    String.prototype.trim = function trim() {
+        if (this === undefined || this === null) {
+            throw new TypeError("can't convert "+this+" to object");
+        }
+        return String(this)
+            .replace(trimBeginRegexp, "")
+            .replace(trimEndRegexp, "");
+    };
+}
+
+//
+// Util
+// ======
+//
+
+// ES5 9.4
+// http://es5.github.com/#x9.4
+// http://jsperf.com/to-integer
+
+function toInteger(n) {
+    n = +n;
+    if (n !== n) { // isNaN
+        n = 0;
+    } else if (n !== 0 && n !== (1/0) && n !== -(1/0)) {
+        n = (n > 0 || -1) * Math.floor(Math.abs(n));
+    }
+    return n;
+}
+
+function isPrimitive(input) {
+    var type = typeof input;
+    return (
+        input === null ||
+        type === "undefined" ||
+        type === "boolean" ||
+        type === "number" ||
+        type === "string"
+    );
+}
+
+function toPrimitive(input) {
+    var val, valueOf, toString;
+    if (isPrimitive(input)) {
+        return input;
+    }
+    valueOf = input.valueOf;
+    if (typeof valueOf === "function") {
+        val = valueOf.call(input);
+        if (isPrimitive(val)) {
+            return val;
+        }
+    }
+    toString = input.toString;
+    if (typeof toString === "function") {
+        val = toString.call(input);
+        if (isPrimitive(val)) {
+            return val;
+        }
+    }
+    throw new TypeError();
+}
+
+// ES5 9.9
+// http://es5.github.com/#x9.9
+var toObject = function (o) {
+    if (o == null) { // this matches both null and undefined
+        throw new TypeError("can't convert "+o+" to object");
+    }
+    return Object(o);
+};
+
+});
+ },"json2ify/index": function(exports, require, module) { /*
+    json2.js
+    2014-02-04
+
+    Public Domain.
+
+    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+
+    See http://www.JSON.org/js.html
+
+
+    This code should be minified before deployment.
+    See http://javascript.crockford.com/jsmin.html
+
+    USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
+    NOT CONTROL.
+
+
+    This file creates a global JSON object containing two methods: stringify
+    and parse.
+
+        JSON.stringify(value, replacer, space)
+            value       any JavaScript value, usually an object or array.
+
+            replacer    an optional parameter that determines how object
+                        values are stringified for objects. It can be a
+                        function or an array of strings.
+
+            space       an optional parameter that specifies the indentation
+                        of nested structures. If it is omitted, the text will
+                        be packed without extra whitespace. If it is a number,
+                        it will specify the number of spaces to indent at each
+                        level. If it is a string (such as '\t' or '&nbsp;'),
+                        it contains the characters used to indent at each level.
+
+            This method produces a JSON text from a JavaScript value.
+
+            When an object value is found, if the object contains a toJSON
+            method, its toJSON method will be called and the result will be
+            stringified. A toJSON method does not serialize: it returns the
+            value represented by the name/value pair that should be serialized,
+            or undefined if nothing should be serialized. The toJSON method
+            will be passed the key associated with the value, and this will be
+            bound to the value
+
+            For example, this would serialize Dates as ISO strings.
+
+                Date.prototype.toJSON = function (key) {
+                    function f(n) {
+                        // Format integers to have at least two digits.
+                        return n < 10 ? '0' + n : n;
+                    }
+
+                    return this.getUTCFullYear()   + '-' +
+                         f(this.getUTCMonth() + 1) + '-' +
+                         f(this.getUTCDate())      + 'T' +
+                         f(this.getUTCHours())     + ':' +
+                         f(this.getUTCMinutes())   + ':' +
+                         f(this.getUTCSeconds())   + 'Z';
+                };
+
+            You can provide an optional replacer method. It will be passed the
+            key and value of each member, with this bound to the containing
+            object. The value that is returned from your method will be
+            serialized. If your method returns undefined, then the member will
+            be excluded from the serialization.
+
+            If the replacer parameter is an array of strings, then it will be
+            used to select the members to be serialized. It filters the results
+            such that only members with keys listed in the replacer array are
+            stringified.
+
+            Values that do not have JSON representations, such as undefined or
+            functions, will not be serialized. Such values in objects will be
+            dropped; in arrays they will be replaced with null. You can use
+            a replacer function to replace those with JSON values.
+            JSON.stringify(undefined) returns undefined.
+
+            The optional space parameter produces a stringification of the
+            value that is filled with line breaks and indentation to make it
+            easier to read.
+
+            If the space parameter is a non-empty string, then that string will
+            be used for indentation. If the space parameter is a number, then
+            the indentation will be that many spaces.
+
+            Example:
+
+            text = JSON.stringify(['e', {pluribus: 'unum'}]);
+            // text is '["e",{"pluribus":"unum"}]'
+
+
+            text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\t');
+            // text is '[\n\t"e",\n\t{\n\t\t"pluribus": "unum"\n\t}\n]'
+
+            text = JSON.stringify([new Date()], function (key, value) {
+                return this[key] instanceof Date ?
+                    'Date(' + this[key] + ')' : value;
+            });
+            // text is '["Date(---current time---)"]'
+
+
+        JSON.parse(text, reviver)
+            This method parses a JSON text to produce an object or array.
+            It can throw a SyntaxError exception.
+
+            The optional reviver parameter is a function that can filter and
+            transform the results. It receives each of the keys and values,
+            and its return value is used instead of the original value.
+            If it returns what it received, then the structure is not modified.
+            If it returns undefined then the member is deleted.
+
+            Example:
+
+            // Parse the text. Values that look like ISO date strings will
+            // be converted to Date objects.
+
+            myData = JSON.parse(text, function (key, value) {
+                var a;
+                if (typeof value === 'string') {
+                    a =
+/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
+                    if (a) {
+                        return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
+                            +a[5], +a[6]));
+                    }
+                }
+                return value;
+            });
+
+            myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {
+                var d;
+                if (typeof value === 'string' &&
+                        value.slice(0, 5) === 'Date(' &&
+                        value.slice(-1) === ')') {
+                    d = new Date(value.slice(5, -1));
+                    if (d) {
+                        return d;
+                    }
+                }
+                return value;
+            });
+
+
+    This is a reference implementation. You are free to copy, modify, or
+    redistribute.
+*/
+
+/*jslint evil: true, regexp: true */
+
+/*members "", "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
+    call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,
+    getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,
+    lastIndex, length, parse, prototype, push, replace, slice, stringify,
+    test, toJSON, toString, valueOf
+*/
+
+
+// Create a JSON object only if one does not already exist. We create the
+// methods in a closure to avoid creating global variables.
+
+if (typeof JSON !== 'object') {
+    JSON = {};
+}
+
+(function () {
+    'use strict';
+
+    function f(n) {
+        // Format integers to have at least two digits.
+        return n < 10 ? '0' + n : n;
     }
 
-    Stack.prototype.add = function(controller) {
-      this.manager.add(controller);
-      return this.append(controller);
-    };
+    if (typeof Date.prototype.toJSON !== 'function') {
 
-    Stack.prototype.release = function() {
-      var ref;
-      if ((ref = this.router) != null) {
-        ref.destroy();
-      }
-      return Stack.__super__.release.apply(this, arguments);
-    };
+        Date.prototype.toJSON = function () {
 
-    return Stack;
+            return isFinite(this.valueOf())
+                ? this.getUTCFullYear()     + '-' +
+                    f(this.getUTCMonth() + 1) + '-' +
+                    f(this.getUTCDate())      + 'T' +
+                    f(this.getUTCHours())     + ':' +
+                    f(this.getUTCMinutes())   + ':' +
+                    f(this.getUTCSeconds())   + 'Z'
+                : null;
+        };
 
-  })(Spine.Controller);
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = Spine.Manager;
-  }
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports.Stack = Spine.Stack;
-  }
-
-}).call(this);
-
-//# sourceMappingURL=manager.js.map
-}, "spine/lib/list": function(exports, require, module) {// Generated by CoffeeScript 1.10.0
-(function() {
-  var $, Spine,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
-
-  Spine = this.Spine || require('spine');
-
-  $ = Spine.$;
-
-  Spine.List = (function(superClass) {
-    extend(List, superClass);
-
-    List.prototype.events = {
-      'click .item': 'click'
-    };
-
-    List.prototype.selectFirst = false;
-
-    function List() {
-      this.change = bind(this.change, this);
-      List.__super__.constructor.apply(this, arguments);
-      this.bind('change', this.change);
+        String.prototype.toJSON      =
+            Number.prototype.toJSON  =
+            Boolean.prototype.toJSON = function () {
+                return this.valueOf();
+            };
     }
 
-    List.prototype.template = function() {
-      throw Error('Override template');
-    };
+    var cx,
+        escapable,
+        gap,
+        indent,
+        meta,
+        rep;
 
-    List.prototype.change = function(item) {
-      var i, idx, index, len, ref;
-      this.current = item;
-      if (!this.current) {
-        this.children().removeClass('active');
-        return;
-      }
-      this.children().removeClass('active');
-      ref = this.items;
-      for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
-        item = ref[idx];
-        if (!(item === this.current)) {
-          continue;
+
+    function quote(string) {
+
+// If the string contains no control characters, no quote characters, and no
+// backslash characters, then we can safely slap some quotes around it.
+// Otherwise we must also replace the offending characters with safe escape
+// sequences.
+
+        escapable.lastIndex = 0;
+        return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
+            var c = meta[a];
+            return typeof c === 'string'
+                ? c
+                : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+        }) + '"' : '"' + string + '"';
+    }
+
+
+    function str(key, holder) {
+
+// Produce a string from holder[key].
+
+        var i,          // The loop counter.
+            k,          // The member key.
+            v,          // The member value.
+            length,
+            mind = gap,
+            partial,
+            value = holder[key];
+
+// If the value has a toJSON method, call it to obtain a replacement value.
+
+        if (value && typeof value === 'object' &&
+                typeof value.toJSON === 'function') {
+            value = value.toJSON(key);
         }
-        index = idx;
-        break;
-      }
-      return $(this.children().get(index)).addClass('active');
-    };
 
-    List.prototype.render = function(items) {
-      if (items) {
-        this.items = items;
-      }
-      this.html(this.template(this.items));
-      this.change(this.current);
-      if (this.selectFirst) {
-        if (!this.children('.active').length) {
-          return this.children(':first').click();
+// If we were called with a replacer function, then call the replacer to
+// obtain a replacement value.
+
+        if (typeof rep === 'function') {
+            value = rep.call(holder, key, value);
         }
-      }
-    };
 
-    List.prototype.children = function(sel) {
-      return this.el.children(sel);
-    };
+// What happens next depends on the value's type.
 
-    List.prototype.click = function(e) {
-      var item;
-      item = this.items[$(e.currentTarget).index()];
-      this.trigger('change', item);
-      return true;
-    };
+        switch (typeof value) {
+        case 'string':
+            return quote(value);
 
-    return List;
+        case 'number':
 
-  })(Spine.Controller);
+// JSON numbers must be finite. Encode non-finite numbers as null.
 
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = Spine.List;
-  }
+            return isFinite(value) ? String(value) : 'null';
 
-}).call(this);
+        case 'boolean':
+        case 'null':
 
-//# sourceMappingURL=list.js.map
-}, "admin": function(exports, require, module) {(function() {
+// If the value is a boolean or null, convert it to a string. Note:
+// typeof null does not produce 'null'. The case is included here in
+// the remote chance that this gets fixed someday.
+
+            return String(value);
+
+// If the type is 'object', we might be dealing with an object or an array or
+// null.
+
+        case 'object':
+
+// Due to a specification blunder in ECMAScript, typeof null is 'object',
+// so watch out for that case.
+
+            if (!value) {
+                return 'null';
+            }
+
+// Make an array to hold the partial results of stringifying this object value.
+
+            gap += indent;
+            partial = [];
+
+// Is the value an array?
+
+            if (Object.prototype.toString.apply(value) === '[object Array]') {
+
+// The value is an array. Stringify every element. Use null as a placeholder
+// for non-JSON values.
+
+                length = value.length;
+                for (i = 0; i < length; i += 1) {
+                    partial[i] = str(i, value) || 'null';
+                }
+
+// Join all of the elements together, separated with commas, and wrap them in
+// brackets.
+
+                v = partial.length === 0
+                    ? '[]'
+                    : gap
+                    ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
+                    : '[' + partial.join(',') + ']';
+                gap = mind;
+                return v;
+            }
+
+// If the replacer is an array, use it to select the members to be stringified.
+
+            if (rep && typeof rep === 'object') {
+                length = rep.length;
+                for (i = 0; i < length; i += 1) {
+                    if (typeof rep[i] === 'string') {
+                        k = rep[i];
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                        }
+                    }
+                }
+            } else {
+
+// Otherwise, iterate through all of the keys in the object.
+
+                for (k in value) {
+                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                        }
+                    }
+                }
+            }
+
+// Join all of the member texts together, separated with commas,
+// and wrap them in braces.
+
+            v = partial.length === 0
+                ? '{}'
+                : gap
+                ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
+                : '{' + partial.join(',') + '}';
+            gap = mind;
+            return v;
+        }
+    }
+
+// If the JSON object does not yet have a stringify method, give it one.
+
+    if (typeof JSON.stringify !== 'function') {
+        escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+        meta = {    // table of character substitutions
+            '\b': '\\b',
+            '\t': '\\t',
+            '\n': '\\n',
+            '\f': '\\f',
+            '\r': '\\r',
+            '"' : '\\"',
+            '\\': '\\\\'
+        };
+        JSON.stringify = function (value, replacer, space) {
+
+// The stringify method takes a value and an optional replacer, and an optional
+// space parameter, and returns a JSON text. The replacer can be a function
+// that can replace values, or an array of strings that will select the keys.
+// A default replacer method can be provided. Use of the space parameter can
+// produce text that is more easily readable.
+
+            var i;
+            gap = '';
+            indent = '';
+
+// If the space parameter is a number, make an indent string containing that
+// many spaces.
+
+            if (typeof space === 'number') {
+                for (i = 0; i < space; i += 1) {
+                    indent += ' ';
+                }
+
+// If the space parameter is a string, it will be used as the indent string.
+
+            } else if (typeof space === 'string') {
+                indent = space;
+            }
+
+// If there is a replacer, it must be a function or an array.
+// Otherwise, throw an error.
+
+            rep = replacer;
+            if (replacer && typeof replacer !== 'function' &&
+                    (typeof replacer !== 'object' ||
+                    typeof replacer.length !== 'number')) {
+                throw new Error('JSON.stringify');
+            }
+
+// Make a fake root object containing our value under the key of ''.
+// Return the result of stringifying the value.
+
+            return str('', {'': value});
+        };
+    }
+
+
+// If the JSON object does not yet have a parse method, give it one.
+
+    if (typeof JSON.parse !== 'function') {
+        cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+        JSON.parse = function (text, reviver) {
+
+// The parse method takes a text and an optional reviver function, and returns
+// a JavaScript value if the text is a valid JSON text.
+
+            var j;
+
+            function walk(holder, key) {
+
+// The walk method is used to recursively walk the resulting structure so
+// that modifications can be made.
+
+                var k, v, value = holder[key];
+                if (value && typeof value === 'object') {
+                    for (k in value) {
+                        if (Object.prototype.hasOwnProperty.call(value, k)) {
+                            v = walk(value, k);
+                            if (v !== undefined) {
+                                value[k] = v;
+                            } else {
+                                delete value[k];
+                            }
+                        }
+                    }
+                }
+                return reviver.call(holder, key, value);
+            }
+
+
+// Parsing happens in four stages. In the first stage, we replace certain
+// Unicode characters with escape sequences. JavaScript handles many characters
+// incorrectly, either silently deleting them, or treating them as line endings.
+
+            text = String(text);
+            cx.lastIndex = 0;
+            if (cx.test(text)) {
+                text = text.replace(cx, function (a) {
+                    return '\\u' +
+                        ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+                });
+            }
+
+// In the second stage, we run the text against regular expressions that look
+// for non-JSON patterns. We are especially concerned with '()' and 'new'
+// because they can cause invocation, and '=' because it can cause mutation.
+// But just to be safe, we want to reject all unexpected forms.
+
+// We split the second stage into 4 regexp operations in order to work around
+// crippling inefficiencies in IE's and Safari's regexp engines. First we
+// replace the JSON backslash pairs with '@' (a non-JSON character). Second, we
+// replace all simple value tokens with ']' characters. Third, we delete all
+// open brackets that follow a colon or comma or that begin the text. Finally,
+// we look to see that the remaining characters are only whitespace or ']' or
+// ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
+
+            if (/^[\],:{}\s]*$/
+                    .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
+                        .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+                        .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+// In the third stage we use the eval function to compile the text into a
+// JavaScript structure. The '{' operator is subject to a syntactic ambiguity
+// in JavaScript: it can begin a block or an object literal. We wrap the text
+// in parens to eliminate the ambiguity.
+
+                j = eval('(' + text + ')');
+
+// In the optional fourth stage, we recursively walk the new structure, passing
+// each name/value pair to a reviver function for possible transformation.
+
+                return typeof reviver === 'function'
+                    ? walk({'': j}, '')
+                    : j;
+            }
+
+// If the text is not JSON parseable, then a SyntaxError is thrown.
+
+            throw new SyntaxError('JSON.parse');
+        };
+    }
+}());
+
+ },"admin": function(exports, require, module) { (function() {
   var $, Category, CategoryEditView, Clipboard, Config, Drag, Extender, Flash, LoaderView, LoginView, Main, MainView, MissingView, ModalActionView, ModalSimpleView, Model, OverviewView, PhotosTrash, PreviewView, Product, ProductEditView, ProductsTrash, Root, Settings, ShowView, Sidebar, Spine, SpineDragItem, Toolbar, ToolbarView, TrustamiView, UploadEditView, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -26980,7 +24667,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/categories_header": function(exports, require, module) {(function() {
+ },"controllers/categories_header": function(exports, require, module) { (function() {
   var $, CategoriesHeader, CategoriesProduct, Category, Extender, Photo, Product, ProductsPhoto, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -27051,7 +24738,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/categories_list": function(exports, require, module) {(function() {
+ },"controllers/categories_list": function(exports, require, module) { (function() {
   var $, CategoriesList, CategoriesProduct, Category, Drag, Extender, Photo, ProductsPhoto, Root, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty,
@@ -27258,7 +24945,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/categories_view": function(exports, require, module) {(function() {
+ },"controllers/categories_view": function(exports, require, module) { (function() {
   var $, CategoriesList, CategoriesProduct, CategoriesView, Category, Drag, Extender, ProductsPhoto, Root, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -27462,7 +25149,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/category_edit_view": function(exports, require, module) {(function() {
+ },"controllers/category_edit_view": function(exports, require, module) { (function() {
   var $, Category, CategoryEditView, Extender, KeyEnhancer, Root, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -27563,7 +25250,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/flickr_view": function(exports, require, module) {(function() {
+ },"controllers/flickr_view": function(exports, require, module) { (function() {
   var $, Extender, FlickrView, Settings, Spine, ToolbarView,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -27819,7 +25506,7 @@ Released under the MIT License
   module.exports = FlickrView;
 
 }).call(this);
-}, "controllers/homepage_list": function(exports, require, module) {(function() {
+ },"controllers/homepage_list": function(exports, require, module) { (function() {
   var $, HomepageList, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -27870,7 +25557,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/homepage_view": function(exports, require, module) {(function() {
+ },"controllers/homepage_view": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Extender, HomepageList, HomepageView, Spine, UriHelper,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28020,7 +25707,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/info": function(exports, require, module) {(function() {
+ },"controllers/info": function(exports, require, module) { (function() {
   var $, Info, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -28120,7 +25807,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/loader_view": function(exports, require, module) {(function() {
+ },"controllers/loader_view": function(exports, require, module) { (function() {
   var $, Extender, LoaderView, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28152,7 +25839,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/login_view": function(exports, require, module) {(function() {
+ },"controllers/login_view": function(exports, require, module) { (function() {
   var $, LoginView, Spine, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28212,7 +25899,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/main_view": function(exports, require, module) {(function() {
+ },"controllers/main_view": function(exports, require, module) { (function() {
   var $, Extender, MainView, Model, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28246,7 +25933,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/missing_view": function(exports, require, module) {(function() {
+ },"controllers/missing_view": function(exports, require, module) { (function() {
   var $, MissingView, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28293,7 +25980,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/modal_2_button_view": function(exports, require, module) {(function() {
+ },"controllers/modal_2_button_view": function(exports, require, module) { (function() {
   var $, Modal2ButtonView, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28360,7 +26047,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/modal_action_view": function(exports, require, module) {(function() {
+ },"controllers/modal_action_view": function(exports, require, module) { (function() {
   var $, ModalActionView, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28424,7 +26111,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/modal_simple_view": function(exports, require, module) {(function() {
+ },"controllers/modal_simple_view": function(exports, require, module) { (function() {
   var $, ModalSimpleView, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28545,7 +26232,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/overview_header": function(exports, require, module) {(function() {
+ },"controllers/overview_header": function(exports, require, module) { (function() {
   var $, OverviewHeader, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28581,7 +26268,7 @@ Released under the MIT License
   module.exports = OverviewHeader;
 
 }).call(this);
-}, "controllers/overview_view": function(exports, require, module) {(function() {
+ },"controllers/overview_view": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Description, Extender, OverviewView, Photo, Product, Recent, Settings, Spine, UriHelper,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -28909,7 +26596,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photo_edit_view": function(exports, require, module) {(function() {
+ },"controllers/photo_edit_view": function(exports, require, module) { (function() {
   var $, Extender, KeyEnhancer, Photo, PhotoEditView, ProductsPhoto, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -29005,7 +26692,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photo_header": function(exports, require, module) {(function() {
+ },"controllers/photo_header": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Extender, PhotoHeader, Product, ProductsPhoto, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -29115,7 +26802,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photo_list": function(exports, require, module) {(function() {
+ },"controllers/photo_list": function(exports, require, module) { (function() {
   var $, Extender, PhotoList, Product, ProductsPhoto, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -29185,7 +26872,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photo_view": function(exports, require, module) {(function() {
+ },"controllers/photo_view": function(exports, require, module) { (function() {
   var $, Drag, Extender, Info, PhotoList, PhotoView, Product, ProductsPhoto, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -29409,7 +27096,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photos_add_list": function(exports, require, module) {(function() {
+ },"controllers/photos_add_list": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Extender, Model, Photo, PhotoExtender, PhotosAddList, Product, ProductsPhoto, Spine, UriHelper,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -29489,7 +27176,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photos_add_view": function(exports, require, module) {(function() {
+ },"controllers/photos_add_view": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Drag, Extender, Info, PhotosAddList, PhotosAddView, Product, ProductsPhoto, Spine, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -29709,7 +27396,7 @@ Released under the MIT License
   module.exports = PhotosAddView;
 
 }).call(this);
-}, "controllers/photos_header": function(exports, require, module) {(function() {
+ },"controllers/photos_header": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Extender, Photo, PhotosHeader, Product, ProductsPhoto, Spine, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -29813,7 +27500,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photos_list": function(exports, require, module) {(function() {
+ },"controllers/photos_list": function(exports, require, module) { (function() {
   var $, Drag, Extender, Photo, PhotoExtender, PhotosList, Product, ProductsPhoto, Spine, ToolbarView, UriHelper,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -30100,7 +27787,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photos_trash_header": function(exports, require, module) {(function() {
+ },"controllers/photos_trash_header": function(exports, require, module) { (function() {
   var $, Category, Extender, PhotosTrashHeader, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -30144,7 +27831,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photos_trash_view": function(exports, require, module) {(function() {
+ },"controllers/photos_trash_view": function(exports, require, module) { (function() {
   var $, Controller, Drag, Extender, PhotoExtender, PhotosTrash, PhotosTrashView, Spine, UriHelper, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -30473,7 +28160,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/photos_view": function(exports, require, module) {(function() {
+ },"controllers/photos_view": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Controller, Drag, Extender, Info, Photo, PhotosList, PhotosView, Product, ProductsPhoto, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -30897,7 +28584,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/preview_view": function(exports, require, module) {(function() {
+ },"controllers/preview_view": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Extender, Model, PreviewView, Product, ProductsPhoto, Spine, UriHelper,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -31102,7 +28789,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/product_edit_view": function(exports, require, module) {(function() {
+ },"controllers/product_edit_view": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Extender, KeyEnhancer, ProductEditView, Spine, SubEditViewDescription, SubEditViewProduct, SubNoProduct, ToolbarView,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -31256,7 +28943,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/products_add_list": function(exports, require, module) {(function() {
+ },"controllers/products_add_list": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Extender, Model, Photo, Product, ProductExtender, ProductsAddList, ProductsPhoto, Spine, UriHelper,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -31329,7 +29016,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/products_add_view": function(exports, require, module) {(function() {
+ },"controllers/products_add_view": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Controller, Drag, Extender, Info, Product, ProductsAddList, ProductsAddView, ProductsPhoto, Spine, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -31534,7 +29221,7 @@ Released under the MIT License
   module.exports = ProductsAddView;
 
 }).call(this);
-}, "controllers/products_header": function(exports, require, module) {(function() {
+ },"controllers/products_header": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Extender, Photo, Product, ProductsHeader, ProductsPhoto, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -31627,7 +29314,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/products_list": function(exports, require, module) {(function() {
+ },"controllers/products_list": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Drag, Extender, Model, Photo, Product, ProductExtender, ProductsList, ProductsPhoto, Spine, UriHelper,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -31859,7 +29546,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/products_trash_header": function(exports, require, module) {(function() {
+ },"controllers/products_trash_header": function(exports, require, module) { (function() {
   var $, Category, Extender, ProductsTrashHeader, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -31903,7 +29590,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/products_trash_view": function(exports, require, module) {(function() {
+ },"controllers/products_trash_view": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Controller, Drag, Extender, ProductExtender, Products, ProductsPhoto, ProductsTrash, ProductsTrashView, Spine, UriHelper, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -32180,7 +29867,7 @@ Released under the MIT License
     ProductsTrashView.prototype.back = function(e) {
       var cid, pid, ref, ref1;
       if (cid = (ref = Category.record) != null ? ref.id : void 0) {
-        return this.navigate('/category', cid, pid = (ref1 = Category.record) != null ? ref1.selectionList().first() : void 0 ? 'pid/' + pid : '');
+        return this.navigate('/category', cid, pid = ((ref1 = Category.record) != null ? ref1.selectionList().first() : void 0) ? 'pid/' + pid : '');
       } else {
         return this.navigate('/category', '');
       }
@@ -32218,7 +29905,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/products_view": function(exports, require, module) {(function() {
+ },"controllers/products_view": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Controller, Drag, Extender, Info, Product, ProductsList, ProductsPhoto, ProductsView, Spine, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -32743,7 +30430,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/refresh_view": function(exports, require, module) {(function() {
+ },"controllers/refresh_view": function(exports, require, module) { (function() {
   var $, Category, Description, Photo, Product, RefreshView, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -32823,7 +30510,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/show_view": function(exports, require, module) {(function() {
+ },"controllers/show_view": function(exports, require, module) { (function() {
   var $, CategoriesHeader, CategoriesProduct, CategoriesView, Category, Clipboard, Controller, Drag, Extender, ModalSimpleView, Model, MysqlAjax, Photo, PhotoHeader, PhotoView, PhotosAddView, PhotosHeader, PhotosTrash, PhotosTrashHeader, PhotosTrashView, PhotosView, Product, ProductsAddView, ProductsHeader, ProductsPhoto, ProductsTrash, ProductsTrashHeader, ProductsTrashView, ProductsView, Root, ShowView, Spine, ToolbarView, WaitView,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -33173,7 +30860,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.transform = function(controller, pContr, cContr) {
-      var c, cm, e, error, fadein, i, len, pm, ref;
+      var c, cm, e, fadein, i, len, pm, ref;
       try {
         cm = cContr.model.className;
         pm = pContr.model.className;
@@ -33712,7 +31399,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.selectAll = function(e) {
-      var error, list;
+      var list;
       try {
         list = this.all();
         return this.current.select(e, list);
@@ -33722,7 +31409,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.selectInv = function(e) {
-      var error, list, selList;
+      var list, selList;
       try {
         list = this.all();
         selList = this.current.model.selectionList();
@@ -34261,7 +31948,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.scrollTo = function(item) {
-      var dht, e, el, error, marginBottom, marginTop, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, parentEl, res, resMax, resMin, stp;
+      var dht, e, el, marginBottom, marginTop, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, parentEl, res, resMax, resMin, stp;
       Spine.trigger('scroll', item);
       if (!(this.controller.isActive() && item)) {
         return;
@@ -34490,7 +32177,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/sidebar": function(exports, require, module) {(function() {
+ },"controllers/sidebar": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Drag, Extender, Photo, Product, ProductsPhoto, RefreshView, Root, Sidebar, SidebarList, Spine, SpineDragItem, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -34795,7 +32482,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/sidebar_flickr": function(exports, require, module) {(function() {
+ },"controllers/sidebar_flickr": function(exports, require, module) { (function() {
   var $, Extender, SidebarFlickr, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -34889,7 +32576,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/sidebar_list": function(exports, require, module) {(function() {
+ },"controllers/sidebar_list": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Drag, Extender, Product, ProductsPhoto, Root, SidebarList, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -35382,7 +33069,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/sub_edit_view_description": function(exports, require, module) {(function() {
+ },"controllers/sub_edit_view_description": function(exports, require, module) { (function() {
   var $, Description, Drag, Extender, KeyEnhancer, Model, Spine, SubEditViewDescription, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -35560,7 +33247,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/sub_edit_view_product": function(exports, require, module) {(function() {
+ },"controllers/sub_edit_view_product": function(exports, require, module) { (function() {
   var $, Category, Extender, KeyEnhancer, Root, Spine, SubEditViewProduct,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -35671,7 +33358,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/sub_no_product": function(exports, require, module) {(function() {
+ },"controllers/sub_no_product": function(exports, require, module) { (function() {
   var $, Extender, Spine, SubNoProduct,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -35709,7 +33396,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/toolbar_view": function(exports, require, module) {(function() {
+ },"controllers/toolbar_view": function(exports, require, module) { (function() {
   var $, Extender, Model, Spine, Toolbar, ToolbarView,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -35845,7 +33532,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/trustami_view": function(exports, require, module) {(function() {
+ },"controllers/trustami_view": function(exports, require, module) { (function() {
   var $, Spine, TrustamiView, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -35958,7 +33645,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/upload_edit_view": function(exports, require, module) {(function() {
+ },"controllers/upload_edit_view": function(exports, require, module) { (function() {
   var $, PhotoEditView, Product, Settings, Spine, UploadEditView,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -36210,7 +33897,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "controllers/wait_view": function(exports, require, module) {(function() {
+ },"controllers/wait_view": function(exports, require, module) { (function() {
   var $, Controller, Extender, ModalSimpleView, Model, Spine, WaitView,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -36296,7 +33983,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/ajax_relations": function(exports, require, module) {(function() {
+ },"extensions/ajax_relations": function(exports, require, module) { (function() {
   var $, AjaxRelations, Builder, CategoriesProduct, Category, Model, Photo, Product, ProductsPhoto, Request, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -36414,7 +34101,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/cache": function(exports, require, module) {(function() {
+ },"extensions/cache": function(exports, require, module) { (function() {
   var $, Model, Spine;
 
   Spine = require("spine");
@@ -36515,11 +34202,12 @@ Released under the MIT License
           return results;
         },
         itemExists: function(item) {
-          var i, key, len, thisItem, val;
+          var i, key, len, ref, thisItem, val;
           for (key in item) {
             val = item[key];
-            for (i = 0, len = this.length; i < len; i++) {
-              thisItem = this[i];
+            ref = this;
+            for (i = 0, len = ref.length; i < len; i++) {
+              thisItem = ref[i];
               if (thisItem[key]) {
                 return thisItem;
               }
@@ -36528,9 +34216,10 @@ Released under the MIT License
           return false;
         },
         keyExists: function(key) {
-          var i, len, thisItem;
-          for (i = 0, len = this.length; i < len; i++) {
-            thisItem = this[i];
+          var i, len, ref, thisItem;
+          ref = this;
+          for (i = 0, len = ref.length; i < len; i++) {
+            thisItem = ref[i];
             if (thisItem[key]) {
               return thisItem;
             }
@@ -36605,7 +34294,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/controller_extender": function(exports, require, module) {(function() {
+ },"extensions/controller_extender": function(exports, require, module) { (function() {
   var $, Controller, Spine,
     slice = [].slice;
 
@@ -36816,7 +34505,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/develop": function(exports, require, module) {(function() {
+ },"extensions/develop": function(exports, require, module) { (function() {
   var $, Ajax, Base, Develop, Developer, DeveloperCollection, Model, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -37040,7 +34729,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/drag": function(exports, require, module) {(function() {
+ },"extensions/drag": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Controller, Drag, Log, Photo, Product, ProductsPhoto, Spine, SpineDragItem;
 
   Spine = require("spine");
@@ -37157,7 +34846,7 @@ Released under the MIT License
           return false;
         },
         drop: function(e, data) {
-          var error, event;
+          var event;
           this.trigger('drag:drop', e, data);
           $('.drag-in-progress').removeClass('drag-in-progress');
           clearTimeout(Spine.timer);
@@ -37314,7 +35003,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/filter": function(exports, require, module) {(function() {
+ },"extensions/filter": function(exports, require, module) { (function() {
   var $, Filter, Model, Spine;
 
   Spine = require("spine");
@@ -37428,7 +35117,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/init_db": function(exports, require, module) {(function() {
+ },"extensions/init_db": function(exports, require, module) { (function() {
   var $, Flash, Log, Model, Spine,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -37735,7 +35424,7 @@ Released under the MIT License
           return this.constructor.selectionList(this.id);
         },
         selectionParentList: function() {
-          var e, error1, modelName;
+          var e, modelName;
           modelName = this.constructor['parent'];
           try {
             return Model[modelName].selectionList();
@@ -37933,7 +35622,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/key_enhancer": function(exports, require, module) {(function() {
+ },"extensions/key_enhancer": function(exports, require, module) { (function() {
   var $, Controller, Spine;
 
   Spine = require("spine");
@@ -37977,7 +35666,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/manager": function(exports, require, module) {(function() {
+ },"extensions/manager": function(exports, require, module) { (function() {
   var $, Log, Spine;
 
   Spine = require("spine");
@@ -38140,7 +35829,7 @@ Released under the MIT License
   });
 
 }).call(this);
-}, "extensions/model_extender": function(exports, require, module) {(function() {
+ },"extensions/model_extender": function(exports, require, module) { (function() {
   var $, Flash, Log, Model, Spine,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     slice = [].slice;
@@ -38474,7 +36163,7 @@ Released under the MIT License
           return this.constructor.selectionList(this.id);
         },
         selectionParentList: function() {
-          var e, error1, modelName;
+          var e, modelName;
           modelName = this.constructor['parent'];
           try {
             return Model[modelName].selectionList();
@@ -38697,7 +36386,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/model_test": function(exports, require, module) {(function() {
+ },"extensions/model_test": function(exports, require, module) { (function() {
   var $, Log, Model, Spine;
 
   Spine = require("spine");
@@ -38725,7 +36414,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/mysql_ajax": function(exports, require, module) {(function() {
+ },"extensions/mysql_ajax": function(exports, require, module) { (function() {
   var $, MysqlAjax, Spine;
 
   Spine = require("spine");
@@ -38771,7 +36460,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/photo_extender": function(exports, require, module) {(function() {
+ },"extensions/photo_extender": function(exports, require, module) { (function() {
   var $, Controller, Spine;
 
   Spine = require("spine");
@@ -38891,7 +36580,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/product_extender": function(exports, require, module) {(function() {
+ },"extensions/product_extender": function(exports, require, module) { (function() {
   var $, Controller, Spine;
 
   Spine = require("spine");
@@ -39047,7 +36736,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/selector": function(exports, require, module) {(function() {
+ },"extensions/selector": function(exports, require, module) { (function() {
   var $, Model, Spine;
 
   Spine = require("spine");
@@ -39153,11 +36842,12 @@ Released under the MIT License
           return results;
         },
         itemExists: function(item) {
-          var i, key, len, thisItem, val;
+          var i, key, len, ref, thisItem, val;
           for (key in item) {
             val = item[key];
-            for (i = 0, len = this.length; i < len; i++) {
-              thisItem = this[i];
+            ref = this;
+            for (i = 0, len = ref.length; i < len; i++) {
+              thisItem = ref[i];
               if (thisItem[key]) {
                 return thisItem;
               }
@@ -39166,9 +36856,10 @@ Released under the MIT License
           return false;
         },
         keyExists: function(key) {
-          var i, len, thisItem;
-          for (i = 0, len = this.length; i < len; i++) {
-            thisItem = this[i];
+          var i, len, ref, thisItem;
+          ref = this;
+          for (i = 0, len = ref.length; i < len; i++) {
+            thisItem = ref[i];
             if (thisItem[key]) {
               return thisItem;
             }
@@ -39246,7 +36937,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/sortable": function(exports, require, module) {(function() {
+ },"extensions/sortable": function(exports, require, module) { (function() {
   $.fn.sortable = function(type) {
     return $(this).Html5Sortable({
       type: type,
@@ -39344,7 +37035,6 @@ Released under the MIT License
           }
           return false;
         }).bind('dragleave', function(e) {
-          var error;
           try {
             if (!(e.originalEvent.dataTransfer.getData('Text') && JSON.parse(e.originalEvent.dataTransfer.getData('Text')).type === options.type)) {
               return true;
@@ -39355,7 +37045,7 @@ Released under the MIT License
           }
           return false;
         }).bind('drop', function(e) {
-          var cond, error, it, model, sourceEl;
+          var cond, it, model, sourceEl;
           try {
             this.log('drop');
             cond = Spine.sortItem.cond;
@@ -39398,7 +37088,7 @@ Released under the MIT License
   };
 
 }).call(this);
-}, "extensions/test": function(exports, require, module) {(function() {
+ },"extensions/test": function(exports, require, module) { (function() {
   var $, Spine;
 
   Spine = require("spine");
@@ -39416,7 +37106,7 @@ Released under the MIT License
   });
 
 }).call(this);
-}, "extensions/tmpl": function(exports, require, module) {(function() {
+ },"extensions/tmpl": function(exports, require, module) { (function() {
   var $;
 
   $ = typeof jQuery !== "undefined" && jQuery !== null ? jQuery : require("jqueryify");
@@ -39457,7 +37147,7 @@ Released under the MIT License
   };
 
 }).call(this);
-}, "extensions/uri": function(exports, require, module) {(function() {
+ },"extensions/uri": function(exports, require, module) { (function() {
   var $, Ajax, Base, CategoriesProduct, Category, Model, Photo, Product, ProductsPhoto, Spine, URI, URICollection, Uri,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -39709,7 +37399,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/uri_helper": function(exports, require, module) {(function() {
+ },"extensions/uri_helper": function(exports, require, module) { (function() {
   var $, Photo, Spine, UriHelper;
 
   Spine = require("spine");
@@ -39779,7 +37469,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "extensions/utils": function(exports, require, module) {(function() {
+ },"extensions/utils": function(exports, require, module) { (function() {
   var $;
 
   $ = typeof jQuery !== "undefined" && jQuery !== null ? jQuery : require("jqueryify");
@@ -39894,7 +37584,7 @@ Released under the MIT License
   };
 
 }).call(this);
-}, "home": function(exports, require, module) {(function() {
+ },"home": function(exports, require, module) { (function() {
   var $, App, HomepageView, ModalSimpleView, RefreshView, Settings, Spine, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -39924,6 +37614,7 @@ Released under the MIT License
       '#outdoor': 'outdoorEl',
       '#specials': 'goodiesEl',
       '#fitness': 'outdoorEl',
+      '#defense': 'defenseEl',
       '#nav': 'nav',
       '#stats': 'stats',
       '#menu-trigger': 'menutrigger',
@@ -39985,6 +37676,12 @@ Released under the MIT License
         categoryName: 'outdoor',
         refreshView: this.refreshView
       });
+      this.defense = new HomepageView({
+        el: this.defenseEl,
+        nav: this.navItems,
+        categoryName: 'defense',
+        refreshView: this.refreshView
+      });
       this.fitness = new HomepageView({
         el: this.outdoorEl,
         nav: this.navItems,
@@ -40008,6 +37705,9 @@ Released under the MIT License
       this.routes({
         '/outdoor/': function(params) {
           return this.outdoor.trigger('active');
+        },
+        '/defense/': function(params) {
+          return this.defense.trigger('active');
         },
         '/fitness/': function(params) {
           return this.fitness.trigger('active');
@@ -40422,7 +38122,7 @@ Released under the MIT License
   module.exports = App;
 
 }).call(this);
-}, "index": function(exports, require, module) {(function() {
+ },"index": function(exports, require, module) { (function() {
   var $, App, Extender, ModalSimpleView, RefreshView, Settings, Spine, UriHelper, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -41124,14 +38824,15 @@ Released under the MIT License
   module.exports = App;
 
 }).call(this);
-}, "lib/array": function(exports, require, module) {(function() {
+ },"lib/array": function(exports, require, module) { (function() {
   var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Array.prototype.toId = function() {
-    var i, id, item, len, res;
+    var i, id, item, len, ref, res;
     res = [];
-    for (i = 0, len = this.length; i < len; i++) {
-      item = this[i];
+    ref = this;
+    for (i = 0, len = ref.length; i < len; i++) {
+      item = ref[i];
       id = typeof item === 'object' ? item.id : typeof item === 'string' ? item : void 0;
       if (id) {
         res.push(id);
@@ -41141,13 +38842,14 @@ Released under the MIT License
   };
 
   Array.prototype.removeFromList = function(list) {
-    var i, id, idx, j, len, len1, seq;
+    var i, id, idx, j, len, len1, ref, seq;
     if (list == null) {
       list = [];
     }
     seq = [];
-    for (idx = i = 0, len = this.length; i < len; idx = ++i) {
-      id = this[idx];
+    ref = this;
+    for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
+      id = ref[idx];
       if (indexOf.call(list, id) >= 0) {
         seq.push(idx);
       }
@@ -41171,12 +38873,13 @@ Released under the MIT License
   };
 
   Array.prototype.filter = function(list) {
-    var i, item, len, ref, res;
+    var i, item, len, ref, ref1, res;
     list = list.toId();
     res = [];
-    for (i = 0, len = this.length; i < len; i++) {
-      item = this[i];
-      if (ref = item.id, indexOf.call(list, ref) >= 0) {
+    ref = this;
+    for (i = 0, len = ref.length; i < len; i++) {
+      item = ref[i];
+      if (ref1 = item.id, indexOf.call(list, ref1) >= 0) {
         res.push(item);
       }
     }
@@ -41225,9 +38928,10 @@ Released under the MIT License
   };
 
   Array.prototype.contains = function(string) {
-    var Regex, i, len, value;
-    for (i = 0, len = this.length; i < len; i++) {
-      value = this[i];
+    var Regex, i, len, ref, value;
+    ref = this;
+    for (i = 0, len = ref.length; i < len; i++) {
+      value = ref[i];
       Regex = new RegExp(value);
       if (Regex.test(string)) {
         return true;
@@ -41236,7 +38940,7 @@ Released under the MIT License
   };
 
 }).call(this);
-}, "lib/setup": function(exports, require, module) {(function() {
+ },"lib/setup": function(exports, require, module) { (function() {
   require('lib/array');
 
   require('spine');
@@ -41248,7 +38952,7 @@ Released under the MIT License
   require('spine/lib/route');
 
 }).call(this);
-}, "login": function(exports, require, module) {(function() {
+ },"login": function(exports, require, module) { (function() {
   var $, Flash, Login, Spine, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -41415,7 +39119,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/categories_product": function(exports, require, module) {(function() {
+ },"models/categories_product": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Extender, Filter, Model, Photo, ProductsPhoto, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -41687,7 +39391,7 @@ Released under the MIT License
   module.exports = Model.CategoriesProduct = CategoriesProduct;
 
 }).call(this);
-}, "models/category": function(exports, require, module) {(function() {
+ },"models/category": function(exports, require, module) { (function() {
   var $, AjaxRelations, CategoriesProduct, Category, Extender, Filter, Model, Photo, ProductsPhoto, Spine, Uri, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -41762,6 +39466,9 @@ Released under the MIT License
       },
       'tools': {
         screenname: 'Tools'
+      },
+      'defense': {
+        screenname: 'Defense'
       },
       'specials': {
         screenname: 'Specials'
@@ -42027,7 +39734,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/clipboard": function(exports, require, module) {(function() {
+ },"models/clipboard": function(exports, require, module) { (function() {
   var $, Clipboard, Model, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -42066,7 +39773,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/config": function(exports, require, module) {(function() {
+ },"models/config": function(exports, require, module) { (function() {
   var $, Config, Filter, Model, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -42112,7 +39819,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/description": function(exports, require, module) {(function() {
+ },"models/description": function(exports, require, module) { (function() {
   var $, AjaxRelations, Description, Extender, Filter, Model, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -42175,7 +39882,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/drag_item": function(exports, require, module) {(function() {
+ },"models/drag_item": function(exports, require, module) { (function() {
   var $, Model, Spine, SpineDragItem,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -42206,7 +39913,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/flash": function(exports, require, module) {(function() {
+ },"models/flash": function(exports, require, module) { (function() {
   var $, Flash, Model, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -42241,7 +39948,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/photo": function(exports, require, module) {(function() {
+ },"models/photo": function(exports, require, module) { (function() {
   var $, AjaxRelations, Cache, Category, Clipboard, Develop, Extender, Filter, Model, Photo, Product, ProductsPhoto, Spine, Uri,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -42608,7 +40315,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/photos_trash": function(exports, require, module) {(function() {
+ },"models/photos_trash": function(exports, require, module) { (function() {
   var $, Extender, Model, PhotosTrash, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -42648,7 +40355,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/product": function(exports, require, module) {(function() {
+ },"models/product": function(exports, require, module) { (function() {
   var $, AjaxRelations, CategoriesProduct, Clipboard, Extender, Filter, Model, Product, Spine, Uri, Utils,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -42878,7 +40585,7 @@ Released under the MIT License
     };
 
     Product.destroyJoin = function(items, target, callback) {
-      var cb, e, error, ga, gas, i, item, len;
+      var cb, e, ga, gas, i, item, len;
       if (items == null) {
         items = [];
       }
@@ -43121,7 +40828,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/products_photo": function(exports, require, module) {(function() {
+ },"models/products_photo": function(exports, require, module) { (function() {
   var $, CategoriesProduct, Category, Extender, Filter, Model, ProductsPhoto, Selector, Spine,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -43286,7 +40993,7 @@ Released under the MIT License
   module.exports = Model.ProductsPhoto = ProductsPhoto;
 
 }).call(this);
-}, "models/products_trash": function(exports, require, module) {(function() {
+ },"models/products_trash": function(exports, require, module) { (function() {
   var $, Extender, Model, ProductsTrash, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -43328,7 +41035,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/recent": function(exports, require, module) {(function() {
+ },"models/recent": function(exports, require, module) { (function() {
   var $, Model, Photo, Recent, Spine, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -43407,7 +41114,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/root": function(exports, require, module) {(function() {
+ },"models/root": function(exports, require, module) { (function() {
   var $, Category, Extender, Filter, Model, Root, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -43462,7 +41169,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/settings": function(exports, require, module) {(function() {
+ },"models/settings": function(exports, require, module) { (function() {
   var $, Extender, Log, Model, Settings, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -43527,7 +41234,7 @@ Released under the MIT License
   module.exports = Model.Settings = Settings;
 
 }).call(this);
-}, "models/toolbar": function(exports, require, module) {(function() {
+ },"models/toolbar": function(exports, require, module) { (function() {
   var $, Category, Clipboard, Filter, Model, Product, Settings, Spine, Toolbar,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty,
@@ -44265,7 +41972,7 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "models/user": function(exports, require, module) {(function() {
+ },"models/user": function(exports, require, module) { (function() {
   var $, Clipboard, Extender, Flash, Log, Model, Settings, Spine, User,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -44425,837 +42132,24 @@ Released under the MIT License
   }
 
 }).call(this);
-}, "views/agb": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ) ];
-try {
+ },"views/agb": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("I. Allgemeine Geschäftsbedingungen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("§ 1 Grundlegende Bestimmungen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("(1) Die nachstehenden Geschäftsbedingungen gelten für alle Verträge, die Sie mit uns als Anbieter (Angela Lehmann) über die Internetseite www.ha-lehmann.at schließen. Soweit nicht anders vereinbart, wird der Einbeziehung gegebenenfalls von Ihnen verwendeter eigener Bedingungen widersprochen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("(2) Verbraucher im Sinne der nachstehenden Regelungen ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden kann. Unternehmer ist jede natürliche oder juristische Person oder eine rechtsfähige Personengesellschaft, die bei Abschluss eines Rechtsgeschäfts in Ausübung ihrer selbständigen beruflichen oder gewerblichen Tätigkeit handelt.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("§ 2 Zustandekommen des Vertrages");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("(1) Gegenstand des Vertrages ist der Verkauf von Waren.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("Unsere Angebote im Internet sind unverbindlich und kein verbindliches Angebot zum Abschluss eines Vertrages.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("(2) Sie können ein verbindliches Kaufangebot (Bestellung) über das Online-Warenkorbsystem abgeben. Dabei werden die zum Kauf beabsichtigten Waren im „Warenkorb\" abgelegt. Über die entsprechende Schaltfläche in der Navigationsleiste können Sie den „Warenkorb\" aufrufen und dort jederzeit Änderungen vornehmen. Nach Aufrufen der Seite „Kasse\" und der Eingabe der persönlichen Daten sowie der Zahlungs- und Versandbedingungen werden abschließend nochmals alle Bestelldaten auf der Bestellübersichtsseite angezeigt. Soweit Sie das Bezahl-System \"amazon-payments\" durch Anklicken der im Shopsystem integrierten Schaltfläche \"Bezahlen über amazon\" nutzen, werden Sie auf die Log-In Seite von amazon.de weitergeleitet. Nach erfolgreicher Anmeldung werden Ihre bei amazon.de hinterlegten Versandadressen und Zahlungsarten angezeigt. Sie wählen Versandadresse und Zahlungsart aus und werden über die Schaltfläche \"weiter\" zurück in unseren Online-Shop geleitet. Vor Absenden der Bestellung haben Sie die Möglichkeit, hier sämtliche Angaben nochmals zu überprüfen, zu ändern (auch über die Funktion „zurück\" des Internetbrowsers) bzw. den Kauf abzubrechen. Mit dem Absenden der Bestellung über die Schaltfläche \"zahlungspflichtig bestellen\" geben Sie ein verbindliches Angebot bei uns ab. Sie erhalten zunächst eine automatische E-Mail über den Eingang Ihrer Bestellung, die noch nicht zum Vertragsschluss führt. Bei Zahlung über \"amazon payments\" erhalten Sie diese Bestätigungs-E-Mail von amazon.de.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("(3) Die Annahme des Angebots (und damit der Vertragsabschluss) erfolgt innerhalb von 2 Tagen durchBestätigung in Textform (z.B. E-Mail), in welcher Ihnen die Ausführung der Bestellung oder Auslieferung der Ware bestätigt wird (Auftragsbestätigung). Soweit Sie das Bezahl-System \"amazon-payments\" gewählt haben, erfolgt die Angebotsannahme (Vertragsschluss) innerhalb von 2 Tagen durch Bestätigung per E-Mail seitens amazon.de, in welcher Ihnen die Auslieferung der Ware mitgeteilt wird. Sollten Sie keine entsprechende Nachricht erhalten haben, sind Sie nicht mehr an Ihre Bestellung gebunden. Gegebenenfalls bereits erbrachte Leistungen werden in diesem Fall unverzüglich zurückerstattet.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("(4) Die Abwicklung der Bestellung und Übermittlung aller im Zusammenhang mit dem Vertragsschlusserforderlichen Informationen erfolgt per E-Mail zum Teil automatisiert. Sie haben deshalb sicherzustellen, dass die von Ihnen bei uns hinterlegte E-Mail-Adresse zutreffend ist, der Empfang der E-Mails technisch sichergestellt und insbesondere nicht durch SPAM-Filter verhindert wird.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("§ 3 Zurückbehaltungsrecht, Eigentumsvorbehalt");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, jade_debug[0].filename ));
-buf.push("(1) Ein Zurückbehaltungsrecht können Sie nur ausüben, soweit es sich um Forderungen aus dem selben Vertragsverhältnis handelt.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("(2) Die Ware bleibt bis zur vollständigen Zahlung des Kaufpreises unser Eigentum.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, jade_debug[0].filename ));
-buf.push("§ 4 Haftung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
-buf.push("(1) Wir haften jeweils uneingeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit. Weiter haften wir ohne Einschränkung in allen Fällen des Vorsatzes und grober Fahrlässigkeit, bei arglistigem Verschweigen eines Mangels, bei Übernahme der Garantie für die Beschaffenheit des Kaufgegenstandes und in allen anderen gesetzlich geregelten Fällen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("(2) Die Haftung für Mängel im Rahmen der gesetzlichen Gewährleistung richtet sich nach der entsprechenden Regelung in unseren Kundeninformationen (Teil II).");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
-buf.push("(3) Sofern wesentliche Vertragspflichten betroffen sind, ist unsere Haftung bei leichter Fahrlässigkeit auf den vertragstypischen, vorhersehbaren Schaden beschränkt. Wesentliche Vertragspflichten sind wesentliche Pflichten, die sich aus der Natur des Vertrages ergeben und deren Verletzung die Erreichung des Vertragszweckes gefährden würde sowie Pflichten, die der Vertrag uns nach seinem Inhalt zur Erreichung des Vertragszwecks auferlegt, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst möglich machen und auf deren Einhaltung Sie regelmäßig vertrauen dürfen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
-buf.push("(4) Bei der Verletzung unwesentlicher Vertragspflichten ist die Haftung bei leicht fahrlässigen Pflichtverletzungen ausgeschlossen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("(5) Die Datenkommunikation über das Internet kann nach dem derzeitigen Stand der Technik nicht fehlerfrei und/oder jederzeit verfügbar gewährleistet werden. Wir haften insoweit weder für die ständige noch ununterbrochene Verfügbarkeit der Webseite und der dort angebotenen Dienstleistung.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
-buf.push("§ 5 Rechtswahl");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 21, jade_debug[0].filename ));
-buf.push("(1) Es gilt deutsches Recht. Bei Verbrauchern gilt diese Rechtswahl nur, soweit hierdurch der durch zwingende Bestimmungen des Rechts des Staates des gewöhnlichen Aufenthaltes des Verbrauchers gewährte Schutz nicht entzogen wird (Günstigkeitsprinzip).");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 22, jade_debug[0].filename ));
-buf.push("(2) Die Bestimmungen des UN-Kaufrechts finden ausdrücklich keine Anwendung.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 23, jade_debug[0].filename ));
-buf.push("§ 6 Jugendschutz");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, jade_debug[0].filename ));
-buf.push("(1) Beim Verkauf von Ware, die den Regelungen des Jugendschutzgesetzes unterfällt, gehen wir nur Vertragsbeziehungen mit Kunden ein, die das gesetzlich vorgeschriebene Mindestalter erreicht haben. Auf bestehende Altersbeschränkungen wird in der jeweiligen Artikelbeschreibung hingewiesen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 25, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 25, jade_debug[0].filename ));
-buf.push("(2) Sie versichern mit Absenden Ihrer Bestellung, das gesetzlich vorgeschriebene Mindestalter erreicht zu haben und dass Ihre Angaben bezüglich Ihres Namens und Ihrer Adresse richtig sind. Sie sind verpflichtet, dafür Sorge zu tragen, dass nur Sie selbst oder solche von Ihnen zur Entgegennahme der Lieferung ermächtigte Personen, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, die Ware in Empfang nehmen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("(3) Soweit wir aufgrund der gesetzlichen Bestimmungen verpflichtet sind, eine Alterskontrolle vorzunehmen,weisen wir den mit der Lieferung beauftragten Logistikdienstleister an, die Lieferung nur an Personen zu übergeben, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, und sich im Zweifelsfall den Personalausweis der die Ware in Empfang nehmenden Person zur Alterskontrolle vorzeigen zu lassen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 27, jade_debug[0].filename ));
-buf.push("(4) Soweit wir über das gesetzlich vorgeschriebene Mindestalter hinausgehend in der jeweiligen Artikelbeschreibung ausweisen, dass Sie für den Kauf der Ware das 18. Lebensjahr vollendet haben müssen, gelten vorstehende Absätze 1-3 mit der Maßgabe, dass anstelle des gesetzlich vorgeschriebenen Mindestalters Volljährigkeit vorliegen muss.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
-buf.push("II. Kundeninformationen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, jade_debug[0].filename ));
-buf.push("1. Identität des Verkäufers");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
-buf.push("Angela Lehmann");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 31, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 31, jade_debug[0].filename ));
-buf.push("Dornachgasse 15");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 32, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 32, jade_debug[0].filename ));
-buf.push("6850 Dornbirn");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 33, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 33, jade_debug[0].filename ));
-buf.push("Österreich");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 34, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 34, jade_debug[0].filename ));
-buf.push("Telefon: 00436641306372");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 35, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 35, jade_debug[0].filename ));
-buf.push("E-Mail: ha-lehmann@gmx.at");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 36, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 37, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 37, jade_debug[0].filename ));
-buf.push("Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter http://ec.europa.eu/odr.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 38, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 38, jade_debug[0].filename ));
-buf.push("2. Informationen zum Zustandekommen des Vertrages");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
-buf.push("Die technischen Schritte zum Vertragsschluss, der Vertragsschluss selbst und die Korrekturmöglichkeiten erfolgen nach Maßgabe des § 2 unserer Allgemeinen Geschäftsbedingungen (Teil I.).");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 40, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 40, jade_debug[0].filename ));
-buf.push("3. Vertragssprache, Vertragstextspeicherung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 41, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 41, jade_debug[0].filename ));
-buf.push("3.1. Vertragssprache ist deutsch.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 42, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 42, jade_debug[0].filename ));
-buf.push("3.2. Der vollständige Vertragstext wird von uns nicht gespeichert. Vor Absenden der Bestellung über das Online Warenkorbsystem  können die Vertragsdaten über die Druckfunktion des Browsers ausgedruckt oder elektronisch gesichert werden. Nach Zugang der Bestellung bei uns werden die Bestelldaten, die gesetzlich vorgeschriebenen Informationen bei Fernabsatzverträgen und die Allgemeinen Geschäftsbedingungen nochmals per E-Mail an Sie übersandt.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 43, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
-buf.push("4. Wesentliche Merkmale der Ware oder Dienstleistung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 44, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 44, jade_debug[0].filename ));
-buf.push("Die wesentlichen Merkmale der Ware und/oder Dienstleistung finden sich im jeweiligen Angebot.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 45, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 45, jade_debug[0].filename ));
-buf.push("5. Preise und Zahlungsmodalitäten");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 46, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 46, jade_debug[0].filename ));
-buf.push("5.1. Die in den jeweiligen Angeboten angeführten Preise sowie die Versandkosten stellen Gesamtpreise dar. Sie beinhalten alle Preisbestandteile einschließlich aller anfallenden Steuern.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 47, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 47, jade_debug[0].filename ));
-buf.push("5.2. Die anfallenden Versandkosten sind nicht im Kaufpreis enthalten. Sie sind über eine entsprechend bezeichnete Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot aufrufbar, werden im Laufe des Bestellvorganges gesondert ausgewiesen und sind von Ihnen zusätzlich zu tragen, soweit nicht die versandkostenfreie Lieferung zugesagt ist.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 48, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 48, jade_debug[0].filename ));
-buf.push("5.3. Die Ihnen zur Verfügung stehenden Zahlungsarten sind unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot ausgewiesen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 49, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 49, jade_debug[0].filename ));
-buf.push("5.4. Soweit bei den einzelnen Zahlungsarten nicht anders angegeben, sind die Zahlungsansprüche aus dem geschlossenen Vertrag sofort zur Zahlung fällig.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 50, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 50, jade_debug[0].filename ));
-buf.push("6. Lieferbedingungen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 51, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 51, jade_debug[0].filename ));
-buf.push("6.1. Die Lieferbedingungen, der Liefertermin sowie gegebenenfalls bestehende Lieferbeschränkungen finden sich unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 52, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 52, jade_debug[0].filename ));
-buf.push("6.2. Soweit Sie Verbraucher sind ist gesetzlich geregelt, dass die Gefahr des zufälligen Untergangs und der zufälligen Verschlechterung der verkauften Sache während der Versendung erst mit der Übergabe der Ware an Sie übergeht, unabhängig davon, ob die Versendung versichert oder unversichert erfolgt. Dies gilt nicht, wenn Sie eigenständig ein nicht vom Unternehmer benanntes Transportunternehmen oder eine sonst zur Ausführung der Versendung bestimmte Person beauftragt haben. ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 53, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 53, jade_debug[0].filename ));
-buf.push("7. Gesetzliches Mängelhaftungsrecht");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 54, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 54, jade_debug[0].filename ));
-buf.push("7.1. Es bestehen die gesetzlichen Mängelhaftungsrechte.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 55, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 55, jade_debug[0].filename ));
-buf.push("7.2. Als Verbraucher werden Sie gebeten, die Ware bei Lieferung umgehend auf Vollständigkeit, offensichtliche Mängel und Transportschäden zu überprüfen und uns sowie dem Spediteur Beanstandungen schnellstmöglich mitzuteilen. Kommen Sie dem nicht nach, hat dies keine Auswirkung auf Ihre gesetzlichen Gewährleistungsansprüche. Diese AGB und Kundeninformationen wurden von den auf IT-Recht spezialisierten Juristen des Händlerbundes erstellt und werden permanent auf Rechtskonformität geprüft. Die Händlerbund Management AG garantiert für die Rechtssicherheit der Texte und haftet im Falle von Abmahnungen. Nähere Informationen dazu finden Sie unter: http://www.haendlerbund.de/agb-service.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 56, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 57, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 57, jade_debug[0].filename ));
-buf.push("Hinweise zur Batterieentsorgung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 58, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 58, jade_debug[0].filename ));
-buf.push("Im Zusammenhang mit dem Vertrieb von Batterien oder mit der Lieferung von Geräten, die Batterien enthalten, sind wir verpflichtet, Sie auf folgendes hinzuweisen:");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 59, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 59, jade_debug[0].filename ));
-buf.push("Sie sind zur Rückgabe gebrauchter Batterien als Endnutzer gesetzlich verpflichtet. Sie können Altbatterien, die wir als Neubatterien im Sortiment führen oder geführt haben, unentgeltlich an unserem Versandlager (Handelsagentur Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich) zurückgeben.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 60, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 60, jade_debug[0].filename ));
-buf.push("Die auf den Batterien abgebildeten Symbole haben folgende Bedeutung:");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 61, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 61, jade_debug[0].filename ));
-buf.push(" ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 62, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 62, jade_debug[0].filename ));
-buf.push("Das Symbol der durchgekreuzten Mülltonne bedeutet, dass die Batterie nicht in den Hausmüll gegeben werden darf.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 63, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 63, jade_debug[0].filename ));
-buf.push("Pb = Batterie enthält mehr als 0,004 Masseprozent Blei");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 64, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 64, jade_debug[0].filename ));
-buf.push("Cd = Batterie enthält mehr als 0,002 Masseprozent Cadmium");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 65, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 65, jade_debug[0].filename ));
-buf.push("Hg = Batterie enthält mehr als 0,0005 Masseprozent Quecksilber.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 68, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 68, jade_debug[0].filename ));
-buf.push("letzte Aktualisierung: 28.09.2016");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 I. Allgemeine Geschäftsbedingungen\nh3.h3 § 1 Grundlegende Bestimmungen\np (1) Die nachstehenden Geschäftsbedingungen gelten für alle Verträge, die Sie mit uns als Anbieter (Angela Lehmann) über die Internetseite www.ha-lehmann.at schließen. Soweit nicht anders vereinbart, wird der Einbeziehung gegebenenfalls von Ihnen verwendeter eigener Bedingungen widersprochen.\np (2) Verbraucher im Sinne der nachstehenden Regelungen ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden kann. Unternehmer ist jede natürliche oder juristische Person oder eine rechtsfähige Personengesellschaft, die bei Abschluss eines Rechtsgeschäfts in Ausübung ihrer selbständigen beruflichen oder gewerblichen Tätigkeit handelt.\nh3.h3 § 2 Zustandekommen des Vertrages\np (1) Gegenstand des Vertrages ist der Verkauf von Waren.\np Unsere Angebote im Internet sind unverbindlich und kein verbindliches Angebot zum Abschluss eines Vertrages.\np (2) Sie können ein verbindliches Kaufangebot (Bestellung) über das Online-Warenkorbsystem abgeben. Dabei werden die zum Kauf beabsichtigten Waren im „Warenkorb\" abgelegt. Über die entsprechende Schaltfläche in der Navigationsleiste können Sie den „Warenkorb\" aufrufen und dort jederzeit Änderungen vornehmen. Nach Aufrufen der Seite „Kasse\" und der Eingabe der persönlichen Daten sowie der Zahlungs- und Versandbedingungen werden abschließend nochmals alle Bestelldaten auf der Bestellübersichtsseite angezeigt. Soweit Sie das Bezahl-System \"amazon-payments\" durch Anklicken der im Shopsystem integrierten Schaltfläche \"Bezahlen über amazon\" nutzen, werden Sie auf die Log-In Seite von amazon.de weitergeleitet. Nach erfolgreicher Anmeldung werden Ihre bei amazon.de hinterlegten Versandadressen und Zahlungsarten angezeigt. Sie wählen Versandadresse und Zahlungsart aus und werden über die Schaltfläche \"weiter\" zurück in unseren Online-Shop geleitet. Vor Absenden der Bestellung haben Sie die Möglichkeit, hier sämtliche Angaben nochmals zu überprüfen, zu ändern (auch über die Funktion „zurück\" des Internetbrowsers) bzw. den Kauf abzubrechen. Mit dem Absenden der Bestellung über die Schaltfläche \"zahlungspflichtig bestellen\" geben Sie ein verbindliches Angebot bei uns ab. Sie erhalten zunächst eine automatische E-Mail über den Eingang Ihrer Bestellung, die noch nicht zum Vertragsschluss führt. Bei Zahlung über \"amazon payments\" erhalten Sie diese Bestätigungs-E-Mail von amazon.de.\np (3) Die Annahme des Angebots (und damit der Vertragsabschluss) erfolgt innerhalb von 2 Tagen durchBestätigung in Textform (z.B. E-Mail), in welcher Ihnen die Ausführung der Bestellung oder Auslieferung der Ware bestätigt wird (Auftragsbestätigung). Soweit Sie das Bezahl-System \"amazon-payments\" gewählt haben, erfolgt die Angebotsannahme (Vertragsschluss) innerhalb von 2 Tagen durch Bestätigung per E-Mail seitens amazon.de, in welcher Ihnen die Auslieferung der Ware mitgeteilt wird. Sollten Sie keine entsprechende Nachricht erhalten haben, sind Sie nicht mehr an Ihre Bestellung gebunden. Gegebenenfalls bereits erbrachte Leistungen werden in diesem Fall unverzüglich zurückerstattet.\np (4) Die Abwicklung der Bestellung und Übermittlung aller im Zusammenhang mit dem Vertragsschlusserforderlichen Informationen erfolgt per E-Mail zum Teil automatisiert. Sie haben deshalb sicherzustellen, dass die von Ihnen bei uns hinterlegte E-Mail-Adresse zutreffend ist, der Empfang der E-Mails technisch sichergestellt und insbesondere nicht durch SPAM-Filter verhindert wird.\nh3.h3 § 3 Zurückbehaltungsrecht, Eigentumsvorbehalt\np (1) Ein Zurückbehaltungsrecht können Sie nur ausüben, soweit es sich um Forderungen aus dem selben Vertragsverhältnis handelt.\np (2) Die Ware bleibt bis zur vollständigen Zahlung des Kaufpreises unser Eigentum.\nh3.h3 § 4 Haftung\np (1) Wir haften jeweils uneingeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit. Weiter haften wir ohne Einschränkung in allen Fällen des Vorsatzes und grober Fahrlässigkeit, bei arglistigem Verschweigen eines Mangels, bei Übernahme der Garantie für die Beschaffenheit des Kaufgegenstandes und in allen anderen gesetzlich geregelten Fällen.\np (2) Die Haftung für Mängel im Rahmen der gesetzlichen Gewährleistung richtet sich nach der entsprechenden Regelung in unseren Kundeninformationen (Teil II).\np (3) Sofern wesentliche Vertragspflichten betroffen sind, ist unsere Haftung bei leichter Fahrlässigkeit auf den vertragstypischen, vorhersehbaren Schaden beschränkt. Wesentliche Vertragspflichten sind wesentliche Pflichten, die sich aus der Natur des Vertrages ergeben und deren Verletzung die Erreichung des Vertragszweckes gefährden würde sowie Pflichten, die der Vertrag uns nach seinem Inhalt zur Erreichung des Vertragszwecks auferlegt, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst möglich machen und auf deren Einhaltung Sie regelmäßig vertrauen dürfen.\np (4) Bei der Verletzung unwesentlicher Vertragspflichten ist die Haftung bei leicht fahrlässigen Pflichtverletzungen ausgeschlossen.\np (5) Die Datenkommunikation über das Internet kann nach dem derzeitigen Stand der Technik nicht fehlerfrei und/oder jederzeit verfügbar gewährleistet werden. Wir haften insoweit weder für die ständige noch ununterbrochene Verfügbarkeit der Webseite und der dort angebotenen Dienstleistung.\nh3.h3 § 5 Rechtswahl\np (1) Es gilt deutsches Recht. Bei Verbrauchern gilt diese Rechtswahl nur, soweit hierdurch der durch zwingende Bestimmungen des Rechts des Staates des gewöhnlichen Aufenthaltes des Verbrauchers gewährte Schutz nicht entzogen wird (Günstigkeitsprinzip).\np (2) Die Bestimmungen des UN-Kaufrechts finden ausdrücklich keine Anwendung.\nh3.h3 § 6 Jugendschutz\np (1) Beim Verkauf von Ware, die den Regelungen des Jugendschutzgesetzes unterfällt, gehen wir nur Vertragsbeziehungen mit Kunden ein, die das gesetzlich vorgeschriebene Mindestalter erreicht haben. Auf bestehende Altersbeschränkungen wird in der jeweiligen Artikelbeschreibung hingewiesen.\np (2) Sie versichern mit Absenden Ihrer Bestellung, das gesetzlich vorgeschriebene Mindestalter erreicht zu haben und dass Ihre Angaben bezüglich Ihres Namens und Ihrer Adresse richtig sind. Sie sind verpflichtet, dafür Sorge zu tragen, dass nur Sie selbst oder solche von Ihnen zur Entgegennahme der Lieferung ermächtigte Personen, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, die Ware in Empfang nehmen.\np (3) Soweit wir aufgrund der gesetzlichen Bestimmungen verpflichtet sind, eine Alterskontrolle vorzunehmen,weisen wir den mit der Lieferung beauftragten Logistikdienstleister an, die Lieferung nur an Personen zu übergeben, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, und sich im Zweifelsfall den Personalausweis der die Ware in Empfang nehmenden Person zur Alterskontrolle vorzeigen zu lassen.\np (4) Soweit wir über das gesetzlich vorgeschriebene Mindestalter hinausgehend in der jeweiligen Artikelbeschreibung ausweisen, dass Sie für den Kauf der Ware das 18. Lebensjahr vollendet haben müssen, gelten vorstehende Absätze 1-3 mit der Maßgabe, dass anstelle des gesetzlich vorgeschriebenen Mindestalters Volljährigkeit vorliegen muss.\nh3.h3 II. Kundeninformationen\nh3.h3 1. Identität des Verkäufers\np Angela Lehmann\np Dornachgasse 15\np 6850 Dornbirn\np Österreich\np Telefon: 00436641306372\np E-Mail: ha-lehmann@gmx.at\np\np Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter http://ec.europa.eu/odr.\nh3.h3 2. Informationen zum Zustandekommen des Vertrages\np Die technischen Schritte zum Vertragsschluss, der Vertragsschluss selbst und die Korrekturmöglichkeiten erfolgen nach Maßgabe des § 2 unserer Allgemeinen Geschäftsbedingungen (Teil I.).\nh3.h3 3. Vertragssprache, Vertragstextspeicherung\np 3.1. Vertragssprache ist deutsch.\np 3.2. Der vollständige Vertragstext wird von uns nicht gespeichert. Vor Absenden der Bestellung über das Online Warenkorbsystem  können die Vertragsdaten über die Druckfunktion des Browsers ausgedruckt oder elektronisch gesichert werden. Nach Zugang der Bestellung bei uns werden die Bestelldaten, die gesetzlich vorgeschriebenen Informationen bei Fernabsatzverträgen und die Allgemeinen Geschäftsbedingungen nochmals per E-Mail an Sie übersandt.\nh3.h3 4. Wesentliche Merkmale der Ware oder Dienstleistung\np Die wesentlichen Merkmale der Ware und/oder Dienstleistung finden sich im jeweiligen Angebot.\nh3.h3 5. Preise und Zahlungsmodalitäten\np 5.1. Die in den jeweiligen Angeboten angeführten Preise sowie die Versandkosten stellen Gesamtpreise dar. Sie beinhalten alle Preisbestandteile einschließlich aller anfallenden Steuern.\np 5.2. Die anfallenden Versandkosten sind nicht im Kaufpreis enthalten. Sie sind über eine entsprechend bezeichnete Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot aufrufbar, werden im Laufe des Bestellvorganges gesondert ausgewiesen und sind von Ihnen zusätzlich zu tragen, soweit nicht die versandkostenfreie Lieferung zugesagt ist.\np 5.3. Die Ihnen zur Verfügung stehenden Zahlungsarten sind unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot ausgewiesen.\np 5.4. Soweit bei den einzelnen Zahlungsarten nicht anders angegeben, sind die Zahlungsansprüche aus dem geschlossenen Vertrag sofort zur Zahlung fällig.\nh3.h3 6. Lieferbedingungen\np 6.1. Die Lieferbedingungen, der Liefertermin sowie gegebenenfalls bestehende Lieferbeschränkungen finden sich unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot.\np 6.2. Soweit Sie Verbraucher sind ist gesetzlich geregelt, dass die Gefahr des zufälligen Untergangs und der zufälligen Verschlechterung der verkauften Sache während der Versendung erst mit der Übergabe der Ware an Sie übergeht, unabhängig davon, ob die Versendung versichert oder unversichert erfolgt. Dies gilt nicht, wenn Sie eigenständig ein nicht vom Unternehmer benanntes Transportunternehmen oder eine sonst zur Ausführung der Versendung bestimmte Person beauftragt haben. \nh3.h3 7. Gesetzliches Mängelhaftungsrecht\np 7.1. Es bestehen die gesetzlichen Mängelhaftungsrechte.\np 7.2. Als Verbraucher werden Sie gebeten, die Ware bei Lieferung umgehend auf Vollständigkeit, offensichtliche Mängel und Transportschäden zu überprüfen und uns sowie dem Spediteur Beanstandungen schnellstmöglich mitzuteilen. Kommen Sie dem nicht nach, hat dies keine Auswirkung auf Ihre gesetzlichen Gewährleistungsansprüche. Diese AGB und Kundeninformationen wurden von den auf IT-Recht spezialisierten Juristen des Händlerbundes erstellt und werden permanent auf Rechtskonformität geprüft. Die Händlerbund Management AG garantiert für die Rechtssicherheit der Texte und haftet im Falle von Abmahnungen. Nähere Informationen dazu finden Sie unter: http://www.haendlerbund.de/agb-service.\np\nh3.h3 Hinweise zur Batterieentsorgung\np Im Zusammenhang mit dem Vertrieb von Batterien oder mit der Lieferung von Geräten, die Batterien enthalten, sind wir verpflichtet, Sie auf folgendes hinzuweisen:\np Sie sind zur Rückgabe gebrauchter Batterien als Endnutzer gesetzlich verpflichtet. Sie können Altbatterien, die wir als Neubatterien im Sortiment führen oder geführt haben, unentgeltlich an unserem Versandlager (Handelsagentur Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich) zurückgeben.\np Die auf den Batterien abgebildeten Symbole haben folgende Bedeutung:\np \np Das Symbol der durchgekreuzten Mülltonne bedeutet, dass die Batterie nicht in den Hausmüll gegeben werden darf.\np Pb = Batterie enthält mehr als 0,004 Masseprozent Blei\np Cd = Batterie enthält mehr als 0,002 Masseprozent Cadmium\np Hg = Batterie enthält mehr als 0,0005 Masseprozent Quecksilber.\n\n\np letzte Aktualisierung: 28.09.2016");
-}
-};}, "views/agb_1": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ) ];
-try {
+buf.push("<h3 class=\"h3\">I. Allgemeine Geschäftsbedingungen</h3><h3 class=\"h3\">§ 1 Grundlegende Bestimmungen</h3><p>(1) Die nachstehenden Geschäftsbedingungen gelten für alle Verträge, die Sie mit uns als Anbieter (Angela Lehmann) über die Internetseite www.ha-lehmann.at schließen. Soweit nicht anders vereinbart, wird der Einbeziehung gegebenenfalls von Ihnen verwendeter eigener Bedingungen widersprochen.</p><p>(2) Verbraucher im Sinne der nachstehenden Regelungen ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden kann. Unternehmer ist jede natürliche oder juristische Person oder eine rechtsfähige Personengesellschaft, die bei Abschluss eines Rechtsgeschäfts in Ausübung ihrer selbständigen beruflichen oder gewerblichen Tätigkeit handelt.</p><h3 class=\"h3\">§ 2 Zustandekommen des Vertrages</h3><p>(1) Gegenstand des Vertrages ist der Verkauf von Waren.</p><p>Unsere Angebote im Internet sind unverbindlich und kein verbindliches Angebot zum Abschluss eines Vertrages.</p><p>(2) Sie können ein verbindliches Kaufangebot (Bestellung) über das Online-Warenkorbsystem abgeben. Dabei werden die zum Kauf beabsichtigten Waren im „Warenkorb\" abgelegt. Über die entsprechende Schaltfläche in der Navigationsleiste können Sie den „Warenkorb\" aufrufen und dort jederzeit Änderungen vornehmen. Nach Aufrufen der Seite „Kasse\" und der Eingabe der persönlichen Daten sowie der Zahlungs- und Versandbedingungen werden abschließend nochmals alle Bestelldaten auf der Bestellübersichtsseite angezeigt. Soweit Sie das Bezahl-System \"amazon-payments\" durch Anklicken der im Shopsystem integrierten Schaltfläche \"Bezahlen über amazon\" nutzen, werden Sie auf die Log-In Seite von amazon.de weitergeleitet. Nach erfolgreicher Anmeldung werden Ihre bei amazon.de hinterlegten Versandadressen und Zahlungsarten angezeigt. Sie wählen Versandadresse und Zahlungsart aus und werden über die Schaltfläche \"weiter\" zurück in unseren Online-Shop geleitet. Vor Absenden der Bestellung haben Sie die Möglichkeit, hier sämtliche Angaben nochmals zu überprüfen, zu ändern (auch über die Funktion „zurück\" des Internetbrowsers) bzw. den Kauf abzubrechen. Mit dem Absenden der Bestellung über die Schaltfläche \"zahlungspflichtig bestellen\" geben Sie ein verbindliches Angebot bei uns ab. Sie erhalten zunächst eine automatische E-Mail über den Eingang Ihrer Bestellung, die noch nicht zum Vertragsschluss führt. Bei Zahlung über \"amazon payments\" erhalten Sie diese Bestätigungs-E-Mail von amazon.de.</p><p>(3) Die Annahme des Angebots (und damit der Vertragsabschluss) erfolgt innerhalb von 2 Tagen durchBestätigung in Textform (z.B. E-Mail), in welcher Ihnen die Ausführung der Bestellung oder Auslieferung der Ware bestätigt wird (Auftragsbestätigung). Soweit Sie das Bezahl-System \"amazon-payments\" gewählt haben, erfolgt die Angebotsannahme (Vertragsschluss) innerhalb von 2 Tagen durch Bestätigung per E-Mail seitens amazon.de, in welcher Ihnen die Auslieferung der Ware mitgeteilt wird. Sollten Sie keine entsprechende Nachricht erhalten haben, sind Sie nicht mehr an Ihre Bestellung gebunden. Gegebenenfalls bereits erbrachte Leistungen werden in diesem Fall unverzüglich zurückerstattet.</p><p>(4) Die Abwicklung der Bestellung und Übermittlung aller im Zusammenhang mit dem Vertragsschlusserforderlichen Informationen erfolgt per E-Mail zum Teil automatisiert. Sie haben deshalb sicherzustellen, dass die von Ihnen bei uns hinterlegte E-Mail-Adresse zutreffend ist, der Empfang der E-Mails technisch sichergestellt und insbesondere nicht durch SPAM-Filter verhindert wird.</p><h3 class=\"h3\">§ 3 Zurückbehaltungsrecht, Eigentumsvorbehalt</h3><p>(1) Ein Zurückbehaltungsrecht können Sie nur ausüben, soweit es sich um Forderungen aus dem selben Vertragsverhältnis handelt.</p><p>(2) Die Ware bleibt bis zur vollständigen Zahlung des Kaufpreises unser Eigentum.</p><h3 class=\"h3\">§ 4 Haftung</h3><p>(1) Wir haften jeweils uneingeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit. Weiter haften wir ohne Einschränkung in allen Fällen des Vorsatzes und grober Fahrlässigkeit, bei arglistigem Verschweigen eines Mangels, bei Übernahme der Garantie für die Beschaffenheit des Kaufgegenstandes und in allen anderen gesetzlich geregelten Fällen.</p><p>(2) Die Haftung für Mängel im Rahmen der gesetzlichen Gewährleistung richtet sich nach der entsprechenden Regelung in unseren Kundeninformationen (Teil II).</p><p>(3) Sofern wesentliche Vertragspflichten betroffen sind, ist unsere Haftung bei leichter Fahrlässigkeit auf den vertragstypischen, vorhersehbaren Schaden beschränkt. Wesentliche Vertragspflichten sind wesentliche Pflichten, die sich aus der Natur des Vertrages ergeben und deren Verletzung die Erreichung des Vertragszweckes gefährden würde sowie Pflichten, die der Vertrag uns nach seinem Inhalt zur Erreichung des Vertragszwecks auferlegt, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst möglich machen und auf deren Einhaltung Sie regelmäßig vertrauen dürfen.</p><p>(4) Bei der Verletzung unwesentlicher Vertragspflichten ist die Haftung bei leicht fahrlässigen Pflichtverletzungen ausgeschlossen.</p><p>(5) Die Datenkommunikation über das Internet kann nach dem derzeitigen Stand der Technik nicht fehlerfrei und/oder jederzeit verfügbar gewährleistet werden. Wir haften insoweit weder für die ständige noch ununterbrochene Verfügbarkeit der Webseite und der dort angebotenen Dienstleistung.</p><h3 class=\"h3\">§ 5 Rechtswahl</h3><p>(1) Es gilt deutsches Recht. Bei Verbrauchern gilt diese Rechtswahl nur, soweit hierdurch der durch zwingende Bestimmungen des Rechts des Staates des gewöhnlichen Aufenthaltes des Verbrauchers gewährte Schutz nicht entzogen wird (Günstigkeitsprinzip).</p><p>(2) Die Bestimmungen des UN-Kaufrechts finden ausdrücklich keine Anwendung.</p><h3 class=\"h3\">§ 6 Jugendschutz</h3><p>(1) Beim Verkauf von Ware, die den Regelungen des Jugendschutzgesetzes unterfällt, gehen wir nur Vertragsbeziehungen mit Kunden ein, die das gesetzlich vorgeschriebene Mindestalter erreicht haben. Auf bestehende Altersbeschränkungen wird in der jeweiligen Artikelbeschreibung hingewiesen.</p><p>(2) Sie versichern mit Absenden Ihrer Bestellung, das gesetzlich vorgeschriebene Mindestalter erreicht zu haben und dass Ihre Angaben bezüglich Ihres Namens und Ihrer Adresse richtig sind. Sie sind verpflichtet, dafür Sorge zu tragen, dass nur Sie selbst oder solche von Ihnen zur Entgegennahme der Lieferung ermächtigte Personen, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, die Ware in Empfang nehmen.</p><p>(3) Soweit wir aufgrund der gesetzlichen Bestimmungen verpflichtet sind, eine Alterskontrolle vorzunehmen,weisen wir den mit der Lieferung beauftragten Logistikdienstleister an, die Lieferung nur an Personen zu übergeben, die das gesetzlich vorgeschriebene Mindestalter erreicht haben, und sich im Zweifelsfall den Personalausweis der die Ware in Empfang nehmenden Person zur Alterskontrolle vorzeigen zu lassen.</p><p>(4) Soweit wir über das gesetzlich vorgeschriebene Mindestalter hinausgehend in der jeweiligen Artikelbeschreibung ausweisen, dass Sie für den Kauf der Ware das 18. Lebensjahr vollendet haben müssen, gelten vorstehende Absätze 1-3 mit der Maßgabe, dass anstelle des gesetzlich vorgeschriebenen Mindestalters Volljährigkeit vorliegen muss.</p><h3 class=\"h3\">II. Kundeninformationen</h3><h3 class=\"h3\">1. Identität des Verkäufers</h3><p>Angela Lehmann</p><p>Dornachgasse 15</p><p>6850 Dornbirn</p><p>Österreich</p><p>Telefon: 00436641306372</p><p>E-Mail: ha-lehmann@gmx.at</p><p></p><p>Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter http://ec.europa.eu/odr.</p><h3 class=\"h3\">2. Informationen zum Zustandekommen des Vertrages</h3><p>Die technischen Schritte zum Vertragsschluss, der Vertragsschluss selbst und die Korrekturmöglichkeiten erfolgen nach Maßgabe des § 2 unserer Allgemeinen Geschäftsbedingungen (Teil I.).</p><h3 class=\"h3\">3. Vertragssprache, Vertragstextspeicherung</h3><p>3.1. Vertragssprache ist deutsch.</p><p>3.2. Der vollständige Vertragstext wird von uns nicht gespeichert. Vor Absenden der Bestellung über das Online Warenkorbsystem  können die Vertragsdaten über die Druckfunktion des Browsers ausgedruckt oder elektronisch gesichert werden. Nach Zugang der Bestellung bei uns werden die Bestelldaten, die gesetzlich vorgeschriebenen Informationen bei Fernabsatzverträgen und die Allgemeinen Geschäftsbedingungen nochmals per E-Mail an Sie übersandt.</p><h3 class=\"h3\">4. Wesentliche Merkmale der Ware oder Dienstleistung</h3><p>Die wesentlichen Merkmale der Ware und/oder Dienstleistung finden sich im jeweiligen Angebot.</p><h3 class=\"h3\">5. Preise und Zahlungsmodalitäten</h3><p>5.1. Die in den jeweiligen Angeboten angeführten Preise sowie die Versandkosten stellen Gesamtpreise dar. Sie beinhalten alle Preisbestandteile einschließlich aller anfallenden Steuern.</p><p>5.2. Die anfallenden Versandkosten sind nicht im Kaufpreis enthalten. Sie sind über eine entsprechend bezeichnete Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot aufrufbar, werden im Laufe des Bestellvorganges gesondert ausgewiesen und sind von Ihnen zusätzlich zu tragen, soweit nicht die versandkostenfreie Lieferung zugesagt ist.</p><p>5.3. Die Ihnen zur Verfügung stehenden Zahlungsarten sind unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot ausgewiesen.</p><p>5.4. Soweit bei den einzelnen Zahlungsarten nicht anders angegeben, sind die Zahlungsansprüche aus dem geschlossenen Vertrag sofort zur Zahlung fällig.</p><h3 class=\"h3\">6. Lieferbedingungen</h3><p>6.1. Die Lieferbedingungen, der Liefertermin sowie gegebenenfalls bestehende Lieferbeschränkungen finden sich unter einer entsprechend bezeichneten Schaltfläche auf unserer Internetpräsenz oder im jeweiligen Angebot.</p><p>6.2. Soweit Sie Verbraucher sind ist gesetzlich geregelt, dass die Gefahr des zufälligen Untergangs und der zufälligen Verschlechterung der verkauften Sache während der Versendung erst mit der Übergabe der Ware an Sie übergeht, unabhängig davon, ob die Versendung versichert oder unversichert erfolgt. Dies gilt nicht, wenn Sie eigenständig ein nicht vom Unternehmer benanntes Transportunternehmen oder eine sonst zur Ausführung der Versendung bestimmte Person beauftragt haben. </p><h3 class=\"h3\">7. Gesetzliches Mängelhaftungsrecht</h3><p>7.1. Es bestehen die gesetzlichen Mängelhaftungsrechte.</p><p>7.2. Als Verbraucher werden Sie gebeten, die Ware bei Lieferung umgehend auf Vollständigkeit, offensichtliche Mängel und Transportschäden zu überprüfen und uns sowie dem Spediteur Beanstandungen schnellstmöglich mitzuteilen. Kommen Sie dem nicht nach, hat dies keine Auswirkung auf Ihre gesetzlichen Gewährleistungsansprüche. Diese AGB und Kundeninformationen wurden von den auf IT-Recht spezialisierten Juristen des Händlerbundes erstellt und werden permanent auf Rechtskonformität geprüft. Die Händlerbund Management AG garantiert für die Rechtssicherheit der Texte und haftet im Falle von Abmahnungen. Nähere Informationen dazu finden Sie unter: http://www.haendlerbund.de/agb-service.</p><p></p><h3 class=\"h3\">Hinweise zur Batterieentsorgung</h3><p>Im Zusammenhang mit dem Vertrieb von Batterien oder mit der Lieferung von Geräten, die Batterien enthalten, sind wir verpflichtet, Sie auf folgendes hinzuweisen:</p><p>Sie sind zur Rückgabe gebrauchter Batterien als Endnutzer gesetzlich verpflichtet. Sie können Altbatterien, die wir als Neubatterien im Sortiment führen oder geführt haben, unentgeltlich an unserem Versandlager (Handelsagentur Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich) zurückgeben.</p><p>Die auf den Batterien abgebildeten Symbole haben folgende Bedeutung:</p><p> </p><p>Das Symbol der durchgekreuzten Mülltonne bedeutet, dass die Batterie nicht in den Hausmüll gegeben werden darf.</p><p>Pb = Batterie enthält mehr als 0,004 Masseprozent Blei</p><p>Cd = Batterie enthält mehr als 0,002 Masseprozent Cadmium</p><p>Hg = Batterie enthält mehr als 0,0005 Masseprozent Quecksilber.</p><p>letzte Aktualisierung: 28.09.2016</p>");;return buf.join("");
+}; },"views/agb_1": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Allgemeine Geschäftsbedingungen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Geltungsbereich");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Für alle Bestellungen über unseren Online-Shop gelten die nachfolgenden AGB.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("Selbstabholung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("Nach Terminvereinbarung möglich.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("Packstation");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("Wir liefern nicht an Packstationen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("Eigentumsvorbehalt ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, jade_debug[0].filename ));
-buf.push("Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("Transportschäden");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
-buf.push("Werden Waren mit offensichtlichen Transportschäden angeliefert, so reklamieren Sie solche Fehler bitte möglichst sofort beim Zusteller und nehmen Sie bitte unverzüglich Kontakt zu uns auf. Die Versäumung einer Reklamation oder Kontaktaufnahme hat für Ihre gesetzlichen Ansprüche und deren Durchsetzung, insbesondere Ihre Gewährleistungsrechte keinerlei Konsequenzen. Sie helfen uns aber, unsere eigenen Ansprüche gegenüber dem Frachtführer bzw. Transportversicherung geltend machen zu können.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("Vertragssprache");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
-buf.push("Die für den Vertragsschluss zur Verfügung stehende Sprache ist Deutsch.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 22, jade_debug[0].filename ));
-buf.push("Jugendschutz");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 23, jade_debug[0].filename ));
-buf.push("Bestimmte Artikel unseres Sortiments gehören ausschließlich in die Hände von Erwachsenen. Wir behalten uns für diese in den Produktbeschreibungen jeweils speziell gekennzeichnete Artikel vor, diese nur an volljährige, unbeschränkt geschäftsfähige natürliche Personen auszuliefern und dabei entsprechende Altersnachweise zu verlangen. Die für die Bestellung erforderlichen Daten wie Name, Anschrift usw. sind vollständig und wahrheitsgemäß anzugeben.  ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 25, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 25, jade_debug[0].filename ));
-buf.push("Widerrufsbelehrung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die letzte Ware in Besitz genommen haben bzw. hat. Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Handelsagentur Lehmann, Angela Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich, Telefon 0043-664-1306372, eMail: ha-lehmann@gmx.at) mittels einer eindeutigen Erklärung (z.B. ein mit der Post versandter Brief, Telefax oder E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist. Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
-buf.push("Folgen des Widerrufs");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, jade_debug[0].filename ));
-buf.push("Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet. Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist. Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden. Sie tragen die unmittelbaren Kosten der Rücksendung der Waren. Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 31, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 31, jade_debug[0].filename ));
-buf.push("Widerrufsformular");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 32, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<iframe src=\"https://docs.google.com/forms/d/e/1FAIpQLSdKP-t3e19dPw1xbsJmaJqCzfTNMWQQ_Knyqr-F5Cfrlej7Jw/viewform?embedded=true\" width=\"100%\" height=\"1350\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 33, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/agb_1.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 33, jade_debug[0].filename ));
-buf.push("Wird geladen...");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</iframe>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3\n  div Allgemeine Geschäftsbedingungen\n  \nh5.h5 Geltungsbereich\np Für alle Bestellungen über unseren Online-Shop gelten die nachfolgenden AGB.\n\nh5.h5 Selbstabholung\np Nach Terminvereinbarung möglich.\n\nh5.h5 Packstation\np Wir liefern nicht an Packstationen.\n\nh5.h5 Eigentumsvorbehalt \np Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum.\n\nh5.h5 Transportschäden\np Werden Waren mit offensichtlichen Transportschäden angeliefert, so reklamieren Sie solche Fehler bitte möglichst sofort beim Zusteller und nehmen Sie bitte unverzüglich Kontakt zu uns auf. Die Versäumung einer Reklamation oder Kontaktaufnahme hat für Ihre gesetzlichen Ansprüche und deren Durchsetzung, insbesondere Ihre Gewährleistungsrechte keinerlei Konsequenzen. Sie helfen uns aber, unsere eigenen Ansprüche gegenüber dem Frachtführer bzw. Transportversicherung geltend machen zu können.\n\nh5.h5 Vertragssprache\np Die für den Vertragsschluss zur Verfügung stehende Sprache ist Deutsch.\n\nh5.h5 Jugendschutz\np Bestimmte Artikel unseres Sortiments gehören ausschließlich in die Hände von Erwachsenen. Wir behalten uns für diese in den Produktbeschreibungen jeweils speziell gekennzeichnete Artikel vor, diese nur an volljährige, unbeschränkt geschäftsfähige natürliche Personen auszuliefern und dabei entsprechende Altersnachweise zu verlangen. Die für die Bestellung erforderlichen Daten wie Name, Anschrift usw. sind vollständig und wahrheitsgemäß anzugeben.  \n\nh5.h5 Widerrufsbelehrung\np Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die letzte Ware in Besitz genommen haben bzw. hat. Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Handelsagentur Lehmann, Angela Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich, Telefon 0043-664-1306372, eMail: ha-lehmann@gmx.at) mittels einer eindeutigen Erklärung (z.B. ein mit der Post versandter Brief, Telefax oder E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist. Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.\n\nh5.h5 Folgen des Widerrufs\np Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet. Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist. Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden. Sie tragen die unmittelbaren Kosten der Rücksendung der Waren. Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.\n\nh5.h5 Widerrufsformular\niframe(src=\"https://docs.google.com/forms/d/e/1FAIpQLSdKP-t3e19dPw1xbsJmaJqCzfTNMWQQ_Knyqr-F5Cfrlej7Jw/viewform?embedded=true\", width=\"100%\", height=\"1350\", frameborder=\"0\", marginheight=\"0\", marginwidth=\"0\")\n  div Wird geladen...\n\n  \n");
-}
-};}, "views/carousel": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ) ];
-try {
+buf.push("<h3 class=\"h3\"><div>Allgemeine Geschäftsbedingungen</div></h3><h5 class=\"h5\">Geltungsbereich</h5><p>Für alle Bestellungen über unseren Online-Shop gelten die nachfolgenden AGB.</p><h5 class=\"h5\">Selbstabholung</h5><p>Nach Terminvereinbarung möglich.</p><h5 class=\"h5\">Packstation</h5><p>Wir liefern nicht an Packstationen.</p><h5 class=\"h5\">Eigentumsvorbehalt </h5><p>Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum.</p><h5 class=\"h5\">Transportschäden</h5><p>Werden Waren mit offensichtlichen Transportschäden angeliefert, so reklamieren Sie solche Fehler bitte möglichst sofort beim Zusteller und nehmen Sie bitte unverzüglich Kontakt zu uns auf. Die Versäumung einer Reklamation oder Kontaktaufnahme hat für Ihre gesetzlichen Ansprüche und deren Durchsetzung, insbesondere Ihre Gewährleistungsrechte keinerlei Konsequenzen. Sie helfen uns aber, unsere eigenen Ansprüche gegenüber dem Frachtführer bzw. Transportversicherung geltend machen zu können.</p><h5 class=\"h5\">Vertragssprache</h5><p>Die für den Vertragsschluss zur Verfügung stehende Sprache ist Deutsch.</p><h5 class=\"h5\">Jugendschutz</h5><p>Bestimmte Artikel unseres Sortiments gehören ausschließlich in die Hände von Erwachsenen. Wir behalten uns für diese in den Produktbeschreibungen jeweils speziell gekennzeichnete Artikel vor, diese nur an volljährige, unbeschränkt geschäftsfähige natürliche Personen auszuliefern und dabei entsprechende Altersnachweise zu verlangen. Die für die Bestellung erforderlichen Daten wie Name, Anschrift usw. sind vollständig und wahrheitsgemäß anzugeben.  </p><h5 class=\"h5\">Widerrufsbelehrung</h5><p>Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die letzte Ware in Besitz genommen haben bzw. hat. Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Handelsagentur Lehmann, Angela Lehmann, Dornachgasse 15, 6850 Dornbirn, Österreich, Telefon 0043-664-1306372, eMail: ha-lehmann@gmx.at) mittels einer eindeutigen Erklärung (z.B. ein mit der Post versandter Brief, Telefax oder E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist. Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.</p><h5 class=\"h5\">Folgen des Widerrufs</h5><p>Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet. Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist. Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden. Sie tragen die unmittelbaren Kosten der Rücksendung der Waren. Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.</p><h5 class=\"h5\">Widerrufsformular</h5><iframe src=\"https://docs.google.com/forms/d/e/1FAIpQLSdKP-t3e19dPw1xbsJmaJqCzfTNMWQQ_Knyqr-F5Cfrlej7Jw/viewform?embedded=true\" width=\"100%\" height=\"1350\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\"><div>Wird geladen...</div></iframe>");;return buf.join("");
+}; },"views/carousel": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 ;var locals_for_with = (locals || {});(function (id, slides, undefined) {
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<div tabindex=\"3\" data-ride=\"\"" + (jade.attr("id", id, true, false)) + " style=\"min-height: 330px;\" class=\"carousel slide\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push(" ");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<div class=\"carousel-inner\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
+buf.push("<div tabindex=\"3\" data-ride=\"\"" + (jade.attr("id", id, true, false)) + " style=\"min-height: 330px;\" class=\"carousel slide\"> <div class=\"carousel-inner\">");
 // iterate slides
 ;(function(){
   var $$obj = slides;
@@ -45264,18 +42158,10 @@ jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-leh
     for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
       var vals = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 buf.push("<div" + (jade.cls(['item',index==0 ? 'active' : ''], [null,true])) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( vals.items)
 {
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 buf.push("<ul class=\"liststyle\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 // iterate vals.items
 ;(function(){
   var $$obj = vals.items;
@@ -45284,18 +42170,9 @@ jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-leh
     for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
       var val = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( val.items)
 {
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = val.items[0]) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
+buf.push("<li>" + (jade.escape(null == (jade_interp = val.items[0]) ? "" : jade_interp)) + "<ul>");
 // iterate val.items
 ;(function(){
   var $$obj = val.items;
@@ -45304,21 +42181,10 @@ jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-le
     for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
       var subval = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( index != 0)
 {
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   } else {
@@ -45326,50 +42192,21 @@ jade_debug.shift();
     for (var index in $$obj) {
       $$l++;      var subval = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( index != 0)
 {
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</ul>");
-jade_debug.shift();
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("</ul></li>");
 }
 else
 {
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = val) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = val) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   } else {
@@ -45377,18 +42214,9 @@ jade_debug.shift();
     for (var index in $$obj) {
       $$l++;      var val = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( val.items)
 {
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = val.items[0]) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
+buf.push("<li>" + (jade.escape(null == (jade_interp = val.items[0]) ? "" : jade_interp)) + "<ul>");
 // iterate val.items
 ;(function(){
   var $$obj = val.items;
@@ -45397,21 +42225,10 @@ jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-le
     for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
       var subval = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( index != 0)
 {
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   } else {
@@ -45419,74 +42236,33 @@ jade_debug.shift();
     for (var index in $$obj) {
       $$l++;      var subval = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( index != 0)
 {
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</ul>");
-jade_debug.shift();
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("</ul></li>");
 }
 else
 {
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = val) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = val) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
 buf.push("</ul>");
-jade_debug.shift();
-jade_debug.shift();
 }
 else if ( vals.img)
 {
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 buf.push("<img" + (jade.attr("src", vals.img, true, false)) + (jade.attr("width", vals.width, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.shift();
 }
-jade_debug.shift();
-jade_debug.shift();
 buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
     }
 
   } else {
@@ -45494,18 +42270,10 @@ jade_debug.shift();
     for (var index in $$obj) {
       $$l++;      var vals = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 buf.push("<div" + (jade.cls(['item',index==0 ? 'active' : ''], [null,true])) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( vals.items)
 {
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 buf.push("<ul class=\"liststyle\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 // iterate vals.items
 ;(function(){
   var $$obj = vals.items;
@@ -45514,18 +42282,9 @@ jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-leh
     for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
       var val = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( val.items)
 {
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = val.items[0]) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
+buf.push("<li>" + (jade.escape(null == (jade_interp = val.items[0]) ? "" : jade_interp)) + "<ul>");
 // iterate val.items
 ;(function(){
   var $$obj = val.items;
@@ -45534,21 +42293,10 @@ jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-le
     for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
       var subval = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( index != 0)
 {
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   } else {
@@ -45556,50 +42304,21 @@ jade_debug.shift();
     for (var index in $$obj) {
       $$l++;      var subval = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( index != 0)
 {
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</ul>");
-jade_debug.shift();
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("</ul></li>");
 }
 else
 {
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = val) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = val) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   } else {
@@ -45607,18 +42326,9 @@ jade_debug.shift();
     for (var index in $$obj) {
       $$l++;      var val = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( val.items)
 {
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = val.items[0]) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<ul>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
+buf.push("<li>" + (jade.escape(null == (jade_interp = val.items[0]) ? "" : jade_interp)) + "<ul>");
 // iterate val.items
 ;(function(){
   var $$obj = val.items;
@@ -45627,21 +42337,10 @@ jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-le
     for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
       var subval = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( index != 0)
 {
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   } else {
@@ -45649,111 +42348,39 @@ jade_debug.shift();
     for (var index in $$obj) {
       $$l++;      var subval = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 if ( index != 0)
 {
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = subval) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</ul>");
-jade_debug.shift();
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("</ul></li>");
 }
 else
 {
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li>" + (jade.escape(null == (jade_interp = val) ? "" : jade_interp)));
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li>" + (jade.escape(null == (jade_interp = val) ? "" : jade_interp)) + "</li>");
 }
-jade_debug.shift();
-jade_debug.shift();
     }
 
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
 buf.push("</ul>");
-jade_debug.shift();
-jade_debug.shift();
 }
 else if ( vals.img)
 {
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
 buf.push("<img" + (jade.attr("src", vals.img, true, false)) + (jade.attr("width", vals.width, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.shift();
 }
-jade_debug.shift();
-jade_debug.shift();
 buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
     }
 
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<a" + (jade.attr("href", '#'+id, true, false)) + " data-slide=\"prev\" class=\"left carousel-control\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 22, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<span class=\"glyphicon glyphicon-chevron-left\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<a" + (jade.attr("href", '#'+id, true, false)) + " data-slide=\"next\" class=\"right carousel-control\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<span class=\"glyphicon glyphicon-chevron-right\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</span>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<ol class=\"carousel-indicators top\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 27, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
+buf.push("</div><a" + (jade.attr("href", '#'+id, true, false)) + " data-slide=\"prev\" class=\"left carousel-control\"><span class=\"glyphicon glyphicon-chevron-left\"></span></a><a" + (jade.attr("href", '#'+id, true, false)) + " data-slide=\"next\" class=\"right carousel-control\"><span class=\"glyphicon glyphicon-chevron-right\"></span></a><ol class=\"carousel-indicators top\">");
 // iterate slides
 ;(function(){
   var $$obj = slides;
@@ -45762,14 +42389,7 @@ jade_debug.unshift(new jade.DebugItem( 27, "/Library/Server/Web/Data/Sites/ha-le
     for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
       var val = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 27, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 28, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li" + (jade.attr("data-target", '#'+id, true, false)) + (jade.attr("data-slide-to", index, true, false)) + (jade.cls([index==0 ? 'active' : ''], [true])) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li" + (jade.attr("data-target", '#'+id, true, false)) + (jade.attr("data-slide-to", index, true, false)) + (jade.cls([index==0 ? 'active' : ''], [true])) + "></li>");
     }
 
   } else {
@@ -45777,1192 +42397,80 @@ jade_debug.shift();
     for (var index in $$obj) {
       $$l++;      var val = $$obj[index];
 
-jade_debug.unshift(new jade.DebugItem( 27, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-jade_debug.unshift(new jade.DebugItem( 28, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/carousel.jade" ));
-buf.push("<li" + (jade.attr("data-target", '#'+id, true, false)) + (jade.attr("data-slide-to", index, true, false)) + (jade.cls([index==0 ? 'active' : ''], [true])) + ">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();
+buf.push("<li" + (jade.attr("data-target", '#'+id, true, false)) + (jade.attr("data-slide-to", index, true, false)) + (jade.cls([index==0 ? 'active' : ''], [true])) + "></li>");
     }
 
   }
 }).call(this);
 
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</ol>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"id" in locals_for_with?locals_for_with.id:typeof id!=="undefined"?id:undefined,"slides" in locals_for_with?locals_for_with.slides:typeof slides!=="undefined"?slides:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div.carousel.slide(tabindex=\"3\", data-ride=\"\", id=id, style=\"min-height: 330px;\") \n            \n  div.carousel-inner\n    each vals, index in slides\n      .item(class=index==0 ? 'active' : '')\n        if vals.items\n          ul.liststyle\n            each val, index in vals.items\n              if val.items\n                li=val.items[0]\n                  ul\n                    each subval, index in val.items\n                      if index != 0\n                        li=subval\n              else\n                li=val\n                \n        else if vals.img\n          img(src=vals.img width=vals.width)\n        \n  a.left.carousel-control(href='#'+id, data-slide=\"prev\")\n    span.glyphicon.glyphicon-chevron-left\n  a.right.carousel-control(href='#'+id, data-slide=\"next\")\n    span.glyphicon.glyphicon-chevron-right\n\n  ol.carousel-indicators.top\n    each val, index in slides\n      li(data-target='#'+id, data-slide-to=index, class=index==0 ? 'active' : '')");
-}
-};}, "views/delivery": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ) ];
-try {
+buf.push("</ol></div>");}.call(this,"id" in locals_for_with?locals_for_with.id:typeof id!=="undefined"?id:undefined,"slides" in locals_for_with?locals_for_with.slides:typeof slides!=="undefined"?slides:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
+}; },"views/delivery": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("Versandkosten");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Kosten des Versandes nach Österreich: 3,90 Euro");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("Wir versenden mit den Paketdiensten DPD und DHL.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 3,90 (Österreich) bzw. € 5,90 (Deutschland) an.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
-buf.push("Lieferfristen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("Soweit im jeweiligen Angebot keine andere Frist angegeben ist, erfolgt die Lieferung der Ware in Österreich innerhalb von 2-4 Tagen, bei Auslandslieferungen innerhalb von 2-5 Tagen nach Vertragsschluss (bei vereinbarter Vorauszahlung nach dem Zeitpunkt Ihrer Zahlungsanweisung).");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
-buf.push("Beachten Sie, dass an Sonn- und Feiertagen keine Zustellung erfolgt.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
-buf.push("Haben Sie Artikel mit unterschiedlichen Lieferzeiten bestellt, versenden wir die Ware in einer gemeinsamen Sendung, sofern wir keine abweichenden Vereinbarungen mit Ihnen getroffen haben. Die Lieferzeit bestimmt sich in diesem Fall nach dem Artikel mit der längsten Lieferzeit den Sie bestellt haben.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
-buf.push("Bei Selbstabholung informieren wir Sie per E-Mail über die Bereitstellung der Ware und die Abholmöglichkeiten. In diesem Fall werden keine Versandkosten berechnet.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, jade_debug[0].filename ));
-buf.push("Zahlungsbedingungen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 26, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, jade_debug[0].filename ));
-buf.push("Bei Lieferungen innerhalb Österreichs haben Sie folgende Zahlungsmöglichkeiten:");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 27, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 27, jade_debug[0].filename ));
-buf.push("-  Barzahlung bei Abholung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 28, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 28, jade_debug[0].filename ));
-buf.push("-  Vorkasse per Überweisung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 29, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 29, jade_debug[0].filename ));
-buf.push("-  Zahlung per Nachnahme ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 30, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 30, jade_debug[0].filename ));
-buf.push("-  Zahlung per PayPal");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 31, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 31, jade_debug[0].filename ));
-buf.push("-  Zahlung per amazon payments");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 33, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 33, jade_debug[0].filename ));
-buf.push("Bei Lieferungen ins Ausland haben Sie folgende Zahlungsmöglichkeiten:");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 34, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 34, jade_debug[0].filename ));
-buf.push("-  Barzahlung bei Abholung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 35, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 35, jade_debug[0].filename ));
-buf.push("-  Vorkasse per Überweisung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 36, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 36, jade_debug[0].filename ));
-buf.push("-  Zahlung per Lastschrift (Bankeinzug)");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 37, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 37, jade_debug[0].filename ));
-buf.push("-  Zahlung per PayPal");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 38, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 38, jade_debug[0].filename ));
-buf.push("-  Zahlung per amazon payments");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 39, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
-buf.push(" ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 40, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 40, jade_debug[0].filename ));
-buf.push("Bei Zahlung per Lastschrift (Bankeinzug) ermächtigen Sie uns widerruflich, den Rechnungsbetrag vom angegebenen Konto einzuziehen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 41, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 41, jade_debug[0].filename ));
-buf.push(" ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 42, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 42, jade_debug[0].filename ));
-buf.push("Unsere Bankverbindung:");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 43, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
-buf.push("IBAN: AT482060200000347112");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 44, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/delivery.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 44, jade_debug[0].filename ));
-buf.push("BIC: DOSPAT2DXXX");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Versandkosten\n\np Kosten des Versandes nach Österreich: 3,90 Euro\n\np Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro\n\np Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!\n\np Wir versenden mit den Paketdiensten DPD und DHL.\n  \nhr.\n\np Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 3,90 (Österreich) bzw. € 5,90 (Deutschland) an.\n\nh3.h3 Lieferfristen\np Soweit im jeweiligen Angebot keine andere Frist angegeben ist, erfolgt die Lieferung der Ware in Österreich innerhalb von 2-4 Tagen, bei Auslandslieferungen innerhalb von 2-5 Tagen nach Vertragsschluss (bei vereinbarter Vorauszahlung nach dem Zeitpunkt Ihrer Zahlungsanweisung).\np Beachten Sie, dass an Sonn- und Feiertagen keine Zustellung erfolgt.\np Haben Sie Artikel mit unterschiedlichen Lieferzeiten bestellt, versenden wir die Ware in einer gemeinsamen Sendung, sofern wir keine abweichenden Vereinbarungen mit Ihnen getroffen haben. Die Lieferzeit bestimmt sich in diesem Fall nach dem Artikel mit der längsten Lieferzeit den Sie bestellt haben.\n\np Bei Selbstabholung informieren wir Sie per E-Mail über die Bereitstellung der Ware und die Abholmöglichkeiten. In diesem Fall werden keine Versandkosten berechnet.\n\nhr \n\nh3.h3 Zahlungsbedingungen\n\np Bei Lieferungen innerhalb Österreichs haben Sie folgende Zahlungsmöglichkeiten:\np -  Barzahlung bei Abholung\np -  Vorkasse per Überweisung\np -  Zahlung per Nachnahme \np -  Zahlung per PayPal\np -  Zahlung per amazon payments\n\np Bei Lieferungen ins Ausland haben Sie folgende Zahlungsmöglichkeiten:\np -  Barzahlung bei Abholung\np -  Vorkasse per Überweisung\np -  Zahlung per Lastschrift (Bankeinzug)\np -  Zahlung per PayPal\np -  Zahlung per amazon payments\np \np Bei Zahlung per Lastschrift (Bankeinzug) ermächtigen Sie uns widerruflich, den Rechnungsbetrag vom angegebenen Konto einzuziehen.\np \np Unsere Bankverbindung:\np IBAN: AT482060200000347112\np BIC: DOSPAT2DXXX");
-}
-};}, "views/imp": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ) ];
-try {
+buf.push("<h3 class=\"h3\">Versandkosten</h3><p>Kosten des Versandes nach Österreich: 3,90 Euro</p><p>Kosten des Versandes nach Deuschland (ausser Inseln): 5,90 Euro</p><p>Ab einem Bestellwert von 50,00 Euro liefern wir innerhalb Österreich versandkostenfrei!!</p><p>Wir versenden mit den Paketdiensten DPD und DHL.</p><hr/><p>Sollten Sie DPD im Abwesenheitsfall, per Benachrichtigungskarte oder telefonisch, eine neue Lieferadresse mitteilen, fallen noch einmal Portokosten in Höhe von € 3,90 (Österreich) bzw. € 5,90 (Deutschland) an.</p><h3 class=\"h3\">Lieferfristen</h3><p>Soweit im jeweiligen Angebot keine andere Frist angegeben ist, erfolgt die Lieferung der Ware in Österreich innerhalb von 2-4 Tagen, bei Auslandslieferungen innerhalb von 2-5 Tagen nach Vertragsschluss (bei vereinbarter Vorauszahlung nach dem Zeitpunkt Ihrer Zahlungsanweisung).</p><p>Beachten Sie, dass an Sonn- und Feiertagen keine Zustellung erfolgt.</p><p>Haben Sie Artikel mit unterschiedlichen Lieferzeiten bestellt, versenden wir die Ware in einer gemeinsamen Sendung, sofern wir keine abweichenden Vereinbarungen mit Ihnen getroffen haben. Die Lieferzeit bestimmt sich in diesem Fall nach dem Artikel mit der längsten Lieferzeit den Sie bestellt haben.</p><p>Bei Selbstabholung informieren wir Sie per E-Mail über die Bereitstellung der Ware und die Abholmöglichkeiten. In diesem Fall werden keine Versandkosten berechnet.</p><hr/><h3 class=\"h3\">Zahlungsbedingungen</h3><p>Bei Lieferungen innerhalb Österreichs haben Sie folgende Zahlungsmöglichkeiten:</p><p>-  Barzahlung bei Abholung</p><p>-  Vorkasse per Überweisung</p><p>-  Zahlung per Nachnahme </p><p>-  Zahlung per PayPal</p><p>-  Zahlung per amazon payments</p><p>Bei Lieferungen ins Ausland haben Sie folgende Zahlungsmöglichkeiten:</p><p>-  Barzahlung bei Abholung</p><p>-  Vorkasse per Überweisung</p><p>-  Zahlung per Lastschrift (Bankeinzug)</p><p>-  Zahlung per PayPal</p><p>-  Zahlung per amazon payments</p><p> </p><p>Bei Zahlung per Lastschrift (Bankeinzug) ermächtigen Sie uns widerruflich, den Rechnungsbetrag vom angegebenen Konto einzuziehen.</p><p> </p><p>Unsere Bankverbindung:</p><p>IBAN: AT482060200000347112</p><p>BIC: DOSPAT2DXXX</p>");;return buf.join("");
+}; },"views/imp": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("Gesetzliche Anbieterkennung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Handelsagentur Lehmann");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Angela Lehmann");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Dornachgasse 15");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("6850 Dornbirn");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("Vorarlberg -  Österreich");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("Telefon: +43 664-1306372");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("Telefax: +43 5572-422498");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("Email  : ha-lehmann@gmx.at");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("USt-IdNr.: ATU71224409");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, jade_debug[0].filename ));
-buf.push("Wi-ID-Nr.: 8206629");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push(" ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, jade_debug[0].filename ));
-buf.push("Unternehmensgegenstand: Online-Handel mit Outdoor, Fitness und Restposten");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
-buf.push("Mitgliedschaften: Händlerbund");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("Berufsrecht: Gewerbeordnung: http://www.ris.bka.gv.at");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
-buf.push("Aufsichtsbehörde: Bezirkshauptmannschaft Dornbirn");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
-buf.push(" ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
-buf.push("Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter . http://ec.europa.eu/odr");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 21, jade_debug[0].filename ));
-buf.push("Wir sind seit 01.12.2016 Mitglied der Initiative \"FairCommerce\". Nähere Informationen hierzu finden Sie unter www.fair-commerce.de.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 22, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<hr/>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 24, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 25, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<a href=\"https://www.haendlerbund.de/faircommerce\" target=\"_blank\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 26, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/imp.jade" ));
-buf.push("<img src=\"/img/fc_logo.gif\"/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</a>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Gesetzliche Anbieterkennung\np Handelsagentur Lehmann\np Angela Lehmann\np Dornachgasse 15\np 6850 Dornbirn\np Vorarlberg -  Österreich\nhr\np Telefon: +43 664-1306372\np Telefax: +43 5572-422498\np Email  : ha-lehmann@gmx.at\np USt-IdNr.: ATU71224409\np Wi-ID-Nr.: 8206629\np \np Unternehmensgegenstand: Online-Handel mit Outdoor, Fitness und Restposten\np Mitgliedschaften: Händlerbund\np Berufsrecht: Gewerbeordnung: http://www.ris.bka.gv.at\np Aufsichtsbehörde: Bezirkshauptmannschaft Dornbirn\np \nhr\np Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter . http://ec.europa.eu/odr\np Wir sind seit 01.12.2016 Mitglied der Initiative \"FairCommerce\". Nähere Informationen hierzu finden Sie unter www.fair-commerce.de.\nhr\np\n  div\n    a(href=\"https://www.haendlerbund.de/faircommerce\", target=\"_blank\")\n      img(src=\"/img/fc_logo.gif\")");
-}
-};}, "views/notify": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/notify.jade" ) ];
-try {
+buf.push("<h3 class=\"h3\">Gesetzliche Anbieterkennung</h3><p>Handelsagentur Lehmann</p><p>Angela Lehmann</p><p>Dornachgasse 15</p><p>6850 Dornbirn</p><p>Vorarlberg -  Österreich</p><hr/><p>Telefon: +43 664-1306372</p><p>Telefax: +43 5572-422498</p><p>Email  : ha-lehmann@gmx.at</p><p>USt-IdNr.: ATU71224409</p><p>Wi-ID-Nr.: 8206629</p><p> </p><p>Unternehmensgegenstand: Online-Handel mit Outdoor, Fitness und Restposten</p><p>Mitgliedschaften: Händlerbund</p><p>Berufsrecht: Gewerbeordnung: http://www.ris.bka.gv.at</p><p>Aufsichtsbehörde: Bezirkshauptmannschaft Dornbirn</p><p> </p><hr/><p>Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter . http://ec.europa.eu/odr</p><p>Wir sind seit 01.12.2016 Mitglied der Initiative \"FairCommerce\". Nähere Informationen hierzu finden Sie unter www.fair-commerce.de.</p><hr/><p><div><a href=\"https://www.haendlerbund.de/faircommerce\" target=\"_blank\"><img src=\"/img/fc_logo.gif\"/></a></div></p>");;return buf.join("");
+}; },"views/notify": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 ;var locals_for_with = (locals || {});(function (text) {
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/notify.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/notify.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/notify.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("" + (((jade_interp = text) == null ? '' : jade_interp)) + "");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"text" in locals_for_with?locals_for_with.text:typeof text!=="undefined"?text:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "p\n  div !{text}");
-}
-};}, "views/pay": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/pay.jade" ) ];
-try {
+buf.push("<p><div>" + (((jade_interp = text) == null ? '' : jade_interp)) + "</div></p>");}.call(this,"text" in locals_for_with?locals_for_with.text:typeof text!=="undefined"?text:undefined));;return buf.join("");
+}; },"views/pay": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/pay.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("Paypal");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Sie sind über den PayPal-Verkäuferschutz abgesichert");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Vorkasse");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("Bei Abholung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/pay.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Paypal\np Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung\np Sie sind über den PayPal-Verkäuferschutz abgesichert\nh3.h3 Vorkasse\np Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nh3.h3 Bei Abholung\np Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.");
-}
-};}, "views/privacy": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/privacy.jade" ) ];
-try {
+buf.push("<h3 class=\"h3\">Paypal</h3><p>Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung</p><p>Sie sind über den PayPal-Verkäuferschutz abgesichert</p><h3 class=\"h3\">Vorkasse</h3><p>Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!</p><h3 class=\"h3\">Bei Abholung</h3><p>Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.</p>");;return buf.join("");
+}; },"views/privacy": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/privacy.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/privacy.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("Herzlich Willkommen auf unserer Webseite!");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/privacy.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/privacy.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Wir legen größten Wert auf den Schutz Ihrer Daten und die Wahrung Ihrer Privatsphäre. Nachstehend informieren wir Sie deshalb über die Erhebung und Verwendung persönlicher Daten bei Nutzung unserer Webseite. Anonyme Datenerhebung Sie können unsere Webseiten besuchen, ohne Angaben zu Ihrer Person zu machen. Wir speichern in diesem Zusammenhang keinerlei persönliche Daten. Um unser Angebot zu verbessern, werten wir lediglich statistische Daten aus, die keinen Rückschluss auf Ihre Person erlauben. Erhebung, Verarbeitung und Nutzung personenbezogener Daten Wir erheben personenbezogene Daten (Einzelangaben über persönliche oder sachliche Verhältnisse einer bestimmten oder bestimmbaren natürlichen Person) nur in dem von Ihnen zur Verfügung gestellten Umfang. Die Verarbeitung und Nutzung Ihrer personenbezogenen Daten erfolgt zur Erfüllung und Abwicklung Ihrer Bestellung sowie zur Bearbeitung Ihrer Anfragen. Nach vollständiger Vertragsabwicklung werden alle personenbezogenen Daten zunächst unter Berücksichtigung steuer- und handelsrechtlicher Aufbewahrungsfristen gespeichert und dann nach Fristablauf gelöscht, sofern Sie der weitergehenden Verarbeitung und Nutzung nicht zugestimmt haben. Zusätzlich weisen wir auf Folgendes hin: Wir verwenden das . Nach Ihrer Bestellung möchten wir Sie bitten, Ihren Kauf Käufersiegel-Bewertungssystem bei uns zu bewerten und zu kommentieren. Zu diesem Zweck werden Sie von uns im Rahmen der Vertragsabwicklung angeschrieben, wobei wir uns hierbei des technischen Systems des Anbieters des Käufersiegel-Bewertungstools, der Händlerbund Management AG,  Leipzig, im Torgauer Straße 233 B, 04347 Rahmen einer Auftragsdatenverarbeitung bedienen. Ihre E-Mail-Adresse wird dabei nur zu diesem Zweck und insbesondere nicht zu weitergehender Werbung benutzt und auch nicht an sonstige Dritte weitergegeben. Die in diesem Zusammenhang im technischen System des Käufersiegel-Bewertungstools gespeicherten personenbezogenen Daten werden 3 Monate nach der zur Bewertung erfassten Warenlieferung gelöscht. Weitergabe personenbezogener Daten Eine Weitergabe Ihrer Daten an Dritte ohne Ihre ausdrückliche Einwilligung erfolgt nicht. Ausgenommen hiervon sind lediglich unsere Dienstleistungspartner, die wir zur Abwicklung des Vertragsverhältnisses benötigen. In diesen Fällen beachten wir strikt die Vorgaben des Bundesdatenschutzgesetzes. Der Umfang der Datenübermittlung beschränkt sich auf ein Mindestmaß. Cookies Unsere Internetseiten verwenden an mehreren Stellen so genannte Cookies. Cookies sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert. Sie dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Des Weiteren ermöglichen Cookies unseren Systemen, Ihren Browser zu erkennen und Ihnen Services anzubieten. Cookies enthalten keine personenbezogenen Daten. Auskunft, Berichtigung, Sperrung und Löschung von Daten Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten Daten sowie das Recht auf Berichtigung, Löschung bzw. Sperrung. Kontaktieren Sie uns auf Wunsch. Die Kontaktdaten finden Sie in unserem Impressum.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/privacy.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/privacy.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("letzte Aktualisierung: 03.12.2015");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Herzlich Willkommen auf unserer Webseite!\np\np Wir legen größten Wert auf den Schutz Ihrer Daten und die Wahrung Ihrer Privatsphäre. Nachstehend informieren wir Sie deshalb über die Erhebung und Verwendung persönlicher Daten bei Nutzung unserer Webseite. Anonyme Datenerhebung Sie können unsere Webseiten besuchen, ohne Angaben zu Ihrer Person zu machen. Wir speichern in diesem Zusammenhang keinerlei persönliche Daten. Um unser Angebot zu verbessern, werten wir lediglich statistische Daten aus, die keinen Rückschluss auf Ihre Person erlauben. Erhebung, Verarbeitung und Nutzung personenbezogener Daten Wir erheben personenbezogene Daten (Einzelangaben über persönliche oder sachliche Verhältnisse einer bestimmten oder bestimmbaren natürlichen Person) nur in dem von Ihnen zur Verfügung gestellten Umfang. Die Verarbeitung und Nutzung Ihrer personenbezogenen Daten erfolgt zur Erfüllung und Abwicklung Ihrer Bestellung sowie zur Bearbeitung Ihrer Anfragen. Nach vollständiger Vertragsabwicklung werden alle personenbezogenen Daten zunächst unter Berücksichtigung steuer- und handelsrechtlicher Aufbewahrungsfristen gespeichert und dann nach Fristablauf gelöscht, sofern Sie der weitergehenden Verarbeitung und Nutzung nicht zugestimmt haben. Zusätzlich weisen wir auf Folgendes hin: Wir verwenden das . Nach Ihrer Bestellung möchten wir Sie bitten, Ihren Kauf Käufersiegel-Bewertungssystem bei uns zu bewerten und zu kommentieren. Zu diesem Zweck werden Sie von uns im Rahmen der Vertragsabwicklung angeschrieben, wobei wir uns hierbei des technischen Systems des Anbieters des Käufersiegel-Bewertungstools, der Händlerbund Management AG,  Leipzig, im Torgauer Straße 233 B, 04347 Rahmen einer Auftragsdatenverarbeitung bedienen. Ihre E-Mail-Adresse wird dabei nur zu diesem Zweck und insbesondere nicht zu weitergehender Werbung benutzt und auch nicht an sonstige Dritte weitergegeben. Die in diesem Zusammenhang im technischen System des Käufersiegel-Bewertungstools gespeicherten personenbezogenen Daten werden 3 Monate nach der zur Bewertung erfassten Warenlieferung gelöscht. Weitergabe personenbezogener Daten Eine Weitergabe Ihrer Daten an Dritte ohne Ihre ausdrückliche Einwilligung erfolgt nicht. Ausgenommen hiervon sind lediglich unsere Dienstleistungspartner, die wir zur Abwicklung des Vertragsverhältnisses benötigen. In diesen Fällen beachten wir strikt die Vorgaben des Bundesdatenschutzgesetzes. Der Umfang der Datenübermittlung beschränkt sich auf ein Mindestmaß. Cookies Unsere Internetseiten verwenden an mehreren Stellen so genannte Cookies. Cookies sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert. Sie dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Des Weiteren ermöglichen Cookies unseren Systemen, Ihren Browser zu erkennen und Ihnen Services anzubieten. Cookies enthalten keine personenbezogenen Daten. Auskunft, Berichtigung, Sperrung und Löschung von Daten Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten Daten sowie das Recht auf Berichtigung, Löschung bzw. Sperrung. Kontaktieren Sie uns auf Wunsch. Die Kontaktdaten finden Sie in unserem Impressum.\np\np letzte Aktualisierung: 03.12.2015");
-}
-};}, "views/product": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ) ];
-try {
+buf.push("<h3 class=\"h3\">Herzlich Willkommen auf unserer Webseite!</h3><p></p><p>Wir legen größten Wert auf den Schutz Ihrer Daten und die Wahrung Ihrer Privatsphäre. Nachstehend informieren wir Sie deshalb über die Erhebung und Verwendung persönlicher Daten bei Nutzung unserer Webseite. Anonyme Datenerhebung Sie können unsere Webseiten besuchen, ohne Angaben zu Ihrer Person zu machen. Wir speichern in diesem Zusammenhang keinerlei persönliche Daten. Um unser Angebot zu verbessern, werten wir lediglich statistische Daten aus, die keinen Rückschluss auf Ihre Person erlauben. Erhebung, Verarbeitung und Nutzung personenbezogener Daten Wir erheben personenbezogene Daten (Einzelangaben über persönliche oder sachliche Verhältnisse einer bestimmten oder bestimmbaren natürlichen Person) nur in dem von Ihnen zur Verfügung gestellten Umfang. Die Verarbeitung und Nutzung Ihrer personenbezogenen Daten erfolgt zur Erfüllung und Abwicklung Ihrer Bestellung sowie zur Bearbeitung Ihrer Anfragen. Nach vollständiger Vertragsabwicklung werden alle personenbezogenen Daten zunächst unter Berücksichtigung steuer- und handelsrechtlicher Aufbewahrungsfristen gespeichert und dann nach Fristablauf gelöscht, sofern Sie der weitergehenden Verarbeitung und Nutzung nicht zugestimmt haben. Zusätzlich weisen wir auf Folgendes hin: Wir verwenden das . Nach Ihrer Bestellung möchten wir Sie bitten, Ihren Kauf Käufersiegel-Bewertungssystem bei uns zu bewerten und zu kommentieren. Zu diesem Zweck werden Sie von uns im Rahmen der Vertragsabwicklung angeschrieben, wobei wir uns hierbei des technischen Systems des Anbieters des Käufersiegel-Bewertungstools, der Händlerbund Management AG,  Leipzig, im Torgauer Straße 233 B, 04347 Rahmen einer Auftragsdatenverarbeitung bedienen. Ihre E-Mail-Adresse wird dabei nur zu diesem Zweck und insbesondere nicht zu weitergehender Werbung benutzt und auch nicht an sonstige Dritte weitergegeben. Die in diesem Zusammenhang im technischen System des Käufersiegel-Bewertungstools gespeicherten personenbezogenen Daten werden 3 Monate nach der zur Bewertung erfassten Warenlieferung gelöscht. Weitergabe personenbezogener Daten Eine Weitergabe Ihrer Daten an Dritte ohne Ihre ausdrückliche Einwilligung erfolgt nicht. Ausgenommen hiervon sind lediglich unsere Dienstleistungspartner, die wir zur Abwicklung des Vertragsverhältnisses benötigen. In diesen Fällen beachten wir strikt die Vorgaben des Bundesdatenschutzgesetzes. Der Umfang der Datenübermittlung beschränkt sich auf ein Mindestmaß. Cookies Unsere Internetseiten verwenden an mehreren Stellen so genannte Cookies. Cookies sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert. Sie dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Des Weiteren ermöglichen Cookies unseren Systemen, Ihren Browser zu erkennen und Ihnen Services anzubieten. Cookies enthalten keine personenbezogenen Daten. Auskunft, Berichtigung, Sperrung und Löschung von Daten Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten Daten sowie das Recht auf Berichtigung, Löschung bzw. Sperrung. Kontaktieren Sie uns auf Wunsch. Die Kontaktdaten finden Sie in unserem Impressum.</p><p></p><p>letzte Aktualisierung: 03.12.2015</p>");;return buf.join("");
+}; },"views/product": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Paypal");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Sie sind über den PayPal-Verkäuferschutz abgesichert");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("Vorkasse");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<li>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<h5 class=\"h5\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("Bei Abholung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h5>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 10, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/product.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 10, jade_debug[0].filename ));
-buf.push("Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</li>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "li\n  h5.h5 Paypal\n  p Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung\n  p Sie sind über den PayPal-Verkäuferschutz abgesichert\nli\n  h5.h5 Vorkasse\n  p Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!\nli\n  h5.h5 Bei Abholung\n  p Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.");
-}
-};}, "views/revocation": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ) ];
-try {
+buf.push("<li><h5 class=\"h5\">Paypal</h5><p>Profitieren Sie von dieser einfachen und schnellen Zahlungsabwicklung</p><p>Sie sind über den PayPal-Verkäuferschutz abgesichert</p></li><li><h5 class=\"h5\">Vorkasse</h5><p>Sie überweisen den Rechnungsbetrag per Vorkasse auf unser Konto. Sofort nach Geldeingang erfolgt die Lieferung an Sie! Vermerken Sie bei Ihrer Überweisung bitte unbedingt Ihren Namen und, falls bekannt, Ihre Kundennummer und die Bestellnummer! Dies beschleunigt den Versand an Sie!</p></li><li><h5 class=\"h5\">Bei Abholung</h5><p>Nach Terminabsprache erhalten Sie den gewünschten Artikel gegen Barzahlung.</p></li>");;return buf.join("");
+}; },"views/revocation": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("Widerrufsrecht für Verbraucher");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("(Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbstständigen beruflichen Tätigkeit zugerechnet werden kann.)");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Widerrufsbelehrung");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Widerrufsrecht Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag,");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("- an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat, sofern Sie eine oder mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese einheitlich geliefert wird bzw. werden");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 7, jade_debug[0].filename ));
-buf.push("- an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die letzte Ware in Besitz genommen haben bzw. hat, sofern Sie mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese getrennt geliefert werden");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Angela Lehmann, Dornachgasse 15, 6850 Dornbirn, Telefonnummer: +43 664-1306372, Telefaxnummer: +43 5572-422498, E-Mail-Adresse: mittels einer eindeutigen Erklärung (z.B. ein mit der Post versandter Brief, Telefax oder ha-lehmann@gmx.at) E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 9, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 9, jade_debug[0].filename ));
-buf.push("Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 11, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 11, jade_debug[0].filename ));
-buf.push("Folgen des Widerrufs");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 12, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 12, jade_debug[0].filename ));
-buf.push("Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf vierzehn Tagen dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 13, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 13, jade_debug[0].filename ));
-buf.push("Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 14, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 14, jade_debug[0].filename ));
-buf.push("Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen ab dem Tag, an dem Sie vierzehn Tagen uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von absenden. vierzehn Tagen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 15, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
-buf.push("Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 16, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 16, jade_debug[0].filename ));
-buf.push("Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 17, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 17, jade_debug[0].filename ));
-buf.push("Ausschluss- bzw. Erlöschensgründe");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 18, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 18, jade_debug[0].filename ));
-buf.push("Das Widerrufsrecht besteht nicht bei Verträgen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 19, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 19, jade_debug[0].filename ));
-buf.push("- zur Lieferung von Waren, die nicht vorgefertigt sind und für deren Herstellung eine individuelle Auswahl oder Bestimmung durch den Verbraucher maßgeblich ist oder die eindeutig auf die persönlichen Bedürfnisse des Verbrauchers zugeschnitten sind; - zur Lieferung von Waren, die schnell verderben können oder deren Verfallsdatum schnell überschritten würde; - zur Lieferung alkoholischer Getränke, deren Preis bei Vertragsschluss vereinbart wurde, die aber frühestens 30 Tage nach Vertragsschluss geliefert werden können und deren aktueller Wert von Schwankungen auf dem Markt abhängt, auf die der Unternehmer keinen Einfluss hat; - zur Lieferung von Zeitungen, Zeitschriften oder Illustrierten mit Ausnahme von Abonnement-Verträgen.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 20, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
-buf.push("Das Widerrufsrecht erlischt vorzeitig bei Verträgen");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 21, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 21, jade_debug[0].filename ));
-buf.push("- zur Lieferung versiegelter Waren, die aus Gründen des Gesundheitsschutzes oder der Hygiene nicht zur Rückgabe geeignet sind, wenn ihre Versiegelung nach der Lieferung entfernt wurde; - zur Lieferung von Waren, wenn diese nach der Lieferung aufgrund ihrer Beschaffenheit untrennbar mit anderen Gütern vermischt wurden; - zur Lieferung von Ton- oder Videoaufnahmen oder Computersoftware in einer versiegelten Packung, wenn die Versiegelung nach der Lieferung entfernt wurde. ");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 23, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<h3 class=\"h3\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 23, jade_debug[0].filename ));
-buf.push("Widerrufsformular");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 24, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<iframe src=\"https://docs.google.com/forms/d/e/1FAIpQLSdKP-t3e19dPw1xbsJmaJqCzfTNMWQQ_Knyqr-F5Cfrlej7Jw/viewform?embedded=true\" width=\"100%\" height=\"1350\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 25, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/revocation.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 25, jade_debug[0].filename ));
-buf.push("Wird geladen...");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</iframe>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3.h3 Widerrufsrecht für Verbraucher\np (Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbstständigen beruflichen Tätigkeit zugerechnet werden kann.)\n\nh3.h3 Widerrufsbelehrung\np Widerrufsrecht Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag,\np - an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat, sofern Sie eine oder mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese einheitlich geliefert wird bzw. werden\np - an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die letzte Ware in Besitz genommen haben bzw. hat, sofern Sie mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese getrennt geliefert werden\np Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Angela Lehmann, Dornachgasse 15, 6850 Dornbirn, Telefonnummer: +43 664-1306372, Telefaxnummer: +43 5572-422498, E-Mail-Adresse: mittels einer eindeutigen Erklärung (z.B. ein mit der Post versandter Brief, Telefax oder ha-lehmann@gmx.at) E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.\np Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.\n\nh3.h3 Folgen des Widerrufs\np Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf vierzehn Tagen dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.\np Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.\np Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen ab dem Tag, an dem Sie vierzehn Tagen uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von absenden. vierzehn Tagen\np Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.\np Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.\nh3.h3 Ausschluss- bzw. Erlöschensgründe\np Das Widerrufsrecht besteht nicht bei Verträgen\np - zur Lieferung von Waren, die nicht vorgefertigt sind und für deren Herstellung eine individuelle Auswahl oder Bestimmung durch den Verbraucher maßgeblich ist oder die eindeutig auf die persönlichen Bedürfnisse des Verbrauchers zugeschnitten sind; - zur Lieferung von Waren, die schnell verderben können oder deren Verfallsdatum schnell überschritten würde; - zur Lieferung alkoholischer Getränke, deren Preis bei Vertragsschluss vereinbart wurde, die aber frühestens 30 Tage nach Vertragsschluss geliefert werden können und deren aktueller Wert von Schwankungen auf dem Markt abhängt, auf die der Unternehmer keinen Einfluss hat; - zur Lieferung von Zeitungen, Zeitschriften oder Illustrierten mit Ausnahme von Abonnement-Verträgen.\np Das Widerrufsrecht erlischt vorzeitig bei Verträgen\np - zur Lieferung versiegelter Waren, die aus Gründen des Gesundheitsschutzes oder der Hygiene nicht zur Rückgabe geeignet sind, wenn ihre Versiegelung nach der Lieferung entfernt wurde; - zur Lieferung von Waren, wenn diese nach der Lieferung aufgrund ihrer Beschaffenheit untrennbar mit anderen Gütern vermischt wurden; - zur Lieferung von Ton- oder Videoaufnahmen oder Computersoftware in einer versiegelten Packung, wenn die Versiegelung nach der Lieferung entfernt wurde. \n\nh3.h3 Widerrufsformular\niframe(src=\"https://docs.google.com/forms/d/e/1FAIpQLSdKP-t3e19dPw1xbsJmaJqCzfTNMWQQ_Knyqr-F5Cfrlej7Jw/viewform?embedded=true\", width=\"100%\", height=\"1350\", frameborder=\"0\", marginheight=\"0\", marginwidth=\"0\")\n  div Wird geladen...\n");
-}
-};}, "views/sample": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/sample.jade" ) ];
-try {
+buf.push("<h3 class=\"h3\">Widerrufsrecht für Verbraucher</h3><p>(Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbstständigen beruflichen Tätigkeit zugerechnet werden kann.)</p><h3 class=\"h3\">Widerrufsbelehrung</h3><p>Widerrufsrecht Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag,</p><p>- an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat, sofern Sie eine oder mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese einheitlich geliefert wird bzw. werden</p><p>- an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die letzte Ware in Besitz genommen haben bzw. hat, sofern Sie mehrere Waren im Rahmen einer einheitlichen Bestellung bestellt haben; und diese getrennt geliefert werden</p><p>Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Angela Lehmann, Dornachgasse 15, 6850 Dornbirn, Telefonnummer: +43 664-1306372, Telefaxnummer: +43 5572-422498, E-Mail-Adresse: mittels einer eindeutigen Erklärung (z.B. ein mit der Post versandter Brief, Telefax oder ha-lehmann@gmx.at) E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.</p><p>Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.</p><h3 class=\"h3\">Folgen des Widerrufs</h3><p>Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf vierzehn Tagen dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.</p><p>Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.</p><p>Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen ab dem Tag, an dem Sie vierzehn Tagen uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von absenden. vierzehn Tagen</p><p>Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.</p><p>Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.</p><h3 class=\"h3\">Ausschluss- bzw. Erlöschensgründe</h3><p>Das Widerrufsrecht besteht nicht bei Verträgen</p><p>- zur Lieferung von Waren, die nicht vorgefertigt sind und für deren Herstellung eine individuelle Auswahl oder Bestimmung durch den Verbraucher maßgeblich ist oder die eindeutig auf die persönlichen Bedürfnisse des Verbrauchers zugeschnitten sind; - zur Lieferung von Waren, die schnell verderben können oder deren Verfallsdatum schnell überschritten würde; - zur Lieferung alkoholischer Getränke, deren Preis bei Vertragsschluss vereinbart wurde, die aber frühestens 30 Tage nach Vertragsschluss geliefert werden können und deren aktueller Wert von Schwankungen auf dem Markt abhängt, auf die der Unternehmer keinen Einfluss hat; - zur Lieferung von Zeitungen, Zeitschriften oder Illustrierten mit Ausnahme von Abonnement-Verträgen.</p><p>Das Widerrufsrecht erlischt vorzeitig bei Verträgen</p><p>- zur Lieferung versiegelter Waren, die aus Gründen des Gesundheitsschutzes oder der Hygiene nicht zur Rückgabe geeignet sind, wenn ihre Versiegelung nach der Lieferung entfernt wurde; - zur Lieferung von Waren, wenn diese nach der Lieferung aufgrund ihrer Beschaffenheit untrennbar mit anderen Gütern vermischt wurden; - zur Lieferung von Ton- oder Videoaufnahmen oder Computersoftware in einer versiegelten Packung, wenn die Versiegelung nach der Lieferung entfernt wurde. </p><h3 class=\"h3\">Widerrufsformular</h3><iframe src=\"https://docs.google.com/forms/d/e/1FAIpQLSdKP-t3e19dPw1xbsJmaJqCzfTNMWQQ_Knyqr-F5Cfrlej7Jw/viewform?embedded=true\" width=\"100%\" height=\"1350\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\"><div>Wird geladen...</div></iframe>");;return buf.join("");
+}; },"views/sample": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 ;var locals_for_with = (locals || {});(function (version) {
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/sample.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/sample.jade" ));
-buf.push("<h2>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 1, jade_debug[0].filename ));
-buf.push("Made with Spine.js version " + (jade.escape((jade_interp = version) == null ? '' : jade_interp)) + "");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h2>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/sample.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Time to get busy with this magic!");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"version" in locals_for_with?locals_for_with.version:typeof version!=="undefined"?version:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h2 Made with Spine.js version #{version}\np Time to get busy with this magic!\n");
-}
-};}, "views/temp": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ) ];
-try {
+buf.push("<h2>Made with Spine.js version " + (jade.escape((jade_interp = version) == null ? '' : jade_interp)) + "</h2><p>Time to get busy with this magic!</p>");}.call(this,"version" in locals_for_with?locals_for_with.version:typeof version!=="undefined"?version:undefined));;return buf.join("");
+}; },"views/temp": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Unser hochwirksames Pfefferspray (Markenqualität Made in Germany) enthält das konzentrierte");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Extrakt (je nach Produkt zwischen 3 und 13,2%) Oleoresin Capsicum (des Cayenne-Pfeffers).");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Pfefferspray macht jeden Angreifer innerhalb weniger Sekundenbruchteile kampf- und handlungsunfähig.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Die Augen, Haut und Schleimhäute brennen wie Feuer und der Angreifer ringt nach Luft.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 6, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 6, jade_debug[0].filename ));
-buf.push("Die Wirkung hält je nach Sprühdauer bis zu einigen Stunden an.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 7, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 8, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/temp.jade" ));
-buf.push("<p class=\"bs-warning\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 8, jade_debug[0].filename ));
-buf.push("<strong>Zur Beachtung: </strong>  Pfefferspray darf in Deutschland nur zur Abwehr von angreifenden und aggressiven Tierenverwendet und verkauft werden.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div\n  p Unser hochwirksames Pfefferspray (Markenqualität Made in Germany) enthält das konzentrierte\n  p Extrakt (je nach Produkt zwischen 3 und 13,2%) Oleoresin Capsicum (des Cayenne-Pfeffers).\n  p Pfefferspray macht jeden Angreifer innerhalb weniger Sekundenbruchteile kampf- und handlungsunfähig.\n  p Die Augen, Haut und Schleimhäute brennen wie Feuer und der Angreifer ringt nach Luft.\n  p Die Wirkung hält je nach Sprühdauer bis zu einigen Stunden an.\n  p\n  p.bs-warning <strong>Zur Beachtung: </strong>  Pfefferspray darf in Deutschland nur zur Abwehr von angreifenden und aggressiven Tierenverwendet und verkauft werden.");
-}
-};}, "views/version": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/version.jade" ) ];
-try {
+buf.push("<div><p>Unser hochwirksames Pfefferspray (Markenqualität Made in Germany) enthält das konzentrierte</p><p>Extrakt (je nach Produkt zwischen 3 und 13,2%) Oleoresin Capsicum (des Cayenne-Pfeffers).</p><p>Pfefferspray macht jeden Angreifer innerhalb weniger Sekundenbruchteile kampf- und handlungsunfähig.</p><p>Die Augen, Haut und Schleimhäute brennen wie Feuer und der Angreifer ringt nach Luft.</p><p>Die Wirkung hält je nach Sprühdauer bis zu einigen Stunden an.</p><p></p><p class=\"bs-warning\"><strong>Zur Beachtung: </strong>  Pfefferspray darf in Deutschland nur zur Abwehr von angreifenden und aggressiven Tierenverwendet und verkauft werden.</p></div>");;return buf.join("");
+}; },"views/version": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 ;var locals_for_with = (locals || {});(function (app_version, bs_version, copyright, spine_version) {
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/version.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/version.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/version.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 2, jade_debug[0].filename ));
-buf.push("Copyright " + (jade.escape((jade_interp = copyright) == null ? '' : jade_interp)) + "");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/version.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("App v." + (jade.escape((jade_interp = app_version) == null ? '' : jade_interp)) + "");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/version.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Spine v." + (jade.escape((jade_interp = spine_version) == null ? '' : jade_interp)) + "");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/version.jade" ));
-buf.push("<div>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Bootstrap v." + (jade.escape((jade_interp = bs_version) == null ? '' : jade_interp)) + "");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();}.call(this,"app_version" in locals_for_with?locals_for_with.app_version:typeof app_version!=="undefined"?app_version:undefined,"bs_version" in locals_for_with?locals_for_with.bs_version:typeof bs_version!=="undefined"?bs_version:undefined,"copyright" in locals_for_with?locals_for_with.copyright:typeof copyright!=="undefined"?copyright:undefined,"spine_version" in locals_for_with?locals_for_with.spine_version:typeof spine_version!=="undefined"?spine_version:undefined));;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "p\n  div Copyright #{copyright}\n  div App v.#{app_version}\n  div Spine v.#{spine_version}\n  div Bootstrap v.#{bs_version}\n");
-}
-};}, "views/warning": function(exports, require, module) {module.exports = function template(locals) {
-var jade_debug = [ new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/warning.jade" ) ];
-try {
+buf.push("<p><div>Copyright " + (jade.escape((jade_interp = copyright) == null ? '' : jade_interp)) + "</div><div>App v." + (jade.escape((jade_interp = app_version) == null ? '' : jade_interp)) + "</div><div>Spine v." + (jade.escape((jade_interp = spine_version) == null ? '' : jade_interp)) + "</div><div>Bootstrap v." + (jade.escape((jade_interp = bs_version) == null ? '' : jade_interp)) + "</div></p>");}.call(this,"app_version" in locals_for_with?locals_for_with.app_version:typeof app_version!=="undefined"?app_version:undefined,"bs_version" in locals_for_with?locals_for_with.bs_version:typeof bs_version!=="undefined"?bs_version:undefined,"copyright" in locals_for_with?locals_for_with.copyright:typeof copyright!=="undefined"?copyright:undefined,"spine_version" in locals_for_with?locals_for_with.spine_version:typeof spine_version!=="undefined"?spine_version:undefined));;return buf.join("");
+}; },"views/warning": function(exports, require, module) { module.exports = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-jade_debug.unshift(new jade.DebugItem( 0, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/warning.jade" ));
-jade_debug.unshift(new jade.DebugItem( 1, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/warning.jade" ));
-buf.push("<div class=\"danger alert\">");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/warning.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 3, jade_debug[0].filename ));
-buf.push("Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong> mit Altersnachweis");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 4, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/warning.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 4, jade_debug[0].filename ));
-buf.push("Dazu bitte ein Scan oder Foto des Nachweises per Mail an ha-lehmann@gmx.at senden.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.unshift(new jade.DebugItem( 5, "/Library/Server/Web/Data/Sites/ha-lehmann.at/app/webroot/js/app/app/views/warning.jade" ));
-buf.push("<p>");
-jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
-jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
-buf.push("Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</div>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "div.danger.alert\n  \n  p Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong> mit Altersnachweis\n  p Dazu bitte ein Scan oder Foto des Nachweises per Mail an ha-lehmann@gmx.at senden.\n  p Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.");
-}
-};}
+buf.push("<div class=\"danger alert\"><p>Der Versand von Pfeffer- und CS Gas-Sprays erfolgt ausschließlich an Personen über <strong>18 Jahre</strong> mit Altersnachweis</p><p>Dazu bitte ein Scan oder Foto des Nachweises per Mail an ha-lehmann@gmx.at senden.</p><p>Dieser FSK 18 Artikel kann gem. einer Richlinie von PayPal nicht mit PayPal bezahlt werden.</p></div>");;return buf.join("");
+}; }
 });
 
-jade.rethrow = function rethrow(err, filename, lineno){ throw err; } 
+

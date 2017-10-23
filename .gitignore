@@ -28,6 +28,7 @@ Icon?
 ehthumbs.db
 Thumbs.db
 /node_modules
+/app/webroot/js/app/node_modules/*
 nbproject
 mysql/*
 mysqlconf/*

@@ -15,8 +15,9 @@ class App extends Spine.Controller
     '#header .nav-item' : 'item',
     '#home'             : 'homeEl',
     '#outdoor'          : 'outdoorEl',
-    '#specials'          : 'goodiesEl',
+    '#specials'         : 'goodiesEl',
     '#fitness'          : 'outdoorEl',
+    '#defense'          : 'defenseEl',
     '#nav'              : 'nav'
     '#stats'            : 'stats'
     '#menu-trigger'     : 'menutrigger'
@@ -72,6 +73,11 @@ class App extends Spine.Controller
       nav: @navItems
       categoryName: 'outdoor'
       refreshView: @refreshView
+    @defense = new HomepageView
+      el: @defenseEl
+      nav: @navItems
+      categoryName: 'defense'
+      refreshView: @refreshView
     @fitness = new HomepageView
       el: @outdoorEl
       nav: @navItems
@@ -97,6 +103,8 @@ class App extends Spine.Controller
     @routes
       '/outdoor/' : (params) ->
         @outdoor.trigger('active')
+      '/defense/' : (params) ->
+        @defense.trigger('active')
       '/fitness/' : (params) ->
         @fitness.trigger('active')
       '/specials/' : (params) ->

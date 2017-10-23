@@ -618,7 +618,7 @@
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
           <li role="presentation" class="opt-ignored"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}" href="#"><i class="glyphicon glyphicon-eye"></i>{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}</a></li>
           <li role="presentation" class="zoom"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#"><i class="tooltips glyphicon glyphicon-picture"></i>Fotos anzeigen</a></li>
-          <li role="presentation" class="opt-favorite"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Produkt des Tages" href="#"><i class="tooltips glyphicon glyphicon-star{{if !favorite}}-empty{{/if}}"></i>Product des Tages</a></li>
+          <li role="presentation" class="opt-favorite"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Produkt des Tages" href="#"><i class="tooltips glyphicon glyphicon-star{{if favorite}}{{else}}-empty{{/if}}"></i>Product des Tages</a></li>
           {{if Category.record}}
           <li role="presentation" class="opt-original"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Im Katalog anzeigen" href="#"><i class="glyphicon glyphicon glyphicon-file"></i>Im Katalog anzeigen</a></li>
           {{/if}}

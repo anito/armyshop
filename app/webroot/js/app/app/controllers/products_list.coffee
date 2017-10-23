@@ -26,7 +26,7 @@ class ProductsList extends Spine.Controller
     'click .opt-delete'            : 'deleteProduct'
     'click .opt-ignored'           : 'ignoreProduct'
     'click .opt-original'          : 'original'
-    'click .opt-favorite'           : 'toggleFavorite'
+    'click .opt-favorite'          : 'toggleFavorite'
     'click .zoom'                  : 'zoom'
     
   constructor: ->
