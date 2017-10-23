@@ -17,7 +17,7 @@
             <a href="#scrollspecials" class="scroll">
             <div class="row">
               <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                <i class="linearicons linearicons-specials"></i>
+                <i class="linearicons linearicons-tools"></i>
                 <h1>Defense</h1>
               </div>
             </div>
@@ -29,8 +29,8 @@
           <div class="jumbotron">
             <div class="container">
               <h1 class="display-3 hidemobile">Defense</h1>
-              <h2 class="hide">Angebote und Restposten zum günstigen Preis</h2>
-              <h5 class="h5 display-3 hidemobile">Angebote und Restposten zum günstigen Preis</h5>
+              <h2 class="hide">Angebote und Restposten zum Verteidigungspreis</h2>
+              <h5 class="h5 display-3 hidemobile">Angebote und Restposten zum Verteidigungspreis</h5>
             </div>
           </div>
           <div class="jumbotron brand hidemobile">
@@ -38,7 +38,7 @@
               <div class="brands display-5"></div>
             </div>
           </div>
-          <div id="scrollspecials" class="items tile pricing pricing--norbu"></div>
+          <div id="scrolldefense" class="items tile pricing pricing--norbu"></div>
         </div>
         <!-- page_header_hintergrundbild -->
     </div><!-- .content -->
@@ -49,7 +49,7 @@
   echo $this->Html->scriptStart();
     ?>
     var base_url = '<?php echo $this->Html->url('/'); ?>';
-    var cat = 'specials'
+    var cat = 'defense'
     
     Page = require("controllers/homepage_view");
     exports.HomePage = new Page({

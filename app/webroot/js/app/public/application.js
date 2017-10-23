@@ -24016,7 +24016,7 @@ if (typeof JSON !== 'object') {
       this.IMAGE_SINGLE_MOVE = this.createImage('/img/cursor_images_1.png');
       this.IMAGE_DOUBLE_MOVE = this.createImage('/img/cursor_images_3.png');
       this.ignoredHashes = ['slideshow', 'preview', 'flickr', 'logout'];
-      this.arr = ['false', 'fitness', 'outdoor', 'specials', 'tools'];
+      this.arr = ['false', 'fitness', 'outdoor', 'specials', 'tools', 'defense'];
       $(window).bind('hashchange', this.proxy(this.storeHash));
       User.bind('pinger', this.proxy(this.validate));
       Clipboard.fetch();
@@ -37584,7 +37584,7 @@ if (typeof JSON !== 'object') {
   };
 
 }).call(this);
- },"home": function(exports, require, module) { (function() {
+ },"home____": function(exports, require, module) { (function() {
   var $, App, HomepageView, ModalSimpleView, RefreshView, Settings, Spine, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -38216,7 +38216,7 @@ if (typeof JSON !== 'object') {
       this.modal = {
         exists: false
       };
-      this.arr = ['home', 'fitness', 'outdoor', 'tools', 'specials', 'out'];
+      this.arr = ['home', 'fitness', 'outdoor', 'tools', 'specials', 'defense', 'out'];
       setting = {
         hidden: false,
         agreed: false,
@@ -38252,6 +38252,7 @@ if (typeof JSON !== 'object') {
       if (name == null) {
         name = 'home';
       }
+      this.log(name);
       name = this.getData(name, this.arr);
       $('.nav-item', this.items).removeClass('active');
       return $('.nav-item.' + name, this.items).addClass('active');

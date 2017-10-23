@@ -67,7 +67,7 @@ class App extends Spine.Controller
     # Getting started - should be removed
     @modal = exists: false
     
-    @arr = ['home', 'fitness', 'outdoor', 'tools', 'specials', 'out']
+    @arr = ['home', 'fitness', 'outdoor', 'tools', 'specials', 'defense', 'out']
     
     setting =
       hidden        : false
@@ -104,6 +104,7 @@ class App extends Spine.Controller
     @exposeNav(cat.name)
     
   exposeNav: (name='home') ->
+    @log name
     name = @getData(name, @arr)
     $('.nav-item', @items).removeClass('active')
     $('.nav-item.'+name, @items).addClass('active')
