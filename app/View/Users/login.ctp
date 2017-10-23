@@ -12,16 +12,15 @@
                         <div class="drag-handle">
                             <h4 class="flash">HA-Lehmann Admin</h4>
                             <span class="h2" style="line-height: 4rem;">Login</span>
-                            <label class="">( guest | guest )</label>
                             <div class="clearfix"></div>
                         </div>
                         <div class="dialogue-scroll table grid-2">
                             <fieldset class="tr">
                                 <div class="td">
-                                    <?php echo $this->Form->input('username', array('label' => "Benutzer ( guest )", 'div' => false, 'autofocus' => 'autofocus')); ?>
+                                    <?php echo $this->Form->input('username', array('label' => "Benutzer", 'div' => false, 'autofocus' => 'autofocus')); ?>
                                 </div>
                                 <div class="td">
-                                    <?php echo $this->Form->input('password', array('label' => "Passwort ( guest )", 'div' => false)); ?>
+                                    <?php echo $this->Form->input('password', array('label' => "Passwort", 'div' => false)); ?>
                                 </div>
                             </fieldset>
                         </div>
