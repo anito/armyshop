@@ -1836,7 +1836,9 @@ header.fixed #lang_sel ul li ul li:after {
     transition: all 0.3s;
   }
   .menu-push-right .menu-push-right-close:hover {
-    background-image: url("images/close-red.svg"); } }
+    background-image: url("images/close-red.svg");
+  }
+}
 
 .category-open {
   display: inline-block;

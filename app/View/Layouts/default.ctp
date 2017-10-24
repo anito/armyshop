@@ -210,6 +210,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                     <li id="" class=""><a href="/pages/fitness">Fitness</a></li>
                     <li id="" class=""><a href="/pages/tools">Messer & Tools</a></li>
                     <li id="" class=""><a href="/pages/specials">Restposten & Specials</a></li>
+                    <li id="" class=""><a href="/pages/defense">Defense</a></li>
                 </ul>
             </div>
             <div class="menu-seitenmenue-unten-container">

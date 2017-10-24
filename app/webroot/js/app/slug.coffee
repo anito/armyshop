@@ -46,9 +46,9 @@ config =
         "lib/blueimp/jquery.fileupload-video.js",
         "lib/blueimp/jquery.fileupload-validate.js",
         "lib/blueimp/jquery.fileupload-ui.js",
-        "lib/swiper/script.js",
         "lib/swiper/swiper.min.js",
         "lib/swiper/swipe.js"
+        "lib/swiper/script.js",
 			]
 			modules: [
 				"spine",

@@ -87,6 +87,9 @@ form#ninja_forms_form_29 {
 .hidemobile {
   display: none !important;
 }
+.page-header {
+  background: url(/img/home_creative.jpg) no-repeat -320px -110px;
+}
 .home .page-header {
   background: url(/img/outdoor_creative.jpg) no-repeat -320px -110px;
 }
@@ -101,6 +104,9 @@ form#ninja_forms_form_29 {
 }
 .specials .page-header {
   background: url(/img/specials_creative_dark.jpg) no-repeat -720px -11px;
+}
+.defense .page-header {
+  background: url(/img/fitness_creative.jpg) no-repeat -695px -410px;
 }
 .page-header .linearicons {
   font-size: 4.5em;

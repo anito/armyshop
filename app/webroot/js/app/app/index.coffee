@@ -179,6 +179,7 @@ class App extends Spine.Controller
     s.id
     
   initBackground: (name='home') ->
+    @log name
     @el.addClass(name)
     
   initLogos: ->
