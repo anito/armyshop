@@ -132,7 +132,7 @@
 }
 
   #container {
-    margin: 71px 0;
+    margin: 76px 0;
     position: relative;
   }
   #container #home .inner {
@@ -163,7 +163,7 @@
   }
   .jumbotron.brand {
     background-color: rgba(0, 0, 0, .7);
-    padding: 1rem 0rem 1rem;
+    padding: 0;
   }
   /* General Demo Style */
   header::after {
@@ -386,7 +386,7 @@
     font-size: 1.3em;
     line-height: 55px;
     position: relative;
-    padding: 1rem 1rem 1.1rem;
+    padding: 1.6rem 1rem 1rem;
   }
   .modal-body {
     font-size: 1.2em;
@@ -417,6 +417,10 @@
   }
   .modal .h3 {
     margin-top: 16px;
+  }
+  .modal .modal-header .h3 {
+    padding-top: 1em;
+    font-weight: 600;
   }
   div.table {
     /*display: table;*/ 

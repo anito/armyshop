@@ -9,14 +9,14 @@ class ModalSimpleView extends Spine.Controller
     '.modal-footer'       : 'footer'
   
   events:
-    'click .opt-ShowAllProducts' : 'allProducts'
-    'click .opt-AddPhotos'     : 'addPhotos'
-    'click .opt-CreateProduct'   : 'createProduct'
-    'click .btnClose'          : 'close'
-    'hidden.bs.modal'          : 'hiddenmodal'
-    'show.bs.modal'            : 'showmodal'
-    'shown.bs.modal'           : 'shownmodal'
-    'keydown'                  : 'keydown'
+    'click .opt-ShowAllProducts': 'allProducts'
+    'click .opt-AddPhotos'      : 'addPhotos'
+    'click .opt-CreateProduct'  : 'createProduct'
+    'click .close'              : 'close'
+    'hidden.bs.modal'           : 'hiddenmodal'
+    'show.bs.modal'             : 'showmodal'
+    'shown.bs.modal'            : 'shownmodal'
+    'keydown'                   : 'keydown'
   
   template: (item) ->
     $('#modalSimpleTemplate').tmpl(item)

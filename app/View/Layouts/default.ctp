@@ -34,7 +34,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->meta('description', $meta);
 
 //    echo $this->Html->css('jquery-ui-1.8.16.custom');
-        echo $this->Html->css('bootstrap');
+        echo $this->Html->css('bootstrap/bootstrap');
         echo $this->Html->css('bootstrap_glyphicons');
         echo $this->Html->css("websymbols");
         echo $this->Html->css("font");
@@ -115,35 +115,40 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->element('google-analytics'); #set the ga-ID in bootstrap.php
         ?>
     </head>
-    <body class="hal hal-home fade in">
+    <body class="hal hal-home in">
         <div class="logos hidemobile">
             <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
             <div class="logo logo-2 hide"></div>
         </div>
         <header id="header" class="header hidemobile">
-            <i class="badge1"></i>
-            <i class="favorite-badge opt-favorite"></i>
-            <nav class="navbar navbar-static-top navbar-dark bg-inverse">
-                <ul class="nav navbar-nav items">
-                    <li id="" class="nav-item">
-                        <a class="nav-link linearicons-home" href="/pages/home/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li id="" class="nav-item outdoor">
-                        <a class="nav-link nav-link linearicons-outdoor" href="/pages/outdoor/">Outdoor</a>
-                    </li>
-                    <li id="" class="nav-item fitness">
-                        <a class="nav-link linearicons-fitness" href="/pages/fitness/">Fitness</a>
-                    </li>
-                    <li id="" class="nav-item tools">
-                        <a class="nav-link linearicons-tools" href="/pages/tools/">Messer & Tools</a>
-                    </li>
-                    <li id="" class="nav-item specials">
-                        <a class="nav-link linearicons-specials" href="/pages/specials/">Specials</a>
-                    </li>
-                    <li id="" class="nav-item defense">
-                        <a class="nav-link linearicons-tools" href="/pages/defense/">Defense</a>
-                    </li>
-                </ul>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <i class="badge1"></i>
+                <i class="favorite-badge opt-favorite"></i>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="nav navbar-nav items">
+                        <li id="" class="nav-item">
+                            <a class="nav-link linearicons-home" href="/pages/home/">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li id="" class="nav-item outdoor">
+                            <a class="nav-link nav-link linearicons-outdoor" href="/pages/outdoor/">Outdoor</a>
+                        </li>
+                        <li id="" class="nav-item fitness">
+                            <a class="nav-link linearicons-fitness" href="/pages/fitness/">Fitness</a>
+                        </li>
+                        <li id="" class="nav-item tools">
+                            <a class="nav-link linearicons-tools" href="/pages/tools/">Messer & Tools</a>
+                        </li>
+                        <li id="" class="nav-item specials">
+                            <a class="nav-link linearicons-specials" href="/pages/specials/">Specials</a>
+                        </li>
+                        <li id="" class="nav-item defense">
+                            <a class="nav-link linearicons-tools" href="/pages/defense/">Defense</a>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </header>
         <header class="main">
@@ -222,7 +227,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                 </ul>
             </div>
         </nav>
-        <div class="sidebar bg-inverse glinch hidemobile">
+        <div class="sidebar bg-dark glinch hidemobile">
             <div class="container">
                 <div class="table">
                     <div class="tr">
@@ -275,37 +280,53 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             </div>
         </div>
 
-        <footer class="footer bg-inverse hidemobile">
+        <footer class="footer bg-dark hidemobile">
             <span class="nav-group">
                 <span class="fc-logo"><a href="https://www.haendlerbund.de/faircommerce" target="_blank"><img src="/img/fc_logo.gif"></img></a></span>
                 <span class="opt-reset" title="FSK 18 Hinweis zurücksetzen">© HA Lehman</span>
-                <span><a href="#" class="opt-imp">Impressum</a></span>
-                <span><a href="#" class="opt-del">Versand</a></span>
-                <span><a href="#" class="opt-pay">Zahlungsmöglichkeiten</a></span>
-                <span><a href="#" class="opt-privacy">Datenschutz</a></span>
-                <span><a href="#" class="opt-revocation">Widerrufsbelehrung</a></span>
-                <span><a href="#" class="opt-agb">AGB</a></span>
+                <span><a href="#" class="opt-imp" data-toggle="modal" data-target="#modal-view">Impressum</a></span>
+                <span><a href="#" class="opt-del" data-toggle="modal" data-target="#modal-view">Versand</a></span>
+                <span><a href="#" class="opt-pay" data-toggle="modal" data-target="#modal-view">Zahlungsmöglichkeiten</a></span>
+                <span><a href="#" class="opt-privacy" data-toggle="modal" data-target="#modal-view">Datenschutz</a></span>
+                <span><a href="#" class="opt-revocation" data-toggle="modal" data-target="#modal-view">Widerrufsbelehrung</a></span>
+                <span><a href="#" class="opt-agb" data-toggle="modal" data-target="#modal-view">AGB</a></span>
                 <span id="refresh" class="left-inline"></span>
                 <span><a href="#" class="opt-stats stats">Statistik</a></span>
             </span>
         </footer>
         <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away hidemobile"></iframe>
         <!-- modal-dialogue -->
-        <div tabindex="0" id="modal-view" role="dialog" aria-labelledby="myModalLabel" class="modal fade" style="z-index: 100001;"></div>
+        <div tabindex="0" id="modal-view_" role="dialog" aria-labelledby="myModalLabel" class="modal fade show" style="z-index: 100001;"></div>
+        <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="z-index: 100001;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    ...
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+        </div>
         <!-- /.modal -->
-        <script>
-
-        </script>
     </body>
 </html>
 
 <script id="modalSimpleTemplate" type="text/x-jquery-tmpl">
-    <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}">
+    <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}" role="document">
     <div class="modal-content">
     {{if header}}
     <div class="modal-header {{if css}}{{html css}}{{/if}}">
+    <div><h3 class="h3" style="padding-left: 26px;">${header}</h3></div>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3 class="h3" style="padding-left: 26px;">${header}</h3>
     </div>
     {{/if}}
     {{if body}}

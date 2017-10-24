@@ -105,7 +105,6 @@ class App extends Spine.Controller
     @exposeNav(cat.name)
     
   exposeNav: (name='home') ->
-    @log name
     name = @getData(name, @arr)
     $('.nav-item', @items).removeClass('active')
     $('.nav-item.'+name, @items).addClass('active')
@@ -228,6 +227,7 @@ class App extends Spine.Controller
       modalOptions:
         keyboard: true
         show: false
+        backdrop: true
       renderOptions: options
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
@@ -415,7 +415,7 @@ class App extends Spine.Controller
     @log 'showmodal'
     
   showmodaldetails: (e) =>
-    @log 'showmodal'
+    @log 'showmodaldetails'
     cb = (json, items) =>
       result = for jsn in json
         ret = for key, val of jsn

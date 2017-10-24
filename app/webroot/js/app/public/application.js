@@ -26130,7 +26130,7 @@ if (typeof JSON !== 'object') {
       'click .opt-ShowAllProducts': 'allProducts',
       'click .opt-AddPhotos': 'addPhotos',
       'click .opt-CreateProduct': 'createProduct',
-      'click .btnClose': 'close',
+      'click .close': 'close',
       'hidden.bs.modal': 'hiddenmodal',
       'show.bs.modal': 'showmodal',
       'shown.bs.modal': 'shownmodal',
@@ -38250,7 +38250,6 @@ if (typeof JSON !== 'object') {
       if (name == null) {
         name = 'home';
       }
-      this.log(name);
       name = this.getData(name, this.arr);
       $('.nav-item', this.items).removeClass('active');
       return $('.nav-item.' + name, this.items).addClass('active');
@@ -38421,7 +38420,8 @@ if (typeof JSON !== 'object') {
       dialog = new ModalSimpleView({
         modalOptions: {
           keyboard: true,
-          show: false
+          show: false,
+          backdrop: true
         },
         renderOptions: options
       });
@@ -38654,7 +38654,7 @@ if (typeof JSON !== 'object') {
 
     App.prototype.showmodaldetails = function(e) {
       var cb, p;
-      this.log('showmodal');
+      this.log('showmodaldetails');
       cb = (function(_this) {
         return function(json, items) {
           var idx, j, jsn, key, len, onError, onLoad, res, result, results, ret, snap, val;
