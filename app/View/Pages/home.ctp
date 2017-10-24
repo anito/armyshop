@@ -91,9 +91,33 @@
 
             </div>
             <!-- page_header_hintergrundbild -->
-        </div>
 
-    </div><!-- .content -->
+            <div id="scrollhome" class="container hide"><!-- outer .container -->
+                <!-- seitennavi_links -->
+                <div class="row">
+                    <div class="col-xs-12 col-md-5 col-lg-4">
+                        <div class="inhaltsverzeichnis sticky-element affix-top" style="width: 285px; top: 140px;">
+                            <span>Das sind unsere Rubriken</span>
+                            <ul class="inhalt">
+                                <li>
+                                    <a href="/pages/outdoor" title="Outdoor" class="">Outdoor</a>
+                                </li>
+                                <li>
+                                    <a href="/pages/fitness" title="Fitness" class="">Fitness</a>
+                                </li>
+                                <li>
+                                    <a href="/pages/tools" title="Messer & Tools" class="">Messer & Tools</a>
+                                </li>
+                                <li>
+                                    <a href="/pages/specials" title="Restposten & Specials" class="">Restposten & Specials</a>
+                                </li>
+                            </ul>
+                            <span>Viel Spass beim Einkauf</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- .content -->
 
 </div>
 
