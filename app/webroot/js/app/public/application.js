@@ -6885,8 +6885,6 @@ var bootstrap=function(t,e){"use strict";function n(t,e){for(var n=0;n<e.length;
         var w = $(this).css('width');
         var h = $(this).css('height');
         var m = $(this).css('margin');
-        console.log(m);
-        console.log('test');
         var dt = e.originalEvent.dataTransfer;
         placeholder.css('width', w);
         placeholder.css('height', h);
@@ -40576,6 +40574,7 @@ if (typeof JSON !== 'object') {
       })();
       if (isValid) {
         target.save({
+          validate: false,
           done: cb
         });
       } else {

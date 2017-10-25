@@ -128,7 +128,9 @@ class Product extends Spine.Model
       
     if isValid
       # save on the target includes the join
-      target.save(done: cb)
+      target.save
+        validate: false
+        done: cb
     else
       Spine.trigger('refresh:all')
     ret

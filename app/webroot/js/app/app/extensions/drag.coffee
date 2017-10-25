@@ -175,7 +175,7 @@ Controller.Drag =
         
         unless @validateDrop target, source, origin, true
           return false
-          
+        
         hash = location.hash
         selection = Spine.dragItem.selection
         switch source.constructor.className

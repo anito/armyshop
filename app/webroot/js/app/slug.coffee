@@ -11,7 +11,7 @@ proxyHem =
 		runner: "browser"
 	proxy:
 		"/proxy":
-			"host": "gap.webpremiere.de"
+			"host": "armyshop.webpremiere.de"
 			"path": "/proxy"
 
 #--------- main configuration setup
@@ -27,39 +27,39 @@ config =
 		defaults: "spine"
 		js:
 			libs: [
-				'lib/jquery.js',
-        "lib/jade_runtime.js",
-        "lib/jquery/jquery-latest.min.js",
-        "lib/jquery/jquery.tmpl.js",
-        "lib/jquery/jquery-ui-1.10.3.custom.js",
-        "lib/bootstrap/bootstrap.bundle.min.js",
-        "lib/html5sortable/jquery.sortable.js",
-        "lib/blueimp/load-image.min.js",
-        "lib/blueimp/locale.js",
-        "lib/blueimp/tmpl.js",
-        "lib/blueimp/canvas-to-blob.js",
-        "lib/blueimp/jquery.iframe-transport.js",
-        "lib/blueimp/jquery.fileupload.js",
-        "lib/blueimp/jquery.fileupload-process.js",
-        "lib/blueimp/jquery.fileupload-image.js",
-        "lib/blueimp/jquery.fileupload-audio.js",
-        "lib/blueimp/jquery.fileupload-video.js",
-        "lib/blueimp/jquery.fileupload-validate.js",
-        "lib/blueimp/jquery.fileupload-ui.js",
-        "lib/swiper/swiper.min.js",
-        "lib/swiper/swipe.js"
-        "lib/swiper/script.js",
+				"lib/jquery.js",
+                                "lib/jade_runtime.js",
+                                "lib/jquery/jquery-latest.min.js",
+                                "lib/jquery/jquery.tmpl.js",
+                                "lib/jquery/jquery-ui-1.10.3.custom.js",
+                                "lib/bootstrap/bootstrap.bundle.min.js",
+                                "lib/html5sortable/jquery.sortable.js",
+                                "lib/blueimp/load-image.min.js",
+                                "lib/blueimp/locale.js",
+                                "lib/blueimp/tmpl.js",
+                                "lib/blueimp/canvas-to-blob.js",
+                                "lib/blueimp/jquery.iframe-transport.js",
+                                "lib/blueimp/jquery.fileupload.js",
+                                "lib/blueimp/jquery.fileupload-process.js",
+                                "lib/blueimp/jquery.fileupload-image.js",
+                                "lib/blueimp/jquery.fileupload-audio.js",
+                                "lib/blueimp/jquery.fileupload-video.js",
+                                "lib/blueimp/jquery.fileupload-validate.js",
+                                "lib/blueimp/jquery.fileupload-ui.js",
+                                "lib/swiper/swiper.min.js",
+                                "lib/swiper/swipe.js"
+                                "lib/swiper/script.js",
 			]
 			modules: [
 				"spine",
-        "spine/lib/ajax",
-        "spine/lib/route",
-        "spine/lib/manager",
-        "spine/lib/local",
-        "spine/lib/list"
-        "jquery.tmpl",
-        "es5-shimify", 
-        "json2ify",
+                                "spine/lib/ajax",
+                                "spine/lib/route",
+                                "spine/lib/manager",
+                                "spine/lib/local",
+                                "spine/lib/list"
+                                "jquery.tmpl",
+                                "es5-shimify", 
+                                "json2ify",
 			]
 		test:
 			after: "require('lib/setup')"

@@ -89,7 +89,7 @@
       Description.refresh(descriptions, {clear: true});
       Photo.refresh(photos, {clear: true});
       Product.refresh(products, {clear: true});
-      Category.refresh(categories, {clear: true});
+      Category.refresh(categories, {clear: true, validate:false});
       
       Spine.Route.setup()
       

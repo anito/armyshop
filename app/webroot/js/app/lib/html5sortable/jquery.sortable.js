@@ -41,8 +41,6 @@
         var w = $(this).css('width');
         var h = $(this).css('height');
         var m = $(this).css('margin');
-        console.log(m);
-        console.log('test');
         var dt = e.originalEvent.dataTransfer;
         placeholder.css('width', w);
         placeholder.css('height', h);
