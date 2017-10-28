@@ -120,7 +120,7 @@
                             <div class="footer" style="">
                                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                                     <div class="btn-group left">
-                                        <button class="dark cat-trigger-edit">
+                                        <button class="dark cat-trigger-edit active">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                             <span>Kategorie</span>
                                         </button>
@@ -153,7 +153,7 @@
                                             <i class="glyphicon glyphicon-pencil"></i>
                                             <span>Kategorie</span>
                                         </button>
-                                        <button class="dark pro-trigger-edit">
+                                        <button class="dark pro-trigger-edit active">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                             <span>Produkt</span>
                                         </button>
@@ -203,7 +203,7 @@
                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                     <span>Produkt</span>
                                                 </button>
-                                                <button class="dark pho-trigger-edit">
+                                                <button class="dark pho-trigger-edit active">
                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                     <span>Foto</span>
                                                 </button>
