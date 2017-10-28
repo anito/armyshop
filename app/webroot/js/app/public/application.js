@@ -31839,9 +31839,9 @@ Released under the MIT License
       var first, previousHash, ref;
       previousHash = Model.Settings.loadSettings().previousHash;
       if (previousHash !== location.hash) {
-        this.navigate(previousHash);
-      } else {
-        this.navigate('#/category', (first = (ref = Category.first()) != null ? ref.id : void 0) ? first : '');
+        console.log(previousHash);
+        console.log(location.hash);
+        this.navigate(previousHash || ((first = (ref = Category.first()) != null ? ref.id : void 0) ? '/category/' + first : '#/categories'));
       }
       e.preventDefault();
       return e.stopPropagation();

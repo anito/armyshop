@@ -920,6 +920,9 @@ li {
 .tright {
   text-align: right;
 }
+.settings table[role="presentation"] {
+  width: 97%;
+}
 .underline {
   text-decoration: underline;
 }
@@ -1151,20 +1154,32 @@ label input[type="checkbox"] + span {
   font-size: 0.7em;
   line-height: 35px;
 }
-.view .viewheader .header-title {
+.viewheader .header-title {
   line-height: 2em;
-  font-size: 0.5rem;
+  font-size: 1em;
+}
+.btn-nav button {
+  line-height: 2.8em;
+  padding: 0 21px;
+  margin: 0 4px;
+}
+span.title-wrapper {
+  font-size: 0.6em;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: -5px;
 }
 .header-title h3:first-child {
   margin-right: 10px;
 }
 .header-title .btn-group {
-  font-size: 2em;
+  font-size: 1.5rem;
   margin-right: 10px;
+  vertical-align: top;
 }
 .header-title .title-field {
   font-size: 3em;
-  display: inline;
+  line-height: 2rem;
   position: relative;
   top: 6px;
 }

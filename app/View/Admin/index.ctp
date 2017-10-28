@@ -790,18 +790,20 @@
     <section class="top viewheader fadeelement">
         <div class="left">
             <div class="header-title">
-                <div class="btn-group">
+                <span class="btn-group btn-nav">
                     <button class="dark opt-ShowOverview">
                         <i class="glyphicon glyphicon-chevron-up nopad"></i>
                     </button>
                     <button class="dark opt-ShowProducts">
                         <i class="glyphicon glyphicon-chevron-down nopad"></i>
                     </button>
-                </div>
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-th-large"></i>
-                    <span class="">Kategorien</span>
-                </div>
+                </span>
+                <span class="title-wrapper">
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        <span class="">Kategorien</span>
+                    </div>
+                </span>
             </div>
         </div>
         {{tmpl() "#categorySpecsTemplate"}}
@@ -826,25 +828,27 @@
     <section class="top viewheader fadeelement">
         <div class="left">
             <div class="header-title">
-                <div class="btn-group">
+                <span class="btn-group btn-nav">
                     <button class="dark opt-ShowCategories">
                         <i class="glyphicon glyphicon-chevron-up nopad"></i>
                     </button>
                     <button class="dark opt-ShowPhotos">
                         <i class="glyphicon glyphicon-chevron-down nopad"></i>
                     </button>
-                </div>
-                {{if model.record}}
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-th-large"></i>
-                    <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
-                </div>
-                {{else}}
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-th"></i>
-                    <span class="">Produkt-Katalog</span>
-                </div>
-                {{/if}}
+                </span>
+                <span class="title-wrapper">
+                    {{if model.record}}
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
+                    </div>
+                    {{else}}
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-th"></i>
+                        <span class="">Produkt-Katalog</span>
+                    </div>
+                    {{/if}}
+                </span>
             </div>
         </div>
         {{tmpl() "#productSpecsTemplate"}}
@@ -889,18 +893,20 @@
     <section class="top viewheader fadeelement left">
         <div class="left">
             <div class="header-title">
-                <div class="btn-group">
+                <span class="btn-group btn-nav">
                     <button class="dark opt-ShowProducts">
                         <i class="glyphicon glyphicon-chevron-up nopad"></i>
                     </button>
                     <button class="dark opt-ShowPhotosTrash">
                         <i class="glyphicon glyphicon-chevron-down nopad"></i>
                     </button>
-                </div>
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <span class="">Produkt Papierkorb</span>
-                </div>
+                </span>
+                <span class="title-wrapper">
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <span class="">Produkt Papierkorb</span>
+                    </div>
+                </span>
             </div>
         </div>
     </section>
@@ -916,29 +922,31 @@
     <section class="top viewheader fadeelement">
         <div class="left">
             <div class="header-title">
-                <div class="btn-group">
+                <span class="btn-group btn-nav">
                     <button class="dark opt-ShowProducts">
                         <i class="glyphicon glyphicon-chevron-up nopad"></i>
                     </button>
                     <button class="dark opt-ShowPhoto">
                         <i class="glyphicon glyphicon-chevron-down nopad"></i>
                     </button>
-                </div>
-                {{if product}}
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-th-large"></i>
-                    <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
-                </div>
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-th"></i>
-                    <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
-                </div>
-                {{else}}
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-picture"></i>
-                    <span class="">Foto-Katalog</span>
-                </div>
-                {{/if}}
+                </span>
+                <span class="title-wrapper">
+                    {{if product}}
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
+                    </div>
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-th"></i>
+                        <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
+                    </div>
+                    {{else}}
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-picture"></i>
+                        <span class="">Foto-Katalog</span>
+                    </div>
+                    {{/if}}
+                </span>
             </div>
         </div>
         {{tmpl() "#photoSpecsTemplate"}}
@@ -954,18 +962,20 @@
     <section class="top viewheader fadeelement left">
         <div class="left">
             <div class="header-title">
-                <div class="btn-group">
+                <span class="btn-group btn-nav">
                     <button class="dark opt-ShowProductsTrash">
                         <i class="glyphicon glyphicon-chevron-up nopad"></i>
                     </button>
                     <button class="dark disabled">
                         <i class="glyphicon glyphicon-chevron-down nopad"></i>
                     </button>
-                </div>
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <span class="">Foto Papierkorb</span>
-                </div>
+                </span>
+                <span class="title-wrapper">
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <span class="">Foto Papierkorb</span>
+                    </div>
+                </span>
             </div>
         </div>
     </section>
@@ -982,29 +992,31 @@
     <section class="top viewheader fadeelement">
         <div class="left">
             <div class="header-title">
-                <div class="btn-group">
+                <span class="btn-group btn-nav">
                     <button class="dark opt-ShowPhotos">
                         <i class="glyphicon glyphicon-chevron-up nopad"></i>
                     </button>
                     <button class="dark disabled">
                         <i class="glyphicon glyphicon-chevron-down nopad"></i>
                     </button>
-                </div>
-                {{if product}}
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-th-large"></i>
-                    <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
-                </div>
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-th"></i>
-                    <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
-                </div>
-                {{else}}
-                <div class="title-field">
-                    <i class="glyphicon glyphicon-picture"></i>
-                    <span class="">Foto-Ansicht</span>
-                </div>
-                {{/if}}
+                </span>
+                <span class="title-wrapper">
+                    {{if product}}
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
+                    </div>
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-th"></i>
+                        <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
+                    </div>
+                    {{else}}
+                    <div class="title-field">
+                        <i class="glyphicon glyphicon-picture"></i>
+                        <span class="">Foto-Ansicht</span>
+                    </div>
+                    {{/if}}
+                </span>
             </div>
         </div>
         {{tmpl() "#photoSpecsTemplate"}}

@@ -190,9 +190,9 @@ class OverviewView extends Spine.Controller
   close: (e) ->
     previousHash = Model.Settings.loadSettings().previousHash
     if previousHash isnt location.hash
-      @navigate previousHash
-    else
-      @navigate '#/category', if first = Category.first()?.id then first else ''# '#/categories')
+      console.log previousHash
+      console.log location.hash
+      @navigate previousHash || if (first = Category.first()?.id) then '/category/' + first else '#/categories'
       
     e.preventDefault()
     e.stopPropagation()
