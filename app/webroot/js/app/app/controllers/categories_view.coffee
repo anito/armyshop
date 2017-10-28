@@ -129,7 +129,9 @@ class CategoriesView extends Spine.Controller
       if item
         if parseInt(item.order) isnt index
           item.order = index
-          item.save(done: cb)
+          item.save
+            done: cb
+            validate: false
   
   infoUp: (e) =>
     el = $(e.currentTarget)

@@ -30404,7 +30404,8 @@ Released under the MIT License
           if (parseInt(item.order) !== index) {
             item.order = index;
             return item.save({
-              done: cb
+              done: cb,
+              validate: false
             });
           }
         }
