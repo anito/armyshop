@@ -102,7 +102,7 @@ class PreviewView extends Spine.Controller
     img.src = res.src
 
   onLoad: ->
-    @imgEl.attr('src', @src).removeClass('load').addClass('in')
+    @imgEl.attr('src', @src).removeClass('load').addClass('show')
 
   onError: (e) ->
     @this.snap @res

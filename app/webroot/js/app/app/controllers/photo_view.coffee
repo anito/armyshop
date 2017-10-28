@@ -122,7 +122,7 @@ class PhotoView extends Spine.Controller
     
     img = $(@)
     tmb.html img
-    container.addClass('in')
+    container.addClass('show')
   
   dropdownToggle: (e) ->
     el = $(e.currentTarget)
@@ -144,12 +144,12 @@ class PhotoView extends Spine.Controller
   
   infoUp: (e) =>
     @info.up(e)
-    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('in').removeClass('out')
+    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('show').removeClass('fade')
     e.preventDefault()
     
   infoBye: (e) =>
     @info.bye()
-    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('out').removeClass('in')
+    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('fade').removeClass('show')
     e.preventDefault()
     
   stopInfo: (e) =>

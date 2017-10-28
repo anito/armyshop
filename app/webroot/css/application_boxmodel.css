@@ -1,5 +1,5 @@
 html, body {
-  background: none repeat scroll 0 0 #606067;
+  background: none repeat scroll 0 0;
 
   display: -webkit-box;
   -webkit-box-align: stretch;
@@ -78,11 +78,6 @@ header, footer {
 }
 .hbox span.flex {
   display: block
-}
-.body {
-  display: inherit;
-  background-image: url(img/pattern.png);
-  background-color: #666;
 }
 #title {
   overflow: hidden;

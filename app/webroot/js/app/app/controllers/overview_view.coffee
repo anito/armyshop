@@ -66,7 +66,7 @@ class OverviewView extends Spine.Controller
       paused: true
       
     @carousel.data('bs.carousel')
-    @carousel.carousel(@carouselOptions)
+    @carousel.carousel @carouselOptions
     
 #    Category.bind('change:collection', @proxy @renderAux)
 #    Spine.bind('product:ignore', @proxy @renderAux)
@@ -146,7 +146,7 @@ class OverviewView extends Spine.Controller
 
   onLoad: ->
     @imgEl.attr('src', @src)
-    @imgEl.addClass('in')
+    @imgEl.addClass('show')
 
   onError: (e) ->
     @me.log 'image could not be loaded'

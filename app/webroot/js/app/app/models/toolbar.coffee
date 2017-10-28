@@ -151,8 +151,8 @@ class Toolbar extends Spine.Model
           devider: true
         ,
           name: ->
-            a = 'Veröffentlichen Ein/Aus'
-            b = ' (' + Category.selectionList().length + ')'
+            a = 'Veröffentlichen'
+            b = ' (' + Category.selectionList().length + ')<br>(Ein/Aus)'
             if Category.record
               return a + b
             else

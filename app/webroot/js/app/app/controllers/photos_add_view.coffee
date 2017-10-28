@@ -18,18 +18,19 @@ class PhotosAddView extends Spine.Controller
   @extend Extender
 
   elements:
-    '.items'        : '_items'
+    '.modal-footer' : 'footer'
+    '.items'        : 'itemsEl'
 
   events:
-    'click .item'                            : 'click'
-    'click .opt-AddExecute:not(.disabled)'   : 'add'
-    'click .opt-SelectInv:not(.disabled)'    : 'selectInv'
-    'click .opt-SelectAll:not(.disabled)'    : 'selectAll'
-    'keyup'                                  : 'keyup'
+    'click .item'                               : 'click'
+    'click .opt-modalAddExecute:not(.disabled)' : 'add'
+    'click .opt-modalSelectInv:not(.disabled)'  : 'selectInv'
+    'click .opt-modalSelectAll:not(.disabled)'  : 'selectAll'
+    'keyup'                                     : 'keyup'
     
   template: (items) ->
     $('#addTemplate').tmpl
-      title: 'Select photos'
+      title: 'Select Photos'
       type: 'photos'
       disabled: true
       contains: !!@items.length
@@ -45,11 +46,15 @@ class PhotosAddView extends Spine.Controller
     
   constructor: ->
     super
+    @el = $('#modal-view')
+
     @thumbSize = 100
     @visible = false
+
     @modal = @el.modal
       show: @visible
       backdrop: true
+
     @modal.bind('show.bs.modal', @proxy @modalShow)
     @modal.bind('shown.bs.modal', @proxy @modalShown)
     @modal.bind('hide.bs.modal', @proxy @modalHide)
@@ -59,31 +64,34 @@ class PhotosAddView extends Spine.Controller
       parent: @parent
       
     Spine.bind('photos:add', @proxy @show)
+    window.test = @
       
   render: (items) ->
     @html @template @items = items
-    @itemsEl = $('.items', @el)
+    
+    @selectionList = []
+    #register events now and only once after the template has rendered
+    @eventsDelegated = @delegateEvents(@events) unless @eventsDelegated
+    
     @list.el = @itemsEl
     @list.render items
+    @el
   
   renderFooter: (list) ->
-    @footer = $('.modal-footer', @el)
     @footer.html @footerTemplate list
     
   show: ->
     product = Product.record
     list = ProductsPhoto.photos(product.id).toId()
     records = Photo.filter list, func: 'idExcludeSelect'
-    @render records, product
-    @el.modal('show')
-    
+    @render(records, product).modal("show")
+
   hide: ->
     @el.modal('hide')
   
   modalShow: (e) ->
     Spine.trigger('slider:change', @thumbSize)
     @preservedList = Product.selectionList().slice(0)
-    @selectionList = []
   
   modalShown: (e) ->
     @log 'shown'
@@ -96,34 +104,37 @@ class PhotosAddView extends Spine.Controller
     e.preventDefault()
     
     item = $(e.currentTarget).item()
-    @select(item.id, @isMeta(e))
+    @select(item.id, !@isMeta(e))
     
-  select: (items = [], exclusive) ->
+  select: (items = [], cumul) ->
     unless Array.isArray items
       items = [items]
       
-    @selectionList = [] if exclusive
-    
-    for item in items
-      @selectionList.addRemove(item)
+    if cumul
+      list = @selectionList[..]
+      for item in items
+        list.addRemove(item)
+    else list = items[..]
         
-    @renderFooter @selectionList
-    @list.exposeSelection(@selectionList)
+    @selectionList = list[..]
+    
+    @renderFooter list
+    @list.exposeSelection(list)
     
   selectAll: (e) ->
     list = @all()
-    @select(list, true)
+    @select(list)
     e.stopPropagation()
     
   selectInv: (e) ->
     list = @all()
-    @select(list)
+    @select(list, true)
     e.stopPropagation()
     
   all: ->
     root = @itemsEl
     items = root.children('.item')
-    return unless root and items.length
+    
     list = []
     items.each (index, el) ->
       item = $(@).item()
@@ -132,8 +143,7 @@ class PhotosAddView extends Spine.Controller
     
   add: ->
     photos = Photo.toRecords(@selectionList)
-    Photo.trigger('create:join', photos, Product.record)
-    @hide()
+    Photo.trigger('create:join', photos, Product.record, @proxy @hide)
     
   keyup: (e) ->
     code = e.charCode or e.keyCode

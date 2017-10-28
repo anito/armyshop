@@ -97,8 +97,8 @@ class Login extends Spine.Controller
       @btnGuest.removeClass('hide')
     
   guestLogin: ->
-    @usernameEl.val('guest')
-    @passwordEl.val('guest')
+    @usernameEl.val('gast')
+    @passwordEl.val('angela')
     @submit()
     
   submitOnEnter: (e) ->

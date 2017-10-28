@@ -77,7 +77,7 @@ class HomepageView extends Spine.Controller
     img.src = res.src
 
   onLoad: ->
-    @imgEl.attr('src', @src).removeClass('load').addClass('in')
+    @imgEl.attr('src', @src).removeClass('load').addClass('show')
     @me.log 'all loaded' if @i is @l-1
     
   onError: (e) -> throw 'unable to load image (Homepage)'

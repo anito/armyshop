@@ -5,7 +5,7 @@ class Info extends Spine.Controller
   
   constructor: ->
     super
-    @el.addClass('away').removeClass('in')
+    @el.addClass('away').removeClass('show')
     @parent = @el.parent()
     
   render: (item) ->
@@ -18,7 +18,7 @@ class Info extends Spine.Controller
     clearTimeout @timer
     clearTimeout @timer_
     @timer = setTimeout(bye, 2000)
-    @el.removeClass('away').addClass('in')
+    @el.removeClass('away').addClass('show')
     unless @current and @current?.id is item.id
       @current = item
       @render(@current)
@@ -28,7 +28,7 @@ class Info extends Spine.Controller
   bye: ->
     return unless @current
     stop = => @stop()
-    @el.removeClass('in')
+    @el.removeClass('show')
     clearTimeout @timer_
     @timer_ = setTimeout(stop, 200)
     

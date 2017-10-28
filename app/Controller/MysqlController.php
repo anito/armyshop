@@ -64,7 +64,7 @@ class MysqlController extends AppController {
     //$path = '/var/www/vhosts/webpremiere.de/mysql_backup/';
 //    $cmd = sprintf('%1s -uaxel -pkakadax -h localhost todos_backbone %2s /var/www/vhosts/webpremiere.de/mysqlÇ/file.sql 2>&1', $postfix, $io);
 //    $cmd = sprintf('%1s -uaxel -pkakadax -h localhost halehmann %2s ' . MYSQLUPLOAD . '/file.sql 2>&1', $postfix, $io);
-    $cmd = sprintf('%1s --defaults-extra-file=' . MYSQLCONFIG . '/my.cnf halehmann_ %2s ' . MYSQLUPLOAD . '/file.sql 2>&1', $postfix, $io);
+    $cmd = sprintf('%1s --defaults-extra-file=' . MYSQLCONFIG . '/my.cnf armyshop %2s ' . MYSQLUPLOAD . '/file.sql 2>&1', $postfix, $io);
     $op = `$cmd`;
     return $op;
   }

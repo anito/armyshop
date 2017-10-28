@@ -38,7 +38,9 @@ class PhotosList extends Spine.Controller
     
     @toolbar = new ToolbarView
       el: @toolbarEl
+
     @add = @html
+
     Spine.bind('slider:start', @proxy @sliderStart)
     Spine.bind('slider:change', @proxy @size)
     Spine.bind('rotate', @proxy @rotate)
@@ -51,6 +53,7 @@ class PhotosList extends Spine.Controller
     return unless Product.record
     return unless Product.record.id is item['product_id']
     return unless item = Photo.find(item['photo_id'])
+
     @log 'changeRelated'
     
     switch mode

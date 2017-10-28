@@ -137,21 +137,19 @@ class PhotosView extends Spine.Controller
   select: (e, ids = []) ->
     list = @model.selectionList()[..]
     ids = [ids] unless Array.isArray ids
-    if @isMeta(e)
+    if !@isMeta(e)
       list.addRemove(ids)
     else
       list = ids[..]
     
-    if @isActive()
-      if list.length
-        @navigate '/category', Category.record?.id or '', Product.record.id or '', 'iid', list[0]
-      else
-        @navigate '/category', Category.record?.id or '', Product.record.id or ''
+    if list.length
+      @navigate '/category', Category.record?.id or '', Product.record.id or '', 'iid', list[0]
+    else
+      @navigate '/category', Category.record?.id or '', Product.record.id or ''
 
     @model.updateSelection list
       
     e.stopPropagation()
-  
   
   select_: (e, ids = []) ->
     isMeta = e.metaKey or e.ctrlKey or e.shiftKey
@@ -299,11 +297,11 @@ class PhotosView extends Spine.Controller
       
   infoUp: (e) ->
     @info.up(e)
-    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('in').removeClass('out')
+    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('show').removeClass('fade')
     
   infoBye: (e) ->
     @info.bye(e)
-    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('out').removeClass('in')
+    el = $('.glyphicon-set' , $(e.currentTarget)).addClass('fade').removeClass('show')
     
   stopInfo: (e) =>
     @info.bye(e)

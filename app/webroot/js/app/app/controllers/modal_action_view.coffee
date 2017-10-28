@@ -17,7 +17,7 @@ class ModalActionView extends Spine.Controller
     
   constructor: ->
     super
-    @el.modal
+    @el = $('#modal-action')
       show: false
       
     @defaults =

@@ -37,7 +37,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('script');
 	?>
 </head>
-<body class="hal fade in">
+<body class="hal fade show">
   <div id="container" style="">
     <div id="content">
 

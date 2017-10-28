@@ -18,12 +18,17 @@ class ProductsAddView extends Spine.Controller
 
   @extend Extender
 
+  elements:
+    '.modal-footer'                          : 'footer'
+    '.items'                                 : 'itemsEl'
+
   events:
-    'click .item'                            : 'click'
-    'click .opt-AddExecute:not(.disabled)'   : 'add'
-    'click .opt-SelectInv:not(.disabled)'    : 'selectInv'
-    'click .opt-SelectAll:not(.disabled)'    : 'selectAll'
-    'keyup'                                  : 'keyup'
+    'click .item'                                 : 'click'
+    'click .opt-modalAddExecute:not(.disabled)'   : 'add'
+    'click .opt-modalSelectInv:not(.disabled)'    : 'selectInv'
+    'click .opt-modalSelectAll:not(.disabled)'    : 'selectAll'
+    'click .close'                                : 'hide'
+    'keyup'                                       : 'keyup'
 
   template: (items) ->
     $('#addTemplate').tmpl
@@ -43,38 +48,39 @@ class ProductsAddView extends Spine.Controller
     
   constructor: ->
     super
-    
+    @el = $('#modal-view')
+
     @visible = false
-    
-    @modal = @el.modal
+
+    modal = @el.modal
       show: @visible
       backdrop: true
+
     @list = new ProductsAddList
       template: @subTemplate
       parent: @parent
       modal: true
-      
-    @modal.bind('show.bs.modal', @proxy @modalShow)
-    @modal.bind('hide.bs.modal', @proxy @modalHide)
-    
+
+    modal.bind('show.bs.modal', @proxy @modalShow)
+    modal.bind('hide.bs.modal', @proxy @modalHide)
+
     Spine.bind('products:add', @proxy @show)
-      
+
   render: (items) ->
     @html @template @items = items
-    @itemsEl = $('.items', @el)
+    @delegateEvents(@events)
     @list.el = @itemsEl
     @list.render items
-  
+    @el
+
   renderFooter: (selection) ->
-    @footer = $('.modal-footer', @el)
     @footer.html @footerTemplate selection
-  
+
   show: ->
     list = CategoriesProduct.products(Category.record.id).toId()
-    records = Product.filter list, func: 'idExcludeSelect'
-    @render records
-    @el.modal('show')
-    
+    records = window.records = Product.filter list, func: 'idExcludeSelect'
+    @render(records).modal('show')
+
   hide: ->
     @el.modal('hide')
   
@@ -86,47 +92,49 @@ class ProductsAddView extends Spine.Controller
     
   click: (e) ->
     e.stopPropagation()
+    e.preventDefault()
     
     item = $(e.currentTarget).item()
-    @select(item.id)
+    @select(item.id, !@isMeta(e))
     
-  select: (items = [], all) ->
+  select: (items = [], cumul) ->
     unless Array.isArray items
       items = [items]
-    
-    @selectionList = [] if all
-    
-    for item in items
-      @selectionList.addRemove(item)
       
-    @renderFooter @selectionList
-    @list.exposeSelection(@selectionList)
+    if cumul
+      list = @selectionList[..]
+      for item in items
+        list.addRemove(item)
+    else list = items[..]
+        
+    @selectionList = list[..]
+    
+    @renderFooter list
+    @list.exposeSelection(list)
     
   selectAll: (e) ->
     list = @all()
-    @select(list, true)
-    e.preventDefault()
+    @select(list)
     e.stopPropagation()
     
   selectInv: (e) ->
     list = @all()
-    @select(list)
-    e.preventDefault()
+    @select(list, true)
     e.stopPropagation()
     
   all: ->
-    list = []
     root = @itemsEl
-    items = $('.item', root)
+    items = root.children('.item')
     
+    list = []
     items.each (index, el) ->
       item = $(@).item()
       list.unshift item.id
     list
       
   add: ->
-    Product.trigger('create:join', Product.toRecords(@selectionList), Category.record)
-    @hide()
+    products = Product.toRecords(@selectionList)
+    Product.trigger('create:join', products, Category.record, @proxy @hide)
     
   keyup: (e) ->
     code = e.charCode or e.keyCode

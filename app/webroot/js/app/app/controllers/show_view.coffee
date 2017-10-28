@@ -207,10 +207,8 @@ class ShowView extends Spine.Controller
       header: @photosTrashHeader
       parent: @
     @productsAddView = new ProductsAddView
-      el: @modalAddProductEl
       parent: @productsView
     @photosAddView = new PhotosAddView
-      el: @modalAddPhotoEl
       parent: @photosView
     @waitView = new WaitView
       el: @waitEl
@@ -679,7 +677,7 @@ class ShowView extends Spine.Controller
     if model then model.updateSelection([])
     
   selectNone: (e) ->
-    @deselect(e)
+#    @deselect(e)
     
   selectAll: (e) ->
     try
@@ -989,7 +987,8 @@ class ShowView extends Spine.Controller
     dialog = new ModalSimpleView
       modalOptions:
         keyboard: true
-        show: false
+        show: true
+
     options =
       small: false
       header: 'TastaturBefehle'
@@ -1012,20 +1011,22 @@ class ShowView extends Spine.Controller
         keyboard: true
         show: false
         
-    options =
-      small: true
-      body: -> require("views/version")
-        copyright     : 'Axel Nitzschner'
-        spine_version : Spine.version
-        app_version   : App.version
-        bs_version    : $.fn.tooltip.Constructor.VERSION
+      renderOptions:
+        small: true
+        header  : ''
+        body: -> require("views/version")
+          copyright     : 'Axel Nitzschner'
+          spine_version : Spine.version
+          app_version   : App.version
+          bs_version    : $.fn.tooltip.Constructor.VERSION
+        footer: ''
       
     dialog.el.one('hidden.bs.modal', @proxy @hiddenmodal)
     dialog.el.one('hide.bs.modal', @proxy @hidemodal)
     dialog.el.one('show.bs.modal', @proxy @showmodal)
     dialog.el.one('shown.bs.modal', @proxy @shownmodal)
     
-    dialog.show(options)
+    dialog.show()
     
   hidemodal: (e) ->
     @log 'hidemodal'
@@ -1098,7 +1099,7 @@ class ShowView extends Spine.Controller
         
     id = el.attr('data-id')
     
-    if isMeta
+    if !isMeta
       #support for multiple selection
       selection = parent.selectionList()[..]
       unless id in selection

@@ -115,7 +115,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->element('google-analytics'); #set the ga-ID in bootstrap.php
         ?>
     </head>
-    <body class="hal hal-home in">
+    <body class="hal hal-home show">
         <div class="logos hidemobile">
             <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
             <div class="logo logo-2 hide"></div>
@@ -295,27 +295,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                 <span><a href="#" class="opt-stats stats">Statistik</a></span>
             </span>
         </footer>
-        <iframe id="stats" frameborder="0" scrolling="no" class="fadeslow away hidemobile"></iframe>
+        <iframe id="stats" frameborder="0" scrolling="no" class="fade hidemobile"></iframe>
         <!-- modal-dialogue -->
-        <div tabindex="0" id="modal-view_" role="dialog" aria-labelledby="myModalLabel" class="modal fade show" style="z-index: 100001;"></div>
-        <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="z-index: 100001;">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    ...
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                  </div>
-                </div>
-              </div>
+        <div class="modal fade" id="modal-simple" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 100001;">
+            <div class="modal-dialog" role="document">needed by Modal</div>
         </div>
         <!-- /.modal -->
     </body>
@@ -323,29 +306,30 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 <script id="modalSimpleTemplate" type="text/x-jquery-tmpl">
     <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}" role="document">
-    <div class="modal-content">
-    {{if header}}
-    <div class="modal-header {{if css}}{{html css}}{{/if}}">
-    <div><h3 class="h3" style="padding-left: 26px;">${header}</h3></div>
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    </div>
-    {{/if}}
-    {{if body}}
-    <div class="modal-body">
-    {{html body}}
-    </div>
-    {{if info}}
-    <div class="modal-header label-info">
-    <div class="label label-info">${info}</div>
-    </div>
-    {{/if}}
-    {{/if}}
-    {{if (typeof footer != 'undefined' && footer.footerButtonText)}}
-    <div class="modal-footer" style="position: relative">
-    <a class="opt-agreed" style="" role="button" data-dismiss="modal" data-toggle="button">{{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
-    </div>
-    {{/if}}
-    </div>
+        <div class="modal-content">
+            {{if header}}
+            <div class="modal-header {{if css}}{{html css}}{{/if}}">
+                <div><h3 class="h3" style="padding-left: 26px;">${header}</h3></div>
+                <button type="button" class="" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            {{/if}}
+            {{if body}}
+            <div class="modal-body">
+                {{html body}}
+            </div>
+            {{/if}}
+            {{if info}}
+            <div class="modal-header label-info">
+                <div class="label label-info">${info}</div>
+            </div>
+            {{/if}}
+            {{if (typeof footer != 'undefined' && footer.footerButtonText)}}
+            <div class="modal-footer" style="position: relative">
+                <a class="opt-agreed" style="" role="button" data-dismiss="modal" data-toggle="button">
+                {{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</a>
+            </div>
+            {{/if}}
+        </div>
     </div>
 </script>
 

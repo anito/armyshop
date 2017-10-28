@@ -133,10 +133,10 @@ class CategoriesView extends Spine.Controller
   
   infoUp: (e) =>
     el = $(e.currentTarget)
-    $('.glyphicon-set.fade' , el).addClass('in').removeClass('out')
+    $('.glyphicon-set.fade' , el).addClass('show').removeClass('fade')
     
   infoBye: (e) =>
     el = $(e.currentTarget)
-    set = $('.glyphicon-set.fade' , el).addClass('out').removeClass('in')
+    set = $('.glyphicon-set.fade' , el).addClass('fade').removeClass('show')
   
 module?.exports = CategoriesView

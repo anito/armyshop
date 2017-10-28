@@ -31,7 +31,7 @@ Controller.PhotoExtender =
         el = @children().forItem(item)
         tb = $('.thumbnail', el)
 
-        tb.attr('style', css).addClass('in')
+        tb.attr('style', css).addClass('show')
         el.toggleClass('active', active)
         el.toggleClass('hot', hot)
         @el.sortable('destroy').sortable('photos')
@@ -65,7 +65,7 @@ Controller.PhotoExtender =
         @thumb.css
           'backgroundImage': css
           'backgroundSize': '100% auto'
-        @thumb.addClass('in')
+        @thumb.addClass('show')
 
       onError: (e) ->
         console.log 'could not load image, trying again'

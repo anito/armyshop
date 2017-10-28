@@ -61,6 +61,7 @@ class Main extends Spine.Controller
     '#loader'             : 'loaderEl'
     '#login'              : 'loginEl'
     '#modal-category'     : 'slideshowEl'
+    '#modal-simple'       : 'modalSimpleEl'
     '#show .content'      : 'content'
     '.vdraggable'         : 'vDrag'
     '.hdraggable'         : 'hDrag'
@@ -69,7 +70,7 @@ class Main extends Spine.Controller
     '.status-symbol img'  : 'statusIcon'
     '.status-text'        : 'statusText'
     '.status-symbol'      : 'statusSymbol'
-    '.toolbar-three'       : 'trustamiEl'
+    '.toolbar-three'      : 'trustamiEl'
     
   events:
     'click [class*="-trigger-edit"]' : 'activateEditor'
@@ -139,9 +140,9 @@ class Main extends Spine.Controller
     
     $('#modal-category').bind('hidden', @proxy @hideSlideshow)
     
-    @modalView = new ModalSimpleView
 #    @modal2ButtonView = new Modal2ButtonView
 #      el: @modalEl
+    @modalView = new ModalSimpleView
     @trustamiView = new TrustamiView
       el: @trustamiEl
     @sidebar = new Sidebar
@@ -444,9 +445,9 @@ class Main extends Spine.Controller
     
   changeContentCanvas: (controller, b) ->
     @controllers = (c for c in @contentManager.controllers when c isnt controller)
-    c.el.removeClass('in') for c in @controllers
+    c.el.removeClass('show') for c in @controllers
     
-    _1 = => controller.el.addClass('in')
+    _1 = => controller.el.addClass('show')
     
     window.setTimeout( =>
       _1()

@@ -192,11 +192,11 @@ class ProductsTrashView extends Spine.Controller
     
   in: (e) =>
     el = $(e.currentTarget)
-    $('.glyphicon-set.fade' , el).addClass('in').removeClass('out')
+    $('.glyphicon-set.fade' , el).addClass('show').removeClass('fade')
     
   out: (e) =>
     el = $(e.currentTarget)
-    set = $('.glyphicon-set.fade' , el).addClass('out').removeClass('in')
+    set = $('.glyphicon-set.fade' , el).addClass('fade').removeClass('show')
     
   keyup: (e) ->
     code = e.charCode or e.keyCode

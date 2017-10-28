@@ -67,7 +67,7 @@ $.fn.Html5Sortable = (opts) ->
 #        catch e
 #          return true
           
-        Spine.sortItem.el?.addClass('in').removeClass('out')
+        Spine.sortItem.el?.addClass('show').removeClass('fade')
         
         Spine.sortItem.splitter.remove()
 
@@ -120,9 +120,9 @@ $.fn.Html5Sortable = (opts) ->
           sourceEl.remove()
           
           that.init it
-          it.addClass('in')
+          it.addClass('show')
           $('._dragging').removeClass('_dragging')
-          it.removeClass('out')
+          it.removeClass('fade')
           Spine.Model[model].trigger('sortupdate', e, it)
         
     that.children('li').each ->

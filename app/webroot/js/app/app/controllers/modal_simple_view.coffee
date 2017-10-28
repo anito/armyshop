@@ -23,14 +23,14 @@ class ModalSimpleView extends Spine.Controller
     
   constructor: ->
     super
-    @el = $('#modal-view')
-    
+    @el = $('#modal-simple')
+
     modalOptions =
       keyboard: true
       show: false
       
     renderOptions =
-      css: 'default';
+      css: 'default'
       small: true
       header  : 'Default Header'
       body    : 'Default Body Text'

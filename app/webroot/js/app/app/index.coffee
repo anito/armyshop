@@ -223,7 +223,7 @@ class App extends Spine.Controller
         spine_version : Spine.version
         app_version   : App.version
         bs_version    : '1.1.1'#$.fn.tooltip.Constructor.VERSION
-      
+
     dialog = new ModalSimpleView
       modalOptions:
         keyboard: true
@@ -427,7 +427,7 @@ class App extends Spine.Controller
       onError = -> throw 'unable to load image (modal)'
       onLoad = ->
         @imgEl.attr('src', @src)
-        if @i is 0 then @imgEl.removeClass('load').addClass('in')
+        if @i is 0 then @imgEl.removeClass('load').addClass('show')
         if @i is @l-1
           @me.log 'all loaded'
           if @l > 1
@@ -483,7 +483,7 @@ class App extends Spine.Controller
     @sidebar.addClass('off')
     
   showStats: (e) ->
-    @stats.attr('src', '/stat/counter.php').addClass('in').removeClass('away')
+    @stats.attr('src', '/stat/counter.php').addClass('show').removeClass('fade')
     e.preventDefault()
     
   moveStats: (e) ->
@@ -491,7 +491,7 @@ class App extends Spine.Controller
     e.preventDefault()
     
   hideStats: (e) ->
-    @stats.attr('src', '').removeClass('in').addClass('away')
+    @stats.attr('src', '').removeClass('show').addClass('fade')
     e.preventDefault()
     
   reset: ->

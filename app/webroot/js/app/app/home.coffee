@@ -89,7 +89,7 @@ class App extends Spine.Controller
       categoryName: 'specials'
       refreshView: @refreshView
       
-    @manager = new Spine.Manager(@home, @outdoor, @fitness, @specials)
+    @manager = new Spine.Manager(@home, @outdoor, @fitness, @specials, @defense)
     @manager.bind('change', @proxy @viewChanged)
     
     $(window).bind('hashchange', @proxy @storeHash)
@@ -359,7 +359,7 @@ class App extends Spine.Controller
     @sidebar.addClass('off')
   
   showStats: (e) ->
-    @stats.attr('src', '/stat/counter.php').addClass('in').removeClass('away')
+    @stats.attr('src', '/stat/counter.php').addClass('show').removeClass('fade')
     e.preventDefault()
     
   moveStats: (e) ->
@@ -367,7 +367,7 @@ class App extends Spine.Controller
     e.preventDefault()
     
   hideStats: (e) ->
-    @stats.attr('src', '').removeClass('in').addClass('away')
+    @stats.attr('src', '').removeClass('show').addClass('fade')
     e.preventDefault()
     
   reset: ->

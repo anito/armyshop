@@ -134,8 +134,7 @@ Controller.Extender =
         @el.deselect(args...)
         
       clearSelection: (e) ->
-        @deselect()
-        @select e, []
+        @model.updateSelection []
         
       sortable: (type) ->
         @el.sortable type

@@ -11,6 +11,13 @@ a:hover, a:active { outline: 0; }
 
 
 /* override bootstrap classes*/
+.item .dropdown-toggle.glyphicon:after {
+    font-size: 2rem;
+    padding: 10px 0 0px 0px;
+}
+.dropdown-item {
+    font-size: 0.8rem;
+}
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
   height: inherit;
 }
@@ -78,9 +85,14 @@ label {
 .the-icons i {
   display: block;
 }
+
 [class^="dropdown-"] i:after {
   content: "";
   margin-right: 5px;
+}
+.glyphicon-:after {
+    content: " ";
+    padding: 6px;
 }
 [class^="dropdown-"] li a:first-child:after {
     content: "";

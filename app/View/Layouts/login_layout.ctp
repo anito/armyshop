@@ -28,7 +28,8 @@
     <?php
     echo $this->Html->meta('icon');
     
-    echo $this->Html->css('bootstrap/css/bootstrap');
+    echo $this->Html->css('bootstrap/glyphicons');
+    echo $this->Html->css('bootstrap/bootstrap');
     echo $this->Html->css('application_boxmodel');
     echo $this->Html->script('app/public/application');
 
@@ -53,7 +54,7 @@
     echo $scripts_for_layout;
     ?>
   </head>
-  <body class="body">
+  <body class="body bg-dark">
     <?php echo $this->fetch('content'); ?>
     <?php echo $this->element('sql_dump'); ?>
   </body>

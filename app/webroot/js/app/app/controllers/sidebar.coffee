@@ -207,7 +207,7 @@ class Sidebar extends Spine.Controller
           ga.silentUpdate()
         
           
-    category.save()
+    category.save validate: false
     Spine.trigger('reorder', category)
     
 module?.exports = Sidebar

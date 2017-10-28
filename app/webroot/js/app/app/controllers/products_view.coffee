@@ -303,21 +303,21 @@ class ProductsView extends Spine.Controller
     return unless @isActive()
     return unless product
     el = @itemsEl.children().forItem(product)
-    $('.glyphicon-set', el).addClass('in')
-    $('.downloading', el).removeClass('hide').addClass('in')
+    $('.glyphicon-set', el).addClass('show')
+    $('.downloading', el).removeClass('fade').addClass('show')
     
   loadingDone: (product) ->
     return unless @isActive()
     return unless product
     el = @itemsEl.children().forItem(product)
-    $('.glyphicon-set', el).removeClass('in')
-    $('.downloading', el).removeClass('in').addClass('hide')
+    $('.glyphicon-set', el).removeClass('show')
+    $('.downloading', el).removeClass('show').addClass('fade')
   
   loadingFail: (product, error) ->
     return unless @isActive()
     err = error.errorThrown
     el = @itemsEl.children().forItem(product)
-    $('.glyphicon-set', el).removeClass('in')
+    $('.glyphicon-set', el).removeClass('show')
     $('.downloading', el).addClass('error').tooltip('destroy').tooltip(title:err).tooltip('show')
     
   renderBackgrounds: (products) ->
@@ -335,7 +335,9 @@ class ProductsView extends Spine.Controller
           ga.order = index
           ga.silentUpdate()
           
-    Category.record.save(done: cb)
+    Category.record.save
+      done: cb
+      validate: false
     
   reorder: (category) ->
     if category.id is Category.record.id
@@ -346,9 +348,9 @@ class ProductsView extends Spine.Controller
     @select(e, item.id)
     
   select: (e, ids = []) ->
+    list = @model.selectionList()[..]
     ids = [ids] unless Array.isArray ids
-    if (@isMeta(e)) and e.type is 'click'
-      list = @model.selectionList()[..]
+    if !@isMeta(e) and e.type is 'click'
       list.addRemove(ids)
     else
       list = ids[..]
@@ -365,12 +367,12 @@ class ProductsView extends Spine.Controller
   infoUp: (e) =>
     @info.up(e)
     el = $(e.currentTarget)
-    $('.glyphicon-set.fade' , el).addClass('in').removeClass('out')
+    $('.glyphicon-set.fade' , el).addClass('show').removeClass('fade')
     
   infoBye: (e) =>
     @info.bye(e)
     el = $(e.currentTarget)
-    set = $('.glyphicon-set.fade' , el).addClass('out').removeClass('in')
+    set = $('.glyphicon-set.fade' , el).addClass('fade').removeClass('show')
     
   stopInfo: (e) =>
     @info.bye(e)
