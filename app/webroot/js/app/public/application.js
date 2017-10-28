@@ -34200,7 +34200,6 @@ Released under the MIT License
     ProductEditView.prototype.changeViewProduct = function(e) {
       var el;
       el = $(e.currentTarget);
-      this.el.find('button.active').removeClass('active');
       this.activeController = this.productView;
       if (this.current) {
         return this.activeController.trigger('active', el);
@@ -34210,7 +34209,6 @@ Released under the MIT License
     ProductEditView.prototype.changeViewDescription = function(e) {
       var el;
       el = $(e.currentTarget);
-      this.el.find('button.active').removeClass('active');
       this.activeController = this.descriptionView;
       if (this.current) {
         return this.activeController.trigger('active', el);

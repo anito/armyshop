@@ -119,7 +119,7 @@
                         <div id="ga" class="view flex vbox bg-dark" style="">
                             <div class="footer" style="">
                                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
-                                    <div class="btn-group left">
+                                    <div class="btn-group-sm left">
                                         <button class="dark cat-trigger-edit active">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                             <span>Kategorie</span>
@@ -133,7 +133,7 @@
                                             <span>Foto</span>
                                         </button>
                                     </div>
-                                    <div class="btn-group right">
+                                    <div class="btn-group-sm right">
                                         <button type="submit" class="blue opt-CreateCategory">
                                             <i class="glyphicon glyphicon-plus"></i>
                                             <span>Kategorie</span>
@@ -148,7 +148,7 @@
                         <div id="al" class="view views flex vbox  bg-dark content" style="">
                             <div class="footer" style="">
                                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
-                                    <div class="btn-group left">
+                                    <div class="btn-group-sm left">
                                         <button class="dark cat-trigger-edit">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                             <span>Kategorie</span>
@@ -162,7 +162,7 @@
                                             <span>Foto</span>
                                         </button>
                                     </div>
-                                    <div class="btn-group right">
+                                    <div class="btn-group-sm right">
                                         <button type="submit" class="dark opt-EditorProduct">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                             <span>Details</span>
@@ -194,7 +194,7 @@
                                     <!-- The table listing the files available for upload/download -->
                                     <div class="footer fileupload-buttonbar" style="">
                                         <div class="span6 left" style="margin: 10px; white-space: nowrap; overflow: hidden;">
-                                            <div class="btn-group left">
+                                            <div class="btn-group-sm left">
                                                 <button class="dark cat-trigger-edit">
                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                     <span>Kategorie</span>
@@ -210,7 +210,7 @@
                                             </div>
                                         </div>
                                         <div class="span6 right" style="margin: 10px; white-space: nowrap; overflow: hidden;">
-                                            <div class="btn-group">
+                                            <div class="btn-group-sm">
                                                 <button type="submit" class="dark start">
                                                     <i class="glyphicon glyphicon-upload"></i>
                                                     <span>Start Upload</span>
@@ -229,11 +229,11 @@
                                                 </button>
                                                 <!-- The loading indicator is shown during file processing -->
                                                 <!-- The fileinput-button span is used to style the file input field as button -->
-                                                <span class="btn blue fileinput-button" style="margin-left: 4px;">
+                                                <button class="blue fileinput-button">
                                                     <i class="glyphicon glyphicon-plus"></i>
                                                     <span>Fotos</span>
                                                     <input type="file" name="files[]" multiple>
-                                                </span>
+                                                </button>
                                                 <span class="fileupload-loading"></span>
                                             </div>
                                         </div>
@@ -1590,8 +1590,8 @@
         <span class="trustami-wrapper">
             <span>
                 <a href="https://app.trustami.com/trustami-card/57e573efcc96c5511c8b480e" target="_blank" title="Trustami Bewertungen und Erfahrungen von Handelsagentur Lehmann" class="trustami-badge"></a>
-                <button type="submit" class="btn left opt-Count-Up dark glyphicon glyphicon-plus"></button>
-                <button type="submit" class="btn right opt-Count-Down dark glyphicon glyphicon-minus"></button>
+                <button type="submit" class="left opt-Count-Up dark glyphicon glyphicon-plus"></button>
+                <button type="submit" class="right opt-Count-Down dark glyphicon glyphicon-minus"></button>
             </span>
             <input class="tmi" type="text" placeholder="Trustami" name="tmi" value="${tmi}">
         </span>

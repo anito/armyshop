@@ -82,17 +82,13 @@ class ProductEditView extends Spine.Controller
   
   changeViewProduct: (e) ->
     el = $(e.currentTarget)
-    @el.find('button.active').removeClass('active')
     @activeController = @productView
     if @current then @activeController.trigger('active', el)
     
   changeViewDescription: (e) ->
     el = $(e.currentTarget)
-    @el.find('button.active').removeClass('active')
     @activeController = @descriptionView
     if @current then @activeController.trigger('active', el)
-
-  
     
   click: (e) ->
 
