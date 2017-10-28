@@ -1625,6 +1625,9 @@ input.tmi {
   padding: 3px;
   text-align: right;
 }
+.trustami {
+  padding: 17px;
+}
 .trustami-wrapper button {
   font-size: 1em;
   background: transparent;
