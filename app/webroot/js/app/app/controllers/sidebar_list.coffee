@@ -327,6 +327,6 @@ class SidebarList extends Spine.Controller
     @el.animate scrollTop: res,
       queue: queued
       duration: speed
-      complete: =>
+      done: =>
     
 module?.exports = SidebarList

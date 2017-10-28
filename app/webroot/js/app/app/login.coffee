@@ -45,9 +45,9 @@ class Login extends Spine.Controller
       type: 'POST'
       success: @success
       error: @error
-      complete: @complete
+      done: @done
       
-  complete: (xhr) =>
+  done: (xhr) =>
     json = xhr.responseText
     @passwordEl.val('')
     @usernameEl.val('').focus()

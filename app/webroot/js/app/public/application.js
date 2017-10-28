@@ -30880,7 +30880,7 @@ Released under the MIT License
       });
       Category.one('refresh', this.proxy(this.active));
       Spine.bind('refresh:one', this.proxy(this.refreshOne));
-      Spine.bind('refresh:complete', this.proxy(this.render));
+      Spine.bind('refresh:done', this.proxy(this.render));
     }
 
     HomepageView.prototype.active = function() {
@@ -30902,7 +30902,7 @@ Released under the MIT License
     HomepageView.prototype.untrackBinds = function(arr) {
       this.tracker.pop();
       if (!this.tracker.length) {
-        return Spine.trigger('refresh:complete');
+        return Spine.trigger('refresh:done');
       }
     };
 
@@ -37283,7 +37283,7 @@ Released under the MIT License
       }, {
         queue: false,
         duration: 'slow',
-        complete: (function(_this) {
+        done: (function(_this) {
           return function() {};
         })(this)
       });
@@ -38348,7 +38348,7 @@ Released under the MIT License
       }, {
         queue: queued,
         duration: speed,
-        complete: (function(_this) {
+        done: (function(_this) {
           return function() {};
         })(this)
       });
@@ -39826,7 +39826,7 @@ Released under the MIT License
       }
     },
     request: function(callback) {
-      return (callback()).complete((function(_this) {
+      return (callback()).done((function(_this) {
         return function() {
           return _this.requestNext();
         };
@@ -43520,7 +43520,7 @@ Released under the MIT License
         el: this.refreshEl
       });
       Spine.bind('active:category', this.proxy(this.initCategory));
-      Spine.bind('refresh:complete', this.proxy(this.renderRefreshView));
+      Spine.bind('refresh:done', this.proxy(this.renderRefreshView));
       Category.bind('refresh', this.proxy(this.renderFv));
       this.initSettings(setting);
       this.initSidebar();
@@ -44293,7 +44293,7 @@ Released under the MIT License
     function Login(form) {
       this.error = bind(this.error, this);
       this.success = bind(this.success, this);
-      this.complete = bind(this.complete, this);
+      this.done = bind(this.done, this);
       this.submit = bind(this.submit, this);
       var flash;
       Login.__super__.constructor.apply(this, arguments);
@@ -44319,11 +44319,11 @@ Released under the MIT License
         type: 'POST',
         success: this.success,
         error: this.error,
-        complete: this.complete
+        done: this.done
       });
     };
 
-    Login.prototype.complete = function(xhr) {
+    Login.prototype.done = function(xhr) {
       var json;
       json = xhr.responseText;
       this.passwordEl.val('');

@@ -1151,7 +1151,7 @@ class ShowView extends Spine.Controller
     parentEl.animate scrollTop: res,
       queue: false
       duration: 'slow'
-      complete: =>
+      done: =>
         
   zoom: (e) ->
     @controller.list?.zoom?(e) or @controller.zoom?(e)

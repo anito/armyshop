@@ -79,7 +79,7 @@ class App extends Spine.Controller
       el: @refreshEl
     
     Spine.bind('active:category', @proxy @initCategory)
-    Spine.bind('refresh:complete', @proxy @renderRefreshView)
+    Spine.bind('refresh:done', @proxy @renderRefreshView)
     Category.bind('refresh', @proxy @renderFv)
     
 #    @menuButton.on('click', @proxy @toggleMenu)

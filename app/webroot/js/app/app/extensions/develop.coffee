@@ -18,7 +18,7 @@ Ajax =
       Spine.trigger('uri:alldone')
 
   request: (callback) ->
-    (do callback).complete(=> do @requestNext)
+    (do callback).done(=> do @requestNext)
       
   queue: (callback) ->
     return unless @enabled

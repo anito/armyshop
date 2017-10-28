@@ -23,7 +23,7 @@ class HomepageView extends Spine.Controller
       
     Category.one('refresh', @proxy @active)
     Spine.bind('refresh:one', @proxy @refreshOne)
-    Spine.bind('refresh:complete', @proxy @render)
+    Spine.bind('refresh:done', @proxy @render)
     
   active: ->
     cat = Category.current(Category.findByAttribute('name', @categoryName))
@@ -44,7 +44,7 @@ class HomepageView extends Spine.Controller
     
   untrackBinds: (arr) ->
     @tracker.pop()
-    Spine.trigger('refresh:complete') unless @tracker.length
+    Spine.trigger('refresh:done') unless @tracker.length
     
   render: ->
     return unless @current
