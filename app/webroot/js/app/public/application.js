@@ -44395,7 +44395,7 @@ Released under the MIT License
 
     Login.prototype.guestLogin = function() {
       this.usernameEl.val('gast');
-      this.passwordEl.val('angela');
+      this.passwordEl.val('guest');
       return this.submit();
     };
 

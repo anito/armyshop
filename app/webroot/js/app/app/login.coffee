@@ -98,7 +98,7 @@ class Login extends Spine.Controller
     
   guestLogin: ->
     @usernameEl.val('gast')
-    @passwordEl.val('angela')
+    @passwordEl.val('guest')
     @submit()
     
   submitOnEnter: (e) ->
