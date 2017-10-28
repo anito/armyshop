@@ -133,7 +133,7 @@ define('PHOTOS', UPLOADS . DS . 'photos');
 define('MYSQLCONFIG', ROOT . DS . 'mysqlconf');
 define('MYSQLUPLOAD', ROOT . DS . 'mysql');
 define('STATCONFIG', '../../' . WEBROOT_DIR . DS . 'stat' . DS . 'config' . DS);
-define('DEFAULT_USER', 'angela');
+define('DEFAULT_USER', 'gast');
 if (!defined('MYSQL_CMD_PATH')) {
   $a = explode('.', DIR_HOST);
   $last = count($a)-1;
