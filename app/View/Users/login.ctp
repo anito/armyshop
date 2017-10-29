@@ -54,7 +54,7 @@
     </div>
 </div>
 
-<script type="text/x-jquery-tmpl" id="flashTemplate">
+<script type="text/html" id="flashTemplate">
     {{if flash}}
     {{html flash}}
     {{if success}}
@@ -63,13 +63,9 @@
     {{/if}}
 </script>
 
-<script type="text/x-jquery-tmpl" id="statusTemplate">
+<script type="text/html" id="statusTemplate">
     <label>
-    {{if statusText}}
-    <span style="display: block;">${statusText}</span>
-    {{else}}
-    keine Statusmeldungen  
-    {{/if}}
+        <span style="display: block;">{{if statusText}}${statusText}{{else}}keine Statusmeldungen{{/if}}</span>
     </label>
 </script>
 <!--{json: {flash: ...}} {error: {record: {}, xhr: {}, statusText: {}, error:{}}}-->
