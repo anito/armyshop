@@ -41431,6 +41431,16 @@ Released under the MIT License
             introspect(obj);
           }
           return res;
+        },
+        isProtectedModel: function(model, query) {
+          if (model == null) {
+            model = this;
+          }
+          console.log(model);
+          if (model["protected"][query]) {
+            return true;
+          }
+          return false;
         }
       };
       Include = {
@@ -41609,11 +41619,8 @@ Released under the MIT License
           }
           return result;
         },
-        isProtectedModel: function(query) {
-          if (this.constructor["protected"][query]) {
-            return true;
-          }
-          return false;
+        isProtectedModel: function(model, query) {
+          return this.constructor.isProtectedModel(model, query);
         },
         addUnique: function(list) {
           var ref;
@@ -44661,21 +44668,21 @@ Released under the MIT License
 
     CategoriesProduct.prototype.selectNotIgnoredAll = function(id) {
       var ref;
-      if ((!this.ignored) && (this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0))) {
+      if ((!this.ignored) && (this.isProtectedModel(Category, (ref = Category.find(this.category_id)) != null ? ref.name : void 0))) {
         return true;
       }
     };
 
     CategoriesProduct.prototype.selectIgnored = function(id) {
       var ref;
-      if (this.ignored && this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
+      if (this.ignored && this.isProtectedModel(Category, (ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
         return true;
       }
     };
 
     CategoriesProduct.prototype.selectOthers = function(id) {
       var ref;
-      if (!this.isProtectedModel((ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
+      if (!this.isProtectedModel(Category, (ref = Category.find(this.category_id)) != null ? ref.name : void 0)) {
         return true;
       }
     };
@@ -44938,7 +44945,7 @@ Released under the MIT License
       if (!(id = instance.id)) {
         return;
       }
-      prot = this.isProtectedModel(instance.name);
+      prot = this.isProtectedModel(this.constructor, instance.name);
       instance["protected"] = prot;
       s = new Object();
       s[id] = [];

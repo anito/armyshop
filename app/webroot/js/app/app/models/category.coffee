@@ -133,7 +133,7 @@ class Category extends Spine.Model
    
   init: (instance) ->
     return unless id = instance.id
-    prot = @isProtectedModel(instance.name)
+    prot = @isProtectedModel(@constructor, instance.name)
     instance.protected = prot
     s = new Object()
     s[id] = []

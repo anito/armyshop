@@ -182,6 +182,10 @@ Model.Extender =
           introspect(obj)
         res
         
+      isProtectedModel: (model=@, query) ->
+        return true if model.protected[query]
+        false
+        
     Include =
       
       trace: !Spine.isProduction
@@ -291,9 +295,8 @@ Model.Extender =
         result[attr] = @[attr] for attr in @constructor.selectAttributes
         result
         
-      isProtectedModel: (query) ->
-        return true if @constructor.protected[query]
-        false
+      isProtectedModel: (model, query) ->
+        @constructor.isProtectedModel(model, query)
       #private
       
       addUnique: (list) ->
