@@ -74,7 +74,7 @@ class Product extends Spine.Model
     ret = photos[0...max]
     ret
     
-  @getFavoriteUrl: (isAdmin) ->
+  @getFavoriteUrl: ->
     isAdmin = App.isAdmin()
     
     favorite = Product.findByAttribute('favorite', true)

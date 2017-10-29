@@ -46,6 +46,10 @@ class Category extends Spine.Model
     'none':
       screenname: 'ohne Kategorie'
 
+  @private:
+    'none':
+      screenname: 'ohne Kategorie'
+
   @fromJSON: (objects) ->
     super
     @createJoinTables objects

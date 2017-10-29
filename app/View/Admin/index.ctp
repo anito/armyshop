@@ -461,8 +461,9 @@
     {{else}}
     <li data-id="${id}" data-model-name="Product" data-models-name="Photo" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
     <span class="infogramm">
-        <span class="glyphicons glyphicons-picture {{if details().iCount}}{{else}} notok{{/if}}"></span>
-        <span class="glyphicons glyphicons-eye-{{if ignored}}close notok{{else}}open{{/if}} opt-ignored"></span>
+        <span class="glyphicons glyphicons-picture {{if details().iCount}}{{else}} notok{{/if}}" title="${details().iCount} Produktbild{{if details().iCount>1 || details().iCount==0}}er{{/if}}"></span>
+        <span class="glyphicons glyphicons-eye-{{if ignored}}close notok{{else}}open{{/if}} opt-ignored" title="Produkt{{if ignored}} veröffentlichen{{else}} nicht veröffentlichen{{/if}}"></span>
+        <span class="glyphicons glyphicons-{{if favorite}}star{{else}}star-empty{{/if}} opt-favorite" title="Produkt des Tages {{if favorite}} deaktivieren{{else}} aktivieren{{/if}}"></span>
     </span>
         <span class="inner-sub">
         <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>

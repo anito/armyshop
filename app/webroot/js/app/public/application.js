@@ -34773,31 +34773,18 @@ Released under the MIT License
     };
 
     ProductsList.prototype.toggleFavorite = function(e) {
-      var cat, favorite, favorites, i, isFavorite, item, len;
-      if ((cat = Category.record) && (!Category["protected"][cat != null ? cat.name : void 0])) {
+      var cat, item;
+      if (!(cat = Category.record)) {
+        return;
+      }
+      if (!Category["protected"][cat != null ? cat.name : void 0] || Category["private"][cat != null ? cat.name : void 0]) {
         App.confirm('NO_VALID_CATEGORY', {
           mode: 'alert'
         });
         return;
       }
       item = $(e.currentTarget).item();
-      isFavorite = item.favorite;
-      if (!isFavorite && item.ignored) {
-        App.confirm('NO_FAVORITE_FOR_IGNORED', {
-          mode: 'alert'
-        });
-        return;
-      }
-      favorites = Product.findAllByAttribute('favorite', true);
-      for (i = 0, len = favorites.length; i < len; i++) {
-        favorite = favorites[i];
-        favorite.updateAttributes({
-          'favorite': false
-        });
-      }
-      item.updateAttributes({
-        'favorite': !isFavorite
-      });
+      Spine.trigger('toggle:favorite', item, cat);
       e.preventDefault();
       return e.stopPropagation();
     };
@@ -35040,6 +35027,7 @@ Released under the MIT License
       for (i = 0, len = products.length; i < len; i++) {
         product = products[i];
         product.deleted = true;
+        product.favorite = false;
         product.save();
         Product.trigger('trashed', product);
       }
@@ -36121,6 +36109,7 @@ Released under the MIT License
       Spine.bind('products:copy', this.proxy(this.copyProducts));
       Spine.bind('photos:copy', this.proxy(this.copyPhotos));
       Spine.bind('product:ignore', this.proxy(this.ignoreProduct));
+      Spine.bind('toggle:favorite', this.proxy(this.toggleFavorite));
       this.current = this.controller = this.productsView;
       this.sOutValue = 160;
       this.sliderRatio = 50;
@@ -37061,6 +37050,24 @@ Released under the MIT License
       }
     };
 
+    ShowView.prototype.toggleFavorite = function(product, category) {
+      var favorite, favorites, i, isFavorite, len;
+      isFavorite = product.favorite;
+      if (!isFavorite && product.ignored) {
+        Spine.trigger('product:ignore', product, Category.record);
+      }
+      favorites = Product.findAllByAttribute('favorite', true);
+      for (i = 0, len = favorites.length; i < len; i++) {
+        favorite = favorites[i];
+        favorite.updateAttributes({
+          'favorite': false
+        });
+      }
+      return product.updateAttributes({
+        'favorite': !isFavorite
+      });
+    };
+
     ShowView.prototype.help = function(e) {
       var carouselOptions, dialog, options;
       carouselOptions = {
@@ -37936,6 +37943,7 @@ Released under the MIT License
 
     SidebarList.prototype.events = {
       'click .opt-ignored': 'ignoreProduct',
+      'click .opt-favorite': 'toggleFavorite',
       "click      .item": 'click',
       "click      .expander": 'clickExpander'
     };
@@ -38239,6 +38247,15 @@ Released under the MIT License
       product = $(e.currentTarget).item();
       category = $(e.currentTarget).parents('.gal.data').item();
       Spine.trigger('product:ignore', product, category);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    SidebarList.prototype.toggleFavorite = function(e) {
+      var category, product;
+      product = $(e.currentTarget).item();
+      category = $(e.currentTarget).parents('.gal.data').item();
+      Spine.trigger('toggle:favorite', product, category);
       e.stopPropagation();
       return e.preventDefault();
     };
@@ -44813,6 +44830,12 @@ Released under the MIT License
       }
     };
 
+    Category["private"] = {
+      'none': {
+        screenname: 'ohne Kategorie'
+      }
+    };
+
     Category.fromJSON = function(objects) {
       var json, key;
       Category.__super__.constructor.fromJSON.apply(this, arguments);
@@ -45826,8 +45849,8 @@ Released under the MIT License
       return ret;
     };
 
-    Product.getFavoriteUrl = function(isAdmin) {
-      var cat, catId, catPro, cats, favorite, location;
+    Product.getFavoriteUrl = function() {
+      var cat, catId, catPro, cats, favorite, isAdmin, location;
       isAdmin = App.isAdmin();
       favorite = Product.findByAttribute('favorite', true);
       if (!favorite) {

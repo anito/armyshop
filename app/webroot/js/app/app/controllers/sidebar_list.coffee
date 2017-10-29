@@ -20,6 +20,7 @@ class SidebarList extends Spine.Controller
 
   events:
     'click .opt-ignored'          : 'ignoreProduct'
+    'click .opt-favorite'         : 'toggleFavorite'
     "click      .item"            : 'click'
     "click      .expander"        : 'clickExpander'
 
@@ -222,6 +223,15 @@ class SidebarList extends Spine.Controller
     product = $(e.currentTarget).item()
     category = $(e.currentTarget).parents('.gal.data').item()
     Spine.trigger('product:ignore', product, category)
+    
+    e.stopPropagation()
+    e.preventDefault()
+    
+  toggleFavorite: (e) ->
+    
+    product = $(e.currentTarget).item()
+    category = $(e.currentTarget).parents('.gal.data').item()
+    Spine.trigger('toggle:favorite', product, category)
     
     e.stopPropagation()
     e.preventDefault()

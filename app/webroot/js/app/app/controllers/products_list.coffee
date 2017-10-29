@@ -39,7 +39,6 @@ class ProductsList extends Spine.Controller
     CategoriesProduct.bind('destroy', @proxy @testEmpty)
     Product.bind('change:collection', @proxy @renderBackgrounds)
     Category.bind('change:selection', @proxy @exposeSelection)
-
     
   changedProducts: (category) ->
     
@@ -100,18 +99,16 @@ class ProductsList extends Spine.Controller
     e.stopPropagation()
       
   toggleFavorite: (e) ->
-    if (cat = Category.record) and (!Category.protected[cat?.name])
+    return unless cat = Category.record
+    
+    if (!Category.protected[cat?.name] or Category.private[cat?.name]) 
       App.confirm('NO_VALID_CATEGORY', mode: 'alert')
       return
+      
     item = $(e.currentTarget).item()
-    isFavorite = item.favorite
-    if !isFavorite and item.ignored
-      App.confirm('NO_FAVORITE_FOR_IGNORED', mode: 'alert')
-      return
-    favorites = Product.findAllByAttribute('favorite', true)
-    favorite.updateAttributes('favorite': false) for favorite in favorites
-    item.updateAttributes('favorite': !isFavorite)
     
+    Spine.trigger('toggle:favorite', item, cat)
+      
     e.preventDefault()
     e.stopPropagation()
       

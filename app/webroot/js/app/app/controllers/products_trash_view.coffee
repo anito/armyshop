@@ -95,6 +95,7 @@ class ProductsTrashView extends Spine.Controller
     products = [products] unless Array.isArray products
     for product in products
       product.deleted = true
+      product.favorite = false
       product.save()
       Product.trigger('trashed', product)
     @initTrash products

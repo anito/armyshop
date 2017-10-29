@@ -253,6 +253,7 @@ class ShowView extends Spine.Controller
     Spine.bind('products:copy', @proxy @copyProducts)
     Spine.bind('photos:copy', @proxy @copyPhotos)
     Spine.bind('product:ignore', @proxy @ignoreProduct)
+    Spine.bind('toggle:favorite', @proxy @toggleFavorite)
     
     @current = @controller = @productsView
     
@@ -920,6 +921,22 @@ class ShowView extends Spine.Controller
         App.confirm('NO_IGNORE_FOR_FAVORITE', mode: 'alert')
         return
       CategoriesProduct.trigger('ignored', ga, newIgnored)
+      
+    
+  toggleFavorite: (product, category) ->
+    isFavorite = product.favorite
+    if !isFavorite and product.ignored
+      #make item visible
+      Spine.trigger('product:ignore', product, Category.record)
+#      App.confirm('NO_FAVORITE_FOR_IGNORED', mode: 'alert')
+#      return
+
+    favorites = Product.findAllByAttribute('favorite', true)
+    favorite.updateAttributes('favorite': false) for favorite in favorites
+    
+    product.updateAttributes
+      'favorite': !isFavorite
+    
       
   help: (e) ->
     carouselOptions =
