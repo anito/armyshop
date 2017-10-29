@@ -30,7 +30,7 @@
             <div class="vbox sidebar canvas bg-dark flex inner" style="display: none">
                 <div class="search">
                     <form class="form-search">
-                        <i class="clear-search glyphicon glyphicon-remove-circle"></i>
+                        <i class="clear-search glyphicons glyphicons-remove-circle"></i>
                         <input class="search-query" type="search" placeholder="Produktsuche">
                     </form>
                 </div>
@@ -52,11 +52,11 @@
                     <div style="white-space: nowrap; overflow: hidden;">
                         <div id="refresh"></div>
                         <button class="opt-CreateCategory blue hide">
-                            <i class="glyphicon glyphicon-plus"></i>
+                            <i class="glyphicons glyphicons-plus"></i>
                             <span>Kategorie</span>
                         </button>
                         <button class="opt-CreateProduct blue right">
-                            <i class="glyphicon glyphicon-plus"></i>
+                            <i class="glyphicons glyphicons-plus"></i>
                             <span>Produkt</span>
                         </button>
                     </div>
@@ -114,28 +114,28 @@
                 <div id="views" class="settings hbox autoflow">
                     <div class="views contents bg-medium vbox flex autoflow hdraggable" style="position: relative">
                         <div class="hdivide draghandle">
-                            <span class="opt opt-CloseDraghandle glyphicon glyphicon-resize-vertical glyphicon glyphicon-white right" style="cursor: pointer;"></span>
+                            <span class="opt opt-CloseDraghandle glyphicons glyphicons-resize-vertical glyphicons glyphicons-white right" style="cursor: pointer;"></span>
                         </div>
                         <div id="ga" class="view flex vbox bg-dark" style="">
                             <div class="footer" style="">
                                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                                     <div class="btn-group-sm left">
                                         <button class="dark cat-trigger-edit active">
-                                            <i class="glyphicon glyphicon-pencil"></i>
+                                            <i class="glyphicons glyphicons-pencil"></i>
                                             <span>Kategorie</span>
                                         </button>
                                         <button class="dark pro-trigger-edit">
-                                            <i class="glyphicon glyphicon-pencil"></i>
+                                            <i class="glyphicons glyphicons-pencil"></i>
                                             <span>Produkt</span>
                                         </button>
                                         <button class="dark pho-trigger-edit">
-                                            <i class="glyphicon glyphicon-pencil"></i>
+                                            <i class="glyphicons glyphicons-pencil"></i>
                                             <span>Foto</span>
                                         </button>
                                     </div>
                                     <div class="btn-group-sm right">
                                         <button type="submit" class="blue opt-CreateCategory">
-                                            <i class="glyphicon glyphicon-plus"></i>
+                                            <i class="glyphicons glyphicons-plus"></i>
                                             <span>Kategorie</span>
                                         </button>
                                     </div>
@@ -150,29 +150,29 @@
                                 <div class="span6" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                                     <div class="btn-group-sm left">
                                         <button class="dark cat-trigger-edit">
-                                            <i class="glyphicon glyphicon-pencil"></i>
+                                            <i class="glyphicons glyphicons-pencil"></i>
                                             <span>Kategorie</span>
                                         </button>
                                         <button class="dark pro-trigger-edit active">
-                                            <i class="glyphicon glyphicon-pencil"></i>
+                                            <i class="glyphicons glyphicons-pencil"></i>
                                             <span>Produkt</span>
                                         </button>
                                         <button class="dark pho-trigger-edit">
-                                            <i class="glyphicon glyphicon-pencil"></i>
+                                            <i class="glyphicons glyphicons-pencil"></i>
                                             <span>Foto</span>
                                         </button>
                                     </div>
                                     <div class="btn-group-sm right">
                                         <button type="submit" class="dark opt-EditorProduct">
-                                            <i class="glyphicon glyphicon-pencil"></i>
+                                            <i class="glyphicons glyphicons-pencil"></i>
                                             <span>Details</span>
                                         </button>
                                         <button type="submit" class="dark opt-EditorDescription">
-                                            <i class="glyphicon glyphicon-pencil"></i>
+                                            <i class="glyphicons glyphicons-pencil"></i>
                                             <span>Eigenschaften</span>
                                         </button>
                                         <button type="submit" class="blue opt-CreateProduct">
-                                            <i class="glyphicon glyphicon-plus"></i>
+                                            <i class="glyphicons glyphicons-plus"></i>
                                             <span>Produkt</span>
                                         </button>
                                     </div>
@@ -196,15 +196,15 @@
                                         <div class="span6 left" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                                             <div class="btn-group-sm left">
                                                 <button class="dark cat-trigger-edit">
-                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                    <i class="glyphicons glyphicons-pencil"></i>
                                                     <span>Kategorie</span>
                                                 </button>
                                                 <button class="dark pro-trigger-edit">
-                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                    <i class="glyphicons glyphicons-pencil"></i>
                                                     <span>Produkt</span>
                                                 </button>
                                                 <button class="dark pho-trigger-edit active">
-                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                    <i class="glyphicons glyphicons-pencil"></i>
                                                     <span>Foto</span>
                                                 </button>
                                             </div>
@@ -212,25 +212,25 @@
                                         <div class="span6 right" style="margin: 10px; white-space: nowrap; overflow: hidden;">
                                             <div class="btn-group-sm">
                                                 <button type="submit" class="dark start">
-                                                    <i class="glyphicon glyphicon-upload"></i>
+                                                    <i class="glyphicons glyphicons-upload"></i>
                                                     <span>Start Upload</span>
                                                 </button>
                                                 <button type="reset" class="dark cancel">
-                                                    <i class="glyphicon glyphicon-ban-circle"></i>
+                                                    <i class="glyphicons glyphicons-ban-circle"></i>
                                                     <span>abbrechen</span>
                                                 </button>
                                                 <button type="button" class="dark delete">
-                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                    <i class="glyphicons glyphicons-remove"></i>
                                                     <span>Liste leeren</span>
                                                 </button>
                                                 <button type="submit" class="dark start opt-editor">
-                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                    <i class="glyphicons glyphicons-pencil"></i>
                                                     <span>Fotottitel</span>
                                                 </button>
                                                 <!-- The loading indicator is shown during file processing -->
                                                 <!-- The fileinput-button span is used to style the file input field as button -->
                                                 <button class="blue fileinput-button">
-                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                    <i class="glyphicons glyphicons-plus"></i>
                                                     <span>Fotos</span>
                                                     <input type="file" name="files[]" multiple>
                                                 </button>
@@ -278,7 +278,7 @@
 
 <script id="flickrIntroTemplate" type="text/html">
     <div class="dark xxl">
-        <i class="glyphicon glyphicon-picture"></i>
+        <i class="glyphicons glyphicons-picture"></i>
         <span class="cover-header">flickr</span>
         <div class=" btn-primary xs">
             <a class="label recent ">flickr recent</a>
@@ -437,6 +437,7 @@
 
 <script id="sidebarTemplate" type="text/html">
     <li data-id="${id}" data-model-name="Category" data-models-name="Product" class="gal item data parent">
+        <i class="glyphicons {{if protected}}glyphicons-lock pointer{{/if}}" title="{{if protected}}geschützte Kategorie{{/if}}"></i>
         <div class="item-header">
             <div class="expander"></div>
             {{tmpl "#sidebarContentTemplate"}}
@@ -460,18 +461,13 @@
     {{else}}
     <li data-id="${id}" data-model-name="Product" data-models-name="Photo" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
     <span class="infogramm">
-        <span class="glyphicon glyphicon-{{if details().iCount}}picture{{else}}camera{{/if}}">
-            <i class="ok glyphicon glyphicon-{{if details().iCount}}ok{{else}}exclamation-sign{{/if}}"></i>
-        </span>
-        <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}} opt-ignored">
-            <i class="ok glyphicon glyphicon-{{if ignored}}exclamation-sign{{else}}ok{{/if}}"></i>
-        </span>
+        <span class="glyphicons glyphicons-picture {{if details().iCount}}{{else}} notok{{/if}}"></span>
+        <span class="glyphicons glyphicons-eye-{{if ignored}}close notok{{else}}open{{/if}} opt-ignored"></span>
     </span>
         <span class="inner-sub">
         <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
         <span class="outer-cta">
-            <span class="cta">€ {{if price}}${price}{{else}}0{{/if}}</span>
-            <i class="ok glyphicon glyphicon-{{if price}}{{else}}exclamation-sign{{/if}}"></i>
+            <span class="cta {{if price}}{{else}}notok{{/if}}">€ {{if price}}${price}{{else}}0{{/if}}</span>
         </span>
     </span>
     </li>
@@ -494,7 +490,7 @@
 
 <script id="sidebarFlickrSublistTemplate" type="text/html">
     <li class="sublist-item item item-content ${klass}">
-        <span class="glyphicon glyphicon-${icon}"></span>
+        <span class="glyphicons glyphicons-${icon}"></span>
         <span class="">${name}</span>
     </li>
 </script>
@@ -513,18 +509,18 @@
                 {{tmpl($item.data.details()) "#galDetailsTemplate"}}
             </div>
         </div>
-        <div class="glyphicon-set right fade" style="">
-            <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
+        <div class="glyphicons-set right fade" style="">
+            <span class="tooltips downloading glyphicons glyphicons-download-alt glyphicons-white hide left fade" data-toggle="tooltip"></span>
             <span class="left">
                 <div class="dropdown">
-                    <a class="dropdown-toggle glyphicon glyphicon-white" data-toggle="dropdown"></a>
+                    <a class="dropdown-toggle glyphicons glyphicons-white" data-toggle="dropdown"></a>
                     <div class="dropdown-menu" aria-labelledby="dLabel">
                         <a class="zoom dropdown-item" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#">
-                            <i class="tooltips glyphicon glyphicon-folder-close"></i>Öffnen
+                            <i class="tooltips glyphicons glyphicons-folder-close"></i>Öffnen
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="delete dropdown-item {{if isInvalid()}}disabled{{/if}}" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#">
-                            <i class="glyphicon glyphicon glyphicon-trash"></i>Löschen
+                            <i class="glyphicons glyphicons glyphicons-trash"></i>Löschen
                         </a>
                     </div>
                 </div>
@@ -581,7 +577,7 @@
 
 <script id="missingViewTemplate" type="text/html">
     <div class="dark xxl">
-        <i class="glyphicon glyphicon-question-sign"></i>
+        <i class="glyphicons glyphicons-question-sign"></i>
         <span class="cover-header">404</span><span>Not Found Error</span>
         <div class=" btn-primary xs">
             <a class="label relocate">Proceed to Overview (or use TAB for sidebar)</a>
@@ -596,8 +592,8 @@
     <div style="font-size: 0.8em; font-style: oblique;">Images: ${iCount}</div>
     <div class="opt-SlideshowPlay hide" style="">
         <span class="label label-default">
-            <i class="glyphicon glyphicon-picture"></i>
-            <i class="glyphicon glyphicon-play"></i>
+            <i class="glyphicons glyphicons-picture"></i>
+            <i class="glyphicons glyphicons-play"></i>
             ${pCount}
         </span>
     </div>
@@ -620,40 +616,40 @@
         {{/if}}
         <div class="thumbnail"></div>
         {{if Category.record}}
-        <div class="glyphicon-set left hide" style="">
+        <div class="glyphicons-set left hide" style="">
             <span class="">
-                <a href="#" title="{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}  Strg+M (Ctrl+M Mac)" class="glyphicon glyphicon-eye glyphicon-white opt-ignored"></a>
+                <a href="#" title="{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}  Strg+M (Ctrl+M Mac)" class="glyphicons glyphicons-eye glyphicons-white opt-ignored"></a>
             </span>
         </div>
         {{/if}}
-        <div class="glyphicon-set right fade" style="">
+        <div class="glyphicons-set right fade" style="">
             <span class="left">
-                <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip">
+                <span class="tooltips downloading glyphicons glyphicons-download-alt glyphicons-white hide left fade" data-toggle="tooltip">
                 </span>
              </span>
             <span class="left">
-            <a href="#" class="dropdown-toggle glyphicon glyphicon-white" data-toggle="dropdown"></a>
+            <a href="#" class="dropdown-toggle glyphicons glyphicons-white" data-toggle="dropdown"></a>
             <div class="dropdown-menu" aria-labelledby="dLabel">
                 <a class="opt-ignored dropdown-item" tabindex="-1" data-toggle="tooltip" title="{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}" href="#">
-                    <i class="glyphicon glyphicon-eye"></i>
+                    <i class="glyphicons glyphicons-eye"></i>
                     {{if ignored}}Einblenden{{else}}Ausblenden{{/if}}
                 </a>
                 <a class="zoom dropdown-item" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#">
-                    <i class="tooltips glyphicon glyphicon-picture"></i>
+                    <i class="tooltips glyphicons glyphicons-picture"></i>
                     Fotos anzeigen
                 </a>
                 <a class="opt-favorite dropdown-item" tabindex="-1" data-toggle="tooltip" title="Produkt des Tages" href="#">
-                    <i class="tooltips glyphicon glyphicon-star{{if favorite}}{{else}}-empty{{/if}}"></i>
+                    <i class="tooltips glyphicons glyphicons-star{{if favorite}}{{else}}-empty{{/if}}"></i>
                     Product des Tages
                 </a>
                 {{if Category.record}}
                 <a class="opt-original dropdown-item" tabindex="-1" data-toggle="tooltip" title="Im Katalog anzeigen" href="#">
-                    <i class="glyphicon glyphicon glyphicon-file"></i>Im Katalog anzeigen</a>
+                    <i class="glyphicons glyphicons glyphicons-file"></i>Im Katalog anzeigen</a>
                 </a>
                 {{/if}}
                 <div class="dropdown-divider"></div>
                 <a class="opt-delete dropdown-item" tabindex="-1" data-toggle="tooltip" title="{{if Category.record}}Entfernen{{else}}Löschen{{/if}} " href="#">
-                  <i class="glyphicon glyphicon glyphicon-trash"></i>
+                  <i class="glyphicons glyphicons glyphicons-trash"></i>
                   {{if Category.record}}Entfernen{{else}}Löschen{{/if}}
                 </a>
             </div>
@@ -667,7 +663,7 @@
             {{if validUrl()}}
             <a href="${link}" target="_blank">{{/if}}
                 <section class="info-badges">
-                    <span class="cc {{if validUrl()}}valid{{else}}warning-badge{{/if}} link glyphicon glyphicon-link"></span>
+                    <span class="cc {{if validUrl()}}valid{{else}}warning-badge{{/if}} link glyphicons glyphicons-link"></span>
                     <span class="dd price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</span>
                 </section>
             {{if validUrl()}}
@@ -680,15 +676,15 @@
 <script id="productsTrashTemplate" type="text/html">
     <li id="${id}" data-id="${id}" data-drag-over="" data-model-name="Product" data-models-name="Photo" class="data item fade show {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
         <div class="thumbnail"></div>
-        <div class="glyphicon-set right fade" style="">
+        <div class="glyphicons-set right fade" style="">
             <span class="left">
-                <a href="#" class="dropdown-toggle glyphicon glyphicon-white" data-toggle="dropdown"></a>
+                <a href="#" class="dropdown-toggle glyphicons glyphicons-white" data-toggle="dropdown"></a>
                 <div class="dropdown-menu" aria-labelledby="dLabel">
                     <a class="opt-destroy dropdown-item" tabindex="-1" data-toggle="tooltip" title="endgültig Löschen" href="#">
-                        <i class="glyphicon glyphicon glyphicon-trash"></i>Löschen
+                        <i class="glyphicons glyphicons glyphicons-trash"></i>Löschen
                     </a>
                     <a class="opt-recover dropdown-item" tabindex="-1" data-toggle="tooltip" title="Wiederherstellen" href="#">
-                        <i class="glyphicon glyphicon glyphicon-repeat"></i>Wiederherstellen
+                        <i class="glyphicons glyphicons glyphicons-repeat"></i>Wiederherstellen
                     </a>
                 </div>
             </span>
@@ -698,7 +694,7 @@
             <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 120)}}{{/if}}</div>
             {{if link}}<a href="${link}" target="_blank">{{/if}}
             <section class="info-badges">
-                <span class="cc link glyphicon glyphicon-link {{if link}}{{else}}warning-badge{{/if}}"></span>
+                <span class="cc link glyphicons glyphicons-link {{if link}}{{else}}warning-badge{{/if}}"></span>
                 <span class="dd price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</span>
             </section>
             {{if link}}</a>{{/if}}
@@ -715,7 +711,7 @@
                     <input type="text" class="form-control" placeholder="Produkttitel" aria-describedby="basic-addon1" name="title" value="{{html title}}">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default opt-ignored" aria-label="Help">
-                            <span class="glyphicon glyphicon-eye-{{if ignored}}close{{else}}open{{/if}}"></span>
+                            <span class="glyphicons glyphicons-eye-{{if ignored}}close{{else}}open{{/if}}"></span>
                         </button>
                     </div>
                 </div>
@@ -749,7 +745,7 @@
                 <div class="input-group" style="">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default" aria-label="Help">
-                            <span id="validLink" class="invalid glyphicon glyphicon-link"></span>
+                            <span id="validLink" class="invalid glyphicons glyphicons-link"></span>
                         </button>
                     </div>
                     <input type="text" class="form-control" aria-describedby="link" placeholder="Link to Ebay" name="link" value="${link}">
@@ -792,15 +788,15 @@
             <div class="header-title">
                 <span class="btn-group btn-nav">
                     <button class="dark opt-ShowOverview">
-                        <i class="glyphicon glyphicon-chevron-up nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-up nopad"></i>
                     </button>
                     <button class="dark opt-ShowProducts">
-                        <i class="glyphicon glyphicon-chevron-down nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-down nopad"></i>
                     </button>
                 </span>
                 <span class="title-wrapper">
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-th-large"></i>
+                        <i class="glyphicons glyphicons-show-big-thumbnails"></i>
                         <span class="">Kategorien</span>
                     </div>
                 </span>
@@ -817,7 +813,7 @@
             <legend class="scheduler-border">Auswahl <span style="font-size:0.9em; text-transform: initial;">(Tasten ENTER ESC < >)</span>
             </legend>
             <span class="selection-title {{if Category.record}}active{{/if}}">
-    <i class="glyphicon glyphicon-th-large"></i>
+    <i class="glyphicons glyphicons-show-big-thumbnails"></i>
     <span>{{if Category.record}}{{if Category.record.screenname}}${$().name(Category.record.screenname,25)}{{else}}${$().name(Category.record.name,25)}{{/if}}{{/if}}</span>
     </span>
         </fieldset>
@@ -830,21 +826,21 @@
             <div class="header-title">
                 <span class="btn-group btn-nav">
                     <button class="dark opt-ShowCategories">
-                        <i class="glyphicon glyphicon-chevron-up nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-up nopad"></i>
                     </button>
                     <button class="dark opt-ShowPhotos">
-                        <i class="glyphicon glyphicon-chevron-down nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-down nopad"></i>
                     </button>
                 </span>
                 <span class="title-wrapper">
                     {{if model.record}}
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-th-large"></i>
+                        <i class="glyphicons glyphicons-show-big-thumbnails"></i>
                         <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
                     </div>
                     {{else}}
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-th"></i>
+                        <i class="glyphicons glyphicons-show-thumbnails"></i>
                         <span class="">Produkt-Katalog</span>
                     </div>
                     {{/if}}
@@ -872,7 +868,7 @@
             <legend class="scheduler-border">Auswahl <span style="font-size:0.9em; text-transform: initial;">(Tasten ENTER ESC < >)</span>
             </legend>
             <span class="selection-title {{if Product.record}}active{{/if}}">
-                <i class="glyphicon glyphicon-th"></i>
+                <i class="glyphicons glyphicons-show-thumbnails"></i>
                 <span>${$().name(Product.record.title, 25)}</span>
             </span>
         </fieldset>
@@ -895,15 +891,15 @@
             <div class="header-title">
                 <span class="btn-group btn-nav">
                     <button class="dark opt-ShowProducts">
-                        <i class="glyphicon glyphicon-chevron-up nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-up nopad"></i>
                     </button>
                     <button class="dark opt-ShowPhotosTrash">
-                        <i class="glyphicon glyphicon-chevron-down nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-down nopad"></i>
                     </button>
                 </span>
                 <span class="title-wrapper">
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-trash"></i>
+                        <i class="glyphicons glyphicons-trash"></i>
                         <span class="">Produkt Papierkorb</span>
                     </div>
                 </span>
@@ -912,7 +908,7 @@
     </section>
     <section class="right">
         <button type="submit" class="dark opt-EmptyProductsTrash">
-            <i class="glyphicon glyphicon-trash"></i>
+            <i class="glyphicons glyphicons-trash"></i>
             <span>Papierkorb leeren</span>
         </button>
     </section>
@@ -924,25 +920,25 @@
             <div class="header-title">
                 <span class="btn-group btn-nav">
                     <button class="dark opt-ShowProducts">
-                        <i class="glyphicon glyphicon-chevron-up nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-up nopad"></i>
                     </button>
                     <button class="dark opt-ShowPhoto">
-                        <i class="glyphicon glyphicon-chevron-down nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-down nopad"></i>
                     </button>
                 </span>
                 <span class="title-wrapper">
                     {{if product}}
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-th-large"></i>
+                        <i class="glyphicons glyphicons-show-big-thumbnails"></i>
                         <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
                     </div>
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-th"></i>
+                        <i class="glyphicons glyphicons-show-thumbnails"></i>
                         <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
                     </div>
                     {{else}}
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-picture"></i>
+                        <i class="glyphicons glyphicons-picture"></i>
                         <span class="">Foto-Katalog</span>
                     </div>
                     {{/if}}
@@ -964,15 +960,15 @@
             <div class="header-title">
                 <span class="btn-group btn-nav">
                     <button class="dark opt-ShowProductsTrash">
-                        <i class="glyphicon glyphicon-chevron-up nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-up nopad"></i>
                     </button>
                     <button class="dark disabled">
-                        <i class="glyphicon glyphicon-chevron-down nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-down nopad"></i>
                     </button>
                 </span>
                 <span class="title-wrapper">
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-trash"></i>
+                        <i class="glyphicons glyphicons-trash"></i>
                         <span class="">Foto Papierkorb</span>
                     </div>
                 </span>
@@ -981,7 +977,7 @@
     </section>
     <section class="right">
         <button type="submit" class="dark opt-EmptyPhotosTrash">
-            <i class="glyphicon glyphicon-trash"></i>
+            <i class="glyphicons glyphicons-trash"></i>
             <span>Papierkorb leeren</span>
         </button>
     </section>
@@ -994,25 +990,25 @@
             <div class="header-title">
                 <span class="btn-group btn-nav">
                     <button class="dark opt-ShowPhotos">
-                        <i class="glyphicon glyphicon-chevron-up nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-up nopad"></i>
                     </button>
                     <button class="dark disabled">
-                        <i class="glyphicon glyphicon-chevron-down nopad"></i>
+                        <i class="glyphicons glyphicons-chevron-down nopad"></i>
                     </button>
                 </span>
                 <span class="title-wrapper">
                     {{if product}}
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-th-large"></i>
+                        <i class="glyphicons glyphicons-show-big-thumbnails"></i>
                         <span class="">{{if category}}{{if category.screenname}}${$().name(category.screenname, 10)}{{else}}${$().name(category.name, 10)}{{/if}}{{else}}...{{/if}}</span>
                     </div>
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-th"></i>
+                        <i class="glyphicons glyphicons-show-thumbnails"></i>
                         <span class="{{if model.record}}{{else}}{{/if}}">{{if modelProduct.record}}{{if product.title}}${$().name(product.title, 15)}{{else}}...{{/if}}{{else}}None{{/if}}</span>
                     </div>
                     {{else}}
                     <div class="title-field">
-                        <i class="glyphicon glyphicon-picture"></i>
+                        <i class="glyphicons glyphicons-picture"></i>
                         <span class="">Foto-Ansicht</span>
                     </div>
                     {{/if}}
@@ -1030,7 +1026,7 @@
             <legend class="scheduler-border">Auswahl <span style="font-size:0.9em; text-transform: initial;">(Tasten ENTER ESC < >)</span>
             </legend>
             <span class="selection-title {{if Photo.record}}active{{/if}}">
-    <i class="glyphicon glyphicon-picture"></i>
+    <i class="glyphicons glyphicons-picture"></i>
     <span>${$().name(Photo.record.src, 25)}</span>
     </span>
         </fieldset>
@@ -1156,33 +1152,33 @@
 
 <script id="photosThumbnailTemplate" type="text/html">
     <div class="thumbnail image left fade"></div>
-    <div class="glyphicon-set right fade" style="">
-        <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
+    <div class="glyphicons-set right fade" style="">
+        <span class="tooltips downloading glyphicons glyphicons-download-alt glyphicons-white hide left fade" data-toggle="tooltip"></span>
         <span class="left">
-            <a href="#" class="dropdown-toggle glyphicon glyphicon-white" data-toggle="dropdown"></a>
+            <a href="#" class="dropdown-toggle glyphicons glyphicons-white" data-toggle="dropdown"></a>
             <div class="dropdown-menu" aria-labelledby="dLabel">
                 <a class="zoom dropdown-item" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#">
-                    <i class="tooltips glyphicon glyphicon-resize-full"></i>Öffnen
+                    <i class="tooltips glyphicons glyphicons-resize-full"></i>Öffnen
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-header disabled"><a role="menuitem" tabindex="-1" data-toggle="tooltip" title="Rotate" href="#">
                         <i class="tooltips"></i>Rotieren:
                     </a>
                     <a class="rotate-cw dropdown-item" tabindex="-1" data-toggle="tooltip" title="Im Uhrzeiger drehen" href="#">
-                        <i class="tooltips glyphicon glyphicon glyphicon-circle-arrow-right"></i>Im Uhrzeiger
+                        <i class="tooltips glyphicons glyphicons glyphicons-circle-arrow-right"></i>Im Uhrzeiger
                     </a>
                     <a class="rotate-ccw dropdown-item" tabindex="-1" data-toggle="tooltip" title="Gegen Uhrzeiger drehen" href="#">
-                        <i class="tooltips glyphicon glyphicon glyphicon-circle-arrow-left"></i>Gegen Uhrzeiger
+                        <i class="tooltips glyphicons glyphicons glyphicons-circle-arrow-left"></i>Gegen Uhrzeiger
                     </a>
                     <div class="dropdown-divider"></div>
                     {{if Product.record}}
                     <a class="original dropdown-item" tabindex="-1" data-toggle="tooltip" title="Im Katalog anzeigen" href="#">
-                        <i class="glyphicon glyphicon glyphicon-file"></i>Im Katalog anzeigen
+                        <i class="glyphicons glyphicons glyphicons-file"></i>Im Katalog anzeigen
                     </a>
                     <div class="dropdown-divider"></div>
                     {{/if}}
                     <a class="delete dropdown-item" tabindex="-1" data-toggle="tooltip" title="{{if Product.record}}Entfernen{{else}}Löschen{{/if}}" href="#">
-                        <i class="glyphicon glyphicon glyphicon-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}
+                        <i class="glyphicons glyphicons glyphicons-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}
                     </a>
             </div>
         </span>
@@ -1192,16 +1188,16 @@
 <script id="photosTrashTemplate" type="text/html">
     <li id="${id}" data-id="${id}" data-model-name="" data-models-name="Photo" class="item data fade show">
         <div class="thumbnail image left fade"></div>
-        <div class="glyphicon-set right fade" style="">
-            <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
+        <div class="glyphicons-set right fade" style="">
+            <span class="tooltips downloading glyphicons glyphicons-download-alt glyphicons-white hide left fade" data-toggle="tooltip"></span>
             <span class="left">
-                <a href="#" class="dropdown-toggle glyphicon glyphicon-white" data-toggle="dropdown"></a>
+                <a href="#" class="dropdown-toggle glyphicons glyphicons-white" data-toggle="dropdown"></a>
                 <div class="dropdown-menu" aria-labelledby="dLabel">
                     <a class="opt-destroy dropdown-item" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#">
-                        <i class="glyphicon glyphicon glyphicon-trash"></i>Löschen
+                        <i class="glyphicons glyphicons glyphicons-trash"></i>Löschen
                     </a>
                     <a class="opt-recover dropdown-item" tabindex="-1" data-toggle="tooltip" title="Wiederherstellen" href="#">
-                        <i class="glyphicon glyphicon glyphicon-repeat"></i>Wiederherstellen
+                        <i class="glyphicons glyphicons glyphicons-repeat"></i>Wiederherstellen
                     </a>
                 </div>
             </span>
@@ -1224,23 +1220,23 @@
 
 <script id="photoThumbnailTemplate" type="text/html">
     <div class="thumbnail image left"></div>
-    <div class="glyphicon-set right fade" style="">
-        <span class="tooltips downloading glyphicon glyphicon-download-alt glyphicon-white hide left fade" data-toggle="tooltip"></span>
+    <div class="glyphicons-set right fade" style="">
+        <span class="tooltips downloading glyphicons glyphicons-download-alt glyphicons-white hide left fade" data-toggle="tooltip"></span>
         <span class="left">
-            <a href="#" class="dropdown-toggle glyphicon glyphicon-white" data-toggle="dropdown"></a>
+            <a href="#" class="dropdown-toggle glyphicons glyphicons-white" data-toggle="dropdown"></a>
             <div class="dropdown-menu" aria-labelledby="dLabel">
                 <a class="dropdown-header disabled dropdown-item" tabindex="-1" data-toggle="tooltip" title="Rotate" href="#">
                     <i class="tooltips"></i>Rotate:
                 </a>
                 <a class="rotate-cw dropdown-item" tabindex="-1" data-toggle="tooltip" title="Rotate cw" href="#">
-                    <i class="tooltips glyphicon glyphicon-circle-arrow-right"></i>cw
+                    <i class="tooltips glyphicons glyphicons-circle-arrow-right"></i>cw
                 </a>
                 <a class="rotate-ccw dropdown-item" tabindex="-1" data-toggle="tooltip" title="Rotate ccw" href="#">
-                    <i class="tooltips glyphicon glyphicon-circle-arrow-left"></i>ccw
+                    <i class="tooltips glyphicons glyphicons-circle-arrow-left"></i>ccw
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="delete dropdown-item" tabindex="-1" data-toggle="tooltip" title="{{if Product.record}}Entfernen{{else}}Löschen{{/if}}" href="#">
-                    <i class="glyphicon glyphicon glyphicon-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}
+                    <i class="glyphicons glyphicons glyphicons-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}
                 </a>
             </div>
         </span>
@@ -1297,8 +1293,8 @@
     <{{if type}}${type} class="{{if icon}}symbol{{/if}} tb-name {{if innerklass}}${innerklass}{{/if}}"{{else}}button class="symbol dark {{if innerklass}}${innerklass}{{/if}}" {{if dataToggle}}data-toggle="dropdown"{{/if}}{{/if}}
     {{if innerstyle}} style="${innerstyle}"{{/if}}
     {{if disabled}}disabled{{/if}}>
-    <i class="glyphicon glyphicon-{{if icon}}${icon}{{/if}} {{if iconcolor}}glyphicon-${iconcolor}{{/if}}"></i>
-    <i class="glyphicon glyphicon-{{if icon2}}${icon2}{{/if}} {{if iconcolor}}glyphicon-${iconcolor}{{/if}}"></i>
+    <i class="glyphicons glyphicons-{{if icon}}${icon}{{/if}} {{if iconcolor}}glyphicons-${iconcolor}{{/if}}"></i>
+    <i class="glyphicons glyphicons-{{if icon2}}${icon2}{{/if}} {{if iconcolor}}glyphicons-${iconcolor}{{/if}}"></i>
     {{html name}}
     </{{if type}}${type}{{else}}button{{/if}}>
     </li>
@@ -1308,7 +1304,7 @@
 <script id="dropdownTemplate" type="text/html">
     <div class="dropdown" {{if id}} id="${id}" {{/if}} >
         <button class="dropdown-toggle dark" data-toggle="dropdown">
-            {{if icon}}<i class="glyphicon glyphicon-${icon}  {{if iconcolor}}glyphicon glyphicon-${iconcolor}{{/if}}"></i>{{/if}}
+            {{if icon}}<i class="glyphicons glyphicons-${icon}  {{if iconcolor}}glyphicons glyphicons-${iconcolor}{{/if}}"></i>{{/if}}
             {{html name}}
             <b class="caret"></b>
         </button>
@@ -1323,7 +1319,7 @@
     <div class="dropdown-divider"></div>
     {{else}}
     <a {{if dataToggle}} data-toggle="${dataToggle}" {{/if}} class="dropdown-item ${klass} {{if disabled}}disabled{{/if}} {{if header}}dropdown-header{{/if}}">
-        <i class="glyphicon glyphicon-{{if icon}}${icon} {{if iconcolor}}glyphicon glyphicon-${iconcolor}{{/if}}{{/if}}"></i>
+        <i class="glyphicons glyphicons-{{if icon}}${icon} {{if iconcolor}}glyphicons glyphicons-${iconcolor}{{/if}}{{/if}}"></i>
         {{html name}}
         {{if shortcut}}
         <span class="label label-primary">{{html shortcut}}</span>
@@ -1343,7 +1339,7 @@
 <script id="loginTemplate" type="text/html">
     <div class="btn-group">
         <button type="button" class="dropdown-toggle dark clear" style="min-width: 180px;" data-toggle="dropdown">
-            <i class="glyphicon glyphicon-user"></i>
+            <i class="glyphicons glyphicons-user"></i>
             <span>${user.name}</span>
             <span class="caret"></span>
         </button>
@@ -1351,7 +1347,7 @@
             <a class="opt-logout dropdown-item" href="#">Logout</a>
             <div class="dropdown-divider"></div>
             <a class="opt-trace dropdown-item" href="#">
-                <i class="glyphicon {{if trace}}glyphicon-ok{{/if}}"></i>Entwickler Modus
+                <i class="glyphicons glyphicons-{{if trace}}check{{else}}unchecked{{/if}}"></i>Entwickler Modus
             </a>
         </div>
     </div>
@@ -1369,10 +1365,10 @@
             <div class="carousel-inner">{{tmpl() '#overviewSlidesTemplate'}}</div>
             <!-- Controls -->
             <a class="left carousel-control" href="#overview-carousel" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="glyphicons glyphicons-chevron-left"></span>
             </a>
             <a class="right carousel-control" href="#overview-carousel" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="glyphicons glyphicons-chevron-right"></span>
             </a>
             <div class="x-xl" style="">
                 Übersicht
@@ -1465,7 +1461,7 @@
 
 <script id="refreshTemplate" type="text/x-tmpl">
     <button class="opt-Refresh dark left">
-        <i class="glyphicon glyphicon-${icon}" style="line-height: 1.5em; padding-left: 8px;"></i>
+        <i class="glyphicons glyphicons-${icon}" style="line-height: 1.5em; padding-left: 8px;"></i>
         <span></span>
     </button>
 </script>
@@ -1502,13 +1498,13 @@
         <td>
             {% if (!o.files.error && !i && !o.options.autoUpload) { %}
             <button class="dark start">
-                <i class="glyphicon glyphicon-upload"></i>
+                <i class="glyphicons glyphicons-upload"></i>
                 <span>Start</span>
             </button>
             {% } %}
             {% if (!i) { %}
             <button class="dark cancel">
-                <i class="glyphicon glyphicon-ban-circle"></i>
+                <i class="glyphicons glyphicons-ban-circle"></i>
                 <span>Cancel</span>
             </button>
             {% } %}
@@ -1524,7 +1520,7 @@
         <td>
             <button class="dark delete" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}" {% if
                     (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
-                    <i class="glyphicon glyphicon-remove"></i>
+                    <i class="glyphicons glyphicons-remove"></i>
                 <span></span>
             </button>
         </td>
@@ -1602,8 +1598,8 @@
         <span class="trustami-wrapper">
             <span>
                 <a href="https://app.trustami.com/trustami-card/57e573efcc96c5511c8b480e" target="_blank" title="Trustami Bewertungen und Erfahrungen von Handelsagentur Lehmann" class="trustami-badge"></a>
-                <button type="submit" class="left opt-Count-Up dark glyphicon glyphicon-plus"></button>
-                <button type="submit" class="right opt-Count-Down dark glyphicon glyphicon-minus"></button>
+                <button type="submit" class="left opt-Count-Up dark glyphicons glyphicons-plus"></button>
+                <button type="submit" class="right opt-Count-Down dark glyphicons glyphicons-minus"></button>
             </span>
             <input class="tmi" type="text" placeholder="Trustami" name="tmi" value="${tmi}">
         </span>

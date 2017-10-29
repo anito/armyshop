@@ -200,7 +200,7 @@ a:hover,
 a:active {
   outline: 0;
 }
-.item .dropdown-toggle.glyphicon:after {
+.item .dropdown-toggle.glyphicons:after {
   font-size: 2rem;
   padding: 10px 0 0px 0px;
 }
@@ -299,7 +299,7 @@ label {
   content: "";
   margin-right: 5px;
 }
-.glyphicon-:after {
+.glyphicons-:after {
   content: " ";
   padding: 6px;
 }
@@ -1159,8 +1159,7 @@ label input[type="checkbox"] + span {
   font-size: 1em;
 }
 .btn-nav button {
-  line-height: 2.8em;
-  padding: 0 21px;
+  padding: 17px 21px;
   margin: 0 4px;
 }
 span.title-wrapper {
@@ -1190,17 +1189,9 @@ span.title-wrapper {
   display: inline-block;
   padding: 0 6px;
 }
-i.ok {
-  position: absolute;
-  top: -22%;
-  left: 55%;
-  font-size: 0.7em !important;
-}
-i.ok[class*="-ok"] {
-  color: #3ada3a;
-}
-i.ok[class*="-exclamation-sign"] {
-  color: #f92727;
+.notok {
+  color: #c00;
+  text-shadow: none;
 }
 button:disabled:not(.btn-label) {
   cursor: auto;
@@ -1469,9 +1460,6 @@ span.inner-sub {
 .gal.active .sublist-item.selected {
   background-color: rgba(159,222,255,0.5);
 }
-.sidebar .glyphicon {
-  font-size: 1.1em;
-}
 .item span.author {
   font-size: 0.8em;
   font-style: italic;
@@ -1646,7 +1634,8 @@ input.tmi {
 .trustami-wrapper button {
   font-size: 1em;
   background: transparent;
-  height: 10px;
+  height: 25px;
+  padding: 0;
 }
 .trustami-badge:before {
   content: " ";
@@ -1973,57 +1962,66 @@ li .thumbnail.image {
 #content [class*='-camera'] {
   color: #f00;
 }
-#content .glyphicon[class*='-eye'] :not([class*="-menu"]),
-.thumbnail+.glyphicon-set [class*='-eye'] {
+#content .glyphicons[class*='-eye'] :not([class*="-menu"]),
+.thumbnail+.glyphicons-set [class*='-eye'] {
   color: #40d840 !important;
 }
-.glyphicon {
+.glyphicons {
   line-height: inherit;
   paddingt: 0 5px 0 0;
 }
-nav .glyphicon {
-  line-height: 0.5em;
+.glyphicons {
+  line-height: 1.3em;
 }
-.glyphicon-set.left {
+.glyphicons-set.left {
   left: 0;
 }
-.glyphicon-set.right {
+.glyphicons-set.right {
   right: 0;
 }
-.glyphicon-set {
+.glyphicons-set {
   background-color: #868686;
   position: absolute;
   padding: 0px 0px 5px 13px;
   top: 0;
 }
-.glyphicon-set:nth-child(2) {
+.glyphicons-set:nth-child(2) {
   padding: 5px 10px 5px 8px;
 }
-.glyphicon-set:nth-child(3) {
+.glyphicons-set:nth-child(3) {
   padding: 5px 6px 5px 10px;
 }
-.glyphicon-set:nth-last-child(2) {
+.glyphicons-set:nth-last-child(2) {
   padding: 5px 6px 5px 10px;
 }
-a.glyphicon {
+a.glyphicons {
   font-size: 1.2rem;
 }
-.sidebar .infogramm .glyphicon {
+.sidebar .glyphicons {
+  font-size: 1em;
+}
+.item .glyphicons.glyphicons-lock {
+  position: absolute;
+  font-size: 0.5em;
+  top: 4px;
+  left: 3px;
+}
+.sidebar .infogramm .glyphicons {
   font-size: 0.7rem;
 }
-.glyphicon-set.blue {
+.glyphicons-set.blue {
   background-color: #39f;
 }
-.glyphicon-white {
+.glyphicons-white {
   color: #fff !important;
 }
-.glyphicon-red {
+.glyphicons-red {
   color: #f00 !important;
 }
-li.item.active .glyphicon-set {
+li.item.active .glyphicons-set {
   opacity: 1;
 }
-.glyphicon-set .glyphicon {
+.glyphicons-set .glyphicons {
   text-shadow: 1px 0px 0px #000;
 }
 .invalid {
@@ -2032,10 +2030,10 @@ li.item.active .glyphicon-set {
 .valid {
   color: #44b944;
 }
-li.item.active.hot .glyphicon-set {
+li.item.active.hot .glyphicons-set {
   background-color: #39f;
 }
-li.item.active .glyphicon-set {
+li.item.active .glyphicons-set {
   background-color: #9fdeff;
 }
 .content .item.hot {
@@ -2115,7 +2113,8 @@ li.item.active .glyphicon-set {
 .opt {
   text-decoration: underline;
 }
-[class*='opt-'] {
+[class*='opt-'],
+.pointer {
   cursor: pointer;
 }
 .preloader {
@@ -2141,7 +2140,7 @@ li.item.active .glyphicon-set {
 #content ul {
   margin: 0;
 }
-.breadcrumb > li.glyphicon:first-child {
+.breadcrumb > li.glyphicons:first-child {
   min-width: 75px;
   padding: 0;
   text-align: center;
@@ -2151,7 +2150,7 @@ li.item.active .glyphicon-set {
   color: rgba(0,0,0,0.7);
   text-decoration: underline;
 }
-.breadcrumb li:not(.glyphicon) {
+.breadcrumb li:not(.glyphicons) {
   text-shadow: 0 1px 0 rgba(255,255,255,0.3);
   font-style: initial;
   font-family: sans-serif;
@@ -2316,16 +2315,20 @@ button.chromeless:hover {
 #slideshow .thumbnail {
   cursor: pointer;
 }
+.item:hover [class*="glyphicons-set"] {
+  opacity: 1;
+  transition: opacity 0.3 linear;
+}
 .downloading {
   padding: 0 10px 0 0;
 }
-.ignored .glyphicon-eye:before {
+.ignored .glyphicons-eye:before {
   content: "\e106";
 }
-.glyphicon-eye:before {
+.glyphicons-eye:before {
   content: "\e105";
 }
-.glyphicon-folder-close:hover:before {
+.glyphicons-folder-close:hover:before {
   content: "\e118";
 }
 .select:after,
@@ -2345,11 +2348,11 @@ fieldset .btn:hover {
   border-color: inherit;
   color: inherit;
 }
-.error.glyphicon-download-alt:before {
+.error.glyphicons-download-alt:before {
   content: "\e101";
   color: #f00;
 }
-.loading .glyphicon-loading {
+.loading .glyphicons-loading {
   background: url("/img/ajax-loader-spinner.gif") repeat scroll 0 0 transparent;
 }
 .loading .out {
@@ -2395,8 +2398,8 @@ fieldset .btn:hover {
 .rel {
   position: relative;
 }
-[class^="glyphicon-"].active,
-[class*=" glyphicon-"].active {
+[class^="glyphicons-"].active,
+[class*=" glyphicons-"].active {
   cursor: auto;
 }
 .anim-link {
@@ -2424,7 +2427,7 @@ section.addAction {
   bottom: 50px;
   right: -250px;
 }
-.modal-dialog .glyphicon-set {
+.modal-dialog .glyphicons-set {
   display: none;
 }
 [class^="bg-"] {
@@ -2613,7 +2616,7 @@ fieldset .selection-title {
   padding: 10px;
   font-size: 1rem;
 }
-.selection-title .glyphicon {
+.selection-title .glyphicons {
   font-size: 2.5rem;
   padding: 0px;
   line-height: 1em;
@@ -2625,7 +2628,7 @@ fieldset .selection-title {
   width: 200px;
   float: right;
 }
-.header .glyphicon+span {
+.header .glyphicons+span {
   padding-left: 7px;
 }
 .sidebar i.clear-search {

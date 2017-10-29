@@ -409,7 +409,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </script>
 
 <script id="refreshTemplate" type="text/x-tmpl">
-    <a href="${location.hash}" class="opt-Refresh"><i class="glyphicon glyphicon-${icon}"></i></a>
+    <a href="${location.hash}" class="opt-Refresh"><i class="glyphicons glyphicons-${icon}"></i></a>
 </script>
 
 <script id="trustamiTemplate" type="text/x-tmpl">

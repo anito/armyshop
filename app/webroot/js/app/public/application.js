@@ -41436,7 +41436,6 @@ Released under the MIT License
           if (model == null) {
             model = this;
           }
-          console.log(model);
           if (model["protected"][query]) {
             return true;
           }
