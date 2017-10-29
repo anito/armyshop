@@ -191,7 +191,7 @@ class PhotosView extends Spine.Controller
     @render(null, 'html') unless photos.length
   
   deletePhoto_: (ids, callback) ->
-    App.confirm('METHOD_NOT_SUPPORTED', null, 'alert')
+    App.confirm('METHOD_NOT_SUPPORTED', mode: 'alert')
     
   deletePhotos: (ids, callback) ->
     @log 'deletePhotos'

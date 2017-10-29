@@ -58,7 +58,7 @@ class PhotosTrashView extends Spine.Controller
     for item in items when item.deleted
       trash = new PhotosTrash(id: item.id)
       trash.save()
-      item.bind('update destroy', @proxy @watch)
+      item.one('update destroy', @proxy @watch)
     
   refreshOne: ->
     Photo.one('refresh', @proxy @refresh)

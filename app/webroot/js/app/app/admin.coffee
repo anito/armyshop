@@ -105,6 +105,10 @@ class Main extends Spine.Controller
         '\nKeine Kategorie ausgwählt.\n\n'
       'EMPTYTRASH': (options) ->
         '\nSoll der Papierkorb geleert werden?\n\n'
+      'NO_FAVORITE_FOUND': (options) ->
+        '\nEs existiert kein Produkt des Tages \n\n'
+      'FAVORITE_IN_TRASH': (options) ->
+        '\nDas Produkt des Tages befindet sich im Papierkorb \n\n'
       'DESTROY_CATEGORY': (options) ->
         '\nSoll die Kategorie "' + options.name + '" entfernt werden?\n\n'
       'DESTROY_CATEGORY_NOT_ALLOWED': (options) ->
@@ -310,6 +314,9 @@ class Main extends Spine.Controller
 #      @startScript(intro)
       @startScript(false)
   
+  isAdmin: ->
+    window.location.pathname.indexOf('admin') isnt -1
+    
   startScript: (b) ->
     setTimeout ->
       App.sidebar.toggleDraghandle()
@@ -492,12 +499,18 @@ class Main extends Spine.Controller
     ret = a for a in @arr when test s, a
     ret
     
-  confirm: (phrase, options={}, mode='confirm') ->
-    defaults = {plural: false}
+  confirm: (phrase='kein Ausgabetext vorhanden', options={}) ->
+    defaults =
+      plural: false
+      mode: 'confirm'
+      
     options = $().extend defaults, options
     
-    if window[mode].call(null, @CONFIRM[phrase](options))
-      return true
+    try
+      if window[options.mode].call(null, @CONFIRM[phrase](options))
+        return true
+    catch e
+    
     return
   
   key: (e) ->

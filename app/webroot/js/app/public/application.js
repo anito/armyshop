@@ -29275,6 +29275,12 @@ Released under the MIT License
         'EMPTYTRASH': function(options) {
           return '\nSoll der Papierkorb geleert werden?\n\n';
         },
+        'NO_FAVORITE_FOUND': function(options) {
+          return '\nEs existiert kein Produkt des Tages \n\n';
+        },
+        'FAVORITE_IN_TRASH': function(options) {
+          return '\nDas Produkt des Tages befindet sich im Papierkorb \n\n';
+        },
         'DESTROY_CATEGORY': function(options) {
           return '\nSoll die Kategorie "' + options.name + '" entfernt werden?\n\n';
         },
@@ -29548,6 +29554,10 @@ Released under the MIT License
       }
     };
 
+    Main.prototype.isAdmin = function() {
+      return window.location.pathname.indexOf('admin') !== -1;
+    };
+
     Main.prototype.startScript = function(b) {
       setTimeout(function() {
         return App.sidebar.toggleDraghandle();
@@ -29806,20 +29816,25 @@ Released under the MIT License
       return ret;
     };
 
-    Main.prototype.confirm = function(phrase, options, mode) {
-      var defaults;
+    Main.prototype.confirm = function(phrase, options) {
+      var defaults, e;
+      if (phrase == null) {
+        phrase = 'kein Ausgabetext vorhanden';
+      }
       if (options == null) {
         options = {};
       }
-      if (mode == null) {
-        mode = 'confirm';
-      }
       defaults = {
-        plural: false
+        plural: false,
+        mode: 'confirm'
       };
       options = $().extend(defaults, options);
-      if (window[mode].call(null, this.CONFIRM[phrase](options))) {
-        return true;
+      try {
+        if (window[options.mode].call(null, this.CONFIRM[phrase](options))) {
+          return true;
+        }
+      } catch (error) {
+        e = error;
       }
     };
 
@@ -33205,7 +33220,7 @@ Released under the MIT License
           id: item.id
         });
         trash.save();
-        results.push(item.bind('update destroy', this.proxy(this.watch)));
+        results.push(item.one('update destroy', this.proxy(this.watch)));
       }
       return results;
     };
@@ -33694,7 +33709,9 @@ Released under the MIT License
     };
 
     PhotosView.prototype.deletePhoto_ = function(ids, callback) {
-      return App.confirm('METHOD_NOT_SUPPORTED', null, 'alert');
+      return App.confirm('METHOD_NOT_SUPPORTED', {
+        mode: 'alert'
+      });
     };
 
     PhotosView.prototype.deletePhotos = function(ids, callback) {
@@ -34758,13 +34775,17 @@ Released under the MIT License
     ProductsList.prototype.toggleFavorite = function(e) {
       var cat, favorite, favorites, i, isFavorite, item, len;
       if ((cat = Category.record) && (!Category["protected"][cat != null ? cat.name : void 0])) {
-        App.confirm('NO_VALID_CATEGORY', null, 'alert');
+        App.confirm('NO_VALID_CATEGORY', {
+          mode: 'alert'
+        });
         return;
       }
       item = $(e.currentTarget).item();
       isFavorite = item.favorite;
       if (!isFavorite && item.ignored) {
-        App.confirm('NO_FAVORITE_FOR_IGNORED', null, 'alert');
+        App.confirm('NO_FAVORITE_FOR_IGNORED', {
+          mode: 'alert'
+        });
         return;
       }
       favorites = Product.findAllByAttribute('favorite', true);
@@ -34981,7 +35002,7 @@ Released under the MIT License
           id: item.id
         });
         trash.save();
-        results.push(item.bind('update destroy', this.proxy(this.watch)));
+        results.push(item.one('update destroy', this.proxy(this.watch)));
       }
       return results;
     };
@@ -35031,6 +35052,9 @@ Released under the MIT License
       var trash;
       if (!item.deleted || item.destroyed) {
         trash = ProductsTrash.find(item.id);
+        if (!trash) {
+          return;
+        }
         trash.destroy();
         Product.trigger('outbound:trash');
         return this.remove(item);
@@ -37028,7 +37052,9 @@ Released under the MIT License
       if (ga = CategoriesProduct.productExists(itemId, categoryId)) {
         newIgnored = !ga.ignored;
         if (product.favorite && newIgnored) {
-          App.confirm('NO_IGNORE_FOR_FAVORITE', null, 'alert');
+          App.confirm('NO_IGNORE_FOR_FAVORITE', {
+            mode: 'alert'
+          });
           return;
         }
         return CategoriesProduct.trigger('ignored', ga, newIgnored);
@@ -37165,7 +37191,7 @@ Released under the MIT License
 
     ShowView.prototype.showFavorite = function(e) {
       var url;
-      if (!(url = Product.getFavoriteUrl('admin'))) {
+      if (!(url = Product.getFavoriteUrl())) {
         return;
       }
       this.navigate(url);
@@ -37686,7 +37712,9 @@ Released under the MIT License
           return category.destroy();
         }
       } else {
-        return App.confirm('DESTROY_CATEGORY_NOT_ALLOWED', null, 'alert');
+        return App.confirm('DESTROY_CATEGORY_NOT_ALLOWED', {
+          mode: 'alert'
+        });
       }
     };
 
@@ -39072,7 +39100,9 @@ Released under the MIT License
       if (!valid()) {
         multiple = data.files.length > 1;
         str = multiple ? 'Sollen die Fotos ' : 'Soll das Foto ';
-        App.confirm('NO_CAT_FOR_UPLOAD', null, 'alert');
+        App.confirm('NO_CAT_FOR_UPLOAD', {
+          mode: 'alert'
+        });
         return false;
       }
       return true;
@@ -44101,6 +44131,10 @@ Released under the MIT License
       return (ref = Settings.first()) != null ? ref.agreed : void 0;
     };
 
+    App.prototype.isAdmin = function() {
+      return window.location.pathname.indexOf('admin') !== -1;
+    };
+
     App.prototype.getData = function(s, arr) {
       var a, i, j, len, test;
       if (arr == null) {
@@ -45795,12 +45829,26 @@ Released under the MIT License
 
     Product.getFavoriteUrl = function(isAdmin) {
       var cat, catId, catPro, cats, favorite, location;
+      isAdmin = App.isAdmin();
       favorite = Product.findByAttribute('favorite', true);
       if (!favorite) {
+        App.confirm('NO_FAVORITE_FOUND', {
+          mode: 'alert'
+        });
         return;
       }
       cats = CategoriesProduct.categories(favorite.id);
       catPro = CategoriesProduct.findByAttribute('product_id', favorite.id);
+      if (!catPro) {
+        if (App.confirm('FAVORITE_IN_TRASH')) {
+          if (isAdmin) {
+            window.location.href = '#/trash/products/';
+            return;
+          }
+        } else {
+          return;
+        }
+      }
       catId = catPro.category_id;
       cat = Category.find(catId);
       if (isAdmin) {
@@ -46816,10 +46864,7 @@ Released under the MIT License
             },
             klass: 'opt-ShowFavorite',
             icon: 'star',
-            disabled: function() {
-              var prod;
-              return !(prod = Product.findByAttribute('favorite', true));
-            }
+            disabled: function() {}
           }, {
             devider: true
           }, {

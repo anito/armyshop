@@ -101,12 +101,12 @@ class ProductsList extends Spine.Controller
       
   toggleFavorite: (e) ->
     if (cat = Category.record) and (!Category.protected[cat?.name])
-      App.confirm('NO_VALID_CATEGORY', null, 'alert')
+      App.confirm('NO_VALID_CATEGORY', mode: 'alert')
       return
     item = $(e.currentTarget).item()
     isFavorite = item.favorite
     if !isFavorite and item.ignored
-      App.confirm('NO_FAVORITE_FOR_IGNORED', null, 'alert')
+      App.confirm('NO_FAVORITE_FOR_IGNORED', mode: 'alert')
       return
     favorites = Product.findAllByAttribute('favorite', true)
     favorite.updateAttributes('favorite': false) for favorite in favorites

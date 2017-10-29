@@ -506,6 +506,9 @@ class App extends Spine.Controller
   isAgreed: ->
     Settings.first()?.agreed
     
+  isAdmin: ->
+    window.location.pathname.indexOf('admin') isnt -1
+    
   getData: (s, arr=[]) ->
     test = (s, a) -> 
       matcher = new RegExp(".*"+a+".*", "g");

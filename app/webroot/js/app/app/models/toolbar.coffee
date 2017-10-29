@@ -192,7 +192,7 @@ class Toolbar extends Spine.Model
           name: -> 'zeige Produkt des Tages'
           klass: 'opt-ShowFavorite'
           icon: 'star'
-          disabled: -> !(prod = Product.findByAttribute('favorite', true))
+          disabled: -> return #!(prod = Product.findByAttribute('favorite', true))
         ,
           devider: true
         ,

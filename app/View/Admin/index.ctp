@@ -675,6 +675,9 @@
 
 <script id="productsTrashTemplate" type="text/html">
     <li id="${id}" data-id="${id}" data-drag-over="" data-model-name="Product" data-models-name="Photo" class="data item fade show {{if Category.record}}{{if ignored}}ignored{{/if}}{{/if}}" draggable="true">
+        {{if favorite}}
+        <i class="badge3"></i>
+        {{/if}}
         <div class="thumbnail"></div>
         <div class="glyphicons-set right fade" style="">
             <span class="left">

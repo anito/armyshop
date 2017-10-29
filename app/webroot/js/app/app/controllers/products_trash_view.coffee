@@ -69,7 +69,7 @@ class ProductsTrashView extends Spine.Controller
     for item in items when item.deleted
       trash = new ProductsTrash(id: item.id)
       trash.save()
-      item.bind('update destroy', @proxy @watch)
+      item.one('update destroy', @proxy @watch)
     
   refreshOne: ->
     Product.one('refresh', @proxy @refresh)
@@ -105,6 +105,7 @@ class ProductsTrashView extends Spine.Controller
   watch: (item) ->
     if !item.deleted or item.destroyed
       trash = ProductsTrash.find(item.id)
+      return unless trash
       trash.destroy()
       Product.trigger('outbound:trash')
       @remove(item)

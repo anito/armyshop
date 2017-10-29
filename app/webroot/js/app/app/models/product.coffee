@@ -75,10 +75,26 @@ class Product extends Spine.Model
     ret
     
   @getFavoriteUrl: (isAdmin) ->
+    isAdmin = App.isAdmin()
+    
     favorite = Product.findByAttribute('favorite', true)
-    return unless favorite
+    
+    unless favorite
+      App.confirm('NO_FAVORITE_FOUND', mode: 'alert')
+      return
+      
     cats = CategoriesProduct.categories favorite.id
     catPro = CategoriesProduct.findByAttribute('product_id', favorite.id)
+    
+    #alert if no Favorite
+    unless catPro
+      if App.confirm('FAVORITE_IN_TRASH')
+        if isAdmin
+          window.location.href = '#/trash/products/'
+          return
+      else
+        return
+      
     catId = catPro.category_id
     cat = Category.find(catId)
     if isAdmin

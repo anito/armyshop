@@ -14,4 +14,3 @@ class PhotosTrash extends Spine.Model
     
     
 module?.exports = Model.PhotosTrash = PhotosTrash
-

@@ -917,7 +917,7 @@ class ShowView extends Spine.Controller
     if ga = CategoriesProduct.productExists(itemId, categoryId)
       newIgnored = !ga.ignored
       if product.favorite and newIgnored
-        App.confirm('NO_IGNORE_FOR_FAVORITE', null, 'alert')
+        App.confirm('NO_IGNORE_FOR_FAVORITE', mode: 'alert')
         return
       CategoriesProduct.trigger('ignored', ga, newIgnored)
       
@@ -1047,7 +1047,7 @@ class ShowView extends Spine.Controller
     $('input','#fu').click()
       
   showFavorite: (e) ->
-    return unless url = Product.getFavoriteUrl('admin')
+    return unless url = Product.getFavoriteUrl()
     @navigate url
     @refreshToolbars()
     
