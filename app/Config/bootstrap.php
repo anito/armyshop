@@ -139,8 +139,8 @@ if (!defined('MYSQL_CMD_PATH')) {
   $last = count($a)-1;
   $tl = $a[$last];
   $path = '';
-  if ($tl == 'dev' || $lt == 'local') {
-    $path = '/usr/local/mysql/bin/';
+  if ($tl == 'dev' || $tl == 'local') {
+        $path = '/usr/local/mysql/bin/';
   }
   define('MYSQL_CMD_PATH', $path);
 }
