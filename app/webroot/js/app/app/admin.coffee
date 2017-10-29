@@ -94,7 +94,7 @@ class Main extends Spine.Controller
     
     @CONFIRM =  
       'REMOVE': (options) ->
-        if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' wirklich entfernt werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" wirklich entfernt werden?\n\n'
+        if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' entfernt werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" wirklich entfernt werden?\n\n'
       'DELETE': (options) ->
         if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" in den Papierkorb verschoben werden?\n\n'
       'DESTROY': (options) ->

@@ -1224,7 +1224,7 @@ class ShowView extends Spine.Controller
           e.preventDefault()
       when 32 #Space
         unless isFormfield
-          photos = App.activePhotos()
+#          photos = App.activePhotos()
           e.preventDefault()
       when 37 #Left
         unless isFormfield

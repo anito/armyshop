@@ -324,42 +324,6 @@ class Toolbar extends Spine.Model
           icon: -> if Model.Settings.isIntroQuatsch() then 'ok' else ''
           disabled: -> true
         ]
-    group4:
-      name: -> 
-        len = App.activePhotos().length
-        'Slideshow  <span class="badge">' + len + '</span>'
-      content:
-        [
-          name: -> 'Preview'
-          klass: 'opt-SlideshowPreview'
-          icon: 'picture'
-          disabled: -> !App.activePhotos().length
-        ,
-          name: 'Start'
-          klass: 'opt-SlideshowPlay'
-          shortcut: 'Space'
-          icon: 'play'
-          dataToggle: 'modal-category'
-          disabled: -> !App.activePhotos().length
-        ]
-    group5:
-      name: -> 
-        len = App.activePhotos().length
-        'Slideshow  <span class="badge">' + len + '</span>'
-      content:
-        [
-          name: -> 'Preview'
-          klass: 'opt-SlideshowPreview'
-          icon: 'picture'
-          disabled: -> !App.activePhotos().length
-        ,
-          name: 'Start'
-          klass: 'opt-SlideshowPlay'
-          shortcut: 'Space'
-          icon: 'play'
-          dataToggle: 'modal-category'
-          disabled: -> !App.activePhotos().length
-        ]
       
   @data:
     package_00:
@@ -428,28 +392,6 @@ class Toolbar extends Spine.Model
       name: 'Slider'
       content:
         [
-          name: '<span class="slider" style=""></span>'
-          klass: 'opt-Thumbsize '
-          type: 'div'
-          innerstyle: 'width: 190px; position: relative;'
-        ]
-    package_13:
-      name: 'SlideshowPackage'
-      content:
-        [
-          name: 'Fullscreen'
-          klass: -> 'opt-FullScreen' + if App.showView.slideshowView.fullScreenEnabled() then ' active' else ''
-          icon: 'fullscreen'
-          dataToggle: 'button'
-          outerstyle: ''
-        ,
-          name: 'Start'
-          klass: 'opt-SlideshowPlay'
-          innerklass: 'symbol'
-          icon: 'play'
-          iconcolor: ''
-          disabled: -> !App.activePhotos().length
-        ,
           name: '<span class="slider" style=""></span>'
           klass: 'opt-Thumbsize '
           type: 'div'

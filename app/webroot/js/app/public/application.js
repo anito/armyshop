@@ -29243,7 +29243,7 @@ Released under the MIT License
       this.CONFIRM = {
         'REMOVE': function(options) {
           if (options.plural) {
-            return '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' wirklich entfernt werden?\n\n';
+            return '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' entfernt werden?\n\n';
           } else {
             return '\nSoll ' + options.type + ' "' + options.name + '" wirklich entfernt werden?\n\n';
           }
@@ -37382,7 +37382,7 @@ Released under the MIT License
     };
 
     ShowView.prototype.keyup = function(e) {
-      var code, el, isFormfield, photos;
+      var code, el, isFormfield;
       code = e.charCode || e.keyCode;
       el = $(document.activeElement);
       isFormfield = $().isFormElement(el);
@@ -37407,7 +37407,6 @@ Released under the MIT License
           break;
         case 32:
           if (!isFormfield) {
-            photos = App.activePhotos();
             return e.preventDefault();
           }
           break;
@@ -47055,62 +47054,6 @@ Released under the MIT License
             }
           }
         ]
-      },
-      group4: {
-        name: function() {
-          var len;
-          len = App.activePhotos().length;
-          return 'Slideshow  <span class="badge">' + len + '</span>';
-        },
-        content: [
-          {
-            name: function() {
-              return 'Preview';
-            },
-            klass: 'opt-SlideshowPreview',
-            icon: 'picture',
-            disabled: function() {
-              return !App.activePhotos().length;
-            }
-          }, {
-            name: 'Start',
-            klass: 'opt-SlideshowPlay',
-            shortcut: 'Space',
-            icon: 'play',
-            dataToggle: 'modal-category',
-            disabled: function() {
-              return !App.activePhotos().length;
-            }
-          }
-        ]
-      },
-      group5: {
-        name: function() {
-          var len;
-          len = App.activePhotos().length;
-          return 'Slideshow  <span class="badge">' + len + '</span>';
-        },
-        content: [
-          {
-            name: function() {
-              return 'Preview';
-            },
-            klass: 'opt-SlideshowPreview',
-            icon: 'picture',
-            disabled: function() {
-              return !App.activePhotos().length;
-            }
-          }, {
-            name: 'Start',
-            klass: 'opt-SlideshowPlay',
-            shortcut: 'Space',
-            icon: 'play',
-            dataToggle: 'modal-category',
-            disabled: function() {
-              return !App.activePhotos().length;
-            }
-          }
-        ]
       }
     };
 
@@ -47196,34 +47139,6 @@ Released under the MIT License
         name: 'Slider',
         content: [
           {
-            name: '<span class="slider" style=""></span>',
-            klass: 'opt-Thumbsize ',
-            type: 'div',
-            innerstyle: 'width: 190px; position: relative;'
-          }
-        ]
-      },
-      package_13: {
-        name: 'SlideshowPackage',
-        content: [
-          {
-            name: 'Fullscreen',
-            klass: function() {
-              return 'opt-FullScreen' + (App.showView.slideshowView.fullScreenEnabled() ? ' active' : '');
-            },
-            icon: 'fullscreen',
-            dataToggle: 'button',
-            outerstyle: ''
-          }, {
-            name: 'Start',
-            klass: 'opt-SlideshowPlay',
-            innerklass: 'symbol',
-            icon: 'play',
-            iconcolor: '',
-            disabled: function() {
-              return !App.activePhotos().length;
-            }
-          }, {
             name: '<span class="slider" style=""></span>',
             klass: 'opt-Thumbsize ',
             type: 'div',
