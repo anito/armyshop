@@ -924,16 +924,21 @@ class ShowView extends Spine.Controller
       
     
   toggleFavorite: (product, category) ->
+
+    if (!Category.protected[category.name] or Category.private.indexOf(category.name) != -1) 
+      App.confirm('NO_VALID_CATEGORY', mode: 'alert')
+      return
+      
     isFavorite = product.favorite
     if !isFavorite and product.ignored
-      #make item visible
+      #make product visible
       Spine.trigger('product:ignore', product, Category.record)
 #      App.confirm('NO_FAVORITE_FOR_IGNORED', mode: 'alert')
 #      return
 
+    #make favorite unique
     favorites = Product.findAllByAttribute('favorite', true)
     favorite.updateAttributes('favorite': false) for favorite in favorites
-    
     product.updateAttributes
       'favorite': !isFavorite
     

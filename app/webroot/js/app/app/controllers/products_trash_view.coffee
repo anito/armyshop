@@ -93,22 +93,33 @@ class ProductsTrashView extends Spine.Controller
     
   inbound: (products) ->
     products = [products] unless Array.isArray products
+    favoriteDeactivated = false
+    
     for product in products
       product.deleted = true
-      product.favorite = false
+      if product.favorite
+        product.favorite = false
+        favoriteDeactivated = true
       product.save()
       Product.trigger('trashed', product)
     @initTrash products
     
+    alert 'Achtung!\nDas Produkt des Tages wurde deaktiviert da es in den Papierkorb verschoben wurde' if favoriteDeactivated
+    
   outbound: (item) ->
+    Product.createJoin [item], Category.findByAttribute('name', 'NONECAT')
 #    alert 'outbound'
+    if App.confirm('NAVIGATE_TO_NONCAT')
+      cid = Category.findByAttribute('name', 'NONECAT').id
+      @navigate '/category', cid
+      
     
   watch: (item) ->
     if !item.deleted or item.destroyed
       trash = ProductsTrash.find(item.id)
       return unless trash
       trash.destroy()
-      Product.trigger('outbound:trash')
+      Product.trigger('outbound:trash', item)
       @remove(item)
     
   dropdownToggle: (e) ->
@@ -124,7 +135,8 @@ class ProductsTrashView extends Spine.Controller
     item.deleted = false
     item.save()
     
-    Product.createJoin [item], Category.findByAttribute('name', 'none')
+    e.stopPropagation()
+    e.preventDefault()
     
   destroyProduct: (e) ->
     e.stopPropagation()

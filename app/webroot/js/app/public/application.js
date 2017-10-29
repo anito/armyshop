@@ -29269,6 +29269,9 @@ Released under the MIT License
             return '\nSoll ' + options.type + ' "' + options.name + '" entfernt und in den Papierkorb verschoben werden?\n\n';
           }
         },
+        'NAVIGATE_TO_NONCAT': function(options) {
+          return '\nWiederhergestellte Produkte werden in den Ordner "' + Category["protected"]['NONECAT'].screenname + '" verschoben\n\nJetzt dorthin wechseln?\n';
+        },
         'NOCAT': function(options) {
           return '\nKeine Kategorie ausgwählt.\n\n';
         },
@@ -29282,7 +29285,7 @@ Released under the MIT License
           return '\nDas Produkt des Tages befindet sich im Papierkorb \n\n';
         },
         'DESTROY_CATEGORY': function(options) {
-          return '\nSoll die Kategorie "' + options.name + '" entfernt werden?\n\n';
+          return '\nSoll die Kategorie "' + options.screenname + '" entfernt werden?\n\n';
         },
         'DESTROY_CATEGORY_NOT_ALLOWED': function(options) {
           return '\nGeschützte Kategorie!\n\n';
@@ -34777,12 +34780,6 @@ Released under the MIT License
       if (!(cat = Category.record)) {
         return;
       }
-      if (!Category["protected"][cat != null ? cat.name : void 0] || Category["private"][cat != null ? cat.name : void 0]) {
-        App.confirm('NO_VALID_CATEGORY', {
-          mode: 'alert'
-        });
-        return;
-      }
       item = $(e.currentTarget).item();
       Spine.trigger('toggle:favorite', item, cat);
       e.preventDefault();
@@ -35020,21 +35017,35 @@ Released under the MIT License
     };
 
     ProductsTrashView.prototype.inbound = function(products) {
-      var i, len, product;
+      var favoriteDeactivated, i, len, product;
       if (!Array.isArray(products)) {
         products = [products];
       }
+      favoriteDeactivated = false;
       for (i = 0, len = products.length; i < len; i++) {
         product = products[i];
         product.deleted = true;
-        product.favorite = false;
+        if (product.favorite) {
+          product.favorite = false;
+          favoriteDeactivated = true;
+        }
         product.save();
         Product.trigger('trashed', product);
       }
-      return this.initTrash(products);
+      this.initTrash(products);
+      if (favoriteDeactivated) {
+        return alert('Achtung!\nDas Produkt des Tages wurde deaktiviert da es in den Papierkorb verschoben wurde');
+      }
     };
 
-    ProductsTrashView.prototype.outbound = function(item) {};
+    ProductsTrashView.prototype.outbound = function(item) {
+      var cid;
+      Product.createJoin([item], Category.findByAttribute('name', 'NONECAT'));
+      if (App.confirm('NAVIGATE_TO_NONCAT')) {
+        cid = Category.findByAttribute('name', 'NONECAT').id;
+        return this.navigate('/category', cid);
+      }
+    };
 
     ProductsTrashView.prototype.watch = function(item) {
       var trash;
@@ -35044,7 +35055,7 @@ Released under the MIT License
           return;
         }
         trash.destroy();
-        Product.trigger('outbound:trash');
+        Product.trigger('outbound:trash', item);
         return this.remove(item);
       }
     };
@@ -35063,7 +35074,8 @@ Released under the MIT License
       item = $(e.currentTarget).item();
       item.deleted = false;
       item.save();
-      return Product.createJoin([item], Category.findByAttribute('name', 'none'));
+      e.stopPropagation();
+      return e.preventDefault();
     };
 
     ProductsTrashView.prototype.destroyProduct = function(e) {
@@ -37052,6 +37064,12 @@ Released under the MIT License
 
     ShowView.prototype.toggleFavorite = function(product, category) {
       var favorite, favorites, i, isFavorite, len;
+      if (!Category["protected"][category.name] || Category["private"].indexOf(category.name) !== -1) {
+        App.confirm('NO_VALID_CATEGORY', {
+          mode: 'alert'
+        });
+        return;
+      }
       isFavorite = product.favorite;
       if (!isFavorite && product.ignored) {
         Spine.trigger('product:ignore', product, Category.record);
@@ -44825,16 +44843,12 @@ Released under the MIT License
       'specials': {
         screenname: 'Specials'
       },
-      'none': {
+      NONECAT: {
         screenname: 'ohne Kategorie'
       }
     };
 
-    Category["private"] = {
-      'none': {
-        screenname: 'ohne Kategorie'
-      }
-    };
+    Category["private"] = [Category["protected"].NONECAT];
 
     Category.fromJSON = function(objects) {
       var json, key;

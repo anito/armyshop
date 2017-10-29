@@ -101,6 +101,8 @@ class Main extends Spine.Controller
         if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' endgültig gelöscht werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" endgültig gelöscht werden?\n\n'
       'REMOVE_AND_DELETE': (options) ->
         if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' entfernt und in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" entfernt und in den Papierkorb verschoben werden?\n\n'
+      'NAVIGATE_TO_NONCAT': (options) ->
+        '\nWiederhergestellte Produkte werden in den Ordner "' + Category.protected['NONECAT'].screenname + '" verschoben\n\nJetzt dorthin wechseln?\n'
       'NOCAT': (options) ->
         '\nKeine Kategorie ausgwählt.\n\n'
       'EMPTYTRASH': (options) ->
@@ -110,7 +112,7 @@ class Main extends Spine.Controller
       'FAVORITE_IN_TRASH': (options) ->
         '\nDas Produkt des Tages befindet sich im Papierkorb \n\n'
       'DESTROY_CATEGORY': (options) ->
-        '\nSoll die Kategorie "' + options.name + '" entfernt werden?\n\n'
+        '\nSoll die Kategorie "' + options.screenname + '" entfernt werden?\n\n'
       'DESTROY_CATEGORY_NOT_ALLOWED': (options) ->
         '\nGeschützte Kategorie!\n\n'
       'NO_VALID_CATEGORY': (options) ->

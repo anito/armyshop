@@ -43,12 +43,10 @@ class Category extends Spine.Model
       screenname: 'Defense'
     'specials':
       screenname: 'Specials'
-    'none':
+    NONECAT:
       screenname: 'ohne Kategorie'
 
-  @private:
-    'none':
-      screenname: 'ohne Kategorie'
+  @private: [@protected.NONECAT]
 
   @fromJSON: (objects) ->
     super

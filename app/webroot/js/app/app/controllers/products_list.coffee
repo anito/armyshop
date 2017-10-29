@@ -101,10 +101,6 @@ class ProductsList extends Spine.Controller
   toggleFavorite: (e) ->
     return unless cat = Category.record
     
-    if (!Category.protected[cat?.name] or Category.private[cat?.name]) 
-      App.confirm('NO_VALID_CATEGORY', mode: 'alert')
-      return
-      
     item = $(e.currentTarget).item()
     
     Spine.trigger('toggle:favorite', item, cat)
