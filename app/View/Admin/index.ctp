@@ -520,7 +520,7 @@
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="delete dropdown-item {{if isInvalid()}}disabled{{/if}}" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#">
-                            <i class="glyphicons glyphicons glyphicons-trash"></i>Löschen
+                            <i class="glyphicons glyphicons glyphicons-bin"></i>Löschen
                         </a>
                     </div>
                 </div>
@@ -618,7 +618,7 @@
         {{if Category.record}}
         <div class="glyphicons-set left hide" style="">
             <span class="">
-                <a href="#" title="{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}  Strg+M (Ctrl+M Mac)" class="glyphicons glyphicons-eye glyphicons-white opt-ignored"></a>
+                <a href="#" title="{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}  Strg+M (Ctrl+M Mac)" class="glyphicons glyphicons-eye-open glyphicons-white opt-ignored"></a>
             </span>
         </div>
         {{/if}}
@@ -631,7 +631,7 @@
             <a href="#" class="dropdown-toggle glyphicons glyphicons-white" data-toggle="dropdown"></a>
             <div class="dropdown-menu" aria-labelledby="dLabel">
                 <a class="opt-ignored dropdown-item" tabindex="-1" data-toggle="tooltip" title="{{if ignored}}Einblenden{{else}}Ausblenden{{/if}}" href="#">
-                    <i class="glyphicons glyphicons-eye"></i>
+                    <i class="glyphicons glyphicons-eye-open"></i>
                     {{if ignored}}Einblenden{{else}}Ausblenden{{/if}}
                 </a>
                 <a class="zoom dropdown-item" tabindex="-1" data-toggle="tooltip" title="Öffnen" href="#">
@@ -649,7 +649,7 @@
                 {{/if}}
                 <div class="dropdown-divider"></div>
                 <a class="opt-delete dropdown-item" tabindex="-1" data-toggle="tooltip" title="{{if Category.record}}Entfernen{{else}}Löschen{{/if}} " href="#">
-                  <i class="glyphicons glyphicons glyphicons-trash"></i>
+                  <i class="glyphicons glyphicons glyphicons-bin"></i>
                   {{if Category.record}}Entfernen{{else}}Löschen{{/if}}
                 </a>
             </div>
@@ -681,7 +681,7 @@
                 <a href="#" class="dropdown-toggle glyphicons glyphicons-white" data-toggle="dropdown"></a>
                 <div class="dropdown-menu" aria-labelledby="dLabel">
                     <a class="opt-destroy dropdown-item" tabindex="-1" data-toggle="tooltip" title="endgültig Löschen" href="#">
-                        <i class="glyphicons glyphicons glyphicons-trash"></i>Löschen
+                        <i class="glyphicons glyphicons glyphicons-bin"></i>Löschen
                     </a>
                     <a class="opt-recover dropdown-item" tabindex="-1" data-toggle="tooltip" title="Wiederherstellen" href="#">
                         <i class="glyphicons glyphicons glyphicons-repeat"></i>Wiederherstellen
@@ -899,7 +899,7 @@
                 </span>
                 <span class="title-wrapper">
                     <div class="title-field">
-                        <i class="glyphicons glyphicons-trash"></i>
+                        <i class="glyphicons glyphicons-bin"></i>
                         <span class="">Produkt Papierkorb</span>
                     </div>
                 </span>
@@ -908,7 +908,7 @@
     </section>
     <section class="right">
         <button type="submit" class="dark opt-EmptyProductsTrash">
-            <i class="glyphicons glyphicons-trash"></i>
+            <i class="glyphicons glyphicons-bin"></i>
             <span>Papierkorb leeren</span>
         </button>
     </section>
@@ -968,7 +968,7 @@
                 </span>
                 <span class="title-wrapper">
                     <div class="title-field">
-                        <i class="glyphicons glyphicons-trash"></i>
+                        <i class="glyphicons glyphicons-bin"></i>
                         <span class="">Foto Papierkorb</span>
                     </div>
                 </span>
@@ -977,7 +977,7 @@
     </section>
     <section class="right">
         <button type="submit" class="dark opt-EmptyPhotosTrash">
-            <i class="glyphicons glyphicons-trash"></i>
+            <i class="glyphicons glyphicons-bin"></i>
             <span>Papierkorb leeren</span>
         </button>
     </section>
@@ -1178,7 +1178,7 @@
                     <div class="dropdown-divider"></div>
                     {{/if}}
                     <a class="delete dropdown-item" tabindex="-1" data-toggle="tooltip" title="{{if Product.record}}Entfernen{{else}}Löschen{{/if}}" href="#">
-                        <i class="glyphicons glyphicons glyphicons-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}
+                        <i class="glyphicons glyphicons glyphicons-bin"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}
                     </a>
             </div>
         </span>
@@ -1194,7 +1194,7 @@
                 <a href="#" class="dropdown-toggle glyphicons glyphicons-white" data-toggle="dropdown"></a>
                 <div class="dropdown-menu" aria-labelledby="dLabel">
                     <a class="opt-destroy dropdown-item" tabindex="-1" data-toggle="tooltip" title="Löschen" href="#">
-                        <i class="glyphicons glyphicons glyphicons-trash"></i>Löschen
+                        <i class="glyphicons glyphicons glyphicons-bin"></i>Löschen
                     </a>
                     <a class="opt-recover dropdown-item" tabindex="-1" data-toggle="tooltip" title="Wiederherstellen" href="#">
                         <i class="glyphicons glyphicons glyphicons-repeat"></i>Wiederherstellen
@@ -1236,7 +1236,7 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="delete dropdown-item" tabindex="-1" data-toggle="tooltip" title="{{if Product.record}}Entfernen{{else}}Löschen{{/if}}" href="#">
-                    <i class="glyphicons glyphicons glyphicons-trash"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}
+                    <i class="glyphicons glyphicons glyphicons-bin"></i>{{if Product.record}}Entfernen{{else}}Löschen{{/if}}
                 </a>
             </div>
         </span>

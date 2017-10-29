@@ -2022,7 +2022,7 @@ li.item.active .glyphicons-set {
   opacity: 1;
 }
 .glyphicons-set .glyphicons {
-  text-shadow: 1px 0px 0px #000;
+  text-shadow: none;
 }
 .invalid {
   color: #f00;

@@ -86,7 +86,7 @@ class Toolbar extends Spine.Model
           disabled: ->
         ,
           name: 'Löschen'
-          icon: 'trash'
+          icon: 'bin'
           klass: 'opt-DeleteCategory'
           disabled: ->
             ret = !Category.record.isValid?() #or (c for c in Category.protected when c is Category.record.name ).length
@@ -135,7 +135,7 @@ class Toolbar extends Spine.Model
               type = 'Entfernen'
               len = Category.selectionList().length
             return type+' ('+len+')'
-          icon: 'trash'
+          icon: 'bin'
           klass: 'opt-DeleteProduct'
           disabled: ->
             len = 0
@@ -157,7 +157,7 @@ class Toolbar extends Spine.Model
               return a + b
             else
               return a
-          icon: 'eye'
+          icon: 'eye-open'
           klass: 'opt-ToggleVisible'
           shortcut: 'Ctrl-M'
           disabled: -> !Category.selectionList().length or !Category.record
@@ -198,7 +198,7 @@ class Toolbar extends Spine.Model
         ,
           name: -> 'Papierkorb'
           klass: 'opt-ShowProductsTrash'
-          icon: 'trash'
+          icon: 'bin'
           disabled: -> false
         ]
     group3:
@@ -251,7 +251,7 @@ class Toolbar extends Spine.Model
               len = Product.selectionList().length
             return type+' ('+len+')'
           shortcut: '<-'
-          icon: 'trash'
+          icon: 'bin'
           klass: 'opt-DeletePhoto'
           disabled: ->
             len = 0
@@ -294,7 +294,7 @@ class Toolbar extends Spine.Model
         ,
           name: -> 'Papierkorb'
           klass: 'opt-ShowPhotosTrash'
-          icon: 'trash'
+          icon: 'bin'
           disabled: -> false
         ,
           devider: true

@@ -46675,7 +46675,7 @@ Released under the MIT License
             disabled: function() {}
           }, {
             name: 'Löschen',
-            icon: 'trash',
+            icon: 'bin',
             klass: 'opt-DeleteCategory',
             disabled: function() {
               var base, ret;
@@ -46739,7 +46739,7 @@ Released under the MIT License
               }
               return type + ' (' + len + ')';
             },
-            icon: 'trash',
+            icon: 'bin',
             klass: 'opt-DeleteProduct',
             disabled: function() {
               var len, model, modelName;
@@ -46767,7 +46767,7 @@ Released under the MIT License
                 return a;
               }
             },
-            icon: 'eye',
+            icon: 'eye-open',
             klass: 'opt-ToggleVisible',
             shortcut: 'Ctrl-M',
             disabled: function() {
@@ -46827,7 +46827,7 @@ Released under the MIT License
               return 'Papierkorb';
             },
             klass: 'opt-ShowProductsTrash',
-            icon: 'trash',
+            icon: 'bin',
             disabled: function() {
               return false;
             }
@@ -46894,7 +46894,7 @@ Released under the MIT License
               return type + ' (' + len + ')';
             },
             shortcut: '<-',
-            icon: 'trash',
+            icon: 'bin',
             klass: 'opt-DeletePhoto',
             disabled: function() {
               var len, model, modelName;
@@ -46952,7 +46952,7 @@ Released under the MIT License
               return 'Papierkorb';
             },
             klass: 'opt-ShowPhotosTrash',
-            icon: 'trash',
+            icon: 'bin',
             disabled: function() {
               return false;
             }
