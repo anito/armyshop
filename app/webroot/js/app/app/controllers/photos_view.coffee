@@ -143,7 +143,7 @@ class PhotosView extends Spine.Controller
       list = ids[..]
     
     if list.length
-      @navigate '/category', Category.record?.id or '', Product.record.id or '', 'iid', list[0]
+      @navigate '/category', Category.record?.id or '', Product.record.id or '', 's', list[0]
     else
       @navigate '/category', Category.record?.id or '', Product.record.id or ''
 

@@ -29445,7 +29445,7 @@ Released under the MIT License
       this.initializeFileupload();
       this.initRoot();
       this.routes({
-        '/category/:cid/:pid/iid/:iid': function(params) {
+        '/category/:cid/:pid/s/:iid': function(params) {
           var buffer;
           Model.Root.updateSelection(params.cid || []);
           Category.updateSelection(params.pid || []);
@@ -29453,33 +29453,34 @@ Released under the MIT License
           buffer = Photo.renderBuffer();
           return this.showView.trigger('active', this.showView.photosView, buffer || Photo.buffer);
         },
+        '/category/:cid/s/:iid': function(params) {
+          var buffer;
+          Model.Root.updateSelection(params.cid || []);
+          Category.updateSelection(params.iid || []);
+          buffer = Product.renderBuffer();
+          return this.showView.trigger('active', this.showView.productsView, buffer || Product.buffer);
+        },
         '/category/:cid/:pid/:iid': function(params) {
           var buffer;
           Model.Root.updateSelection(params.cid || []);
-          if (params.pid === 'pid') {
-            Category.updateSelection(params.iid || []);
-            buffer = Product.renderBuffer();
-            return this.showView.trigger('active', this.showView.productsView, buffer || Product.buffer);
-          } else {
-            Category.updateSelection(params.pid || []);
-            Product.updateSelection(params.iid || []);
-            buffer = Photo.renderBuffer();
-            return this.showView.trigger('active', this.showView.photoView, buffer || Photo.buffer);
-          }
+          Category.updateSelection(params.pid || []);
+          Product.updateSelection(params.iid || []);
+          buffer = Photo.renderBuffer();
+          return this.showView.trigger('active', this.showView.photoView, buffer || Photo.buffer);
+        },
+        '/category/s/:pid': function(params) {
+          var buffer;
+          buffer = Category.renderBuffer();
+          this.showView.trigger('active', this.showView.categoriesView, buffer || Category.buffer);
+          return Model.Root.updateSelection(params.pid || []);
         },
         '/category/:cid/:pid': function(params) {
           var buffer;
-          if (params.cid === 'cid') {
-            buffer = Category.renderBuffer();
-            this.showView.trigger('active', this.showView.categoriesView, buffer || Category.buffer);
-            return Model.Root.updateSelection(params.pid || []);
-          } else {
-            Model.Root.updateSelection(params.cid || []);
-            Category.updateSelection(params.pid || []);
-            Product.updateSelection([]);
-            buffer = Photo.renderBuffer();
-            return this.showView.trigger('active', this.showView.photosView, buffer || Photo.buffer);
-          }
+          Model.Root.updateSelection(params.cid || []);
+          Category.updateSelection(params.pid || []);
+          Product.updateSelection([]);
+          buffer = Photo.renderBuffer();
+          return this.showView.trigger('active', this.showView.photosView, buffer || Photo.buffer);
         },
         '/category/:cid': function(params) {
           var buffer;
@@ -29516,9 +29517,6 @@ Released under the MIT License
         },
         '/wait/*glob': function(params) {
           return this.showView.trigger('active', this.showView.waitView);
-        },
-        '/*glob': function(params) {
-          return this.navigate('/overview', '');
         }
       });
       this.loadToolbars();
@@ -30213,7 +30211,7 @@ Released under the MIT License
       var cid, item, pid, ref;
       item = e.type === 'click' ? $(e.currentTarget).item() : this.models.record;
       if (cid = item != null ? item.id : void 0) {
-        this.navigate('/category', cid, pid = (pid = (ref = Category.record) != null ? ref.selectionList().first() : void 0) ? 'pid/' + pid : null);
+        this.navigate('/category', cid, pid = (pid = (ref = Category.record) != null ? ref.selectionList().first() : void 0) ? 's/' + pid : null);
       } else {
         this.navigate('/category', '');
       }
@@ -30351,7 +30349,7 @@ Released under the MIT License
       if (!Array.isArray(ids)) {
         ids = [ids];
       }
-      this.navigate('/category', 'cid', ids[0]);
+      this.navigate('/category', 's', ids[0]);
       this.model.updateSelection(ids);
       return e.stopPropagation();
     };
@@ -31843,7 +31841,7 @@ Released under the MIT License
 
     OverviewView.prototype.showCategories = function() {
       var cid, ref;
-      return this.navigate('/category', cid = (cid = (ref = Category.record) != null ? ref.id : void 0) ? 'cid/' + cid : null);
+      return this.navigate('/category', cid = (cid = (ref = Category.record) != null ? ref.id : void 0) ? 's/' + cid : null);
     };
 
     OverviewView.prototype.showProductMasters = function() {
@@ -32157,7 +32155,7 @@ Released under the MIT License
 
     PhotoList.prototype.back = function() {
       var iid, ref, ref1, ref2;
-      return this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) || '', iid = (iid = (ref2 = Product.record) != null ? typeof ref2.selectionList === "function" ? ref2.selectionList().first() : void 0 : void 0) ? 'iid/' + iid : null);
+      return this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) || '', iid = (iid = (ref2 = Product.record) != null ? typeof ref2.selectionList === "function" ? ref2.selectionList().first() : void 0 : void 0) ? 's/' + iid : null);
     };
 
     PhotoList.prototype.zoom = function(e) {};
@@ -32995,7 +32993,7 @@ Released under the MIT License
 
     PhotosList.prototype.back = function(e) {
       var pid, ref, ref1;
-      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', pid = (pid = (ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) ? 'pid/' + pid : null);
+      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', pid = (pid = (ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) ? 's/' + pid : null);
       e.preventDefault();
       return e.stopPropagation();
     };
@@ -33078,7 +33076,7 @@ Released under the MIT License
       })(this);
       for (i = 0, len = items.length; i < len; i++) {
         item = items[i];
-        $('#' + item.id + '>.thumbnail', this.el).removeClass('in');
+        $('#' + item.id + '>.thumbnail', this.el).removeClass('show');
       }
       Photo.develop('rotate', options, callback, items);
       return false;
@@ -33431,7 +33429,7 @@ Released under the MIT License
 
     PhotosTrashView.prototype.back = function(e) {
       var iid, ref, ref1, ref2;
-      return this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) || '', iid = (iid = (ref2 = Product.record) != null ? typeof ref2.selectionList === "function" ? ref2.selectionList().first() : void 0 : void 0) ? 'iid/' + iid : null);
+      return this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) || '', iid = (iid = (ref2 = Product.record) != null ? typeof ref2.selectionList === "function" ? ref2.selectionList().first() : void 0 : void 0) ? 's/' + iid : null);
     };
 
     PhotosTrashView.prototype["in"] = function(e) {
@@ -33658,7 +33656,7 @@ Released under the MIT License
         list = ids.slice(0);
       }
       if (list.length) {
-        this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', Product.record.id || '', 'iid', list[0]);
+        this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', Product.record.id || '', 's', list[0]);
       } else {
         this.navigate('/category', ((ref1 = Category.record) != null ? ref1.id : void 0) || '', Product.record.id || '');
       }
@@ -34791,14 +34789,14 @@ Released under the MIT License
       var iid, item, ref;
       item = e.type === 'click' ? $(e.currentTarget).item() : this.models.record;
       this.parent.stopInfo();
-      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', (item != null ? item.id : void 0) || '', iid = (iid = typeof item.selectionList === "function" ? item.selectionList().first() : void 0) ? 'iid/' + iid : null);
+      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', (item != null ? item.id : void 0) || '', iid = (iid = typeof item.selectionList === "function" ? item.selectionList().first() : void 0) ? 's/' + iid : null);
       e.preventDefault();
       return e.stopPropagation();
     };
 
     ProductsList.prototype.back = function(e) {
       var cid, ref;
-      this.navigate('/category', cid = (cid = (ref = Category.record) != null ? ref.id : void 0) ? 'cid/' + cid : null);
+      this.navigate('/category', cid = (cid = (ref = Category.record) != null ? ref.id : void 0) ? 's/' + cid : null);
       e.preventDefault();
       return e.stopPropagation();
     };
@@ -35185,7 +35183,7 @@ Released under the MIT License
     ProductsTrashView.prototype.back = function(e) {
       var cid, pid, ref, ref1;
       if (cid = (ref = Category.record) != null ? ref.id : void 0) {
-        return this.navigate('/category', cid, pid = ((ref1 = Category.record) != null ? ref1.selectionList().first() : void 0) ? 'pid/' + pid : '');
+        return this.navigate('/category', cid, pid = ((ref1 = Category.record) != null ? ref1.selectionList().first() : void 0) ? 's/' + pid : '');
       } else {
         return this.navigate('/category', '');
       }
@@ -35488,7 +35486,7 @@ Released under the MIT License
             return Category.updateSelection([record.id], (ref = Category.record) != null ? ref.id : void 0);
           };
         }
-        this.navigate('/category', (target != null ? target.id : void 0) || '', 'pid', product.id);
+        this.navigate('/category', (target != null ? target.id : void 0) || '', 's', product.id);
         setTimeout(func, 100);
         $().extend(options, {
           product: record
@@ -35710,7 +35708,7 @@ Released under the MIT License
         list = ids.slice(0);
       }
       if (list.length) {
-        this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', 'pid', list[0]);
+        this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', 's', list[0]);
       } else {
         this.navigate('/category', ((ref1 = Category.record) != null ? ref1.id : void 0) || '');
       }
@@ -36200,13 +36198,13 @@ Released under the MIT License
       ref = this.controllers;
       for (i = 0, len = ref.length; i < len; i++) {
         c = ref[i];
-        $('.items', this.el).removeClass('in3');
+        $('.items', this.el).removeClass('show');
       }
       fadein = (function(_this) {
         return function() {
           var viewport;
           viewport = controller.viewport || controller.el;
-          return viewport.addClass('in3');
+          return viewport.addClass('show');
         };
       })(this);
       return window.setTimeout((function(_this) {
@@ -36816,7 +36814,7 @@ Released under the MIT License
 
     ShowView.prototype.showCategories = function() {
       var cid, ref;
-      return this.navigate('/category', cid = (cid = (ref = Category.record) != null ? ref.id : void 0) ? 'cid/' + cid : null);
+      return this.navigate('/category', cid = (cid = (ref = Category.record) != null ? ref.id : void 0) ? 's/' + cid : null);
     };
 
     ShowView.prototype.showProductMasters = function() {
@@ -36829,13 +36827,13 @@ Released under the MIT License
 
     ShowView.prototype.showProducts = function(e) {
       var cid, pid, ref, ref1;
-      this.navigate('/category', cid = ((ref = Category.record) != null ? ref.id : void 0) || '', pid = (pid = (ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) ? 'pid/' + pid : null);
+      this.navigate('/category', cid = ((ref = Category.record) != null ? ref.id : void 0) || '', pid = (pid = (ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) ? 's/' + pid : null);
       return e.preventDefault();
     };
 
     ShowView.prototype.showPhotos = function(e) {
       var iid, ref, ref1, ref2;
-      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) || '', iid = (iid = (ref2 = Product.record) != null ? typeof ref2.selectionList === "function" ? ref2.selectionList().first() : void 0 : void 0) ? 'iid/' + iid : null);
+      this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', ((ref1 = Category.record) != null ? typeof ref1.selectionList === "function" ? ref1.selectionList().first() : void 0 : void 0) || '', iid = (iid = (ref2 = Product.record) != null ? typeof ref2.selectionList === "function" ? ref2.selectionList().first() : void 0 : void 0) ? 's/' + iid : null);
       return e.preventDefault();
     };
 
@@ -38252,11 +38250,11 @@ Released under the MIT License
       switch (item.constructor.className) {
         case 'Category':
           this.expand(item, (this.isOpen(el)) || (!(((ref = Category.record) != null ? ref.id : void 0) === item.id) || !this.isOpen(el)));
-          this.navigate('/category', cid, pid = (pid = item.selectionList().first()) ? 'pid/' + pid : null);
+          this.navigate('/category', cid, pid = (pid = item.selectionList().first()) ? 's/' + pid : null);
           break;
         case 'Product':
           category = $(e.target).closest('li.gal').item();
-          this.navigate('/category', category.id, 'pid', item.id);
+          this.navigate('/category', category.id, 's', item.id);
       }
       return item.updateSelection(list);
     };
@@ -39827,7 +39825,7 @@ Released under the MIT License
           if (!el.length) {
             return;
           }
-          el.addClass('out').removeClass('in');
+          el.addClass('fade').removeClass('show');
           f = function() {
             el.detach();
             return this.trigger('detached', item);
@@ -39840,11 +39838,14 @@ Released under the MIT License
           return (ref = this.el).deselect.apply(ref, args);
         },
         clearSelection: function(e) {
-          var id, part;
+          var href, id, index, location, part;
           id = this.model.record.id;
           part = this.model.className.toLowerCase();
           this.model.updateSelection([]);
-          return this.navigate('/' + part, id);
+          location = window.location.href;
+          index = window.location.href.toLowerCase().indexOf('/s');
+          href = location.slice(0, index);
+          return window.location.href = href;
         },
         sortable: function(type) {
           return this.el.sortable(type);
@@ -45893,7 +45894,7 @@ Released under the MIT License
       catId = catPro.category_id;
       cat = Category.find(catId);
       if (isAdmin) {
-        location = '/category/' + catId + '/pid/' + favorite.id;
+        location = '/category/' + catId + '/s/' + favorite.id;
       } else {
         if (catPro.ignored || !Category["protected"][cat.name]) {
           return;

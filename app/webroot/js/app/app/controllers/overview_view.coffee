@@ -179,7 +179,7 @@ class OverviewView extends Spine.Controller
     @record.trigger('ajaxError', xhr, statusText, error)
     
   showCategories: ->
-    @navigate '/category', cid = if (cid = Category.record?.id) then 'cid/' + cid else null
+    @navigate '/category', cid = if (cid = Category.record?.id) then 's/' + cid else null
   
   showProductMasters: ->
     @navigate '/category', ''

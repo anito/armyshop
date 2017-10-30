@@ -145,7 +145,7 @@ class PhotosList extends Spine.Controller
     e.preventDefault()
     
   back: (e) ->
-    @navigate '/category', Category.record?.id or '', pid = if (pid = Category.record?.selectionList?().first()) then 'pid/' + pid else null
+    @navigate '/category', Category.record?.id or '', pid = if (pid = Category.record?.selectionList?().first()) then 's/' + pid else null
     
     e.preventDefault()
     e.stopPropagation()
@@ -201,7 +201,7 @@ class PhotosList extends Spine.Controller
       Photo.trigger('develop', items)
       
     
-    $('#'+item.id+'>.thumbnail', @el).removeClass('in') for item in items
+    $('#'+item.id+'>.thumbnail', @el).removeClass('show') for item in items
     Photo.develop('rotate', options, callback, items)
     false
     

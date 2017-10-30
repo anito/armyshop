@@ -314,10 +314,10 @@ class ShowView extends Spine.Controller
     catch e
 #    return if cm is pm
     @controllers = (c for c in @canvasManager.controllers when c isnt controller)
-    $('.items', @el).removeClass('in3') for c in @controllers
+    $('.items', @el).removeClass('show') for c in @controllers
     fadein = =>
       viewport = controller.viewport or controller.el
-      viewport.addClass('in3')
+      viewport.addClass('show')
       
     window.setTimeout( =>
       fadein()
@@ -747,7 +747,7 @@ class ShowView extends Spine.Controller
     @navigate '/trash/photos', ''
     
   showCategories: ->
-    @navigate '/category', cid = if (cid = Category.record?.id) then 'cid/' + cid else null
+    @navigate '/category', cid = if (cid = Category.record?.id) then 's/' + cid else null
     
   showProductMasters: ->
     @navigate '/category', ''
@@ -756,12 +756,12 @@ class ShowView extends Spine.Controller
     @navigate '/category', '/'
     
   showProducts: (e) ->
-    @navigate '/category', cid = Category.record?.id or '', pid = if (pid = Category.record?.selectionList?().first()) then 'pid/' + pid else null
+    @navigate '/category', cid = Category.record?.id or '', pid = if (pid = Category.record?.selectionList?().first()) then 's/' + pid else null
       
     e.preventDefault()
     
   showPhotos: (e) ->
-    @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', iid = if (iid = Product.record?.selectionList?().first()) then 'iid/' + iid else null
+    @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', iid = if (iid = Product.record?.selectionList?().first()) then 's/' + iid else null
     e.preventDefault()
     
   showPhoto: (e) ->

@@ -98,7 +98,7 @@ class Product extends Spine.Model
     catId = catPro.category_id
     cat = Category.find(catId)
     if isAdmin
-      location = '/category/' + catId + '/pid/' + favorite.id
+      location = '/category/' + catId + '/s/' + favorite.id
     else
       return if catPro.ignored or !Category.protected[cat.name]
       location = '/pages/' + cat.name + '#/item/' + favorite.id

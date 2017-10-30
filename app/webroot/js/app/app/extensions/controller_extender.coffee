@@ -124,7 +124,7 @@ Controller.Extender =
         el = els.children().forItem(item)
         return unless el.length
         
-        el.addClass('out').removeClass('in')
+        el.addClass('fade').removeClass('show')
         f = ->
           el.detach()
           @trigger('detached', item)
@@ -137,7 +137,10 @@ Controller.Extender =
         id = @model.record.id
         part = @model.className.toLowerCase()
         @model.updateSelection []
-        @navigate '/' + part, id
+        location = window.location.href
+        index = window.location.href.toLowerCase().indexOf('/s')
+        href = location.slice(0, index)
+        window.location.href = href
         
       sortable: (type) ->
         @el.sortable type

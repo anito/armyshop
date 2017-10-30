@@ -125,7 +125,7 @@ class CategoriesList extends Spine.Controller
     item = if e.type is 'click' then $(e.currentTarget).item() else @models.record
     
     if cid = item?.id
-      @navigate '/category', cid, pid = if (pid = Category.record?.selectionList().first()) then 'pid/' + pid else null
+      @navigate '/category', cid, pid = if (pid = Category.record?.selectionList().first()) then 's/' + pid else null
     else
       @navigate '/category', ''
     

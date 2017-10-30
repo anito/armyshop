@@ -212,10 +212,10 @@ class SidebarList extends Spine.Controller
     switch item.constructor.className
       when 'Category'
         @expand(item, (@isOpen(el)) or (!(Category.record?.id is item.id) or !@isOpen(el)))
-        @navigate '/category', cid, pid = if (pid = item.selectionList().first()) then 'pid/' + pid else null
+        @navigate '/category', cid, pid = if (pid = item.selectionList().first()) then 's/' + pid else null
       when 'Product'
         category = $(e.target).closest('li.gal').item()
-        @navigate '/category', category.id, 'pid', item.id
+        @navigate '/category', category.id, 's', item.id
     
     item.updateSelection list
     

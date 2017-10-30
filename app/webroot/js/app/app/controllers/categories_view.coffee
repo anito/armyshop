@@ -83,7 +83,7 @@ class CategoriesView extends Spine.Controller
 #    list = Root.selectionList()[..]
 #    list.addRemove ids
     
-    @navigate '/category', 'cid', ids[0]
+    @navigate '/category', 's', ids[0]
     
     @model.updateSelection ids
     

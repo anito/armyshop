@@ -201,7 +201,7 @@ class PhotosTrashView extends Spine.Controller
     e.stopPropagation()
     
   back: (e) ->
-    @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', iid = if (iid = Product.record?.selectionList?().first()) then 'iid/' + iid else null
+    @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', iid = if (iid = Product.record?.selectionList?().first()) then 's/' + iid else null
     
   in: (e) =>
     el = $(e.currentTarget)

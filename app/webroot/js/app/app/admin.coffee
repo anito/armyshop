@@ -235,35 +235,33 @@ class Main extends Spine.Controller
     
     @routes
       
-      '/category/:cid/:pid/iid/:iid': (params) ->
+      '/category/:cid/:pid/s/:iid': (params) ->
         Model.Root.updateSelection params.cid or []
         Category.updateSelection params.pid or []
         Product.updateSelection params.iid or []
         buffer = Photo.renderBuffer()
         @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
+      '/category/:cid/s/:iid': (params) ->
+        Model.Root.updateSelection params.cid or []
+        Category.updateSelection params.iid or []
+        buffer = Product.renderBuffer()
+        @showView.trigger('active', @showView.productsView, buffer || Product.buffer)
       '/category/:cid/:pid/:iid': (params) ->
         Model.Root.updateSelection params.cid or []
-        if (params.pid is 'pid')
-          Category.updateSelection params.iid or []
-          buffer = Product.renderBuffer()
-          @showView.trigger('active', @showView.productsView, buffer || Product.buffer)
-        else
-          Category.updateSelection params.pid or []
-          Product.updateSelection params.iid or []
-          buffer = Photo.renderBuffer()
-          @showView.trigger('active', @showView.photoView, buffer || Photo.buffer)
+        Category.updateSelection params.pid or []
+        Product.updateSelection params.iid or []
+        buffer = Photo.renderBuffer()
+        @showView.trigger('active', @showView.photoView, buffer || Photo.buffer)
+      '/category/s/:pid': (params) ->
+        buffer = Category.renderBuffer()
+        @showView.trigger('active', @showView.categoriesView, buffer || Category.buffer)
+        Model.Root.updateSelection params.pid or []
       '/category/:cid/:pid': (params) ->
-        if (params.cid is 'cid')
-          buffer = Category.renderBuffer()
-          @showView.trigger('active', @showView.categoriesView, buffer || Category.buffer)
-          
-          Model.Root.updateSelection params.pid or []
-        else
-          Model.Root.updateSelection params.cid or []
-          Category.updateSelection params.pid or []
-          Product.updateSelection []
-          buffer = Photo.renderBuffer()
-          @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
+        Model.Root.updateSelection params.cid or []
+        Category.updateSelection params.pid or []
+        Product.updateSelection []
+        buffer = Photo.renderBuffer()
+        @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
       '/category/:cid': (params) ->
         Model.Root.updateSelection params.cid or []
 #        Category.updateSelection()
@@ -287,8 +285,8 @@ class Main extends Spine.Controller
         @showView.trigger('active', @showView.photosTrashView, items)
       '/wait/*glob': (params) ->
         @showView.trigger('active', @showView.waitView)
-      '/*glob': (params) ->
-        @navigate '/overview', ''
+#      '/*glob': (params) ->
+#        @navigate '/overview', ''
 
     @loadToolbars()
     @defaultSettings =

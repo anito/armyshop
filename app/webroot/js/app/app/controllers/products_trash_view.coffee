@@ -200,7 +200,7 @@ class ProductsTrashView extends Spine.Controller
     
   back: (e) ->
     if cid = Category.record?.id
-      @navigate '/category', cid, pid = if (Category.record?.selectionList().first()) then 'pid/' + pid else ''
+      @navigate '/category', cid, pid = if (Category.record?.selectionList().first()) then 's/' + pid else ''
     else
       @navigate '/category', ''
     

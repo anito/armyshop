@@ -199,7 +199,7 @@ class ProductsView extends Spine.Controller
       else
         func = -> Category.updateSelection([record.id], Category.record?.id)
 #      
-      @navigate('/category', target?.id or '', 'pid', product.id)
+      @navigate('/category', target?.id or '', 's', product.id)
       setTimeout(func, 100)
       
 #      # fill in / remove photos
@@ -356,7 +356,7 @@ class ProductsView extends Spine.Controller
       list = ids[..]
     
     if list.length
-      @navigate '/category', Category.record?.id or '', 'pid', list[0]
+      @navigate '/category', Category.record?.id or '', 's', list[0]
     else
       @navigate '/category', Category.record?.id or ''
     

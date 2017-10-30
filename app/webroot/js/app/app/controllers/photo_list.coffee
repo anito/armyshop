@@ -35,7 +35,7 @@ class PhotoList extends Spine.Controller
     e.preventDefault()
     
   back: ->
-    @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', iid = if (iid = Product.record?.selectionList?().first()) then 'iid/' + iid else null
+    @navigate '/category', Category.record?.id or '', Category.record?.selectionList?().first() or '', iid = if (iid = Product.record?.selectionList?().first()) then 's/' + iid else null
   
   zoom: (e) ->
   
