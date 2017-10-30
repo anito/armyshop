@@ -1128,10 +1128,8 @@ class ShowView extends Spine.Controller
         selection.addRemove(id)
         selection.addRemove(first)
         selection.addRemove(id)
-      console.log selection
       list.parent.select e, selection
     else
-      console.log selection
       list.parent.select e, [id]
         
   scrollTo: (item) ->

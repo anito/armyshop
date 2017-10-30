@@ -37279,10 +37279,8 @@ Released under the MIT License
           selection.addRemove(first);
           selection.addRemove(id);
         }
-        console.log(selection);
         return list.parent.select(e, selection);
       } else {
-        console.log(selection);
         return list.parent.select(e, [id]);
       }
     };
