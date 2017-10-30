@@ -1074,7 +1074,7 @@ class ShowView extends Spine.Controller
     e.stopPropagation()
       
   selectByKey: (e, direction) ->
-    isMeta = e.metaKey or e.ctrlKey or e.shiftKey
+    isMeta = @isMeta(e)
     index = null
     lastIndex = null
     list = @controller.list?.listener or @controller.list
@@ -1118,7 +1118,7 @@ class ShowView extends Spine.Controller
         
     id = el.attr('data-id')
     
-    if !isMeta
+    if isMeta
       #support for multiple selection
       selection = parent.selectionList()[..]
       unless id in selection
@@ -1128,8 +1128,10 @@ class ShowView extends Spine.Controller
         selection.addRemove(id)
         selection.addRemove(first)
         selection.addRemove(id)
+      console.log selection
       list.parent.select e, selection
     else
+      console.log selection
       list.parent.select e, [id]
         
   scrollTo: (item) ->

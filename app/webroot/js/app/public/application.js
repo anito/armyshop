@@ -37222,7 +37222,7 @@ Released under the MIT License
 
     ShowView.prototype.selectByKey = function(e, direction) {
       var active, activeEl, el, elements, first, id, index, isMeta, last, lastIndex, list, models, next, parent, prev, record, ref, selection;
-      isMeta = e.metaKey || e.ctrlKey || e.shiftKey;
+      isMeta = this.isMeta(e);
       index = null;
       lastIndex = null;
       list = ((ref = this.controller.list) != null ? ref.listener : void 0) || this.controller.list;
@@ -37269,7 +37269,7 @@ Released under the MIT License
           el = $(last);
       }
       id = el.attr('data-id');
-      if (!isMeta) {
+      if (isMeta) {
         selection = parent.selectionList().slice(0);
         if (indexOf.call(selection, id) < 0) {
           selection.addRemove(id);
@@ -37279,8 +37279,10 @@ Released under the MIT License
           selection.addRemove(first);
           selection.addRemove(id);
         }
+        console.log(selection);
         return list.parent.select(e, selection);
       } else {
+        console.log(selection);
         return list.parent.select(e, [id]);
       }
     };
