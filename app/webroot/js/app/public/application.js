@@ -29484,12 +29484,13 @@ Released under the MIT License
         '/category/:cid': function(params) {
           var buffer;
           Model.Root.updateSelection(params.cid || []);
-          Category.updateSelection();
           buffer = Product.renderBuffer();
           return this.showView.trigger('active', this.showView.productsView, buffer || Product.buffer);
         },
         '/category/*': function() {
-          Root.updateSelection([]);
+          return this.showView.trigger('active', this.showView.categoriesView);
+        },
+        '/root/:rid': function() {
           return this.showView.trigger('active', this.showView.categoriesView);
         },
         '/overview/*': function() {
@@ -29717,8 +29718,8 @@ Released under the MIT License
     Main.prototype.startPage = function() {
       var ref;
       return;
-      if (!/^#\/category\//.test(location.hash)) {
-        return this.navigate('/category', (ref = Category.first()) != null ? ref.id : void 0);
+      if (!/^#\/root\//.test(location.hash)) {
+        return this.navigate('/root', (ref = Category.first()) != null ? ref.id : void 0);
       }
     };
 
@@ -39839,7 +39840,11 @@ Released under the MIT License
           return (ref = this.el).deselect.apply(ref, args);
         },
         clearSelection: function(e) {
-          return this.model.updateSelection([]);
+          var id, part;
+          id = this.model.record.id;
+          part = this.model.className.toLowerCase();
+          this.model.updateSelection([]);
+          return this.navigate('/' + part, id);
         },
         sortable: function(type) {
           return this.el.sortable(type);

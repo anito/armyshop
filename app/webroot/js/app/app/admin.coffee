@@ -266,11 +266,13 @@ class Main extends Spine.Controller
           @showView.trigger('active', @showView.photosView, buffer || Photo.buffer)
       '/category/:cid': (params) ->
         Model.Root.updateSelection params.cid or []
-        Category.updateSelection()
+#        Category.updateSelection()
         buffer = Product.renderBuffer()
         @showView.trigger('active', @showView.productsView, buffer || Product.buffer)
       '/category/*': ->
-        Root.updateSelection []
+#        Root.updateSelection []
+        @showView.trigger('active', @showView.categoriesView)
+      '/root/:rid': ->
         @showView.trigger('active', @showView.categoriesView)
       '/overview/*': ->
         @overviewView.trigger('active')
@@ -444,8 +446,8 @@ class Main extends Spine.Controller
       
   startPage: ->
     return
-    unless /^#\/category\//.test(location.hash)
-      @navigate '/category', Category.first()?.id
+    unless /^#\/root\//.test(location.hash)
+      @navigate '/root', Category.first()?.id
       
   canvas: (controller) ->
     controller.trigger 'active'

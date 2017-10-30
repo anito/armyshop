@@ -134,7 +134,10 @@ Controller.Extender =
         @el.deselect(args...)
         
       clearSelection: (e) ->
+        id = @model.record.id
+        part = @model.className.toLowerCase()
         @model.updateSelection []
+        @navigate '/' + part, id
         
       sortable: (type) ->
         @el.sortable type
