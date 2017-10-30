@@ -134,13 +134,7 @@ Controller.Extender =
         @el.deselect(args...)
         
       clearSelection: (e) ->
-        id = @model.record.id
-        part = @model.className.toLowerCase()
-        @model.updateSelection []
-        location = window.location.href
-        index = window.location.href.toLowerCase().indexOf('/s')
-        href = location.slice(0, index)
-        window.location.href = href
+        @select e, @model.selectionList()[..]
         
       sortable: (type) ->
         @el.sortable type

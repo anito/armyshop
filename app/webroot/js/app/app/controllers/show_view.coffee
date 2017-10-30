@@ -256,7 +256,8 @@ class ShowView extends Spine.Controller
     Spine.bind('toggle:favorite', @proxy @toggleFavorite)
     
     @current = @controller = @productsView
-    
+    @started = false
+  
     @sOutValue = 160 # initial thumb size (slider setting)
     @sliderRatio = 50
     @thumbSize = 240 # size thumbs are created serverside (should be as large as slider max for best quality)
@@ -282,37 +283,33 @@ class ShowView extends Spine.Controller
     e.stopPropagation()
     
   active: (controller, params) ->
-    @log 'active'
+    @previous = @current #unless @current.subview
+    @current = @controller = controller
+    
     # activate subcontroller
     if controller
       controller.trigger('active', params)
       controller.header?.trigger('active')
       @activated(controller).focus()
-#    else
-#      @focus()
     
   activated: (controller) ->
-    p = @previous = @current unless @current.subview
-    c = @current = @controller = controller
     @currentHeader = controller.header
     @prevLocation = location.hash
+    
     @el.data('current',
       model: controller.model
       models: controller.models
     )
     @controller
-#    return if (@previous is @current) and !@current.isActive()
-    # the controller should already be active, however rendering hasn't taken place yet
     
   changeCanvas: (controller, args) ->
-    @transform(controller, @previous, @current)
-  
+    transformRequired = controller isnt @previous or !@started
+    
+    if transformRequired
+      @transform(controller, @previous)
+      @started = true
+    
   transform: (controller, pContr, cContr) ->
-    try
-      cm = cContr.model.className
-      pm = pContr.model.className
-    catch e
-#    return if cm is pm
     @controllers = (c for c in @canvasManager.controllers when c isnt controller)
     $('.items', @el).removeClass('show') for c in @controllers
     fadein = =>
@@ -1137,7 +1134,7 @@ class ShowView extends Spine.Controller
         
   scrollTo: (item) ->
     Spine.trigger('scroll', item)
-    return unless @controller.isActive() and item
+    return unless @controller?.isActive() and item
     return unless item.constructor.className is @controller.models.className
     
     try

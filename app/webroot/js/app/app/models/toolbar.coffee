@@ -126,8 +126,8 @@ class Toolbar extends Spine.Model
         ,
           name: ->
             len = 0
-            model = App.showView.current.model
-            modelName = App.showView.current.model.className
+            model = App.showView.current?.model
+            modelName = App.showView.current?.model.className
             if modelName is 'ProductsTrash'
               type = 'Löschen'
               len = model.selectionList().length
@@ -139,8 +139,8 @@ class Toolbar extends Spine.Model
           klass: 'opt-DeleteProduct'
           disabled: ->
             len = 0
-            model = App.showView.current.model
-            modelName = App.showView.current.model.className
+            model = App.showView.current?.model
+            modelName = App.showView.current?.model.className
             if modelName is 'ProductsTrash'
               len = model.selectionList().length
             else
@@ -241,8 +241,8 @@ class Toolbar extends Spine.Model
         ,
           name: ->
             len = 0
-            model = App.showView.current.model
-            modelName = App.showView.current.model.className
+            model = App.showView.current?.model
+            modelName = App.showView.current?.model.className
             if modelName is 'PhotosTrash'
               type = 'Löschen'
               len = model.selectionList().length
@@ -255,8 +255,8 @@ class Toolbar extends Spine.Model
           klass: 'opt-DeletePhoto'
           disabled: ->
             len = 0
-            model = App.showView.current.model
-            modelName = App.showView.current.model.className
+            model = App.showView.current?.model
+            modelName = App.showView.current?.model.className
             if modelName is 'PhotosTrash'
               len = model.selectionList().length
             else
@@ -268,19 +268,19 @@ class Toolbar extends Spine.Model
           name: 'Kopieren'
           icon: ''
           klass: 'opt-CopyPhoto'
-          disabled: -> !Product.selectionList().length and App.showView.current.model.className.toLowerCase().indexOf('trash') >= 0
+          disabled: -> !Product.selectionList().length and App.showView.current?.model.className.toLowerCase().indexOf('trash') >= 0
           shortcut: 'Ctrl+C'
         ,
           name: 'Ausschneiden'
           icon: ''
           klass: 'opt-CutPhoto'
-          disabled: -> !Product.selectionList().length and App.showView.current.model.className.toLowerCase().indexOf('trash') >= 0
+          disabled: -> !Product.selectionList().length and App.showView.current?.model.className.toLowerCase().indexOf('trash') >= 0
           shortcut: 'Ctrl+X'
         ,
           name: 'Einfügen'
           icon: ''
           klass: 'opt-PastePhoto'
-          disabled: -> !Clipboard.findAllByAttribute('type', 'copy').length or !Product.record and App.showView.current.model.className.toLowerCase().indexOf('trash') >= 0
+          disabled: -> !Clipboard.findAllByAttribute('type', 'copy').length or !Product.record and App.showView.current?.model.className.toLowerCase().indexOf('trash') >= 0
           shortcut: 'Ctrl+V'
         ,
           devider: true

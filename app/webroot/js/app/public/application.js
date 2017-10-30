@@ -36122,6 +36122,7 @@ Released under the MIT License
       Spine.bind('product:ignore', this.proxy(this.ignoreProduct));
       Spine.bind('toggle:favorite', this.proxy(this.toggleFavorite));
       this.current = this.controller = this.productsView;
+      this.started = false;
       this.sOutValue = 160;
       this.sliderRatio = 50;
       this.thumbSize = 240;
@@ -36146,7 +36147,8 @@ Released under the MIT License
 
     ShowView.prototype.active = function(controller, params) {
       var ref;
-      this.log('active');
+      this.previous = this.current;
+      this.current = this.controller = controller;
       if (controller) {
         controller.trigger('active', params);
         if ((ref = controller.header) != null) {
@@ -36157,11 +36159,6 @@ Released under the MIT License
     };
 
     ShowView.prototype.activated = function(controller) {
-      var c, p;
-      if (!this.current.subview) {
-        p = this.previous = this.current;
-      }
-      c = this.current = this.controller = controller;
       this.currentHeader = controller.header;
       this.prevLocation = location.hash;
       this.el.data('current', {
@@ -36172,17 +36169,16 @@ Released under the MIT License
     };
 
     ShowView.prototype.changeCanvas = function(controller, args) {
-      return this.transform(controller, this.previous, this.current);
+      var transformRequired;
+      transformRequired = controller !== this.previous || !this.started;
+      if (transformRequired) {
+        this.transform(controller, this.previous);
+        return this.started = true;
+      }
     };
 
     ShowView.prototype.transform = function(controller, pContr, cContr) {
-      var c, cm, e, fadein, i, len, pm, ref;
-      try {
-        cm = cContr.model.className;
-        pm = pContr.model.className;
-      } catch (error) {
-        e = error;
-      }
+      var c, fadein, i, len, ref;
       this.controllers = (function() {
         var i, len, ref, results;
         ref = this.canvasManager.controllers;
@@ -37290,9 +37286,9 @@ Released under the MIT License
     };
 
     ShowView.prototype.scrollTo = function(item) {
-      var dht, e, el, marginBottom, marginTop, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, parentEl, res, resMax, resMin, stp;
+      var dht, e, el, marginBottom, marginTop, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, parentEl, ref, res, resMax, resMin, stp;
       Spine.trigger('scroll', item);
-      if (!(this.controller.isActive() && item)) {
+      if (!(((ref = this.controller) != null ? ref.isActive() : void 0) && item)) {
         return;
       }
       if (item.constructor.className !== this.controller.models.className) {
@@ -39838,14 +39834,7 @@ Released under the MIT License
           return (ref = this.el).deselect.apply(ref, args);
         },
         clearSelection: function(e) {
-          var href, id, index, location, part;
-          id = this.model.record.id;
-          part = this.model.className.toLowerCase();
-          this.model.updateSelection([]);
-          location = window.location.href;
-          index = window.location.href.toLowerCase().indexOf('/s');
-          href = location.slice(0, index);
-          return window.location.href = href;
+          return this.select(e, this.model.selectionList().slice(0));
         },
         sortable: function(type) {
           return this.el.sortable(type);
@@ -46816,10 +46805,10 @@ Released under the MIT License
             disabled: function() {}
           }, {
             name: function() {
-              var len, model, modelName, type;
+              var len, model, modelName, ref, ref1, type;
               len = 0;
-              model = App.showView.current.model;
-              modelName = App.showView.current.model.className;
+              model = (ref = App.showView.current) != null ? ref.model : void 0;
+              modelName = (ref1 = App.showView.current) != null ? ref1.model.className : void 0;
               if (modelName === 'ProductsTrash') {
                 type = 'Löschen';
                 len = model.selectionList().length;
@@ -46832,10 +46821,10 @@ Released under the MIT License
             icon: 'bin',
             klass: 'opt-DeleteProduct',
             disabled: function() {
-              var len, model, modelName;
+              var len, model, modelName, ref, ref1;
               len = 0;
-              model = App.showView.current.model;
-              modelName = App.showView.current.model.className;
+              model = (ref = App.showView.current) != null ? ref.model : void 0;
+              modelName = (ref1 = App.showView.current) != null ? ref1.model.className : void 0;
               if (modelName === 'ProductsTrash') {
                 len = model.selectionList().length;
               } else {
@@ -46967,10 +46956,10 @@ Released under the MIT License
             disabled: function() {}
           }, {
             name: function() {
-              var len, model, modelName, type;
+              var len, model, modelName, ref, ref1, type;
               len = 0;
-              model = App.showView.current.model;
-              modelName = App.showView.current.model.className;
+              model = (ref = App.showView.current) != null ? ref.model : void 0;
+              modelName = (ref1 = App.showView.current) != null ? ref1.model.className : void 0;
               if (modelName === 'PhotosTrash') {
                 type = 'Löschen';
                 len = model.selectionList().length;
@@ -46984,10 +46973,10 @@ Released under the MIT License
             icon: 'bin',
             klass: 'opt-DeletePhoto',
             disabled: function() {
-              var len, model, modelName;
+              var len, model, modelName, ref, ref1;
               len = 0;
-              model = App.showView.current.model;
-              modelName = App.showView.current.model.className;
+              model = (ref = App.showView.current) != null ? ref.model : void 0;
+              modelName = (ref1 = App.showView.current) != null ? ref1.model.className : void 0;
               if (modelName === 'PhotosTrash') {
                 len = model.selectionList().length;
               } else {
@@ -47002,7 +46991,8 @@ Released under the MIT License
             icon: '',
             klass: 'opt-CopyPhoto',
             disabled: function() {
-              return !Product.selectionList().length && App.showView.current.model.className.toLowerCase().indexOf('trash') >= 0;
+              var ref;
+              return !Product.selectionList().length && ((ref = App.showView.current) != null ? ref.model.className.toLowerCase().indexOf('trash') : void 0) >= 0;
             },
             shortcut: 'Ctrl+C'
           }, {
@@ -47010,7 +47000,8 @@ Released under the MIT License
             icon: '',
             klass: 'opt-CutPhoto',
             disabled: function() {
-              return !Product.selectionList().length && App.showView.current.model.className.toLowerCase().indexOf('trash') >= 0;
+              var ref;
+              return !Product.selectionList().length && ((ref = App.showView.current) != null ? ref.model.className.toLowerCase().indexOf('trash') : void 0) >= 0;
             },
             shortcut: 'Ctrl+X'
           }, {
@@ -47018,7 +47009,8 @@ Released under the MIT License
             icon: '',
             klass: 'opt-PastePhoto',
             disabled: function() {
-              return !Clipboard.findAllByAttribute('type', 'copy').length || !Product.record && App.showView.current.model.className.toLowerCase().indexOf('trash') >= 0;
+              var ref;
+              return !Clipboard.findAllByAttribute('type', 'copy').length || !Product.record && ((ref = App.showView.current) != null ? ref.model.className.toLowerCase().indexOf('trash') : void 0) >= 0;
             },
             shortcut: 'Ctrl+V'
           }, {

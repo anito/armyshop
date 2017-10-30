@@ -76,7 +76,7 @@
                     <li class="splitter flex"></li>
                     <nav class="navbar navbar-expand-lg toolbar toolbar-three hbox nav"></nav>
                 </ul>
-                <div class="contents views vbox flex fadeelement content bg-dark" style="height: 0;">
+                <div class="contents views vbox flex fade_ content bg-dark" style="height: 0;">
                     <div class="header views vbox">
                         <div data-model-name="Root" data-models-name="Category" class="categories  view vbox"></div>
                         <div data-model-name="Category" data-models-name="Product" class="products view vbox"></div>
@@ -87,27 +87,27 @@
                         <div class="overview view"></div>
                     </div>
                     <div class="view wait content vbox flex autoflow" style=""></div>
-                    <div data-model-name="Root" data-models-name="Category" class="view categories content vbox flex data parent autoflow" style="">
-                        <div class="items flex autoflow fadein in1">Categories</div>
+                    <div data-model-name="Root" data-models-name="Category" class="view categories content vbox flex data parent autoflow show" style="">
+                        <div class="items flex autoflow fade">Categories</div>
                     </div>
-                    <div data-model-name="Category" data-models-name="Product" class="view products content vbox flex data parent autoflow fadeelement" style="">
+                    <div data-model-name="Category" data-models-name="Product" class="view products content vbox flex data parent autoflow show" style="">
                         <div class="hoverinfo fade"></div>
-                        <div class="items flex autoflow fadein in1">Products</div>
+                        <div class="items flex autoflow fade">Products</div>
                     </div>
-                    <div data-model-name="Product" data-models-name="Photo" class="view photos content vbox flex data parent autoflow fadeelement" style="">
+                    <div data-model-name="Product" data-models-name="Photo" class="view photos content vbox flex data parent autoflow show" style="">
                         <div class="hoverinfo fade"></div>
-                        <div class="items flex autoflow fadein in1" data-toggle="modal-category"
+                        <div class="items flex autoflow fade" data-toggle="modal-category"
                              data-target="#modal-category" data-selector="a">Photos
                         </div>
                     </div>
-                    <div data-model-name="Product" data-models-name="Photo" class="view photo content vbox flex data parent autoflow fadeelement nopad" style="">
+                    <div data-model-name="Product" data-models-name="Photo" class="view photo content vbox flex data parent autoflow show nopad" style="">
                         <div class="hoverinfo fade"></div>
                         <div class="items flex autoflow fadein in1 nopad">Photo</div>
                     </div>
-                    <div data-model-name="ProductsTrash" data-models-name="Product" tabindex="1" class="view products-trash content vbox flex data parent autoflow fadeelement" style="">
+                    <div data-model-name="ProductsTrash" data-models-name="Product" tabindex="1" class="view products-trash content vbox flex data parent autoflow fade" style="">
                         <div class="items flex autoflow fadein in1">Product Trash</div>
                     </div>
-                    <div data-model-name="PhotosTrash" data-models-name="Photo" tabindex="1" class="view photos-trash content vbox flex data parent autoflow fadeelement" style="">
+                    <div data-model-name="PhotosTrash" data-models-name="Photo" tabindex="1" class="view photos-trash content vbox flex data parent autoflow fade" style="">
                         <div class="items flex autoflow fadein in1">Photo Trash</div>
                     </div>
                 </div>
@@ -787,7 +787,7 @@
 </script>
 
 <script id="headerCategoryTemplate" type="text/html">
-    <section class="top viewheader fadeelement">
+    <section class="top viewheader">
         <div class="left">
             <div class="header-title">
                 <span class="btn-group btn-nav">
@@ -825,7 +825,7 @@
 </script>
 
 <script id="headerProductTemplate" type="text/html">
-    <section class="top viewheader fadeelement">
+    <section class="top viewheader">
         <div class="left">
             <div class="header-title">
                 <span class="btn-group btn-nav">
@@ -854,7 +854,7 @@
         {{tmpl() "#productSpecsTemplate"}}
     </section>
     <section class="hide">
-        <span class="fadeelement breadcrumb">
+        <span class="fade breadcrumb">
             <li style="padding: 0px 19px;" class="opt-Prev">
                 <div style="" class="go-up"></div>
             </li>
@@ -890,7 +890,7 @@
 </script>
 
 <script id="headerProductTrashTemplate" type="text/html">
-    <section class="top viewheader fadeelement left">
+    <section class="top viewheader left">
         <div class="left">
             <div class="header-title">
                 <span class="btn-group btn-nav">
@@ -919,7 +919,7 @@
 </script>
 
 <script id="headerPhotosTemplate" type="text/html">
-    <section class="top viewheader fadeelement">
+    <section class="top viewheader">
         <div class="left">
             <div class="header-title">
                 <span class="btn-group btn-nav">
@@ -959,7 +959,7 @@
 </script>
 
 <script id="headerPhotosTrashTemplate" type="text/html">
-    <section class="top viewheader fadeelement left">
+    <section class="top viewheader left">
         <div class="left">
             <div class="header-title">
                 <span class="btn-group btn-nav">
@@ -989,7 +989,7 @@
 </script>
 
 <script id="headerPhotoTemplate" type="text/html">
-    <section class="top viewheader fadeelement">
+    <section class="top viewheader">
         <div class="left">
             <div class="header-title">
                 <span class="btn-group btn-nav">
@@ -1049,7 +1049,7 @@
 
 <script id="photosBreadcrumbTemplate" type="text/html">
     <section class="hide">
-        <span class="fadeelement breadcrumb">
+        <span class="fade breadcrumb">
             <li style="padding: 0px 19px;" class="opt-Prev">
                 <div style="" class="go-up"></div>
             </li>
@@ -1066,7 +1066,7 @@
 
 <script id="photoBreadcrumbTemplate" type="text/html">
     <section class="hide">
-        <span class="fadeelement breadcrumb">
+        <span class="fade breadcrumb">
             <li style="padding: 0px 19px;" class="opt-Prev">
                 <div style="" class="go-up"></div>
             </li>
