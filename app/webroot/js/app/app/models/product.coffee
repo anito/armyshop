@@ -135,7 +135,7 @@ class Product extends Spine.Model
       ga = new CategoriesProduct
         category_id  : target.id
         product_id   : item.id
-        ignored      : true
+        ignored      : item.ignored
         order        : parseInt(CategoriesProduct.products(target.id).last()?.order)+1 or 0
       valid = ga.save
         validate: true
