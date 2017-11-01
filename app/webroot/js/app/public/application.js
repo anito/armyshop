@@ -42024,7 +42024,7 @@ Released under the MIT License
           return this.me.snap(this.res);
         },
         updateTemplate: function(item) {
-          var active, hot, ignored, innerEl, itemEl, style, tmplItem;
+          var active, hot, innerEl, itemEl, style, tmplItem;
           this.log('updateTemplate');
           if (!item || item.destroyed || item.deleted) {
             return;
@@ -42033,7 +42033,6 @@ Released under the MIT License
           itemEl = this.children().forItem(item);
           active = itemEl.hasClass('active');
           hot = itemEl.hasClass('hot');
-          ignored = itemEl.hasClass('ignored');
           innerEl = $('.thumbnail', itemEl);
           style = innerEl.attr('style');
           tmplItem = itemEl.tmplItem();
@@ -42045,7 +42044,7 @@ Released under the MIT License
           itemEl.attr('id', item.id);
           itemEl.toggleClass('active', active);
           itemEl.toggleClass('hot', hot);
-          itemEl.toggleClass('ignored', ignored);
+          itemEl.toggleClass('ignored', item.ignored);
           innerEl = $('.thumbnail', itemEl);
           innerEl.attr('style', style);
           return this.el.sortable();
