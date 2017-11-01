@@ -22,6 +22,7 @@ class PhotosAddView extends Spine.Controller
     '.items'        : 'itemsEl'
 
   events:
+    'click'                                     : 'clearSelection'
     'click .item'                               : 'click'
     'click .opt-modalAddExecute:not(.disabled)' : 'add'
     'click .opt-modalSelectInv:not(.disabled)'  : 'selectInv'
@@ -62,9 +63,11 @@ class PhotosAddView extends Spine.Controller
     @list = new PhotosAddList
       template: @subTemplate
       parent: @parent
+    
+    @selectionList = []
       
     Spine.bind('photos:add', @proxy @show)
-    window.test = @
+    @bind('selected', @proxy @selected)
       
   render: (items) ->
     @html @template @items = items
@@ -100,35 +103,18 @@ class PhotosAddView extends Spine.Controller
     Spine.trigger('slider:change', App.showView.sOutValue)
     
   click: (e) ->
+    item = $(e.currentTarget).item()
+    @select(e, item.id, true)
+    
     e.stopPropagation()
     e.preventDefault()
     
-    item = $(e.currentTarget).item()
-    @select(item.id, !@isMeta(e))
-    
-  select: (items = [], cumul) ->
-    unless Array.isArray items
-      items = [items]
-      
-    if cumul
-      list = @selectionList[..]
-      for item in items
-        list.addRemove(item)
-    else list = items[..]
-        
-    @selectionList = list[..]
-    
+  selected: (list) ->
     @renderFooter list
-    @list.exposeSelection(list)
-    
-  selectAll: (e) ->
-    list = @all()
-    @select(list)
-    e.stopPropagation()
+    @list.exposeSelection list
     
   selectInv: (e) ->
-    list = @all()
-    @select(list, true)
+    @select e, @all(), true
     e.stopPropagation()
     
   all: ->

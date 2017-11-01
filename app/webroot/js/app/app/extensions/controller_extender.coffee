@@ -44,7 +44,7 @@ Controller.Extender =
         e.preventDefault()
         e.stopPropagation()
         
-      exposeSelection: (selection=@model.selectionList()) ->
+      exposeSelection: (selection=@model?.selectionList() or @selectionList) ->
         @log 'exposing'
         @deselect()
         
@@ -134,7 +134,50 @@ Controller.Extender =
         @el.deselect(args...)
         
       clearSelection: (e) ->
-        @select e, @model.selectionList()[..]
+        @select e, []
+        
+      getList: ->
+        @selectionList?[..] or @model?.selectionList()[..]
+        
+      select: (e, ids=[], addRemove) ->
+        list = @getList()
+        ids = [ids] unless Array.isArray ids
+        
+#        addRemove = addRemove or !@isMeta(e)
+        
+        if addRemove 
+          list.addRemove(ids)
+        else
+          list = ids[..]
+
+        @selectionList = list[..] if @selectionList
+        @trigger 'selected', list
+
+        e.stopPropagation()
+        
+      selectAll: (e) ->
+        @select e, @all()
+        e.stopPropagation()
+    
+      selectInv: (e) ->
+        @select e, @all(), true
+        e.stopPropagation()
+        
+      selected: (list) ->
+        @model.updateSelection list
+        
+      all: ->
+        root = $('.items', @el)
+        
+        return [] unless root.length
+        
+        items = root.children('.item')
+
+        list = []
+        items.each (index, el) ->
+          item = $(@).item()
+          list.unshift item.id
+        list
         
       sortable: (type) ->
         @el.sortable type

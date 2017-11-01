@@ -30306,6 +30306,7 @@ Released under the MIT License
       this.infoUp = bind(this.infoUp, this);
       CategoriesView.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
+      this.bind('selected', this.proxy(this.selected));
       this.list = new CategoriesList({
         el: this.items,
         template: this.template,
@@ -30339,19 +30340,12 @@ Released under the MIT License
     CategoriesView.prototype.click = function(e) {
       var item;
       item = $(e.currentTarget).item();
-      return this.select(e, item.id);
+      return this.select(e, item.id, true);
     };
 
-    CategoriesView.prototype.select = function(e, ids) {
-      if (ids == null) {
-        ids = [];
-      }
-      if (!Array.isArray(ids)) {
-        ids = [ids];
-      }
-      this.navigate('/category', 's', ids[0]);
-      this.model.updateSelection(ids);
-      return e.stopPropagation();
+    CategoriesView.prototype.selected = function(list) {
+      this.navigate('/category', 's', list[0]);
+      return this.model.updateSelection(list[0]);
     };
 
     CategoriesView.prototype.beforeDestroy = function(item) {
@@ -32519,6 +32513,7 @@ Released under the MIT License
     };
 
     PhotosAddView.prototype.events = {
+      'click': 'clearSelection',
       'click .item': 'click',
       'click .opt-modalAddExecute:not(.disabled)': 'add',
       'click .opt-modalSelectInv:not(.disabled)': 'selectInv',
@@ -32563,8 +32558,9 @@ Released under the MIT License
         template: this.subTemplate,
         parent: this.parent
       });
+      this.selectionList = [];
       Spine.bind('photos:add', this.proxy(this.show));
-      window.test = this;
+      this.bind('selected', this.proxy(this.selected));
     }
 
     PhotosAddView.prototype.render = function(items) {
@@ -32611,45 +32607,19 @@ Released under the MIT License
 
     PhotosAddView.prototype.click = function(e) {
       var item;
-      e.stopPropagation();
-      e.preventDefault();
       item = $(e.currentTarget).item();
-      return this.select(item.id, !this.isMeta(e));
+      this.select(e, item.id, true);
+      e.stopPropagation();
+      return e.preventDefault();
     };
 
-    PhotosAddView.prototype.select = function(items, cumul) {
-      var i, item, len, list;
-      if (items == null) {
-        items = [];
-      }
-      if (!Array.isArray(items)) {
-        items = [items];
-      }
-      if (cumul) {
-        list = this.selectionList.slice(0);
-        for (i = 0, len = items.length; i < len; i++) {
-          item = items[i];
-          list.addRemove(item);
-        }
-      } else {
-        list = items.slice(0);
-      }
-      this.selectionList = list.slice(0);
+    PhotosAddView.prototype.selected = function(list) {
       this.renderFooter(list);
       return this.list.exposeSelection(list);
     };
 
-    PhotosAddView.prototype.selectAll = function(e) {
-      var list;
-      list = this.all();
-      this.select(list);
-      return e.stopPropagation();
-    };
-
     PhotosAddView.prototype.selectInv = function(e) {
-      var list;
-      list = this.all();
-      this.select(list, true);
+      this.select(e, this.all(), true);
       return e.stopPropagation();
     };
 
@@ -33092,7 +33062,7 @@ Released under the MIT License
 
 }).call(this);
  },"controllers/photos_trash_header": function(exports, require, module) { (function() {
-  var $, Category, Extender, PhotosTrashHeader, Spine,
+  var $, Category, Extender, PhotosTrash, PhotosTrashHeader, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -33104,10 +33074,16 @@ Released under the MIT License
 
   Extender = require('extensions/controller_extender');
 
+  PhotosTrash = require('models/photos_trash');
+
   PhotosTrashHeader = (function(superClass) {
     extend(PhotosTrashHeader, superClass);
 
     PhotosTrashHeader.extend(Extender);
+
+    PhotosTrashHeader.prototype.events = {
+      'click .opt-RecoverPhotosTrash': 'recover'
+    };
 
     PhotosTrashHeader.prototype.template = function(items) {
       return $("#headerPhotosTrashTemplate").tmpl(items);
@@ -33116,14 +33092,33 @@ Released under the MIT License
     function PhotosTrashHeader() {
       PhotosTrashHeader.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
+      PhotosTrash.bind('change:selection', this.proxy(this.change));
     }
 
-    PhotosTrashHeader.prototype.render = function(item) {
-      return this.html(this.template(item));
+    PhotosTrashHeader.prototype.change = function(list) {
+      var records;
+      records = PhotosTrash.toRecords(list);
+      this.items = records;
+      return this.render(records);
+    };
+
+    PhotosTrashHeader.prototype.render = function(items) {
+      if (items == null) {
+        items = [];
+      }
+      return this.html(this.template({
+        count: items.length
+      }));
     };
 
     PhotosTrashHeader.prototype.active = function() {
       return this.render();
+    };
+
+    PhotosTrashHeader.prototype.recover = function(e) {
+      PhotosTrash.trigger('recover', this.items);
+      e.stopPropagation();
+      return e.preventDefault();
     };
 
     return PhotosTrashHeader;
@@ -33199,13 +33194,14 @@ Released under the MIT License
       this["in"] = bind(this["in"], this);
       PhotosTrashView.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
-      Photo.bind('destroy:trash', this.proxy(this.destroy));
+      this.bind('selected', this.proxy(this.selected));
       PhotosTrash.bind('change:selection', this.proxy(this.exposeSelection));
-      Photo.bind('beforeDestroy', this.proxy(this.beforeDestroy));
+      PhotosTrash.bind('recover', this.proxy(this.recoverPhotos));
+      PhotosTrash.bind('beforeDestroy', this.proxy(this.beforeDestroy));
+      Photo.bind('destroy:trash', this.proxy(this.destroy));
+      Photo.bind('inbound:trash', this.proxy(this.inbound));
       Photo.bind('destroy:photos', this.proxy(this.destroyPhotos));
       Photo.bind('refresh', this.proxy(this.initTrash));
-      Photo.bind('inbound:trash', this.proxy(this.inbound));
-      Photo.bind('outbound:trash', this.proxy(this.outbound));
       Photo.bind('empty:trash', this.proxy(this.emptyTrash));
       Spine.bind('refresh:one', this.proxy(this.refreshOne));
     }
@@ -33258,6 +33254,7 @@ Released under the MIT License
       if (!Array.isArray(photos)) {
         photos = [photos];
       }
+      console.log(photos);
       for (i = 0, len = photos.length; i < len; i++) {
         photo = photos[i];
         photo.deleted = true;
@@ -33267,15 +33264,11 @@ Released under the MIT License
       return this.initTrash(photos);
     };
 
-    PhotosTrashView.prototype.outbound = function(item) {};
-
     PhotosTrashView.prototype.watch = function(item) {
       var trash;
       if (!item.deleted || item.destroyed) {
         trash = PhotosTrash.find(item.id);
-        console.log(trash);
         trash.destroy();
-        Photo.trigger('outbound:trash');
         return this.remove(item);
       }
     };
@@ -33291,9 +33284,26 @@ Released under the MIT License
     PhotosTrashView.prototype.recoverPhoto = function(e) {
       var item;
       e.stopPropagation();
-      item = $(e.currentTarget).item();
-      item.deleted = false;
-      return item.save();
+      item = $(e.target).item();
+      this.recoverPhotos(item);
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    PhotosTrashView.prototype.recoverPhotos = function(items) {
+      var i, item, len, photo, results;
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      results = [];
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        console.log(item);
+        photo = Photo.find(item.id);
+        photo.deleted = false;
+        results.push(photo.save());
+      }
+      return results;
     };
 
     PhotosTrashView.prototype.destroyPhoto = function(e) {
@@ -33331,49 +33341,10 @@ Released under the MIT License
       }
     };
 
-    PhotosTrashView.prototype.beforeDestroy = function(photo) {
-      var i, len, photos, product, products, results;
+    PhotosTrashView.prototype.beforeDestroy = function(trash) {
       this.log('beforeDestroy');
-      return;
-      photo.unbind('released:fromTrash');
-      photo.removeSelectionID();
-      products = ProductsPhoto.products(photo.id);
-      results = [];
-      for (i = 0, len = products.length; i < len; i++) {
-        product = products[i];
-        product.removeFromSelection(photo.id);
-        photo.removeSelectionID();
-        photos = ProductsPhoto.photos(product.id).toId();
-        results.push(Photo.trigger('destroy:join', photos, product));
-      }
-      return results;
-    };
-
-    PhotosTrashView.prototype.destroyPhotos_ = function(ids, callback) {
-      var el, i, len, photo, photos, product;
-      this.log('destroyPhoto');
-      if (!Array.isArray(ids)) {
-        ids = [ids];
-      }
-      this.stopInfo();
-      ids = ids || Product.selectionList().slice(0);
-      photos = Photo.toRecords(ids);
-      for (i = 0, len = photos.length; i < len; i++) {
-        photo = photos[i];
-        el = this.list.findModelElement(photo);
-        el.removeClass('in');
-        if (product = Product.record) {
-          this.destroyJoin({
-            photos: [photo],
-            product: product
-          });
-        } else {
-          photo.destroy();
-        }
-      }
-      if (typeof callback === 'function') {
-        return callback.call();
-      }
+      trash.removeSelectionID();
+      return PhotosTrash.removeFromSelection(null, trash.id);
     };
 
     PhotosTrashView.prototype.destroy = function(items) {
@@ -33405,25 +33376,7 @@ Released under the MIT License
     PhotosTrashView.prototype.click = function(e) {
       var item;
       item = $(e.currentTarget).item();
-      this.select(e, item.id);
-      return e.stopPropagation();
-    };
-
-    PhotosTrashView.prototype.select = function(e, ids) {
-      var list;
-      if (ids == null) {
-        ids = [];
-      }
-      list = this.model.selectionList().slice(0);
-      if (!Array.isArray(ids)) {
-        ids = [ids];
-      }
-      if (this.isMeta(e)) {
-        list.addRemove(ids);
-      } else {
-        list = ids.slice(0);
-      }
-      this.model.updateSelection(list);
+      this.select(e, item.id, true);
       return e.stopPropagation();
     };
 
@@ -33553,6 +33506,7 @@ Released under the MIT License
       this.header.template = this.headerTemplate;
       this.viewport = this.list.el;
       this.bind('drag:drop', this.proxy(this.dragDrop));
+      this.bind('selected', this.proxy(this.selected));
       ProductsPhoto.bind('destroy', this.proxy(this.destroyProductsPhoto));
       ProductsPhoto.bind('beforeDestroy', this.proxy(this.beforeDestroyProductsPhoto));
       CategoriesProduct.bind('destroy', this.proxy(this.backToProductView));
@@ -33638,30 +33592,18 @@ Released under the MIT License
       var item;
       App.showView.trigger('change:toolbarOne');
       item = $(e.currentTarget).item();
-      return this.select(e, item.id);
+      this.select(e, item.id, true);
+      return e.stopPropagation();
     };
 
-    PhotosView.prototype.select = function(e, ids) {
-      var list, ref, ref1;
-      if (ids == null) {
-        ids = [];
-      }
-      list = this.model.selectionList().slice(0);
-      if (!Array.isArray(ids)) {
-        ids = [ids];
-      }
-      if (!this.isMeta(e)) {
-        list.addRemove(ids);
-      } else {
-        list = ids.slice(0);
-      }
+    PhotosView.prototype.selected = function(list) {
+      var ref, ref1;
       if (list.length) {
         this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', Product.record.id || '', 's', list[0]);
       } else {
         this.navigate('/category', ((ref1 = Category.record) != null ? ref1.id : void 0) || '', Product.record.id || '');
       }
-      this.model.updateSelection(list);
-      return e.stopPropagation();
+      return this.model.updateSelection(list);
     };
 
     PhotosView.prototype.select_ = function(e, ids) {
@@ -34064,7 +34006,8 @@ Released under the MIT License
       if (parent.hasClass('open')) {
         return;
       }
-      return this.exapand(e);
+      this.exapand(e);
+      return e.stopPropagation();
     };
 
     PreviewView.prototype.togglePreview = function() {
@@ -34362,6 +34305,7 @@ Released under the MIT License
     };
 
     ProductsAddView.prototype.events = {
+      'click': 'clearSelection',
       'click .item': 'click',
       'click .opt-modalAddExecute:not(.disabled)': 'add',
       'click .opt-modalSelectInv:not(.disabled)': 'selectInv',
@@ -34405,9 +34349,11 @@ Released under the MIT License
         parent: this.parent,
         modal: true
       });
+      this.selectionList = [];
       modal.bind('show.bs.modal', this.proxy(this.modalShow));
       modal.bind('hide.bs.modal', this.proxy(this.modalHide));
       Spine.bind('products:add', this.proxy(this.show));
+      this.bind('selected', this.proxy(this.selected));
     }
 
     ProductsAddView.prototype.render = function(items) {
@@ -34444,19 +34390,22 @@ Released under the MIT License
 
     ProductsAddView.prototype.click = function(e) {
       var item;
-      e.stopPropagation();
-      e.preventDefault();
       item = $(e.currentTarget).item();
-      return this.select(item.id, !this.isMeta(e));
+      this.select(e, item.id, true);
+      e.stopPropagation();
+      return e.preventDefault();
     };
 
-    ProductsAddView.prototype.select = function(items, cumul) {
+    ProductsAddView.prototype.select__ = function(ids, cumul) {
       var i, item, len, list;
-      if (items == null) {
-        items = [];
+      if (ids == null) {
+        ids = [];
       }
-      if (!Array.isArray(items)) {
-        items = [items];
+      if (cumul == null) {
+        cumul = true;
+      }
+      if (!Array.isArray(ids)) {
+        ids = [ids];
       }
       if (cumul) {
         list = this.selectionList.slice(0);
@@ -34467,36 +34416,12 @@ Released under the MIT License
       } else {
         list = items.slice(0);
       }
-      this.selectionList = list.slice(0);
+      return this.selectionList = list.slice(0);
+    };
+
+    ProductsAddView.prototype.selected = function(list) {
       this.renderFooter(list);
       return this.list.exposeSelection(list);
-    };
-
-    ProductsAddView.prototype.selectAll = function(e) {
-      var list;
-      list = this.all();
-      this.select(list);
-      return e.stopPropagation();
-    };
-
-    ProductsAddView.prototype.selectInv = function(e) {
-      var list;
-      list = this.all();
-      this.select(list, true);
-      return e.stopPropagation();
-    };
-
-    ProductsAddView.prototype.all = function() {
-      var items, list, root;
-      root = this.itemsEl;
-      items = root.children('.item');
-      list = [];
-      items.each(function(index, el) {
-        var item;
-        item = $(this).item();
-        return list.unshift(item.id);
-      });
-      return list;
     };
 
     ProductsAddView.prototype.add = function() {
@@ -34844,7 +34769,7 @@ Released under the MIT License
 
 }).call(this);
  },"controllers/products_trash_header": function(exports, require, module) { (function() {
-  var $, Category, Extender, ProductsTrashHeader, Spine,
+  var $, Category, Extender, ProductsTrash, ProductsTrashHeader, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -34856,10 +34781,16 @@ Released under the MIT License
 
   Extender = require('extensions/controller_extender');
 
+  ProductsTrash = require('models/products_trash');
+
   ProductsTrashHeader = (function(superClass) {
     extend(ProductsTrashHeader, superClass);
 
     ProductsTrashHeader.extend(Extender);
+
+    ProductsTrashHeader.prototype.events = {
+      'click .opt-RecoverProductsTrash': 'recover'
+    };
 
     ProductsTrashHeader.prototype.template = function(items) {
       return $("#headerProductTrashTemplate").tmpl(items);
@@ -34868,14 +34799,33 @@ Released under the MIT License
     function ProductsTrashHeader() {
       ProductsTrashHeader.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
+      ProductsTrash.bind('change:selection', this.proxy(this.change));
     }
 
-    ProductsTrashHeader.prototype.render = function(item) {
-      return this.html(this.template(item));
+    ProductsTrashHeader.prototype.change = function(list) {
+      var records;
+      records = ProductsTrash.toRecords(list);
+      this.items = records;
+      return this.render(records);
+    };
+
+    ProductsTrashHeader.prototype.render = function(items) {
+      if (items == null) {
+        items = [];
+      }
+      return this.html(this.template({
+        count: items.length
+      }));
     };
 
     ProductsTrashHeader.prototype.active = function() {
       return this.render();
+    };
+
+    ProductsTrashHeader.prototype.recover = function(e) {
+      ProductsTrash.trigger('recover', this.items);
+      e.stopPropagation();
+      return e.preventDefault();
     };
 
     return ProductsTrashHeader;
@@ -34957,14 +34907,15 @@ Released under the MIT License
       this["in"] = bind(this["in"], this);
       ProductsTrashView.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
-      Product.bind('beforeDestroy', this.proxy(this.beforeDestroy));
+      this.bind('selected', this.proxy(this.selected));
       Product.bind('destroy:trash', this.proxy(this.destroy));
       Product.bind('inbound:trash', this.proxy(this.inbound));
-      Product.bind('outbound:trash', this.proxy(this.outbound));
       Product.bind('destroy:products', this.proxy(this.destroyProducts));
       Product.bind('empty:trash', this.proxy(this.emptyTrash));
       Product.bind('refresh', this.proxy(this.initTrash));
+      ProductsTrash.bind('beforeDestroy', this.proxy(this.beforeDestroy));
       ProductsTrash.bind('change:selection', this.proxy(this.exposeSelection));
+      ProductsTrash.bind('recover', this.proxy(this.recoverProducts));
       Spine.bind('refresh:one', this.proxy(this.refreshOne));
       this.bind('drag:start', this.proxy(this.dragStart));
       this.bind('drag:enter', this.proxy(this.dragEnter));
@@ -35037,16 +34988,7 @@ Released under the MIT License
       }
     };
 
-    ProductsTrashView.prototype.outbound = function(item) {
-      var cid;
-      Product.createJoin([item], Category.findByAttribute('name', 'NONECAT'));
-      if (App.confirm('NAVIGATE_TO_NONCAT')) {
-        cid = Category.findByAttribute('name', 'NONECAT').id;
-        return this.navigate('/category', cid);
-      }
-    };
-
-    ProductsTrashView.prototype.watch = function(item) {
+    ProductsTrashView.prototype.watch = function(item, o) {
       var trash;
       if (!item.deleted || item.destroyed) {
         trash = ProductsTrash.find(item.id);
@@ -35054,7 +34996,6 @@ Released under the MIT License
           return;
         }
         trash.destroy();
-        Product.trigger('outbound:trash', item);
         return this.remove(item);
       }
     };
@@ -35071,10 +35012,30 @@ Released under the MIT License
       var item;
       e.stopPropagation();
       item = $(e.currentTarget).item();
-      item.deleted = false;
-      item.save();
+      this.recoverProducts(item);
       e.stopPropagation();
       return e.preventDefault();
+    };
+
+    ProductsTrashView.prototype.recoverProducts = function(items) {
+      var i, id, item, len, product, target;
+      if (!Array.isArray(items)) {
+        items = [items];
+      }
+      target = Category.findByAttribute('name', 'NONECAT');
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        product = Product.find(item.id);
+        product.deleted = false;
+        product.save({
+          target: target
+        });
+      }
+      Product.createJoin(items, target);
+      if (App.confirm('NAVIGATE_TO_NONCAT')) {
+        id = target.id;
+        return this.navigate('/category', id);
+      }
     };
 
     ProductsTrashView.prototype.destroyProduct = function(e) {
@@ -35113,20 +35074,10 @@ Released under the MIT License
       return results;
     };
 
-    ProductsTrashView.prototype.beforeDestroy = function(product) {
-      var categories, category, i, len, photos, results;
+    ProductsTrashView.prototype.beforeDestroy = function(trash) {
       this.log('beforeDestroy');
-      product.unbind('released:fromTrash');
-      product.removeSelectionID();
-      categories = CategoriesProduct.categories(product.id);
-      results = [];
-      for (i = 0, len = categories.length; i < len; i++) {
-        category = categories[i];
-        category.removeFromSelection(product.id);
-        photos = ProductsPhoto.photos(product.id).toId();
-        results.push(Photo.trigger('destroy:join', photos, product));
-      }
-      return results;
+      trash.removeSelectionID();
+      return ProductsTrash.removeFromSelection(null, trash.id);
     };
 
     ProductsTrashView.prototype.destroy = function(items) {
@@ -35157,26 +35108,8 @@ Released under the MIT License
 
     ProductsTrashView.prototype.click = function(e) {
       var item;
-      item = $(e.currentTarget).item();
-      this.select(e, item.id);
-      return e.stopPropagation();
-    };
-
-    ProductsTrashView.prototype.select = function(e, ids) {
-      var list;
-      if (ids == null) {
-        ids = [];
-      }
-      list = this.model.selectionList().slice(0);
-      if (!Array.isArray(ids)) {
-        ids = [ids];
-      }
-      if (this.isMeta(e)) {
-        list.addRemove(ids);
-      } else {
-        list = ids.slice(0);
-      }
-      this.model.updateSelection(list);
+      item = $(e.target).item();
+      this.select(e, item.id, true);
       return e.stopPropagation();
     };
 
@@ -35300,6 +35233,7 @@ Released under the MIT License
       this.infoUp = bind(this.infoUp, this);
       ProductsView.__super__.constructor.apply(this, arguments);
       this.bind('active', this.proxy(this.active));
+      this.bind('selected', this.proxy(this.selected));
       this.info = new Info({
         el: this.infoEl,
         template: this.infoTemplate
@@ -35690,30 +35624,18 @@ Released under the MIT License
     ProductsView.prototype.click = function(e, excl) {
       var item;
       item = $(e.currentTarget).item();
-      return this.select(e, item.id);
+      this.select(e, item.id, true);
+      return e.stopPropagation();
     };
 
-    ProductsView.prototype.select = function(e, ids) {
-      var list, ref, ref1;
-      if (ids == null) {
-        ids = [];
-      }
-      list = this.model.selectionList().slice(0);
-      if (!Array.isArray(ids)) {
-        ids = [ids];
-      }
-      if (!this.isMeta(e) && e.type === 'click') {
-        list.addRemove(ids);
-      } else {
-        list = ids.slice(0);
-      }
+    ProductsView.prototype.selected = function(list) {
+      var ref, ref1;
       if (list.length) {
         this.navigate('/category', ((ref = Category.record) != null ? ref.id : void 0) || '', 's', list[0]);
       } else {
         this.navigate('/category', ((ref1 = Category.record) != null ? ref1.id : void 0) || '');
       }
-      this.model.updateSelection(list);
-      return e.stopPropagation();
+      return this.model.updateSelection(list);
     };
 
     ProductsView.prototype.infoUp = function(e) {
@@ -36699,35 +36621,17 @@ Released under the MIT License
     };
 
     ShowView.prototype.deselect = function(e) {
-      var model;
-      model = this.current.model;
-      if (model) {
-        return model.updateSelection([]);
-      }
+      return this.current.deselect(e);
     };
 
     ShowView.prototype.selectNone = function(e) {};
 
     ShowView.prototype.selectAll = function(e) {
-      var list;
-      try {
-        list = this.all();
-        return this.current.select(e, list);
-      } catch (error) {
-        e = error;
-      }
+      return this.current.selectAll(e);
     };
 
     ShowView.prototype.selectInv = function(e) {
-      var list, selList;
-      try {
-        list = this.all();
-        selList = this.current.model.selectionList();
-        list.addRemove(selList);
-        return this.current.select(e, list);
-      } catch (error) {
-        e = error;
-      }
+      return this.current.selectInv(e);
     };
 
     ShowView.prototype.all = function() {
@@ -38252,7 +38156,8 @@ Released under the MIT License
           category = $(e.target).closest('li.gal').item();
           this.navigate('/category', category.id, 's', item.id);
       }
-      return item.updateSelection(list);
+      item.updateSelection(list);
+      return e.stopPropagation();
     };
 
     SidebarList.prototype.ignoreProduct = function(e) {
@@ -39705,9 +39610,9 @@ Released under the MIT License
           return e.stopPropagation();
         },
         exposeSelection: function(selection) {
-          var el, first, i, id, len;
+          var el, first, i, id, len, ref;
           if (selection == null) {
-            selection = this.model.selectionList();
+            selection = ((ref = this.model) != null ? ref.selectionList() : void 0) || this.selectionList;
           }
           this.log('exposing');
           this.deselect();
@@ -39834,7 +39739,57 @@ Released under the MIT License
           return (ref = this.el).deselect.apply(ref, args);
         },
         clearSelection: function(e) {
-          return this.select(e, this.model.selectionList().slice(0));
+          return this.select(e, []);
+        },
+        getList: function() {
+          var ref, ref1;
+          return ((ref = this.selectionList) != null ? ref.slice(0) : void 0) || ((ref1 = this.model) != null ? ref1.selectionList().slice(0) : void 0);
+        },
+        select: function(e, ids, addRemove) {
+          var list;
+          if (ids == null) {
+            ids = [];
+          }
+          list = this.getList();
+          if (!Array.isArray(ids)) {
+            ids = [ids];
+          }
+          if (addRemove) {
+            list.addRemove(ids);
+          } else {
+            list = ids.slice(0);
+          }
+          if (this.selectionList) {
+            this.selectionList = list.slice(0);
+          }
+          this.trigger('selected', list);
+          return e.stopPropagation();
+        },
+        selectAll: function(e) {
+          this.select(e, this.all());
+          return e.stopPropagation();
+        },
+        selectInv: function(e) {
+          this.select(e, this.all(), true);
+          return e.stopPropagation();
+        },
+        selected: function(list) {
+          return this.model.updateSelection(list);
+        },
+        all: function() {
+          var items, list, root;
+          root = $('.items', this.el);
+          if (!root.length) {
+            return [];
+          }
+          items = root.children('.item');
+          list = [];
+          items.each(function(index, el) {
+            var item;
+            item = $(this).item();
+            return list.unshift(item.id);
+          });
+          return list;
         },
         sortable: function(type) {
           return this.el.sortable(type);
@@ -45935,7 +45890,9 @@ Released under the MIT License
           item = items[i];
           if (item.deleted) {
             item.deleted = false;
-            item.save();
+            item.save({
+              target: target
+            });
           }
           ga = new CategoriesProduct({
             category_id: target.id,

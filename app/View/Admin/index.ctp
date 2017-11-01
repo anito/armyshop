@@ -915,6 +915,10 @@
             <i class="glyphicons glyphicons-bin"></i>
             <span>Papierkorb leeren</span>
         </button>
+        <button type="submit" class="dark opt-RecoverProductsTrash {{if count}}{{else}}disabled{{/if}}">
+            <i class="glyphicons glyphicons-bin"></i>
+            <span>Wiederherstellen</span>
+        </button>
     </section>
 </script>
 
@@ -983,6 +987,10 @@
         <button type="submit" class="dark opt-EmptyPhotosTrash">
             <i class="glyphicons glyphicons-bin"></i>
             <span>Papierkorb leeren</span>
+        </button>
+        <button type="submit" class="dark opt-RecoverPhotosTrash {{if count}}{{else}}disabled{{/if}}">
+            <i class="glyphicons glyphicons-bin"></i>
+            <span>Wiederherstellen</span>
         </button>
     </section>
 

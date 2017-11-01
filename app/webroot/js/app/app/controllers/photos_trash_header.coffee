@@ -1,11 +1,15 @@
 Spine           = require("spine")
 $               = Spine.$
-Category         = require('models/category')
+Category        = require('models/category')
 Extender        = require('extensions/controller_extender')
+PhotosTrash     = require('models/photos_trash')
 
 class PhotosTrashHeader extends Spine.Controller
   
   @extend Extender
+  
+  events:
+    'click .opt-RecoverPhotosTrash' : 'recover'
   
   template: (items) ->
     $("#headerPhotosTrashTemplate").tmpl items
@@ -13,11 +17,23 @@ class PhotosTrashHeader extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
+    PhotosTrash.bind('change:selection', @proxy @change)
 
-  render: (item) ->
-    @html @template item
+  change: (list) ->
+    records = PhotosTrash.toRecords(list)
+    @items = records
+    @render records
+    
+  render: (items = []) ->
+    @html @template {count:items.length}
     
   active: ->
     @render()
+    
+  recover: (e) ->
+    PhotosTrash.trigger('recover', @items)
+    
+    e.stopPropagation()
+    e.preventDefault()
     
 module?.exports = PhotosTrashHeader

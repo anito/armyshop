@@ -23,6 +23,7 @@ class ProductsAddView extends Spine.Controller
     '.items'                                 : 'itemsEl'
 
   events:
+    'click'                                       : 'clearSelection'
     'click .item'                                 : 'click'
     'click .opt-modalAddExecute:not(.disabled)'   : 'add'
     'click .opt-modalSelectInv:not(.disabled)'    : 'selectInv'
@@ -60,11 +61,14 @@ class ProductsAddView extends Spine.Controller
       template: @subTemplate
       parent: @parent
       modal: true
+      
+    @selectionList = []
 
     modal.bind('show.bs.modal', @proxy @modalShow)
     modal.bind('hide.bs.modal', @proxy @modalHide)
 
     Spine.bind('products:add', @proxy @show)
+    @bind('selected', @proxy @selected)
 
   render: (items) ->
     @html @template @items = items
@@ -91,15 +95,14 @@ class ProductsAddView extends Spine.Controller
   modalHide: (e) ->
     
   click: (e) ->
+    item = $(e.currentTarget).item()
+    @select(e, item.id, true)
+    
     e.stopPropagation()
     e.preventDefault()
     
-    item = $(e.currentTarget).item()
-    @select(item.id, !@isMeta(e))
-    
-  select: (items = [], cumul) ->
-    unless Array.isArray items
-      items = [items]
+  select__: (ids = [], cumul=true) ->
+    ids = [ids] unless Array.isArray ids
       
     if cumul
       list = @selectionList[..]
@@ -109,28 +112,9 @@ class ProductsAddView extends Spine.Controller
         
     @selectionList = list[..]
     
+  selected: (list) ->
     @renderFooter list
-    @list.exposeSelection(list)
-    
-  selectAll: (e) ->
-    list = @all()
-    @select(list)
-    e.stopPropagation()
-    
-  selectInv: (e) ->
-    list = @all()
-    @select(list, true)
-    e.stopPropagation()
-    
-  all: ->
-    root = @itemsEl
-    items = root.children('.item')
-    
-    list = []
-    items.each (index, el) ->
-      item = $(@).item()
-      list.unshift item.id
-    list
+    @list.exposeSelection list
       
   add: ->
     products = Product.toRecords(@selectionList)

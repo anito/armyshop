@@ -63,6 +63,7 @@ class PhotosView extends Spine.Controller
     @viewport = @list.el
     
     @bind('drag:drop', @proxy @dragDrop)
+    @bind('selected', @proxy @selected)
     
     ProductsPhoto.bind('destroy', @proxy @destroyProductsPhoto)
     ProductsPhoto.bind('beforeDestroy', @proxy @beforeDestroyProductsPhoto)
@@ -132,25 +133,18 @@ class PhotosView extends Spine.Controller
     App.showView.trigger('change:toolbarOne')
     
     item = $(e.currentTarget).item()
-    @select e, item.id
+    @select e, item.id, true
     
-  select: (e, ids = []) ->
-    list = @model.selectionList()[..]
-    ids = [ids] unless Array.isArray ids
-    if !@isMeta(e)
-      list.addRemove(ids)
-    else
-      list = ids[..]
+    e.stopPropagation()
     
+  selected: (list) ->
     if list.length
       @navigate '/category', Category.record?.id or '', Product.record.id or '', 's', list[0]
     else
       @navigate '/category', Category.record?.id or '', Product.record.id or ''
-
-    @model.updateSelection list
-      
-    e.stopPropagation()
   
+    @model.updateSelection list
+    
   select_: (e, ids = []) ->
     isMeta = e.metaKey or e.ctrlKey or e.shiftKey
     ids = [ids] unless Array.isArray ids

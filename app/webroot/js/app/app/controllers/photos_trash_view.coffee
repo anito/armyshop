@@ -42,16 +42,18 @@ class PhotosTrashView extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
+    @bind('selected', @proxy @selected)
+    
+    PhotosTrash.bind('change:selection', @proxy @exposeSelection)
+    PhotosTrash.bind('recover', @proxy @recoverPhotos)
+    PhotosTrash.bind('beforeDestroy', @proxy @beforeDestroy)
     
     Photo.bind('destroy:trash', @proxy @destroy)
-    PhotosTrash.bind('change:selection', @proxy @exposeSelection)
-    
-    Photo.bind('beforeDestroy', @proxy @beforeDestroy)
+    Photo.bind('inbound:trash', @proxy @inbound)
     Photo.bind('destroy:photos', @proxy @destroyPhotos)
     Photo.bind('refresh', @proxy @initTrash)
-    Photo.bind('inbound:trash', @proxy @inbound)
-    Photo.bind('outbound:trash', @proxy @outbound)
     Photo.bind('empty:trash', @proxy @emptyTrash)
+    
     Spine.bind('refresh:one', @proxy @refreshOne)
     
   initTrash: (items) ->
@@ -63,7 +65,6 @@ class PhotosTrashView extends Spine.Controller
   refreshOne: ->
     Photo.one('refresh', @proxy @refresh)
     
-  # calls render for joins only
   refresh: () ->
     items = Photo.filter(true, func: 'selectDeleted')
     @render items
@@ -83,21 +84,17 @@ class PhotosTrashView extends Spine.Controller
     
   inbound: (photos) ->
     photos = [photos] unless Array.isArray photos
+    console.log photos
     for photo in photos
       photo.deleted = true
       photo.save()
       Photo.trigger('trashed', photo)
     @initTrash photos
     
-  outbound: (item) ->
-#    alert 'outbound'
-    
   watch: (item) ->
     if !item.deleted or item.destroyed
       trash = PhotosTrash.find(item.id)
-      console.log trash
       trash.destroy()
-      Photo.trigger('outbound:trash')
       @remove(item)
     
   dropdownToggle: (e) ->
@@ -109,9 +106,21 @@ class PhotosTrashView extends Spine.Controller
     
   recoverPhoto: (e) ->
     e.stopPropagation()
-    item = $(e.currentTarget).item()
-    item.deleted = false
-    item.save()
+    
+    item = $(e.target).item()
+    @recoverPhotos item
+    
+    e.stopPropagation()
+    e.preventDefault()
+    
+  recoverPhotos: (items) ->
+    items = [items] unless Array.isArray(items)
+    
+    for item in items
+      console.log item
+      photo = Photo.find(item.id)
+      photo.deleted = false
+      photo.save()
     
   destroyPhoto: (e) ->
     e.stopPropagation()
@@ -135,42 +144,10 @@ class PhotosTrashView extends Spine.Controller
     if typeof callback is 'function'
       callback.call()    
     
-  beforeDestroy: (photo) ->
+  beforeDestroy: (trash) ->
     @log 'beforeDestroy'
-    return
-    photo.unbind('released:fromTrash')
-    photo.removeSelectionID()
-    
-    products = ProductsPhoto.products(photo.id)
-    for product in products
-      product.removeFromSelection photo.id
-      photo.removeSelectionID()
-      # remove all associated photos
-      photos = ProductsPhoto.photos(product.id).toId()
-      Photo.trigger('destroy:join', photos, product)
-    
-  destroyPhotos_: (ids, callback) ->
-    @log 'destroyPhoto'
-    ids = [ids] unless Array.isArray(ids)
-    
-    @stopInfo()
-    
-    ids = ids || Product.selectionList().slice(0)
-    photos = Photo.toRecords(ids)
-    
-    for photo in photos
-      el = @list.findModelElement(photo)
-      el.removeClass('in')
-      if product = Product.record
-        @destroyJoin
-          photos: [photo]
-          product: product
-      else
-        photo.destroy()
-      
-        
-    if typeof callback is 'function'
-      callback.call()
+    trash.removeSelectionID()
+    PhotosTrash.removeFromSelection(null, trash.id)
     
   destroy: (items) ->
     @log 'destroy'
@@ -184,19 +161,7 @@ class PhotosTrashView extends Spine.Controller
     
   click: (e) ->
     item = $(e.currentTarget).item()
-    @select e, item.id
-    
-    e.stopPropagation()
-    
-  select: (e, ids=[]) ->
-    list = @model.selectionList()[..]
-    ids = [ids] unless Array.isArray ids
-    if @isMeta(e)
-      list.addRemove(ids)
-    else
-      list = ids[..]
-    
-    @model.updateSelection list
+    @select e, item.id, true
     
     e.stopPropagation()
     

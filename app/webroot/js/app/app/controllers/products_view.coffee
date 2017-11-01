@@ -55,6 +55,7 @@ class ProductsView extends Spine.Controller
     super
 #    @trace = false
     @bind('active', @proxy @active)
+    @bind('selected', @proxy @selected)
     
     @info = new Info
       el: @infoEl
@@ -345,24 +346,17 @@ class ProductsView extends Spine.Controller
       
   click: (e, excl) ->
     item = $(e.currentTarget).item()
-    @select(e, item.id)
+    @select e, item.id, true
     
-  select: (e, ids = []) ->
-    list = @model.selectionList()[..]
-    ids = [ids] unless Array.isArray ids
-    if !@isMeta(e) and e.type is 'click'
-      list.addRemove(ids)
-    else
-      list = ids[..]
+    e.stopPropagation()
     
+  selected: (list) ->
     if list.length
       @navigate '/category', Category.record?.id or '', 's', list[0]
     else
       @navigate '/category', Category.record?.id or ''
-    
+      
     @model.updateSelection list
-    
-    e.stopPropagation()
     
   infoUp: (e) =>
     @info.up(e)

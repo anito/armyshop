@@ -670,26 +670,16 @@ class ShowView extends Spine.Controller
     target.click()
     
   deselect: (e) ->
-    model = @current.model
-    
-    if model then model.updateSelection([])
+    @current.deselect e
     
   selectNone: (e) ->
 #    @deselect(e)
     
   selectAll: (e) ->
-    try
-      list = @all()
-      @current.select(e, list)
-    catch e
+    @current.selectAll e
     
   selectInv: (e)->
-    try
-      list = @all()
-      selList = @current.model.selectionList()
-      list.addRemove(selList)
-      @current.select(e, list)
-    catch e
+    @current.selectInv e
     
   all: ->
     list = []

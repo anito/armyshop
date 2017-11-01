@@ -44,18 +44,20 @@ class ProductsTrashView extends Spine.Controller
  
   constructor: ->
     super
-    @bind('active', @proxy @active)
     
-    Product.bind('beforeDestroy', @proxy @beforeDestroy)
+    @bind('active', @proxy @active)
+    @bind('selected', @proxy @selected)
+    
     
     Product.bind('destroy:trash', @proxy @destroy)
     Product.bind('inbound:trash', @proxy @inbound)
-    Product.bind('outbound:trash', @proxy @outbound)
     Product.bind('destroy:products', @proxy @destroyProducts)
     Product.bind('empty:trash', @proxy @emptyTrash)
     Product.bind('refresh', @proxy @initTrash)
     
+    ProductsTrash.bind('beforeDestroy', @proxy @beforeDestroy)
     ProductsTrash.bind('change:selection', @proxy @exposeSelection)
+    ProductsTrash.bind('recover', @proxy @recoverProducts)
     
     Spine.bind('refresh:one', @proxy @refreshOne)
     
@@ -106,20 +108,11 @@ class ProductsTrashView extends Spine.Controller
     
     alert 'Achtung!\nDas Produkt des Tages wurde deaktiviert da es in den Papierkorb verschoben wurde' if favoriteDeactivated
     
-  outbound: (item) ->
-    Product.createJoin [item], Category.findByAttribute('name', 'NONECAT')
-#    alert 'outbound'
-    if App.confirm('NAVIGATE_TO_NONCAT')
-      cid = Category.findByAttribute('name', 'NONECAT').id
-      @navigate '/category', cid
-      
-    
-  watch: (item) ->
+  watch: (item, o) ->
     if !item.deleted or item.destroyed
       trash = ProductsTrash.find(item.id)
       return unless trash
       trash.destroy()
-      Product.trigger('outbound:trash', item)
       @remove(item)
     
   dropdownToggle: (e) ->
@@ -131,19 +124,34 @@ class ProductsTrashView extends Spine.Controller
     
   recoverProduct: (e) ->
     e.stopPropagation()
+    
     item = $(e.currentTarget).item()
-    item.deleted = false
-    item.save()
+    @recoverProducts item
     
     e.stopPropagation()
     e.preventDefault()
     
+  recoverProducts: (items) ->
+    items = [items] unless Array.isArray(items)
+    target = Category.findByAttribute('name', 'NONECAT')
+    
+    for item in items
+      product = Product.find(item.id)
+      product.deleted = false
+      product.save(target: target)
+    
+    #move recovered Product to NONECAT
+    Product.createJoin items, target
+#    alert 'outbound'
+    if App.confirm('NAVIGATE_TO_NONCAT')
+      id = target.id
+      @navigate '/category', id
+  
   destroyProduct: (e) ->
     e.stopPropagation()
     item = $(e.currentTarget).item()
     
     @destroyProducts(e, id) if id = item?.id
-    
     
   destroyProducts: (e, ids=@model.selectionList(), callback) ->
     @log 'destroyProducts'
@@ -158,17 +166,10 @@ class ProductsTrashView extends Spine.Controller
           continue
         else break
     
-  beforeDestroy: (product) ->
+  beforeDestroy: (trash) ->
     @log 'beforeDestroy'
-    product.unbind('released:fromTrash')
-    product.removeSelectionID()
-    
-    categories = CategoriesProduct.categories(product.id)
-    for category in categories
-      category.removeFromSelection product.id
-      # remove all associated products
-      photos = ProductsPhoto.photos(product.id).toId()
-      Photo.trigger('destroy:join', photos, product)
+    trash.removeSelectionID()
+    ProductsTrash.removeFromSelection(null, trash.id)
     
   destroy: (items) ->
     @log 'destroy'
@@ -181,20 +182,8 @@ class ProductsTrashView extends Spine.Controller
         item.destroy()
     
   click: (e) ->
-    item = $(e.currentTarget).item()
-    @select e, item.id
-    
-    e.stopPropagation()
-    
-  select: (e, ids=[]) ->
-    list = @model.selectionList()[..]
-    ids = [ids] unless Array.isArray ids
-    if @isMeta(e)
-      list.addRemove(ids)
-    else
-      list = ids[..]
-    
-    @model.updateSelection list
+    item = $(e.target).item()
+    @select e, item.id, true
     
     e.stopPropagation()
     

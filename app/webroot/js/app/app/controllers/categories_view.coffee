@@ -40,6 +40,7 @@ class CategoriesView extends Spine.Controller
   constructor: ->
     super
     @bind('active', @proxy @active)
+    @bind('selected', @proxy @selected)
     
     @list = new CategoriesList
       el: @items
@@ -76,18 +77,11 @@ class CategoriesView extends Spine.Controller
     
   click: (e) ->
     item = $(e.currentTarget).item()
-    @select(e, item.id) #one category selected at a time
+    @select(e, item.id, true) #one category selected at a time
     
-  select: (e, ids=[]) ->
-    ids = [ids] unless Array.isArray ids
-#    list = Root.selectionList()[..]
-#    list.addRemove ids
-    
-    @navigate '/category', 's', ids[0]
-    
-    @model.updateSelection ids
-    
-    e.stopPropagation()
+  selected: (list) ->
+    @navigate '/category', 's', list[0]
+    @model.updateSelection list[0]
     
   beforeDestroy: (item) ->
     return unless item.isValid()

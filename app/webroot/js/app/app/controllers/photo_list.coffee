@@ -14,8 +14,8 @@ class PhotoList extends Spine.Controller
     'click .rotate-cw'        : 'rotateCW'
     'click .rotate-ccw'       : 'rotateCCW'
     
-    'click .zoom'                     : 'zoom'
-    'click .rotate'                   : 'rotate'
+    'click .zoom'             : 'zoom'
+    'click .rotate'           : 'rotate'
   
   constructor: ->
     super

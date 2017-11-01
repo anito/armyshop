@@ -219,6 +219,8 @@ class SidebarList extends Spine.Controller
     
     item.updateSelection list
     
+    e.stopPropagation()
+    
   ignoreProduct: (e) ->
     product = $(e.currentTarget).item()
     category = $(e.currentTarget).parents('.gal.data').item()

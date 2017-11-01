@@ -131,7 +131,7 @@ class Product extends Spine.Model
     ret = for item in items
       if item.deleted
         item.deleted = false
-        item.save()
+        item.save(target: target)
       ga = new CategoriesProduct
         category_id  : target.id
         product_id   : item.id

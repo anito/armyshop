@@ -111,6 +111,8 @@ class PreviewView extends Spine.Controller
     return if parent.hasClass('open')
     @exapand(e)
     
+    e.stopPropagation()
+    
   togglePreview: ->
     @expander.click()
     
