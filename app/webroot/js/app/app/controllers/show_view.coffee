@@ -309,7 +309,7 @@ class ShowView extends Spine.Controller
       @transform(controller, @previous)
       @started = true
     
-  transform: (controller, pContr, cContr) ->
+  transform: (controller) ->
     @controllers = (c for c in @canvasManager.controllers when c isnt controller)
     $('.items', @el).removeClass('show') for c in @controllers
     fadein = =>
@@ -1279,5 +1279,5 @@ class ShowView extends Spine.Controller
         unless isFormfield
           if e.metaKey or e.ctrlKey
             Spine.trigger('rotate', false, -90)
-
+            
 module?.exports = ShowView

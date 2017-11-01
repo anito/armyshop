@@ -49,6 +49,7 @@ class ProductsList extends Spine.Controller
       
     product = Product.find(item['product_id'])
     product = @mixinOne product
+    
     switch mode
       when 'create'
         @wipe().append @template(product)

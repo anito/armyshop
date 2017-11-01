@@ -88,6 +88,7 @@ Controller.ProductExtender =
         itemEl = @children().forItem(item)
         active = itemEl.hasClass('active')
         hot = itemEl.hasClass('hot')
+        ignored = itemEl.hasClass('ignored')
         innerEl = $('.thumbnail', itemEl)
         style = innerEl.attr('style')
 
@@ -100,7 +101,7 @@ Controller.ProductExtender =
         itemEl.attr('id', item.id)
         itemEl.toggleClass('active', active)
         itemEl.toggleClass('hot', hot)
-        itemEl.toggleClass('ignored', item.ignored)
+        itemEl.toggleClass('ignored', ignored)
         innerEl = $('.thumbnail', itemEl)
         innerEl.attr('style', style)
 

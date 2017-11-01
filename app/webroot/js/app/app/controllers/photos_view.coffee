@@ -96,9 +96,7 @@ class PhotosView extends Spine.Controller
     @el
   
   active: (items, options) ->
-    b1 = @eql.call(@parent)
-    b2 = @eql_()
-    return if b1 and b2
+    return if @equals.call(@parent, @)
     
     App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider])
     App.showView.trigger('change:toolbarTwo', ['Trustami'])

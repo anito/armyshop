@@ -73,13 +73,11 @@ class Main extends Spine.Controller
     '.toolbar-three'      : 'trustamiEl'
     
   events:
-    'click [class*="-trigger-edit"]' : 'activateEditor'
-    'click'               : 'delegateFocus'
+    'click'                           : 'delegateFocus'
+    'click [class*="-trigger-edit"]'  : 'activateEditor'
     
-#    'drop'                : 'drop'
-    
-    'keyup'               : 'key'
-    'keydown'             : 'key'
+    'keyup'                           : 'key'
+    'keydown'                         : 'key'
 
   constructor: ->
     super
@@ -101,8 +99,6 @@ class Main extends Spine.Controller
         if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' endgültig gelöscht werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" endgültig gelöscht werden?\n\n'
       'REMOVE_AND_DELETE': (options) ->
         if options.plural then '\nSollen ' + options.type + ' ' + $().brace(options.length) + ' entfernt und in den Papierkorb verschoben werden?\n\n' else '\nSoll ' + options.type + ' "' + options.name + '" entfernt und in den Papierkorb verschoben werden?\n\n'
-      'NAVIGATE_TO_NONCAT': (options) ->
-        '\nWiederhergestellte Produkte werden in den Ordner "' + Category.protected['NONECAT'].screenname + '" verschoben\n\nJetzt dorthin wechseln?\n'
       'NOCAT': (options) ->
         '\nKeine Kategorie ausgwählt.\n\n'
       'EMPTYTRASH': (options) ->
@@ -578,7 +574,6 @@ class Main extends Spine.Controller
       when 65 #ctrl A
         unless isFormfield
           @delegateFocus(e, @showView.current)
-          e.preventDefault()
       when 73 #ctrl I
         unless isFormfield
           @delegateFocus(e, @showView.current)
@@ -591,7 +586,7 @@ class Main extends Spine.Controller
         if isFormfield
           if e.metaKey or e.ctrlKey
             e.stopPropagation()
-          
+      
   delegateFocus: (e, controller = @showView) ->
     el=$(document.activeElement)
     return if $().isFormElement(el)

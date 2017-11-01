@@ -133,19 +133,15 @@ class ProductsTrashView extends Spine.Controller
     
   recoverProducts: (items) ->
     items = [items] unless Array.isArray(items)
-    target = Category.findByAttribute('name', 'NONECAT')
     
     for item in items
       product = Product.find(item.id)
-      product.deleted = false
-      product.save(target: target)
     
-    #move recovered Product to NONECAT
-    Product.createJoin items, target
-#    alert 'outbound'
-    if App.confirm('NAVIGATE_TO_NONCAT')
-      id = target.id
-      @navigate '/category', id
+      if target = Category.find(product.deleted)
+        Product.createJoin items, target
+        
+      product.deleted = false
+      product.save()
   
   destroyProduct: (e) ->
     e.stopPropagation()

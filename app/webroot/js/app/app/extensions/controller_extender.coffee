@@ -61,16 +61,20 @@ Controller.Extender =
         img.src = url if url
         img
         
-      eql: ->
+      equals: (controller) ->
         c = @current?.model.className
         p = @previous?.model.className
-        !!(c is p)
+        !!(c is p) and controller.eql()
         
-      eql_: ->
-        rec = @model.record
-        prev = @current
-        @current = rec
-        !!(@current?.eql?(prev) and !!prev)
+      eql: ->
+        rec = @model.record or Model.Root.first()
+        prev = @current_record
+        @current_record = rec
+        !!(@current_record?.eql?(prev) and !!prev)
+  
+      rootID: ->
+        @root_id = @root_id or Model.Root.uuid()
+        
   
       activated: ->
   
@@ -153,8 +157,6 @@ Controller.Extender =
         @selectionList = list[..] if @selectionList
         @trigger 'selected', list
 
-        e.stopPropagation()
-        
       selectAll: (e) ->
         @select e, @all()
         e.stopPropagation()

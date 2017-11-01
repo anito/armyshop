@@ -2667,6 +2667,14 @@ body.cat.fitness li.parent.preview {
 body.cat.tools li.parent.preview {
   background: url("/img/tools_creative.jpg") -497px -365px;
 }
+@media (min-width: 992px) {
+  .modal-lg.products {
+    max-width: 850px;
+  }
+  .modal-lg.photos {
+    max-width: 765px;
+  }
+}
 @-webkit-keyframes pulsate {
   from {
     opacity: 0.5;

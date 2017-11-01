@@ -58,10 +58,33 @@ class SubEditViewProduct extends Spine.Controller
     code = e.charCode or e.keyCode
     
     switch code
+      when 13 # ENTER
+        return
+      when 16 # SHIFT
+        return
+      when 17 # CTRL
+        return
+      when 18 # OPTION
+        return
+      when 20 # SHIFT LOCK
+        return
+      when 37 # LEFT
+        return
+      when 38 # UP
+        return
+      when 39 # RIGHT
+        return
+      when 40 # DOWN
+        return
+      when 91 # COMMAND
+        return
+      when 93 # COMMAND 2
+        return
       when 32 # SPACE
-        e.stopPropagation() 
+        e.stopPropagation()
       when 9 # TAB
         e.stopPropagation()
+        return
 
     @save @el
     @checkLink()

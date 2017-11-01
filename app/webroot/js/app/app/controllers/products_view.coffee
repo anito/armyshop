@@ -79,7 +79,6 @@ class ProductsView extends Spine.Controller
     
     Product.bind('create', @proxy @create)
     Product.bind('ajaxError', Product.errorHandler)
-#    Product.bind('destroy', @proxy @destroy)
     Product.bind('create:join', @proxy @createJoin)
     Product.bind('destroy:join', @proxy @destroyJoin)
     Product.bind('change:collection', @proxy @renderBackgrounds)
@@ -95,7 +94,6 @@ class ProductsView extends Spine.Controller
     Spine.bind('loading:done', @proxy @loadingDone)
     Spine.bind('loading:fail', @proxy @loadingFail)
     Spine.bind('delete:products', @proxy @deleteProducts)
-#    Spine.bind('select:product', @proxy @select)
     
     @bind('drag:start', @proxy @dragStart)
     @bind('drag:enter', @proxy @dragEnter)
@@ -117,17 +115,13 @@ class ProductsView extends Spine.Controller
     @render Product.renderBuffer(true)
     
   render: (items, mode='html') ->
-#    return unless @isActive()
-    
     @list.render(items, mode)
     @list.sortable('product') if Category.record
 #    $('.tooltips', @el).tooltip(title:'default title')
     @el
       
   active: (items, options) ->
-    b1 = @eql.call(@parent)
-    b2 = @eql_()
-    return if b1 and b2
+    return if @equals.call(@parent, @)
     
     App.showView.trigger('change:toolbarOne', ['Default'])
     App.showView.trigger('change:toolbarTwo', ['Trustami'])
@@ -253,17 +247,21 @@ class ProductsView extends Spine.Controller
       
     products = Product.toRecords(ids)
     for product in products
-      if product.deleted
-        Product.trigger('destroy:products', ids)
-        break
+#      if product.deleted
+#        Product.trigger('destroy:products', ids)
+#        break
       cats = CategoriesProduct.categories(product.id)
+      # In Products Catalog
       unless category = Category.record
         # for the Catalogue View
         if cats.length
           #remove from all Categories
+          joined = []
           if res1 or (res1 = App.confirm('REMOVE_AND_DELETE', @humanize(products)))
             for cat in cats
               @destroyJoin product, cat
+              joined.push(cat.id)
+            joined.join('::')
             Product.trigger('inbound:trash', product)
             continue
           else break
@@ -272,10 +270,12 @@ class ProductsView extends Spine.Controller
             Product.trigger('inbound:trash', product)
             continue
           else break
+      # Category Selected
       else
         # for the Joins View
         # send the last joined product to trash
         if cats.length is 1
+          joined = []
           if res3 or (res3 = App.confirm('DELETE', @humanize(products)))
             @destroyJoin(product, category)
             Product.trigger('inbound:trash', product)

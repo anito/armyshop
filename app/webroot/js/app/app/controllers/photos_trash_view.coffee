@@ -117,7 +117,6 @@ class PhotosTrashView extends Spine.Controller
     items = [items] unless Array.isArray(items)
     
     for item in items
-      console.log item
       photo = Photo.find(item.id)
       photo.deleted = false
       photo.save()

@@ -102,7 +102,7 @@
     echo $scripts_for_layout;
     ?>
   </head>
-  <body class="admin hal cat views canvas bg-dark" data-model-name="" data-models-name="Root">
+    <body class="admin hal cat views canvas bg-dark" data-model-name="" data-models-name="Root" tabindex="1">
     <?php echo $content_for_layout; ?>
     <?php echo $this->element('sql_dump'); ?>
     <?php echo $this->element(STATCONFIG . 'tracking_code'); ?>

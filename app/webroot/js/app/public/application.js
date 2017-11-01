@@ -29226,8 +29226,8 @@ Released under the MIT License
     };
 
     Main.prototype.events = {
-      'click [class*="-trigger-edit"]': 'activateEditor',
       'click': 'delegateFocus',
+      'click [class*="-trigger-edit"]': 'activateEditor',
       'keyup': 'key',
       'keydown': 'key'
     };
@@ -29268,9 +29268,6 @@ Released under the MIT License
           } else {
             return '\nSoll ' + options.type + ' "' + options.name + '" entfernt und in den Papierkorb verschoben werden?\n\n';
           }
-        },
-        'NAVIGATE_TO_NONCAT': function(options) {
-          return '\nWiederhergestellte Produkte werden in den Ordner "' + Category["protected"]['NONECAT'].screenname + '" verschoben\n\nJetzt dorthin wechseln?\n';
         },
         'NOCAT': function(options) {
           return '\nKeine Kategorie ausgwählt.\n\n';
@@ -29921,8 +29918,7 @@ Released under the MIT License
           break;
         case 65:
           if (!isFormfield) {
-            this.delegateFocus(e, this.showView.current);
-            return e.preventDefault();
+            return this.delegateFocus(e, this.showView.current);
           }
           break;
         case 73:
@@ -33298,7 +33294,6 @@ Released under the MIT License
       results = [];
       for (i = 0, len = items.length; i < len; i++) {
         item = items[i];
-        console.log(item);
         photo = Photo.find(item.id);
         photo.deleted = false;
         results.push(photo.save());
@@ -33540,10 +33535,7 @@ Released under the MIT License
     };
 
     PhotosView.prototype.active = function(items, options) {
-      var b1, b2;
-      b1 = this.eql.call(this.parent);
-      b2 = this.eql_();
-      if (b1 && b2) {
+      if (this.equals.call(this.parent, this)) {
         return;
       }
       App.showView.trigger('change:toolbarOne', ['Default', 'Slider', App.showView.initSlider]);
@@ -35018,24 +35010,21 @@ Released under the MIT License
     };
 
     ProductsTrashView.prototype.recoverProducts = function(items) {
-      var i, id, item, len, product, target;
+      var i, item, len, product, results, target;
       if (!Array.isArray(items)) {
         items = [items];
       }
-      target = Category.findByAttribute('name', 'NONECAT');
+      results = [];
       for (i = 0, len = items.length; i < len; i++) {
         item = items[i];
         product = Product.find(item.id);
+        if (target = Category.find(product.deleted)) {
+          Product.createJoin(items, target);
+        }
         product.deleted = false;
-        product.save({
-          target: target
-        });
+        results.push(product.save());
       }
-      Product.createJoin(items, target);
-      if (App.confirm('NAVIGATE_TO_NONCAT')) {
-        id = target.id;
-        return this.navigate('/category', id);
-      }
+      return results;
     };
 
     ProductsTrashView.prototype.destroyProduct = function(e) {
@@ -35296,10 +35285,7 @@ Released under the MIT License
     };
 
     ProductsView.prototype.active = function(items, options) {
-      var b1, b2;
-      b1 = this.eql.call(this.parent);
-      b2 = this.eql_();
-      if (b1 && b2) {
+      if (this.equals.call(this.parent, this)) {
         return;
       }
       App.showView.trigger('change:toolbarOne', ['Default']);
@@ -35470,7 +35456,7 @@ Released under the MIT License
     };
 
     ProductsView.prototype.deleteProducts = function(ids, callback) {
-      var cat, category, cats, j, k, len, len1, product, products, res1, res2, res3, res4, results;
+      var cat, category, cats, j, joined, k, len, len1, product, products, res1, res2, res3, res4, results;
       this.log('deleteProduct');
       if (!Array.isArray(ids)) {
         ids = [ids];
@@ -35483,18 +35469,17 @@ Released under the MIT License
       results = [];
       for (j = 0, len = products.length; j < len; j++) {
         product = products[j];
-        if (product.deleted) {
-          Product.trigger('destroy:products', ids);
-          break;
-        }
         cats = CategoriesProduct.categories(product.id);
         if (!(category = Category.record)) {
           if (cats.length) {
+            joined = [];
             if (res1 || (res1 = App.confirm('REMOVE_AND_DELETE', this.humanize(products)))) {
               for (k = 0, len1 = cats.length; k < len1; k++) {
                 cat = cats[k];
                 this.destroyJoin(product, cat);
+                joined.push(cat.id);
               }
+              joined.join('::');
               Product.trigger('inbound:trash', product);
               continue;
             } else {
@@ -35510,6 +35495,7 @@ Released under the MIT License
           }
         } else {
           if (cats.length === 1) {
+            joined = [];
             if (res3 || (res3 = App.confirm('DELETE', this.humanize(products)))) {
               this.destroyJoin(product, category);
               Product.trigger('inbound:trash', product);
@@ -36099,7 +36085,7 @@ Released under the MIT License
       }
     };
 
-    ShowView.prototype.transform = function(controller, pContr, cContr) {
+    ShowView.prototype.transform = function(controller) {
       var c, fadein, i, len, ref;
       this.controllers = (function() {
         var i, len, ref, results;
@@ -38156,8 +38142,7 @@ Released under the MIT License
           category = $(e.target).closest('li.gal').item();
           this.navigate('/category', category.id, 's', item.id);
       }
-      item.updateSelection(list);
-      return e.stopPropagation();
+      return item.updateSelection(list);
     };
 
     SidebarList.prototype.ignoreProduct = function(e) {
@@ -38595,11 +38580,34 @@ Released under the MIT License
       var code;
       code = e.charCode || e.keyCode;
       switch (code) {
+        case 13:
+          return;
+        case 16:
+          return;
+        case 17:
+          return;
+        case 18:
+          return;
+        case 20:
+          return;
+        case 37:
+          return;
+        case 38:
+          return;
+        case 39:
+          return;
+        case 40:
+          return;
+        case 91:
+          return;
+        case 93:
+          return;
         case 32:
           e.stopPropagation();
           break;
         case 9:
           e.stopPropagation();
+          return;
       }
       this.save(this.el);
       return this.checkLink();
@@ -39636,18 +39644,21 @@ Released under the MIT License
           }
           return img;
         },
-        eql: function() {
+        equals: function(controller) {
           var c, p, ref, ref1;
           c = (ref = this.current) != null ? ref.model.className : void 0;
           p = (ref1 = this.previous) != null ? ref1.model.className : void 0;
-          return !!(c === p);
+          return !!(c === p) && controller.eql();
         },
-        eql_: function() {
+        eql: function() {
           var prev, rec, ref;
-          rec = this.model.record;
-          prev = this.current;
-          this.current = rec;
-          return !!(((ref = this.current) != null ? typeof ref.eql === "function" ? ref.eql(prev) : void 0 : void 0) && !!prev);
+          rec = this.model.record || Model.Root.first();
+          prev = this.current_record;
+          this.current_record = rec;
+          return !!(((ref = this.current_record) != null ? typeof ref.eql === "function" ? ref.eql(prev) : void 0 : void 0) && !!prev);
+        },
+        rootID: function() {
+          return this.root_id = this.root_id || Model.Root.uuid();
         },
         activated: function() {},
         testEmpty: function() {
@@ -39762,8 +39773,7 @@ Released under the MIT License
           if (this.selectionList) {
             this.selectionList = list.slice(0);
           }
-          this.trigger('selected', list);
-          return e.stopPropagation();
+          return this.trigger('selected', list);
         },
         selectAll: function(e) {
           this.select(e, this.all());
@@ -42013,7 +42023,7 @@ Released under the MIT License
           return this.me.snap(this.res);
         },
         updateTemplate: function(item) {
-          var active, hot, innerEl, itemEl, style, tmplItem;
+          var active, hot, ignored, innerEl, itemEl, style, tmplItem;
           this.log('updateTemplate');
           if (!item || item.destroyed || item.deleted) {
             return;
@@ -42022,6 +42032,7 @@ Released under the MIT License
           itemEl = this.children().forItem(item);
           active = itemEl.hasClass('active');
           hot = itemEl.hasClass('hot');
+          ignored = itemEl.hasClass('ignored');
           innerEl = $('.thumbnail', itemEl);
           style = innerEl.attr('style');
           tmplItem = itemEl.tmplItem();
@@ -42033,7 +42044,7 @@ Released under the MIT License
           itemEl.attr('id', item.id);
           itemEl.toggleClass('active', active);
           itemEl.toggleClass('hot', hot);
-          itemEl.toggleClass('ignored', item.ignored);
+          itemEl.toggleClass('ignored', ignored);
           innerEl = $('.thumbnail', itemEl);
           innerEl.attr('style', style);
           return this.el.sortable();

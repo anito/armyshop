@@ -87,27 +87,27 @@
                         <div class="overview view"></div>
                     </div>
                     <div class="view wait content vbox flex autoflow" style=""></div>
-                    <div data-model-name="Root" data-models-name="Category" class="view categories content vbox flex data parent autoflow show" style="">
+                    <div data-model-name="Root" data-models-name="Category" class="view categories content vbox flex data parent autoflow show" style="" tabindex="1">
                         <div class="items flex autoflow fade">Categories</div>
                     </div>
-                    <div data-model-name="Category" data-models-name="Product" class="view products content vbox flex data parent autoflow show" style="">
+                    <div data-model-name="Category" data-models-name="Product" class="view products content vbox flex data parent autoflow show" style="" tabindex="1">
                         <div class="hoverinfo fade"></div>
                         <div class="items flex autoflow fade">Products</div>
                     </div>
-                    <div data-model-name="Product" data-models-name="Photo" class="view photos content vbox flex data parent autoflow show" style="">
+                    <div data-model-name="Product" data-models-name="Photo" class="view photos content vbox flex data parent autoflow show" style="" tabindex="1">
                         <div class="hoverinfo fade"></div>
                         <div class="items flex autoflow fade" data-toggle="modal-category"
                              data-target="#modal-category" data-selector="a">Photos
                         </div>
                     </div>
-                    <div data-model-name="Product" data-models-name="Photo" class="view photo content vbox flex data parent autoflow show nopad" style="">
+                    <div data-model-name="Product" data-models-name="Photo" class="view photo content vbox flex data parent autoflow show nopad" style="" tabindex="1">
                         <div class="hoverinfo fade"></div>
                         <div class="items flex autoflow fadein in1 nopad">Photo</div>
                     </div>
-                    <div data-model-name="ProductsTrash" data-models-name="Product" tabindex="1" class="view products-trash content vbox flex data parent autoflow fade" style="">
+                    <div data-model-name="ProductsTrash" data-models-name="Product" tabindex="1" class="view products-trash content vbox flex data parent autoflow fade" style="" tabindex="1">
                         <div class="items flex autoflow fadein in1">Product Trash</div>
                     </div>
-                    <div data-model-name="PhotosTrash" data-models-name="Photo" tabindex="1" class="view photos-trash content vbox flex data parent autoflow fade" style="">
+                    <div data-model-name="PhotosTrash" data-models-name="Photo" tabindex="1" class="view photos-trash content vbox flex data parent autoflow fade" style="" tabindex="1">
                         <div class="items flex autoflow fadein in1">Photo Trash</div>
                     </div>
                 </div>
