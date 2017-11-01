@@ -145,7 +145,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             <a class="nav-link linearicons-specials" href="/pages/specials/">Specials</a>
                         </li>
                         <li id="" class="nav-item defense">
-                            <a class="nav-link linearicons-tools" href="/pages/defense/">Defense</a>
+                            <a class="nav-link linearicons-defense" href="/pages/defense/">Defense</a>
                         </li>
                     </ul>
                 </div>

@@ -44,6 +44,9 @@
 .linearicons-specials::before {
   content: "\e814";
 }
+.linearicons-defense::before {
+  content: "\e8a5";
+}
 [class*="opt-"] {
   -moz-user-select:none;
   -khtml-user-drag: element;

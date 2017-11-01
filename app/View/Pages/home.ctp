@@ -4,10 +4,6 @@
 
             <div id="home" class="page-header hide" style="">
                 <div class="container">
-
-
-
-
                     <div class="breadcrumbs" typeof="BreadcrumbList" vocab="http://schema.org/">
                         <!-- Breadcrumb NavXT 5.5.1 -->
                         <span property="itemListElement" typeof="ListItem">
@@ -24,7 +20,6 @@
                     </a>
                 </div>
             </div>
-
             <div id="home" class="view active">
                 <!-- Main jumbotron for a primary marketing message or call to action -->
                 <div class="jumbotron">
@@ -46,7 +41,7 @@
                                 <span class="linearicons linearicons-outdoor"></span>
                                 <div class="ca-content">
                                     <h2 class="ca-main">Outdoor</h2>
-                                    <h3 class="ca-sub">Atmen Sie durch</h3>
+                                    <h3 class="ca-sub">Atmen Sie Durch</h3>
                                 </div>
                             </a>
                         </li>
@@ -73,7 +68,7 @@
                                 <span class="linearicons linearicons-specials"></span>
                                 <div class="ca-content">
                                     <h2 class="ca-main">Specials</h2>
-                                    <h3 class="ca-sub">24/7 Geld sparen</h3>
+                                    <h3 class="ca-sub">24/7 Geld Sparen</h3>
                                 </div>
                             </a>
                         </li>
@@ -82,7 +77,7 @@
                                 <span class="linearicons linearicons-defense"></span>
                                 <div class="ca-content">
                                     <h2 class="ca-main">Defense</h2>
-                                    <h3 class="ca-sub">24/7 Vorbereitet</h3>
+                                    <h3 class="ca-sub">Vorbereitet Sein</h3>
                                 </div>
                             </a>
                         </li>
@@ -110,6 +105,9 @@
                                 </li>
                                 <li>
                                     <a href="/pages/specials" title="Restposten & Specials" class="">Restposten & Specials</a>
+                                </li>
+                                <li>
+                                    <a href="/pages/defense" title="Defense" class="">Defense</a>
                                 </li>
                             </ul>
                             <span>Viel Spass beim Einkauf</span>

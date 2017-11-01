@@ -516,7 +516,7 @@ html {
   min-height: 100%;
 }
 body {
-  background: transparent url(../img/outdoor_creative.jpg) 50% 0 fixed;
+  background: transparent url(/img/outdoor_creative.jpg) 50% 0 fixed;
   color: #333;
   font-family: 'Muli', 'Myriad Pro', Arial, sans-serif !important;
   font-size: 0.8rem;
@@ -560,52 +560,62 @@ body {
   opacity: 1;
   transition: opacity 0.45s linear;
 }
-body.fade.out {
-  background: transparent url(../img/outdoor_creative.jpg) 50% 0 fixed;
+body {
+  background: transparent url(/img/outdoor_creative.jpg) 50% 0 fixed;
   transition: background 2s linear;
 }
-body.fade.in.outdoor {
-  background: transparent url(../img/outdoor_creative.jpg) 50% 10% fixed;
+body.outdoor {
+  background: transparent url(/img/outdoor_creative.jpg) 50% 10% fixed;
   transition: background 1s ease-in-out;
 }
-body.fade.in.fitness {
-  background: transparent url(../img/fitness_creative.jpg) 60% 20% fixed; 
+body.fitness {
+  background: transparent url(/img/fitness_creative.jpg) 60% 20% fixed; 
   transition: background 1s ease-in-out;
 }
-body.fade.in.specials {
-  background: transparent url(../img/specials_creative.jpg) 20% 30% fixed; 
+body.specials {
+  background: transparent url(/img/specials_creative.jpg) 20% 30% fixed; 
   transition: background 1s ease-in-out;
 }
-body.fade.in.tools {
-  background: transparent url(../img/tools_creative.jpg) 0% 80% fixed; 
+body.tools {
+  background: transparent url(/img/tools_creative.jpg) 0% 80% fixed; 
+  transition: background 1s ease-in-out;
+}
+body.defense {
+  background: transparent url(/img/defense_creative.jpg) 0% 80% fixed; 
   transition: background 1s ease-in-out;
 }
 .item-menu.outdoor:hover {
-  background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
+  background: transparent url(/img/outdoor_creative_light.jpg) 50% 10% fixed;
 }
 .item-menu.fitness:hover {
-  background: transparent url(../img/fitness_creative_light.jpg) 60% 20% fixed;
+  background: transparent url(/img/fitness_creative_light.jpg) 60% 20% fixed;
 }
 .item-menu.specials:hover {
-  background: transparent url(../img/specials_creative_light.jpg) 20% 30% fixed;
+  background: transparent url(/img/specials_creative_light.jpg) 20% 30% fixed;
 }
 .item-menu.tools:hover {
-  background: transparent url(../img/tools_creative_light.jpg) 0% 80% fixed;
+  background: transparent url(/img/tools_creative_light.jpg) 0% 80% fixed;
+}
+.item-menu.defense:hover {
+  background: transparent url(/img/defense_creative_light.jpg) 0% 80% fixed;
 }
 .home .item-menu.category {
-  background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
+  background: transparent url(/img/outdoor_creative_light.jpg) 50% 10% fixed;
 }
-.outdoor .item-menu.outdoor.category:hover {
-  background: transparent url(../img/outdoor_creative_light.jpg) 50% 10% fixed;
+.outdoor .item-menu.outdoor:hover {
+  background: transparent url(/img/outdoor_creative_light.jpg) 50% 10% fixed;
 }
-.fitness .item-menu.fitness.category:hover {
-  background: transparent url(../img/fitness_creative_light.jpg) 60% 20% fixed;
+.fitness .item-menu.fitness:hover {
+  background: transparent url(/img/fitness_creative_light.jpg) 60% 20% fixed;
 }
-.specials .item-menu.specials.category:hover {
-  background: transparent url(../img/specials_creative_light.jpg) 20% 30% fixed;
+.specials .item-menu.specials:hover {
+  background: transparent url(/img/specials_creative_light.jpg) 20% 30% fixed;
 }
-.tools .item-menu.tools.category:hover {
-  background: transparent url(../img/tools_creative_light.jpg) 00% 80% fixed;
+.defense .item-menu.defense:hover {
+  background: transparent url(/img/defense_creative_light.jpg) 0% 80% fixed;
+}
+.tools .item-menu.tools:hover {
+  background: transparent url(/img/tools_creative_light.jpg) 0% 80% fixed;
 }
 .jumbotron {
   border-radius: 0;
@@ -614,7 +624,7 @@ body.fade.in.tools {
   position: absolute;
   top: 69px;
   right: -60px;
-  background: transparent url(../img/hal_logo_dark_357.png) no-repeat 0px -40px;
+  background: transparent url(/img/hal_logo_dark_357.png) no-repeat 0px -40px;
   line-height: 200px;
   height: 400px;
   width: 357px;
