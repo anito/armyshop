@@ -43578,6 +43578,7 @@ Released under the MIT License
         name = 'home';
       }
       name = this.getData(name, this.arr);
+      console.log(name);
       $('.nav-item', this.items).removeClass('active');
       return $('.nav-item.' + name, this.items).addClass('active');
     };

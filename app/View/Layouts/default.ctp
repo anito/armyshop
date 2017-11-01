@@ -129,7 +129,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="nav navbar-nav items">
-                        <li id="" class="nav-item">
+                        <li id="" class="nav-item home">
                             <a class="nav-link linearicons-home" href="/pages/home/">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li id="" class="nav-item outdoor">

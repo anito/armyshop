@@ -106,6 +106,7 @@ class App extends Spine.Controller
     
   exposeNav: (name='home') ->
     name = @getData(name, @arr)
+    console.log name
     $('.nav-item', @items).removeClass('active')
     $('.nav-item.'+name, @items).addClass('active')
     
