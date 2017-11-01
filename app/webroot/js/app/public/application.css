@@ -2655,19 +2655,25 @@ a.feature-list {
   border: 0 none !important;
 }
 body.cat li.parent.preview {
-  background: url("/img/home_creative.jpg") -700px -300px;
+  background: url("/img/home_creative.jpg") 48% 66%;
 }
 body.cat.outdoor li.parent.preview {
-  background: url("/img/outdoor_creative.jpg") -497px -265px;
+  background: url("/img/outdoor_creative.jpg") 27% 29%;
 }
 body.cat.specials li.parent.preview {
-  background: url("/img/specials_creative.jpg") -700px -100px;
+  background: url("/img/specials_creative.jpg") 50% 23%;
 }
 body.cat.fitness li.parent.preview {
-  background: url("/img/fitness_creative.jpg") -497px -365px;
+  background: url("/img/fitness_creative.jpg") 33% 33%;
 }
 body.cat.tools li.parent.preview {
-  background: url("/img/tools_creative.jpg") -497px -365px;
+  background: url("/img/tools_creative.jpg") 49% 57%;
+}
+body.cat.specials li.parent.preview {
+  background: url("/img/specials_creative.jpg") 52% 23%;
+}
+body.cat.defense li.parent.preview {
+  background: url("/img/defense_creative.jpg") 33% 33%;
 }
 @media (min-width: 992px) {
   .modal-lg.products {
