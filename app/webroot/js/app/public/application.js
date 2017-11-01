@@ -35686,7 +35686,7 @@ Released under the MIT License
 
     RefreshView.prototype.template = function(icon) {
       if (icon == null) {
-        icon = 'repeat';
+        icon = 'redo';
       }
       return $('#refreshTemplate').tmpl({
         icon: icon

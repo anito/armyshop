@@ -41,6 +41,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->css("flaticon");
         echo $this->Html->css("muli");
         echo $this->Html->css("icons");
+        echo $this->Html->css("linearicons");
         echo $this->Html->css("lehmann");
         echo $this->Html->css("common");
         echo $this->Html->css("demo", array('media' => 'only screen and (min-device-width : 768px)'));
@@ -130,22 +131,22 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="nav navbar-nav items">
                         <li id="" class="nav-item home">
-                            <a class="nav-link linearicons-home" href="/pages/home/">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link lnr-home" href="/pages/home/">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li id="" class="nav-item outdoor">
-                            <a class="nav-link nav-link linearicons-outdoor" href="/pages/outdoor/">Outdoor</a>
+                            <a class="nav-link lnr-sun" href="/pages/outdoor/">Outdoor</a>
                         </li>
                         <li id="" class="nav-item fitness">
-                            <a class="nav-link linearicons-fitness" href="/pages/fitness/">Fitness</a>
+                            <a class="nav-link lnr-bicycle" href="/pages/fitness/">Fitness</a>
                         </li>
                         <li id="" class="nav-item tools">
-                            <a class="nav-link linearicons-tools" href="/pages/tools/">Messer & Tools</a>
+                            <a class="nav-link lnr-diamond" href="/pages/tools/">Messer & Tools</a>
                         </li>
                         <li id="" class="nav-item specials">
-                            <a class="nav-link linearicons-specials" href="/pages/specials/">Specials</a>
+                            <a class="nav-link lnr-star" href="/pages/specials/">Specials</a>
                         </li>
                         <li id="" class="nav-item defense">
-                            <a class="nav-link linearicons-defense" href="/pages/defense/">Defense</a>
+                            <a class="nav-link lnr-hand" href="/pages/defense/">Defense</a>
                         </li>
                     </ul>
                 </div>
@@ -409,7 +410,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </script>
 
 <script id="refreshTemplate" type="text/x-tmpl">
-    <a href="${location.hash}" class="opt-Refresh"><i class="glyphicons glyphicons-${icon}"></i></a>
+    <a href="${location.hash}" class="opt-Refresh"><i class="lnr lnr-${icon}"></i></a>
 </script>
 
 <script id="trustamiTemplate" type="text/x-tmpl">

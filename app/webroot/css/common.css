@@ -18,34 +18,13 @@
   bottom: 25px;
   z-index: 998;
 }
-[class*="linearicons-"]::before {
+[class*="lnr-"]::before {
   font-family: "linearicons" !important;
   width: 30px;
   height: 30px;
   font-weight: 300 !important;
   line-height: 0em;
   margin: 0 5px;
-}
-.linearicons-home::before {
-  content: "\e800";
-}
-.linearicons-home2::before {
-  content: "\e844";
-}
-.linearicons-outdoor::before {
-  content: "\e807";
-}
-.linearicons-fitness::before {
-  content: "\e850";
-}
-.linearicons-tools::before {
-  content: "\e845";
-}
-.linearicons-specials::before {
-  content: "\e814";
-}
-.linearicons-defense::before {
-  content: "\e8a5";
 }
 [class*="opt-"] {
   -moz-user-select:none;

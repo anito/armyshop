@@ -25,7 +25,8 @@
   }
   [class^="item-menu "] [class^="flaticon-"]:before, [class^="item-menu "] [class*=" flaticon-"]:before,
   [class^="item-menu "] [class^="flaticon-"]:after, [class^="item-menu "] [class*=" flaticon-"]:after,
-  [class^="item-menu "] [class^="linearicons-"]:before, [class^="item-menu "] [class*=" linearicons-"]:before {
+  [class^="item-menu "] [class^="linearicons-"]:before, [class^="item-menu "] [class*=" linearicons-"]:before,
+  [class^="item-menu "] [class^="lnr-"]:before, [class^="item-menu "] [class*=" lnr-"]:before {
     font-size: 9em;
   }
 }
@@ -66,7 +67,9 @@
 [class^="item-menu "] [class^="flaticon-"]:before, [class^="item-menu "] [class*=" flaticon-"]:before,
 [class^="item-menu "] [class^="flaticon-"]:after, [class^="item-menu "] [class*=" flaticon-"]:after,
 [class^="item-menu "] [class^="linearicons-"]:before, [class^="item-menu "] [class*=" linearicons-"]:before,
-[class^="item-menu "] [class^="linearicons-"]:after, [class^="item-menu "] [class*=" linearicons-"]:after {
+[class^="item-menu "] [class^="linearicons-"]:after, [class^="item-menu "] [class*=" linearicons-"]:after,
+[class^="item-menu "] [class^="lnr-"]:before, [class^="item-menu "] [class*=" lnr-"]:before,
+[class^="item-menu "] [class^="lnr-"]:after, [class^="item-menu "] [class*=" lnr-"]:after {
   text-shadow: 0px 0px 1px #333;
   line-height: 150px;
   position: absolute;
