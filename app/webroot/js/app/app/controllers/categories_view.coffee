@@ -79,6 +79,8 @@ class CategoriesView extends Spine.Controller
     item = $(e.currentTarget).item()
     @select(e, item.id, true) #one category selected at a time
     
+    e.stopPropagation()
+    
   selected: (list) ->
     @navigate '/category', 's', list[0]
     @model.updateSelection list[0]

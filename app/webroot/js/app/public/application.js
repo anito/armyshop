@@ -29468,7 +29468,7 @@ Released under the MIT License
         '/category/s/:pid': function(params) {
           var buffer;
           buffer = Category.renderBuffer();
-          this.showView.trigger('active', this.showView.categoriesView, buffer || Category.buffer);
+          this.showView.trigger('active', this.showView.categoriesView);
           return Model.Root.updateSelection(params.pid || []);
         },
         '/category/:cid/:pid': function(params) {
@@ -30336,7 +30336,8 @@ Released under the MIT License
     CategoriesView.prototype.click = function(e) {
       var item;
       item = $(e.currentTarget).item();
-      return this.select(e, item.id, true);
+      this.select(e, item.id, true);
+      return e.stopPropagation();
     };
 
     CategoriesView.prototype.selected = function(list) {

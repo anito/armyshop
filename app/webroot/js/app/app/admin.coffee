@@ -250,7 +250,7 @@ class Main extends Spine.Controller
         @showView.trigger('active', @showView.photoView, buffer || Photo.buffer)
       '/category/s/:pid': (params) ->
         buffer = Category.renderBuffer()
-        @showView.trigger('active', @showView.categoriesView, buffer || Category.buffer)
+        @showView.trigger('active', @showView.categoriesView)
         Model.Root.updateSelection params.pid or []
       '/category/:cid/:pid': (params) ->
         Model.Root.updateSelection params.cid or []
