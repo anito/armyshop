@@ -1882,23 +1882,6 @@ section span.price {
   outline: #121212;
   position: relative;
 }
-li .thumbnail.image {
-  position: relative;
-  background-position: center center;
-  background-size: inherit;
-}
-.thumbnail {
-  background-position: 0 0;
-}
-.thumbnail {
-  outline: none;
-  white-space: nowrap;
-  padding: 10px;
-  margin: 0;
-  color: rgba(200,200,200,0.5);
-  line-height: 1.2em;
-  border-radius: 0px;
-}
 .categories li {
   margin: 0 5px 10px;
 }
@@ -1943,6 +1926,25 @@ li .thumbnail.image {
   color: rgba(250,192,150,0.4);
   text-shadow: 0 -1px 0 rgba(0,0,0,0.7);
   font-family: Verdana, sans-serif;
+}
+.thumbnail.image {
+  position: relative;
+  background-position: center center;
+  background-size: inherit;
+}
+.thumbnail {
+  outline: none;
+  white-space: nowrap;
+  color: rgba(200,200,200,0.5);
+  line-height: 1.2em;
+  border-radius: 0px;
+  background-position: 0 0;
+}
+.categories .thumbnail {
+  padding: 20px;
+}
+.products .thumbnail {
+  padding: 10px;
 }
 #content .content .item:not(.active) span.close {
   display: none;
@@ -2235,7 +2237,7 @@ li.item.active .glyphicons-set {
   padding: 0;
 }
 .dd {
-  padding: 2px 7px;
+  padding: 2px 0px 2px 5px;
 }
 .cc {
   padding: 2px 7px;

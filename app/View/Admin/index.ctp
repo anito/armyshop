@@ -510,6 +510,7 @@
                 {{tmpl($item.data.details()) "#galDetailsTemplate"}}
             </div>
         </div>
+        <i class="glyphicons {{if protected}}glyphicons-lock pointer{{/if}}" title="{{if protected}}geschützte Kategorie{{/if}}"></i>
         <div class="glyphicons-set right fade" style="">
             <span class="tooltips downloading glyphicons glyphicons-download-alt glyphicons-white hide left fade" data-toggle="tooltip"></span>
             <span class="left">
@@ -664,8 +665,9 @@
             {{if validUrl()}}
             <a href="${link}" target="_blank">{{/if}}
                 <section class="info-badges">
-                    <span class="cc {{if validUrl()}}valid{{else}}warning-badge{{/if}} link glyphicons glyphicons-link"></span>
-                    <span class="dd price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</span>
+                    <span class="dd price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}
+                        <i class="cc {{if validUrl()}}valid{{else}}warning-badge{{/if}} link glyphicons glyphicons-link"></i>
+                    </span>
                 </section>
             {{if validUrl()}}
             </a>
@@ -698,8 +700,9 @@
             <div class="subtitle">{{if subtitle}}{{html $().name(subtitle, 120)}}{{/if}}</div>
             {{if link}}<a href="${link}" target="_blank">{{/if}}
             <section class="info-badges">
-                <span class="cc link glyphicons glyphicons-link {{if link}}{{else}}warning-badge{{/if}}"></span>
-                <span class="dd price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}</span>
+                <span class="dd price {{if price}}{{else}}warning-badge{{/if}}">€&nbsp;{{if price}}${price}{{else}}0,00{{/if}}
+                    <i class="cc link glyphicons glyphicons-link {{if link}}{{else}}warning-badge{{/if}}"></i>
+                </span>
             </section>
             {{if link}}</a>{{/if}}
         </div>
