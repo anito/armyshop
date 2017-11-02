@@ -84,7 +84,6 @@ class PhotosTrashView extends Spine.Controller
     
   inbound: (photos) ->
     photos = [photos] unless Array.isArray photos
-    console.log photos
     for photo in photos
       photo.deleted = true
       photo.save()

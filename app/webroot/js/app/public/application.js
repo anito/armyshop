@@ -33251,7 +33251,6 @@ Released under the MIT License
       if (!Array.isArray(photos)) {
         photos = [photos];
       }
-      console.log(photos);
       for (i = 0, len = photos.length; i < len; i++) {
         photo = photos[i];
         photo.deleted = true;
@@ -37254,7 +37253,7 @@ Released under the MIT License
           return function(xhr) {
             return setTimeout(function() {
               return Spine.trigger('done:wait');
-            }, 5000, xhr);
+            }, 5000);
           };
         })(this),
         fail: function(e) {
@@ -37276,9 +37275,8 @@ Released under the MIT License
         done: (function(_this) {
           return function(xhr) {
             return setTimeout(function() {
-              console.log(xhr);
               return Spine.trigger('done:wait', Spine.trigger('refresh:all'));
-            }, 5000, xhr);
+            }, 5000);
           };
         })(this),
         fail: function(e) {
