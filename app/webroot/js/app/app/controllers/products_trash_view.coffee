@@ -147,9 +147,9 @@ class ProductsTrashView extends Spine.Controller
     e.stopPropagation()
     item = $(e.currentTarget).item()
     
-    @destroyProducts(e, id) if id = item?.id
+    @destroyProducts(id) if id = item?.id
     
-  destroyProducts: (e, ids=@model.selectionList(), callback) ->
+  destroyProducts: (ids=@model.selectionList(), callback) ->
     @log 'destroyProducts'
     ids = [ids] unless Array.isArray(ids)
     
@@ -202,7 +202,7 @@ class ProductsTrashView extends Spine.Controller
     
     switch code
       when 8 #Backspace
-        @destroyProducts(e)
+        @destroyProducts()
         e.preventDefault()
         e.stopPropagation()
     

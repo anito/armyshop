@@ -13,7 +13,7 @@ class RefreshView extends Spine.Controller
   events:
     'click .opt-Refresh'  : 'refresh'
     
-  template:  (icon = 'redo') ->
+  template:  (icon = 'repeat') ->
     $('#refreshTemplate').tmpl icon: icon
     
   constructor: ->

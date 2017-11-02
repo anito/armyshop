@@ -81,6 +81,7 @@ class ProductsView extends Spine.Controller
     Product.bind('ajaxError', Product.errorHandler)
     Product.bind('create:join', @proxy @createJoin)
     Product.bind('destroy:join', @proxy @destroyJoin)
+    Product.bind('delete:products', @proxy @deleteProducts)
     Product.bind('change:collection', @proxy @renderBackgrounds)
     Product.bind('show:unpublished', @proxy @showUnpublished)
     Product.bind('show:unused', @proxy @showUnused)
@@ -93,7 +94,6 @@ class ProductsView extends Spine.Controller
     Spine.bind('loading:start', @proxy @loadingStart)
     Spine.bind('loading:done', @proxy @loadingDone)
     Spine.bind('loading:fail', @proxy @loadingFail)
-    Spine.bind('delete:products', @proxy @deleteProducts)
     
     @bind('drag:start', @proxy @dragStart)
     @bind('drag:enter', @proxy @dragEnter)
@@ -247,47 +247,48 @@ class ProductsView extends Spine.Controller
       
     products = Product.toRecords(ids)
     for product in products
-#      if product.deleted
-#        Product.trigger('destroy:products', ids)
-#        break
-      cats = CategoriesProduct.categories(product.id)
-      # In Products Catalog
-      unless category = Category.record
-        # for the Catalogue View
-        if cats.length
-          #remove from all Categories
-          joined = []
-          if res1 or (res1 = App.confirm('REMOVE_AND_DELETE', @humanize(products)))
-            for cat in cats
-              @destroyJoin product, cat
-              joined.push(cat.id)
-            joined.join('::')
-            Product.trigger('inbound:trash', product)
-            continue
-          else break
-        else
-          if res2 or (res2 = App.confirm('DELETE', @humanize(products)))
-            Product.trigger('inbound:trash', product)
-            continue
-          else break
-      # Category Selected
+      if product.deleted # assumes your are in Trash View
+        Product.trigger('destroy:products', ids)
+        break
       else
-        # for the Joins View
-        # send the last joined product to trash
-        if cats.length is 1
-          joined = []
-          if res3 or (res3 = App.confirm('DELETE', @humanize(products)))
-            @destroyJoin(product, category)
-            Product.trigger('inbound:trash', product)
-            continue
-          else break
+        cats = CategoriesProduct.categories(product.id)
+        # In Products Catalog
+        unless category = Category.record
+          # for the Catalogue View
+          if cats.length
+            #remove from all Categories
+            joined = []
+            if res1 or (res1 = App.confirm('REMOVE_AND_DELETE', @humanize(products)))
+              for cat in cats
+                @destroyJoin product, cat
+                joined.push(cat.id)
+              joined.join('::')
+              Product.trigger('inbound:trash', product)
+              continue
+            else break
+          else
+            if res2 or (res2 = App.confirm('DELETE', @humanize(products)))
+              Product.trigger('inbound:trash', product)
+              continue
+            else break
+        # Category Selected
         else
-          # there are still other identical Products
-          # just remove it from the Cat
-          if res4 or (res4 = App.confirm('REMOVE', @humanize(products)))
-            @destroyJoin(product, category)
-            continue
-          else break
+          # for the Joins View
+          # send the last joined product to trash
+          if cats.length is 1
+            joined = []
+            if res3 or (res3 = App.confirm('DELETE', @humanize(products)))
+              @destroyJoin(product, category)
+              Product.trigger('inbound:trash', product)
+              continue
+            else break
+          else
+            # there are still other identical Products
+            # just remove it from the Cat
+            if res4 or (res4 = App.confirm('REMOVE', @humanize(products)))
+              @destroyJoin(product, category)
+              continue
+            else break
       
   createJoin: (products, category, callback) ->
     Product.createJoin products, category, callback

@@ -143,7 +143,7 @@ class ProductsList extends Spine.Controller
     item = $(e.currentTarget).item()
     return unless item?.constructor?.className is 'Product'
     
-    Spine.trigger('delete:products', [item.id])
+    Product.trigger('delete:products', [item.id])
     
     e.stopPropagation()
     e.preventDefault()

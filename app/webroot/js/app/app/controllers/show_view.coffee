@@ -158,6 +158,7 @@ class ShowView extends Spine.Controller
     
     @bind('active', @proxy @active)
     @silent = true
+    
     @toolbarOne = new ToolbarView
       el: @toolbarOneEl
     @toolbarTwo = new ToolbarView
@@ -512,8 +513,8 @@ class ShowView extends Spine.Controller
   
   deleteProduct: (e) ->
     model = App.showView.current.model
-    Spine.trigger('delete:products', model.selectionList())
-
+    Product.trigger('delete:products', model.selectionList())
+    
   deletePhoto: (e) ->
     model = App.showView.current.model
     Spine.trigger('delete:photos', model.selectionList())
@@ -1178,8 +1179,9 @@ class ShowView extends Spine.Controller
     options =
       done: (xhr) => setTimeout ->
         Spine.trigger('done:wait')
-      , 5000, xhr
+      , 5000
       fail: (e) ->
+        alert e
     
 #    @waitView.trigger('active',
     Spine.trigger('show:wait',
@@ -1193,11 +1195,11 @@ class ShowView extends Spine.Controller
   mysqlRestore: ->
     options =
       done: (xhr) => setTimeout ->
-        Spine.trigger('done:wait')
-        Spine.trigger('refresh:all')
-      , 5000, xhr
+        Spine.trigger('done:wait', Spine.trigger('refresh:all'))
+      , 5000
       fail: (e) ->
-      
+        alert e
+        
     Spine.trigger('show:wait',
       small: true
       header: false

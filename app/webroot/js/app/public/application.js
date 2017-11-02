@@ -34742,7 +34742,7 @@ Released under the MIT License
       if ((item != null ? (ref = item.constructor) != null ? ref.className : void 0 : void 0) !== 'Product') {
         return;
       }
-      Spine.trigger('delete:products', [item.id]);
+      Product.trigger('delete:products', [item.id]);
       e.stopPropagation();
       return e.preventDefault();
     };
@@ -35033,11 +35033,11 @@ Released under the MIT License
       e.stopPropagation();
       item = $(e.currentTarget).item();
       if (id = item != null ? item.id : void 0) {
-        return this.destroyProducts(e, id);
+        return this.destroyProducts(id);
       }
     };
 
-    ProductsTrashView.prototype.destroyProducts = function(e, ids, callback) {
+    ProductsTrashView.prototype.destroyProducts = function(ids, callback) {
       var i, len, product, products, res, results;
       if (ids == null) {
         ids = this.model.selectionList();
@@ -35129,7 +35129,7 @@ Released under the MIT License
       code = e.charCode || e.keyCode;
       switch (code) {
         case 8:
-          this.destroyProducts(e);
+          this.destroyProducts();
           e.preventDefault();
           return e.stopPropagation();
       }
@@ -35243,6 +35243,7 @@ Released under the MIT License
       Product.bind('ajaxError', Product.errorHandler);
       Product.bind('create:join', this.proxy(this.createJoin));
       Product.bind('destroy:join', this.proxy(this.destroyJoin));
+      Product.bind('delete:products', this.proxy(this.deleteProducts));
       Product.bind('change:collection', this.proxy(this.renderBackgrounds));
       Product.bind('show:unpublished', this.proxy(this.showUnpublished));
       Product.bind('show:unused', this.proxy(this.showUnused));
@@ -35252,7 +35253,6 @@ Released under the MIT License
       Spine.bind('loading:start', this.proxy(this.loadingStart));
       Spine.bind('loading:done', this.proxy(this.loadingDone));
       Spine.bind('loading:fail', this.proxy(this.loadingFail));
-      Spine.bind('delete:products', this.proxy(this.deleteProducts));
       this.bind('drag:start', this.proxy(this.dragStart));
       this.bind('drag:enter', this.proxy(this.dragEnter));
       this.bind('drag:over', this.proxy(this.dragOver));
@@ -35470,46 +35470,51 @@ Released under the MIT License
       results = [];
       for (j = 0, len = products.length; j < len; j++) {
         product = products[j];
-        cats = CategoriesProduct.categories(product.id);
-        if (!(category = Category.record)) {
-          if (cats.length) {
-            joined = [];
-            if (res1 || (res1 = App.confirm('REMOVE_AND_DELETE', this.humanize(products)))) {
-              for (k = 0, len1 = cats.length; k < len1; k++) {
-                cat = cats[k];
-                this.destroyJoin(product, cat);
-                joined.push(cat.id);
-              }
-              joined.join('::');
-              Product.trigger('inbound:trash', product);
-              continue;
-            } else {
-              break;
-            }
-          } else {
-            if (res2 || (res2 = App.confirm('DELETE', this.humanize(products)))) {
-              Product.trigger('inbound:trash', product);
-              continue;
-            } else {
-              break;
-            }
-          }
+        if (product.deleted) {
+          Product.trigger('destroy:products', ids);
+          break;
         } else {
-          if (cats.length === 1) {
-            joined = [];
-            if (res3 || (res3 = App.confirm('DELETE', this.humanize(products)))) {
-              this.destroyJoin(product, category);
-              Product.trigger('inbound:trash', product);
-              continue;
+          cats = CategoriesProduct.categories(product.id);
+          if (!(category = Category.record)) {
+            if (cats.length) {
+              joined = [];
+              if (res1 || (res1 = App.confirm('REMOVE_AND_DELETE', this.humanize(products)))) {
+                for (k = 0, len1 = cats.length; k < len1; k++) {
+                  cat = cats[k];
+                  this.destroyJoin(product, cat);
+                  joined.push(cat.id);
+                }
+                joined.join('::');
+                Product.trigger('inbound:trash', product);
+                continue;
+              } else {
+                break;
+              }
             } else {
-              break;
+              if (res2 || (res2 = App.confirm('DELETE', this.humanize(products)))) {
+                Product.trigger('inbound:trash', product);
+                continue;
+              } else {
+                break;
+              }
             }
           } else {
-            if (res4 || (res4 = App.confirm('REMOVE', this.humanize(products)))) {
-              this.destroyJoin(product, category);
-              continue;
+            if (cats.length === 1) {
+              joined = [];
+              if (res3 || (res3 = App.confirm('DELETE', this.humanize(products)))) {
+                this.destroyJoin(product, category);
+                Product.trigger('inbound:trash', product);
+                continue;
+              } else {
+                break;
+              }
             } else {
-              break;
+              if (res4 || (res4 = App.confirm('REMOVE', this.humanize(products)))) {
+                this.destroyJoin(product, category);
+                continue;
+              } else {
+                break;
+              }
             }
           }
         }
@@ -35686,7 +35691,7 @@ Released under the MIT License
 
     RefreshView.prototype.template = function(icon) {
       if (icon == null) {
-        icon = 'redo';
+        icon = 'repeat';
       }
       return $('#refreshTemplate').tmpl({
         icon: icon
@@ -36400,7 +36405,7 @@ Released under the MIT License
     ShowView.prototype.deleteProduct = function(e) {
       var model;
       model = App.showView.current.model;
-      return Spine.trigger('delete:products', model.selectionList());
+      return Product.trigger('delete:products', model.selectionList());
     };
 
     ShowView.prototype.deletePhoto = function(e) {
@@ -37252,7 +37257,9 @@ Released under the MIT License
             }, 5000, xhr);
           };
         })(this),
-        fail: function(e) {}
+        fail: function(e) {
+          return alert(e);
+        }
       };
       Spine.trigger('show:wait', {
         small: true,
@@ -37269,12 +37276,14 @@ Released under the MIT License
         done: (function(_this) {
           return function(xhr) {
             return setTimeout(function() {
-              Spine.trigger('done:wait');
-              return Spine.trigger('refresh:all');
+              console.log(xhr);
+              return Spine.trigger('done:wait', Spine.trigger('refresh:all'));
             }, 5000, xhr);
           };
         })(this),
-        fail: function(e) {}
+        fail: function(e) {
+          return alert(e);
+        }
       };
       Spine.trigger('show:wait', {
         small: true,
