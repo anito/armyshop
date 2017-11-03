@@ -112,7 +112,8 @@ class CategoriesView extends Spine.Controller
     for key, val of Category.protected
       unless Category.findByAttribute('name', key)
         item.name = key
-        item.screenname = val.screenname
+        for k, v of val
+          item[k] = v
         break
       
   sortupdate: (e, o) ->

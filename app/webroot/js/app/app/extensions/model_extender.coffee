@@ -338,6 +338,8 @@ Model.Extender =
         sCount: 0
         author: ''
         
+      details: =>
+        
         
     @include Log
     @extend Log

@@ -29517,10 +29517,6 @@ Released under the MIT License
         }
       });
       this.loadToolbars();
-      this.defaultSettings = {
-        welcomeScreen: false,
-        test: true
-      };
     }
 
     Main.prototype.initRoot = function() {
@@ -29963,6 +29959,41 @@ Released under the MIT License
   }
 
 }).call(this);
+ },"controllers/bin_view": function(exports, require, module) { (function() {
+  var $, Bin, BinView, Extender, Spine,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Bin = require('models/bin');
+
+  Extender = require('extensions/controller_extender');
+
+  BinView = (function(superClass) {
+    extend(BinView, superClass);
+
+    BinView.extend(Extender);
+
+    BinView.prototype.elements = {
+      '.item': 'item'
+    };
+
+    function BinView() {
+      BinView.__super__.constructor.apply(this, arguments);
+    }
+
+    return BinView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = BinView;
+  }
+
+}).call(this);
  },"controllers/categories_header": function(exports, require, module) { (function() {
   var $, CategoriesHeader, CategoriesProduct, Category, Extender, Photo, Product, ProductsPhoto, Spine,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -30381,14 +30412,17 @@ Released under the MIT License
     };
 
     CategoriesView.prototype.createProtected = function(item) {
-      var key, ref, results, val;
+      var k, key, ref, results, v, val;
       ref = Category["protected"];
       results = [];
       for (key in ref) {
         val = ref[key];
         if (!Category.findByAttribute('name', key)) {
           item.name = key;
-          item.screenname = val.screenname;
+          for (k in val) {
+            v = val[k];
+            item[k] = v;
+          }
           break;
         } else {
           results.push(void 0);
@@ -32238,7 +32272,6 @@ Released under the MIT License
         template: this.infoTemplate
       });
       this.viewport = this.itemsEl;
-      Photo.one('refresh', this.proxy(this.refresh));
       Product.bind('change:collection', this.proxy(this.refresh));
       Photo.bind('change:current', this.proxy(this.changeNavigation));
     }
@@ -35456,7 +35489,7 @@ Released under the MIT License
     };
 
     ProductsView.prototype.deleteProducts = function(ids, callback) {
-      var cat, category, cats, j, joined, k, len, len1, product, products, res1, res2, res3, res4, results;
+      var cat, category, cats, j, joined, k, len, len1, product, products, res1, res2, res3, results;
       this.log('deleteProduct');
       if (!Array.isArray(ids)) {
         ids = [ids];
@@ -35498,22 +35531,11 @@ Released under the MIT License
               }
             }
           } else {
-            if (cats.length === 1) {
-              joined = [];
-              if (res3 || (res3 = App.confirm('DELETE', this.humanize(products)))) {
-                this.destroyJoin(product, category);
-                Product.trigger('inbound:trash', product);
-                continue;
-              } else {
-                break;
-              }
+            if (res3 || (res3 = App.confirm('REMOVE', this.humanize(products)))) {
+              this.destroyJoin(product, category);
+              continue;
             } else {
-              if (res4 || (res4 = App.confirm('REMOVE', this.humanize(products)))) {
-                this.destroyJoin(product, category);
-                continue;
-              } else {
-                break;
-              }
+              break;
             }
           }
         }
@@ -35523,6 +35545,9 @@ Released under the MIT License
 
     ProductsView.prototype.createJoin = function(products, category, callback) {
       Product.createJoin(products, category, callback);
+      if (!Array.isArray(products)) {
+        products = [products];
+      }
       return category.updateSelection(products.toId());
     };
 
@@ -35717,16 +35742,16 @@ Released under the MIT License
     };
 
     RefreshView.prototype.fetchAll = function() {
+      Description.fetch(null, {
+        clear: true
+      });
       Photo.fetch(null, {
         clear: true
       });
       Product.fetch(null, {
         clear: true
       });
-      Category.fetch(null, {
-        clear: true
-      });
-      return Description.fetch(null, {
+      return Category.fetch(null, {
         clear: true
       });
     };
@@ -37413,7 +37438,7 @@ Released under the MIT License
 
 }).call(this);
  },"controllers/sidebar": function(exports, require, module) { (function() {
-  var $, CategoriesProduct, Category, Drag, Extender, Photo, Product, ProductsPhoto, RefreshView, Root, Sidebar, SidebarList, Spine, SpineDragItem, User,
+  var $, BinView, CategoriesProduct, Category, Drag, Extender, Photo, Product, ProductsPhoto, RefreshView, Root, Sidebar, SidebarList, SidebarTrashList, Spine, SpineDragItem, User,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -37439,7 +37464,11 @@ Released under the MIT License
 
   SidebarList = require('controllers/sidebar_list');
 
+  SidebarTrashList = require('controllers/sidebar_trash_list');
+
   RefreshView = require('controllers/refresh_view');
+
+  BinView = require('controllers/bin_view');
 
   Extender = require('extensions/controller_extender');
 
@@ -37457,6 +37486,7 @@ Released under the MIT License
       'input.search-query': 'input',
       '.flickr': 'flickr',
       '.items': 'items',
+      '.bin': 'binEl',
       '.inner': 'inner',
       '.droppable': 'droppable',
       '.expander': 'expander',
@@ -37495,9 +37525,13 @@ Released under the MIT License
         template: this.categoryTemplate,
         parent: this
       });
+      this.bin = new BinView({
+        el: this.binEl
+      });
       this.refreshView = new RefreshView({
         el: this.refreshEl
       });
+      this.refreshView.render();
       Category.one('refresh', this.proxy(this.refresh));
       Category.bind('error', this.proxy(this.error));
       Category.bind('update', this.proxy(this.render));
@@ -38315,6 +38349,442 @@ Released under the MIT License
 
   if (typeof module !== "undefined" && module !== null) {
     module.exports = SidebarList;
+  }
+
+}).call(this);
+ },"controllers/sidebar_trash_list": function(exports, require, module) { (function() {
+  var $, Bin, CategoriesProduct, Category, Drag, Extender, Product, ProductsPhoto, ProductsTrash, Root, SidebarTrashList, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Bin = require("models/bin");
+
+  Root = require("models/root");
+
+  Product = require('models/product');
+
+  Category = require('models/category');
+
+  ProductsPhoto = require('models/products_photo');
+
+  ProductsTrash = require('models/products_trash');
+
+  CategoriesProduct = require('models/categories_product');
+
+  Drag = require('extensions/drag');
+
+  Extender = require('extensions/controller_extender');
+
+  require('extensions/tmpl');
+
+  SidebarTrashList = (function(superClass) {
+    extend(SidebarTrashList, superClass);
+
+    SidebarTrashList.extend(Drag);
+
+    SidebarTrashList.extend(Extender);
+
+    SidebarTrashList.prototype.elements = {
+      '.item': 'item'
+    };
+
+    SidebarTrashList.prototype.events = {
+      "click      .item": 'click',
+      "click      .expander": 'clickExpander'
+    };
+
+    SidebarTrashList.prototype.subtemplate = function(items) {
+      return $('#productsTrashSublistTemplate').tmpl(items);
+    };
+
+    SidebarTrashList.prototype.template = function(items) {
+      return $("#sidebarTemplate").tmpl(items);
+    };
+
+    SidebarTrashList.prototype.ctaTemplate = function(item) {
+      return $('#ctaTemplate').tmpl(item);
+    };
+
+    function SidebarTrashList() {
+      this.render = bind(this.render, this);
+      SidebarTrashList.__super__.constructor.apply(this, arguments);
+      ProductsTrash.bind('change', this.proxy(this.render));
+      Spine.bind('scroll', this.proxy(this.scrollTo));
+    }
+
+    SidebarTrashList.prototype.init = function() {};
+
+    SidebarTrashList.prototype.render = function(item, mode) {
+      this.log('render');
+      switch (mode) {
+        case 'create':
+          return this.create(item);
+        case 'update':
+          return this.update(item);
+        case 'destroy':
+          return this.destroy(item);
+      }
+    };
+
+    SidebarTrashList.prototype.create = function(item) {
+      this.append(this.template(item));
+      console.log('trash list create');
+      return console.log(item);
+    };
+
+    SidebarTrashList.prototype.update = function(item) {
+      console.log('trash list update');
+      return console.log(item);
+    };
+
+    SidebarTrashList.prototype.destroy = function(item) {
+      console.log('trash list destroy');
+      return console.log(item);
+    };
+
+    SidebarTrashList.prototype.initialize = function() {
+      var id, ref, selector;
+      id = (ref = Category.findByAttribute('name', '__BIN__')) != null ? ref.id : void 0;
+      selector = '#sidebar [data-id="' + id + '"]';
+      this.el = $(selector);
+      return console.log(this.el);
+    };
+
+    SidebarTrashList.prototype.click = function(e) {};
+
+    SidebarTrashList.prototype.clickExpander = function(e) {
+      var el, item;
+      el = $(e.target).closest('li.gal');
+      if (!this.isOpen(el)) {
+        el.addClass('manual');
+      } else {
+        el.removeClass('manual');
+      }
+      item = el.item();
+      if (item) {
+        this.expand(item, !this.isOpen(el));
+      }
+      e.stopPropagation();
+      return e.preventDefault();
+    };
+
+    SidebarTrashList.prototype.expand = function(item, open) {
+      var el, expander;
+      el = this.categoryElFromItem(item);
+      expander = $('.expander', el);
+      el.toggleClass('open', open);
+      return;
+      if (open) {
+        return this.openSublist(el);
+      } else {
+        if (!el.hasClass('manual')) {
+          return this.closeSublist(el);
+        }
+      }
+    };
+
+    SidebarTrashList.prototype.open = function() {};
+
+    SidebarTrashList.prototype.close = function() {};
+
+    SidebarTrashList.prototype.scrollTo = function(item) {
+      var clsName, el, el_, ohc, ohp, otc, otp, outOfMaxRange, outOfMinRange, outOfRange, queued, res, resMax, resMin, speed, stp, ul;
+      if (!item) {
+        return;
+      }
+      el = this.children().forItem(Category.record);
+      clsName = item.constructor.className;
+      switch (clsName) {
+        case 'Category':
+          return;
+          queued = false;
+          ul = $('ul', el);
+          ul.hide();
+          el_ = el[0];
+          if (el_) {
+            ohc = el_.offsetHeight;
+          }
+          ul.show();
+          speed = 10;
+          break;
+        case 'Product':
+          queued = false;
+          ul = $('ul', el);
+          el = $('li', ul).forItem(item);
+          el_ = el[0];
+          if (el_) {
+            ohc = el_.offsetHeight;
+          }
+          speed = 200;
+          break;
+        default:
+          return;
+      }
+      if (!el.length) {
+        return;
+      }
+      otc = el.offset().top;
+      stp = this.el[0].scrollTop;
+      otp = this.el.offset().top;
+      ohp = this.el[0].offsetHeight;
+      resMin = stp + otc - otp;
+      resMax = stp + otc - (otp + ohp - ohc);
+      outOfRange = stp > resMin || stp < resMax;
+      if (!outOfRange) {
+        return;
+      }
+      outOfMinRange = stp > resMin;
+      outOfMaxRange = stp < resMax;
+      res = outOfMinRange ? resMin : outOfMaxRange ? resMax : void 0;
+      return this.el.animate({
+        scrollTop: res
+      }, {
+        queue: queued,
+        duration: speed,
+        done: (function(_this) {
+          return function() {};
+        })(this)
+      });
+    };
+
+    return SidebarTrashList;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = SidebarTrashList;
+  }
+
+}).call(this);
+ },"controllers/sidebar_trash_view": function(exports, require, module) { (function() {
+  var $, Category, Drag, Extender, Photo, Product, Products, Root, SidebarTrashList, SidebarTrashView, Spine, SpineDragItem, User,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Category = require('models/category');
+
+  Product = require('models/product');
+
+  Photo = require('models/photo');
+
+  Root = require('models/root');
+
+  Products = require('models/products');
+
+  User = require("models/user");
+
+  Drag = require('extensions/drag');
+
+  SidebarTrashList = require('controllers/sidebar_trash_list');
+
+  Extender = require('extensions/controller_extender');
+
+  SpineDragItem = require('models/drag_item');
+
+  SidebarTrashView = (function(superClass) {
+    extend(SidebarTrashView, superClass);
+
+    SidebarTrashView.extend(Drag);
+
+    SidebarTrashView.extend(Extender);
+
+    SidebarTrashView.prototype.elements = {
+      '.items': 'items',
+      '.expander': 'expander'
+    };
+
+    SidebarTrashView.prototype.events = {
+      'sortupdate .sublist': 'sortupdate',
+      'dragstart  .item': 'dragstart',
+      'dragover   .item': 'dragover',
+      'dragenter  .item': 'dragenter',
+      'dragleave  .item': 'dragleave',
+      'dragend    .item': 'dragend',
+      'drop       .item': 'drop'
+    };
+
+    SidebarTrashView.prototype.template = function(items) {
+      return $("#sidebarTrashTemplate").tmpl(items);
+    };
+
+    function SidebarTrashView() {
+      SidebarTrashView.__super__.constructor.apply(this, arguments);
+      this.list = new SidebarTrashList({
+        el: this.items
+      });
+      Category.one('refresh', this.proxy(this.refresh));
+      Category.bind('error', this.proxy(this.error));
+      Category.bind('update', this.proxy(this.render));
+      Category.bind("ajaxError", Category.errorHandler);
+      Category.bind("ajaxSuccess", Category.successHandler);
+      Spine.bind('refresh:one', this.proxy(this.refreshOne));
+      Spine.bind('create:category', this.proxy(this.createCategory));
+      Spine.bind('edit:category', this.proxy(this.edit));
+      Spine.bind('delete:category', this.proxy(this.deleteCategory));
+      this.bind('drag:timeout', this.proxy(this.expandAfterTimeout));
+      this.bind('drag:help', this.proxy(this.dragHelp));
+      this.bind('drag:start', this.proxy(this.dragStart));
+      this.bind('drag:enter', this.proxy(this.dragEnter));
+      this.bind('drag:over', this.proxy(this.dragOver));
+      this.bind('drag:leave', this.proxy(this.dragLeave));
+      this.bind('drag:drop', this.proxy(this.dragDrop));
+      this.model = this.defaultModel = 'Category';
+    }
+
+    SidebarTrashView.prototype.filter = function(e, qry) {
+      if (qry) {
+        this.input.val(qry);
+      }
+      this.query = this.input.val() || qry;
+      return this.render();
+    };
+
+    SidebarTrashView.prototype.refresh = function(items) {
+      return this.render();
+    };
+
+    SidebarTrashView.prototype.refreshOne = function() {
+      return Category.one('refresh', this.proxy(this.refresh));
+    };
+
+    SidebarTrashView.prototype.render = function() {
+      var cat, items, j, k, len, len1, pro, ref, ref1;
+      this.log('render');
+      this.products = Product.filter(this.query, {
+        func: 'searchSelect'
+      });
+      if (this.query) {
+        items = [];
+        ref = this.products;
+        for (j = 0, len = ref.length; j < len; j++) {
+          pro = ref[j];
+          ref1 = CategoriesProduct.categories(pro.id);
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            cat = ref1[k];
+            items.push(cat);
+          }
+        }
+      } else {
+        items = Category.filter(this.query, {
+          func: 'searchSelect'
+        });
+      }
+      this.list.render(items);
+      return this.refreshView.render();
+    };
+
+    SidebarTrashView.prototype.newAttributes = function() {
+      if (User.first()) {
+        return {
+          screenname: this.categoryName(),
+          author: User.first().name,
+          user_id: User.first().id
+        };
+      } else {
+        return User.ping();
+      }
+    };
+
+    SidebarTrashView.prototype.categoryName = function(proposal) {
+      if (proposal == null) {
+        proposal = 'Category ' + (function() {
+          var i, index, s;
+          s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          index = (i = Category.count() + 1) < s.length ? i : i % s.length;
+          return s.split('')[index];
+        })();
+      }
+      Category.each((function(_this) {
+        return function(record) {
+          if (record.name === proposal) {
+            return proposal = _this.categoryName(proposal + proposal.split(' ')[1][0]);
+          }
+        };
+      })(this));
+      return proposal;
+    };
+
+    SidebarTrashView.prototype.createCategory = function(options) {
+      var category, cb;
+      if (options == null) {
+        options = {};
+      }
+      this.log('createCategory');
+      cb = function(category) {
+        category.updateSelectionID();
+        Root.updateSelection([category.id]);
+        if (options.products) {
+          Product.trigger('create:join', options.products, category);
+          if (options.deleteFromOrigin) {
+            return Product.trigger('destroy:join', options.products, options.deleteFromOrigin);
+          }
+        }
+      };
+      category = new Category(this.newAttributes());
+      category.one('ajaxSuccess', this.proxy(cb));
+      return category.save(options);
+    };
+
+    SidebarTrashView.prototype.error = function(item, err) {
+      return alert(err);
+    };
+
+    SidebarTrashView.prototype.createProduct = function() {
+      return Spine.trigger('create:product');
+    };
+
+    SidebarTrashView.prototype.deleteCategory = function(id) {
+      var category;
+      if (!(category = Category.find(id))) {
+        return;
+      }
+      if (category.isValid()) {
+        if (App.confirm('DESTROY_CATEGORY', this.humanize(category))) {
+          return category.destroy();
+        }
+      } else {
+        return App.confirm('DESTROY_CATEGORY_NOT_ALLOWED', {
+          mode: 'alert'
+        });
+      }
+    };
+
+    SidebarTrashView.prototype.clearSearch = function() {
+      $(this.input).val('');
+      return this.filter();
+    };
+
+    SidebarTrashView.prototype.edit = function() {
+      App.categoryEditView.render();
+      return App.contentManager.change(App.categoryEditView);
+    };
+
+    SidebarTrashView.prototype.expandAfterTimeout = function(e, timer) {
+      var categoryEl, item, ref;
+      clearTimeout(timer);
+      categoryEl = $(e.target).closest('.gal.item');
+      item = categoryEl.item();
+      if (!(item && item.id !== ((ref = Spine.dragItem.originModelName.record) != null ? ref.id : void 0))) {
+        return;
+      }
+      return this.list.expand(item, true);
+    };
+
+    return SidebarTrashView;
+
+  })(Spine.Controller);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = SidebarTrashView;
   }
 
 }).call(this);
@@ -41703,7 +42173,10 @@ Released under the MIT License
           aCount: 0,
           sCount: 0,
           author: ''
-        }
+        },
+        details: (function(_this) {
+          return function() {};
+        })(this)
       };
       this.include(Log);
       this.extend(Log);
@@ -44172,7 +44645,7 @@ Released under the MIT License
     ref = this;
     for (i = 0, len = ref.length; i < len; i++) {
       item = ref[i];
-      id = typeof item === 'object' ? item.id : typeof item === 'string' ? item : void 0;
+      id = typeof item === 'object' && (id = item.id) ? id : typeof item === 'string' ? item : void 0;
       if (id) {
         res.push(id);
       }
@@ -44455,6 +44928,62 @@ Released under the MIT License
 
   if (typeof module !== "undefined" && module !== null) {
     module.exports = Login;
+  }
+
+}).call(this);
+ },"models/bin": function(exports, require, module) { (function() {
+  var $, Bin, Extender, Filter, Model, ProductsTrash, Spine,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Spine = require("spine");
+
+  $ = Spine.$;
+
+  Model = Spine.Model;
+
+  ProductsTrash = require('models/products_trash');
+
+  Filter = require("extensions/filter");
+
+  Extender = require("extensions/model_extender");
+
+  require("extensions/cache");
+
+  require("spine/lib/ajax");
+
+  Bin = (function(superClass) {
+    extend(Bin, superClass);
+
+    function Bin() {
+      this.details = bind(this.details, this);
+      return Bin.__super__.constructor.apply(this, arguments);
+    }
+
+    Bin.configure("Bin", 'id', 'cid', 'title');
+
+    Bin.extend(Filter);
+
+    Bin.extend(Extender);
+
+    Bin.selectAttributes = ['title'];
+
+    Bin.prototype.details = function() {
+      return $().extend(this.defaultDetails, {
+        iCount: this.photos().length,
+        sCount: Product.selectionList().length,
+        product: Product.record,
+        category: Category.record
+      });
+    };
+
+    return Bin;
+
+  })(Spine.Model);
+
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = Model.Bin = Bin;
   }
 
 }).call(this);
@@ -44811,13 +45340,10 @@ Released under the MIT License
       },
       'specials': {
         screenname: 'Specials'
-      },
-      NONECAT: {
-        screenname: 'ohne Kategorie'
       }
     };
 
-    Category["private"] = [Category["protected"].NONECAT];
+    Category["private"] = [Category["protected"]['__BIN__']];
 
     Category.fromJSON = function(objects) {
       var json, key;
@@ -45943,22 +46469,29 @@ Released under the MIT License
     };
 
     Product.destroyJoin = function(items, target, callback) {
-      var cb, e, ga, gas, i, item, len;
+      var cb, e, ga, i, item, len;
       if (items == null) {
         items = [];
+      }
+      if (!target) {
+        return;
       }
       if (!Array.isArray(items)) {
         items = [items];
       }
-      cb = function() {};
-      if (!target) {
-        return;
-      }
-      for (i = 0, len = items.length; i < len; i++) {
-        item = items[i];
-        gas = CategoriesProduct.filter(item.id, {
+      cb = function(item) {
+        var category, gas, product;
+        category = Category.findByAttribute('name', 'NONECAT');
+        product = Product.find(this.product_id);
+        gas = CategoriesProduct.filter(this.product_id, {
           associationForeignKey: 'product_id'
         });
+        if (!gas.length) {
+          return Product.trigger('inbound:trash', product);
+        }
+      };
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
         ga = CategoriesProduct.productExists(item.id, target.id);
         try {
           if (ga != null) {

@@ -1,7 +1,7 @@
 Array.prototype.toId = ->
   res = []
   for item in @
-    id = if typeof item is 'object' then item.id else if typeof item is 'string' then item
+    id = if typeof item is 'object' and id = item.id then id else if typeof item is 'string' then item
     res.push id if id
   res
   

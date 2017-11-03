@@ -52,7 +52,7 @@ class PhotoView extends Spine.Controller
       template: @infoTemplate
     @viewport = @itemsEl
     
-    Photo.one('refresh', @proxy @refresh)
+#    Photo.one('refresh', @proxy @refresh)
     Product.bind('change:collection', @proxy @refresh)
     Photo.bind('change:current', @proxy @changeNavigation)
     

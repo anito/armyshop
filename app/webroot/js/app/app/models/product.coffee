@@ -121,7 +121,9 @@ class Product extends Spine.Model
       items = [items]
     
     return unless items.length and target
+    
     isValid = true
+    
     cb = ->
       # scope of record
       Category.trigger('change:collection', target)
@@ -152,20 +154,23 @@ class Product extends Spine.Model
     ret
     
   @destroyJoin: (items=[], target, callback) ->
-    unless Array.isArray items
-      items = [items]
-    
-    cb = ->
-#      if typeof callback is 'function'
-#        callback.call(@)
-    
     return unless target
     
+    items = [items] unless Array.isArray items
+    
+    # scope of record
+    cb = (item) ->
+      category = Category.findByAttribute('name', 'NONECAT')
+      product = Product.find(@product_id)
+      
+      gas = CategoriesProduct.filter(@product_id, associationForeignKey: 'product_id')
+      Product.trigger('inbound:trash', product) unless gas.length
+#      Product.trigger('create:join', product, category) unless gas.length
+    
     for item in items
-      gas = CategoriesProduct.filter(item.id, associationForeignKey: 'product_id')
       ga = CategoriesProduct.productExists(item.id, target.id)
       try
-        ga?.destroy(done: cb)
+        ga?.destroy(done: cb) # callback for unused products
       catch e
         alert e
       

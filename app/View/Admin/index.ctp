@@ -48,6 +48,7 @@
                     </li>
                 </ul>
                 <ul class="items flex vbox autoflow"></ul>
+                <ul class="bin flex vbox autoflow"></ul>
                 <footer class="footer">
                     <div style="white-space: nowrap; overflow: hidden;">
                         <div id="refresh"></div>
@@ -460,19 +461,30 @@
     </li>
     {{else}}
     <li data-id="${id}" data-model-name="Product" data-models-name="Photo" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
-    <span class="infogramm">
-        <span class="glyphicons glyphicons-picture {{if details().iCount}}{{else}} notok{{/if}}" title="${details().iCount} Produktbild{{if details().iCount>1 || details().iCount==0}}er{{/if}}"></span>
-        <span class="glyphicons glyphicons-eye-{{if ignored}}close notok{{else}}open{{/if}} opt-ignored" title="Produkt{{if ignored}} veröffentlichen{{else}} nicht veröffentlichen{{/if}}"></span>
-        <span class="glyphicons glyphicons-{{if favorite}}star{{else}}star-empty{{/if}} opt-favorite" title="{{if favorite}}{{else}}zum {{/if}}Produkt des Tages {{if favorite}} deaktivieren{{else}} machen{{/if}}"></span>
-    </span>
-        <span class="inner-sub">
-        <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
-        <span class="outer-cta">
-            <span class="cta {{if price}}{{else}}notok{{/if}}">€ {{if price}}${price}{{else}}0{{/if}}</span>
+        <span class="infogramm">
+            <span class="glyphicons glyphicons-picture {{if details().iCount}}{{else}} notok{{/if}}" title="${details().iCount} Produktbild{{if details().iCount>1 || details().iCount==0}}er{{/if}}"></span>
+            <span class="glyphicons glyphicons-eye-{{if ignored}}close notok{{else}}open{{/if}} opt-ignored" title="Produkt{{if ignored}} veröffentlichen{{else}} nicht veröffentlichen{{/if}}"></span>
+            <span class="glyphicons glyphicons-{{if favorite}}star{{else}}star-empty{{/if}} opt-favorite" title="{{if favorite}}{{else}}zum {{/if}}Produkt des Tages {{if favorite}} deaktivieren{{else}} machen{{/if}}"></span>
         </span>
-    </span>
+        <span class="inner-sub">
+            <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
+            <span class="outer-cta">
+                <span class="cta {{if price}}{{else}}notok{{/if}}">€ {{if price}}${price}{{else}}0{{/if}}</span>
+            </span>
+        </span>
     </li>
     {{/if}}
+</script>
+
+<script id="productsTrashSublistTemplate" type="text/html">
+    <li data-id="${id}" data-model-name="Product" data-models-name="Photo" class="sublist-item alb item data {{if ignored}}ignored{{/if}}" title="${title}">
+        <span class="inner-sub">
+            <span class="title center" title="${title}">{{if title}}${$().name(title, 16)}{{/if}}</span>
+            <span class="outer-cta">
+                <span class="cta {{if price}}{{else}}notok{{/if}}">€ {{if price}}${price}{{else}}0{{/if}}</span>
+            </span>
+        </span>
+    </li>
 </script>
 
 <script id="sidebarFlickrTemplate" type="text/html">

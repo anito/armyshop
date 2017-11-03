@@ -285,9 +285,8 @@ class Main extends Spine.Controller
 #        @navigate '/overview', ''
 
     @loadToolbars()
-    @defaultSettings =
-      welcomeScreen: false,
-      test: true
+      
+#    Spine.trigger('refresh:all')
       
   initRoot: ->
     root = new Model.Root()

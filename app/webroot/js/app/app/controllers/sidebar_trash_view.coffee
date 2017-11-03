@@ -1,76 +1,44 @@
-Spine             = require("spine")
-$                 = Spine.$
-Category          = require('models/category')
-Product           = require('models/product')
-Photo             = require('models/photo')
-Root              = require('models/root')
-CategoriesProduct = require('models/categories_product')
-ProductsPhoto     = require('models/products_photo')
+Spine          = require("spine")
+$              = Spine.$
+Category        = require('models/category')
+Product          = require('models/product')
+Photo          = require('models/photo')
+Root           = require('models/root')
+Products          = require('models/products')
 User              = require("models/user")
 Drag              = require('extensions/drag')
-SidebarList       = require('controllers/sidebar_list')
 SidebarTrashList  = require('controllers/sidebar_trash_list')
-RefreshView       = require('controllers/refresh_view')
-BinView           = require('controllers/bin_view')
 Extender          = require('extensions/controller_extender')
 SpineDragItem     = require('models/drag_item')
 
-class Sidebar extends Spine.Controller
+class SidebarTrashView extends Spine.Controller
 
   @extend Drag
   @extend Extender
 
   elements:
-    'form'                  : 'form'
-    'input.search-query'    : 'input'
-    '.flickr'               : 'flickr'
     '.items'                : 'items'
-    '.bin'                  : 'binEl'
-    '.inner'                : 'inner'
-    '.droppable'            : 'droppable'
     '.expander'             : 'expander'
-    '#refresh'              : 'refreshEl'
 
 
   events:
-    'click .clear-search'       : 'clearSearch'
-    'keyup input'               : 'filter'
-    'click .opt-CreateProduct'  : 'createProduct'
-    'click .opt-CreateCategory' : 'createCategory'
-#    'click a[href]'             : 'followLink'
-    
-    'dblclick .draghandle'      : 'toggleDraghandle'
-
     'sortupdate .sublist'         : 'sortupdate'
     
-    'dragstart  .alb.item'        : 'dragstart'
-    'dragover   .gal.item'        : 'dragover' # Chrome only dispatches the drop event if this event is cancelled
-    'dragenter  .gal.item'        : 'dragenter'
-    'dragenter  .alb.item'        : 'dragenter'
-    'dragleave  .gal.item'        : 'dragleave'
-    'dragleave  .alb.item'        : 'dragleave'
-    'dragend    .gal.item'        : 'dragend'
-    'dragend    .alb.item'        : 'dragend'
-    'drop       .gal.item'        : 'drop'
-    'drop       .alb.item'        : 'drop'
+    'dragstart  .item'        : 'dragstart'
+    'dragover   .item'        : 'dragover' # Chrome only dispatches the drop event if this event is cancelled
+    'dragenter  .item'        : 'dragenter'
+    'dragleave  .item'        : 'dragleave'
+    'dragend    .item'        : 'dragend'
+    'drop       .item'        : 'drop'
 
-  categoryTemplate: (items) ->
-    $("#sidebarTemplate").tmpl(items)
-    
+  template: (items) ->
+    $("#sidebarTrashTemplate").tmpl(items)
+
   constructor: ->
     super
-    @el.width(8)
-    @defaultTemplate = @categoryTemplate
-    @list = new SidebarList
-      el: @items,
-      template: @categoryTemplate
-      parent: @
-    @bin = new BinView
-      el: @binEl
-    @refreshView = new RefreshView
-      el: @refreshEl
-      
-    @refreshView.render()
+    
+    @list = new SidebarTrashList
+      el: @items
       
     Category.one('refresh', @proxy @refresh)
     Category.bind('error', @proxy @error)
@@ -116,7 +84,6 @@ class Sidebar extends Spine.Controller
       items = Category.filter(@query, func: 'searchSelect')
     @list.render items
     @refreshView.render()
-#    Spine.trigger('init:bin')
   
   newAttributes: ->
     if User.first()
@@ -176,25 +143,6 @@ class Sidebar extends Spine.Controller
   edit: ->
     App.categoryEditView.render()
     App.contentManager.change(App.categoryEditView)
-
-  toggleDraghandle: (options) ->
-    width = =>
-      max = App.vmanager.currentDim
-      w =  @el.width()
-      if App.vmanager.sleep
-        App.vmanager.awake()
-        @clb = ->
-        max+"px"
-      else
-        @clb = App.vmanager.goSleep
-        '20px'
-    
-    w = width()
-    speed = 700
-    @el.animate
-      width: w
-      speed
-      => @clb()
     
   expandAfterTimeout: (e, timer) ->
     clearTimeout timer
@@ -203,19 +151,4 @@ class Sidebar extends Spine.Controller
     return unless item and item.id isnt Spine.dragItem.originModelName.record?.id
     @list.expand(item, true)
     
-  sortupdate: (e, o) ->
-    list = o.item.parent()
-    category = list.parent().item()
-    gas = CategoriesProduct.filter(category.id, associationForeignKey: 'category_id')
-    list.children().each (index) ->
-      product = $(@).item()
-      for ga in gas
-        if ga.product_id is product.id and parseInt(ga.order) isnt index
-          ga.order = index
-          ga.silentUpdate()
-        
-          
-    category.save validate: false
-    Spine.trigger('reorder', category)
-    
-module?.exports = Sidebar
+module?.exports = SidebarTrashView

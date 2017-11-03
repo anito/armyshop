@@ -275,23 +275,15 @@ class ProductsView extends Spine.Controller
         else
           # for the Joins View
           # send the last joined product to trash
-          if cats.length is 1
-            joined = []
-            if res3 or (res3 = App.confirm('DELETE', @humanize(products)))
-              @destroyJoin(product, category)
-              Product.trigger('inbound:trash', product)
-              continue
-            else break
-          else
-            # there are still other identical Products
-            # just remove it from the Cat
-            if res4 or (res4 = App.confirm('REMOVE', @humanize(products)))
-              @destroyJoin(product, category)
-              continue
-            else break
+          if res3 or (res3 = App.confirm('REMOVE', @humanize(products)))
+            @destroyJoin(product, category)
+            continue
+          else break
       
   createJoin: (products, category, callback) ->
     Product.createJoin products, category, callback
+    
+    products = [products] unless Array.isArray products
     category.updateSelection products.toId()
     
   destroyJoin: (products, category) ->
