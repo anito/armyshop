@@ -100,14 +100,6 @@ class CategoriesView extends Spine.Controller
       unless /^#\/category\//.test(location.hash)
         @navigate '/category', Category.first().id
   
-  newAttributes: ->
-    if User.first()
-      name   : 'New Name'
-      user_id : User.first().id
-      author: User.first().name
-    else
-      User.ping()
-      
   createProtected: (item) ->
     for key, val of Category.protected
       unless Category.findByAttribute('name', key)

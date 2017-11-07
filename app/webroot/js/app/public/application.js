@@ -29282,7 +29282,7 @@ Released under the MIT License
           return '\nDas Produkt des Tages befindet sich im Papierkorb \n\n';
         },
         'DESTROY_CATEGORY': function(options) {
-          return '\nSoll die Kategorie "' + options.screenname + '" entfernt werden?\n\n';
+          return '\nSoll die Kategorie "' + options.name + '" entfernt werden?\n\n';
         },
         'DESTROY_CATEGORY_NOT_ALLOWED': function(options) {
           return '\nGeschützte Kategorie!\n\n';
@@ -30396,18 +30396,6 @@ Released under the MIT License
         if (!/^#\/category\//.test(location.hash)) {
           return this.navigate('/category', Category.first().id);
         }
-      }
-    };
-
-    CategoriesView.prototype.newAttributes = function() {
-      if (User.first()) {
-        return {
-          name: 'New Name',
-          user_id: User.first().id,
-          author: User.first().name
-        };
-      } else {
-        return User.ping();
       }
     };
 
@@ -37594,10 +37582,11 @@ Released under the MIT License
     };
 
     Sidebar.prototype.newAttributes = function() {
+      var name;
       if (User.first()) {
         return {
-          screenname: this.categoryName(),
-          author: User.first().name,
+          name: name = this.categoryName(),
+          screenname: name,
           user_id: User.first().id
         };
       } else {
@@ -37641,7 +37630,7 @@ Released under the MIT License
         }
       };
       category = new Category(this.newAttributes());
-      category.one('ajaxSuccess', this.proxy(cb));
+      category.one('ajaxSuccess', cb);
       return category.save(options);
     };
 
@@ -41681,8 +41670,8 @@ Released under the MIT License
           };
           return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
         },
-        n: function(inst) {
-          return inst.name || inst.screenname || inst.title || inst.src || 'no name';
+        n: function(instance) {
+          return instance.name || instance.screenname || instance.title || instance.src || 'no name';
         },
         "protected": {},
         record: false,
@@ -44949,10 +44938,6 @@ Released under the MIT License
 
   Extender = require("extensions/model_extender");
 
-  require("extensions/cache");
-
-  require("spine/lib/ajax");
-
   Bin = (function(superClass) {
     extend(Bin, superClass);
 
@@ -44961,7 +44946,7 @@ Released under the MIT License
       return Bin.__super__.constructor.apply(this, arguments);
     }
 
-    Bin.configure("Bin", 'id', 'cid', 'title');
+    Bin.configure("Bin", 'id', 'title');
 
     Bin.extend(Filter);
 

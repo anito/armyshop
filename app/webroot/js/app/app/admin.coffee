@@ -108,7 +108,7 @@ class Main extends Spine.Controller
       'FAVORITE_IN_TRASH': (options) ->
         '\nDas Produkt des Tages befindet sich im Papierkorb \n\n'
       'DESTROY_CATEGORY': (options) ->
-        '\nSoll die Kategorie "' + options.screenname + '" entfernt werden?\n\n'
+        '\nSoll die Kategorie "' + options.name + '" entfernt werden?\n\n'
       'DESTROY_CATEGORY_NOT_ALLOWED': (options) ->
         '\nGeschützte Kategorie!\n\n'
       'NO_VALID_CATEGORY': (options) ->

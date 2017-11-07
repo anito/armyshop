@@ -120,8 +120,8 @@ class Sidebar extends Spine.Controller
   
   newAttributes: ->
     if User.first()
-      screenname  : @categoryName()
-      author      : User.first().name
+      name        : name = @categoryName()
+      screenname  : name
       user_id     : User.first().id
     else
       User.ping()
@@ -152,7 +152,7 @@ class Sidebar extends Spine.Controller
 #        Category.trigger('activate', category.id)
         
     category = new Category @newAttributes()
-    category.one('ajaxSuccess', @proxy cb)
+    category.one('ajaxSuccess', cb)
     category.save(options)
     
   error: (item, err) ->

@@ -4,13 +4,10 @@ Model             = Spine.Model
 ProductsTrash     = require('models/products_trash')
 Filter            = require("extensions/filter")
 Extender          = require("extensions/model_extender")
-require("extensions/cache")
-require("spine/lib/ajax")
-
 
 class Bin extends Spine.Model
 
-  @configure "Bin", 'id', 'cid', 'title'
+  @configure "Bin", 'id', 'title'
 
   @extend Filter
   @extend Extender
