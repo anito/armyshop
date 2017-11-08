@@ -16,46 +16,48 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+$cakeDescription = __d('cake_dev', 'HA-Lehmann');
+$cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <?php echo $this->Html->charset(); ?>
-    <title>
-      <?php __('CakePHP: Welcome to CakePHP: '); ?>
-      <?php echo $title_for_layout; ?>
-    </title>
-    <?php
-    echo $this->Html->meta('icon');
-    
-    echo $this->Html->css('bootstrap/glyphicons');
-    echo $this->Html->css('bootstrap/bootstrap');
-    echo $this->Html->css('application_boxmodel');
-    echo $this->Html->script('app/public/application');
+    <head>
+        <?php echo $this->Html->charset(); ?>
+        <title>
+            <?php echo $cakeDescription ?>:
+            <?php echo $this->fetch('title'); ?>
+        </title>
+        <?php
+        echo $this->Html->meta('icon');
 
-    echo $this->Html->scriptStart();
-    ?>
+        echo $this->Html->css('bootstrap/glyphicons');
+        echo $this->Html->css('bootstrap/bootstrap');
+        echo $this->Html->css('application_boxmodel');
+        echo $this->Html->script('app/public/application');
 
-    var base_url = '<?php echo $this->Html->url('/'); ?>';
-    var isProduction = true
-    var exports = this;
-    
-    Spine = require('spine');
-    Spine.isProduction = (localStorage.isProduction != null) ? !(localStorage.isProduction === 'false') : isProduction
-    
-    $(function(){
-      var Login = require("login");
-      exports.Login = new Login({el: $("body")})
-    });
-    
-    <?php
-    echo $this->Html->scriptEnd();
-    echo $this->fetch('meta');
-    echo $scripts_for_layout;
-    ?>
-  </head>
-  <body class="body bg-dark">
-    <?php echo $this->fetch('content'); ?>
-    <?php echo $this->element('sql_dump'); ?>
-  </body>
+        echo $this->Html->scriptStart();
+        ?>
+
+        var base_url = '<?php echo $this->Html->url('/'); ?>';
+        var isProduction = true
+        var exports = this;
+
+        Spine = require('spine');
+        Spine.isProduction = (localStorage.isProduction != null) ? !(localStorage.isProduction === 'false') : isProduction
+
+        $(function(){
+        var Login = require("login");
+        exports.Login = new Login({el: $("body")})
+        });
+
+        <?php
+        echo $this->Html->scriptEnd();
+        echo $this->fetch('meta');
+        echo $scripts_for_layout;
+        ?>
+    </head>
+    <body class="body bg-dark">
+        <?php echo $this->fetch('content'); ?>
+        <?php echo $this->element('sql_dump'); ?>
+    </body>
 </html>
