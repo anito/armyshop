@@ -558,12 +558,10 @@ article.home-blog .bottom .author p.name a:hover {
   text-decoration: underline; }
 
 .btn, .button-ghost-black, input[type="submit"], .button-ghost-white, .button-ghost-primary, .ninja-forms-cont .ninja-forms-form-wrap .ninja-forms-all-fields-wrap .field-wrap.submit-wrap input[type="submit"], #seminars-table table tr td:nth-child(4) a, #seminar-form ul li button, table#adwords_wrapper tbody tr td input[type="submit"], a.btn, a.button-ghost-black, a.button-ghost-white, a.button-ghost-primary, #seminars-table table tr td:nth-child(4) a {
-  color: #FFFFFF;
   display: inline-block;
   text-decoration: none;
   padding: 14px;
   margin: 0px;
-  font-size: 0.75rem;
   font-weight: bold;
   line-height: 100%;
   cursor: pointer;

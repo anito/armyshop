@@ -1,7 +1,7 @@
 <div class="outer-wrapper">
     <div class="content">
         <div class="page-sidebar">
-            <div id="home" class="page-header hide" style="">
+            <div id="" class="page-header hide" style="">
                 <div class="container">
                     <div class="breadcrumbs" typeof="BreadcrumbList" vocab="http://schema.org/">
                         <!-- Breadcrumb NavXT 5.5.1 -->

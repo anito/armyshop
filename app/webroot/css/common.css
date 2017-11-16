@@ -1,7 +1,15 @@
+.btn {
+    position: relative;
+}
 .pricing__item {
   -webkit-flex: 1 1 300px;
   flex: 1 1 300px;
   transition: flex 0.3s;
+}
+.pricing--details .pricing__action {
+    line-height: 2.5em;
+    padding: 0 10px;
+    position: relative;
 }
 .tile .price {
   border: 1px solid rgba(0,0,0,0.2);

@@ -44,7 +44,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->css("linearicons");
         echo $this->Html->css("lehmann");
         echo $this->Html->css("common");
-        echo $this->Html->css("demo", array('media' => 'only screen and (min-width : 768px)'));
+        echo $this->Html->css("demo", array('media' => 'only screen and (min-width : 320px)'));
         echo $this->Html->css("style7", array('media' => 'only screen and (min-width : 320px)'));
         echo $this->Html->css("custom", array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
         echo $this->Html->css("component", array('media' => 'only screen and (min-width : 768px)'));
@@ -53,7 +53,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->css("touch", array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
         echo $this->Html->css("style", array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
         echo $this->Html->css("swiper/myswipe"); //, array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
-        echo $this->Html->css("swiper/swiper.min"); //, array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
+        echo $this->Html->css("swiper/swiper"); //, array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
         echo $this->Html->css("spine");
 
 //    jQuery first, then Tether, then Bootstrap JS.
@@ -118,8 +118,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </head>
     <body class="hal hal-home show">
         <div class="logos hidemobile">
-            <div class="lehmann logo-1 hide"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
-            <div class="logo logo-2 hide"></div>
+            <div class="lehmann logo-1"><span class="lehmann-01"></span><span class="lehmann-02"></span></div>
         </div>
         <header id="header" class="header hidemobile">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -306,10 +305,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </html>
 
 <script id="modalSimpleTemplate" type="text/html">
-    <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}" role="document">
+    <div class="modal-dialog default {{if small}}modal-sm{{else}}modal-lg{{/if}} {{if css}}{{html css}}{{/if}}" role="document">
         <div class="modal-content">
             {{if header}}
-            <div class="modal-header {{if css}}{{html css}}{{/if}}">
+            <div class="modal-header">
                 <div><h3 class="h3" style="padding-left: 26px;">${header}</h3></div>
                 <button type="button" class="" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
@@ -326,8 +325,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             {{/if}}
             {{if (typeof footer != 'undefined' && footer.footerButtonText)}}
             <div class="modal-footer" style="position: relative">
-                <a class="opt-agreed" style="" role="button" data-dismiss="modal" data-toggle="button">
-                {{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</a>
+                <button class="opt-agreed" style="" role="button" data-dismiss="modal" data-toggle="button">
+                {{if footer.footerButtonText}}${footer.footerButtonText}{{else}}Ok{{/if}}</button>
             </div>
             {{/if}}
         </div>
@@ -365,7 +364,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
     <ul class="pricing__feature-list">{{tmpl(descriptions()) "#norbuFeatureListTemplate" }}</ul>
     {{if link}}
-    <a href="${link}}" target="_blank" class="pricing__action ebay btn-dark col-md-6" role="button" aria-disabled=""><i class="ebay"></i>Zum Shop</a>
+    <a href="${link}}" target="_blank" class="btn btn-light pricing__action ebay" role="button" aria-disabled=""><i class="ebay"></i>Zum Shop</a>
     {{/if}}
     </div>
     </div>

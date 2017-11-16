@@ -30,7 +30,7 @@ class ModalSimpleView extends Spine.Controller
       show: false
       
     renderOptions =
-      css: 'default'
+      css: ''
       small: true
       header  : 'Default Header'
       body    : 'Default Body Text'

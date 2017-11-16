@@ -21,25 +21,21 @@
     overflow: auto;
   }
 }
-  .pricing--details .pricing__image {
+.pricing--details .pricing__image {
     width: 312px;
     height: 312px;
-  }
-
-  .pricing--details .pricing__image img.load {
+}
+.pricing--details .pricing__image img.load {
     position: absolute;
     top: 40%;
     left: 40%;
-  }
-
-  .pricing--details .pricing__image img:not(.load) {
+}
+.pricing--details .pricing__image img:not(.load) {
     position: absolute;
-  }
-  
+}
 .pricing--details {
   margin: -30px -10px 0;
 }
-
 .pricing--details .pricing__item .pricing__price {
   font-size: 2em;
   position: relative;
@@ -60,12 +56,8 @@
   transition: flex 0.3s;
 }
 .pricing--details .pricing__action {
-  text-align: center;
-  height: 50px;
-  line-height: 3em;
-  margin-top: 25px;
+  
 }
-
 .pricing {
 /*  display: -webkit-flex;
   display: flex;
@@ -82,7 +74,6 @@
   min-height: 340px;
   position: relative;
 }
-
 .pricing__item {
   display: -webkit-flex;
   display: flex;
@@ -97,19 +88,16 @@
   border-radius: 0px 0px 0 0;
   transition: flex 0.3s;
 }
-
 .pricing__feature-list {
   text-align: left;
   margin: 20px 0;
 }
-
 .pricing__action {
+    
 }
-
 .pricing__action:focus {
   outline: none;
 }
-
 /* Individual styles */
 /* norbu */
 .pricing--norbu .pricing__item {
@@ -121,7 +109,6 @@
   transition: border-color 0.3s, background 0.3s;
   transition: color 0.3s;
 }
-
 .pricing--norbu .pricing__title {
   font-size: 2.4em;
   font-weight: 400;
@@ -129,7 +116,6 @@
   padding: .3em;
   position: relative;
 }
-
 .pricing--norbu .pricing__title::after {
   content: '';
   position: absolute;
@@ -139,7 +125,6 @@
   left: 40%;
   bottom: -6px;
 }
-
 .pricing--norbu .icon {
   display: inline-block;
   min-width: 2em;

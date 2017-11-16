@@ -5,20 +5,14 @@
     }
 
     .pricing--details .pricing__feature-list {
-        margin: 85px 20px 0 0;
-        position: absolute;
-        top: 0;
-        right: 0;
-        text-align: left;
-        width: 45%;
-        padding-right: 20px;
-        height: 400px;
-        overflow: auto;
+        margin-top: 33px;
     }
 }
+.hide {
+  display: none !important;
+}
 .pricing--details .pricing__image {
-    width: 420px;
-    height: 420px;
+    width: 100%;
 }
 
 .pricing--details .pricing__image img.load {
@@ -28,12 +22,11 @@
 }
 
 .pricing--details .pricing__image img:not(.load) {
-    width: 420px;
-    height: 420px;
+    width: 100%;
 }
 
 .pricing--details {
-    margin: -60px -10px 0;
+    
 }
 
 .pricing--details .pricing__item .pricing__price {
@@ -49,19 +42,17 @@
     align-items: stretch;
     text-align: left;
     flex: 1 0 100px; 
-    margin: 1em;
+    margin: 0;
     border: 0 none;
     border-radius: 0px 0px 0 0;
     transition: flex 0.3s;
 }
-.pricing--details .pricing__action {
-    text-align: center;
-    height: 50px;
-    width: 100%;
-    line-height: 3em;
-    margin-top: 25px;
+.hal .pricing {
+    padding-right: 64px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
 }
-
 .pricing {
 /*    display: -webkit-flex;
     display: flex;
@@ -103,7 +94,8 @@
     margin: 20px 0;
 }
 
-.pricing__action {
+.pricing--details .pricing__action {
+    border: 3px solid #fff;
 }
 
 .pricing__action:focus {

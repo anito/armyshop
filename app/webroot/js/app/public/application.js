@@ -31467,7 +31467,7 @@ Released under the MIT License
         show: false
       };
       renderOptions = {
-        css: 'default',
+        css: '',
         small: true,
         header: 'Default Header',
         body: 'Default Body Text',
@@ -43877,7 +43877,7 @@ Released under the MIT License
       }
       options = {
         small: false,
-        css: 'alert',
+        css: 'details',
         header: this.product.title,
         body: (function(_this) {
           return function() {
