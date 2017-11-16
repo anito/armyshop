@@ -308,7 +308,6 @@ class Main extends Spine.Controller
       unless (intro = settings.intro)?
         settings.updateAttributes(intro: !intro)
         intro = true
-#      @startScript(intro)
       @startScript(false)
   
   isAdmin: ->
@@ -363,7 +362,6 @@ class Main extends Spine.Controller
         body: '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>'
         footer: false
       )
-      
       
 #      @notify '<h3>Welcome</h3><br>to<br><h4>HA Lehmann Admin</h4><h2>Beta</h2>'
       

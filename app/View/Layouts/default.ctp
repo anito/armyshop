@@ -44,16 +44,16 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->css("linearicons");
         echo $this->Html->css("lehmann");
         echo $this->Html->css("common");
-        echo $this->Html->css("demo", array('media' => 'only screen and (min-device-width : 768px)'));
-        echo $this->Html->css("style7", array('media' => 'only screen and (min-device-width : 320px)'));
-        echo $this->Html->css("custom", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-        echo $this->Html->css("component", array('media' => 'only screen and (min-device-width : 768px)'));
-        echo $this->Html->css("component_mobile", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-//    echo $this->Html->css("mobile_device", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-        echo $this->Html->css("touch", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-        echo $this->Html->css("style", array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-        echo $this->Html->css("swiper/myswipe"); //, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
-        echo $this->Html->css("swiper/swiper.min"); //, array('media' => 'only screen and (min-device-width : 320px) and (max-device-width : 767px) '));
+        echo $this->Html->css("demo", array('media' => 'only screen and (min-width : 768px)'));
+        echo $this->Html->css("style7", array('media' => 'only screen and (min-width : 320px)'));
+        echo $this->Html->css("custom", array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
+        echo $this->Html->css("component", array('media' => 'only screen and (min-width : 768px)'));
+        echo $this->Html->css("component_mobile", array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
+//    echo $this->Html->css("mobile_device", array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
+        echo $this->Html->css("touch", array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
+        echo $this->Html->css("style", array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
+        echo $this->Html->css("swiper/myswipe"); //, array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
+        echo $this->Html->css("swiper/swiper.min"); //, array('media' => 'only screen and (min-width : 320px) and (max-width : 767px) '));
         echo $this->Html->css("spine");
 
 //    jQuery first, then Tether, then Bootstrap JS.
@@ -124,7 +124,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <header id="header" class="header hidemobile">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <i class="badge1"></i>
-                <i class="favorite-badge opt-favorite"></i>
+                <i class="favorite-badge opt-favorite" title="Produkt des Tages"></i>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -305,7 +305,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </body>
 </html>
 
-<script id="modalSimpleTemplate" type="text/x-jquery-tmpl">
+<script id="modalSimpleTemplate" type="text/html">
     <div class="modal-dialog {{if small}}modal-sm{{else}}modal-lg{{/if}}" role="document">
         <div class="modal-content">
             {{if header}}
@@ -334,13 +334,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
 </script>
 
-<script id="norbuPricingDetailsTemplate" type="text/x-tmpl">
+<script id="norbuPricingDetailsTemplate" type="text/html">
     <div class="">
     {{tmpl() "#norbuPricingDetailsTemplate_" }}
     </div>
 </script>
 
-<script id="norbuPricingDetailsTemplate_" type="text/x-tmpl">
+<script id="norbuPricingDetailsTemplate_" type="text/html">
     <div class="pricing--details pricing--norbu_">
     <div id="${id}" data-id="${id}" class="pricing__item">
     {{if favorite}}
@@ -371,7 +371,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
 </script>
 
-<script id="norbuPricingTemplate" type="text/x-tmpl">
+<script id="norbuPricingTemplate" type="text/html">
     <div id="${id}" data-id="${id}" class="pricing__item">
     {{if favorite}}
     <i class="badge3"></i>
@@ -399,21 +399,21 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </div>
 </script>
 
-<script id="norbuImageListTemplate" type="text/x-tmpl">
+<script id="norbuImageListTemplate" type="text/html">
     <div class="swiper-slide">
     <div id="${id}" class="pricing__image"><img class="image load" src="/img/ajax-loader-66.gif"/></div>
     </div>
 </script>
 
-<script id="norbuFeatureListTemplate" type="text/x-tmpl">
+<script id="norbuFeatureListTemplate" type="text/html">
     <li class="pricing__feature">{{html description}}</li>
 </script>
 
-<script id="refreshTemplate" type="text/x-tmpl">
+<script id="refreshTemplate" type="text/html">
     <a href="${location.hash}" class="opt-Refresh"><i class="lnr lnr-${icon}"></i></a>
 </script>
 
-<script id="trustamiTemplate" type="text/x-tmpl">
+<script id="trustamiTemplate" type="text/html">
     <a href="https://app.trustami.com/trustami-card/57e573efcc96c5511c8b480e" target="_blank" title="Trustami Bewertungen und Erfahrungen von Handelsagentur Lehmann">
     <div class="trustami-inner">
     <i class="trustami-image"></i>
@@ -422,7 +422,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </a>
 </script>
 
-<script id="hbTemplate" type="text/x-tmpl">
+<script id="hbTemplate" type="text/html">
     <a href="https://www.haendlerbund.de/mitglied/show.php?uuid=13b695f4-b7a3-11e6-8974-9c5c8e4fb375-3496146168" target="_blank">
     <img src="/img/hbLogo.jpg" title="H&auml;ndlerbund Mitglied" alt="Mitglied im H&auml;ndlerbund" hspace="5" vspace="5" border="0" />
     </a>

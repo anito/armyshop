@@ -52,12 +52,21 @@
     right: 6px;
     top: 37px;
   }
-  .badge2::before {
-    content: url(/img/favorite.png);
+  .badge2 {
+    width: 50px;
+    height: 80px;
     position: absolute;
-    z-index: 1;
+    top: 20px;
     right: 110px;
-    top: 6px;
+    z-index: 1;
+  }
+  .badge2::before {
+    background-image: url(/img/favorite.png);
+    content: "";
+    background-size: 50px 80px;
+    display: inline-block;
+    width: 50px; 
+    height: 80px;
   }
   .badge2-modal::before {
     content: url(/img/favorite.png);

@@ -78,30 +78,27 @@ class Product extends Spine.Model
     isAdmin = App.isAdmin()
     
     favorite = Product.findByAttribute('favorite', true)
-    
-    unless favorite
-      App.confirm('NO_FAVORITE_FOUND', mode: 'alert')
-      return
-      
-    cats = CategoriesProduct.categories favorite.id
-    catPro = CategoriesProduct.findByAttribute('product_id', favorite.id)
-    
-    #alert if no Favorite
-    unless catPro
-      if App.confirm('FAVORITE_IN_TRASH')
-        if isAdmin
-          window.location.href = '#/trash/products/'
-          return
-      else
-        return
-      
-    catId = catPro.category_id
+    catPro = CategoriesProduct.findByAttribute('product_id', favorite?.id)
+    cats = CategoriesProduct.categories favorite?.id
+    catId = catPro?.category_id
     cat = Category.find(catId)
-    if isAdmin
-      location = '/category/' + catId + '/s/' + favorite.id
-    else
+    
+    if(isAdmin)
+      unless favorite
+        App.confirm('NO_FAVORITE_FOUND', mode: 'alert')
+        return
+      else
+        unless catPro
+          if App.confirm('FAVORITE_IN_TRASH')
+            window.location.href = '#/trash/products/'
+            return
+          else return
+        else if catId
+          location = '/category/' + catId + '/s/' + favorite.id
+    else if catPro and cat
       return if catPro.ignored or !Category.protected[cat.name]
       location = '/pages/' + cat.name + '#/item/' + favorite.id
+      
     location
     
   @descriptions: (id) ->

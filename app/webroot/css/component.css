@@ -121,6 +121,7 @@
     transition: border-color 0.3s, background 0.3s;
     transition: color 0.3s;
     flex: 1 0 250px;
+    max-width: 250px;
 }
 
 .pricing--norbu .pricing__title {
