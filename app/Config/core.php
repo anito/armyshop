@@ -220,8 +220,8 @@ Configure::write('Routing.prefixes', array('admin'));
  */
 	Configure::write('Session', array(
 		'defaults' => 'cache',
-    'cookie' => 'LEHMANN',
-    'timeout' => 3600
+                'cookie' => 'LEHMANN',
+                'timeout' => 3600
 	));
 
 /**
@@ -273,7 +273,7 @@ Configure::write('Routing.prefixes', array('admin'));
  * Uncomment this line and correct your server timezone to fix
  * any date & time related errors.
  */
-	date_default_timezone_set('UTC');
+	date_default_timezone_set('Europe/Berlin');
 
 /**
  * `Config.timezone` is available in which you can set users' timezone string.
