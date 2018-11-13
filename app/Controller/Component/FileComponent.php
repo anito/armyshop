@@ -663,7 +663,7 @@ class FileComponent extends CakeObject {
         }
       }
 
-      if (eregi('\.jpg|\.jpeg', basename($path)) && is_callable('exif_read_data')) {
+      if (preg_match('/\.jpg|\.jpeg/', basename($path)) && is_callable('exif_read_data')) {
         $exif_data = exif_read_data($path, 0, true);
         $meta['Exif'] = $exif_data;
         if (isset($meta['Exif']['EXIF']['DateTimeDigitized'])) {
