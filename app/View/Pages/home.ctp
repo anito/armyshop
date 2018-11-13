@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-10 col-sm-offset-1">
                                 <i class="lnr-home"></i>
-                                <h1>Herzlich Willkommen</h1>
+                                <h1>HHerzlich Willkommen</h1>
                             </div>
                         </div>
                     </a>
