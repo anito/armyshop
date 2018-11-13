@@ -409,7 +409,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </script>
 
 <script id="refreshTemplate" type="text/html">
-    <a href="${location.hash}" class="opt-Refresh"><i class="lnr lnr-${icon}"></i></a>
+    <a href="${location.hash}" class="opt-Refresh lnr lnr-${icon}"></a>
 </script>
 
 <script id="trustamiTemplate" type="text/html">
