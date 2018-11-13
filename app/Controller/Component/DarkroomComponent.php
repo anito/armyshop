@@ -1,6 +1,6 @@
 <?php
 
-class DarkroomComponent extends Object {
+class DarkroomComponent extends CakeObject {
 
   var $controller = true;
 
@@ -30,7 +30,7 @@ class DarkroomComponent extends Object {
     $ext = $this->returnExt($name);
     // Find out what we are dealing with
     switch (true) {
-      case preg_match("/jpg|jpeg|jpe|JPE|JPG|JPEG/", $ext):
+      case preg_match('/jpg|jpeg|jpe|JPE|JPG|JPEG/', $ext):
         if (imagetypes() & IMG_JPG) {
           $src_img = imagecreatefromjpeg($name);
           $type = 'jpg';
@@ -38,7 +38,7 @@ class DarkroomComponent extends Object {
           return;
         }
         break;
-      case preg_match("/png/", $ext):
+      case preg_match('/png/', $ext):
         if (imagetypes() & IMG_PNG) {
           $src_img = imagecreatefrompng($name);
           $type = 'png';
@@ -46,7 +46,7 @@ class DarkroomComponent extends Object {
           return;
         }
         break;
-      case preg_match("/gif|GIF/", $ext):
+      case preg_match('/gif|GIF/', $ext):
         if (imagetypes() & IMG_GIF) {
           $src_img = imagecreatefromgif($name);
           $type = 'gif';
@@ -219,7 +219,7 @@ class DarkroomComponent extends Object {
             return;
           }
           break;
-        case preg_match("/png/", $ext):
+        case preg_match('/png/', $ext):
           if (imagetypes() & IMG_PNG) {
             $src_img = imagecreatefrompng($name);
             $type = 'png';

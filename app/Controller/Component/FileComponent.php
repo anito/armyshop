@@ -3,7 +3,7 @@
 App::uses('Folder', 'Utility');
 App::uses('File', 'Utility');
 
-class FileComponent extends Object {
+class FileComponent extends CakeObject {
 
   var $controller = true;
   var $dirTags = array(
