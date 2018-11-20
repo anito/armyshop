@@ -73,11 +73,11 @@ class Login extends Spine.Controller
     flash.statusText = xhr.statusText
     @flash flash
     
-  flash: (flash) ->
+  flash: (json) ->
     @oldMessage = @flashEl.html() unless @oldMessage
     delayedFunc = -> @flashEl.html @oldMessage
-    @render @flashEl, @flashTemplate flash
-    @render @statusEl, @statusTemplate flash
+    @render @flashEl, @flashTemplate json
+    @render @statusEl, @statusTemplate json
     @delay delayedFunc, 2000
     
   newAttributes: (json) ->

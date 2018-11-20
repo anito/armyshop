@@ -89,7 +89,7 @@ class UsersController extends AppController {
     $this->Auth->logout();
     if (!$this->request->is('ajax')) {
 //    $this->log($this->Session->id());
-      $this->Flash->error(__('Anmeldung erforderlich'));
+//      $this->Flash->error(__('Anmeldung erforderlich'));
       $this->redirect(array('controller' => 'users', 'action' => 'login'));
     } else {
       $this->Flash->success(__('Sie wurden ausgelogged'));

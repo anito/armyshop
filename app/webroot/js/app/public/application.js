@@ -44323,7 +44323,7 @@ Released under the MIT License
       return this.flash(flash);
     };
 
-    Login.prototype.flash = function(flash) {
+    Login.prototype.flash = function(json) {
       var delayedFunc;
       if (!this.oldMessage) {
         this.oldMessage = this.flashEl.html();
@@ -44331,8 +44331,8 @@ Released under the MIT License
       delayedFunc = function() {
         return this.flashEl.html(this.oldMessage);
       };
-      this.render(this.flashEl, this.flashTemplate(flash));
-      this.render(this.statusEl, this.statusTemplate(flash));
+      this.render(this.flashEl, this.flashTemplate(json));
+      this.render(this.statusEl, this.statusTemplate(json));
       return this.delay(delayedFunc, 2000);
     };
 
