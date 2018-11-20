@@ -19,6 +19,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 App::uses('AppController', 'Controller');
+App::uses('SecurityComponent', 'Controller/Component');
 
 /**
  * Static content controller
@@ -101,6 +102,7 @@ class PagesController extends AppController {
             $user_id = $this->Auth->user('id');
 //      $this->log('Auth', LOG_DEBUG);
         } else {
+            // take the defauilt user if nobody is logged in
             $user = $this->User->find('first', array(
                 'conditions' => array('User.username' => DEFAULT_USER)
             ));
@@ -111,7 +113,8 @@ class PagesController extends AppController {
             }
         }
         if (empty($user_id)) {
-//      $this->response->header("WWW-Authenticate: Negotiate");
+            $this->response->header("WWW-Authenticate: Negotiate");
+            die();
         }
 //    $this->log('$user_id', LOG_DEBUG);
         $categories = $this->Category->findAllByUserId($user_id);

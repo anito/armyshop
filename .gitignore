@@ -40,6 +40,6 @@ mysqlconf/*
 /app/webroot/stat/counter_default.php
 /app/webroot/stat/config/config_db.php
 /app/webroot/stat/config/*.inc
-/app/webroot/stat_
+/app/webroot/stat
 /app/webroot/googlec455ce6e66bdc8d6.html
 app/webroot/google58799cfc93ea70b6.html

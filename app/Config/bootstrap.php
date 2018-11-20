@@ -129,7 +129,7 @@ define('PHOTOS', UPLOADS . DS . 'photos');
 define('MYSQLCONFIG', ROOT . DS . 'mysqlconf');
 define('MYSQLUPLOAD', ROOT . DS . 'mysql');
 define('STATCONFIG', '../../' . WEBROOT_DIR . DS . 'stat' . DS . 'config' . DS);
-define('DEFAULT_USER', 'gast');
+define('DEFAULT_USER', 'guest');
 // for MySQL Controller
 App::uses('ConnectionManager', 'Model');
 $cm = ConnectionManager::getSourceName('default');
