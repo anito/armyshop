@@ -483,6 +483,7 @@ class App extends Spine.Controller
     @sidebar.addClass('off')
     
   showStats: (e) ->
+    return unless STATS_ENABLED
     @stats.attr('src', '/stat/counter.php').addClass('show').removeClass('fade')
     e.preventDefault()
     

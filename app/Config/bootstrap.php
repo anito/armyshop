@@ -128,6 +128,7 @@ define('UPLOADS', ROOT . DS . 'uploads');
 define('PHOTOS', UPLOADS . DS . 'photos');
 define('MYSQLCONFIG', ROOT . DS . 'mysqlconf');
 define('MYSQLUPLOAD', ROOT . DS . 'mysql');
+define('STATS_ENABLED', TRUE);
 define('STATCONFIG', '../../' . WEBROOT_DIR . DS . 'stat' . DS . 'config' . DS);
 define('DEFAULT_USER', 'guest');
 // for MySQL Controller

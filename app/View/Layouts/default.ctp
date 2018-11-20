@@ -301,6 +301,17 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             <div class="modal-dialog" role="document">needed by Modal</div>
         </div>
         <!-- /.modal -->
+        
+        <?php
+        echo $this->Html->scriptStart();
+        ?>
+
+        var STATS_ENABLED = !!'<?php echo STATS_ENABLED; ?>';
+
+        <?php
+        echo $this->Html->scriptEnd();
+        ?>
+        
     </body>
 </html>
 
