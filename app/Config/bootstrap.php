@@ -131,6 +131,9 @@ define('MYSQLUPLOAD', ROOT . DS . 'mysql');
 define('STATCONFIG', '../../' . WEBROOT_DIR . DS . 'stat' . DS . 'config' . DS);
 define('DEFAULT_USER', 'gast');
 // for MySQL Controller
+App::uses('ConnectionManager', 'Model');
+$cm = ConnectionManager::getSourceName('default');
+//define("DEFAULT_DB", ConnectionManager::config );
 define("DEFAULT_DB", 'armyshop');
 if (!defined('MYSQL_CMD_PATH')) {
     $a = explode('.', DIR_HOST);
